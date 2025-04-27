@@ -2,8 +2,15 @@
 	"extends": "@tsconfig/node22/tsconfig.json",
 	"include": ["src"],
 	"compilerOptions": {
+		"allowJs": true,
 		"outDir": "lib",
 		"skipLibCheck": false,
-		"moduleResolution": "NodeNext"
+		"moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"declaration": true,
+		"sourceMap": true,
+		"declarationMap": true
 	}
 }

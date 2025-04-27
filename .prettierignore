@@ -1,2 +1,2 @@
-pnpm-lock.yaml
-./src/database.types.ts
+/node_modules
+/lib

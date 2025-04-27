@@ -1,14 +1,14 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
+import eslint from "@eslint/js";
+import tsEslint from "typescript-eslint";
+
 import { FlatCompat } from "@eslint/eslintrc";
-import reactPlugin from "eslint-plugin-react";
-import functional from "eslint-plugin-functional";
-import query from "@tanstack/eslint-plugin-query";
 import stylistic from "@stylistic/eslint-plugin-ts";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
+import importPlugin from "eslint-plugin-import";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,43 +18,38 @@ const compat = new FlatCompat({
 });
 
 /** @type { import("eslint").Linter.Config[] } */
-
-const eslintConfig = [
-	...compat.extends("next/core-web-vitals", "next/typescript"),
-	...query.configs["flat/recommended"],
+export default tsEslint.config(
+	eslint.configs.recommended,
+	tsEslint.configs.recommendedTypeChecked,
 	{
-		settings: {
-			react: {
-				version: "detect"
+		languageOptions: {
+			parserOptions: {
+				project: ["./packages/*/tsconfig.json"],
+				tsconfigRootDir: import.meta.dirname
 			}
-		},
+		}
+	},
+	{
+		ignores: [
+			"**/lib/",
+			"**/generated/",
+			"**/node_modules/",
+		],
 		plugins: {
 			stylistic,
-			functional,
 			perfectionist,
-
-			unusedImports: unusedImports,
-			...reactPlugin.configs.flat.recommended.plugins,
-			"react-hooks": reactHooksPlugin
+			import: importPlugin,
+			unusedImports
 		},
 		rules: {
-			...reactPlugin.configs.flat.recommended.rules,
-			...reactHooksPlugin.configs.recommended.rules,
-			"react/prop-types": "off",
-			"react/react-in-jsx-scope": "off",
-			"react/jsx-boolean-value": "error",
-			"react-hooks/exhaustive-deps": "error",
-			"react/jsx-curly-brace-presence": ["error", "never"],
-
 			curly: "error",
 			"sort-keys": "off",
-			"no-console": "error",
+			// "no-console": "error",
 			"max-params": ["error", 4],
 			"@typescript-eslint/no-namespace": "off",
 			"unusedImports/no-unused-imports": "error",
 			"@typescript-eslint/no-explicit-any": "warn",
 			"@typescript-eslint/no-empty-object-type": "off",
-			"no-restricted-imports": ["error", { patterns: ["./**", "../**"] }],
 			"@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports", fixStyle: "inline-type-imports" }],
 			"@typescript-eslint/no-unused-vars": [
 				"error",
@@ -110,6 +105,4 @@ const eslintConfig = [
 			"import/no-extraneous-dependencies": ["error", { devDependencies: true }]
 		}
 	}
-];
-
-export default eslintConfig;
+);
