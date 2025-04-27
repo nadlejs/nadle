@@ -1,0 +1,38 @@
+{
+	"name": "nadle",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"build": "tsc",
+		"watch": "tsc -watch",
+		"lint": "next lint --quiet && prettier --check .",
+		"lint:fix": "next lint --fix && prettier --write ."
+	},
+	"dependencies": {
+		"lodash": "^4.17.21",
+		"nanoid": "^5.1.2",
+		"zod": "^3.24.1"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3",
+		"@stylistic/eslint-plugin-ts": "^2.12.0",
+		"@tsconfig/node22": "^22.0.1",
+		"@types/lodash": "^4.17.14",
+		"@types/node": "^22.15.2",
+		"eslint": "^9.25.1",
+		"eslint-plugin-perfectionist": "^4.9.0",
+		"eslint-plugin-unused-imports": "^4.1.4",
+		"prettier": "^3.5.1",
+		"tsx": "^4.19.3",
+		"typescript": "^5.8.2"
+	},
+	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",
+	"lint-staged": {
+		"*.{ts,tsx}": [
+			"eslint --fix"
+		],
+		"*.{ts,tsx,yml,json}": [
+			"prettier --write"
+		]
+	}
+}
