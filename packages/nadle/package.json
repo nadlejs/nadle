@@ -5,9 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"watch": "tsc -watch",
-		"lint": "eslint src --quiet && prettier src --check",
-		"lint:fix": "eslint src --fix && prettier src --write"
+		"watch": "tsc -watch"
 	},
 	"files": [
 		"src",
@@ -19,16 +17,11 @@
 	"bin": "lib/cli.js",
 	"dependencies": {
 		"cac": "^6.7.14",
-		"jiti": "^2.4.2",
-		"lodash": "^4.17.21",
-		"nanoid": "^5.1.2",
-		"zod": "^3.24.1"
+		"jiti": "^2.4.2"
 	},
 	"devDependencies": {
 		"@tsconfig/node22": "^22.0.1",
-		"@types/lodash": "^4.17.14",
 		"@types/node": "^22.15.2",
-		"tsx": "^4.19.3",
 		"typescript": "^5.8.2"
 	},
 	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",

@@ -1,0 +1,8 @@
+{
+	"extends": "./tsconfig.json",
+	"include": ["**/src", "./prettier.config.js", "./eslint.config.mjs", "packages/app/build.ts"],
+	"compilerOptions": {
+		"noEmit": true,
+		"allowJs": true
+	}
+}

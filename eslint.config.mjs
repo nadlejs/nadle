@@ -1,45 +1,29 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-
 import eslint from "@eslint/js";
 import tsEslint from "typescript-eslint";
-
-import { FlatCompat } from "@eslint/eslintrc";
 import stylistic from "@stylistic/eslint-plugin-ts";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
-import importPlugin from "eslint-plugin-import";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-	baseDirectory: __dirname
-});
 
 /** @type { import("eslint").Linter.Config[] } */
 export default tsEslint.config(
 	eslint.configs.recommended,
-	tsEslint.configs.recommendedTypeChecked,
+	tsEslint.configs.recommended,
 	{
-		languageOptions: {
-			parserOptions: {
-				project: ["./packages/*/tsconfig.json"],
-				tsconfigRootDir: import.meta.dirname
-			}
-		}
+		ignores: ["**/lib", "**/node_modules/"]
 	},
 	{
-		ignores: [
-			"**/lib/",
-			"**/generated/",
-			"**/node_modules/",
-		],
+		linterOptions: {
+			reportUnusedDisableDirectives: "error"
+		},
 		plugins: {
 			stylistic,
 			perfectionist,
-			import: importPlugin,
 			unusedImports
+		},
+		languageOptions: {
+			parserOptions: {
+				project: ["tsconfig.eslint.json"]
+			}
 		},
 		rules: {
 			curly: "error",
@@ -50,7 +34,13 @@ export default tsEslint.config(
 			"unusedImports/no-unused-imports": "error",
 			"@typescript-eslint/no-explicit-any": "warn",
 			"@typescript-eslint/no-empty-object-type": "off",
-			"@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports", fixStyle: "inline-type-imports" }],
+			"@typescript-eslint/consistent-type-imports": [
+				"error",
+				{
+					prefer: "type-imports",
+					fixStyle: "inline-type-imports"
+				}
+			],
 			"@typescript-eslint/no-unused-vars": [
 				"error",
 				{
@@ -61,9 +51,6 @@ export default tsEslint.config(
 				}
 			],
 
-			"import/no-duplicates": ["error", { "prefer-inline": true }],
-
-			"perfectionist/sort-jsx-props": ["error", { type: "line-length" }],
 			"perfectionist/sort-named-imports": ["error", { type: "line-length" }],
 			"perfectionist/sort-objects": ["error", { type: "line-length", partitionByNewLine: true }],
 			"perfectionist/sort-exports": ["error", { type: "line-length", partitionByNewLine: true }],
@@ -74,14 +61,7 @@ export default tsEslint.config(
 				{
 					type: "line-length",
 					newlinesBetween: "always",
-					groups: ["side-effect", "builtin", "external", "shadcn", "component", "project", ["parent", "sibling", "index"]],
-					customGroups: {
-						value: {
-							project: "^@\/(?!components)",
-							shadcn: "^@\/components\/shadcn\/.*",
-							component: "^@\/components\/(?!shadcn).*"
-						}
-					}
+					groups: ["side-effect", "builtin", "external", ["parent", "sibling", "index"]]
 				}
 			],
 
@@ -94,15 +74,6 @@ export default tsEslint.config(
 				},
 				{ next: "*", prev: "block-like", blankLine: "always" }
 			]
-		}
-	},
-	{
-		files: ["src/test/**"],
-		rules: {
-			"no-console": "off",
-			"react-hooks/rules-of-hooks": "off",
-			"@typescript-eslint/no-require-imports": "off",
-			"import/no-extraneous-dependencies": ["error", { devDependencies: true }]
 		}
 	}
 );

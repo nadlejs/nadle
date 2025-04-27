@@ -5,5 +5,5 @@ export default {
 	endOfLine: "auto",
 	trailingComma: "none",
 	bracketSameLine: true,
-	arrowParens: "always",
+	arrowParens: "always"
 };

@@ -4,7 +4,10 @@
 	"type": "module",
 	"scripts": {
 		"build": "pnpm -r build",
-		"lint": "pnpm -r lint"
+		"format": "pnpm run \"/lint|prettier/\"",
+		"lint": "eslint --quiet",
+		"prettier": "prettier --check .",
+		"fix": "eslint --fix && prettier --write ."
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
@@ -24,10 +27,10 @@
 	},
 	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",
 	"lint-staged": {
-		"*.{ts,tsx}": [
+		"*.ts": [
 			"eslint --fix"
 		],
-		"*.{ts,tsx,yml,json}": [
+		"*.{ts,yml,json}": [
 			"prettier --write"
 		]
 	}
