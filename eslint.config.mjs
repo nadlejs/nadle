@@ -1,4 +1,5 @@
 import eslint from "@eslint/js";
+import nPlugin from "eslint-plugin-n";
 import tsEslint from "typescript-eslint";
 import stylistic from "@stylistic/eslint-plugin-ts";
 import perfectionist from "eslint-plugin-perfectionist";
@@ -8,6 +9,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 export default tsEslint.config(
 	eslint.configs.recommended,
 	tsEslint.configs.recommended,
+	nPlugin.configs["flat/recommended-module"],
 	{
 		ignores: ["**/lib", "**/node_modules/"]
 	},
@@ -28,27 +30,21 @@ export default tsEslint.config(
 		rules: {
 			curly: "error",
 			"sort-keys": "off",
-			// "no-console": "error",
+			"no-console": "warn",
 			"max-params": ["error", 4],
-			"@typescript-eslint/no-namespace": "off",
+
+			"n/no-missing-import": "off",
+			"n/prefer-node-protocol": "error",
+
 			"unusedImports/no-unused-imports": "error",
+
+			"@typescript-eslint/no-namespace": "off",
 			"@typescript-eslint/no-explicit-any": "warn",
 			"@typescript-eslint/no-empty-object-type": "off",
-			"@typescript-eslint/consistent-type-imports": [
-				"error",
-				{
-					prefer: "type-imports",
-					fixStyle: "inline-type-imports"
-				}
-			],
+			"@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports", fixStyle: "inline-type-imports" }],
 			"@typescript-eslint/no-unused-vars": [
 				"error",
-				{
-					argsIgnorePattern: "^_",
-					ignoreRestSiblings: true,
-					destructuredArrayIgnorePattern: "^_",
-					caughtErrorsIgnorePattern: "^error$"
-				}
+				{ argsIgnorePattern: "^_", ignoreRestSiblings: true, destructuredArrayIgnorePattern: "^_", caughtErrorsIgnorePattern: "^error$" }
 			],
 
 			"perfectionist/sort-named-imports": ["error", { type: "line-length" }],
@@ -58,20 +54,12 @@ export default tsEslint.config(
 			"perfectionist/sort-object-types": ["error", { type: "line-length", partitionByNewLine: true }],
 			"perfectionist/sort-imports": [
 				"error",
-				{
-					type: "line-length",
-					newlinesBetween: "always",
-					groups: ["side-effect", "builtin", "external", ["parent", "sibling", "index"]]
-				}
+				{ type: "line-length", newlinesBetween: "always", groups: ["side-effect", "builtin", "external", ["parent", "sibling", "index"]] }
 			],
 
 			"stylistic/padding-line-between-statements": [
 				"error",
-				{
-					prev: "*",
-					blankLine: "always",
-					next: ["if", "while", "for", "switch", "try", "do", "return"]
-				},
+				{ prev: "*", blankLine: "always", next: ["if", "while", "for", "switch", "try", "do", "return"] },
 				{ next: "*", prev: "block-like", blankLine: "always" }
 			]
 		}

@@ -1,6 +1,6 @@
 {
 	"extends": "../../tsconfig.json",
-	"files": ["build.ts"],
+	"files": ["build.nadle.ts"],
 	"compilerOptions": {
 		"noEmit": true
 	}

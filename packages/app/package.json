@@ -5,7 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"run": "nadle hello"
+		"hello": "nadle hello",
+		"hello&goodbye": "nadle hello goodbye",
+		"help": "nadle -h"
 	},
 	"dependencies": {
 		"nadle": "workspace:*"
