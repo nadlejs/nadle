@@ -18,7 +18,7 @@ export async function runTask(name: string) {
 	const fn = tasks.get(name);
 
 	if (!fn) {
-		throw new Error(`Task "${name}" not found`);
+		throw new Error(`Task "${name}" not found. Candidate tasks: ${Array.from(tasks.keys()).join(", ")}`);
 	}
 
 	await fn();

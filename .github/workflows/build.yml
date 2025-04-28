@@ -29,8 +29,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Format
+      - name: Lint & Format
         run: pnpm lint && pnpm prettier
 
       - name: Build
         run: pnpm build
+
+      - name: Test
+        run: pnpm test

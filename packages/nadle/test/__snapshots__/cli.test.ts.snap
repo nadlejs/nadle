@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CLI > can run a simple command 1`] = `"Hello from nadle!"`;
+
+exports[`CLI > can run two commands 1`] = `
+"Hello from nadle!
+Goodbye, tak!"
+`;
+
+exports[`CLI > prints help 1`] = `
+"nadle [...options] <tasks...>
+
+Run one or many tasks
+
+Options:
+      --version  Show version number                                   [boolean]
+  -c, --config   Path to config file    [string] [default: <cwd>/build.nadle.ts]
+      --help     Show help                                             [boolean]"
+`;

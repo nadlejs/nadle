@@ -15,7 +15,8 @@ const argv = yargs(hideBin(process.argv))
 		alias: "c",
 		type: "string",
 		default: "build.nadle.ts",
-		description: "Path to config file"
+		description: "Path to config file",
+		defaultDescription: "<cwd>/build.nadle.ts"
 	})
 	.help()
 	.parseSync();

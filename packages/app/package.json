@@ -5,8 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"hello": "nadle hello",
-		"hello&goodbye": "nadle hello goodbye",
+		"base": "nadle --config src/build.nadle.ts",
+		"hello": "pnpm base hello",
+		"hello-and-goodbye": "pnpm base hello goodbye",
 		"help": "nadle -h"
 	},
 	"dependencies": {

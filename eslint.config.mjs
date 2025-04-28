@@ -35,6 +35,7 @@ export default tsEslint.config(
 
 			"n/no-missing-import": "off",
 			"n/prefer-node-protocol": "error",
+			"n/no-unsupported-features/node-builtins": "off",
 
 			"unusedImports/no-unused-imports": "error",
 
