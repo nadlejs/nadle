@@ -1,16 +1,15 @@
 {
-	"extends": "@tsconfig/node22/tsconfig.json",
-	"include": ["src"],
 	"compilerOptions": {
-		"allowJs": true,
-		"outDir": "lib",
-		"skipLibCheck": false,
+		"lib": ["ES2024"],
+		"target": "ES2022",
 		"moduleResolution": "NodeNext",
 		"module": "NodeNext",
+		"allowJs": true,
 		"isolatedModules": true,
 		"resolveJsonModule": true,
 		"declaration": true,
 		"sourceMap": true,
-		"declarationMap": true
+		"declarationMap": true,
+		"strict": true
 	}
 }
