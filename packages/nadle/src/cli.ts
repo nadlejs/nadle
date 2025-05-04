@@ -39,5 +39,5 @@ await jiti.import(pathToFileURL(buildFile).toString());
 const tasks: string[] = argv.tasks as string[];
 
 for (const task of tasks) {
-	await runTask(task);
+	await runTask(task, {});
 }

@@ -5,8 +5,7 @@ import stylistic from "@stylistic/eslint-plugin-ts";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
 
-/** @type { import("eslint").Linter.Config[] } */
-export default tsEslint.config(
+const config = tsEslint.config(
 	eslint.configs.recommended,
 	tsEslint.configs.recommended,
 	nPlugin.configs["flat/recommended-module"],
@@ -64,5 +63,13 @@ export default tsEslint.config(
 				{ next: "*", prev: "block-like", blankLine: "always" }
 			]
 		}
+	},
+	{
+		rules: {
+			"no-console": "off"
+		},
+		files: ["packages/app/**/*.ts", "packages/nadle/test/**/*.ts"]
 	}
 );
+
+export default config;
