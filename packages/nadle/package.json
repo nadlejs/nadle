@@ -17,6 +17,7 @@
 	"types": "lib/index.d.ts",
 	"bin": "bin/nadle",
 	"dependencies": {
+		"consola": "^3.4.2",
 		"jiti": "^2.4.2",
 		"yargs": "^17.7.2"
 	},

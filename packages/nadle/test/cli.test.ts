@@ -1,10 +1,7 @@
-import path from "node:path";
-
 import { execa } from "execa";
 import { it, expect, describe } from "vitest";
 
-const cliPath = path.resolve(import.meta.dirname, "../bin/nadle");
-const fixturesDir = path.resolve(import.meta.dirname, "./fixtures");
+import { cliPath, fixturesDir } from "./utils.js";
 
 describe("CLI", () => {
 	const exec = execa({ cwd: fixturesDir });

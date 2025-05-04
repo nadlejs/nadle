@@ -6,7 +6,7 @@ import yargs from "yargs";
 import { createJiti } from "jiti";
 import { hideBin } from "yargs/helpers";
 
-import { runTask } from "./core/index.js";
+import { runTask } from "./core/run-task.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")

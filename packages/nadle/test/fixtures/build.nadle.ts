@@ -1,11 +1,11 @@
-import { task, type TaskFn } from "../../lib/index.js";
+import { tasks, type TaskFn } from "../../lib/index.js";
 
-task("hello", async () => {
+tasks.register("hello", async () => {
 	await new Promise((r) => setTimeout(r, 100));
 	console.log("Hello from nadle!");
 });
 
-task("goodbye", () => {
+tasks.register("goodbye", () => {
 	console.log("Goodbye, tak!");
 });
 
@@ -16,7 +16,7 @@ function copyTask(): TaskFn {
 	};
 }
 
-task("copy", copyTask()).meta((context) => {
+tasks.register("copy", copyTask()).meta((context) => {
 	context.configure({
 		meta: {
 			dependsOn: ["prepare"]
@@ -28,6 +28,6 @@ task("copy", copyTask()).meta((context) => {
 	});
 });
 
-task("prepare", async () => {
+tasks.register("prepare", async () => {
 	console.log("Preparing...");
 });
