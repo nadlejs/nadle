@@ -8,46 +8,34 @@ tasks
 	.register("install", () => {
 		console.log("Installing npm...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["node"] } });
-	});
+	.config({ dependsOn: ["node"] });
 
 tasks
 	.register("compileTs", () => {
 		console.log("Compiling ts...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["install"] } });
-	});
+	.config({ dependsOn: ["install"] });
 
 tasks
 	.register("compileSvg", () => {
 		console.log("Compiling svg...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["install"] } });
-	});
+	.config({ dependsOn: ["install"] });
 
 tasks
 	.register("compile", () => {
 		console.log("Compiling...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["compileSvg", "compileTs"] } });
-	});
+	.config({ dependsOn: ["compileSvg", "compileTs"] });
 
 tasks
 	.register("test", () => {
 		console.log("Running tests...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["install"] } });
-	});
+	.config({ dependsOn: ["install"] });
 
 tasks
 	.register("build", () => {
 		console.log("Building...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["test", "compile"] } });
-	});
+	.config({ dependsOn: ["test", "compile"] });
