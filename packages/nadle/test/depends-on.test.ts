@@ -1,23 +1,22 @@
-import { execa } from "execa";
 import { it, expect, describe } from "vitest";
 
-import { cliPath, fixturesDir } from "./utils.js";
+import { createExec } from "./utils.js";
 
 describe("dependsOn", () => {
-	const exec = execa({ cwd: fixturesDir });
+	const exec = createExec({ config: "depends-on" });
 
 	it("should run dependent tasks first", async () => {
-		const { stdout } = await exec`${cliPath} --config depends-on.nadle.ts compileTs`;
+		const { stdout } = await exec`$0 compileTs`;
 		expect(stdout).toMatchSnapshot();
 	});
 
 	it("should run shared dependent tasks", async () => {
-		const { stdout } = await exec`${cliPath} --config depends-on.nadle.ts compile test`;
+		const { stdout } = await exec`$0 compile test`;
 		expect(stdout).toMatchSnapshot();
 	});
 
 	it("should run shared dependent tasks 2", async () => {
-		const { stdout } = await exec`${cliPath} --config depends-on.nadle.ts test compile`;
+		const { stdout } = await exec`$0 test compile`;
 		expect(stdout).toMatchSnapshot();
 	});
 });

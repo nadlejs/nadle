@@ -31,6 +31,7 @@ const config = tsEslint.config(
 			"sort-keys": "off",
 			"no-console": "warn",
 			"max-params": ["error", 4],
+			"no-restricted-imports": ["error", { patterns: ["consola"] }],
 
 			"n/no-missing-import": "off",
 			"n/prefer-node-protocol": "error",
@@ -69,6 +70,12 @@ const config = tsEslint.config(
 			"no-console": "off"
 		},
 		files: ["packages/app/**/*.ts", "packages/nadle/test/**/*.ts"]
+	},
+	{
+		files: ["packages/nadle/test/fixtures/**/*.ts"],
+		rules: {
+			"no-restricted-imports": ["error", { patterns: ["../**/src/*"] }]
+		}
 	}
 );
 

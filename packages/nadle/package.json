@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "tsc",
 		"test": "vitest",
-		"start": "tsc -watch"
+		"start": "tsc --watch"
 	},
 	"files": [
 		"src",

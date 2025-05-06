@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`--list > prints all available tasks 1`] = `
+"[log] Available tasks:
+[log] - hello
+[log] - goodbye
+[log] - copy
+[log] - prepare"
+`;
+
+exports[`--list > prints no task message when no registered tasks 1`] = `"[log] No tasks found"`;

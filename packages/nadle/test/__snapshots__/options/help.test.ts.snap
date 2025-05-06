@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`--help > prints help 1`] = `
+"nadle [tasks...]
+
+Run one or many tasks
+
+Options:
+      --version  Show version number                                   [boolean]
+  -c, --config   Path to config file    [string] [default: <cwd>/build.nadle.ts]
+  -l, --list     List all available tasks                              [boolean]
+  -h, --help     Show help                                             [boolean]"
+`;

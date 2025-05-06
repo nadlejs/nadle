@@ -21,9 +21,7 @@ export async function runTask(taskName: string, args: Record<string, any>) {
 		args,
 		options: {},
 		env: process.env,
-		configure: (meta) => {
-			Object.assign(context, meta);
-		}
+		configure: () => {}
 	};
 
 	const metadata = task.getMetadata(context);
