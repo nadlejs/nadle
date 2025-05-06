@@ -6,9 +6,11 @@
 	"scripts": {
 		"build": "tsc",
 		"base": "nadle --config src/build.nadle.ts",
+		"empty": "pnpm base",
+		"help": "pnpm base -h",
+		"list": "pnpm base --list",
 		"hello": "pnpm base hello",
 		"hello-and-goodbye": "pnpm base hello goodbye",
-		"help": "nadle -h",
 		"copy": "pnpm base copy",
 		"build_": "pnpm base install node"
 	},

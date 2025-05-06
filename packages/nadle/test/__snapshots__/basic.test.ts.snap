@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CLI > can run a simple command 1`] = `"Hello from nadle!"`;
+
+exports[`CLI > can run dependent task first 1`] = `
+"Preparing...
+Copying from assets/ to dist/"
+`;
+
+exports[`CLI > can run two commands sequentially 1`] = `
+"Hello from nadle!
+Goodbye, tak!"
+`;

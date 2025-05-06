@@ -1,5 +1,4 @@
-import consola from "consola";
-
+import { Consola } from "../consola.js";
 import { type TaskFn, type TaskMeta, type TaskContext, type RegisteredTask } from "./types.js";
 
 /** @internal */
@@ -17,7 +16,7 @@ export function registerTask(name: string, fn: TaskFn): { meta: (collector: (con
 			name,
 			run: fn,
 			getMetadata: (context) => {
-				consola.info("Compute metadata for task", name);
+				Consola.info("Compute metadata for task", name);
 				let capturedConfig: TaskMeta = {};
 				context.configure = (meta: TaskMeta) => {
 					capturedConfig = meta;

@@ -1,16 +1,14 @@
-import { resolve } from "node:path";
-import { existsSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import * as process from "node:process";
 
 import yargs from "yargs";
-import { createJiti } from "jiti";
 import { hideBin } from "yargs/helpers";
 
-import { runTask } from "./core/run-task.js";
+import { Consola } from "./consola.js";
+import { runner } from "./cli/runner.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
-	.usage("$0 [...options] <tasks...>", "Run one or many tasks")
+	.command("$0 [tasks...]", "Run one or many tasks")
 	.option("config", {
 		alias: "c",
 		type: "string",
@@ -18,26 +16,13 @@ const argv = yargs(hideBin(process.argv))
 		description: "Path to config file",
 		defaultDescription: "<cwd>/build.nadle.ts"
 	})
-	.help()
+	.option("list", { alias: "l", type: "boolean", description: "List all available tasks" })
+	.help("help")
+	.alias("help", "h")
 	.parseSync();
 
-const buildFile = resolve(process.cwd(), argv.config);
-
-if (!existsSync(buildFile)) {
-	console.error(`Config file not found: ${buildFile}`);
+runner(argv).catch((error) => {
+	Consola.error(error);
 	// eslint-disable-next-line n/no-process-exit
 	process.exit(1);
-}
-
-const jiti = createJiti(import.meta.url, {
-	interopDefault: true,
-	extensions: [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"]
 });
-
-await jiti.import(pathToFileURL(buildFile).toString());
-
-const tasks: string[] = argv.tasks as string[];
-
-for (const task of tasks) {
-	await runTask(task, {});
-}
