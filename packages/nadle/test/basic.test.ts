@@ -15,8 +15,6 @@ describe("CLI", () => {
 		expect(stdout).toMatchSnapshot();
 	});
 
-
-
 	it("can run dependent task first", async () => {
 		const { stdout, exitCode } = await exec`$0 copy`;
 		expect(exitCode).toBe(0);
