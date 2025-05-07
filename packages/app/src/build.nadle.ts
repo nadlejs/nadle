@@ -1,4 +1,11 @@
-import { tasks, type TaskFn } from "nadle";
+import { tasks, type Task } from "nadle";
+
+const CopyTask: Task<{ to: string; from: string }> = {
+	run: ({ options }) => {
+		const { to, from } = options;
+		console.log(`Copying from ${from} to ${to}`);
+	}
+};
 
 tasks.register("hello", async () => {
 	await new Promise((r) => setTimeout(r, 300));
@@ -9,28 +16,9 @@ tasks
 	.register("goodbye", () => {
 		console.log("Goodbye, tak!");
 	})
-	.meta((context) => {
-		context.configure({ meta: { dependsOn: ["hello"] } });
-	});
+	.config({ dependsOn: ["hello"] });
 
-function copyTask(): TaskFn {
-	return async (context) => {
-		const { to, from } = context.options;
-		console.log(`Copying from ${from} to ${to}`);
-	};
-}
-
-tasks.register("copy", copyTask()).meta((context) => {
-	context.configure({
-		meta: {
-			dependsOn: ["prepare"]
-		},
-		options: {
-			to: "dist/",
-			from: "assets/"
-		}
-	});
-});
+tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({ dependsOn: ["prepare"] });
 
 tasks.register("prepare", async () => {
 	console.log("Preparing...");
@@ -44,38 +32,32 @@ tasks
 	.register("install", async () => {
 		console.log("Installing npm...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["node"] } });
-	});
+	.config({ dependsOn: ["node"] });
 
 tasks
 	.register("compileTs", () => {
 		console.log("Compiling ts...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["install"] } });
-	});
+	.config({ dependsOn: ["install"] });
+
+tasks.register("compileSvg", () => {
+	console.log("Compiling svg...");
+});
 
 tasks
 	.register("compile", () => {
 		console.log("Compiling...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["compileSvg", "compileTs"] } });
-	});
+	.config({ dependsOn: ["compileSvg", "compileTs"] });
 
 tasks
 	.register("test", () => {
 		console.log("Running tests...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["compile"] } });
-	});
+	.config({ dependsOn: ["compile"] });
 
 tasks
 	.register("build", () => {
 		console.log("Building...");
 	})
-	.meta((ctx) => {
-		ctx.configure({ meta: { dependsOn: ["test", "compile"] } });
-	});
+	.config({ dependsOn: ["test", "compile"] });

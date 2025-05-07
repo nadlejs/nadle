@@ -1,37 +1,32 @@
-import { type TaskContext } from "./types.js";
+import { type Context } from "./types.js";
 import { getRegisteredTasks } from "./register-task.js";
 
 const executed = new Set<string>();
 
 /** @internal */
-export async function runTask(taskName: string, args: Record<string, any>) {
+export async function runTask(taskName: string) {
 	const task = getRegisteredTasks().find((t) => t.name === taskName);
 
 	if (!task) {
 		throw new Error(`Task "${taskName}" not found`);
 	}
 
-	if (executed.has(task.name)) {
+	const { run, name, configResolver, optionsResolver } = task;
+
+	if (executed.has(name)) {
 		return;
 	}
 
-	executed.add(task.name);
+	executed.add(name);
 
-	const context: TaskContext = {
-		args,
-		options: {},
-		env: process.env,
-		configure: () => {}
-	};
+	const context: Context = { env: process.env };
 
-	const metadata = task.getMetadata(context);
-	context.options = metadata.options || {};
+	const config = configResolver({ context });
+	const options = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 
-	const deps = metadata.meta?.dependsOn ?? [];
-
-	for (const dep of deps) {
-		await runTask(dep, args);
+	for (const dependentTask of config?.dependsOn ?? []) {
+		await runTask(dependentTask);
 	}
 
-	await task.run(context);
+	await run({ context, options });
 }

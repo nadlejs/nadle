@@ -1,4 +1,4 @@
-import { tasks, type TaskFn } from "../../lib/index.js";
+import { tasks, type Task } from "../../lib/index.js";
 
 tasks.register("hello", async () => {
 	await new Promise((r) => setTimeout(r, 100));
@@ -9,23 +9,19 @@ tasks.register("goodbye", () => {
 	console.log("Goodbye, tak!");
 });
 
-function copyTask(): TaskFn {
-	return async (context) => {
-		const { to, from } = context.options;
-		console.log(`Copying from ${from} to ${to}`);
-	};
+interface CopyOptions {
+	to: string;
+	from: string;
 }
 
-tasks.register("copy", copyTask()).meta((context) => {
-	context.configure({
-		meta: {
-			dependsOn: ["prepare"]
-		},
-		options: {
-			to: "dist/",
-			from: "assets/"
-		}
-	});
+const CopyTask: Task<CopyOptions> = {
+	run: ({ options }) => {
+		const { to, from } = options;
+		console.log(`Copying from ${from} to ${to}`);
+	}
+};
+tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({
+	dependsOn: ["prepare"]
 });
 
 tasks.register("prepare", async () => {

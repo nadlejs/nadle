@@ -41,6 +41,6 @@ export async function runner(options: CLIOptions) {
 	}
 
 	for (const task of tasks) {
-		await runTask(task, {});
+		await runTask(task);
 	}
 }

@@ -1,42 +1,58 @@
 import { Consola } from "../consola.js";
-import { type TaskFn, type TaskMeta, type TaskContext, type RegisteredTask } from "./types.js";
+import {
+	type Task,
+	type TaskFn,
+	type Resolver,
+	type ConfigBuilder,
+	type RegisteredTask,
+	type TaskConfiguration,
+	type ContextualResolver
+} from "./types.js";
 
 /** @internal */
 export const taskRegistry = new Map<string, RegisteredTask>();
 
-export function registerTask(name: string, fn: TaskFn): { meta: (collector: (context: TaskContext) => void) => void } {
+export function registerTask(name: string, fnTask: TaskFn): ConfigBuilder;
+export function registerTask<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): ConfigBuilder;
+export function registerTask(name: string, task: TaskFn | Task, optionsResolver?: Resolver): ConfigBuilder {
 	if (taskRegistry.has(name)) {
 		throw new Error(`Task "${name}" already registered`);
 	}
 
-	let metaCollector: (context: TaskContext) => void = () => {};
+	let configCollector: ContextualResolver<TaskConfiguration> | TaskConfiguration = () => ({});
 
 	const register = () => {
 		taskRegistry.set(name, {
 			name,
-			run: fn,
-			getMetadata: (context) => {
+			configResolver: (params) => {
 				Consola.info("Compute metadata for task", name);
-				let capturedConfig: TaskMeta = {};
-				context.configure = (meta: TaskMeta) => {
-					capturedConfig = meta;
-				};
 
-				metaCollector(context);
-
-				return capturedConfig;
-			}
+				return typeof configCollector === "function" ? configCollector(params) : configCollector;
+			},
+			...computeTaskInfo(task, optionsResolver)
 		});
 	};
 
 	register();
 
 	return {
-		meta: (collector) => {
-			metaCollector = collector;
+		config: (collector) => {
+			configCollector = collector;
 			register();
 		}
 	};
+}
+
+function computeTaskInfo(task: TaskFn | Task, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver"> {
+	if (typeof task === "function") {
+		return { run: task, optionsResolver: undefined };
+	}
+
+	if (optionsResolver === undefined) {
+		throw new Error("Option builder is required for option task");
+	}
+
+	return { ...task, optionsResolver: optionsResolver };
 }
 
 export function getRegisteredTasks() {

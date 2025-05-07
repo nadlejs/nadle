@@ -1,21 +1,26 @@
-export type TaskFn = (context: TaskContext) => Promise<void> | void;
-
-export interface TaskMeta {
-	options?: Record<string, unknown>;
-	meta?: {
-		dependsOn?: string[];
-	};
-}
-
-export interface TaskContext {
+export interface Context {
 	env: NodeJS.ProcessEnv;
-	args: Record<string, unknown>;
-	options: Record<string, unknown>;
-	configure(config: TaskMeta): void;
 }
 
-export interface RegisteredTask {
-	run: TaskFn;
+export type ContextualResolver<T = unknown> = (params: { context: Context }) => T;
+export type Resolver<T = unknown> = T | ContextualResolver<T>;
+
+export type TaskFn = ContextualResolver<Promise<void> | void>;
+
+export interface Task<Options = unknown> {
+	run(params: { options: Options; context: Context }): Promise<void> | void;
+}
+
+export interface TaskConfiguration {
+	dependsOn?: string[];
+}
+
+export interface ConfigBuilder {
+	config(builder: ContextualResolver<TaskConfiguration> | TaskConfiguration): void;
+}
+
+export interface RegisteredTask extends Task {
 	name: string;
-	getMetadata: (context: TaskContext) => TaskMeta;
+	optionsResolver: Resolver | undefined;
+	configResolver: ContextualResolver<TaskConfiguration>;
 }
