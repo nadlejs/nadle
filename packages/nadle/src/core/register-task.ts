@@ -1,6 +1,7 @@
-import { Consola } from "../consola.js";
+import { taskRegistry } from "./task-registry.js";
 import {
 	type Task,
+	TaskStatus,
 	type TaskFn,
 	type Resolver,
 	type ConfigBuilder,
@@ -8,9 +9,6 @@ import {
 	type TaskConfiguration,
 	type ContextualResolver
 } from "./types.js";
-
-/** @internal */
-export const taskRegistry = new Map<string, RegisteredTask>();
 
 export function registerTask(name: string, fnTask: TaskFn): ConfigBuilder;
 export function registerTask<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): ConfigBuilder;
@@ -22,11 +20,11 @@ export function registerTask(name: string, task: TaskFn | Task, optionsResolver?
 	let configCollector: ContextualResolver<TaskConfiguration> | TaskConfiguration = () => ({});
 
 	const register = () => {
-		taskRegistry.set(name, {
+		taskRegistry.register(name, {
 			name,
+			status: TaskStatus.Registered,
+			result: { duration: null, startTime: null },
 			configResolver: (params) => {
-				Consola.info("Compute metadata for task", name);
-
 				return typeof configCollector === "function" ? configCollector(params) : configCollector;
 			},
 			...computeTaskInfo(task, optionsResolver)
@@ -53,8 +51,4 @@ function computeTaskInfo(task: TaskFn | Task, optionsResolver?: Resolver): Pick<
 	}
 
 	return { ...task, optionsResolver: optionsResolver };
-}
-
-export function getRegisteredTasks() {
-	return [...taskRegistry.values()];
 }

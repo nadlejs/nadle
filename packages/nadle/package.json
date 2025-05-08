@@ -18,6 +18,7 @@
 	"dependencies": {
 		"consola": "^3.4.2",
 		"jiti": "^2.4.2",
+		"tinyrainbow": "^2.0.0",
 		"yargs": "^17.7.2"
 	},
 	"devDependencies": {
