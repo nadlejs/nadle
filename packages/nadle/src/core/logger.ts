@@ -1,18 +1,13 @@
 import type { Writable } from "node:stream";
 
 // eslint-disable-next-line no-restricted-imports
-import { consola, LogLevels } from "consola";
+import { consola, LogLevels, type LogType } from "consola";
 
 import { FileLogger } from "./file-logger.js";
-import { type LogLevel } from "./constants.js";
+import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
 
-export const ESC: string = "\x1B[";
-export const ERASE_DOWN: string = `${ESC}J`;
-export const ERASE_SCROLLBACK: string = `${ESC}3J`;
-export const CURSOR_TO_START: string = `${ESC}1;1H`;
-export const HIDE_CURSOR: string = `${ESC}?25l`;
-export const SHOW_CURSOR: string = `${ESC}?25h`;
-export const CLEAR_SCREEN: string = "\x1Bc";
+export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
+export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 const l = new FileLogger("logger");
 
@@ -20,7 +15,7 @@ export class Logger {
 	private _clearScreenPending: string | undefined;
 
 	constructor(
-		public logLevel: LogLevel = "log",
+		public logLevel: SupportLogLevel = "log",
 		public outputStream: NodeJS.WriteStream | Writable = process.stdout,
 		public errorStream: NodeJS.WriteStream | Writable = process.stderr
 	) {

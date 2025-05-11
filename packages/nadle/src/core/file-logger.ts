@@ -11,18 +11,18 @@ interface LogItem {
 const logItems: LogItem[] = [];
 
 const ESC = "\\x1B[";
-export const CLEAR_LINE: string = `${ESC}K`;
-export const MOVE_CURSOR_ONE_ROW_UP: string = `${ESC}1A`;
-export const SYNC_START: string = `${ESC}?2026h`;
-export const SYNC_END: string = `${ESC}?2026l`;
-export const ERASE_DOWN: string = `${ESC}J`;
-export const ERASE_SCROLLBACK: string = `${ESC}3J`;
-export const CURSOR_TO_START: string = `${ESC}1;1H`;
-export const HIDE_CURSOR: string = `${ESC}?25l`;
-export const SHOW_CURSOR: string = `${ESC}?25h`;
-export const CLEAR_SCREEN: string = "\\x1Bc";
+const CLEAR_LINE: string = `${ESC}K`;
+const MOVE_CURSOR_ONE_ROW_UP: string = `${ESC}1A`;
+const SYNC_START: string = `${ESC}?2026h`;
+const SYNC_END: string = `${ESC}?2026l`;
+const ERASE_DOWN: string = `${ESC}J`;
+const ERASE_SCROLLBACK: string = `${ESC}3J`;
+const CURSOR_TO_START: string = `${ESC}1;1H`;
+const HIDE_CURSOR: string = `${ESC}?25l`;
+const SHOW_CURSOR: string = `${ESC}?25h`;
+const CLEAR_SCREEN: string = "\\x1Bc";
 
-export const ANSI: Record<string, string> = {
+const ANSI: Record<string, string> = {
 	SYNC_END,
 	ERASE_DOWN,
 	CLEAR_LINE,

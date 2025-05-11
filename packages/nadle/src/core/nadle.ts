@@ -3,32 +3,34 @@ import { resolve } from "node:path";
 import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
+import c from "tinyrainbow";
 import { createJiti } from "jiti";
 
-import { Logger } from "./logger.js";
-import { type Context } from "./types.js";
+import { capitalize } from "./utils.js";
 import { TaskRunner } from "./task-runner.js";
-import { type LogLevel } from "./constants.js";
+import { UnnamedGroup } from "./constants.js";
 import { taskRegistry } from "./task-registry.js";
+import { Logger, type SupportLogLevel } from "./logger.js";
+import { type Context, type RegisteredTask } from "./types.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 
-export interface Options {
+export interface NadleOptions {
 	readonly tasks?: string[];
 
 	readonly configPath: string;
 
 	readonly list?: boolean;
-	readonly logLevel: LogLevel;
 	readonly showSummary: boolean;
+	readonly logLevel: SupportLogLevel;
 }
 
 export class Nadle {
 	public readonly logger: Logger;
-	public readonly taskRunner: TaskRunner;
 	public readonly reporter: Reporter;
+	public readonly taskRunner: TaskRunner;
 	public readonly registry = taskRegistry;
 
-	constructor(public readonly options: Options) {
+	constructor(public readonly options: NadleOptions) {
 		this.logger = new Logger(options.logLevel);
 		this.taskRunner = new TaskRunner(this);
 		this.reporter = new DefaultReporter(this);
@@ -38,14 +40,19 @@ export class Nadle {
 
 	async execute() {
 		await this.registerTask();
+		this.reporter.onExecutionStart?.();
 
 		if (this.options.list) {
 			this.listTasks();
-
-			return;
+		} else {
+			await this.runTasks();
 		}
 
-		const tasks = (this.options.tasks ?? []) as string[];
+		this.reporter.onExecutionFinish?.();
+	}
+
+	async runTasks() {
+		const tasks = this.options.tasks ?? [];
 
 		if (tasks.length === 0) {
 			this.printNoTasksFound();
@@ -53,14 +60,6 @@ export class Nadle {
 			return;
 		}
 
-		this.reporter.onExecutionStart?.();
-
-		await this.runTasks(tasks);
-
-		this.reporter.onExecutionFinish?.();
-	}
-
-	async runTasks(tasks: string[]) {
 		const context: Context = { env: process.env };
 
 		for (const task of tasks) {
@@ -69,18 +68,62 @@ export class Nadle {
 	}
 
 	listTasks() {
-		const tasks = taskRegistry.getAll();
-
-		if (tasks.length === 0) {
+		if (taskRegistry.getAll().length === 0) {
 			this.logger.log("No tasks found");
 
 			return;
 		}
 
-		this.logger.log("Available tasks:");
-		tasks.forEach((task) => {
-			this.logger.log(`- ${task.name}`);
-		});
+		const groups = this.computeTaskGroups();
+
+		for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+			const [groupName, tasks] = groups[groupIndex];
+
+			const label = `${capitalize(groupName)} tasks`;
+			this.logger.log(c.bold(label));
+			this.logger.log(c.bold("-".repeat(label.length)));
+
+			for (const task of tasks) {
+				const { description, name: taskName } = task;
+
+				if (description) {
+					this.logger.log(`${c.bold(c.green(taskName))}${c.yellow(` - ${description}`)}`);
+				} else {
+					this.logger.log(`${c.green(taskName)}`);
+				}
+			}
+
+			if (groupIndex < groups.length - 1) {
+				this.logger.log("");
+			}
+		}
+	}
+
+	computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
+		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
+
+		for (const task of this.registry.getAll()) {
+			const { description, group = UnnamedGroup } = task.configResolver({ context: { env: process.env } });
+
+			tasksByGroup[group] ??= [];
+			tasksByGroup[group].push({ ...task, description });
+		}
+
+		return Object.entries(tasksByGroup)
+			.sort(([firstGroupName], [secondGroupName]) => {
+				if (firstGroupName === UnnamedGroup) {
+					return 1;
+				}
+
+				if (secondGroupName === UnnamedGroup) {
+					return -1;
+				}
+
+				return firstGroupName.localeCompare(secondGroupName);
+			})
+			.map(([groupName, tasks]) => {
+				return [groupName, tasks.sort((firstTask, secondTask) => firstTask.name.localeCompare(secondTask.name))];
+			});
 	}
 
 	printNoTasksFound() {

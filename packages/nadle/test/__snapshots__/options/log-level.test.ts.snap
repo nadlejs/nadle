@@ -17,12 +17,12 @@ exports[`shows debug log when passing --log-level=debug 1`] = `
 [info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
 [info] Execution started
 [info] Task "hello" queued
-[log] <Yellow>></Color> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
-[log] <Green>✓</Color> Task <Bold>hello</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
 [info] Execution finished
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;
 
 exports[`shows error log only when passing --log-level=error 1`] = `"Hello from nadle!"`;
@@ -44,10 +44,10 @@ exports[`shows info log when passing --log-level=info 1`] = `
 [info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
 [info] Execution started
 [info] Task "hello" queued
-[log] <Yellow>></Color> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
-[log] <Green>✓</Color> Task <Bold>hello</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
 [info] Execution finished
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;

@@ -1,61 +1,61 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`dependsOn > should run dependent tasks first 1`] = `
-[log] <Yellow>></Color> Task <Bold>node</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
-[log] <Green>✓</Color> Task <Bold>node</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>install</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 Installing npm...
-[log] <Green>✓</Color> Task <Bold>install</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compileTs</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
 Compiling ts...
-[log] <Green>✓</Color> Task <Bold>compileTs</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>3</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>3</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;
 
 exports[`dependsOn > should run shared dependent tasks 1`] = `
-[log] <Yellow>></Color> Task <Bold>node</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
-[log] <Green>✓</Color> Task <Bold>node</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>install</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 Installing npm...
-[log] <Green>✓</Color> Task <Bold>install</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compileSvg</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
 Compiling svg...
-[log] <Green>✓</Color> Task <Bold>compileSvg</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compileTs</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
 Compiling ts...
-[log] <Green>✓</Color> Task <Bold>compileTs</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compile</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
 Compiling...
-[log] <Green>✓</Color> Task <Bold>compile</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>test</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
 Running tests...
-[log] <Green>✓</Color> Task <Bold>test</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>test</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>6</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>6</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;
 
 exports[`dependsOn > should run shared dependent tasks 2 1`] = `
-[log] <Yellow>></Color> Task <Bold>node</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
-[log] <Green>✓</Color> Task <Bold>node</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>install</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 Installing npm...
-[log] <Green>✓</Color> Task <Bold>install</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>test</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
 Running tests...
-[log] <Green>✓</Color> Task <Bold>test</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compileSvg</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>test</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
 Compiling svg...
-[log] <Green>✓</Color> Task <Bold>compileSvg</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compileTs</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
 Compiling ts...
-[log] <Green>✓</Color> Task <Bold>compileTs</BoldDim> done in _ms
-[log] <Yellow>></Color> Task <Bold>compile</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
 Compiling...
-[log] <Green>✓</Color> Task <Bold>compile</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>6</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>6</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;

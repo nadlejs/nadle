@@ -1,13 +1,17 @@
 import { tasks, type Task } from "../../lib/index.js";
 
-tasks.register("hello", async () => {
-	await new Promise((r) => setTimeout(r, 100));
-	console.log("Hello from nadle!");
-});
+tasks
+	.register("hello", async () => {
+		await new Promise((r) => setTimeout(r, 100));
+		console.log("Hello from nadle!");
+	})
+	.config({ group: "Greetings", description: "Say hello to nadle!" });
 
-tasks.register("goodbye", () => {
-	console.log("Goodbye, tak!");
-});
+tasks
+	.register("goodbye", () => {
+		console.log("Goodbye, tak!");
+	})
+	.config({ group: "Greetings", description: "Say goodbye to nadle!" });
 
 interface CopyOptions {
 	to: string;
@@ -21,6 +25,7 @@ const CopyTask: Task<CopyOptions> = {
 	}
 };
 tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({
+	group: "Utils",
 	dependsOn: ["prepare"]
 });
 

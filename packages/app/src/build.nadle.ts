@@ -9,16 +9,18 @@ const CopyTask: Task<{ to: string; from: string }> = {
 	}
 };
 
-tasks.register("hello", async () => {
-	await new Promise((r) => setTimeout(r, 300));
-	console.log("Hello from nadle!");
-});
+tasks
+	.register("hello", async () => {
+		await new Promise((r) => setTimeout(r, 300));
+		console.log("Hello from nadle!");
+	})
+	.config({ group: "Greetings", description: "Say hello" });
 
 tasks
 	.register("goodbye", () => {
 		console.log("Goodbye, tak!");
 	})
-	.config({ dependsOn: ["hello"] });
+	.config({ group: "Greetings", dependsOn: ["hello"], description: "Say goodbye" });
 
 tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({ dependsOn: ["prepare"] });
 
@@ -40,23 +42,25 @@ tasks
 	.register("compileTs", () => {
 		console.log("Compiling ts...");
 	})
-	.config({ dependsOn: ["install"] });
+	.config({ group: "build", dependsOn: ["install"], description: "Compile Typescript" });
 
-tasks.register("compileSvg", () => {
-	console.log("Compiling svg...");
-});
+tasks
+	.register("compileSvg", () => {
+		console.log("Compiling svg...");
+	})
+	.config({ group: "build", description: "Compile SVG" });
 
 tasks
 	.register("compile", () => {
 		console.log("Compiling...");
 	})
-	.config({ dependsOn: ["compileSvg", "compileTs"] });
+	.config({ group: "build", description: "Compile", dependsOn: ["compileSvg", "compileTs"] });
 
 tasks
 	.register("test", () => {
 		console.log("Running tests...");
 	})
-	.config({ dependsOn: ["compile"] });
+	.config({ group: "test", description: "Test", dependsOn: ["compile"] });
 
 tasks
 	.register("build", () => {
