@@ -28,9 +28,4 @@ const argv = yargs(hideBin(process.argv))
 	.alias("help", "h")
 	.parseSync();
 
-new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute().catch((error) => {
-	// eslint-disable-next-line no-console
-	console.error(error);
-	// eslint-disable-next-line n/no-process-exit
-	process.exit(1);
-});
+new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute();

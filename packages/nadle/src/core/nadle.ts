@@ -42,10 +42,16 @@ export class Nadle {
 		await this.registerTask();
 		this.reporter.onExecutionStart?.();
 
-		if (this.options.list) {
-			this.listTasks();
-		} else {
-			await this.runTasks();
+		try {
+			if (this.options.list) {
+				this.listTasks();
+			} else {
+				await this.runTasks();
+			}
+		} catch (error) {
+			this.reporter.onExecutionFailed?.();
+			// eslint-disable-next-line n/no-process-exit
+			process.exit((error as any).errorCode || 1);
 		}
 
 		this.reporter.onExecutionFinish?.();
@@ -60,7 +66,7 @@ export class Nadle {
 			return;
 		}
 
-		const context: Context = { env: process.env };
+		const context: Context = { nadle: this, env: process.env };
 
 		for (const task of tasks) {
 			await this.taskRunner.run(task, context);
@@ -103,7 +109,7 @@ export class Nadle {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
 		for (const task of this.registry.getAll()) {
-			const { description, group = UnnamedGroup } = task.configResolver({ context: { env: process.env } });
+			const { description, group = UnnamedGroup } = task.configResolver({ context: { nadle: this, env: process.env } });
 
 			tasksByGroup[group] ??= [];
 			tasksByGroup[group].push({ ...task, description });
@@ -127,8 +133,7 @@ export class Nadle {
 	}
 
 	printNoTasksFound() {
-		this.logger.log("No tasks specified");
-		this.listTasks();
+		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
 	async registerTask() {

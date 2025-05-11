@@ -1,6 +1,7 @@
 import c from "tinyrainbow";
 
 import { type Nadle } from "./nadle.js";
+import { CHECK, CROSS } from "./constants.js";
 import { type Renderer } from "./renderers/renderer.js";
 import { NormalRenderer } from "./renderers/normal-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
@@ -8,12 +9,15 @@ import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
 
 export interface Reporter {
 	onInit?: (nadle: Nadle) => void;
-	onTaskStart?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskQueued?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
 
 	onExecutionStart?: () => Awaitable<void>;
 	onExecutionFinish?: () => Awaitable<void>;
+	onExecutionFailed?: () => Awaitable<void>;
+
+	onTaskStart?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskQueued?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
 }
 
 const DURATION_UPDATE_INTERVAL_MS = 100;
@@ -21,6 +25,7 @@ const DURATION_UPDATE_INTERVAL_MS = 100;
 export class DefaultReporter implements Reporter {
 	private renderer: Renderer;
 	private taskStat = {
+		failed: 0,
 		queued: 0,
 		running: 0,
 		finished: 0
@@ -79,8 +84,14 @@ export class DefaultReporter implements Reporter {
 	}
 
 	async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(`${c.green("✓")} Task ${c.bold(task.name)} done in ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(`${c.green(CHECK)} Task ${c.bold(task.name)} done in ${formatTime(task.result.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
+		this.renderer.schedule();
+	}
+
+	async onTaskFailed(task: RegisteredTask) {
+		this.nadle.logger.log(`${c.red(CROSS)} Task ${c.bold(task.name)} failed in ${formatTime(task.result.duration ?? 0)}`);
+		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
 		this.renderer.schedule();
 	}
 
@@ -98,13 +109,25 @@ export class DefaultReporter implements Reporter {
 
 	async onExecutionFinish() {
 		this.nadle.logger.info("Execution finished");
-		this.renderer.schedule();
 		this.renderer.finish();
 		clearInterval(this.durationInterval);
 
-		const finishedTasks = `${c.bold(this.taskStat.finished)} task${this.taskStat.finished > 0 ? "s" : ""}`;
+		const finishedTasks = `${c.bold(this.taskStat.finished)} task${this.taskStat.finished > 1 ? "s" : ""}`;
 
-		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} ${finishedTasks} in ${c.bold(formatTime(this.duration))}`);
+		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed)`)}`);
+	}
+
+	async onExecutionFailed() {
+		this.nadle.logger.info("Execution failed");
+		this.renderer.finish();
+		clearInterval(this.durationInterval);
+
+		const finishedTasks = `${c.bold(this.taskStat.finished)} task${this.taskStat.finished > 1 ? "s" : ""}`;
+		const failedTasks = `${c.bold(this.taskStat.failed)} task${this.taskStat.failed > 1 ? "s" : ""}`;
+
+		this.nadle.logger.log(
+			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
+		);
 	}
 
 	private startTimers() {

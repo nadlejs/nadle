@@ -1,4 +1,4 @@
-import { tasks, type Task } from "nadle";
+import { tasks, PnpmTask, type Task } from "nadle";
 
 import { createTask } from "./create-task.js";
 
@@ -38,11 +38,7 @@ tasks
 	})
 	.config({ dependsOn: ["node"] });
 
-tasks
-	.register("compileTs", () => {
-		console.log("Compiling ts...");
-	})
-	.config({ group: "build", dependsOn: ["install"], description: "Compile Typescript" });
+tasks.register("compileTs", PnpmTask, { args: ["exec", "tsc"] }).config({ group: "build", description: "Compile Typescript" });
 
 tasks
 	.register("compileSvg", () => {
@@ -67,6 +63,12 @@ tasks
 		console.log("Building...");
 	})
 	.config({ dependsOn: ["test", "compile"] });
+
+tasks
+	.register("throwable", () => {
+		throw new Error("This is an error");
+	})
+	.config({ dependsOn: ["install"] });
 
 /**
  * Progressive tasks

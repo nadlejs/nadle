@@ -51,14 +51,9 @@ export async function emit(): Promise<void> {
 }
 
 export class FileLogger {
-	constructor(
-		public namespace: string,
-		public options?: { noEmit?: true }
-	) {}
+	constructor(public namespace: string) {}
 
 	log(subspace: string, ...args: any[]): void {
-		if (!this.options?.noEmit) {
-			logItems.push({ args, subspace, namespace: this.namespace });
-		}
+		logItems.push({ args, subspace, namespace: this.namespace });
 	}
 }

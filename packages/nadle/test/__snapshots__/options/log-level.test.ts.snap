@@ -22,7 +22,7 @@ Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
 [info] Execution finished
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
 exports[`shows error log only when passing --log-level=error 1`] = `"Hello from nadle!"`;
@@ -49,5 +49,5 @@ Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
 [info] Execution finished
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;

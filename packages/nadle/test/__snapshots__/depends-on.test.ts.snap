@@ -11,7 +11,7 @@ Installing npm...
 Compiling ts...
 [log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>3</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
 exports[`dependsOn > should run shared dependent tasks 1`] = `
@@ -34,7 +34,7 @@ Compiling...
 Running tests...
 [log] <Green>✓</Green> Task <Bold>test</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>6</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>6</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
 exports[`dependsOn > should run shared dependent tasks 2 1`] = `
@@ -57,5 +57,5 @@ Compiling ts...
 Compiling...
 [log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>6</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>6</BoldDim><Dim> tasks executed)</BoldDim>
 `;

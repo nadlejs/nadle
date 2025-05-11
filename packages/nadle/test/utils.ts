@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { expect } from "vitest";
 import { execa, type Options, type ResultPromise } from "execa";
 
 export const cliPath = path.resolve(import.meta.dirname, "../bin/nadle");
@@ -29,3 +30,13 @@ export function createExec(options?: RunOptions) {
 }
 
 export const exec = createExec();
+
+export async function expectFail(command: () => ResultPromise) {
+	try {
+		await command();
+	} catch (error: any) {
+		expect(error.exitCode).toBe(1);
+		expect(error.stdout).toMatchSnapshot("stdout");
+		expect(error.stderr).toMatchSnapshot("stderr");
+	}
+}
