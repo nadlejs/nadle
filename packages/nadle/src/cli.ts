@@ -4,7 +4,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { Nadle } from "./core/nadle.js";
-import { LogLevels, type LogLevel } from "./core/constants.js";
+import { SupportLogLevels, type SupportLogLevel } from "./core/logger.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
@@ -19,7 +19,7 @@ const argv = yargs(hideBin(process.argv))
 	.option("log-level", {
 		type: "string",
 		default: "log",
-		choices: LogLevels,
+		choices: SupportLogLevels,
 		describe: "Set the logging level"
 	})
 	.option("list", { alias: "l", default: false, type: "boolean", description: "List all available tasks" })
@@ -28,7 +28,7 @@ const argv = yargs(hideBin(process.argv))
 	.alias("help", "h")
 	.parseSync();
 
-new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as LogLevel }).execute().catch((error) => {
+new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute().catch((error) => {
 	// eslint-disable-next-line no-console
 	console.error(error);
 	// eslint-disable-next-line n/no-process-exit

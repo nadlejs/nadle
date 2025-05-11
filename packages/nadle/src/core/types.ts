@@ -14,6 +14,19 @@ export interface Task<Options = unknown> {
 }
 
 export interface TaskConfiguration {
+	/**
+	 * The group name to which this task belongs.
+	 */
+	group?: string;
+
+	/**
+	 * The description of the task.
+	 */
+	description?: string;
+
+	/**
+	 * A list of tasks that this task depends on.
+	 */
 	dependsOn?: string[];
 }
 
