@@ -4,8 +4,8 @@ exports[`when not given any tasks > show all available tasks 1`] = `
 [log] No tasks specified
 [log] <Bold>Greetings tasks</BoldDim>
 [log] <Bold>---------------</BoldDim>
-[log] <Green>goodbye</Green><Yellow> - Say goodbye to nadle!</Yellow>
-[log] <Green>hello</Green><Yellow> - Say hello to nadle!</Yellow>
+[log] <Bold><Green>goodbye</Green></BoldDim><Yellow> - Say goodbye to nadle!</Yellow>
+[log] <Bold><Green>hello</Green></BoldDim><Yellow> - Say hello to nadle!</Yellow>
 [log]
 [log] <Bold>Utils tasks</BoldDim>
 [log] <Bold>-----------</BoldDim>
