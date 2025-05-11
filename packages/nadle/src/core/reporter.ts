@@ -1,0 +1,131 @@
+import c from "tinyrainbow";
+
+import { type Nadle } from "./nadle.js";
+import { type Renderer } from "./renderers/renderer.js";
+import { NormalRenderer } from "./renderers/normal-renderer.js";
+import { SummaryRenderer } from "./renderers/summary-renderer.js";
+import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
+
+export interface Reporter {
+	onInit?: (nadle: Nadle) => void;
+	onTaskStart?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskQueued?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
+
+	onExecutionStart?: () => Awaitable<void>;
+	onExecutionFinish?: () => Awaitable<void>;
+}
+
+const DURATION_UPDATE_INTERVAL_MS = 100;
+
+export class DefaultReporter implements Reporter {
+	private renderer: Renderer;
+	private taskStat = {
+		queued: 0,
+		running: 0,
+		finished: 0
+	};
+	private startTime = "";
+	private currentTime = 0;
+	private duration = 0;
+	private durationInterval: NodeJS.Timeout | undefined = undefined;
+
+	constructor(public readonly nadle: Nadle) {
+		this.renderer = this.nadle.options.showSummary
+			? new SummaryRenderer({ logger: this.nadle.logger, getWindow: () => this.createSummary() })
+			: new NormalRenderer();
+	}
+
+	private printLabel(label: string) {
+		return c.dim(label.padEnd(11, " "));
+	}
+
+	private createSummary() {
+		const summary: string[] = [""];
+
+		const stats = [
+			c.bold(c.blue(`${this.taskStat.queued} queued`)),
+			c.bold(c.yellow(`${this.taskStat.running} running`)),
+			c.bold(c.green(`${this.taskStat.finished} finished`))
+		];
+
+		summary.push(`${this.printLabel("Tasks")} ${stats.join(", ")}`);
+		summary.push(`${this.printLabel("Start at")} ${this.startTime}`);
+		summary.push(`${this.printLabel("Duration")} ${formatTime(this.duration)}`);
+
+		summary.push(...this.printRunningTasks());
+
+		summary.push("");
+
+		return summary;
+	}
+
+	private printRunningTasks() {
+		return this.nadle.registry
+			.getAll()
+			.filter((task) => task.status === TaskStatus.Running)
+			.map((task) => c.bold(`❯ :${task.name}`));
+	}
+
+	onInit() {
+		this.nadle.logger.info("Nadle initialized with options:", this.nadle.options);
+		this.renderer.start();
+	}
+
+	async onTaskStart(task: RegisteredTask) {
+		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} started`);
+		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
+		this.renderer.schedule();
+	}
+
+	async onTaskFinish(task: RegisteredTask) {
+		this.nadle.logger.log(`${c.green("✓")} Task ${c.bold(task.name)} done in ${formatTime(task.result.duration ?? 0)}`);
+		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
+		this.renderer.schedule();
+	}
+
+	async onTaskQueued(task: RegisteredTask) {
+		this.nadle.logger.info(`Task "${task.name}" queued`);
+		this.taskStat = { ...this.taskStat, queued: ++this.taskStat.queued };
+		this.renderer.schedule();
+	}
+
+	async onExecutionStart() {
+		this.nadle.logger.info("Execution started");
+		this.startTimers();
+		this.renderer.start();
+	}
+
+	async onExecutionFinish() {
+		this.nadle.logger.info("Execution finished");
+		this.renderer.schedule();
+		this.renderer.finish();
+		clearInterval(this.durationInterval);
+
+		const finishedTasks = `${c.bold(this.taskStat.finished)} task${this.taskStat.finished > 0 ? "s" : ""}`;
+
+		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} ${finishedTasks} in ${c.bold(formatTime(this.duration))}`);
+	}
+
+	private startTimers() {
+		const start = performance.now();
+		this.startTime = formatTimeString(new Date());
+
+		this.durationInterval = setInterval(() => {
+			this.currentTime = performance.now();
+			this.duration = this.currentTime - start;
+		}, DURATION_UPDATE_INTERVAL_MS).unref();
+	}
+}
+
+export function formatTime(time: number): string {
+	if (time > 1000) {
+		return `${(time / 1000).toFixed(2)}s`;
+	}
+
+	return `${Math.round(time)}ms`;
+}
+
+export function formatTimeString(date: Date): string {
+	return date.toTimeString().split(" ")[0];
+}

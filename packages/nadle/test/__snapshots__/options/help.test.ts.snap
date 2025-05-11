@@ -6,8 +6,12 @@ exports[`--help > prints help 1`] = `
 Run one or many tasks
 
 Options:
-      --version  Show version number                                   [boolean]
-  -c, --config   Path to config file    [string] [default: <cwd>/build.nadle.ts]
-  -l, --list     List all available tasks                              [boolean]
-  -h, --help     Show help                                             [boolean]"
+      --version       Show version number                              [boolean]
+  -c, --config        Path to config file
+                                        [string] [default: <cwd>/build.nadle.ts]
+      --log-level     Set the logging level
+            [string] [choices: "error", "log", "info", "debug"] [default: "log"]
+  -l, --list          List all available tasks        [boolean] [default: false]
+      --show-summary  Show progress summary            [boolean] [default: true]
+  -h, --help          Show help                                        [boolean]"
 `;

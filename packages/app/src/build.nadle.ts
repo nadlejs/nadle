@@ -1,5 +1,7 @@
 import { tasks, type Task } from "nadle";
 
+import { createTask } from "./create-task.js";
+
 const CopyTask: Task<{ to: string; from: string }> = {
 	run: ({ options }) => {
 		const { to, from } = options;
@@ -61,3 +63,11 @@ tasks
 		console.log("Building...");
 	})
 	.config({ dependsOn: ["test", "compile"] });
+
+/**
+ * Progressive tasks
+ */
+
+tasks.register(...createTask("task-1", { subTaskCount: 5, subTaskDuration: 800 }));
+tasks.register(...createTask("task-2", { subTaskCount: 6, subTaskDuration: 900 })).config({ dependsOn: ["task-1"] });
+tasks.register(...createTask("task-3", { subTaskCount: 7, subTaskDuration: 1000 })).config({ dependsOn: ["task-2", "task-1"] });

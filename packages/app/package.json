@@ -12,7 +12,8 @@
 		"hello": "pnpm base hello",
 		"hello-and-goodbye": "pnpm base hello goodbye",
 		"copy": "pnpm base copy",
-		"build_": "pnpm base build"
+		"build_": "pnpm base build",
+		"task-3": "pnpm base task-3"
 	},
 	"dependencies": {
 		"nadle": "workspace:*"

@@ -3,8 +3,8 @@ import * as process from "node:process";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { Consola } from "./consola.js";
-import { runner } from "./cli/runner.js";
+import { Nadle } from "./core/nadle.js";
+import { LogLevels, type LogLevel } from "./core/constants.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
@@ -16,13 +16,21 @@ const argv = yargs(hideBin(process.argv))
 		description: "Path to config file",
 		defaultDescription: "<cwd>/build.nadle.ts"
 	})
-	.option("list", { alias: "l", type: "boolean", description: "List all available tasks" })
+	.option("log-level", {
+		type: "string",
+		default: "log",
+		choices: LogLevels,
+		describe: "Set the logging level"
+	})
+	.option("list", { alias: "l", default: false, type: "boolean", description: "List all available tasks" })
+	.option("show-summary", { default: true, type: "boolean", description: "Show progress summary" })
 	.help("help")
 	.alias("help", "h")
 	.parseSync();
 
-runner(argv).catch((error) => {
-	Consola.error(error);
+new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as LogLevel }).execute().catch((error) => {
+	// eslint-disable-next-line no-console
+	console.error(error);
 	// eslint-disable-next-line n/no-process-exit
 	process.exit(1);
 });

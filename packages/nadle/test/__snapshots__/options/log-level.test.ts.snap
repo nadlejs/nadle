@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`shows debug log when passing --log-level=debug 1`] = `
+[info] Initializing Logger with level 4
+[info] Nadle initialized with options: { _: [],
+  'show-summary': false,
+  showSummary: false,
+  'log-level': 'debug',
+  logLevel: 'debug',
+  config: 'build.nadle.ts',
+  c: 'build.nadle.ts',
+  list: false,
+  l: false,
+  '$0': 'nadle',
+  tasks: [ 'hello' ],
+  configPath: 'build.nadle.ts' }
+[info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
+[info] Execution started
+[info] Task "hello" queued
+[log] <Yellow>></Color> Task <Bold>hello</BoldDim> started
+Hello from nadle!
+[log] <Green>✓</Color> Task <Bold>hello</BoldDim> done in _ms
+[info] Execution finished
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+`;
+
+exports[`shows error log only when passing --log-level=error 1`] = `"Hello from nadle!"`;
+
+exports[`shows info log when passing --log-level=info 1`] = `
+[info] Initializing Logger with level 3
+[info] Nadle initialized with options: { _: [],
+  'show-summary': false,
+  showSummary: false,
+  'log-level': 'info',
+  logLevel: 'info',
+  config: 'build.nadle.ts',
+  c: 'build.nadle.ts',
+  list: false,
+  l: false,
+  '$0': 'nadle',
+  tasks: [ 'hello' ],
+  configPath: 'build.nadle.ts' }
+[info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
+[info] Execution started
+[info] Task "hello" queued
+[log] <Yellow>></Color> Task <Bold>hello</BoldDim> started
+Hello from nadle!
+[log] <Green>✓</Color> Task <Bold>hello</BoldDim> done in _ms
+[info] Execution finished
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+`;

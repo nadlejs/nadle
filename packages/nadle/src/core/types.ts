@@ -1,3 +1,5 @@
+export type Awaitable<T> = T | PromiseLike<T>;
+
 export interface Context {
 	env: NodeJS.ProcessEnv;
 }
@@ -19,8 +21,20 @@ export interface ConfigBuilder {
 	config(builder: ContextualResolver<TaskConfiguration> | TaskConfiguration): void;
 }
 
+export enum TaskStatus {
+	Registered = "registered",
+	Queued = "queued",
+	Running = "running",
+	Finished = "finished"
+}
+
 export interface RegisteredTask extends Task {
 	name: string;
+	status: TaskStatus;
 	optionsResolver: Resolver | undefined;
 	configResolver: ContextualResolver<TaskConfiguration>;
+	result: {
+		duration: number | null;
+		startTime: number | null;
+	};
 }

@@ -1,13 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CLI > can run a simple command 1`] = `"Hello from nadle!"`;
+exports[`CLI > can run a simple command 1`] = `
+[log] <Yellow>></Color> Task <Bold>hello</BoldDim> started
+Hello from nadle!
+[log] <Green>✓</Color> Task <Bold>hello</BoldDim> done in _ms
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+`;
 
 exports[`CLI > can run dependent task first 1`] = `
-"Preparing...
-Copying from assets/ to dist/"
+[log] <Yellow>></Color> Task <Bold>prepare</BoldDim> started
+Preparing...
+[log] <Green>✓</Color> Task <Bold>prepare</BoldDim> done in _ms
+[log] <Yellow>></Color> Task <Bold>copy</BoldDim> started
+Copying from assets/ to dist/
+[log] <Green>✓</Color> Task <Bold>copy</BoldDim> done in _ms
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>2</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;
 
 exports[`CLI > can run two commands sequentially 1`] = `
-"Hello from nadle!
-Goodbye, tak!"
+[log] <Yellow>></Color> Task <Bold>hello</BoldDim> started
+Hello from nadle!
+[log] <Green>✓</Color> Task <Bold>hello</BoldDim> done in _ms
+[log] <Yellow>></Color> Task <Bold>goodbye</BoldDim> started
+Goodbye, tak!
+[log] <Green>✓</Color> Task <Bold>goodbye</BoldDim> done in _ms
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Color></BoldDim> <Bold>2</BoldDim> tasks in <Bold>_ms</BoldDim>
 `;

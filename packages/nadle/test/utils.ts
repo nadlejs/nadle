@@ -15,9 +15,14 @@ export function createExec(options?: RunOptions) {
 	const configFileName = configFile === undefined ? undefined : configFile.includes(".") ? configFile : `${configFile}.nadle.ts`;
 
 	return (strings: TemplateStringsArray, ...values: unknown[]): ResultPromise => {
-		const command = strings
+		let command = strings
 			.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "")
 			.replace("$0", cliPath + (configFileName ? ` --config ${configFileName}` : ""));
+
+		// Disable summary if not specified
+		if (!command.includes("--show-summary") || !command.includes("--no-show-summary")) {
+			command = command.replace(cliPath, `${cliPath} --no-show-summary`);
+		}
 
 		return execa({ ...options, cwd })("sh", ["-c", command]);
 	};
