@@ -5,7 +5,7 @@ exports[`CLI > can run a simple command 1`] = `
 Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>1</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
 exports[`CLI > can run dependent task first 1`] = `
@@ -16,7 +16,7 @@ Preparing...
 Copying from assets/ to dist/
 [log] <Green>✓</Green> Task <Bold>copy</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>2</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
 exports[`CLI > can run two commands sequentially 1`] = `
@@ -27,5 +27,5 @@ Hello from nadle!
 Goodbye, tak!
 [log] <Green>✓</Green> Task <Bold>goodbye</BoldDim> done in _ms
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>2</BoldDim> tasks in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;

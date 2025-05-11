@@ -1,3 +1,5 @@
+import c from "tinyrainbow";
+
 import { type Nadle } from "./nadle.js";
 import { type Context } from "./types.js";
 
@@ -11,6 +13,7 @@ export class TaskRunner {
 			const task = this.nadle.registry.getByName(taskName);
 
 			if (!task) {
+				this.nadle.logger.error(`Task ${c.bold(taskName)} not found`);
 				throw new Error(`Task "${taskName}" not found`);
 			}
 
@@ -39,9 +42,14 @@ export class TaskRunner {
 		this.nadle.registry.onTaskStart(name);
 		await this.nadle.reporter.onTaskStart?.(getTask());
 
-		await run({ context, options });
-
-		this.nadle.registry.onTaskFinish(name);
-		await this.nadle.reporter.onTaskFinish?.(getTask());
+		try {
+			await run({ context, options });
+			this.nadle.registry.onTaskFinish(name);
+			await this.nadle.reporter.onTaskFinish?.(getTask());
+		} catch (error) {
+			this.nadle.registry.onTaskFail(name);
+			await this.nadle.reporter.onTaskFailed?.(getTask());
+			throw error;
+		}
 	}
 }

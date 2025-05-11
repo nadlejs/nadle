@@ -1,6 +1,9 @@
+import { type Nadle } from "./nadle.js";
+
 export type Awaitable<T> = T | PromiseLike<T>;
 
 export interface Context {
+	nadle: Nadle;
 	env: NodeJS.ProcessEnv;
 }
 
@@ -38,7 +41,8 @@ export enum TaskStatus {
 	Registered = "registered",
 	Queued = "queued",
 	Running = "running",
-	Finished = "finished"
+	Finished = "finished",
+	Failed = "failed"
 }
 
 export interface RegisteredTask extends Task {

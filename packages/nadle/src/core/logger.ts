@@ -1,7 +1,7 @@
 import type { Writable } from "node:stream";
 
 // eslint-disable-next-line no-restricted-imports
-import { consola, LogLevels, type LogType } from "consola";
+import { consola, LogLevels, type LogType, type ConsolaInstance } from "consola";
 
 import { FileLogger } from "./file-logger.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
@@ -13,46 +13,48 @@ const l = new FileLogger("logger");
 
 export class Logger {
 	private _clearScreenPending: string | undefined;
+	private consola: ConsolaInstance;
 
 	constructor(
 		public logLevel: SupportLogLevel = "log",
 		public outputStream: NodeJS.WriteStream | Writable = process.stdout,
 		public errorStream: NodeJS.WriteStream | Writable = process.stderr
 	) {
-		consola.level = LogLevels[this.logLevel];
+		const level = LogLevels[this.logLevel];
+		this.consola = consola.create({ level, formatOptions: { date: false } });
 
 		if ((this.outputStream as typeof process.stdout).isTTY) {
 			(this.outputStream as Writable).write(HIDE_CURSOR);
 		}
 
-		this.info(`Initializing Logger with level ${consola.level}`);
+		this.info(`Initializing Logger with level ${level}`);
 	}
 
 	log(message: string, ...args: unknown[]): void {
 		l.log("log", message, ...args);
 		this._clearScreen();
-		consola.log(message, ...args);
+		this.consola.log(message, ...args);
 	}
 
 	error(message: string, ...args: unknown[]): void {
 		l.log("error", message, ...args);
 
 		this._clearScreen();
-		consola.error(message, ...args);
+		this.consola.error(message, ...args);
 	}
 
 	warn(message: string, ...args: unknown[]): void {
 		l.log("warn", message, ...args);
 
 		this._clearScreen();
-		consola.warn(message, ...args);
+		this.consola.warn(message, ...args);
 	}
 
 	info(message: string, ...args: unknown[]): void {
 		l.log("info", message, ...args);
 
 		this._clearScreen();
-		consola.info(message, ...args);
+		this.consola.info(message, ...args);
 	}
 
 	clearFullScreen(message = ""): void {
@@ -84,7 +86,7 @@ export class Logger {
 
 		const log = this._clearScreenPending;
 		this._clearScreenPending = undefined;
-		consola.log(`${CURSOR_TO_START}${ERASE_DOWN}${log}`);
+		this.consola.log(`${CURSOR_TO_START}${ERASE_DOWN}${log}`);
 	}
 
 	getColumns(): number {

@@ -1,19 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`when not given any tasks > show all available tasks 1`] = `
-[log] No tasks specified
-[log] <Bold>Greetings tasks</BoldDim>
-[log] <Bold>---------------</BoldDim>
-[log] <Bold><Green>goodbye</Green></BoldDim><Yellow> - Say goodbye to nadle!</Yellow>
-[log] <Bold><Green>hello</Green></BoldDim><Yellow> - Say hello to nadle!</Yellow>
-[log]
-[log] <Bold>Utils tasks</BoldDim>
-[log] <Bold>-----------</BoldDim>
-[log] <Green>copy</Green>
-[log]
-[log] <Bold>Unnamed tasks</BoldDim>
-[log] <Bold>-------------</BoldDim>
-[log] <Green>prepare</Green>
+[log] No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> <Bold>0</BoldDim> task in <Bold>_ms</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
 `;

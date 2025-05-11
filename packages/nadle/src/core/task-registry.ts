@@ -41,6 +41,17 @@ export class TaskRegistry {
 		task.result.duration = Date.now() - (task.result.startTime ?? 0);
 	}
 
+	onTaskFail(name: string) {
+		const task = this.getByName(name);
+
+		if (!task) {
+			throw new Error(`Task "${name}" not found`);
+		}
+
+		task.status = TaskStatus.Failed;
+		task.result.duration = Date.now() - (task.result.startTime ?? 0);
+	}
+
 	onTaskQueued(name: string) {
 		const task = this.getByName(name);
 

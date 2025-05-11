@@ -32,3 +32,9 @@ tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({
 tasks.register("prepare", async () => {
 	console.log("Preparing...");
 });
+
+tasks
+	.register("throwable", () => {
+		throw new Error("This is an error");
+	})
+	.config({ dependsOn: ["prepare", "hello"] });

@@ -13,7 +13,10 @@
 		"hello-and-goodbye": "pnpm base hello goodbye",
 		"copy": "pnpm base copy",
 		"build_": "pnpm base build",
-		"task-3": "pnpm base task-3"
+		"task-3": "pnpm base task-3",
+		"compileTs": "pnpm base compileTs",
+		"throwable": "pnpm base throwable",
+		"unknown": "pnpm base unknown"
 	},
 	"dependencies": {
 		"nadle": "workspace:*"
