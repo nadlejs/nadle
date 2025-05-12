@@ -16,6 +16,34 @@ const argv = yargs(hideBin(process.argv))
 		description: "Path to config file",
 		defaultDescription: "<cwd>/build.nadle.ts"
 	})
+	.option("min-workers", {
+		type: "string",
+		default: undefined,
+		describe: "Minimum number of workers (integer or percentage)",
+		coerce: (value) => {
+			const parsedValue = Number(value);
+
+			if (!isNaN(parsedValue)) {
+				return parsedValue;
+			}
+
+			return value;
+		}
+	})
+	.option("max-workers", {
+		type: "string",
+		default: undefined,
+		describe: "Maximum number of workers (integer or percentage)",
+		coerce: (value) => {
+			const parsedValue = Number(value);
+
+			if (!isNaN(parsedValue)) {
+				return parsedValue;
+			}
+
+			return value;
+		}
+	})
 	.option("log-level", {
 		type: "string",
 		default: "log",
@@ -28,4 +56,6 @@ const argv = yargs(hideBin(process.argv))
 	.alias("help", "h")
 	.parseSync();
 
-new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute();
+new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute().then(async () => {
+	// await emit();
+});

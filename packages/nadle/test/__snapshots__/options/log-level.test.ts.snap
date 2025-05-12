@@ -3,12 +3,16 @@
 exports[`shows debug log when passing --log-level=debug 1`] = `
 [info] Initializing Logger with level 4
 [info] Nadle initialized with options: { _: [],
+  'max-workers': 1,
+  maxWorkers: 1,
   'show-summary': false,
   showSummary: false,
   'log-level': 'debug',
   logLevel: 'debug',
   config: 'build.nadle.ts',
   c: 'build.nadle.ts',
+  'min-workers': undefined,
+  minWorkers: undefined,
   list: false,
   l: false,
   '$0': 'nadle',
@@ -16,7 +20,9 @@ exports[`shows debug log when passing --log-level=debug 1`] = `
   configPath: 'build.nadle.ts' }
 [info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
 [info] Execution started
-[info] Task "hello" queued
+[info] Maximum threads: 1
+[info] Minimum threads: 1
+[info] Task <Bold>hello</BoldDim> queued
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
@@ -30,12 +36,16 @@ exports[`shows error log only when passing --log-level=error 1`] = `"Hello from 
 exports[`shows info log when passing --log-level=info 1`] = `
 [info] Initializing Logger with level 3
 [info] Nadle initialized with options: { _: [],
+  'max-workers': 1,
+  maxWorkers: 1,
   'show-summary': false,
   showSummary: false,
   'log-level': 'info',
   logLevel: 'info',
   config: 'build.nadle.ts',
   c: 'build.nadle.ts',
+  'min-workers': undefined,
+  minWorkers: undefined,
   list: false,
   l: false,
   '$0': 'nadle',
@@ -43,7 +53,9 @@ exports[`shows info log when passing --log-level=info 1`] = `
   configPath: 'build.nadle.ts' }
 [info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
 [info] Execution started
-[info] Task "hello" queued
+[info] Maximum threads: 1
+[info] Minimum threads: 1
+[info] Task <Bold>hello</BoldDim> queued
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Path from "node:path";
 import { inspect } from "node:util";
 import * as Fs from "node:fs/promises";

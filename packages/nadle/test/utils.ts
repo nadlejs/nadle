@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import { expect } from "vitest";
-import { execa, type Options, type ResultPromise } from "execa";
+import { execa, type Result, type Options, type ResultPromise } from "execa";
 
 export const cliPath = path.resolve(import.meta.dirname, "../bin/nadle");
 export const fixturesDir = path.resolve(import.meta.dirname, "./fixtures");
@@ -25,6 +25,11 @@ export function createExec(options?: RunOptions) {
 			command = command.replace(cliPath, `${cliPath} --no-show-summary`);
 		}
 
+		// Disable summary if not specified
+		if (!command.includes("--max-worker")) {
+			command = command.replace(cliPath, `${cliPath} --max-workers 1`);
+		}
+
 		return execa({ ...options, cwd })("sh", ["-c", command]);
 	};
 }
@@ -34,9 +39,10 @@ export const exec = createExec();
 export async function expectFail(command: () => ResultPromise) {
 	try {
 		await command();
-	} catch (error: any) {
-		expect(error.exitCode).toBe(1);
-		expect(error.stdout).toMatchSnapshot("stdout");
-		expect(error.stderr).toMatchSnapshot("stderr");
+	} catch (error) {
+		const execaError = error as Result;
+		expect(execaError.exitCode).toBe(1);
+		expect(execaError.stdout).toMatchSnapshot("stdout");
+		expect(execaError.stderr).toMatchSnapshot("stderr");
 	}
 }

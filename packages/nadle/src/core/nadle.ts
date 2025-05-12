@@ -7,11 +7,12 @@ import c from "tinyrainbow";
 import { createJiti } from "jiti";
 
 import { capitalize } from "./utils.js";
-import { TaskRunner } from "./task-runner.js";
+import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
+import { type RegisteredTask } from "./types.js";
 import { taskRegistry } from "./task-registry.js";
+import { TaskScheduler } from "./task-scheduler.js";
 import { Logger, type SupportLogLevel } from "./logger.js";
-import { type Context, type RegisteredTask } from "./types.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 
 export interface NadleOptions {
@@ -22,20 +23,20 @@ export interface NadleOptions {
 	readonly list?: boolean;
 	readonly showSummary: boolean;
 	readonly logLevel: SupportLogLevel;
+	readonly minWorkers?: number | string;
+	readonly maxWorkers?: number | string;
 }
 
 export class Nadle {
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
-	public readonly taskRunner: TaskRunner;
-	public readonly registry = taskRegistry;
+	public registry = taskRegistry;
 
 	constructor(public readonly options: NadleOptions) {
 		this.logger = new Logger(options.logLevel);
-		this.taskRunner = new TaskRunner(this);
 		this.reporter = new DefaultReporter(this);
 
-		this.reporter.onInit?.(this);
+		this.reporter.onInit?.();
 	}
 
 	async execute() {
@@ -50,7 +51,7 @@ export class Nadle {
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.();
-			// eslint-disable-next-line n/no-process-exit
+			// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
 			process.exit((error as any).errorCode || 1);
 		}
 
@@ -66,11 +67,8 @@ export class Nadle {
 			return;
 		}
 
-		const context: Context = { nadle: this, env: process.env };
-
-		for (const task of tasks) {
-			await this.taskRunner.run(task, context);
-		}
+		const scheduler = new TaskScheduler({ nadle: this, env: process.env }, tasks);
+		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
 	}
 
 	listTasks() {
@@ -144,11 +142,28 @@ export class Nadle {
 			throw new Error(`Config file not found: ${configFile}`);
 		}
 
-		const jiti = createJiti(import.meta.url, {
-			interopDefault: true,
-			extensions: [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"]
-		});
+		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"] });
 
 		await jiti.import(pathToFileURL(configFile).toString());
+	}
+
+	public async onTaskStart(task: RegisteredTask) {
+		this.registry.onTaskStart(task.name);
+		await this.reporter.onTaskStart?.(task);
+	}
+
+	public async onTaskFinish(task: RegisteredTask) {
+		this.registry.onTaskFinish(task.name);
+		await this.reporter.onTaskFinish?.(task);
+	}
+
+	public async onTaskFailed(task: RegisteredTask) {
+		this.registry.onTaskFailed(task.name);
+		await this.reporter.onTaskFailed?.(task);
+	}
+
+	public async onTaskQueued(task: RegisteredTask) {
+		this.registry.onTaskQueued(task.name);
+		await this.reporter.onTaskQueued?.(task);
 	}
 }
