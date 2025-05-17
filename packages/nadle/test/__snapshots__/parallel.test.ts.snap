@@ -1,42 +1,25 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Parallel > should run tasks parallely 1`] = `
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim> started
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim> started
-[task-A.0] Subtask 1/3 completed.
-[task-A.0] Subtask 2/3 completed.
-[task-A.1] Subtask 1/3 completed.
-[task-A.0] Subtask 3/3 completed.
-[log] <Green>✓</Green> Task <Bold>task-A.0</BoldDim> done in _ms
+[log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>task-A.[01]</BoldDim> done in 1._s
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim> started
-[task-A.2] Subtask 1/2 completed.
-[task-A.1] Subtask 2/3 completed.
-[task-A.2] Subtask 2/2 completed.
+[log] <Green>✓</Green> Task <Bold>task-A.[01]</BoldDim> done in 2._s
 [log] <Green>✓</Green> Task <Bold>task-A.2</BoldDim> done in 1._s
-[task-A.1] Subtask 3/3 completed.
-[log] <Green>✓</Green> Task <Bold>task-A.1</BoldDim> done in 2._s
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim> started
-[task-A] Subtask 1/3 completed.
-[task-A] Subtask 2/3 completed.
-[task-A] Subtask 3/3 completed.
-[log] <Green>✓</Green> Task <Bold>task-A</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>task-A</BoldDim> done in 1._s
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>3._s</BoldDim> <Dim>(<Bold>4</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>4._s</BoldDim> <Dim>(<Bold>4</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
 exports[`Parallel > should stop on error immediately > stderr 1`] = `""`;
 
 exports[`Parallel > should stop on error immediately > stdout 1`] = `
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim> started
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim> started
-[task-A.0] Subtask 1/3 completed.
-[task-A.0] Subtask 2/3 completed.
-[task-A.1] Subtask 1/3 completed.
-[task-A.0] Subtask 3/3 completed.
-[log] <Green>✓</Green> Task <Bold>task-A.0</BoldDim> done in _ms
-[task-A.1] Subtask 2/3 completed.
-[task-A.1] Subtask 3/3 completed.
-[log] <Green>✓</Green> Task <Bold>task-A.1</BoldDim> done in 2._s
+[log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>task-A.[01]</BoldDim> done in 1._s
+[log] <Green>✓</Green> Task <Bold>task-A.[01]</BoldDim> done in 2._s
 [log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> started
 [log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in _ms
 [log] 

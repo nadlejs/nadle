@@ -36,13 +36,39 @@ export function createExec(options?: RunOptions) {
 
 export const exec = createExec();
 
-export async function expectFail(command: () => ResultPromise) {
+export async function expectFail(command: () => ResultPromise, options?: BlurOptions) {
 	try {
 		await command();
 	} catch (error) {
 		const execaError = error as Result;
 		expect(execaError.exitCode).toBe(1);
-		expect(execaError.stdout).toMatchSnapshot("stdout");
-		expect(execaError.stderr).toMatchSnapshot("stderr");
+		expect(blurSnapshot(execaError.stdout, options)).toMatchSnapshot("stdout");
+		expect(blurSnapshot(execaError.stderr, options)).toMatchSnapshot("stderr");
 	}
+}
+
+export interface BlurOptions {
+	pattern: string | RegExp;
+	replacement: (match: string) => string;
+}
+export function blurSnapshot(snapshot: any, options?: BlurOptions) {
+	if (!options) {
+		return snapshot;
+	}
+
+	const { pattern, replacement } = options;
+
+	if (typeof pattern === "string") {
+		return snapshot.replaceAll(pattern, replacement(pattern));
+	}
+
+	if (pattern instanceof RegExp) {
+		if (!pattern.flags.includes("g")) {
+			throw new Error("The regex pattern must have the global flag 'g'");
+		}
+
+		return (snapshot as string).replace(pattern, (match) => replacement(match));
+	}
+
+	throw new Error("Pattern must be a string or a RegExp");
 }
