@@ -85,7 +85,7 @@ export class Nadle {
 
 		const orderedTasks = new TaskScheduler({ nadle: this, env: process.env }, tasks).getOrderedTasks();
 
-		this.logger.log("Listing tasks in dry run mode:");
+		this.logger.log(c.bold("Execution plan:"));
 
 		for (const task of orderedTasks) {
 			this.logger.log(`${c.yellow(">")} Task ${c.bold(task)}`);
