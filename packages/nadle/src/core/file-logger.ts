@@ -36,7 +36,7 @@ const ANSI: Record<string, string> = {
 	MOVE_CURSOR_ONE_ROW_UP
 };
 
-export const filePath: string = Path.join(import.meta.dirname, "..", "..", "logs", `${new Date().toISOString()}.txt`);
+const filePath: string = Path.join(import.meta.dirname, "..", "..", "logs", `${new Date().toISOString()}.txt`);
 export async function emit(): Promise<void> {
 	let data = logItems
 		.map(({ args, subspace, namespace }) => {

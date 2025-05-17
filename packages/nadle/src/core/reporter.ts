@@ -3,6 +3,7 @@ import c from "tinyrainbow";
 import { type Nadle } from "./nadle.js";
 import { CHECK, CROSS } from "./constants.js";
 import { type Renderer } from "./renderers/renderer.js";
+import { formatTime, formatTimeString } from "./utils.js";
 import { NormalRenderer } from "./renderers/normal-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
 import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
@@ -139,16 +140,4 @@ export class DefaultReporter implements Reporter {
 			this.duration = this.currentTime - start;
 		}, DURATION_UPDATE_INTERVAL_MS).unref();
 	}
-}
-
-export function formatTime(time: number): string {
-	if (time > 1000) {
-		return `${(time / 1000).toFixed(2)}s`;
-	}
-
-	return `${Math.round(time)}ms`;
-}
-
-export function formatTimeString(date: Date): string {
-	return date.toTimeString().split(" ")[0];
 }

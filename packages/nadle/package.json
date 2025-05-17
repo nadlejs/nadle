@@ -5,7 +5,8 @@
 	"scripts": {
 		"build": "tsc",
 		"test": "vitest",
-		"start": "tsc --watch"
+		"start": "tsc --watch",
+		"knip": "knip"
 	},
 	"files": [
 		"src",
@@ -24,9 +25,9 @@
 		"yargs": "^17.7.2"
 	},
 	"devDependencies": {
-		"@tsconfig/node22": "^22.0.1",
 		"@types/node": "^22.15.2",
 		"@types/yargs": "^17.0.33",
+		"knip": "^5.56.0",
 		"typescript": "^5.8.2",
 		"vitest": "^3.1.2"
 	},
