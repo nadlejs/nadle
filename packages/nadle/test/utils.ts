@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import { expect } from "vitest";
-import { execa, type Options, type ResultPromise } from "execa";
+import { execa, type Result, type Options, type ResultPromise } from "execa";
 
 export const cliPath = path.resolve(import.meta.dirname, "../bin/nadle");
 export const fixturesDir = path.resolve(import.meta.dirname, "./fixtures");
@@ -25,18 +25,59 @@ export function createExec(options?: RunOptions) {
 			command = command.replace(cliPath, `${cliPath} --no-show-summary`);
 		}
 
+		// Disable summary if not specified
+		if (!command.includes("--max-worker")) {
+			command = command.replace(cliPath, `${cliPath} --max-workers 1`);
+		}
+
 		return execa({ ...options, cwd })("sh", ["-c", command]);
 	};
 }
 
 export const exec = createExec();
 
-export async function expectFail(command: () => ResultPromise) {
+export async function expectFail(command: () => ResultPromise, options: BlurOptions[]) {
 	try {
 		await command();
-	} catch (error: any) {
-		expect(error.exitCode).toBe(1);
-		expect(error.stdout).toMatchSnapshot("stdout");
-		expect(error.stderr).toMatchSnapshot("stderr");
+	} catch (error) {
+		const execaError = error as Result;
+		expect(execaError.exitCode).toBe(1);
+		expect(blurSnapshot(execaError.stdout, options)).toMatchSnapshot("stdout");
+		expect(blurSnapshot(execaError.stderr, options)).toMatchSnapshot("stderr");
 	}
+}
+
+export function blurSnapshot(snapshot: any, options: BlurOptions[] = []) {
+	return options.reduce((result, option) => blur(result, option), snapshot);
+}
+
+export const DurationBlurOptions: BlurOptions = {
+	replacement: "<duration>",
+	pattern: /(\d+(\.\d+)?(ms|s))+/gi
+};
+
+export interface BlurOptions {
+	pattern: string | RegExp;
+	replacement: string | ((match: string) => string);
+}
+export function blur(snapshot: string, options?: BlurOptions) {
+	if (!options) {
+		return snapshot;
+	}
+
+	const { pattern, replacement } = options;
+
+	if (typeof pattern === "string") {
+		return snapshot.replaceAll(pattern, (match) => (typeof replacement === "string" ? replacement : replacement(match)));
+	}
+
+	if (pattern instanceof RegExp) {
+		if (!pattern.flags.includes("g")) {
+			throw new Error("The regex pattern must have the global flag 'g'");
+		}
+
+		return snapshot.replace(pattern, (match) => (typeof replacement === "string" ? replacement : replacement(match)));
+	}
+
+	throw new Error("Pattern must be a string or a RegExp");
 }

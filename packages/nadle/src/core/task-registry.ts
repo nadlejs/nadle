@@ -1,3 +1,5 @@
+import c from "tinyrainbow";
+
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
 export class TaskRegistry {
@@ -15,16 +17,22 @@ export class TaskRegistry {
 		return [...this.registry.values()];
 	}
 
-	getByName(name: string): RegisteredTask | undefined {
-		return this.registry.get(name);
+	findByName(taskName: string): RegisteredTask | undefined {
+		return this.registry.get(taskName);
+	}
+
+	getByName(taskName: string): RegisteredTask {
+		const task = this.findByName(taskName);
+
+		if (!task) {
+			throw new Error(`Task ${c.bold(taskName)} not found`);
+		}
+
+		return task;
 	}
 
 	onTaskStart(name: string) {
 		const task = this.getByName(name);
-
-		if (!task) {
-			throw new Error(`Task "${name}" not found`);
-		}
 
 		task.status = TaskStatus.Running;
 		task.result.startTime = Date.now();
@@ -33,20 +41,12 @@ export class TaskRegistry {
 	onTaskFinish(name: string) {
 		const task = this.getByName(name);
 
-		if (!task) {
-			throw new Error(`Task "${name}" not found`);
-		}
-
 		task.status = TaskStatus.Finished;
 		task.result.duration = Date.now() - (task.result.startTime ?? 0);
 	}
 
-	onTaskFail(name: string) {
+	onTaskFailed(name: string) {
 		const task = this.getByName(name);
-
-		if (!task) {
-			throw new Error(`Task "${name}" not found`);
-		}
 
 		task.status = TaskStatus.Failed;
 		task.result.duration = Date.now() - (task.result.startTime ?? 0);
@@ -54,10 +54,6 @@ export class TaskRegistry {
 
 	onTaskQueued(name: string) {
 		const task = this.getByName(name);
-
-		if (!task) {
-			throw new Error(`Task "${name}" not found`);
-		}
 
 		task.status = TaskStatus.Queued;
 	}

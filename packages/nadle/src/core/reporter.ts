@@ -8,7 +8,7 @@ import { SummaryRenderer } from "./renderers/summary-renderer.js";
 import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
 
 export interface Reporter {
-	onInit?: (nadle: Nadle) => void;
+	onInit?: () => void;
 
 	onExecutionStart?: () => Awaitable<void>;
 	onExecutionFinish?: () => Awaitable<void>;
@@ -69,7 +69,7 @@ export class DefaultReporter implements Reporter {
 		return this.nadle.registry
 			.getAll()
 			.filter((task) => task.status === TaskStatus.Running)
-			.map((task) => c.bold(`❯ :${task.name}`));
+			.map((task) => c.bold(` ${c.yellow(">")} :${task.name}`));
 	}
 
 	onInit() {
@@ -96,7 +96,7 @@ export class DefaultReporter implements Reporter {
 	}
 
 	async onTaskQueued(task: RegisteredTask) {
-		this.nadle.logger.info(`Task "${task.name}" queued`);
+		this.nadle.logger.info(`Task ${c.bold(task.name)} queued`);
 		this.taskStat = { ...this.taskStat, queued: ++this.taskStat.queued };
 		this.renderer.schedule();
 	}

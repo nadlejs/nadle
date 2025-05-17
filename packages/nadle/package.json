@@ -19,6 +19,7 @@
 		"consola": "^3.4.2",
 		"execa": "^9.5.2",
 		"jiti": "^2.4.2",
+		"tinypool": "^1.0.2",
 		"tinyrainbow": "^2.0.0",
 		"yargs": "^17.7.2"
 	},

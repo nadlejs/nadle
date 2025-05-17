@@ -1,13 +1,10 @@
-import { tasks, PnpmTask, type Task } from "nadle";
+import { tasks, type Task } from "nadle";
 
 import { createTask } from "./create-task.js";
 
-const CopyTask: Task<{ to: string; from: string }> = {
-	run: ({ options }) => {
-		const { to, from } = options;
-		console.log(`Copying from ${from} to ${to}`);
-	}
-};
+/**
+ * Basic tasks
+ */
 
 tasks
 	.register("hello", async () => {
@@ -22,41 +19,75 @@ tasks
 	})
 	.config({ group: "Greetings", dependsOn: ["hello"], description: "Say goodbye" });
 
+/**
+ * Copy task
+ */
+
+const CopyTask: Task<{ to: string; from: string }> = {
+	run: ({ options }) => {
+		const { to, from } = options;
+		console.log(`Copying from ${from} to ${to}`);
+	}
+};
+
 tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({ dependsOn: ["prepare"] });
 
 tasks.register("prepare", async () => {
 	console.log("Preparing...");
 });
 
-tasks.register("node", async () => {
+/**
+ * Error handling
+ */
+
+tasks
+	.register("throwable", () => {
+		throw new Error("This is an error");
+	})
+	.config({ dependsOn: ["prepare", "hello"] });
+
+tasks
+	.register("post-throwable", () => {
+		console.log("It should not reach here");
+	})
+	.config({ dependsOn: ["throwable"] });
+
+/**
+ * Regular tasks
+ */
+tasks.register("node", () => {
 	console.log("Setup node...");
 });
 
 tasks
-	.register("install", async () => {
+	.register("install", () => {
 		console.log("Installing npm...");
 	})
 	.config({ dependsOn: ["node"] });
 
-tasks.register("compileTs", PnpmTask, { args: ["exec", "tsc"] }).config({ group: "build", description: "Compile Typescript" });
+tasks
+	.register("compileTs", () => {
+		console.log("Compiling ts...");
+	})
+	.config({ dependsOn: ["install"] });
 
 tasks
 	.register("compileSvg", () => {
 		console.log("Compiling svg...");
 	})
-	.config({ group: "build", description: "Compile SVG" });
+	.config({ dependsOn: ["install"] });
 
 tasks
 	.register("compile", () => {
 		console.log("Compiling...");
 	})
-	.config({ group: "build", description: "Compile", dependsOn: ["compileSvg", "compileTs"] });
+	.config({ dependsOn: ["compileSvg", "compileTs"] });
 
 tasks
 	.register("test", () => {
 		console.log("Running tests...");
 	})
-	.config({ group: "test", description: "Test", dependsOn: ["compile"] });
+	.config({ dependsOn: ["install"] });
 
 tasks
 	.register("build", () => {
@@ -64,16 +95,23 @@ tasks
 	})
 	.config({ dependsOn: ["test", "compile"] });
 
-tasks
-	.register("throwable", () => {
-		throw new Error("This is an error");
-	})
-	.config({ dependsOn: ["install"] });
-
 /**
  * Progressive tasks
  */
 
-tasks.register(...createTask("task-1", { subTaskCount: 5, subTaskDuration: 800 }));
-tasks.register(...createTask("task-2", { subTaskCount: 6, subTaskDuration: 900 })).config({ dependsOn: ["task-1"] });
-tasks.register(...createTask("task-3", { subTaskCount: 7, subTaskDuration: 1000 })).config({ dependsOn: ["task-2", "task-1"] });
+tasks.register(...createTask("task-A.0", { subTaskCount: 3, subTaskDuration: 1500 }));
+tasks.register(...createTask("task-A.1", { subTaskCount: 3, subTaskDuration: 2000 }));
+tasks.register(...createTask("task-A.2", { subTaskCount: 3, subTaskDuration: 1200 }));
+tasks.register(...createTask("task-A", { subTaskCount: 3, subTaskDuration: 1000 })).config({ dependsOn: ["task-A.0", "task-A.1", "task-A.2"] });
+
+tasks.register(...createTask("task-B.0", { subTaskCount: 3, subTaskDuration: 1300 }));
+tasks.register(...createTask("task-B.1", { subTaskCount: 3, subTaskDuration: 1700 }));
+tasks.register(...createTask("task-B.2", { subTaskCount: 3, subTaskDuration: 1400 }));
+tasks.register(...createTask("task-B", { subTaskCount: 3, subTaskDuration: 1500 })).config({ dependsOn: ["task-B.0", "task-B.1", "task-B.2"] });
+
+tasks.register(...createTask("task-C.0", { subTaskCount: 3, subTaskDuration: 1200 }));
+tasks.register(...createTask("task-C.1", { subTaskCount: 3, subTaskDuration: 1500 }));
+tasks.register(...createTask("task-C.2", { subTaskCount: 3, subTaskDuration: 1300 }));
+tasks
+	.register(...createTask("task-C", { subTaskCount: 3, subTaskDuration: 1000 }))
+	.config({ dependsOn: ["task-A", "task-B", "task-C.0", "task-C.1", "task-C.2"] });
