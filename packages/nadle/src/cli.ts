@@ -56,6 +56,4 @@ const argv = yargs(hideBin(process.argv))
 	.alias("help", "h")
 	.parseSync();
 
-new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute().then(async () => {
-	// await emit();
-});
+new Nadle({ ...argv, configPath: argv.config, logLevel: argv.logLevel as SupportLogLevel }).execute();

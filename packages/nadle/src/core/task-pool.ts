@@ -46,12 +46,6 @@ export class TaskPool {
 
 					return;
 				}
-
-				if (msg.type === "finish") {
-					await this.nadle.onTaskFinish(task);
-
-					return;
-				}
 			});
 
 			const workerParams: WorkerParams = {

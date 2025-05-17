@@ -3,7 +3,7 @@ import c from "tinyrainbow";
 import { type Context } from "./types.js";
 
 export class TaskScheduler {
-	// Map between a tasks and
+	// Map between a task and the set of tasks that depend on it
 	private dependentsGraph = new Map<string, Set<string>>();
 	// Map between a tasks and its indegree
 	private indegree = new Map<string, number>();
