@@ -21,6 +21,7 @@ export interface NadleOptions {
 	readonly configPath: string;
 
 	readonly list?: boolean;
+	readonly dryRun?: boolean;
 	readonly showSummary: boolean;
 	readonly logLevel: SupportLogLevel;
 	readonly minWorkers?: number | string;
@@ -46,6 +47,8 @@ export class Nadle {
 		try {
 			if (this.options.list) {
 				this.listTasks();
+			} else if (this.options.dryRun) {
+				this.dryRunTasks();
 			} else {
 				await this.runTasks();
 			}
@@ -69,6 +72,24 @@ export class Nadle {
 
 		const scheduler = new TaskScheduler({ nadle: this, env: process.env }, tasks);
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
+	}
+
+	dryRunTasks() {
+		const tasks = this.options.tasks ?? [];
+
+		if (tasks.length === 0) {
+			this.printNoTasksFound();
+
+			return;
+		}
+
+		const orderedTasks = new TaskScheduler({ nadle: this, env: process.env }, tasks).getOrderedTasks();
+
+		this.logger.log("Listing tasks in dry run mode:");
+
+		for (const task of orderedTasks) {
+			this.logger.log(`${c.yellow(">")} Task ${c.bold(task)}`);
+		}
 	}
 
 	listTasks() {

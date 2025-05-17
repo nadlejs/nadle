@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`--dry-run > can run a simple command 1`] = `
+[log] Listing tasks in dry run mode:
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`--dry-run > should list for dependent tasks 1`] = `
+[log] Listing tasks in dry run mode:
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
