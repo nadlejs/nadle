@@ -51,6 +51,7 @@ const argv = yargs(hideBin(process.argv))
 		describe: "Set the logging level"
 	})
 	.option("list", { alias: "l", default: false, type: "boolean", description: "List all available tasks" })
+	.option("dry-run", { default: false, type: "boolean", description: "Run tasks in dry run mode" })
 	.option("show-summary", { default: true, type: "boolean", description: "Show progress summary" })
 	.help("help")
 	.alias("help", "h")
