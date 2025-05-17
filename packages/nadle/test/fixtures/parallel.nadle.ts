@@ -10,7 +10,7 @@ tasks
 	.register("throwable", () => {
 		throw new Error("This is an error");
 	})
-	.config({ dependsOn: ["task-A.0", "task-A.1"] });
+	.config({ dependsOn: ["task-A.2", "task-A.1"] });
 tasks
 	.register("X", () => {
 		console.log("Should not reach here");

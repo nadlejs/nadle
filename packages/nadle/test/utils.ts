@@ -36,7 +36,7 @@ export function createExec(options?: RunOptions) {
 
 export const exec = createExec();
 
-export async function expectFail(command: () => ResultPromise, options?: BlurOptions) {
+export async function expectFail(command: () => ResultPromise, options: BlurOptions[]) {
 	try {
 		await command();
 	} catch (error) {
@@ -47,11 +47,20 @@ export async function expectFail(command: () => ResultPromise, options?: BlurOpt
 	}
 }
 
+export function blurSnapshot(snapshot: any, options: BlurOptions[] = []) {
+	return options.reduce((result, option) => blur(result, option), snapshot);
+}
+
+export const DurationBlurOptions: BlurOptions = {
+	replacement: "<duration>",
+	pattern: /(\d+(\.\d+)?(ms|s))+/gi
+};
+
 export interface BlurOptions {
 	pattern: string | RegExp;
-	replacement: (match: string) => string;
+	replacement: string | ((match: string) => string);
 }
-export function blurSnapshot(snapshot: any, options?: BlurOptions) {
+export function blur(snapshot: string, options?: BlurOptions) {
 	if (!options) {
 		return snapshot;
 	}
@@ -59,7 +68,7 @@ export function blurSnapshot(snapshot: any, options?: BlurOptions) {
 	const { pattern, replacement } = options;
 
 	if (typeof pattern === "string") {
-		return snapshot.replaceAll(pattern, replacement(pattern));
+		return snapshot.replaceAll(pattern, (match) => (typeof replacement === "string" ? replacement : replacement(match)));
 	}
 
 	if (pattern instanceof RegExp) {
@@ -67,7 +76,7 @@ export function blurSnapshot(snapshot: any, options?: BlurOptions) {
 			throw new Error("The regex pattern must have the global flag 'g'");
 		}
 
-		return (snapshot as string).replace(pattern, (match) => replacement(match));
+		return snapshot.replace(pattern, (match) => (typeof replacement === "string" ? replacement : replacement(match)));
 	}
 
 	throw new Error("Pattern must be a string or a RegExp");
