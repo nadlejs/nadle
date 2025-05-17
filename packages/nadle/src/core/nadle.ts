@@ -10,10 +10,10 @@ import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
-import { taskRegistry } from "./task-registry.js";
 import { TaskScheduler } from "./task-scheduler.js";
 import { Logger, type SupportLogLevel } from "./logger.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
+import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 
 export interface NadleOptions {
 	readonly tasks?: string[];
@@ -31,7 +31,7 @@ export interface NadleOptions {
 export class Nadle {
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
-	public registry = taskRegistry;
+	public registry: TaskRegistry = taskRegistry;
 
 	constructor(public readonly options: NadleOptions) {
 		this.logger = new Logger(options.logLevel);
