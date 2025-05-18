@@ -33,4 +33,4 @@ jobs:
         run: echo "$(pwd)/node_modules/.bin" >> $GITHUB_PATH
 
       - name: Build
-        run: nadle check build test
+        run: nadle check build test --no-show-summary
