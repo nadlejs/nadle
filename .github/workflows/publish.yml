@@ -1,4 +1,4 @@
-name: Publish to npm
+name: Publish
 
 on:
   push:
@@ -26,9 +26,21 @@ jobs:
           node-version: 22
           cache: "pnpm"
 
-      - run: pnpm install
-      - run: pnpm build
-      - run: pnpm test
-      - run: pnpm publish -r --no-git-checks
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint & Format
+        run: pnpm lint && pnpm prettier
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm test
+
+      - name: Publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}" # pnpm config set is broken
+          pnpm publish -r --no-git-checks
