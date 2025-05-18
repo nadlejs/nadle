@@ -1,15 +1,13 @@
-import { it, expect, describe } from "vitest";
+import { it, describe } from "vitest";
 
-import { createExec } from "../utils.js";
+import { createExec, expectPass } from "../utils.js";
 
 describe("--list", () => {
 	it("prints all available tasks", async () => {
-		const { stdout } = await createExec()`$0 --list`;
-		expect(stdout).toMatchSnapshot();
+		await expectPass(createExec()`--list`);
 	});
 
 	it("prints no task message when no registered tasks", async () => {
-		const { stdout } = await createExec({ config: "empty" })`$0 --list`;
-		expect(stdout).toMatchSnapshot();
+		await expectPass(createExec({ config: "empty" })`--list`);
 	});
 });

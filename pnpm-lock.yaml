@@ -104,6 +104,8 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2(@types/node@22.15.2)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.8.0)
 
+  packages/nadle/test/fixtures/sample-app: {}
+
 packages:
 
   '@emnapi/core@1.4.3':

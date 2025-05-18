@@ -19,6 +19,7 @@ export const PnpmTask: Task<{ args: string[] }> = {
 		});
 
 		await subprocess;
+
 		context.nadle.logger.info(`pnpm command completed successfully.`);
 	}
 };

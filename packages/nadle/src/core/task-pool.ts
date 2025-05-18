@@ -51,7 +51,7 @@ export class TaskPool {
 			const workerParams: WorkerParams = {
 				name: task.name,
 				port: workerPort,
-				options: { ...this.nadle.options, logLevel: "error", showSummary: false }
+				options: { ...this.nadle.options, showSummary: false, isWorkerThread: true }
 			};
 
 			await this.nadle.onTaskQueued(task);

@@ -1,31 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CLI > can run a simple command 1`] = `
+exports[`Basic > can run a simple command > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
-[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`CLI > can run dependent task first 1`] = `
+exports[`Basic > can run dependent task first > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
 Preparing...
-[log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>copy</BoldDim> started
 Copying from assets/ to dist/
-[log] <Green>✓</Green> Task <Bold>copy</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>copy</BoldDim> done in {duration}
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`CLI > can run two commands sequentially 1`] = `
+exports[`Basic > can run two commands sequentially > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
-[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> started
 Goodbye, tak!
-[log] <Green>✓</Green> Task <Bold>goodbye</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>goodbye</BoldDim> done in {duration}
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;

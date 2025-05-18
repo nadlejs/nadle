@@ -1,21 +1,15 @@
-import { test, expect } from "vitest";
+import { test } from "vitest";
 
-import { exec } from "../utils.js";
+import { exec, expectPass } from "../utils.js";
 
 test("shows info log when passing --log-level=info", async () => {
-	const { stdout, exitCode } = await exec`$0 hello --log-level=info`;
-	expect(exitCode).toBe(0);
-	expect(stdout).toMatchSnapshot();
+	await expectPass(exec`hello --log-level=info`);
 });
 
 test("shows debug log when passing --log-level=debug", async () => {
-	const { stdout, exitCode } = await exec`$0 hello --log-level=debug`;
-	expect(exitCode).toBe(0);
-	expect(stdout).toMatchSnapshot();
+	await expectPass(exec`hello --log-level=debug`);
 });
 
 test("shows error log only when passing --log-level=error", async () => {
-	const { stdout, exitCode } = await exec`$0 hello --log-level=error`;
-	expect(exitCode).toBe(0);
-	expect(stdout).toMatchSnapshot();
+	await expectPass(exec`hello --log-level=error`);
 });

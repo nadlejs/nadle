@@ -11,23 +11,33 @@ export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 const l = new FileLogger("logger");
 
+export interface LoggerOptions {
+	readonly logLevel?: SupportLogLevel;
+
+	/** @internal */
+	readonly isWorkerThread?: boolean;
+}
+
 export class Logger {
 	private _clearScreenPending: string | undefined;
 	private consola: ConsolaInstance;
+	public options: Required<LoggerOptions>;
+	public outputStream: NodeJS.WriteStream | Writable = process.stdout;
+	public errorStream: NodeJS.WriteStream | Writable = process.stderr;
 
-	constructor(
-		public logLevel: SupportLogLevel = "log",
-		public outputStream: NodeJS.WriteStream | Writable = process.stdout,
-		public errorStream: NodeJS.WriteStream | Writable = process.stderr
-	) {
-		const level = LogLevels[this.logLevel];
+	constructor(options: LoggerOptions) {
+		this.options = { logLevel: "log", isWorkerThread: false, ...options };
+
+		const level = LogLevels[this.options.logLevel];
 		this.consola = consola.create({ level, formatOptions: { date: false } });
 
 		if ((this.outputStream as typeof process.stdout).isTTY) {
 			(this.outputStream as Writable).write(HIDE_CURSOR);
 		}
 
-		this.info(`Initializing Logger with level ${level}`);
+		if (!this.options.isWorkerThread) {
+			this.info(`Initialized logger with level ${level}`);
+		}
 	}
 
 	log(message: string, ...args: unknown[]): void {

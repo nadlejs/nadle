@@ -26,6 +26,9 @@ export interface NadleOptions {
 	readonly logLevel: SupportLogLevel;
 	readonly minWorkers?: number | string;
 	readonly maxWorkers?: number | string;
+
+	/** @internal */
+	readonly isWorkerThread?: boolean;
 }
 
 export class Nadle {
@@ -34,7 +37,7 @@ export class Nadle {
 	public registry: TaskRegistry = taskRegistry;
 
 	constructor(public readonly options: NadleOptions) {
-		this.logger = new Logger(options.logLevel);
+		this.logger = new Logger(options);
 		this.reporter = new DefaultReporter(this);
 
 		this.reporter.onInit?.();
@@ -157,7 +160,10 @@ export class Nadle {
 
 	async registerTask() {
 		const configFile = resolve(process.cwd(), this.options.configPath);
-		this.logger.info(`Resolved config file: ${configFile}`);
+
+		if (!this.options.isWorkerThread) {
+			this.logger.info(`Resolved config file: ${configFile}`);
+		}
 
 		if (!existsSync(configFile)) {
 			throw new Error(`Config file not found: ${configFile}`);
