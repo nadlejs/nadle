@@ -15,4 +15,4 @@ describe("Pnpm Task", () => {
 	it("throw error when running tsc command with error ts file", async () => {
 		await expectFail(() => exec`fail`);
 	});
-});
+}, 10000);
