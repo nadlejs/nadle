@@ -1,0 +1,7 @@
+{
+	"extends": "../../../tsconfig.json",
+	"include": ["./**/register.test-d.ts"],
+	"compilerOptions": {
+		"noEmit": true
+	}
+}

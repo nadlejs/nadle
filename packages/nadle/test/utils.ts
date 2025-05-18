@@ -8,23 +8,24 @@ export const fixturesDir = path.resolve(import.meta.dirname, "./fixtures");
 
 interface RunOptions extends Options {
 	config?: string;
+	autoDisabledSummary?: boolean;
 }
 
 export function createExec(options?: RunOptions) {
 	const cwd = options?.cwd ?? fixturesDir;
 	const configFile = options?.config;
+	const autoDisabledSummary = options?.autoDisabledSummary ?? true;
 	const configFileName = configFile === undefined ? undefined : configFile.includes(".") ? configFile : `${configFile}.nadle.ts`;
 
 	return (strings: TemplateStringsArray, ...values: unknown[]): ResultPromise => {
 		let command = strings.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "");
 
-		// Disable summary if not specified
 		if (configFile !== undefined) {
 			command = `--config ${configFileName} ` + command;
 		}
 
 		// Disable summary if not specified
-		if (!command.includes("--show-summary") || !command.includes("--no-show-summary")) {
+		if (autoDisabledSummary && (!command.includes("--show-summary") || !command.includes("--no-show-summary"))) {
 			command = "--no-show-summary " + command;
 		}
 
@@ -33,10 +34,7 @@ export function createExec(options?: RunOptions) {
 			command = "--max-workers 1 " + command;
 		}
 
-		return execa(`${cliPath}`, parseCommandString(command), {
-			...options,
-			cwd
-		});
+		return execa(cliPath, parseCommandString(command), { ...options, cwd });
 	};
 }
 

@@ -4,6 +4,7 @@ import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 import c from "tinyrainbow";
+import { isCI } from "std-env";
 import { createJiti } from "jiti";
 
 import { capitalize } from "./utils.js";
@@ -15,14 +16,14 @@ import { Logger, type SupportLogLevel } from "./logger.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 
-export interface NadleOptions {
+export interface NadleUserOptions {
 	readonly tasks?: string[];
 
 	readonly configPath: string;
 
 	readonly list?: boolean;
 	readonly dryRun?: boolean;
-	readonly showSummary: boolean;
+	readonly showSummary?: boolean;
 	readonly logLevel: SupportLogLevel;
 	readonly minWorkers?: number | string;
 	readonly maxWorkers?: number | string;
@@ -31,16 +32,31 @@ export interface NadleOptions {
 	readonly isWorkerThread?: boolean;
 }
 
+export type NadleOptions = Required<Omit<NadleUserOptions, "maxWorkers" | "minWorkers">> & Pick<NadleUserOptions, "maxWorkers" | "minWorkers">;
+
 export class Nadle {
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
-	public registry: TaskRegistry = taskRegistry;
+	public readonly registry: TaskRegistry = taskRegistry;
+	public readonly options: NadleOptions;
 
-	constructor(public readonly options: NadleOptions) {
+	constructor(options: NadleUserOptions) {
+		this.options = this.resolveOptions(options);
 		this.logger = new Logger(options);
 		this.reporter = new DefaultReporter(this);
 
 		this.reporter.onInit?.();
+	}
+
+	private resolveOptions(options: NadleUserOptions): NadleOptions {
+		return {
+			tasks: [],
+			list: false,
+			dryRun: false,
+			showSummary: !isCI,
+			isWorkerThread: false,
+			...options
+		};
 	}
 
 	async execute() {
