@@ -10,9 +10,10 @@ import {
 	type ContextualResolver
 } from "./types.js";
 
+export function registerTask(name: string): ConfigBuilder;
 export function registerTask(name: string, fnTask: TaskFn): ConfigBuilder;
 export function registerTask<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): ConfigBuilder;
-export function registerTask(name: string, task: TaskFn | Task, optionsResolver?: Resolver): ConfigBuilder {
+export function registerTask(name: string, task?: TaskFn | Task, optionsResolver?: Resolver): ConfigBuilder {
 	if (taskRegistry.has(name)) {
 		throw new Error(`Task "${name}" already registered`);
 	}
@@ -41,7 +42,11 @@ export function registerTask(name: string, task: TaskFn | Task, optionsResolver?
 	};
 }
 
-function computeTaskInfo(task: TaskFn | Task, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver"> {
+function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver"> {
+	if (task === undefined) {
+		return { run: () => {}, optionsResolver: undefined };
+	}
+
 	if (typeof task === "function") {
 		return { run: task, optionsResolver: undefined };
 	}

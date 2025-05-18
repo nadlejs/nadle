@@ -29,11 +29,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Lint & Format
-        run: pnpm lint && pnpm prettier
+      - name: Add node_modules/.bin to PATH
+        run: echo "$(pwd)/node_modules/.bin" >> $GITHUB_PATH
 
       - name: Build
-        run: pnpm build
-
-      - name: Test
-        run: pnpm test
+        run: nadle check build test --no-show-summary
