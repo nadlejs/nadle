@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import { expect } from "vitest";
-import { execa, type Result, type Options, type ResultPromise } from "execa";
+import { execa, type Result, type Options, type ResultPromise, parseCommandString } from "execa";
 
 export const cliPath = path.resolve(import.meta.dirname, "../bin/nadle");
 export const fixturesDir = path.resolve(import.meta.dirname, "./fixtures");
@@ -16,27 +16,33 @@ export function createExec(options?: RunOptions) {
 	const configFileName = configFile === undefined ? undefined : configFile.includes(".") ? configFile : `${configFile}.nadle.ts`;
 
 	return (strings: TemplateStringsArray, ...values: unknown[]): ResultPromise => {
-		let command = strings
-			.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "")
-			.replace("$0", cliPath + (configFileName ? ` --config ${configFileName}` : ""));
+		let command = strings.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "");
+
+		// Disable summary if not specified
+		if (configFile !== undefined) {
+			command = `--config ${configFileName} ` + command;
+		}
 
 		// Disable summary if not specified
 		if (!command.includes("--show-summary") || !command.includes("--no-show-summary")) {
-			command = command.replace(cliPath, `${cliPath} --no-show-summary`);
+			command = "--no-show-summary " + command;
 		}
 
-		// Disable summary if not specified
+		// Enforce one worker if not specified
 		if (!command.includes("--max-worker")) {
-			command = command.replace(cliPath, `${cliPath} --max-workers 1`);
+			command = "--max-workers 1 " + command;
 		}
 
-		return execa({ ...options, cwd })("sh", ["-c", command]);
+		return execa(`${cliPath}`, parseCommandString(command), {
+			...options,
+			cwd
+		});
 	};
 }
 
 export const exec = createExec();
 
-export async function expectFail(command: () => ResultPromise, options: BlurOptions[]) {
+export async function expectFail(command: () => ResultPromise, options: BlurOptions[] = []) {
 	try {
 		await command();
 	} catch (error) {
@@ -47,14 +53,15 @@ export async function expectFail(command: () => ResultPromise, options: BlurOpti
 	}
 }
 
+export async function expectPass(command: ResultPromise, options: BlurOptions[] = []) {
+	const { stdout, exitCode } = await command;
+	expect(exitCode).toBe(0);
+	expect(blurSnapshot(stdout, options)).toMatchSnapshot("stdout");
+}
+
 export function blurSnapshot(snapshot: any, options: BlurOptions[] = []) {
 	return options.reduce((result, option) => blur(result, option), snapshot);
 }
-
-export const DurationBlurOptions: BlurOptions = {
-	replacement: "<duration>",
-	pattern: /(\d+(\.\d+)?(ms|s))+/gi
-};
 
 export interface BlurOptions {
 	pattern: string | RegExp;

@@ -1,61 +1,61 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`dependsOn > should run dependent tasks first 1`] = `
+exports[`dependsOn > should run dependent tasks first > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
-[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 Installing npm...
-[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
 Compiling ts...
-[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`dependsOn > should run shared dependent tasks 1`] = `
+exports[`dependsOn > should run shared dependent tasks > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
-[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 Installing npm...
-[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
 Compiling svg...
-[log] <Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
 Compiling ts...
-[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
 Running tests...
-[log] <Green>✓</Green> Task <Bold>test</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>test</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
 Compiling...
-[log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in {duration}
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>6</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>6</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`dependsOn > should run shared dependent tasks 2 1`] = `
+exports[`dependsOn > should run shared dependent tasks 2 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
-[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 Installing npm...
-[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
 Running tests...
-[log] <Green>✓</Green> Task <Bold>test</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>test</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
 Compiling svg...
-[log] <Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
 Compiling ts...
-[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
 Compiling...
-[log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>compile</BoldDim> done in {duration}
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>6</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>6</BoldDim><Dim> tasks executed)</BoldDim>
 `;

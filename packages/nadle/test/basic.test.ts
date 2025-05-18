@@ -1,23 +1,17 @@
-import { it, expect, describe } from "vitest";
+import { it, describe } from "vitest";
 
-import { exec } from "./utils.js";
+import { exec, expectPass } from "./utils.js";
 
-describe("CLI", () => {
+describe("Basic", () => {
 	it("can run a simple command", async () => {
-		const { stdout, exitCode } = await exec`$0 hello`;
-		expect(exitCode).toBe(0);
-		expect(stdout).toMatchSnapshot();
+		await expectPass(exec`hello`);
 	});
 
 	it("can run two commands sequentially", async () => {
-		const { stdout, exitCode } = await exec`$0 hello goodbye`;
-		expect(exitCode).toBe(0);
-		expect(stdout).toMatchSnapshot();
+		await expectPass(exec`hello goodbye`);
 	});
 
 	it("can run dependent task first", async () => {
-		const { stdout, exitCode } = await exec`$0 copy`;
-		expect(exitCode).toBe(0);
-		expect(stdout).toMatchSnapshot();
+		await expectPass(exec`copy`);
 	});
 });

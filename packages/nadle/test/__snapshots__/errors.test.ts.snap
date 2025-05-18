@@ -5,19 +5,19 @@ exports[`when a task fails > should report correctly > stderr 1`] = `""`;
 exports[`when a task fails > should report correctly > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
 Preparing...
-[log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
-[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in _ms
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> started
-[log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in _ms
+[log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
 [log] 
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 `;
 
 exports[`when passing invalid task name > should throw error > stderr 1`] = `[error] Task <Bold>unknown</BoldDim> not found`;
 
 exports[`when passing invalid task name > should throw error > stdout 1`] = `
 [log] 
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>_ms</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
 `;

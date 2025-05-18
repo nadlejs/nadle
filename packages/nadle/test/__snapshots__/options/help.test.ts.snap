@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--help > prints help 1`] = `
+exports[`--help > prints help > stdout 1`] = `
 "nadle [tasks...]
 
 Run one or many tasks

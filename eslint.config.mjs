@@ -34,6 +34,7 @@ const config = tsEslint.config(
 			"no-restricted-imports": ["error", { patterns: ["consola"] }],
 
 			"n/no-missing-import": "off",
+			"n/no-unpublished-import": "off",
 			"n/prefer-node-protocol": "error",
 			"n/no-unsupported-features/node-builtins": "off",
 

@@ -74,7 +74,10 @@ export class DefaultReporter implements Reporter {
 	}
 
 	onInit() {
-		this.nadle.logger.info("Nadle initialized with options:", this.nadle.options);
+		if (!this.nadle.options.isWorkerThread) {
+			this.nadle.logger.info("Nadle initialized with options:", this.nadle.options);
+		}
+
 		this.renderer.start();
 	}
 

@@ -2,11 +2,9 @@ export function serializeFilePath(input: string) {
 	return input.replace(process.cwd(), "/ROOT");
 }
 
-const DurationRegex = /(\d+)(ms|s)/g;
+const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;
 export function serializeDuration(input: string) {
-	return input.replace(DurationRegex, (_: unknown, _p1: string, p2: string) => {
-		return `_${p2}`;
-	});
+	return input.replace(DurationRegex, "{duration}");
 }
 
 // eslint-disable-next-line no-control-regex
@@ -20,7 +18,7 @@ export function serializeANSI(input: string) {
 			const number = parseInt(code, 10);
 
 			if (!Object.keys(ansiCodeMap).includes(code)) {
-				throw new Error(`Unknown ANSI code: ${code}`);
+				throw new Error(`Unknown ANSI code: ${code}. Please update the ANSI code map.`);
 			}
 
 			const result = ansiCodeMap[code];
@@ -42,9 +40,13 @@ export function serializeANSI(input: string) {
 	});
 }
 
+/* eslint-disable perfectionist/sort-objects */
 const ansiCodeMap: Record<string, string> = {
-	"2": "<Dim>",
+	"0": "</Reset>",
+	"7": "</Inverse>",
+
 	"1": "<Bold>",
+	"2": "<Dim>",
 	"22": "</BoldDim>",
 
 	"31": "<Red>",
@@ -52,5 +54,13 @@ const ansiCodeMap: Record<string, string> = {
 	"33": "<Yellow>",
 
 	"39": "</Color>",
-	"49": "</BgColor>"
+	"49": "</BgColor>",
+
+	"90": "<BrightBlack>",
+	"91": "<BrightRed>",
+	"93": "<BrightYellow>",
+
+	"96": "<BrightCyan>",
+	"106": "</BrightCyan>"
 };
+/* eslint-enable perfectionist/sort-objects */
