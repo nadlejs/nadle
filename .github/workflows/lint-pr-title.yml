@@ -27,6 +27,7 @@ jobs:
             refactor
             test
             perf
+            release
           requireScope: false
           subjectPattern: ^[a-z].+$
           subjectPatternError: |
