@@ -19,6 +19,7 @@ export function createTask(taskName: string, options?: { subTaskCount?: number; 
 		async () => {
 			for (let i = 0; i < subTaskCount; i++) {
 				await new Promise((resolve) => setTimeout(resolve, subTaskDuration));
+
 				console.log(`[${colorMap[hash(taskName)](taskName)}] Subtask ${i + 1}/${subTaskCount} completed.`);
 			}
 		}

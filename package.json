@@ -10,7 +10,8 @@
 		"test": "pnpm -r test",
 		"lint": "eslint --quiet",
 		"prettier": "prettier --check .",
-		"fix": "eslint --fix && prettier --write ."
+		"fix": "eslint --fix && prettier --write .",
+		"prepare": "husky"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.25.1",
@@ -22,6 +23,8 @@
 		"eslint-plugin-n": "^17.17.0",
 		"eslint-plugin-perfectionist": "^4.9.0",
 		"eslint-plugin-unused-imports": "^4.1.4",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.0.0",
 		"prettier": "^3.5.1",
 		"tsx": "^4.19.3",
 		"typescript": "^5.8.2",
