@@ -20,6 +20,7 @@ export default async ({ name, port, options }: WorkerParams) => {
 
 	port.postMessage({ type: "start", taskName: name });
 	await new Promise((resolve) => setImmediate(resolve));
+	await new Promise((resolve) => process.nextTick(resolve));
 
 	await task.run({ context, options: taskOptions });
 };
