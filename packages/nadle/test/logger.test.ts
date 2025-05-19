@@ -15,4 +15,11 @@ describe("Logger", () => {
 
 		expect(stdout).contain(`reporters: [ ${reporter} {} ] }`);
 	});
+
+	it("should not prepend log level in CI", async () => {
+		const { stdout } = await createExec({ env: { CI: "true", TEST: "false" } })`hello --log-level info`;
+
+		expect(stdout).not.contain("[log]");
+		expect(stdout).not.contain("[info]");
+	});
 });
