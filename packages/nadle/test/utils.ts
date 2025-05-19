@@ -1,17 +1,18 @@
 import path from "node:path";
 
 import { expect } from "vitest";
-import { execa, type Result, type Options, type ResultPromise, parseCommandString } from "execa";
+import { execa, type Result, type ResultPromise, parseCommandString, type Options as ExecaOptions } from "execa";
 
 export const cliPath = path.resolve(import.meta.dirname, "../bin/nadle");
 export const fixturesDir = path.resolve(import.meta.dirname, "./fixtures");
 
-interface RunOptions extends Options {
+interface ExecOptions extends ExecaOptions {
 	config?: string;
 	autoDisabledSummary?: boolean;
+	env?: ExecaOptions["env"] & { CI?: "true" | "false"; TEST?: "true" | "false" };
 }
 
-export function createExec(options?: RunOptions) {
+export function createExec(options?: ExecOptions) {
 	const cwd = options?.cwd ?? fixturesDir;
 	const configFile = options?.config;
 	const autoDisabledSummary = options?.autoDisabledSummary ?? true;
@@ -34,10 +35,14 @@ export function createExec(options?: RunOptions) {
 			command = "--max-workers 1 " + command;
 		}
 
-		let env = { ...options?.env };
+		let env: ExecOptions["env"] = { CI: "false", TEST: "true", ...options?.env };
 
 		if (env.CI === "false") {
 			env = { ...env, GITHUB_ACTIONS: undefined };
+		}
+
+		if (env.TEST === "false") {
+			env = { ...env, NODE_ENV: "production" };
 		}
 
 		return execa(cliPath, parseCommandString(command), { ...options, cwd, env });
@@ -63,6 +68,7 @@ export async function expectPass(command: ResultPromise, options: BlurOptions[] 
 	expect(blurSnapshot(stdout, options)).toMatchSnapshot("stdout");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function blurSnapshot(snapshot: any, options: BlurOptions[] = []) {
 	return options.reduce((result, option) => blur(result, option), snapshot);
 }
