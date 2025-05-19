@@ -1,24 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`shows debug log when passing --log-level=debug > stdout 1`] = `
+exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1`] = `
 [info] Initialized logger with level 4
-[info] Nadle initialized with options: { _: [],
-  'max-workers': 1,
-  maxWorkers: 1,
-  'show-summary': false,
+[info] Nadle initialized with options: { tasks: [ 'hello' ],
+  list: false,
+  dryRun: false,
   showSummary: false,
-  'log-level': 'debug',
+  isWorkerThread: false,
+  maxWorkers: 1,
   logLevel: 'debug',
   config: 'build.nadle.ts',
-  c: 'build.nadle.ts',
-  'min-workers': undefined,
   minWorkers: undefined,
-  list: false,
-  l: false,
-  'dry-run': false,
-  dryRun: false,
-  '$0': 'nadle',
-  tasks: [ 'hello' ],
   configPath: 'build.nadle.ts' }
 [info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
 [info] Execution started
@@ -33,27 +25,19 @@ Hello from nadle!
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`shows error log only when passing --log-level=error > stdout 1`] = `"Hello from nadle!"`;
+exports[`--log-level > shows error log only when passing --log-level=error > stdout 1`] = `"Hello from nadle!"`;
 
-exports[`shows info log when passing --log-level=info > stdout 1`] = `
+exports[`--log-level > shows info log when passing --log-level=info > stdout 1`] = `
 [info] Initialized logger with level 3
-[info] Nadle initialized with options: { _: [],
-  'max-workers': 1,
-  maxWorkers: 1,
-  'show-summary': false,
+[info] Nadle initialized with options: { tasks: [ 'hello' ],
+  list: false,
+  dryRun: false,
   showSummary: false,
-  'log-level': 'info',
+  isWorkerThread: false,
+  maxWorkers: 1,
   logLevel: 'info',
   config: 'build.nadle.ts',
-  c: 'build.nadle.ts',
-  'min-workers': undefined,
   minWorkers: undefined,
-  list: false,
-  l: false,
-  'dry-run': false,
-  dryRun: false,
-  '$0': 'nadle',
-  tasks: [ 'hello' ],
   configPath: 'build.nadle.ts' }
 [info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
 [info] Execution started

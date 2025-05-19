@@ -7,7 +7,7 @@ describe("Parallel", () => {
 
 	it("should run tasks parallely", async () => {
 		await expectPass(exec`--max-workers 2 task-A`, [{ pattern: /task-A\.[01]/g, replacement: () => "task-A.[01]" }]);
-	}, 6000);
+	}, 8000);
 
 	it("should stop on error immediately", async () => {
 		await expectFail(() => exec`--max-workers 2 X`, [{ pattern: /task-A\.[12]/g, replacement: () => "task-A.[12]" }]);

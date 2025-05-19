@@ -52,6 +52,7 @@ const ansiCodeMap: Record<string, string> = {
 	"31": "<Red>",
 	"32": "<Green>",
 	"33": "<Yellow>",
+	"34": "<Blue>",
 
 	"39": "</Color>",
 	"49": "</BgColor>",
