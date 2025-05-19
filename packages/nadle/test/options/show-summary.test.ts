@@ -36,10 +36,7 @@ describe("--show-summary", () => {
 	});
 
 	it("should show summary when not in CI by default", async () => {
-		const { stdout, exitCode } = await createExec({
-			autoDisabledSummary: false,
-			env: { CI: "false", GITHUB_ACTIONS: undefined }
-		})`copy`;
+		const { stdout, exitCode } = await createExec({ env: { CI: "false" }, autoDisabledSummary: false })`copy`;
 
 		expect(exitCode).toBe(0);
 		expect(serializeANSI(stdout as string)).contain(`<Dim>Tasks      </BoldDim>`);

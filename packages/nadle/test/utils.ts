@@ -34,7 +34,13 @@ export function createExec(options?: RunOptions) {
 			command = "--max-workers 1 " + command;
 		}
 
-		return execa(cliPath, parseCommandString(command), { ...options, cwd });
+		let env = { ...options?.env };
+
+		if (env.CI === "false") {
+			env = { ...env, GITHUB_ACTIONS: undefined };
+		}
+
+		return execa(cliPath, parseCommandString(command), { ...options, cwd, env });
 	};
 }
 
