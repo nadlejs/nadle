@@ -5,7 +5,7 @@ import { createExec, expectFail, expectPass } from "./utils.js";
 describe("Parallel", () => {
 	const exec = createExec({ config: "parallel" });
 
-	it("should run tasks parallely", async () => {
+	it("should run tasks parallel", async () => {
 		await expectPass(exec`--max-workers 2 task-A`, [{ pattern: /task-A\.[01]/g, replacement: () => "task-A.[01]" }]);
 	}, 8000);
 

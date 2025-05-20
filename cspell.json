@@ -1,0 +1,5 @@
+{
+	"language": "en",
+	"words": ["softwareTerms", "nadle", "tinyrainbow", "consola", "Vitest", "indegree", "SCROLLBACK"],
+	"ignorePaths": ["pnpm-lock.yaml", "**/lib", "*.vitest-temp.json"]
+}
