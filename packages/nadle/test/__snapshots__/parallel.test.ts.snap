@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Parallel > should run tasks parallely > stdout 1`] = `
+exports[`Parallel > should run tasks parallel > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
 [log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
 [log] <Green>✓</Green> Task <Bold>task-A.[01]</BoldDim> done in {duration}

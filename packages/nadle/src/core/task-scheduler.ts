@@ -13,10 +13,9 @@ export class TaskScheduler {
 		private readonly context: Context,
 		taskNames: string[]
 	) {
-		taskNames.forEach((taskName) => this.analyse(taskName));
+		taskNames.forEach((taskName) => this.analyze(taskName));
 	}
-
-	private analyse(taskName: string): void {
+	private analyze(taskName: string): void {
 		const task = this.context.nadle.registry.findByName(taskName);
 
 		if (!task) {
@@ -35,7 +34,7 @@ export class TaskScheduler {
 
 			this.dependentsGraph.get(dependency)?.add(taskName);
 
-			this.analyse(dependency);
+			this.analyze(dependency);
 		}
 	}
 
