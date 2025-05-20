@@ -28,6 +28,7 @@ jobs:
             test
             perf
             release
+            dep
           requireScope: false
           subjectPattern: ^[a-z].+$
           subjectPatternError: |
