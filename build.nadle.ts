@@ -4,7 +4,8 @@ tasks.register("clean", PnpmTask, { args: ["-r", "exec", "rimraf", "lib"] });
 
 tasks.register("eslint", PnpmTask, { args: ["eslint"] });
 tasks.register("prettier", ExecTask, { command: "prettier", args: ["--check", "."] });
-tasks.register("check", () => console.log("Checking...")).config({ dependsOn: ["eslint", "prettier"] });
+tasks.register("knip", PnpmTask, { args: ["-r", "--filter", "./packages/nadle", "exec", "knip"] });
+tasks.register("check").config({ dependsOn: ["eslint", "prettier", "knip"] });
 
 tasks.register("build", PnpmTask, { args: ["run", "-r", "build"] }).config({ dependsOn: ["check"] });
 

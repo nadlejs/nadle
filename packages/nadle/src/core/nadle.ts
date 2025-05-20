@@ -16,7 +16,7 @@ import { Logger, type SupportLogLevel } from "./logger.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 
-export interface NadleUserOptions {
+interface NadleUserOptions {
 	readonly tasks?: string[];
 
 	readonly configPath: string;
