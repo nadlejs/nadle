@@ -38,10 +38,12 @@ export function createExec(options?: ExecOptions) {
 		let env: ExecOptions["env"] = { CI: "false", TEST: "true", ...options?.env };
 
 		if (env.CI === "false") {
+			// std-env requires GITHUB_ACTIONS to be undefined to not be detected as CI
 			env = { ...env, GITHUB_ACTIONS: undefined };
 		}
 
 		if (env.TEST === "false") {
+			// std-env requires TEST to be undefined to not be detected as TEST
 			env = { ...env, NODE_ENV: "production" };
 		}
 
