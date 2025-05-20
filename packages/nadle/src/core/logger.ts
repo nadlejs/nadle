@@ -1,9 +1,7 @@
 import type { Writable } from "node:stream";
 
-// eslint-disable-next-line no-restricted-imports
-import { consola, LogLevels, type LogType, type ConsolaInstance } from "consola";
-
 import { FileLogger } from "./file-logger.js";
+import { type LogType, createNadleConsola, type ConsolaInstance } from "./consola-reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
 
 export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
@@ -27,16 +25,15 @@ export class Logger {
 
 	constructor(options: LoggerOptions) {
 		this.options = { logLevel: "log", isWorkerThread: false, ...options };
-
-		const level = LogLevels[this.options.logLevel];
-		this.consola = consola.create({ level, formatOptions: { date: false } });
+		this.consola = createNadleConsola(this.options);
 
 		if ((this.outputStream as typeof process.stdout).isTTY) {
 			(this.outputStream as Writable).write(HIDE_CURSOR);
 		}
 
 		if (!this.options.isWorkerThread) {
-			this.info(`Initialized logger with level ${level}`);
+			const { stderr, stdout, ...consoleOptions } = this.consola.options;
+			this.info(`Initialized logger with consola options:`, consoleOptions);
 		}
 	}
 
@@ -71,7 +68,7 @@ export class Logger {
 		l.log("clearFullScreen");
 
 		if (message) {
-			consola.log(`${CLEAR_SCREEN}${ERASE_SCROLLBACK}${message}`);
+			this.consola.log(`${CLEAR_SCREEN}${ERASE_SCROLLBACK}${message}`);
 		} else {
 			(this.outputStream as Writable).write(`${CLEAR_SCREEN}${ERASE_SCROLLBACK}`);
 		}

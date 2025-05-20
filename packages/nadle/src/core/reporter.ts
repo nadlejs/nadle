@@ -1,4 +1,5 @@
 import c from "tinyrainbow";
+import { isCI, isTest } from "std-env";
 
 import { type Nadle } from "./nadle.js";
 import { CHECK, CROSS } from "./constants.js";
@@ -76,6 +77,7 @@ export class DefaultReporter implements Reporter {
 	onInit() {
 		if (!this.nadle.options.isWorkerThread) {
 			this.nadle.logger.info("Nadle initialized with options:", this.nadle.options);
+			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 		}
 
 		this.renderer.start();
