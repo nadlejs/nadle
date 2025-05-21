@@ -125,6 +125,8 @@ export class Nadle {
     readonly reporter: Reporter;
     // (undocumented)
     runTasks(): Promise<void>;
+    // (undocumented)
+    readonly version: string;
 }
 
 // @public (undocumented)
