@@ -1,0 +1,19 @@
+{
+	"name": "@nadle/internal-test",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"test": "vitest"
+	},
+	"dependencies": {
+		"nadle": "workspace:*",
+		"@nadle/cli": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.2",
+		"execa": "^9.5.2",
+		"std-env": "^3.9.0",
+		"typescript": "^5.8.2",
+		"vitest": "^3.1.2"
+	}
+}

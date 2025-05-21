@@ -1,0 +1,32 @@
+{
+	"name": "@nadle/internal-sample-app",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"compile": "tsc -b",
+		"base": "nadle --config src/build.nadle.ts --show-summary --log-level=info --max-workers=2",
+		"empty": "pnpm base",
+		"help": "pnpm base -h",
+		"list": "pnpm base --list",
+		"hello": "pnpm base hello",
+		"hello-and-goodbye": "pnpm base hello goodbye",
+		"copy": "pnpm base copy",
+		"build_": "pnpm base build",
+		"compile-test": "pnpm base compile test",
+		"test-compile": "pnpm base test compile",
+		"task-A": "pnpm base task-A",
+		"task-C": "pnpm base task-C",
+		"compileTs": "pnpm base compileTs",
+		"post-throwable": "pnpm base post-throwable",
+		"unknown": "pnpm base unknown"
+	},
+	"dependencies": {
+		"@nadle/cli": "workspace:*",
+		"nadle": "workspace:*"
+	},
+	"devDependencies": {
+		"tinyrainbow": "^2.0.0",
+		"typescript": "^5.8.2"
+	},
+	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf"
+}

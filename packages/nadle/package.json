@@ -3,33 +3,25 @@
 	"version": "0.2.5",
 	"type": "module",
 	"scripts": {
-		"compile": "tsc",
-		"test": "vitest",
-		"start": "tsc --watch"
+		"compile": "tsc -b"
 	},
 	"files": [
-		"src",
 		"lib"
 	],
 	"main": "lib/index.js",
 	"module": "lib/index.js",
 	"types": "lib/index.d.ts",
-	"bin": "bin/nadle",
 	"dependencies": {
 		"consola": "^3.4.2",
 		"execa": "^9.5.2",
 		"jiti": "^2.4.2",
 		"std-env": "^3.9.0",
 		"tinypool": "^1.0.2",
-		"tinyrainbow": "^2.0.0",
-		"yargs": "^17.7.2"
+		"tinyrainbow": "^2.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.15.2",
-		"@types/yargs": "^17.0.33",
 		"knip": "^5.56.0",
-		"typescript": "^5.8.2",
-		"vitest": "^3.1.2"
-	},
-	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf"
+		"typescript": "^5.8.2"
+	}
 }
