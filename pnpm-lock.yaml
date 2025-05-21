@@ -51,8 +51,8 @@ importers:
         specifier: ^16.0.0
         version: 16.0.0
       nadle:
-        specifier: ^0.2.4
-        version: 0.2.4
+        specifier: ^0.2.5
+        version: 0.2.5
       prettier:
         specifier: ^3.5.1
         version: 3.5.3
@@ -2031,8 +2031,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  nadle@0.2.4:
-    resolution: {integrity: sha512-SxlcsArXcRCXgyhCHIXov0DEGjnKlCAvIomY/lV/etcTS32P4TVJpi+YUW/0Z+sMxpHDVy7ztMBnroM3/WgaJg==}
+  nadle@0.2.5:
+    resolution: {integrity: sha512-I6Ln2wNzUeP3pKL8rAJ6Cdecj9xZ6/65WZJ7XmZ9ftyAcnfcUijsQbCTFvEkrxLfzwQYRzQNeablsgl3daaT5g==}
     hasBin: true
 
   nano-spawn@1.0.1:
@@ -4870,7 +4870,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  nadle@0.2.4:
+  nadle@0.2.5:
     dependencies:
       consola: 3.4.2
       execa: 9.5.2
