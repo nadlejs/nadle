@@ -3,7 +3,7 @@
 	"version": "0.2.4",
 	"type": "module",
 	"scripts": {
-		"build": "tsc",
+		"compile": "tsc",
 		"test": "vitest",
 		"start": "tsc --watch"
 	},
