@@ -76,7 +76,8 @@ export class DefaultReporter implements Reporter {
 
 	onInit() {
 		if (!this.nadle.options.isWorkerThread) {
-			this.nadle.logger.info("Nadle initialized with options:", this.nadle.options);
+			this.nadle.logger.log(c.bold(c.cyan(`🛠️Welcome to Nadle v${this.nadle.version}!`)));
+			this.nadle.logger.info("Resolved options:", this.nadle.options);
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 		}
 

@@ -1,6 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`--list > prints all available tasks > stdout 1`] = `
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/build.nadle.ts</BoldDim>
+
 [log] <Bold>Greetings tasks</BoldDim>
 [log] <Bold>---------------</BoldDim>
 [log] <Bold><Green>goodbye</Green></BoldDim><Yellow> - Say goodbye to nadle!</Yellow>
@@ -19,6 +22,9 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 `;
 
 exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/empty.nadle.ts</BoldDim>
+
 [log] No tasks found
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>

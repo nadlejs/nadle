@@ -1,3 +1,7 @@
+export function serializeVersion(input: string) {
+	return input.replace(/v\d+\.\d+\.\d+/g, "{version}");
+}
+
 export function serializeFilePath(input: string) {
 	return input.replace(process.cwd(), "/ROOT");
 }
@@ -53,6 +57,7 @@ const ansiCodeMap: Record<string, string> = {
 	"32": "<Green>",
 	"33": "<Yellow>",
 	"34": "<Blue>",
+	"36": "<Cyan>",
 
 	"39": "</Color>",
 	"49": "</BgColor>",

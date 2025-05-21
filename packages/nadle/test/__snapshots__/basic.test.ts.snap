@@ -1,6 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Basic > can run a simple command > stdout 1`] = `
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/build.nadle.ts</BoldDim>
+
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
@@ -9,6 +12,9 @@ Hello from nadle!
 `;
 
 exports[`Basic > can run dependent task first > stdout 1`] = `
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/build.nadle.ts</BoldDim>
+
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
 Preparing...
 [log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
@@ -20,6 +26,9 @@ Copying from assets/ to dist/
 `;
 
 exports[`Basic > can run two commands sequentially > stdout 1`] = `
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/build.nadle.ts</BoldDim>
+
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}

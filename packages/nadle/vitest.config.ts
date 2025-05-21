@@ -1,10 +1,11 @@
 import path from "node:path";
 
+import { isCI } from "std-env";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	test: {
-		retry: 5,
+		retry: isCI ? 5 : 2,
 		environment: "node",
 		setupFiles: "./test/setup.ts",
 		chaiConfig: {

@@ -23,7 +23,8 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
   defaults: { level: 1 },
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
-[info] Nadle initialized with options: { tasks: [ 'hello' ],
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Resolved options: { tasks: [ 'hello' ],
   list: false,
   dryRun: false,
   showSummary: false,
@@ -34,7 +35,8 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
   minWorkers: undefined,
   configPath: 'build.nadle.ts' }
 [info] Detected environments: { CI: false, TEST: true }
-[info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/build.nadle.ts</BoldDim>
+
 [info] Execution started
 [info] Maximum threads: 1
 [info] Minimum threads: 1
@@ -72,7 +74,8 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
   defaults: { level: 1 },
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
-[info] Nadle initialized with options: { tasks: [ 'hello' ],
+[log] <Bold><Cyan>🛠️Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Resolved options: { tasks: [ 'hello' ],
   list: false,
   dryRun: false,
   showSummary: false,
@@ -83,7 +86,8 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
   minWorkers: undefined,
   configPath: 'build.nadle.ts' }
 [info] Detected environments: { CI: false, TEST: true }
-[info] Resolved config file: /ROOT/test/fixtures/build.nadle.ts
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/test/fixtures/build.nadle.ts</BoldDim>
+
 [info] Execution started
 [info] Maximum threads: 1
 [info] Minimum threads: 1
