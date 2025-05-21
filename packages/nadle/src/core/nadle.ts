@@ -7,6 +7,7 @@ import c from "tinyrainbow";
 import { isCI } from "std-env";
 import { createJiti } from "jiti";
 
+import { VERSION } from "../version.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
@@ -39,6 +40,7 @@ export class Nadle {
 	public readonly reporter: Reporter;
 	public readonly registry: TaskRegistry = taskRegistry;
 	public readonly options: NadleOptions;
+	public readonly version = VERSION;
 
 	constructor(options: NadleUserOptions) {
 		this.options = this.resolveOptions(options);
@@ -178,7 +180,7 @@ export class Nadle {
 		const configFile = resolve(process.cwd(), this.options.configPath);
 
 		if (!this.options.isWorkerThread) {
-			this.logger.info(`Resolved config file: ${configFile}`);
+			this.logger.log(`${c.gray("Using config file from")} ${c.dim(configFile)}\n`);
 		}
 
 		if (!existsSync(configFile)) {
