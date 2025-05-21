@@ -17,7 +17,7 @@
 		"cspell": "^9.0.1",
 		"eslint": "^9.25.1",
 		"eslint-plugin-import": "^2.31.0",
-		"eslint-plugin-n": "^17.17.0",
+		"eslint-plugin-n": "^17.18.0",
 		"eslint-plugin-perfectionist": "^4.9.0",
 		"eslint-plugin-unused-imports": "^4.1.4",
 		"husky": "^9.1.7",
