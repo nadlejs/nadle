@@ -2,9 +2,6 @@
 	"name": "@nadle/internal-validators",
 	"type": "module",
 	"private": true,
-	"scripts": {
-		"test": "vitest"
-	},
 	"devDependencies": {
 		"@types/node": "^22.15.2",
 		"execa": "^9.5.2",
