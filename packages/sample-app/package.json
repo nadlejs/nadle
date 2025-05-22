@@ -1,7 +1,7 @@
 {
 	"name": "@nadle/internal-sample-app",
-	"private": true,
 	"type": "module",
+	"private": true,
 	"scripts": {
 		"compile": "tsc -b",
 		"base": "nadle --config src/build.nadle.ts --show-summary --log-level=info --max-workers=2",

@@ -6,7 +6,8 @@ tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "
 tasks.register("eslint", PnpmTask, { args: ["eslint"] });
 tasks.register("prettier", ExecTask, { command: "prettier", args: ["--check", "."] });
 tasks.register("knip", PnpmTask, { args: ["-r", "--filter", "./packages/nadle", "exec", "knip"] });
-tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip"] });
+tasks.register("validate", ExecTask, { command: "tsx", args: ["./packages/validators/src/index.ts"] });
+tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
 tasks.register("compile", PnpmTask, { args: ["compile"] });
 

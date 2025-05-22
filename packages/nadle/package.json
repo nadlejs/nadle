@@ -1,16 +1,12 @@
 {
 	"name": "nadle",
 	"version": "0.2.5",
+	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
-	"description": " A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool ",
-	"scripts": {
-		"compile": "tsc -b"
-	},
 	"files": [
 		"lib"
 	],
 	"main": "lib/index.js",
-	"module": "lib/index.js",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"consola": "^3.4.2",
@@ -25,6 +21,15 @@
 		"knip": "^5.57.1",
 		"typescript": "^5.8.2"
 	},
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nam-hle/nadle.git",
+		"directory": "packages/nadle"
+	},
 	"keywords": [
 		"nodejs",
 		"task-runner",
@@ -38,8 +43,6 @@
 		"developer-tools",
 		"lightweight"
 	],
-	"author": {
-		"name": "Nam Hoang Le",
-		"email": "namhoangle.dev@gmail.com"
-	}
+	"homepage": "https://nadle.io",
+	"bugs": "https://github.com/nam-hle/nadle/issues"
 }
