@@ -27,4 +27,4 @@ nadle --dry-run build
 
 - Learn about [Advanced Configuration](../advanced-configuration.md)
 - Explore the [API Reference](../api/index.md)
-- Check out [Task Patterns](../task-patterns.md) for common use cases 
+- Check out [Task Patterns](../task-patterns.md) for common use cases

@@ -1,4 +1,4 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"references": [{ "path": "./tsconfig.docusaurus.json" }, { "path": "./tsconfig.lint.json" }]
+	"references": [{ "path": "./tsconfig.docusaurus.json" }, { "path": "./tsconfig.eslint.json" }]
 }

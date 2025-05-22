@@ -188,6 +188,7 @@ const keyIndicesMap = new Map(
 		"dependencies",
 		"devDependencies",
 		"engines",
+		"browserslist",
 		"author",
 		"repository",
 		"keywords",

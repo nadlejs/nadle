@@ -1,6 +1,6 @@
 {
-	"name": "@nadle/docs",
-	"version": "0.0.0",
+	"name": "@nadle/internal-docs",
+	"type": "module",
 	"private": true,
 	"scripts": {
 		"docusaurus": "docusaurus",
@@ -11,8 +11,7 @@
 		"clear": "docusaurus clear",
 		"serve": "docusaurus serve",
 		"write-translations": "docusaurus write-translations",
-		"write-heading-ids": "docusaurus write-heading-ids",
-		"typecheck": "tsc"
+		"write-heading-ids": "docusaurus write-heading-ids"
 	},
 	"dependencies": {
 		"@docusaurus/core": "3.1.1",
@@ -27,7 +26,10 @@
 		"@docusaurus/module-type-aliases": "^3.1.1",
 		"@docusaurus/tsconfig": "^3.1.1",
 		"@docusaurus/types": "^3.1.1",
-		"typescript": "5.2.2"
+		"typescript": "^5.8.2"
+	},
+	"engines": {
+		"node": ">=22.0"
 	},
 	"browserslist": {
 		"production": [
@@ -40,8 +42,5 @@
 			"last 3 firefox version",
 			"last 5 safari version"
 		]
-	},
-	"engines": {
-		"node": ">=18.0"
 	}
 }

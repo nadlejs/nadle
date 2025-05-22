@@ -20,29 +20,37 @@ Nadle stands out from other task runners with its unique combination of features
 ## Key Features
 
 ### 1. Type-Safe Task Definitions
+
 Define your tasks with full TypeScript support, ensuring that your build scripts are reliable and maintainable.
 
 ### 2. Parallel Task Execution
+
 Nadle automatically analyzes task dependencies and executes independent tasks in parallel, optimizing build times.
 
 ### 3. Dependency Management
+
 Clearly define task dependencies and let Nadle handle the execution order:
+
 - Automatic dependency resolution
 - Circular dependency detection
 - Optional dependencies support
 
 ### 4. Progress Tracking
+
 Monitor task execution with built-in progress tracking:
+
 - Real-time execution status
 - Task duration measurements
 - Clear error reporting
 
 ### 5. Flexible Configuration
+
 Customize Nadle to suit your project needs:
+
 - Multiple configuration file support
 - Environment-specific settings
 - Extensible plugin system
 
 ## Getting Started
 
-To start using Nadle in your project, check out our [Quick Start Guide](./getting-started.md) or dive into the [API Reference](./api/index.md) for detailed documentation. 
+To start using Nadle in your project, check out our [Quick Start Guide](./getting-started/installation.md) or dive into the [API Reference](./api/index.md) for detailed documentation.

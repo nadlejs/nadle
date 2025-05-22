@@ -33,4 +33,4 @@ pnpm add -D nadle @nadle/cli
   </TabItem>
 </Tabs>
 
-After installation, you'll have access to the `nadle` command-line interface and the core Nadle package for defining your tasks. 
+After installation, you'll have access to the `nadle` command-line interface and the core Nadle package for defining your tasks.
