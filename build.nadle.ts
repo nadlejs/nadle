@@ -8,7 +8,7 @@ tasks.register("prettier", ExecTask, { command: "prettier", args: ["--check", ".
 tasks.register("knip", PnpmTask, { args: ["-r", "--filter", "./packages/nadle", "exec", "knip"] });
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip"] });
 
-tasks.register("compile", PnpmTask, { args: ["run", "-r", "compile"] });
+tasks.register("compile", PnpmTask, { args: ["compile"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["compile"] });
 tasks

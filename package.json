@@ -6,7 +6,9 @@
 		"node": ">=22"
 	},
 	"scripts": {
-		"prepare": "husky"
+		"prepare": "husky",
+		"compile": "tsc -b",
+		"start": "tsc -b --watch"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.4",

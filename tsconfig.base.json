@@ -1,0 +1,22 @@
+{
+	"include": ["${configDir}/src/**/*.ts"],
+	"compilerOptions": {
+		"lib": ["ES2024"],
+		"target": "ES2022",
+		"moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"allowJs": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"declaration": true,
+		"sourceMap": true,
+		"declarationMap": true,
+		"strict": true,
+		"skipLibCheck": true,
+
+		"composite": true,
+		"rootDir": "${configDir}/src",
+		"outDir": "${configDir}/lib",
+		"tsBuildInfoFile": "${configDir}/build/tsconfig.tsbuildinfo.json"
+	}
+}

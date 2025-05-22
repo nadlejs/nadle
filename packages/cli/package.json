@@ -1,0 +1,22 @@
+{
+	"name": "@nadle/cli",
+	"version": "0.2.5",
+	"type": "module",
+	"files": [
+		"lib",
+		"bin"
+	],
+	"bin": {
+		"nadle": "bin/nadle"
+	},
+	"dependencies": {
+		"nadle-core": "workspace:nadle@*",
+		"yargs": "^17.7.2"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.2",
+		"@types/yargs": "^17.0.33",
+		"knip": "^5.56.0",
+		"typescript": "^5.8.2"
+	}
+}
