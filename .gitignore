@@ -26,6 +26,10 @@ nadle.iml
 
 # misc
 .DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 *.pem
 
 # debug
@@ -42,3 +46,5 @@ yarn-error.log*
 *.tsbuildinfo
 lib
 tsconfig.vitest-temp.json
+
+.docusaurus

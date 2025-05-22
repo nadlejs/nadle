@@ -2,5 +2,5 @@
 	"language": "en",
 	"words": ["npmjs", "softwareTerms", "nadle", "tinyrainbow", "consola", "Vitest", "indegree", "SCROLLBACK"],
 	"ignoreWords": ["Hoang"],
-	"ignorePaths": ["pnpm-lock.yaml", "**/lib", "*.vitest-temp.json"]
+	"ignorePaths": ["pnpm-lock.yaml", "**/lib", "*.vitest-temp.json", "**/*.svg", "./packages/docs/**"]
 }

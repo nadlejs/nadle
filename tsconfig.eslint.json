@@ -1,6 +1,6 @@
 {
 	"extends": "./tsconfig.json",
-	"include": ["**/src", "**/test", "./build.nadle.ts", "./prettier.config.js", "./eslint.config.mjs", "./packages/*/*.config.*"],
+	"include": ["./build.nadle.ts", "./prettier.config.js", "./eslint.config.mjs"],
 	"compilerOptions": {
 		"noEmit": true,
 		"allowJs": true

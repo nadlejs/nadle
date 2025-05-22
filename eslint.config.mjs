@@ -10,7 +10,7 @@ const config = tsEslint.config(
 	tsEslint.configs.recommended,
 	nPlugin.configs["flat/recommended-module"],
 	{
-		ignores: ["**/lib", "**/node_modules/"]
+		ignores: ["**/lib", "**/node_modules/", "**/.docusaurus"]
 	},
 	{
 		linterOptions: {
@@ -23,7 +23,7 @@ const config = tsEslint.config(
 		},
 		languageOptions: {
 			parserOptions: {
-				project: ["tsconfig.eslint.json"]
+				project: ["**/tsconfig.eslint.json"]
 			}
 		},
 		rules: {

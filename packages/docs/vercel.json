@@ -1,0 +1,7 @@
+{
+	"buildCommand": "pnpm build",
+	"devCommand": "pnpm start",
+	"installCommand": "pnpm install",
+	"framework": "docusaurus",
+	"outputDirectory": "build"
+}
