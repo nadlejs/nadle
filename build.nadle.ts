@@ -22,4 +22,4 @@ tasks.register("build").config({ dependsOn: ["check", "compile", "test"] });
 
 tasks.register("fixEslint", PnpmTask, { args: ["eslint", "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
-tasks.register("fixCheck").config({ dependsOn: ["fixEslint", "fixPrettier"] });
+tasks.register("format").config({ dependsOn: ["fixEslint", "fixPrettier"] });

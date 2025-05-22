@@ -2,6 +2,7 @@
 	"name": "@nadle/cli",
 	"version": "0.2.5",
 	"type": "module",
+	"description": " A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"files": [
 		"lib",
 		"bin"
@@ -18,5 +19,22 @@
 		"@types/yargs": "^17.0.33",
 		"knip": "^5.57.1",
 		"typescript": "^5.8.2"
+	},
+	"keywords": [
+		"nodejs",
+		"task-runner",
+		"build-tool",
+		"typescript",
+		"cli",
+		"automation",
+		"gradle-inspired",
+		"task-orchestration",
+		"type-safe",
+		"developer-tools",
+		"lightweight"
+	],
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com"
 	}
 }
