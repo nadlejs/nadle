@@ -1,13 +1,9 @@
 {
-	"name": "@nadle/internal-package-validator",
+	"name": "@nadle/internal-validators",
 	"type": "module",
 	"private": true,
 	"scripts": {
 		"test": "vitest"
-	},
-	"dependencies": {
-		"@nadle/cli": "workspace:*",
-		"nadle": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/node": "^22.15.2",
