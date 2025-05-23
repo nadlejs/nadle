@@ -29,6 +29,7 @@ jobs:
             perf
             release
             deps
+            docs
           requireScope: false
           subjectPattern: ^[a-z].+$
           subjectPatternError: |

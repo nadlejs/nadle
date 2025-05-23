@@ -70,6 +70,10 @@ const versionValidator: PackageValidator = ({ pkg }) => {
 };
 
 const typeValidator: PackageValidator = ({ pkg }) => {
+	if (pkg.name === "@nadle/internal-docs") {
+		return;
+	}
+
 	if (!pkg.type) {
 		throw new Error(`"type" field is required"`);
 	}
@@ -188,6 +192,7 @@ const keyIndicesMap = new Map(
 		"dependencies",
 		"devDependencies",
 		"engines",
+		"browserslist",
 		"author",
 		"repository",
 		"keywords",
