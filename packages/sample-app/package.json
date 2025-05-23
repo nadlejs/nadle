@@ -21,7 +21,8 @@
 		"post-throwable": "pnpm base post-throwable",
 		"unknown": "pnpm base unknown",
 		"task-cycle-3": "pnpm base task-cycle-3",
-		"task-cycle-6": "pnpm base task-cycle-6"
+		"task-cycle-6": "pnpm base task-cycle-6",
+		"show-config": "pnpm base --log-level log --show-config"
 	},
 	"dependencies": {
 		"@nadle/cli": "workspace:*",

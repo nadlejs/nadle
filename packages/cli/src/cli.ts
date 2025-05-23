@@ -50,13 +50,16 @@ const argv = yargs(hideBin(process.argv))
 	})
 	.option("list", { alias: "l", default: false, type: "boolean", description: "List all available tasks" })
 	.option("dry-run", { default: false, type: "boolean", description: "Run tasks in dry run mode" })
+	.option("show-config", { type: "boolean", description: "Print the final configuration instead of building" })
 	.option("show-summary", { hidden: true, type: "boolean" })
 	.help("help")
 	.alias("help", "h")
 	.parseSync();
 
 const removedAliasArgv = Object.fromEntries(
-	Object.entries(argv).filter(([key]) => !["$0", "_", "l", "c", "dry-run", "show-summary", "log-level", "min-workers", "max-workers"].includes(key))
+	Object.entries(argv).filter(
+		([key]) => !["$0", "_", "l", "c", "config", "show-config", "dry-run", "show-summary", "log-level", "min-workers", "max-workers"].includes(key)
+	)
 );
 
 new Nadle({ ...removedAliasArgv, configPath: argv.config, logLevel: removedAliasArgv.logLevel as SupportLogLevel }).execute();

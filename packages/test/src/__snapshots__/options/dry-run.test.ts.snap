@@ -2,8 +2,8 @@
 
 exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/depends-on.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/depends-on.nadle.ts
+</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>install</BoldDim>
@@ -18,8 +18,8 @@ exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 
 exports[`--dry-run > should list for one task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/build.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim>
 [log] 

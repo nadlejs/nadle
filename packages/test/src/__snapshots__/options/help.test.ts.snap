@@ -14,5 +14,6 @@ Options:
             [string] [choices: "error", "log", "info", "debug"] [default: "log"]
   -l, --list         List all available tasks         [boolean] [default: false]
       --dry-run      Run tasks in dry run mode        [boolean] [default: false]
+      --show-config  Print the final configuration instead of building [boolean]
   -h, --help         Show help                                         [boolean]"
 `;
