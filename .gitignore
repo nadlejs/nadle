@@ -48,3 +48,4 @@ lib
 tsconfig.vitest-temp.json
 
 .docusaurus
+.vercel

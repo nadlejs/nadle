@@ -1,14 +1,9 @@
 {
-	"buildCommand": "pnpm --filter @nadle/docs build",
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"buildCommand": "pnpm -r --filter @nadle/internal-docs build",
 	"outputDirectory": "packages/docs/build",
 	"installCommand": "pnpm install",
 	"framework": "docusaurus-2",
-	"rewrites": [
-		{
-			"source": "/(.*)",
-			"destination": "/packages/docs/$1"
-		}
-	],
 	"github": {
 		"silent": true,
 		"autoJobCancelation": true

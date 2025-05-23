@@ -74,6 +74,14 @@ const typeValidator: PackageValidator = ({ pkg }) => {
 		throw new Error(`"type" field is required"`);
 	}
 
+	if (pkg.name === "@nadle/docs") {
+		if (pkg.type !== "commonjs") {
+			throw new Error("Package type must be commonjs");
+		}
+
+		return;
+	}
+
 	if (pkg.type !== "module") {
 		throw new Error("Package type must be module");
 	}
