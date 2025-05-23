@@ -3,7 +3,6 @@
 	"version": "0.2.5",
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
-	"description": " A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"files": [
 		"lib",
 		"bin"
@@ -43,6 +42,6 @@
 		"developer-tools",
 		"lightweight"
 	],
-	"homepage": "https://nadle.io",
+	"homepage": "https://nadle.vercel.app",
 	"bugs": "https://github.com/nam-hle/nadle/issues"
 }

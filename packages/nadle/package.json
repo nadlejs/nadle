@@ -43,6 +43,6 @@
 		"developer-tools",
 		"lightweight"
 	],
-	"homepage": "https://nadle.io",
+	"homepage": "https://nadle.vercel.app",
 	"bugs": "https://github.com/nam-hle/nadle/issues"
 }
