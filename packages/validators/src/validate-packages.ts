@@ -74,7 +74,7 @@ const typeValidator: PackageValidator = ({ pkg }) => {
 		throw new Error(`"type" field is required"`);
 	}
 
-	if (pkg.name === "@nadle/docs") {
+	if (pkg.name === "@nadle/internal-docs") {
 		return;
 	}
 
