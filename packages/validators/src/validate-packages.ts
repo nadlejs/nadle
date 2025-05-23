@@ -70,12 +70,12 @@ const versionValidator: PackageValidator = ({ pkg }) => {
 };
 
 const typeValidator: PackageValidator = ({ pkg }) => {
-	if (!pkg.type) {
-		throw new Error(`"type" field is required"`);
-	}
-
 	if (pkg.name === "@nadle/internal-docs") {
 		return;
+	}
+
+	if (!pkg.type) {
+		throw new Error(`"type" field is required"`);
 	}
 
 	if (pkg.type !== "module") {
