@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`detect cycle > should detect 1-task-cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-8</BoldDim> → <Bold>cycle-8</BoldDim>`;
+
+exports[`detect cycle > should detect 1-task-cycle > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/cycle.nadle.ts</BoldDim>
+
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+`;
+
+exports[`detect cycle > should detect 2-tasks-cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-6</BoldDim> → <Bold>cycle-7</BoldDim> → <Bold>cycle-6</BoldDim>`;
+
+exports[`detect cycle > should detect 2-tasks-cycle > stderr 2`] = `[error] Cycle detected: <Bold>cycle-7</BoldDim> → <Bold>cycle-6</BoldDim> → <Bold>cycle-7</BoldDim>`;
+
+exports[`detect cycle > should detect 2-tasks-cycle > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/cycle.nadle.ts</BoldDim>
+
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+`;
+
+exports[`detect cycle > should detect 2-tasks-cycle > stdout 2`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/cycle.nadle.ts</BoldDim>
+
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+`;
+
+exports[`detect cycle > should detect cycle from a task inside the cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-2</BoldDim> → <Bold>cycle-3</BoldDim> → <Bold>cycle-4</BoldDim> → <Bold>cycle-5</BoldDim> → <Bold>cycle-2</BoldDim>`;
+
+exports[`detect cycle > should detect cycle from a task inside the cycle > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/cycle.nadle.ts</BoldDim>
+
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+`;
+
+exports[`detect cycle > should detect cycle from a task outside the cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-2</BoldDim> → <Bold>cycle-3</BoldDim> → <Bold>cycle-4</BoldDim> → <Bold>cycle-5</BoldDim> → <Bold>cycle-2</BoldDim>`;
+
+exports[`detect cycle > should detect cycle from a task outside the cycle > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/cycle.nadle.ts</BoldDim>
+
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+`;
+
+exports[`detect cycle > should print the cycle from the first reach task > stderr 1`] = `[error] Cycle detected: <Bold>cycle-4</BoldDim> → <Bold>cycle-5</BoldDim> → <Bold>cycle-2</BoldDim> → <Bold>cycle-3</BoldDim> → <Bold>cycle-4</BoldDim>`;
+
+exports[`detect cycle > should print the cycle from the first reach task > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/cycle.nadle.ts</BoldDim>
+
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+`;

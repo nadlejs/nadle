@@ -115,3 +115,12 @@ tasks.register(...createTask("task-C.2", { subTaskCount: 3, subTaskDuration: 130
 tasks
 	.register(...createTask("task-C", { subTaskCount: 3, subTaskDuration: 1000 }))
 	.config({ dependsOn: ["task-A", "task-B", "task-C.0", "task-C.1", "task-C.2"] });
+
+/**
+ * Cycle tasks
+ */
+tasks.register("cycle-1").config({ dependsOn: ["cycle-2"] });
+tasks.register("cycle-2").config({ dependsOn: ["cycle-3"] });
+tasks.register("cycle-3").config({ dependsOn: ["cycle-4"] });
+tasks.register("cycle-4").config({ dependsOn: ["cycle-5"] });
+tasks.register("cycle-5").config({ dependsOn: ["cycle-2"] });

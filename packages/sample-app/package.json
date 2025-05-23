@@ -1,5 +1,6 @@
 {
 	"name": "@nadle/internal-sample-app",
+	"description": "Sample package to test nadle",
 	"type": "module",
 	"private": true,
 	"scripts": {
@@ -18,7 +19,9 @@
 		"task-C": "pnpm base task-C",
 		"compileTs": "pnpm base compileTs",
 		"post-throwable": "pnpm base post-throwable",
-		"unknown": "pnpm base unknown"
+		"unknown": "pnpm base unknown",
+		"task-cycle-3": "pnpm base task-cycle-3",
+		"task-cycle-6": "pnpm base task-cycle-6"
 	},
 	"dependencies": {
 		"@nadle/cli": "workspace:*",

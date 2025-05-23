@@ -1,12 +1,19 @@
 import c from "tinyrainbow";
 
 import { type Context } from "./types.js";
+import { RIGHT_ARROW } from "./constants.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
 	private dependentsGraph = new Map<string, Set<string>>();
+
+	// Map between a task and the set of tasks that it depends on
+	private dependencyGraph = new Map<string, Set<string>>();
+
 	// Map between a tasks and its indegree
 	private indegree = new Map<string, number>();
+
+	// Set of tasks that are ready to be executed
 	private readyTasks = new Set<string>();
 
 	constructor(
@@ -14,8 +21,29 @@ export class TaskScheduler {
 		taskNames: string[]
 	) {
 		taskNames.forEach((taskName) => this.analyze(taskName));
+
+		taskNames.forEach((taskName) => this.detectCycle(taskName, [taskName]));
 	}
+
+	private detectCycle(taskName: string, paths: string[]) {
+		for (const dependency of this.dependencyGraph.get(taskName) ?? []) {
+			const startTaskIndex = paths.indexOf(dependency);
+
+			if (startTaskIndex !== -1) {
+				const cyclePath = [...paths.slice(startTaskIndex), dependency].map(c.bold).join(` ${RIGHT_ARROW} `);
+				this.context.nadle.logger.error(`Cycle detected: ${cyclePath}`);
+				throw new Error(`Cycle detected: ${cyclePath}`);
+			}
+
+			this.detectCycle(dependency, [...paths, dependency]);
+		}
+	}
+
 	private analyze(taskName: string): void {
+		if (this.dependencyGraph.has(taskName)) {
+			return;
+		}
+
 		const task = this.context.nadle.registry.findByName(taskName);
 
 		if (!task) {
@@ -24,6 +52,7 @@ export class TaskScheduler {
 		}
 
 		const dependencies = task.configResolver({ context: this.context }).dependsOn ?? [];
+		this.dependencyGraph.set(taskName, new Set(dependencies));
 
 		this.indegree.set(taskName, dependencies.length);
 

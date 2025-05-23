@@ -5,8 +5,7 @@
 	"scripts": {
 		"prepare": "husky",
 		"compile": "tsc -b",
-		"start": "tsc -b --watch",
-		"build": "pnpm -F @nadle/docs build"
+		"start": "tsc -b --watch"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.4",
