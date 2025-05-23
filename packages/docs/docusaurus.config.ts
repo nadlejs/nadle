@@ -4,6 +4,8 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const GITHUB_REPO_URL = "https://github.com/nam-hle/nadle";
+
 const config: Config = {
 	title: "Nadle",
 	favicon: "img/favicon.ico",
@@ -13,7 +15,7 @@ const config: Config = {
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
 	// Set the production url of your site here
-	url: "https://nadle.dev",
+	url: "https://nadle.vercel.app",
 
 	projectName: "nadle", // Usually your repo name.
 	// GitHub pages deployment config.
@@ -43,7 +45,7 @@ const config: Config = {
 					sidebarPath: "./sidebars.ts",
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
-					editUrl: "https://github.com/nadle/nadle/tree/main/packages/docs/"
+					editUrl: `${GITHUB_REPO_URL}/tree/main/packages/docs/`
 				}
 			} satisfies Preset.Options
 		]
@@ -72,7 +74,7 @@ const config: Config = {
 				{
 					label: "GitHub",
 					position: "right",
-					href: "https://github.com/nam-hle/nadle"
+					href: GITHUB_REPO_URL
 				}
 			]
 		},
@@ -98,7 +100,7 @@ const config: Config = {
 					items: [
 						{
 							label: "GitHub",
-							href: "https://github.com/nam-hle/nadle"
+							href: GITHUB_REPO_URL
 						}
 					]
 				}
