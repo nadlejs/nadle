@@ -1,7 +1,7 @@
 {
 	"name": "@nadle/internal-sample-app",
-	"type": "module",
 	"description": "Sample package to test nadle",
+	"type": "module",
 	"private": true,
 	"scripts": {
 		"compile": "tsc -b",
