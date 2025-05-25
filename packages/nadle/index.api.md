@@ -126,6 +126,8 @@ export class Nadle {
     // (undocumented)
     runTasks(): Promise<void>;
     // (undocumented)
+    showConfig(): void;
+    // (undocumented)
     readonly version: string;
 }
 
@@ -148,6 +150,8 @@ export interface NadleUserOptions {
     readonly maxWorkers?: number | string;
     // (undocumented)
     readonly minWorkers?: number | string;
+    // (undocumented)
+    readonly showConfig?: boolean;
     // (undocumented)
     readonly showSummary?: boolean;
     // (undocumented)

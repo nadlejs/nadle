@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`--show-config > should show config > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+</BoldDim>
+[log] {
+  "tasks": [
+    "hello"
+  ],
+  "list": false,
+  "dryRun": false,
+  "showConfig": true,
+  "showSummary": false,
+  "isWorkerThread": false,
+  "maxWorkers": 1,
+  "logLevel": "log",
+  "configPath": "build.nadle.ts"
+}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`--show-config > should show config with extra options > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+</BoldDim>
+[log] {
+  "tasks": [
+    "hello"
+  ],
+  "list": false,
+  "dryRun": false,
+  "showConfig": true,
+  "showSummary": false,
+  "isWorkerThread": false,
+  "minWorkers": 2,
+  "maxWorkers": 3,
+  "logLevel": "log",
+  "configPath": "build.nadle.ts"
+}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;

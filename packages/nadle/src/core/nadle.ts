@@ -24,7 +24,9 @@ export interface NadleUserOptions {
 
 	readonly list?: boolean;
 	readonly dryRun?: boolean;
+	readonly showConfig?: boolean;
 	readonly showSummary?: boolean;
+
 	readonly logLevel: SupportLogLevel;
 	readonly minWorkers?: number | string;
 	readonly maxWorkers?: number | string;
@@ -55,6 +57,7 @@ export class Nadle {
 			tasks: [],
 			list: false,
 			dryRun: false,
+			showConfig: false,
 			showSummary: !isCI,
 			isWorkerThread: false,
 			...options
@@ -66,7 +69,9 @@ export class Nadle {
 		this.reporter.onExecutionStart?.();
 
 		try {
-			if (this.options.list) {
+			if (this.options.showConfig) {
+				this.showConfig();
+			} else if (this.options.list) {
 				this.listTasks();
 			} else if (this.options.dryRun) {
 				this.dryRunTasks();
@@ -145,6 +150,10 @@ export class Nadle {
 		}
 	}
 
+	showConfig() {
+		this.logger.log(JSON.stringify(this.options, null, 2));
+	}
+
 	computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
@@ -180,7 +189,7 @@ export class Nadle {
 		const configFile = resolve(process.cwd(), this.options.configPath);
 
 		if (!this.options.isWorkerThread) {
-			this.logger.log(`${c.gray("Using config file from")} ${c.dim(configFile)}\n`);
+			this.logger.log(c.dim(`Using config file from ${configFile}\n`));
 		}
 
 		if (!existsSync(configFile)) {

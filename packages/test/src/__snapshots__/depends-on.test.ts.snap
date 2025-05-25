@@ -2,8 +2,8 @@
 
 exports[`dependsOn > should run dependent tasks first > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/depends-on.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/depends-on.nadle.ts
+</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
 [log] <Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
@@ -19,8 +19,8 @@ Compiling ts...
 
 exports[`dependsOn > should run shared dependent tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/depends-on.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/depends-on.nadle.ts
+</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
 [log] <Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
@@ -45,8 +45,8 @@ Compiling...
 
 exports[`dependsOn > should run shared dependent tasks 2 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/depends-on.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/depends-on.nadle.ts
+</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 Setup node...
 [log] <Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}

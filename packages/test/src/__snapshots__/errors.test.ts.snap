@@ -4,8 +4,8 @@ exports[`when a task fails > should report correctly > stderr 1`] = `""`;
 
 exports[`when a task fails > should report correctly > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/build.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
 Preparing...
 [log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
@@ -22,8 +22,8 @@ exports[`when passing invalid task name > should throw error > stderr 1`] = `[er
 
 exports[`when passing invalid task name > should throw error > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <BrightBlack>Using config file from</Cyan> <Dim>/ROOT/src/fixtures/build.nadle.ts</BoldDim>
-
+[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+</BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
 `;
