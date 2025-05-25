@@ -1,5 +1,5 @@
 import { optionRegistry } from "./options-registry.js";
-import { type NadleConfigFileOptions } from "./options.js";
+import { type NadleConfigFileOptions } from "./types.js";
 
 export function configure(options: Partial<NadleConfigFileOptions>) {
 	if (typeof options !== "object" || options === null) {

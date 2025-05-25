@@ -25,7 +25,6 @@
 		"show-config": "pnpm base --show-config"
 	},
 	"dependencies": {
-		"@nadle/cli": "workspace:*",
 		"nadle": "workspace:*"
 	},
 	"devDependencies": {

@@ -6,8 +6,7 @@
 		"test": "vitest"
 	},
 	"dependencies": {
-		"nadle": "workspace:*",
-		"@nadle/cli": "workspace:*"
+		"nadle": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/node": "^22.15.2",

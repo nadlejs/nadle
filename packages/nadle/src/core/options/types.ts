@@ -1,4 +1,4 @@
-import { type SupportLogLevel } from "./logger.js";
+import { type SupportLogLevel } from "../logger.js";
 
 export interface NadleUserBaseOptions {
 	readonly showSummary?: boolean;
@@ -13,10 +13,10 @@ export interface NadleUserBaseOptions {
 export interface NadleCLIOptions extends NadleUserBaseOptions {
 	readonly tasks?: string[];
 
-	readonly list?: boolean;
-	readonly dryRun?: boolean;
+	readonly list: boolean;
+	readonly dryRun: boolean;
 	readonly configPath?: string;
-	readonly showConfig?: boolean;
+	readonly showConfig: boolean;
 }
 
 export interface NadleConfigFileOptions extends NadleUserBaseOptions {}

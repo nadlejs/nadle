@@ -6,11 +6,11 @@ supporting parallel execution and streamlined build automation.
 ## Installation
 
 ```bash
-npm install -D nadle @nadle/cli
+npm install -D nadle
 # or
-yarn add -D nadle @nadle/cli
+yarn add -D nadle
 # or
-pnpm add -D nadle @nadle/cli
+pnpm add -D nadle
 ```
 
 ## Features

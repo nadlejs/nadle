@@ -13,21 +13,21 @@ import TabItem from '@theme/TabItem';
   <TabItem value="npm" label="npm">
 
 ```bash
-npm install -D nadle @nadle/cli
+npm install -D nadle
 ```
 
   </TabItem>
   <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add -D nadle @nadle/cli
+yarn add -D nadle
 ```
 
   </TabItem>
   <TabItem value="pnpm" label="pnpm">
 
 ```bash
-pnpm add -D nadle @nadle/cli
+pnpm add -D nadle
 ```
 
   </TabItem>
