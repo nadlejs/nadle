@@ -27,19 +27,17 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
 [info] Resolved options: { tasks: [ 'hello' ],
   list: false,
   dryRun: false,
+  logLevel: 'debug',
   showConfig: false,
   showSummary: false,
+  configPath: '/ROOT/src/fixtures/build.nadle.ts',
   isWorkerThread: false,
   maxWorkers: 1,
-  logLevel: 'debug',
-  minWorkers: undefined,
-  configPath: 'build.nadle.ts' }
+  minWorkers: 1 }
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
 </BoldDim>
 [info] Execution started
-[info] Maximum threads: 1
-[info] Minimum threads: 1
 [info] Task <Bold>hello</BoldDim> queued
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
@@ -78,19 +76,17 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
 [info] Resolved options: { tasks: [ 'hello' ],
   list: false,
   dryRun: false,
+  logLevel: 'info',
   showConfig: false,
   showSummary: false,
+  configPath: '/ROOT/src/fixtures/build.nadle.ts',
   isWorkerThread: false,
   maxWorkers: 1,
-  logLevel: 'info',
-  minWorkers: undefined,
-  configPath: 'build.nadle.ts' }
+  minWorkers: 1 }
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
 </BoldDim>
 [info] Execution started
-[info] Maximum threads: 1
-[info] Minimum threads: 1
 [info] Task <Bold>hello</BoldDim> queued
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!

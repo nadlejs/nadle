@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Configure > can override configured options from config file if the cli one is provided > stdout 1`] = `
+[info] Initialized logger with consola options: { types:
+   { silent: { level: -1 },
+     fatal: { level: 0 },
+     error: { level: 0 },
+     warn: { level: 1 },
+     log: { level: 2 },
+     info: { level: 3 },
+     success: { level: 3 },
+     fail: { level: 3 },
+     ready: { level: 3 },
+     start: { level: 3 },
+     box: { level: 3 },
+     debug: { level: 4 },
+     trace: { level: 5 },
+     verbose: { level: Infinity } },
+  throttle: 1000,
+  throttleMin: 5,
+  formatOptions: { date: false, colors: false, compact: true },
+  level: 3,
+  defaults: { level: 1 },
+  prompt: [Function: prompt],
+  reporters: [ BasicReporter {} ] }
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Resolved options: { tasks: [],
+  list: false,
+  dryRun: false,
+  logLevel: 'info',
+  showConfig: true,
+  showSummary: false,
+  configPath: '/ROOT/src/fixtures/configure.nadle.ts',
+  isWorkerThread: false,
+  maxWorkers: 1,
+  minWorkers: 1 }
+[info] Detected environments: { CI: false, TEST: true }
+[log] <Dim>Using config file from /ROOT/src/fixtures/configure.nadle.ts
+</BoldDim>
+[info] Execution started
+[log] {
+  "tasks": [],
+  "list": false,
+  "dryRun": false,
+  "logLevel": "info",
+  "showConfig": true,
+  "showSummary": false,
+  "configPath": "/ROOT/src/fixtures/configure.nadle.ts",
+  "isWorkerThread": false,
+  "maxWorkers": 1,
+  "minWorkers": 1
+}
+[info] Execution finished
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`Configure > can use configured options from config file > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Using config file from /ROOT/src/fixtures/configure.nadle.ts
+</BoldDim>
+[log] {
+  "tasks": [],
+  "list": false,
+  "dryRun": false,
+  "logLevel": "error",
+  "showConfig": true,
+  "showSummary": false,
+  "configPath": "/ROOT/src/fixtures/configure.nadle.ts",
+  "isWorkerThread": false,
+  "maxWorkers": 1,
+  "minWorkers": 1
+}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;

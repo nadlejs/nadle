@@ -1,71 +1,43 @@
 import process from "node:process";
-import { resolve } from "node:path";
 import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 import c from "tinyrainbow";
-import { isCI } from "std-env";
 import { createJiti } from "jiti";
 
+import { Logger } from "./logger.js";
 import { VERSION } from "../version.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
 import { TaskScheduler } from "./task-scheduler.js";
-import { Logger, type SupportLogLevel } from "./logger.js";
+import { optionRegistry } from "./options-registry.js";
+import { OptionsResolver } from "./options-resolver.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
-
-export interface NadleUserOptions {
-	readonly tasks?: string[];
-
-	readonly configPath: string;
-
-	readonly list?: boolean;
-	readonly dryRun?: boolean;
-	readonly showConfig?: boolean;
-	readonly showSummary?: boolean;
-
-	readonly logLevel: SupportLogLevel;
-	readonly minWorkers?: number | string;
-	readonly maxWorkers?: number | string;
-
-	/** @internal */
-	readonly isWorkerThread?: boolean;
-}
-
-export type NadleOptions = Required<Omit<NadleUserOptions, "maxWorkers" | "minWorkers">> & Pick<NadleUserOptions, "maxWorkers" | "minWorkers">;
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./options.js";
 
 export class Nadle {
+	public readonly version = VERSION;
+
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
 	public readonly registry: TaskRegistry = taskRegistry;
-	public readonly options: NadleOptions;
-	public readonly version = VERSION;
 
-	constructor(options: NadleUserOptions) {
-		this.options = this.resolveOptions(options);
+	private readonly optionsResolver: OptionsResolver;
+
+	constructor(options: NadleCLIOptions) {
+		this.optionsResolver = new OptionsResolver(options);
 		this.logger = new Logger(options);
 		this.reporter = new DefaultReporter(this);
 
 		this.reporter.onInit?.();
 	}
 
-	private resolveOptions(options: NadleUserOptions): NadleOptions {
-		return {
-			tasks: [],
-			list: false,
-			dryRun: false,
-			showConfig: false,
-			showSummary: !isCI,
-			isWorkerThread: false,
-			...options
-		};
-	}
-
 	async execute() {
 		await this.registerTask();
+		this.optionsResolver.addConfigFileOptions(optionRegistry.get());
 		this.reporter.onExecutionStart?.();
 
 		try {
@@ -87,6 +59,10 @@ export class Nadle {
 		this.reporter.onExecutionFinish?.();
 	}
 
+	get options(): NadleResolvedOptions {
+		return this.optionsResolver.options;
+	}
+
 	async runTasks() {
 		const tasks = this.options.tasks ?? [];
 
@@ -101,7 +77,7 @@ export class Nadle {
 	}
 
 	dryRunTasks() {
-		const tasks = this.options.tasks ?? [];
+		const tasks = this.options.tasks;
 
 		if (tasks.length === 0) {
 			this.printNoTasksFound();
@@ -186,7 +162,7 @@ export class Nadle {
 	}
 
 	async registerTask() {
-		const configFile = resolve(process.cwd(), this.options.configPath);
+		const configFile = this.options.configPath;
 
 		if (!this.options.isWorkerThread) {
 			this.logger.log(c.dim(`Using config file from ${configFile}\n`));

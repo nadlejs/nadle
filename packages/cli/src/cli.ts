@@ -2,7 +2,7 @@ import * as process from "node:process";
 
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { Nadle, SupportLogLevels, type SupportLogLevel } from "nadle-core";
+import { Nadle, SupportLogLevels } from "nadle-core";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
@@ -10,7 +10,6 @@ const argv = yargs(hideBin(process.argv))
 	.option("config", {
 		alias: "c",
 		type: "string",
-		default: "build.nadle.ts",
 		description: "Path to config file",
 		defaultDescription: "<cwd>/build.nadle.ts"
 	})
@@ -44,7 +43,7 @@ const argv = yargs(hideBin(process.argv))
 	})
 	.option("log-level", {
 		type: "string",
-		default: "log",
+		defaultDescription: "log",
 		choices: SupportLogLevels,
 		describe: "Set the logging level"
 	})
@@ -56,10 +55,14 @@ const argv = yargs(hideBin(process.argv))
 	.alias("help", "h")
 	.parseSync();
 
-const removedAliasArgv = Object.fromEntries(
+let removedAliasArgv = Object.fromEntries(
 	Object.entries(argv).filter(
 		([key]) => !["$0", "_", "l", "c", "config", "show-config", "dry-run", "show-summary", "log-level", "min-workers", "max-workers"].includes(key)
 	)
 );
 
-new Nadle({ ...removedAliasArgv, configPath: argv.config, logLevel: removedAliasArgv.logLevel as SupportLogLevel }).execute();
+if (argv.config !== undefined) {
+	removedAliasArgv = { ...removedAliasArgv, configPath: argv.config };
+}
+
+new Nadle({ ...removedAliasArgv }).execute();

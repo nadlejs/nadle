@@ -16,6 +16,9 @@ export interface ConfigBuilder {
 }
 
 // @public (undocumented)
+export function configure(options: Partial<NadleConfigFileOptions>): void;
+
+// @public (undocumented)
 export interface Context {
     // (undocumented)
     env: NodeJS.ProcessEnv;
@@ -92,7 +95,7 @@ export interface LoggerOptions {
 
 // @public (undocumented)
 export class Nadle {
-    constructor(options: NadleUserOptions);
+    constructor(options: NadleCLIOptions);
     // (undocumented)
     computeTaskGroups(): [string, (RegisteredTask & {
         description?: string;
@@ -114,7 +117,7 @@ export class Nadle {
     // (undocumented)
     onTaskStart(task: RegisteredTask): Promise<void>;
     // (undocumented)
-    readonly options: NadleOptions;
+    get options(): NadleResolvedOptions;
     // (undocumented)
     printNoTasksFound(): void;
     // (undocumented)
@@ -132,30 +135,43 @@ export class Nadle {
 }
 
 // @public (undocumented)
-export type NadleOptions = Required<Omit<NadleUserOptions, "maxWorkers" | "minWorkers">> & Pick<NadleUserOptions, "maxWorkers" | "minWorkers">;
-
-// @public (undocumented)
-export interface NadleUserOptions {
+export interface NadleCLIOptions extends NadleUserBaseOptions {
     // (undocumented)
-    readonly configPath: string;
+    readonly configPath?: string;
     // (undocumented)
     readonly dryRun?: boolean;
-    // @internal (undocumented)
-    readonly isWorkerThread?: boolean;
     // (undocumented)
     readonly list?: boolean;
     // (undocumented)
-    readonly logLevel: SupportLogLevel;
+    readonly showConfig?: boolean;
+    // (undocumented)
+    readonly tasks?: string[];
+}
+
+// @public (undocumented)
+export interface NadleConfigFileOptions extends NadleUserBaseOptions {
+}
+
+// @public (undocumented)
+export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
+    // (undocumented)
+    readonly maxWorkers: number;
+    // (undocumented)
+    readonly minWorkers: number;
+}
+
+// @public (undocumented)
+export interface NadleUserBaseOptions {
+    // @internal (undocumented)
+    readonly isWorkerThread?: boolean;
+    // (undocumented)
+    readonly logLevel?: SupportLogLevel;
     // (undocumented)
     readonly maxWorkers?: number | string;
     // (undocumented)
     readonly minWorkers?: number | string;
     // (undocumented)
-    readonly showConfig?: boolean;
-    // (undocumented)
     readonly showSummary?: boolean;
-    // (undocumented)
-    readonly tasks?: string[];
 }
 
 // @public (undocumented)

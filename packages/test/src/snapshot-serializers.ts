@@ -3,7 +3,7 @@ export function serializeVersion(input: string) {
 }
 
 export function serializeFilePath(input: string) {
-	return input.replace(process.cwd(), "/ROOT");
+	return input.replaceAll(process.cwd(), "/ROOT");
 }
 
 const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;
