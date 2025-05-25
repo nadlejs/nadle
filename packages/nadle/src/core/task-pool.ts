@@ -11,9 +11,9 @@ export class TaskPool {
 		private readonly getNextReadyTasks: (taskName?: string) => Set<string>
 	) {
 		this.pool = new TinyPool({
-			filename: new URL("./worker.js", import.meta.url).href,
-			minThreads: this.nadle.optionsResolver.options.minWorkers,
-			maxThreads: this.nadle.optionsResolver.options.maxWorkers
+			minThreads: this.nadle.options.minWorkers,
+			maxThreads: this.nadle.options.maxWorkers,
+			filename: new URL("./worker.js", import.meta.url).href
 		});
 	}
 
@@ -41,7 +41,7 @@ export class TaskPool {
 			const workerParams: WorkerParams = {
 				name: task.name,
 				port: workerPort,
-				options: { ...this.nadle.optionsResolver.options, showSummary: false, isWorkerThread: true }
+				options: { ...this.nadle.options, showSummary: false, isWorkerThread: true }
 			};
 
 			await this.nadle.onTaskQueued(task);

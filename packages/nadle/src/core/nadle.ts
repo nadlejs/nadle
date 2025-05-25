@@ -12,19 +12,20 @@ import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
 import { TaskScheduler } from "./task-scheduler.js";
-import { type NadleCLIOptions } from "./options.js";
 import { optionRegistry } from "./options-registry.js";
 import { OptionsResolver } from "./options-resolver.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./options.js";
 
 export class Nadle {
 	public readonly version = VERSION;
 
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
-	public readonly optionsResolver: OptionsResolver;
 	public readonly registry: TaskRegistry = taskRegistry;
+
+	private readonly optionsResolver: OptionsResolver;
 
 	constructor(options: NadleCLIOptions) {
 		this.optionsResolver = new OptionsResolver(options);
@@ -40,11 +41,11 @@ export class Nadle {
 		this.reporter.onExecutionStart?.();
 
 		try {
-			if (this.optionsResolver.options.showConfig) {
+			if (this.options.showConfig) {
 				this.showConfig();
-			} else if (this.optionsResolver.options.list) {
+			} else if (this.options.list) {
 				this.listTasks();
-			} else if (this.optionsResolver.options.dryRun) {
+			} else if (this.options.dryRun) {
 				this.dryRunTasks();
 			} else {
 				await this.runTasks();
@@ -58,8 +59,12 @@ export class Nadle {
 		this.reporter.onExecutionFinish?.();
 	}
 
+	get options(): NadleResolvedOptions {
+		return this.optionsResolver.options;
+	}
+
 	async runTasks() {
-		const tasks = this.optionsResolver.options.tasks ?? [];
+		const tasks = this.options.tasks ?? [];
 
 		if (tasks.length === 0) {
 			this.printNoTasksFound();
@@ -72,7 +77,7 @@ export class Nadle {
 	}
 
 	dryRunTasks() {
-		const tasks = this.optionsResolver.options.tasks ?? [];
+		const tasks = this.options.tasks;
 
 		if (tasks.length === 0) {
 			this.printNoTasksFound();
@@ -122,7 +127,7 @@ export class Nadle {
 	}
 
 	showConfig() {
-		this.logger.log(JSON.stringify(this.optionsResolver.options, null, 2));
+		this.logger.log(JSON.stringify(this.options, null, 2));
 	}
 
 	computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
@@ -157,9 +162,9 @@ export class Nadle {
 	}
 
 	async registerTask() {
-		const configFile = this.optionsResolver.options.configPath;
+		const configFile = this.options.configPath;
 
-		if (!this.optionsResolver.options.isWorkerThread) {
+		if (!this.options.isWorkerThread) {
 			this.logger.log(c.dim(`Using config file from ${configFile}\n`));
 		}
 

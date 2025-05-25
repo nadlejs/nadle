@@ -38,7 +38,7 @@ export class DefaultReporter implements Reporter {
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
 
 	constructor(public readonly nadle: Nadle) {
-		this.renderer = this.nadle.optionsResolver.options.showSummary
+		this.renderer = this.nadle.options.showSummary
 			? new SummaryRenderer({ logger: this.nadle.logger, getWindow: () => this.createSummary() })
 			: new NormalRenderer();
 	}
@@ -75,9 +75,9 @@ export class DefaultReporter implements Reporter {
 	}
 
 	onInit() {
-		if (!this.nadle.optionsResolver.options.isWorkerThread) {
+		if (!this.nadle.options.isWorkerThread) {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${this.nadle.version}!`)));
-			this.nadle.logger.info("Resolved options:", this.nadle.optionsResolver.options);
+			this.nadle.logger.info("Resolved options:", this.nadle.options);
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 		}
 
