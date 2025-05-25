@@ -1,5 +1,3 @@
-import Os from "node:os";
-
 import TinyPool from "tinypool";
 
 import { type Nadle } from "./nadle.js";
@@ -7,23 +5,15 @@ import { type WorkerParams } from "./worker.js";
 
 export class TaskPool {
 	private readonly pool: TinyPool;
-	private readonly maxThreads: number;
-	private readonly minThreads: number;
 
 	constructor(
 		private readonly nadle: Nadle,
 		private readonly getNextReadyTasks: (taskName?: string) => Set<string>
 	) {
-		this.maxThreads = resolveWorkerCount(this.nadle.options.maxWorkers);
-		this.minThreads = Math.min(resolveWorkerCount(this.nadle.options.minWorkers), this.maxThreads);
-
-		this.nadle.logger.info(`Maximum threads: ${this.maxThreads}`);
-		this.nadle.logger.info(`Minimum threads: ${this.minThreads}`);
-
 		this.pool = new TinyPool({
-			minThreads: this.minThreads,
-			maxThreads: this.maxThreads,
-			filename: new URL("./worker.js", import.meta.url).href
+			filename: new URL("./worker.js", import.meta.url).href,
+			minThreads: this.nadle.optionsResolver.options.minWorkers,
+			maxThreads: this.nadle.optionsResolver.options.maxWorkers
 		});
 	}
 
@@ -51,7 +41,7 @@ export class TaskPool {
 			const workerParams: WorkerParams = {
 				name: task.name,
 				port: workerPort,
-				options: { ...this.nadle.options, showSummary: false, isWorkerThread: true }
+				options: { ...this.nadle.optionsResolver.options, showSummary: false, isWorkerThread: true }
 			};
 
 			await this.nadle.onTaskQueued(task);
@@ -66,31 +56,4 @@ export class TaskPool {
 
 		await Promise.all(Array.from(this.getNextReadyTasks(taskName)).map((taskName) => this.pushTask(taskName)));
 	}
-}
-
-function resolveWorkerCount(configValue: string | number | undefined) {
-	if (configValue === undefined) {
-		return Math.max(getMaxWorkersCount() - 1, 1);
-	}
-
-	if (typeof configValue === "number") {
-		return configValue;
-	}
-
-	if (typeof configValue === "string") {
-		return getWorkersCountByPercentage(configValue);
-	}
-
-	throw new Error(`Invalid worker value: ${configValue}`);
-}
-
-function getWorkersCountByPercentage(percent: string): number {
-	const maxWorkersCount = getMaxWorkersCount();
-	const workersCountByPercentage = Math.round((Number.parseInt(percent) / 100) * maxWorkersCount);
-
-	return Math.max(1, Math.min(maxWorkersCount, workersCountByPercentage));
-}
-
-function getMaxWorkersCount() {
-	return typeof Os.availableParallelism === "function" ? Os.availableParallelism() : Os.cpus().length;
 }

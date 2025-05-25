@@ -1,12 +1,13 @@
 import { type MessagePort } from "node:worker_threads";
 
+import { Nadle } from "./nadle.js";
 import { taskRegistry } from "./task-registry.js";
-import { Nadle, type NadleOptions } from "./nadle.js";
+import { type NadleResolvedOptions } from "./options.js";
 
 export interface WorkerParams {
 	readonly name: string;
 	readonly port: MessagePort;
-	readonly options: NadleOptions;
+	readonly options: NadleResolvedOptions;
 }
 
 export default async ({ name, port, options }: WorkerParams) => {

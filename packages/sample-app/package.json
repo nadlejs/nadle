@@ -5,7 +5,7 @@
 	"private": true,
 	"scripts": {
 		"compile": "tsc -b",
-		"base": "nadle --config src/build.nadle.ts --show-summary --log-level=info --max-workers=2",
+		"base": "nadle --config src/build.nadle.ts --max-workers=2",
 		"empty": "pnpm base",
 		"help": "pnpm base -h",
 		"list": "pnpm base --list",
@@ -22,7 +22,7 @@
 		"unknown": "pnpm base unknown",
 		"task-cycle-3": "pnpm base task-cycle-3",
 		"task-cycle-6": "pnpm base task-cycle-6",
-		"show-config": "pnpm base --log-level log --show-config"
+		"show-config": "pnpm base --show-config"
 	},
 	"dependencies": {
 		"@nadle/cli": "workspace:*",
