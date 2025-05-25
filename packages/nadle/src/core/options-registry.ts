@@ -1,6 +1,6 @@
 import { type NadleConfigFileOptions } from "./options.js";
 
-export class OptionsRegistry {
+class OptionsRegistry {
 	private options: Partial<NadleConfigFileOptions> = {};
 
 	add(options: Partial<NadleConfigFileOptions>) {
