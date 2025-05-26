@@ -15,7 +15,7 @@ const config: Config = {
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
 	// Set the production url of your site here
-	url: "https://nadle.vercel.app",
+	url: "https://nadle.dev",
 
 	projectName: "nadle", // Usually your repo name.
 	// GitHub pages deployment config.

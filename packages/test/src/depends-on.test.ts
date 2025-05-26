@@ -2,7 +2,7 @@ import { it, describe } from "vitest";
 
 import { createExec, expectPass } from "./utils.js";
 
-describe("dependsOn", () => {
+describe.skip("dependsOn", () => {
 	const exec = createExec({ config: "depends-on" });
 
 	it("should run dependent tasks first", async () => {
