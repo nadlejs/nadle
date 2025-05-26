@@ -22,7 +22,7 @@
 		"yargs": "^17.7.2"
 	},
 	"devDependencies": {
-		"@types/node": "^22.15.2",
+		"@types/node": "^22.15.21",
 		"@types/yargs": "^17.0.33",
 		"knip": "^5.58.0",
 		"typescript": "^5.8.2"

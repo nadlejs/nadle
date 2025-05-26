@@ -3,7 +3,7 @@
 	"type": "module",
 	"private": true,
 	"devDependencies": {
-		"@types/node": "^22.15.2",
+		"@types/node": "^22.15.21",
 		"execa": "^9.5.2",
 		"std-env": "^3.9.0",
 		"tinyrainbow": "^2.0.0",
