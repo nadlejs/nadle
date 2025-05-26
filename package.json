@@ -13,7 +13,7 @@
 		"@microsoft/api-extractor": "^7.52.8",
 		"@stylistic/eslint-plugin-ts": "^4.2.0",
 		"@types/node": "^22.15.2",
-		"cspell": "^9.0.1",
+		"cspell": "^9.0.2",
 		"eslint": "^9.25.1",
 		"eslint-plugin-import": "^2.31.0",
 		"eslint-plugin-n": "^17.18.0",
