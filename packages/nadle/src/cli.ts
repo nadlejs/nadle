@@ -9,7 +9,8 @@ import { CLIOptions, resolveCLIOptions } from "./core/options/shared.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
-	.command("$0 [tasks...]", "Run one or many tasks")
+	.command("$0 [tasks...]", "Execute one or more named tasks")
+
 	.option(CLIOptions.configPath.key, CLIOptions.configPath.options)
 	.option(CLIOptions.minWorkers.key, CLIOptions.minWorkers.options)
 	.option(CLIOptions.maxWorkers.key, CLIOptions.maxWorkers.options)
@@ -22,6 +23,9 @@ const argv = yargs(hideBin(process.argv))
 	.alias("v", "version")
 	.help("help", "Show this help")
 	.alias("h", "help")
+	.group([CLIOptions.list.key, CLIOptions.dryRun.key, CLIOptions.showConfig.key], "Execution options:")
+	.group([CLIOptions.configPath.key, CLIOptions.logLevel.key, CLIOptions.minWorkers.key, CLIOptions.maxWorkers.key], "General options:")
+	.group(["help", "version"], "Miscellaneous options:")
 	.wrap(100)
 	.strict()
 	.parseSync();

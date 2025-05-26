@@ -55,7 +55,7 @@ export const CLIOptions = {
 			alias: "m",
 			default: false,
 			type: "boolean",
-			description: "Run tasks in dry run mode"
+			description: "Run specified tasks in dry run mode"
 		}
 	},
 	showConfig: {
@@ -63,7 +63,7 @@ export const CLIOptions = {
 		options: {
 			default: false,
 			type: "boolean",
-			description: "Print the final configuration instead of building"
+			description: "Print the resolved configuration"
 		}
 	},
 	showSummary: {
