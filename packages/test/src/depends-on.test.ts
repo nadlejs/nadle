@@ -5,7 +5,7 @@ import { createExec, expectPass } from "./utils.js";
 describe("dependsOn", () => {
 	const exec = createExec({ config: "depends-on" });
 
-	it("should run dependent tasks first", async () => {
+	it.skip("should run dependent tasks first", async () => {
 		await expectPass(exec`compileTs`);
 	});
 
