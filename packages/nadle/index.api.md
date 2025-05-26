@@ -139,11 +139,11 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
     // (undocumented)
     readonly configPath?: string;
     // (undocumented)
-    readonly dryRun?: boolean;
+    readonly dryRun: boolean;
     // (undocumented)
-    readonly list?: boolean;
+    readonly list: boolean;
     // (undocumented)
-    readonly showConfig?: boolean;
+    readonly showConfig: boolean;
     // (undocumented)
     readonly tasks?: string[];
 }
