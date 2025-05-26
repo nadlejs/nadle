@@ -69,28 +69,6 @@ importers:
         specifier: ^8.32.1
         version: 8.32.1(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
 
-  packages/cli:
-    dependencies:
-      nadle-core:
-        specifier: workspace:nadle@*
-        version: link:../nadle
-      yargs:
-        specifier: ^17.7.2
-        version: 17.7.2
-    devDependencies:
-      '@types/node':
-        specifier: ^22.15.2
-        version: 22.15.2
-      '@types/yargs':
-        specifier: ^17.0.33
-        version: 17.0.33
-      knip:
-        specifier: ^5.57.1
-        version: 5.57.1(@types/node@22.15.2)(typescript@5.8.3)
-      typescript:
-        specifier: ^5.8.2
-        version: 5.8.3
-
   packages/docs:
     dependencies:
       '@docusaurus/core':
@@ -148,10 +126,16 @@ importers:
       tinyrainbow:
         specifier: ^2.0.0
         version: 2.0.0
+      yargs:
+        specifier: ^17.7.2
+        version: 17.7.2
     devDependencies:
       '@types/node':
         specifier: ^22.15.2
         version: 22.15.2
+      '@types/yargs':
+        specifier: ^17.0.33
+        version: 17.0.33
       knip:
         specifier: ^5.57.1
         version: 5.57.1(@types/node@22.15.2)(typescript@5.8.3)
@@ -161,9 +145,6 @@ importers:
 
   packages/sample-app:
     dependencies:
-      '@nadle/cli':
-        specifier: workspace:*
-        version: link:../cli
       nadle:
         specifier: workspace:*
         version: link:../nadle
@@ -177,9 +158,6 @@ importers:
 
   packages/test:
     dependencies:
-      '@nadle/cli':
-        specifier: workspace:*
-        version: link:../cli
       nadle:
         specifier: workspace:*
         version: link:../nadle

@@ -12,11 +12,10 @@ import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
 import { TaskScheduler } from "./task-scheduler.js";
-import { optionRegistry } from "./options-registry.js";
-import { OptionsResolver } from "./options-resolver.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "./options.js";
+import { optionRegistry, OptionsResolver } from "./options/shared.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
 
 export class Nadle {
 	public readonly version = VERSION;

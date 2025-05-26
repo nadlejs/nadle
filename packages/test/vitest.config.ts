@@ -5,8 +5,9 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	test: {
-		retry: isCI ? 5 : 2,
 		environment: "node",
+		retry: isCI ? 5 : 2,
+		fileParallelism: !isCI,
 		setupFiles: "./src/setup.ts",
 		chaiConfig: {
 			truncateThreshold: 0

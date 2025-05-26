@@ -4,9 +4,13 @@
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
 	"files": [
-		"lib"
+		"lib",
+		"bin"
 	],
 	"main": "lib/index.js",
+	"bin": {
+		"nadle": "bin/nadle"
+	},
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"consola": "^3.4.2",
@@ -14,10 +18,12 @@
 		"jiti": "^2.4.2",
 		"std-env": "^3.9.0",
 		"tinypool": "^1.0.2",
-		"tinyrainbow": "^2.0.0"
+		"tinyrainbow": "^2.0.0",
+		"yargs": "^17.7.2"
 	},
 	"devDependencies": {
 		"@types/node": "^22.15.2",
+		"@types/yargs": "^17.0.33",
 		"knip": "^5.57.1",
 		"typescript": "^5.8.2"
 	},

@@ -25,30 +25,30 @@ exports[`Configure > can override configured options from config file if the cli
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [info] Resolved options: { tasks: [],
-  list: false,
-  dryRun: false,
   logLevel: 'info',
   showConfig: true,
   showSummary: false,
   configPath: '/ROOT/src/fixtures/configure.nadle.ts',
   isWorkerThread: false,
   maxWorkers: 1,
-  minWorkers: 1 }
+  minWorkers: 1,
+  list: false,
+  dryRun: false }
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/configure.nadle.ts
 </BoldDim>
 [info] Execution started
 [log] {
   "tasks": [],
-  "list": false,
-  "dryRun": false,
   "logLevel": "info",
   "showConfig": true,
   "showSummary": false,
   "configPath": "/ROOT/src/fixtures/configure.nadle.ts",
   "isWorkerThread": false,
   "maxWorkers": 1,
-  "minWorkers": 1
+  "minWorkers": 1,
+  "list": false,
+  "dryRun": false
 }
 [info] Execution finished
 [log] 
@@ -61,15 +61,15 @@ exports[`Configure > can use configured options from config file > stdout 1`] = 
 </BoldDim>
 [log] {
   "tasks": [],
-  "list": false,
-  "dryRun": false,
   "logLevel": "error",
   "showConfig": true,
   "showSummary": false,
   "configPath": "/ROOT/src/fixtures/configure.nadle.ts",
   "isWorkerThread": false,
   "maxWorkers": 1,
-  "minWorkers": 1
+  "minWorkers": 1,
+  "list": false,
+  "dryRun": false
 }
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>

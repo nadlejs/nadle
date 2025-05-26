@@ -4,14 +4,12 @@ import { resolve } from "node:path";
 
 import { isCI } from "std-env";
 
-import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./options.js";
+import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
 export class OptionsResolver {
 	private readonly defaultOptions = {
 		tasks: [] as string[],
 
-		list: false,
-		dryRun: false,
 		logLevel: "log",
 		showConfig: false,
 		showSummary: !isCI,
