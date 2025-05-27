@@ -1,5 +1,12 @@
 # nadle
 
+## 0.3.1
+
+### Minor Changes
+
+- ee25bfc: add --show-config option
+- 6a32bec: allow to specify configuration from config file
+
 ## 0.3.0
 
 ### Minor Changes
