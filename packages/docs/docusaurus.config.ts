@@ -69,7 +69,7 @@ const config: Config = {
 					label: "Docs",
 					position: "left",
 					type: "docSidebar",
-					sidebarId: "tutorialSidebar"
+					sidebarId: "docsSidebar"
 				},
 				{
 					label: "GitHub",
@@ -83,15 +83,19 @@ const config: Config = {
 			copyright: `Copyright © ${new Date().getFullYear()} Nadle. Built with Docusaurus.`,
 			links: [
 				{
-					title: "Docs",
+					title: "Documentation",
 					items: [
 						{
-							label: "Introduction",
-							to: "/docs/introduction"
+							label: "Why Nadle?",
+							to: "/docs/introduction/why-nadle"
 						},
 						{
 							label: "Getting Started",
-							to: "/docs/getting-started/installation"
+							to: "/docs/introduction/getting-started"
+						},
+						{
+							label: "Features",
+							to: "/docs/introduction/features"
 						}
 					]
 				},

@@ -13,14 +13,13 @@ configure({
 
 tasks
 	.register("hello", async () => {
-		await new Promise((r) => setTimeout(r, 300));
-		console.log("Hello from nadle!");
+		console.log("Hello from Nadle!");
 	})
 	.config({ group: "Greetings", description: "Say hello" });
 
 tasks
 	.register("goodbye", () => {
-		console.log("Goodbye, tak!");
+		console.log("Goodbye, Nadle!");
 	})
 	.config({ group: "Greetings", dependsOn: ["hello"], description: "Say goodbye" });
 
