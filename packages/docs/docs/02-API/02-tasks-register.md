@@ -61,13 +61,13 @@ tasks
 
 ### Available Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `logger` | `Logger` | Task logger |
-| `options` | `T` | Task options |
-| `env` | `Record<string, string>` | Environment variables |
-| `workspace` | `Workspace` | Workspace utilities |
-| `run` | `TaskRunner` | Task runner |
+| Property    | Type                     | Description           |
+|-------------|--------------------------|-----------------------|
+| `logger`    | `Logger`                 | Task logger           |
+| `options`   | `T`                      | Task options          |
+| `env`       | `Record<string, string>` | Environment variables |
+| `workspace` | `Workspace`              | Workspace utilities   |
+| `run`       | `TaskRunner`             | Task runner           |
 
 ### Logger
 
@@ -143,15 +143,15 @@ tasks.register('build:all', async ({ run }) => {
 
 ### Configuration Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `description` | `string` | Task description |
-| `group` | `string` | Task group |
-| `dependsOn` | `string[]` | Required dependencies |
-| `optionalDependsOn` | `string[]` | Optional dependencies |
-| `environment` | `Record<string, string>` | Task environment |
-| `parallel` | `boolean` | Enable parallel execution |
-| `defaultOptions` | `T` | Default task options |
+| Option              | Type                     | Description               |
+|---------------------|--------------------------|---------------------------|
+| `description`       | `string`                 | Task description          |
+| `group`             | `string`                 | Task group                |
+| `dependsOn`         | `string[]`               | Required dependencies     |
+| `optionalDependsOn` | `string[]`               | Optional dependencies     |
+| `environment`       | `Record<string, string>` | Task environment          |
+| `parallel`          | `boolean`                | Enable parallel execution |
+| `defaultOptions`    | `T`                      | Default task options      |
 
 ### Basic Configuration
 
@@ -322,9 +322,3 @@ tasks
     }
   });
 ```
-
-## See Also
-
-- [Configure API](./configure.md)
-- [Build File Configuration](../configuration/build-file.md)
-- [Task Patterns](../features/overview.md) 

@@ -131,9 +131,3 @@ Goodbye, Nadle!
                                                                                                                                                         
 RUN SUCCESSFUL in 505ms (2 tasks executed)
 ```
-
-## Next Steps
-
-1. Learn about [Configuration Options](./configuration.md)
-2. Explore [Task Patterns](../features/overview.md)
-3. Check the [API Reference](../api/configure.md) 

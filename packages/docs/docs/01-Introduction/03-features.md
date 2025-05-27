@@ -211,6 +211,5 @@ tasks.register('deploy', async ({ logger }) => {
 
 ## Next Steps
 
-1. Dive into [Configuration Reference](../configuration/cli.md)
-2. Explore [API Documentation](../api/configure.md)
-3. Check out [Task Patterns](../task-patterns.md) 
+1. Dive into [Configuration Reference](./04-config-reference.md)
+2. Explore [API Documentation](../02-API/02-tasks-register.md)

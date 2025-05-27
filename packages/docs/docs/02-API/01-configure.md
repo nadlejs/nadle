@@ -254,6 +254,5 @@ configure({
 
 ## See Also
 
-- [Build File Configuration](../configuration/build-file.md)
-- [CLI Configuration](../configuration/cli.md)
-- [Task API](./tasks-register.md) 
+- [Configuration Reference](../01-Introduction/04-config-reference.md)
+- [Task API](./02-tasks-register.md) 
