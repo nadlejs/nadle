@@ -10,14 +10,10 @@ export const ExecTask: Task<{ command: string; args: string[] | string }> = {
 
 		context.nadle.logger.info(`Running command: ${command} ${commandArguments.join(" ")}`);
 
-		const subprocess = execa(command, commandArguments, { stdio: "pipe", env: { FORCE_COLOR: "1" } });
+		const subprocess = execa(command, commandArguments, { all: true, env: { FORCE_COLOR: "1" } });
 
-		subprocess.stdout.on("data", (chunk) => {
+		subprocess.all?.on("data", (chunk) => {
 			context.nadle.logger.log(chunk.toString());
-		});
-
-		subprocess.stderr.on("data", (chunk) => {
-			context.nadle.logger.error(chunk.toString());
 		});
 
 		await subprocess;
