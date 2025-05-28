@@ -10,6 +10,7 @@ tasks.register("validate", ExecTask, { command: "tsx", args: ["./packages/valida
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
 tasks.register("compile", PnpmTask, { args: ["compile"] });
+tasks.register("buildDoc", PnpmTask, { args: ["-r", "--filter", "./packages/docs", "build"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["compile"] });
 tasks
