@@ -20,7 +20,7 @@ tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
 
 tasks.register("updateAPI", PnpmTask, { args: ["-r", "--filter", "./packages/nadle", "exec", "api-extractor", "run", "--local"] });
 
-tasks.register("build").config({ dependsOn: ["check", "compile", "test"] });
+tasks.register("build").config({ dependsOn: ["check", "compile", "buildDoc", "test"] });
 
 tasks.register("fixEslint", PnpmTask, { args: ["eslint", "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
