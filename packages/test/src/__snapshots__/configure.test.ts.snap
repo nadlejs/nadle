@@ -28,14 +28,14 @@ exports[`Configure > can override configured options from config file if the cli
   logLevel: 'info',
   showConfig: true,
   showSummary: false,
-  configPath: '/ROOT/src/fixtures/configure.nadle.ts',
+  configPath: '/ROOT/src/fixtures/nadle.configure.ts',
   isWorkerThread: false,
   maxWorkers: 1,
   minWorkers: 1,
   list: false,
   dryRun: false }
 [info] Detected environments: { CI: false, TEST: true }
-[log] <Dim>Using config file from /ROOT/src/fixtures/configure.nadle.ts
+[log] <Dim>Using config file from /ROOT/src/fixtures/nadle.configure.ts
 </BoldDim>
 [info] Execution started
 [log] {
@@ -43,7 +43,7 @@ exports[`Configure > can override configured options from config file if the cli
   "logLevel": "info",
   "showConfig": true,
   "showSummary": false,
-  "configPath": "/ROOT/src/fixtures/configure.nadle.ts",
+  "configPath": "/ROOT/src/fixtures/nadle.configure.ts",
   "isWorkerThread": false,
   "maxWorkers": 1,
   "minWorkers": 1,
@@ -57,14 +57,14 @@ exports[`Configure > can override configured options from config file if the cli
 
 exports[`Configure > can use configured options from config file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/src/fixtures/configure.nadle.ts
+[log] <Dim>Using config file from /ROOT/src/fixtures/nadle.configure.ts
 </BoldDim>
 [log] {
   "tasks": [],
   "logLevel": "error",
   "showConfig": true,
   "showSummary": false,
-  "configPath": "/ROOT/src/fixtures/configure.nadle.ts",
+  "configPath": "/ROOT/src/fixtures/nadle.configure.ts",
   "isWorkerThread": false,
   "maxWorkers": 1,
   "minWorkers": 1,

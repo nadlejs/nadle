@@ -2,7 +2,7 @@
 
 exports[`--show-config > should show config > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+[log] <Dim>Using config file from /ROOT/src/fixtures/nadle.config.ts
 </BoldDim>
 [log] {
   "tasks": [
@@ -11,7 +11,7 @@ exports[`--show-config > should show config > stdout 1`] = `
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
-  "configPath": "/ROOT/src/fixtures/build.nadle.ts",
+  "configPath": "/ROOT/src/fixtures/nadle.config.ts",
   "isWorkerThread": false,
   "maxWorkers": 1,
   "minWorkers": 1,
@@ -24,7 +24,7 @@ exports[`--show-config > should show config > stdout 1`] = `
 
 exports[`--show-config > should show config with extra options > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/src/fixtures/build.nadle.ts
+[log] <Dim>Using config file from /ROOT/src/fixtures/nadle.config.ts
 </BoldDim>
 [log] {
   "tasks": [
@@ -33,7 +33,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
-  "configPath": "/ROOT/src/fixtures/build.nadle.ts",
+  "configPath": "/ROOT/src/fixtures/nadle.config.ts",
   "isWorkerThread": false,
   "minWorkers": 2,
   "maxWorkers": 3,

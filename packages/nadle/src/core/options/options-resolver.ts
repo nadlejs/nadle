@@ -13,7 +13,7 @@ export class OptionsResolver {
 		logLevel: "log",
 		showConfig: false,
 		showSummary: !isCI,
-		configPath: "build.nadle.ts",
+		configPath: "nadle.config.ts",
 
 		isWorkerThread: false
 	} as const;

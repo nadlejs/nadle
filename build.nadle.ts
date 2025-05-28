@@ -10,6 +10,7 @@ tasks.register("validate", ExecTask, { command: "tsx", args: ["./packages/valida
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
 tasks.register("compile", PnpmTask, { args: ["compile"] });
+tasks.register("buildDoc", PnpmTask, { args: ["-r", "--filter", "./packages/docs", "build"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["compile"] });
 tasks
@@ -19,7 +20,7 @@ tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
 
 tasks.register("updateAPI", PnpmTask, { args: ["-r", "--filter", "./packages/nadle", "exec", "api-extractor", "run", "--local"] });
 
-tasks.register("build").config({ dependsOn: ["check", "compile", "test"] });
+tasks.register("build").config({ dependsOn: ["check", "compile", "buildDoc", "test"] });
 
 tasks.register("fixEslint", PnpmTask, { args: ["eslint", "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
