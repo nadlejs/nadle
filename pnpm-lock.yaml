@@ -51,8 +51,8 @@ importers:
         specifier: ^16.0.0
         version: 16.0.0
       nadle:
-        specifier: ^0.2.5
-        version: 0.2.5
+        specifier: ^0.3.1
+        version: 0.3.1
       prettier:
         specifier: ^3.5.1
         version: 3.5.3
@@ -5270,8 +5270,8 @@ packages:
     resolution: {integrity: sha512-2eznPJP8z2BFLX50tf0LuODrpINqP1RVIm/CObbTcBRITQgmC/TjcREF1NeTBzIcR5XO/ukWo+YHOjBbFwIupg==}
     hasBin: true
 
-  nadle@0.2.5:
-    resolution: {integrity: sha512-I6Ln2wNzUeP3pKL8rAJ6Cdecj9xZ6/65WZJ7XmZ9ftyAcnfcUijsQbCTFvEkrxLfzwQYRzQNeablsgl3daaT5g==}
+  nadle@0.3.1:
+    resolution: {integrity: sha512-LWCZ4n5bwG28LnzXn7yW0emjmowcRjOnY3D4AWfwy0CnXRVecY7tjVECPSp4Pnw9U1pa72V9UPGNZ32ZQmWGfA==}
     hasBin: true
 
   nano-spawn@1.0.1:
@@ -13871,7 +13871,7 @@ snapshots:
       dns-packet: 5.6.1
       thunky: 1.1.0
 
-  nadle@0.2.5:
+  nadle@0.3.1:
     dependencies:
       consola: 3.4.2
       execa: 9.5.2
