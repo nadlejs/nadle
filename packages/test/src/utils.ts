@@ -16,7 +16,7 @@ export function createExec(options?: ExecOptions) {
 	const cwd = options?.cwd ?? fixturesDir;
 	const configFile = options?.config;
 	const autoDisabledSummary = options?.autoDisabledSummary ?? true;
-	const configFileName = configFile === undefined ? undefined : configFile.includes(".") ? configFile : `${configFile}.nadle.ts`;
+	const configFileName = configFile === undefined ? undefined : configFile.includes(".") ? configFile : `nadle.${configFile}.ts`;
 
 	return (strings: TemplateStringsArray, ...values: unknown[]): ResultPromise => {
 		let command = strings.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "");
