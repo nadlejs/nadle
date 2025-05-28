@@ -48,13 +48,19 @@ export async function emit(): Promise<void> {
 		data = data.replaceAll(value, `{${key}}`);
 	}
 
+	await Fs.mkdir(Path.dirname(filePath), { recursive: true });
 	await Fs.writeFile(filePath, data, { encoding: "utf-8" });
 }
 
 export class FileLogger {
-	constructor(public namespace: string) {}
+	constructor(
+		public namespace: string,
+		public options?: { silent?: boolean }
+	) {}
 
 	log(subspace: string, ...args: any[]): void {
-		logItems.push({ args, subspace, namespace: this.namespace });
+		if (!this.options?.silent) {
+			logItems.push({ args, subspace, namespace: this.namespace });
+		}
 	}
 }

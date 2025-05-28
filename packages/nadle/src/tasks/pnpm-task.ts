@@ -8,14 +8,10 @@ export const PnpmTask: Task<{ args: string[] }> = {
 
 		context.nadle.logger.info(`Running pnpm command: pnpm ${args.join(" ")}`);
 
-		const subprocess = execa("pnpm", args, { stdio: "pipe", env: { FORCE_COLOR: "1" } });
+		const subprocess = execa("pnpm", args, { all: true, env: { FORCE_COLOR: "1" } });
 
-		subprocess.stdout.on("data", (chunk) => {
+		subprocess.all?.on("data", (chunk) => {
 			context.nadle.logger.log(chunk.toString());
-		});
-
-		subprocess.stderr.on("data", (chunk) => {
-			context.nadle.logger.error(chunk.toString());
 		});
 
 		await subprocess;
