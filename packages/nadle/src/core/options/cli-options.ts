@@ -3,6 +3,7 @@ import { type Options } from "yargs";
 
 import { SupportLogLevels } from "../logger.js";
 import { type NadleCLIOptions } from "./types.js";
+import { OptionsResolver } from "./options-resolver.js";
 
 export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOptions {
 	let resolvedOptions = {};
@@ -37,7 +38,7 @@ export const CLIOptions = {
 			alias: "c",
 			type: "string",
 			description: "Path to config file",
-			defaultDescription: "<cwd>/build.nadle.ts"
+			defaultDescription: `<cwd>/build.nadle.(${OptionsResolver.SUPPORT_EXTENSIONS.join("|")})`
 		}
 	},
 	list: {

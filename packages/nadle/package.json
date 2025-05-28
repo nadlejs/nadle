@@ -3,6 +3,9 @@
 	"version": "0.3.1",
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
+	"scripts": {
+		"build": "tsup"
+	},
 	"files": [
 		"lib",
 		"bin"
@@ -25,6 +28,7 @@
 		"@types/node": "^22.15.21",
 		"@types/yargs": "^17.0.33",
 		"knip": "^5.58.0",
+		"tsup": "^8.5.0",
 		"typescript": "^5.8.2"
 	},
 	"author": {
