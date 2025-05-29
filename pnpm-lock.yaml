@@ -193,11 +193,47 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2(@types/debug@4.1.12)(@types/node@22.15.21)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
 
-  packages/test/src/fixtures/sample-app:
+  packages/test/src/fixtures/packages/cjs-js:
     dependencies:
       nadle:
         specifier: workspace:*
-        version: link:../../../../nadle
+        version: link:../../../../../nadle
+
+  packages/test/src/fixtures/packages/cjs-ts:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../../../../nadle
+
+  packages/test/src/fixtures/packages/esm-js:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../../../../nadle
+
+  packages/test/src/fixtures/packages/esm-ts:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../../../../nadle
+
+  packages/test/src/fixtures/packages/mixed-ts-js:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../../../../nadle
+
+  packages/test/src/fixtures/packages/mixed-ts-mts:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../../../../nadle
+
+  packages/test/src/fixtures/packages/pnpm-task:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../../../../nadle
 
   packages/validators:
     devDependencies:

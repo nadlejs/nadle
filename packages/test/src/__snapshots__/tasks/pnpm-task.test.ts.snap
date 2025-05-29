@@ -2,7 +2,7 @@
 
 exports[`Pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/src/fixtures/sample-app/pnpm-task.nadle.ts
+[log] <Dim>Using config file from /ROOT/src/fixtures/packages/pnpm-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> started
 [log] <Green>✓</Green> Task <Bold>pass</BoldDim> done in {duration}
@@ -14,7 +14,7 @@ exports[`Pnpm Task > throw error when running tsc command with error ts file > s
 
 exports[`Pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/src/fixtures/sample-app/pnpm-task.nadle.ts
+[log] <Dim>Using config file from /ROOT/src/fixtures/packages/pnpm-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> started
 [log] <BrightCyan>src/fail.ts</Reset>:<BrightYellow>1</Reset>:<BrightYellow>14</Reset> - <BrightRed>error</Reset><BrightBlack> TS2322: </Reset>Type 'number' is not assignable to type 'string'.
