@@ -22,8 +22,8 @@ supporting parallel execution and streamlined build automation.
 
 ## Contribution
 
-See [Contributing Guide](https://github.com/nam-hle/nadle/blob/main/CONTRIBUTING.md).
+See [Contributing Guide](https://github.com/nam-hle/nadle/blob/main/CONTRIBUTING.md)
 
 ## License
 
-[MIT](./LICENSE) License © 2025-Present [Nam Hoang Le](https://github.com/nam-hle)`
+[MIT](./LICENSE) License © 2025-Present [Nam Hoang Le](https://github.com/nam-hle)
