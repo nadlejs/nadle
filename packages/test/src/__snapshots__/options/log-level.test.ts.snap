@@ -28,12 +28,12 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
   logLevel: 'debug',
   showConfig: false,
   showSummary: false,
-  configPath: '/ROOT/src/fixtures/nadle.config.ts',
   isWorkerThread: false,
   maxWorkers: 1,
   minWorkers: 1,
   list: false,
-  dryRun: false }
+  dryRun: false,
+  configPath: '/ROOT/src/fixtures/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.config.ts
 </BoldDim>
@@ -77,12 +77,12 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
   logLevel: 'info',
   showConfig: false,
   showSummary: false,
-  configPath: '/ROOT/src/fixtures/nadle.config.ts',
   isWorkerThread: false,
   maxWorkers: 1,
   minWorkers: 1,
   list: false,
-  dryRun: false }
+  dryRun: false,
+  configPath: '/ROOT/src/fixtures/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.config.ts
 </BoldDim>

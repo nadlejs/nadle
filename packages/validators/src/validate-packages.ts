@@ -78,8 +78,8 @@ const typeValidator: PackageValidator = ({ pkg }) => {
 		throw new Error(`"type" field is required"`);
 	}
 
-	if (pkg.type !== "module") {
-		throw new Error("Package type must be module");
+	if (isPublic(pkg) && pkg.type !== "module") {
+		throw new Error("Public package type must be module");
 	}
 };
 

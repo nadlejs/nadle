@@ -1,5 +1,4 @@
 {
-	"include": ["${configDir}/src/**/*.ts"],
 	"compilerOptions": {
 		"lib": ["ES2024"],
 		"target": "ES2022",
@@ -13,10 +12,8 @@
 		"declarationMap": true,
 		"strict": true,
 		"skipLibCheck": true,
-
-		"composite": true,
-		"rootDir": "${configDir}/src",
-		"outDir": "${configDir}/lib",
+		"preserveWatchOutput": true,
+		"noEmit": true,
 		"tsBuildInfoFile": "${configDir}/build/tsconfig.tsbuildinfo.json"
 	}
 }

@@ -1,0 +1,8 @@
+{
+	"name": "@nadle/internal-examples-cjs-js",
+	"type": "commonjs",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	}
+}

@@ -5,47 +5,19 @@ nadle.iml
 
 # dependencies
 **/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
 
 # testing
 /coverage
 
-# next.js
-/.next/
-/.next-dev/
-/out/
-
-# production
+# build output
 **/build
+**/lib
+.docusaurus
+.vercel
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-!.env
 
 # typescript
 *.tsbuildinfo
-lib
 tsconfig.vitest-temp.json
-
-.docusaurus
-.vercel

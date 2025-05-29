@@ -5,8 +5,7 @@ import { it, describe } from "vitest";
 import { createExec, expectFail, expectPass, fixturesDir } from "../utils.js";
 
 describe("Pnpm Task", () => {
-	const cwd = Path.join(fixturesDir, "sample-app");
-	const exec = createExec({ cwd, config: Path.join(cwd, "pnpm-task.nadle.ts") });
+	const exec = createExec({ cwd: Path.join(fixturesDir, "packages", "pnpm-task") });
 
 	it("can run tsc command with no error ts file", async () => {
 		await expectPass(exec`pass`);

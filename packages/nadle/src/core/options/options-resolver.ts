@@ -1,19 +1,21 @@
 import Os from "node:os";
-import process from "node:process";
-import { resolve } from "node:path";
+import Fs from "node:fs";
+import Path from "node:path";
+import Process from "node:process";
 
 import { isCI } from "std-env";
 
 import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
 export class OptionsResolver {
+	static SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
+
 	private readonly defaultOptions = {
 		tasks: [] as string[],
 
 		logLevel: "log",
 		showConfig: false,
 		showSummary: !isCI,
-		configPath: "nadle.config.ts",
 
 		isWorkerThread: false
 	} as const;
@@ -42,7 +44,27 @@ export class OptionsResolver {
 		const maxWorkers = this.resolveWorkerCount(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkerCount(baseOptions.minWorkers), maxWorkers);
 
-		return { ...baseOptions, minWorkers, maxWorkers, configPath: resolve(process.cwd(), baseOptions.configPath) };
+		return { ...baseOptions, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseOptions.configPath) };
+	}
+
+	private resolveConfigPath(configPath: string | undefined): string {
+		const cwd = Process.cwd();
+
+		if (configPath !== undefined) {
+			return Path.resolve(cwd, configPath);
+		}
+
+		for (const ext of OptionsResolver.SUPPORT_EXTENSIONS) {
+			const fullPath = Path.resolve(cwd, `nadle.config.${ext}`);
+
+			if (Fs.existsSync(fullPath)) {
+				return fullPath;
+			}
+		}
+
+		throw new Error(
+			`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory. Please use --config to specify a custom path.`
+		);
 	}
 
 	private resolveWorkerCount(configValue: string | number | undefined) {

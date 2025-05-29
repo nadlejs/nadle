@@ -11,7 +11,7 @@ Execution options:
       --show-config  Print the resolved configuration                     [boolean] [default: false]
 
 General options:
-  -c, --config       Path to config file                    [string] [default: <cwd>/build.nadle.ts]
+  -c, --config       Path to config file       [string] [default: <cwd>/build.nadle.{js,mjs,ts,mts}]
       --log-level    Set the logging level
                                   [string] [choices: "error", "log", "info", "debug"] [default: log]
       --min-workers  Minimum number of workers (integer or percentage)                      [string]

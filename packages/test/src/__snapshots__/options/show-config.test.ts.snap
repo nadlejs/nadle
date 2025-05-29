@@ -11,12 +11,12 @@ exports[`--show-config > should show config > stdout 1`] = `
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
-  "configPath": "/ROOT/src/fixtures/nadle.config.ts",
   "isWorkerThread": false,
   "maxWorkers": 1,
   "minWorkers": 1,
   "list": false,
-  "dryRun": false
+  "dryRun": false,
+  "configPath": "/ROOT/src/fixtures/nadle.config.ts"
 }
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
@@ -33,12 +33,12 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
-  "configPath": "/ROOT/src/fixtures/nadle.config.ts",
   "isWorkerThread": false,
   "minWorkers": 2,
   "maxWorkers": 3,
   "list": false,
-  "dryRun": false
+  "dryRun": false,
+  "configPath": "/ROOT/src/fixtures/nadle.config.ts"
 }
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>

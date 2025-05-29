@@ -4,7 +4,7 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"compile": "tsc -b",
+		"build": "tsc -b",
 		"base": "nadle --config src/nadle.config.ts --max-workers=2",
 		"empty": "pnpm base",
 		"help": "pnpm base -h",

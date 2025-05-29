@@ -4,7 +4,7 @@
 
 ```ts
 
-import type { Writable } from 'node:stream';
+import { Writable } from 'node:stream';
 
 // @public (undocumented)
 export type Awaitable<T> = T | PromiseLike<T>;
@@ -290,7 +290,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// src/core/api.ts:3:19 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:134:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

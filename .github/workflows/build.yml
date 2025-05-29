@@ -29,8 +29,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Add node_modules/.bin to PATH
-        run: echo "$(pwd)/node_modules/.bin" >> $GITHUB_PATH
-
       - name: Build
-        run: nadle build
+        run: npx nadle build test
