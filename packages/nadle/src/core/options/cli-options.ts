@@ -38,7 +38,7 @@ export const CLIOptions = {
 			alias: "c",
 			type: "string",
 			description: "Path to config file",
-			defaultDescription: `<cwd>/build.nadle.(${OptionsResolver.SUPPORT_EXTENSIONS.join("|")})`
+			defaultDescription: `<cwd>/build.nadle.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}}`
 		}
 	},
 	list: {

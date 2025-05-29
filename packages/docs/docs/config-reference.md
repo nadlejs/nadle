@@ -9,10 +9,8 @@ By default, Nadle will look in the **current working directory** for a configura
 
 - `nadle.config.js`
 - `nadle.config.mjs`
-- `nadle.config.cjs`
 - `nadle.config.ts`
 - `nadle.config.mts`
-- `nadle.config.cts`
 
 You can also specify a custom configuration file location using the `--config` CLI option.
 
@@ -22,7 +20,7 @@ You can also specify a custom configuration file location using the `--config` C
 
 - **Type:** `string`
 - **Alias:** `-c`
-- **Default:** Searches for `nadle.config.{js,mjs,cjs,ts,mts,cts}` in the current working directory
+- **Default:** Searches for `nadle.config.{js,mjs,ts,mts}` in the current working directory
 
 Specifies a custom path to the configuration file.
 This allows using different configurations for different environments or purposes.
@@ -30,7 +28,7 @@ The path can be either absolute or relative to the current working directory.
 Use this flag to override the default resolution behavior and point to a specific configuration file as needed.
 
 ```bash
-nadle --config ./configs/custom.config.ts
+nadle --config ./configs/nadle.config.ts
 ```
 
 ### `--list`

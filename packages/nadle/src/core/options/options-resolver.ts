@@ -63,7 +63,7 @@ export class OptionsResolver {
 		}
 
 		throw new Error(
-			`No nadle.config.(${OptionsResolver.SUPPORT_EXTENSIONS.join("|")}) found in ${Process.cwd()} directory. Please use --config to specify a custom path.`
+			`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory. Please use --config to specify a custom path.`
 		);
 	}
 
