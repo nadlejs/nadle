@@ -47,8 +47,19 @@ export class TaskScheduler {
 		const task = this.context.nadle.registry.findByName(taskName);
 
 		if (!task) {
-			this.context.nadle.logger.error(`Task ${c.bold(taskName)} not found`);
-			throw new Error(`Task "${taskName}" not found`);
+			let baseMessage = `Task ${c.bold(taskName)} not found`;
+			const similarTasks = this.context.nadle.registry.getSimilarTasks(taskName).map((name) => c.bold(name));
+
+			if (similarTasks.length === 1) {
+				baseMessage += `. Did you mean ${similarTasks[0]}?`;
+			} else if (similarTasks.length === 2) {
+				baseMessage += `. Did you mean ${similarTasks[0]} or ${similarTasks[1]}?`;
+			} else if (similarTasks.length > 2) {
+				baseMessage += `. Did you mean one of these tasks: ${similarTasks.slice(0, -1).join(", ")}, or ${similarTasks.at(-1)}?`;
+			}
+
+			this.context.nadle.logger.error(baseMessage);
+			throw new Error(baseMessage);
 		}
 
 		const dependencies = task.configResolver({ context: this.context }).dependsOn ?? [];
