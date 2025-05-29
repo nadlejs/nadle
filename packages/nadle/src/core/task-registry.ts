@@ -1,4 +1,5 @@
 import c from "tinyrainbow";
+import { distance } from "fastest-levenshtein";
 
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
@@ -29,6 +30,22 @@ export class TaskRegistry {
 		}
 
 		return task;
+	}
+
+	getSimilarTasks(taskName: string): string[] {
+		return this.getAll()
+			.flatMap(({ name }) => {
+				const score = distance(taskName, name);
+
+				if (score > 5) {
+					return [];
+				}
+
+				return { name, score };
+			})
+			.sort((a, b) => a.score - b.score)
+			.map(({ name }) => name)
+			.slice(0, 3);
 	}
 
 	onTaskStart(name: string) {

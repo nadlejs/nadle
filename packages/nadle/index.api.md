@@ -253,6 +253,8 @@ export class TaskRegistry {
     // (undocumented)
     getByName(taskName: string): RegisteredTask;
     // (undocumented)
+    getSimilarTasks(taskName: string): string[];
+    // (undocumented)
     has(name: string): boolean;
     // (undocumented)
     onTaskFailed(name: string): void;
@@ -290,7 +292,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:134:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:135:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
