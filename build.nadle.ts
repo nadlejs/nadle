@@ -19,7 +19,7 @@ tasks
 	.config({ dependsOn: ["build"] });
 tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
 
-tasks.register("fixEslint", PnpmTask, { args: ["eslint", "--fix"] });
+tasks.register("fixEslint", PnpmTask, { args: ["-r", "exec", "eslint", "--quiet", "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
 tasks.register("format").config({ dependsOn: ["fixEslint", "fixPrettier"] });
 tasks
