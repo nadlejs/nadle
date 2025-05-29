@@ -1,0 +1,8 @@
+{
+	"name": "@nadle/internal-examples-esm-js",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	}
+}

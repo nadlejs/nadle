@@ -13,16 +13,14 @@ interface ExecOptions extends ExecaOptions {
 }
 
 export function createExec(options?: ExecOptions) {
-	const cwd = options?.cwd ?? fixturesDir;
 	const configFile = options?.config;
 	const autoDisabledSummary = options?.autoDisabledSummary ?? true;
-	const configFileName = configFile === undefined ? undefined : configFile.includes(".") ? configFile : `nadle.${configFile}.ts`;
 
 	return (strings: TemplateStringsArray, ...values: unknown[]): ResultPromise => {
 		let command = strings.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "");
 
 		if (configFile !== undefined) {
-			command = `--config ${configFileName} ` + command;
+			command = `--config ${configFile.includes(".") ? configFile : `nadle.${configFile}.ts`} ` + command;
 		}
 
 		// Disable summary if not specified
@@ -47,7 +45,7 @@ export function createExec(options?: ExecOptions) {
 			env = { ...env, NODE_ENV: "production" };
 		}
 
-		return execa(cliPath, parseCommandString(command), { ...options, cwd, env });
+		return execa(cliPath, parseCommandString(command), { cwd: fixturesDir, ...options, env });
 	};
 }
 
