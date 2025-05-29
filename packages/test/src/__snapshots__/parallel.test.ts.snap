@@ -18,7 +18,23 @@ exports[`Parallel > should run tasks parallel > stdout 1`] = `
 
 exports[`Parallel > should stop on error immediately > stderr 1`] = `""`;
 
+exports[`Parallel > should stop on error immediately > stderr 2`] = `""`;
+
 exports[`Parallel > should stop on error immediately > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Using config file from /ROOT/src/fixtures/nadle.parallel.ts
+</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.[12]</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>task-A.[12]</BoldDim> started
+[log] <Green>✓</Green> Task <Bold>task-A.[12]</BoldDim> done in {duration}
+[log] <Green>✓</Green> Task <Bold>task-A.[12]</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> started
+[log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+`;
+
+exports[`Parallel > should stop on error immediately > stdout 2`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.parallel.ts
 </BoldDim>

@@ -14,6 +14,10 @@ export async function validatePackages() {
 		cwd: rootDir,
 		exclude: (path) => path.includes("node_modules")
 	})) {
+		if (entry.includes("/nadle/lib/")) {
+			continue;
+		}
+
 		const path = Path.join(rootDir, entry);
 		const pkg = JSON.parse(await Fs.readFile(path, "utf-8"));
 		console.log(c.cyan(`Validating package.json at file://${path}`));

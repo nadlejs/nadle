@@ -24,8 +24,7 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Resolved options: { tasks: [ 'hello' ],
-  logLevel: 'debug',
+[info] Resolved options: { logLevel: 'debug',
   showConfig: false,
   showSummary: false,
   isWorkerThread: false,
@@ -37,6 +36,7 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.config.ts
 </BoldDim>
+[info] Resolved tasks: [ hello ]
 [info] Execution started
 [info] Task <Bold>hello</BoldDim> queued
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
@@ -73,8 +73,7 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Resolved options: { tasks: [ 'hello' ],
-  logLevel: 'info',
+[info] Resolved options: { logLevel: 'info',
   showConfig: false,
   showSummary: false,
   isWorkerThread: false,
@@ -86,6 +85,7 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.config.ts
 </BoldDim>
+[info] Resolved tasks: [ hello ]
 [info] Execution started
 [info] Task <Bold>hello</BoldDim> queued
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started

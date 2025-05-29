@@ -30,4 +30,4 @@ const argv = yargs(hideBin(process.argv))
 	.strict()
 	.parseSync();
 
-new Nadle(resolveCLIOptions(argv)).execute();
+new Nadle(resolveCLIOptions(argv)).execute((argv as any).tasks ?? []);
