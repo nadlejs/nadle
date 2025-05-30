@@ -1,9 +1,0 @@
-import { it, describe } from "vitest";
-
-import { exec, expectPass } from "./utils.js";
-
-describe("when not given any tasks", () => {
-	it("show all available tasks", async () => {
-		await expectPass(exec``);
-	});
-});

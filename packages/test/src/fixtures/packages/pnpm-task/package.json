@@ -1,8 +1,0 @@
-{
-	"name": "@nadle/internal-test-fixtures-sample-app",
-	"type": "module",
-	"private": true,
-	"dependencies": {
-		"nadle": "workspace:*"
-	}
-}

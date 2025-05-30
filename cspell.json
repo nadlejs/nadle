@@ -2,5 +2,5 @@
 	"language": "en",
 	"words": ["npmjs", "softwareTerms", "nadle", "tinyrainbow", "consola", "Vitest", "indegree", "SCROLLBACK", "Cancelation", "amannn", "vercel"],
 	"ignoreWords": ["Hoang"],
-	"ignorePaths": ["pnpm-lock.yaml", "**/lib", "*.vitest-temp.json", "**/*.svg", "./packages/docs/**", "packages/test/src/resolve-task.test.ts"]
+	"ignorePaths": ["pnpm-lock.yaml", "**/lib", "*.vitest-temp.json", "**/*.svg", "./packages/docs/**", "packages/nadle/test/resolve-task.test.ts"]
 }
