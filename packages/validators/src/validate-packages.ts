@@ -203,6 +203,7 @@ const keyIndicesMap = new Map(
 		"homepage",
 		"bugs",
 		"packageManager",
+		"pnpm",
 		"lint-staged"
 	].map((key, index) => [key, index])
 );
