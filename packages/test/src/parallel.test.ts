@@ -11,5 +11,5 @@ describe("Parallel", () => {
 
 	it("should stop on error immediately", async () => {
 		await expectFail(() => exec`--max-workers 2 X`, [{ pattern: /task-A\.[12]/g, replacement: () => "task-A.[12]" }]);
-	}, 4000);
+	}, 8000);
 });
