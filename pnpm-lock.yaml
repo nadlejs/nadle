@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@vitest/pretty-format': 3.1.2
+
 importers:
 
   .:
@@ -145,9 +148,6 @@ importers:
       '@types/yargs':
         specifier: ^17.0.33
         version: 17.0.33
-      '@vitest/pretty-format':
-        specifier: 3.1.2
-        version: 3.1.2
       knip:
         specifier: ^5.58.0
         version: 5.58.0(@types/node@22.15.21)(typescript@5.8.3)
@@ -2503,9 +2503,6 @@ packages:
 
   '@vitest/pretty-format@3.1.2':
     resolution: {integrity: sha512-R0xAiHuWeDjTSB3kQ3OQpT8Rx3yhdOAIm/JM4axXxnG7Q/fS8XUwggv/A4xzbQA+drYRjzkMnpYnOGAc4oeq8w==}
-
-  '@vitest/pretty-format@3.1.4':
-    resolution: {integrity: sha512-cqv9H9GvAEoTaoq+cYqUTCGscUjKqlJZC7PRwY5FMySVj5J+xOm1KQcCiYHJOEzOKRUhLH4R2pTwvFlWCEScsg==}
 
   '@vitest/runner@3.1.2':
     resolution: {integrity: sha512-bhLib9l4xb4sUMPXnThbnhX2Yi8OutBMA8Yahxa7yavQsFDtwY/jrUZwpKp2XH9DhRFJIeytlyGpXCqZ65nR+g==}
@@ -10519,10 +10516,6 @@ snapshots:
     dependencies:
       tinyrainbow: 2.0.0
 
-  '@vitest/pretty-format@3.1.4':
-    dependencies:
-      tinyrainbow: 2.0.0
-
   '@vitest/runner@3.1.2':
     dependencies:
       '@vitest/utils': 3.1.2
@@ -15948,7 +15941,7 @@ snapshots:
     dependencies:
       '@vitest/expect': 3.1.2
       '@vitest/mocker': 3.1.2(vite@6.3.3(@types/node@22.15.21)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
-      '@vitest/pretty-format': 3.1.4
+      '@vitest/pretty-format': 3.1.2
       '@vitest/runner': 3.1.2
       '@vitest/snapshot': 3.1.2
       '@vitest/spy': 3.1.2

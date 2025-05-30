@@ -36,5 +36,10 @@
 		"*": "cspell --no-must-find-files --gitignore",
 		"*.ts": "eslint --fix",
 		"*.{ts,yml,json}": "prettier --write"
+	},
+	"pnpm": {
+		"overrides": {
+			"@vitest/pretty-format": "3.1.2"
+		}
 	}
 }
