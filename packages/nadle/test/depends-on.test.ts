@@ -1,19 +1,35 @@
-import { it, describe } from "vitest";
+import { it, expect, describe } from "vitest";
 
-import { createExec, expectPass } from "./setup/utils.js";
+import { getStdout, createExec } from "./setup/utils.js";
 
-describe.skip("dependsOn", () => {
-	const exec = createExec({ config: "depends-on" });
+describe(
+	"dependsOn",
+	() => {
+		const exec = createExec({ config: "depends-on" });
 
-	it("should run dependent tasks first", async () => {
-		await expectPass(exec`compileTs`);
-	});
+		it("should run dependent tasks first 1", async () => {
+			const stdout = await getStdout(exec`compile`);
+			expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
+		});
 
-	it("should run shared dependent tasks", async () => {
-		await expectPass(exec`compile test`);
-	});
+		it("should run dependent tasks first 2", async () => {
+			const stdout = await getStdout(exec`compile test`);
+			expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
+			expect(stdout).toRunInOrder("install", "test");
+		});
 
-	it("should run shared dependent tasks 2", async () => {
-		await expectPass(exec`test compile`);
-	});
-});
+		it("should run dependent tasks first 3", async () => {
+			const stdout = await getStdout(exec`test compile`);
+			expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
+			expect(stdout).toRunInOrder("install", "test");
+		});
+
+		it("should run dependent tasks first 3", async () => {
+			const stdout = await getStdout(exec`build`);
+			expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
+			expect(stdout).toRunInOrder("install", "test");
+			expect(stdout).toRunInOrder(["test", "compile"], "build");
+		});
+	},
+	{ retry: 0, repeats: 3 }
+);
