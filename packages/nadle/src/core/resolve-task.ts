@@ -77,7 +77,7 @@ export function formatSuggestions(names: string[]): string {
 	let tasksList;
 
 	if (formattedNames.length === 1) {
-		tasksList = names[0];
+		tasksList = formattedNames[0];
 	} else if (formattedNames.length === 2) {
 		tasksList = `${formattedNames[0]} or ${formattedNames[1]}`;
 	} else {
