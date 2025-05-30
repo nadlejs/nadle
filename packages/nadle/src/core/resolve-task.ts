@@ -72,16 +72,14 @@ export function formatSuggestions(names: string[]): string {
 		return "";
 	}
 
-	const formattedNames = names.slice(0, 4).map((name) => `"${name}"`);
-
 	let tasksList;
 
-	if (formattedNames.length === 1) {
-		tasksList = formattedNames[0];
-	} else if (formattedNames.length === 2) {
-		tasksList = `${formattedNames[0]} or ${formattedNames[1]}`;
+	if (names.length === 1) {
+		tasksList = names[0];
+	} else if (names.length === 2) {
+		tasksList = `${names[0]} or ${names[1]}`;
 	} else {
-		tasksList = `${formattedNames.slice(0, -1).join(", ")}, or ${formattedNames.at(-1)}`;
+		tasksList = `${names.slice(0, -1).join(", ")}, or ${names.at(-1)}`;
 	}
 
 	return ` Did you mean ${tasksList}?`;
