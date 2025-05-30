@@ -11,8 +11,6 @@ export class OptionsResolver {
 	static SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
 
 	private readonly defaultOptions = {
-		tasks: [] as string[],
-
 		logLevel: "log",
 		showConfig: false,
 		showSummary: !isCI,

@@ -24,8 +24,7 @@ exports[`Configure > can override configured options from config file if the cli
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Resolved options: { tasks: [],
-  logLevel: 'info',
+[info] Resolved options: { logLevel: 'info',
   showConfig: true,
   showSummary: false,
   isWorkerThread: false,
@@ -37,9 +36,9 @@ exports[`Configure > can override configured options from config file if the cli
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.configure.ts
 </BoldDim>
+[info] Resolved tasks: [  ]
 [info] Execution started
 [log] {
-  "tasks": [],
   "logLevel": "info",
   "showConfig": true,
   "showSummary": false,
@@ -60,7 +59,6 @@ exports[`Configure > can use configured options from config file > stdout 1`] = 
 [log] <Dim>Using config file from /ROOT/src/fixtures/nadle.configure.ts
 </BoldDim>
 [log] {
-  "tasks": [],
   "logLevel": "error",
   "showConfig": true,
   "showSummary": false,

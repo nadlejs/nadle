@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"prepare": "husky",
-		"start": "pnpm -r --filter=!@nadle/internal-docs --parallel build --watch"
+		"start": "pnpm -r --parallel start"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.4",

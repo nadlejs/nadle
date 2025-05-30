@@ -13,6 +13,7 @@ import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
 import { TaskScheduler } from "./task-scheduler.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
+import { resolveTask, formatSuggestions } from "./resolve-task.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
@@ -34,20 +35,22 @@ export class Nadle {
 		this.reporter.onInit?.();
 	}
 
-	async execute() {
+	async execute(tasks: string[]) {
 		await this.registerTask();
 		this.optionsResolver.addConfigFileOptions(optionRegistry.get());
-		this.reporter.onExecutionStart?.();
 
 		try {
+			const resolvedTasks = this.resolveTasks(tasks);
+			this.reporter.onExecutionStart?.();
+
 			if (this.options.showConfig) {
 				this.showConfig();
 			} else if (this.options.list) {
 				this.listTasks();
 			} else if (this.options.dryRun) {
-				this.dryRunTasks();
+				this.dryRunTasks(resolvedTasks);
 			} else {
-				await this.runTasks();
+				await this.runTasks(resolvedTasks);
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.();
@@ -62,9 +65,7 @@ export class Nadle {
 		return this.optionsResolver.options;
 	}
 
-	async runTasks() {
-		const tasks = this.options.tasks ?? [];
-
+	private async runTasks(tasks: string[]) {
 		if (tasks.length === 0) {
 			this.printNoTasksFound();
 
@@ -75,9 +76,7 @@ export class Nadle {
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
 	}
 
-	dryRunTasks() {
-		const tasks = this.options.tasks;
-
+	private dryRunTasks(tasks: string[]) {
 		if (tasks.length === 0) {
 			this.printNoTasksFound();
 
@@ -127,6 +126,26 @@ export class Nadle {
 
 	showConfig() {
 		this.logger.log(JSON.stringify(this.options, null, 2));
+	}
+
+	private resolveTasks(tasks: string[]) {
+		const allTasks = this.registry.getAll().map(({ name }) => name);
+
+		const resolvedTasks = tasks.map((task) => {
+			const resolvedTask = resolveTask(task, allTasks);
+
+			if (resolvedTask.result === undefined) {
+				const message = `Task ${c.yellow(c.bold(task))} not found.${formatSuggestions(resolvedTask.suggestions.map((task) => c.yellow(c.bold(task))))}`;
+				this.logger.error(message);
+				throw new Error(message);
+			}
+
+			return resolvedTask.result;
+		});
+
+		this.logger.info(`Resolved tasks: [ ${resolvedTasks.join(", ")} ]`);
+
+		return resolvedTasks;
 	}
 
 	computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {

@@ -13,7 +13,7 @@ export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOption
 		.filter(Boolean);
 
 	for (const [key, value] of Object.entries(argv)) {
-		if (aliases.includes(key) || key.includes("-") || key === "_" || key === "$0") {
+		if (aliases.includes(key) || key.includes("-") || key === "_" || key === "$0" || key === "tasks") {
 			continue;
 		}
 
