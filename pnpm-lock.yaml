@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@vitest/pretty-format': 3.1.2
+
 importers:
 
   .:
@@ -154,6 +157,57 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.3
+      vitest:
+        specifier: 3.1.2
+        version: 3.1.2(@types/debug@4.1.12)(@types/node@22.15.21)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
+
+  packages/nadle/test/fixtures/cjs-js:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/cjs-ts:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/esm-js:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/esm-ts:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/main:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/mixed-ts-js:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/mixed-ts-mts:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/fixtures/pnpm-task:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
 
   packages/sample-app:
     dependencies:
@@ -167,70 +221,6 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.3
-
-  packages/test:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../nadle
-    devDependencies:
-      '@types/node':
-        specifier: ^22.15.21
-        version: 22.15.21
-      execa:
-        specifier: ^9.5.2
-        version: 9.5.2
-      std-env:
-        specifier: ^3.9.0
-        version: 3.9.0
-      typescript:
-        specifier: ^5.8.2
-        version: 5.8.3
-      vitest:
-        specifier: ^3.1.2
-        version: 3.1.2(@types/debug@4.1.12)(@types/node@22.15.21)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
-
-  packages/test/src/fixtures/packages/cjs-js:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
-
-  packages/test/src/fixtures/packages/cjs-ts:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
-
-  packages/test/src/fixtures/packages/esm-js:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
-
-  packages/test/src/fixtures/packages/esm-ts:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
-
-  packages/test/src/fixtures/packages/mixed-ts-js:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
-
-  packages/test/src/fixtures/packages/mixed-ts-mts:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
-
-  packages/test/src/fixtures/packages/pnpm-task:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../../nadle
 
   packages/validators:
     devDependencies:
@@ -6766,10 +6756,6 @@ packages:
 
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
-
-  tinyglobby@0.2.13:
-    resolution: {integrity: sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==}
-    engines: {node: '>=12.0.0'}
 
   tinyglobby@0.2.14:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
@@ -15624,11 +15610,6 @@ snapshots:
 
   tinyexec@0.3.2: {}
 
-  tinyglobby@0.2.13:
-    dependencies:
-      fdir: 6.4.4(picomatch@4.0.2)
-      picomatch: 4.0.2
-
   tinyglobby@0.2.14:
     dependencies:
       fdir: 6.4.4(picomatch@4.0.2)
@@ -15966,14 +15947,14 @@ snapshots:
       '@vitest/spy': 3.1.2
       '@vitest/utils': 3.1.2
       chai: 5.2.0
-      debug: 4.4.0
+      debug: 4.4.1
       expect-type: 1.2.1
       magic-string: 0.30.17
       pathe: 2.0.3
       std-env: 3.9.0
       tinybench: 2.9.0
       tinyexec: 0.3.2
-      tinyglobby: 0.2.13
+      tinyglobby: 0.2.14
       tinypool: 1.0.2
       tinyrainbow: 2.0.0
       vite: 6.3.3(@types/node@22.15.21)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
