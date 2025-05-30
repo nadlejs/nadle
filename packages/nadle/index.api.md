@@ -61,6 +61,9 @@ export const ExecTask: Task<{
 }>;
 
 // @public (undocumented)
+export function formatSuggestions(names: string[]): string;
+
+// @public (undocumented)
 export class Logger {
     constructor(options: LoggerOptions);
     // (undocumented)
@@ -101,9 +104,7 @@ export class Nadle {
         description?: string;
     })[]][];
     // (undocumented)
-    dryRunTasks(): void;
-    // (undocumented)
-    execute(): Promise<void>;
+    execute(tasks: string[]): Promise<void>;
     // (undocumented)
     listTasks(): void;
     // (undocumented)
@@ -127,8 +128,6 @@ export class Nadle {
     // (undocumented)
     readonly reporter: Reporter;
     // (undocumented)
-    runTasks(): Promise<void>;
-    // (undocumented)
     showConfig(): void;
     // (undocumented)
     readonly version: string;
@@ -144,8 +143,6 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
     readonly list: boolean;
     // (undocumented)
     readonly showConfig: boolean;
-    // (undocumented)
-    readonly tasks?: string[];
 }
 
 // @public (undocumented)
@@ -220,6 +217,14 @@ export interface Reporter {
 export type Resolver<T = unknown> = T | ContextualResolver<T>;
 
 // @public (undocumented)
+export function resolveTask(input: string, allTasks: string[]): {
+    result: string;
+} | {
+    result: undefined;
+    suggestions: string[];
+};
+
+// @public (undocumented)
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 // @public (undocumented)
@@ -292,7 +297,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:135:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:136:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
