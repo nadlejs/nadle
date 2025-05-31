@@ -70,7 +70,7 @@ const config = tsEslint.config(
 		rules: {
 			"no-console": "off"
 		},
-		files: ["packages/sample-app/**/*.ts", "packages/test/**/*.ts"]
+		files: ["packages/sample-app/**/*.ts", "packages/nadle/test/**/*.ts"]
 	},
 	{
 		files: ["packages/nadle/test/fixtures/**/*.ts"],

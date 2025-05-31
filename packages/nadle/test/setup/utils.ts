@@ -1,6 +1,7 @@
 import Path from "node:path";
 
 import { expect } from "vitest";
+import stripAnsi from "strip-ansi";
 import { execa, type Result, type ResultPromise, parseCommandString, type Options as ExecaOptions } from "execa";
 
 export const cliPath = Path.resolve(import.meta.dirname, "..", "..", "bin", "nadle");
@@ -60,6 +61,17 @@ export async function expectFail(command: () => ResultPromise, options: BlurOpti
 		expect(blurSnapshot(execaError.stdout, options)).toMatchSnapshot("stdout");
 		expect(blurSnapshot(execaError.stderr, options)).toMatchSnapshot("stderr");
 	}
+}
+
+export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean }) {
+	const { stdout, exitCode } = await command;
+	expect(exitCode).toBe(0);
+
+	if (options?.stripAnsi ?? true) {
+		return stripAnsi(stdout as string);
+	}
+
+	return stdout;
 }
 
 export async function expectPass(command: ResultPromise, options: BlurOptions[] = []) {
