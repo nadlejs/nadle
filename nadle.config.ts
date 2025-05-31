@@ -11,7 +11,7 @@ tasks.register("knip", PnpmTask, { args: ["-r", "--filter", "./packages/nadle", 
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./packages/validators/src/index.ts"] });
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
-tasks.register("build", PnpmTask, { args: ["-r", "build"] }).config({ dependsOn: ["check"] });
+tasks.register("build", PnpmTask, { args: ["-r", "build"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["build"] });
 tasks

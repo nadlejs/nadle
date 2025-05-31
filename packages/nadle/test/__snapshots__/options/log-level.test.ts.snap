@@ -49,6 +49,8 @@ Hello from nadle!
 
 exports[`--log-level > shows error log only when passing --log-level=error > stdout 1`] = `"Hello from nadle!"`;
 
+exports[`--log-level > shows error log only when passing --log-level=error > stdout 2`] = `"Hello from nadle!"`;
+
 exports[`--log-level > shows info log when passing --log-level=info > stdout 1`] = `
 [info] Initialized logger with consola options: { types:
    { silent: { level: -1 },
