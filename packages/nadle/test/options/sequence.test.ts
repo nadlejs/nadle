@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { getStdout, createExec } from "../setup/utils.js";
+import { getStdout, createExec, expectPass } from "../setup/utils.js";
 
 describe("--sequence", () => {
 	const exec = createExec({ config: "sequence" });
@@ -51,5 +51,41 @@ describe("--sequence", () => {
 	it("should run in order 8", async () => {
 		const stdout = await getStdout(exec`install --sequence`);
 		expect(stdout).toRunInOrder("node", "install");
+	});
+
+	describe("with --dry-run", () => {
+		const exec = createExec({ config: "abc" });
+
+		it("should list tasks in order 1", async () => {
+			await expectPass(exec`task-A task-B --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 2", async () => {
+			await expectPass(exec`task-B task-A --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 3", async () => {
+			await expectPass(exec`task-B task-A.2 task-A --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 4", async () => {
+			await expectPass(exec`task-A.1 task-A.0 task-A.2 task-A --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 5", async () => {
+			await expectPass(exec`task-C task-A --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 6", async () => {
+			await expectPass(exec`task-B task-C --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 7", async () => {
+			await expectPass(exec`task-A.1 task-B task-C --dry-run --sequence`);
+		});
+
+		it("should list tasks in order 8", async () => {
+			await expectPass(exec`task-B.2 task-A.1 task-B task-C --dry-run --sequence`);
+		});
 	});
 });
