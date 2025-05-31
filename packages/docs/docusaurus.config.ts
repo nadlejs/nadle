@@ -110,7 +110,9 @@ const config: Config = {
 				}
 			]
 		}
-	} satisfies Preset.ThemeConfig
+	} satisfies Preset.ThemeConfig,
+
+	plugins: [["vercel-analytics", { debug: true, mode: "auto" }]]
 };
 
 export default config;
