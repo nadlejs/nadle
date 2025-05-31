@@ -1,3 +1,5 @@
+import process from "node:process";
+
 import { tasks, type Task, configure } from "nadle";
 
 import { createTask } from "./create-task.js";
@@ -128,3 +130,22 @@ tasks.register("cycle-2").config({ dependsOn: ["cycle-3"] });
 tasks.register("cycle-3").config({ dependsOn: ["cycle-4"] });
 tasks.register("cycle-4").config({ dependsOn: ["cycle-5"] });
 tasks.register("cycle-5").config({ dependsOn: ["cycle-2"] });
+
+tasks
+	.register("env", () => {
+		console.log(process.env);
+	})
+	.config({
+		env: {
+			NODE_ENV: "development",
+			CUSTOM_VAR: "custom_value"
+		}
+	});
+
+tasks.register("firstTask", () => console.log("firstTask")).config({ env: { FIRST_TASK_ENV: "first task env" } });
+
+const MyTask: Task = {
+	run: () => console.log(process.env.FIRST_TASK_ENV)
+};
+
+tasks.register("secondTask", MyTask, {}).config(() => ({ env: { SECOND_TASK_ENV: "second task env" } }));

@@ -72,7 +72,7 @@ export class Nadle {
 			return;
 		}
 
-		const scheduler = new TaskScheduler({ nadle: this, env: process.env }, tasks);
+		const scheduler = new TaskScheduler({ nadle: this }, tasks);
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
 	}
 
@@ -83,7 +83,7 @@ export class Nadle {
 			return;
 		}
 
-		const orderedTasks = new TaskScheduler({ nadle: this, env: process.env }, tasks).getOrderedTasks();
+		const orderedTasks = new TaskScheduler({ nadle: this }, tasks).getOrderedTasks();
 
 		this.logger.log(c.bold("Execution plan:"));
 
@@ -152,7 +152,7 @@ export class Nadle {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
 		for (const task of this.registry.getAll()) {
-			const { description, group = UnnamedGroup } = task.configResolver({ context: { nadle: this, env: process.env } });
+			const { description, group = UnnamedGroup } = task.configResolver({ context: { nadle: this } });
 
 			tasksByGroup[group] ??= [];
 			tasksByGroup[group].push({ ...task, description });

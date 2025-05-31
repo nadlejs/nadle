@@ -21,8 +21,6 @@ export function configure(options: Partial<NadleConfigFileOptions>): void;
 // @public (undocumented)
 export interface Context {
     // (undocumented)
-    env: NodeJS.ProcessEnv;
-    // (undocumented)
     nadle: Nadle;
 }
 
@@ -247,8 +245,12 @@ export interface Task<Options = unknown> {
 export interface TaskConfiguration {
     dependsOn?: string[];
     description?: string;
+    env?: TaskEnv;
     group?: string;
 }
+
+// @public (undocumented)
+export type TaskEnv = Record<string, string | number | boolean>;
 
 // @public (undocumented)
 export type TaskFn = ContextualResolver<Promise<void> | void>;
@@ -301,7 +303,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:136:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:140:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
