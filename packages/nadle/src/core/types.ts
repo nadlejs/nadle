@@ -4,7 +4,6 @@ export type Awaitable<T> = T | PromiseLike<T>;
 
 export interface Context {
 	nadle: Nadle;
-	env: NodeJS.ProcessEnv;
 }
 
 export type ContextualResolver<T = unknown> = (params: { context: Context }) => T;
@@ -15,6 +14,8 @@ export type TaskFn = ContextualResolver<Promise<void> | void>;
 export interface Task<Options = unknown> {
 	run(params: { options: Options; context: Context }): Promise<void> | void;
 }
+
+export type TaskEnv = Record<string, string | number | boolean>;
 
 export interface TaskConfiguration {
 	/**
@@ -31,6 +32,11 @@ export interface TaskConfiguration {
 	 * A list of tasks that this task depends on.
 	 */
 	dependsOn?: string[];
+
+	/**
+	 * Environment variables to set when running the task.
+	 */
+	env?: TaskEnv;
 }
 
 export interface ConfigBuilder {

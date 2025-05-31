@@ -30,7 +30,7 @@ export function createExec(options?: ExecOptions) {
 		}
 
 		// Enforce one worker if not specified
-		if (!command.includes("--max-worker")) {
+		if (!command.includes("--max-workers")) {
 			command = "--max-workers 1 " + command;
 		}
 
@@ -63,7 +63,7 @@ export async function expectFail(command: () => ResultPromise, options: BlurOpti
 	}
 }
 
-export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean }) {
+export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
 	const { stdout, exitCode } = await command;
 	expect(exitCode).toBe(0);
 
@@ -71,7 +71,7 @@ export async function getStdout(command: ResultPromise, options?: { stripAnsi?: 
 		return stripAnsi(stdout as string);
 	}
 
-	return stdout;
+	return stdout as string;
 }
 
 export async function expectPass(command: ResultPromise, options: BlurOptions[] = []) {
