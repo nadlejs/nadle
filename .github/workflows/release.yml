@@ -1,4 +1,4 @@
-name: Publish
+name: Release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "v*"
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: npx nadle build test
 
-      - name: Publish
+      - name: Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |

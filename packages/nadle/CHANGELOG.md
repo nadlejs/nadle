@@ -1,5 +1,14 @@
 # nadle
 
+## 0.3.2
+
+### Patch Changes
+
+- 13848bf: optimize bundled size
+- 2556b60: allow to run specified tasks in order
+- 5196558: allow to specify task with abbreviation
+- 34e9360: add suggestions when the specified task not exist
+
 ## 0.3.1
 
 ### Minor Changes
