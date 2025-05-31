@@ -164,26 +164,13 @@ export class TaskScheduler {
 		return nextReadyTasks;
 	}
 
-	public getOrderedTasks(): string[] {
-		const orderedTasks: string[] = [];
-		const indegreeMap = new Map(this.indegree);
+	public getOrderedTasks(task?: string): string[] {
+		const readyTasks = Array.from(this.getReadyTasks(task));
 
-		const queue = Array.from(indegreeMap.entries()).flatMap(([taskName, indegree]) => (indegree === 0 ? [taskName] : []));
-
-		while (queue.length > 0) {
-			const headTask = queue.shift()!;
-			orderedTasks.push(headTask);
-
-			for (const dependent of this.dependentsGraph.get(headTask) ?? []) {
-				const indegree = (indegreeMap.get(dependent) || 0) - 1;
-				indegreeMap.set(dependent, indegree);
-
-				if (indegree === 0) {
-					queue.push(dependent);
-				}
-			}
+		for (const readyTask of readyTasks) {
+			readyTasks.push(...Array.from(this.getOrderedTasks(readyTask)));
 		}
 
-		return orderedTasks;
+		return readyTasks;
 	}
 }
