@@ -50,6 +50,15 @@ export const CLIOptions = {
 			description: "List all available tasks"
 		}
 	},
+	sequence: {
+		key: "sequence",
+		options: {
+			alias: "s",
+			default: false,
+			type: "boolean",
+			description: "Executes the specified tasks sequentially as listed, while still respecting their configured dependencies"
+		}
+	},
 	dryRun: {
 		key: "dry-run",
 		options: {
