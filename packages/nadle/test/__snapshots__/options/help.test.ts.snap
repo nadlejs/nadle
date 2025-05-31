@@ -6,6 +6,8 @@ exports[`--help > prints help > stdout 1`] = `
 Execute one or more named tasks
 
 Execution options:
+  -s, --sequence     Executes the specified tasks sequentially as listed, while still respecting the
+                     ir configured dependencies                           [boolean] [default: false]
   -l, --list         List all available tasks                             [boolean] [default: false]
   -m, --dry-run      Run specified tasks in dry run mode                  [boolean] [default: false]
       --show-config  Print the resolved configuration                     [boolean] [default: false]

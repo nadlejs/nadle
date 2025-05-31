@@ -64,6 +64,13 @@ export class Logger {
 		this.consola.info(message, ...args);
 	}
 
+	debug(message: string, ...args: unknown[]): void {
+		l.log("debug", message, ...args);
+
+		this._clearScreen();
+		this.consola.debug(message, ...args);
+	}
+
 	clearFullScreen(message = ""): void {
 		l.log("clearFullScreen");
 

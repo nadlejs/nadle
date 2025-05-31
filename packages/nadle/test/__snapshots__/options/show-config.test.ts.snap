@@ -5,6 +5,7 @@ exports[`--show-config > should show config > stdout 1`] = `
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
 </BoldDim>
 [log] {
+  "sequence": false,
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
@@ -24,6 +25,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
 </BoldDim>
 [log] {
+  "sequence": false,
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,

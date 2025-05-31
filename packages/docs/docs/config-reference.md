@@ -94,6 +94,17 @@ When both are specified, CLI flags take precedence, allowing quick overrides wit
 
 Set the logging verbosity level. Higher levels include all lower level logs.
 
+### `sequence`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **CLI:** `--sequence`, `-s`
+
+Executes the specified tasks sequentially in the order listed,
+while still respecting their configured dependencies—unless a later task is a dependency of an earlier one.
+Dependencies may still run in parallel where possible.  
+Useful when task order matters but full dependency execution is still desired.
+
 ### `showSummary`
 
 - **Type:** `boolean`

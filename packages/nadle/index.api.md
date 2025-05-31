@@ -71,6 +71,8 @@ export class Logger {
     // (undocumented)
     clearScreen(message: string, force?: boolean): void;
     // (undocumented)
+    debug(message: string, ...args: unknown[]): void;
+    // (undocumented)
     error(message: string, ...args: unknown[]): void;
     // (undocumented)
     errorStream: NodeJS.WriteStream | Writable;
@@ -167,6 +169,8 @@ export interface NadleUserBaseOptions {
     readonly maxWorkers?: number | string;
     // (undocumented)
     readonly minWorkers?: number | string;
+    // (undocumented)
+    readonly sequence?: boolean;
     // (undocumented)
     readonly showSummary?: boolean;
 }

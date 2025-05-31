@@ -40,14 +40,14 @@ function assertOrder(stdout: string, firstTask: string, secondTask: string) {
 	if (firstTaskDoneIndex === -1) {
 		return {
 			pass: false,
-			message: () => `Expected task '${firstTask}' to have run, but it did not.`
+			message: () => `Expected task '${firstTask}' to have run, but it did not. Stdout:\n${stdout}`
 		};
 	}
 
 	if (secondTaskStartedIndex === -1) {
 		return {
 			pass: false,
-			message: () => `Expected task '${secondTask}' to have run, but it did not.`
+			message: () => `Expected task '${secondTask}' to have run, but it did not. Stdout:\n${stdout}`
 		};
 	}
 
@@ -57,7 +57,7 @@ function assertOrder(stdout: string, firstTask: string, secondTask: string) {
 		pass,
 		message: () =>
 			pass
-				? `Expected task '${firstTask}' not to run before '${secondTask}', but it did.`
-				: `Expected task '${firstTask}' to run before '${secondTask}', but the order was incorrect.`
+				? `Expected task '${firstTask}' not to run before '${secondTask}', but it did. Stdout:\n${stdout}`
+				: `Expected task '${firstTask}' to run before '${secondTask}', but the order was incorrect. Stdout:\n${stdout}`
 	};
 }
