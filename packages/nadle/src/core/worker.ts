@@ -25,9 +25,7 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 	await new Promise((resolve) => setImmediate(resolve));
 	await new Promise((resolve) => process.nextTick(resolve));
 
-	const taskEnv: Record<string, string> = Object.fromEntries(
-		Object.entries(task.configResolver({ context }) ?? {}).map(([key, val]) => [key, String(val)])
-	);
+	const taskEnv = Object.fromEntries(Object.entries(task.configResolver({ context }).env ?? {}).map(([key, val]) => [key, String(val)]));
 
 	Object.assign(process.env, { ...originalEnv, ...taskEnv });
 
