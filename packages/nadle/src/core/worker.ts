@@ -1,3 +1,4 @@
+import Path from "node:path";
 import { type MessagePort } from "node:worker_threads";
 
 import { Nadle } from "./nadle.js";
@@ -25,11 +26,13 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 	await new Promise((resolve) => setImmediate(resolve));
 	await new Promise((resolve) => process.nextTick(resolve));
 
-	const taskEnv = Object.fromEntries(Object.entries(task.configResolver({ context }).env ?? {}).map(([key, val]) => [key, String(val)]));
+	const taskConfig = task.configResolver({ context });
+	const taskEnv = Object.fromEntries(Object.entries(taskConfig.env ?? {}).map(([key, val]) => [key, String(val)]));
+	const workingDir = taskConfig.workingDir ? Path.resolve(taskConfig.workingDir) : process.cwd();
 
 	Object.assign(process.env, { ...originalEnv, ...taskEnv });
 
-	await task.run({ context, options: taskOptions });
+	await task.run({ options: taskOptions, context: { ...context, workingDir } });
 
 	for (const [key] of Object.entries(taskEnv)) {
 		delete process.env[key];

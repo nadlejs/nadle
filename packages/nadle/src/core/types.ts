@@ -3,16 +3,16 @@ import { type Nadle } from "./nadle.js";
 export type Awaitable<T> = T | PromiseLike<T>;
 
 export interface Context {
-	nadle: Nadle;
+	readonly nadle: Nadle;
 }
 
-export type ContextualResolver<T = unknown> = (params: { context: Context }) => T;
-export type Resolver<T = unknown> = T | ContextualResolver<T>;
+export type Callback<T = unknown, P = { context: Context }> = (params: P) => T;
+export type Resolver<T = unknown> = T | Callback<T>;
 
-export type TaskFn = ContextualResolver<Promise<void> | void>;
+export type TaskFn = Callback<Awaitable<void>, { context: Context & { workingDir: string } }>;
 
 export interface Task<Options = unknown> {
-	run(params: { options: Options; context: Context }): Promise<void> | void;
+	run: Callback<Awaitable<void>, { options: Options; context: Context & { workingDir: string } }>;
 }
 
 export type TaskEnv = Record<string, string | number | boolean>;
@@ -37,10 +37,15 @@ export interface TaskConfiguration {
 	 * Environment variables to set when running the task.
 	 */
 	env?: TaskEnv;
+
+	/**
+	 * Changes the working directory for the task.
+	 */
+	workingDir?: string;
 }
 
 export interface ConfigBuilder {
-	config(builder: ContextualResolver<TaskConfiguration> | TaskConfiguration): void;
+	config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
 }
 
 export enum TaskStatus {
@@ -55,7 +60,7 @@ export interface RegisteredTask extends Task {
 	name: string;
 	status: TaskStatus;
 	optionsResolver: Resolver | undefined;
-	configResolver: ContextualResolver<TaskConfiguration>;
+	configResolver: Callback<TaskConfiguration>;
 	result: {
 		duration: number | null;
 		startTime: number | null;
