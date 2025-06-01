@@ -8,7 +8,7 @@ export const PnpmTask: Task<{ args: string[] }> = {
 
 		context.nadle.logger.info(`Running pnpm command: pnpm ${args.join(" ")}`);
 
-		const subprocess = execa("pnpm", args, { all: true, env: { FORCE_COLOR: "1" } });
+		const subprocess = execa("pnpm", args, { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
 
 		subprocess.all?.on("data", (chunk) => {
 			context.nadle.logger.log(chunk.toString());

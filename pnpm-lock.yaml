@@ -194,6 +194,12 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
+  packages/nadle/test/fixtures/exec-task:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/nadle/test/fixtures/main:
     dependencies:
       nadle:

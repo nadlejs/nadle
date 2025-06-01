@@ -10,7 +10,7 @@ export const ExecTask: Task<{ command: string; args: string[] | string }> = {
 
 		context.nadle.logger.info(`Running command: ${command} ${commandArguments.join(" ")}`);
 
-		const subprocess = execa(command, commandArguments, { all: true, env: { FORCE_COLOR: "1" } });
+		const subprocess = execa(command, commandArguments, { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
 
 		subprocess.all?.on("data", (chunk) => {
 			context.nadle.logger.log(chunk.toString());
