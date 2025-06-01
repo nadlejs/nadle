@@ -144,7 +144,7 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
     // (undocumented)
     readonly showConfig: boolean;
     // (undocumented)
-    readonly stacktrace?: boolean;
+    readonly stacktrace: boolean;
 }
 
 // @public (undocumented)
