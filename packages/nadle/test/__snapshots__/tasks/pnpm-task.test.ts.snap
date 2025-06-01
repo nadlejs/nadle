@@ -5,7 +5,9 @@ exports[`Pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 [log] <Dim>Using config file from /ROOT/test/fixtures/pnpm-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> started
-[log] <Green>✓</Green> Task <Bold>pass</BoldDim> done in {duration}
+
+[log] 
+<Green>✓</Green> Task <Bold>pass</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -17,6 +19,7 @@ exports[`Pnpm Task > throw error when running tsc command with error ts file > s
 [log] <Dim>Using config file from /ROOT/test/fixtures/pnpm-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> started
+
 [log] <BrightCyan>src/fail.ts</Reset>:<BrightYellow>1</Reset>:<BrightYellow>14</Reset> - <BrightRed>error</Reset><BrightBlack> TS2322: </Reset>Type 'number' is not assignable to type 'string'.
 
 </Inverse>1</Reset> export const number: string = 42;
@@ -27,7 +30,8 @@ exports[`Pnpm Task > throw error when running tsc command with error ts file > s
 Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
 
 
-[log] <Red>×</Red> Task <Bold>fail</BoldDim> failed in {duration}
+[log] 
+<Red>×</Red> Task <Bold>fail</BoldDim> failed in {duration}
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 [log] 

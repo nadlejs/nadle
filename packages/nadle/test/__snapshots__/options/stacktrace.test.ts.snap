@@ -12,13 +12,19 @@ exports[`--stacktrace > should show stack trace > stdout 1`] = `
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
+
 Preparing...
-[log] <Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+
 Hello from nadle!
-[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
 [log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> started
-[log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
+
+[log] 
+<Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 `;
