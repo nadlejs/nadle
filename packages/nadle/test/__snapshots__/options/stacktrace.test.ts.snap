@@ -2,10 +2,9 @@
 
 exports[`--stacktrace > should show stack trace > stderr 1`] = `
 [error] Error: This is an error
-    at Object.run (/ROOT/test/fixtures/main/nadle.config.ts:38:9)
-    at worker_default (file:///ROOT/lib/worker.js:22:14)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async file:///REPO_ROOT/node_modules/.pnpm/tinypool@1.1.0/node_modules/tinypool/dist/entry/worker.js:47:17
+    at Object.run (/ROOT/test/fixtures/main/nadle.config.ts:{line}:{column})
+    at process.processTicksAndRejections (node:internal/process/task_queues:{line}:{column})
+    at async file:///REPO_ROOT/node_modules/.pnpm/tinypool{version}/node_modules/tinypool/dist/entry/worker.js:{line}:{column}
 `;
 
 exports[`--stacktrace > should show stack trace > stdout 1`] = `

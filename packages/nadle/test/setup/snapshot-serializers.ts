@@ -1,7 +1,21 @@
 import Path from "node:path";
 
+const UnstableWordsMap = [["worker_default", "default"]];
+
+export function serializeUnstableWords(input: string) {
+	for (const [word, replacement] of UnstableWordsMap) {
+		input = input.replaceAll(word, replacement);
+	}
+
+	return input;
+}
+
 export function serializeVersion(input: string) {
-	return input.replace(/v\d+\.\d+\.\d+/g, "{version}");
+	return input.replace(/([v@])\d+\.\d+\.\d+/g, "{version}");
+}
+
+export function serializeLibFilePath(input: string) {
+	return input.replaceAll(/^.*ROOT\/lib\/.*(?:\r?\n)?/gm, "");
 }
 
 export function serializeFilePath(input: string) {
@@ -9,6 +23,12 @@ export function serializeFilePath(input: string) {
 	const rootPath = Path.join(cwd, "..", "..");
 
 	return input.replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
+}
+
+export function serializeFileLocation(input: string) {
+	return input.replaceAll(/(\w+(\.\w)?):(\d+):(\d+)/g, (_match, file) => {
+		return `${file}:{line}:{column}`;
+	});
 }
 
 const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;

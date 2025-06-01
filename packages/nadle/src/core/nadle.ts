@@ -9,9 +9,9 @@ import { Logger } from "./logger.js";
 import { VERSION } from "../version.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
-import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
 import { TaskScheduler } from "./task-scheduler.js";
+import { RIGHT_ARROW, UnnamedGroup } from "./constants.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { resolveTask, formatSuggestions } from "./resolve-task.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
@@ -131,6 +131,8 @@ export class Nadle {
 	private resolveTasks(tasks: string[]) {
 		const allTasks = this.registry.getAll().map(({ name }) => name);
 
+		const resolveTaskPairs: { resolved: string; original: string }[] = [];
+
 		const resolvedTasks = tasks.map((task) => {
 			const resolvedTask = resolveTask(task, allTasks);
 
@@ -140,8 +142,24 @@ export class Nadle {
 				throw new Error(message);
 			}
 
+			if (resolvedTask.result !== task) {
+				resolveTaskPairs.push({ original: task, resolved: resolvedTask.result });
+			}
+
 			return resolvedTask.result;
 		});
+
+		if (resolveTaskPairs.length > 0) {
+			const maxOriginTaskLength = Math.max(...resolveTaskPairs.map(({ original }) => original?.length ?? 0));
+			const message = [
+				`Resolved tasks:\n`,
+				...resolveTaskPairs.map(
+					({ resolved, original }) =>
+						`${" ".repeat(4)}${c.yellow(c.bold(original?.padEnd(maxOriginTaskLength, " ")))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
+				)
+			].join("");
+			this.logger.log(message);
+		}
 
 		this.logger.info(`Resolved tasks: [ ${resolvedTasks.join(", ")} ]`);
 
