@@ -22,7 +22,7 @@ supporting parallel execution and streamlined build automation.
 
 ## Contribution
 
-See [Contributing Guide](https://github.com/nam-hle/nadle/blob/main/CONTRIBUTING.md)
+See [Contributing Guide](https://github.com/nadlejs/nadle/blob/main/CONTRIBUTING.md)
 
 ## License
 

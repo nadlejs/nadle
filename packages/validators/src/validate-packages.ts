@@ -149,7 +149,7 @@ const typesValidator: PackageValidator = ({ pkg }) => {
 	}
 };
 
-const REPOSITORY_URL = "https://github.com/nam-hle/nadle.git";
+const REPOSITORY_URL = "https://github.com/nadlejs/nadle.git";
 
 const repositoryValidator: PackageValidator = ({ pkg, path }) => {
 	if (isPrivate(pkg)) {
