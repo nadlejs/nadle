@@ -7,7 +7,7 @@ exports[`Basic > can run a simple command > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 Hello from nadle!
 [log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
-[log]
+[log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
@@ -21,7 +21,7 @@ Preparing...
 [log] <Yellow>></Yellow> Task <Bold>copy</BoldDim> started
 Copying from assets/ to dist/
 [log] <Green>✓</Green> Task <Bold>copy</BoldDim> done in {duration}
-[log]
+[log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
@@ -35,6 +35,6 @@ Hello from nadle!
 [log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> started
 Goodbye, tak!
 [log] <Green>✓</Green> Task <Bold>goodbye</BoldDim> done in {duration}
-[log]
+[log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;

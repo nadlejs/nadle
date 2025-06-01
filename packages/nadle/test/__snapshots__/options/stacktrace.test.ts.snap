@@ -5,7 +5,7 @@ exports[`--stacktrace > should show stack trace > stderr 1`] = `
     at Object.run (/ROOT/test/fixtures/main/nadle.config.ts:38:9)
     at worker_default (file:///ROOT/lib/worker.js:22:14)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async file:///REPO_ROOT/node_modules/.pnpm/tinypool@1.0.2/node_modules/tinypool/dist/entry/worker.js:71:20
+    at async file:///REPO_ROOT/node_modules/.pnpm/tinypool@1.1.0/node_modules/tinypool/dist/entry/worker.js:47:17
 `;
 
 exports[`--stacktrace > should show stack trace > stdout 1`] = `
