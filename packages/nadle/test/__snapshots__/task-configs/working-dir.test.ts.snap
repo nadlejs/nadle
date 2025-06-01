@@ -5,8 +5,10 @@ exports[`workingDir > should print correct working directory for task current > 
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>current</BoldDim> started
+
 Current working directory: /ROOT/test/fixtures/main
-[log] <Green>✓</Green> Task <Bold>current</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>current</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -16,8 +18,10 @@ exports[`workingDir > should print correct working directory for task oneLevelDo
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>oneLevelDown</BoldDim> started
+
 Current working directory: /ROOT/test/fixtures/main/subdir1
-[log] <Green>✓</Green> Task <Bold>oneLevelDown</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>oneLevelDown</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -27,8 +31,10 @@ exports[`workingDir > should print correct working directory for task oneLevelUp
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>oneLevelUp</BoldDim> started
+
 Current working directory: /ROOT/test/fixtures
-[log] <Green>✓</Green> Task <Bold>oneLevelUp</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>oneLevelUp</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -38,8 +44,10 @@ exports[`workingDir > should print correct working directory for task twoLevelsD
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsDown</BoldDim> started
+
 Current working directory: /ROOT/test/fixtures/main/subdir1/subdir2
-[log] <Green>✓</Green> Task <Bold>twoLevelsDown</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>twoLevelsDown</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -49,8 +57,10 @@ exports[`workingDir > should print correct working directory for task twoLevelsU
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsUp</BoldDim> started
+
 Current working directory: /ROOT/test
-[log] <Green>✓</Green> Task <Bold>twoLevelsUp</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>twoLevelsUp</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;

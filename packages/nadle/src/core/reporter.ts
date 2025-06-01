@@ -85,19 +85,19 @@ export class DefaultReporter implements Reporter {
 	}
 
 	async onTaskStart(task: RegisteredTask) {
-		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} started`);
+		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} started\n`);
 		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
 		this.renderer.schedule();
 	}
 
 	async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(`${c.green(CHECK)} Task ${c.bold(task.name)} done in ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.name)} done in ${formatTime(task.result.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
 		this.renderer.schedule();
 	}
 
 	async onTaskFailed(task: RegisteredTask) {
-		this.nadle.logger.log(`${c.red(CROSS)} Task ${c.bold(task.name)} failed in ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.name)} failed in ${formatTime(task.result.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
 		this.renderer.schedule();
 	}

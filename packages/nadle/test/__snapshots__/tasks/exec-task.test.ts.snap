@@ -5,9 +5,11 @@ exports[`ExecTask > can run pwd-1 command with configured workingDir > stdout 1`
 [log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-1</BoldDim> started
+
 [log] /ROOT/test/fixtures/exec-task
 
-[log] <Green>✓</Green> Task <Bold>pwd-1</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>pwd-1</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -17,9 +19,11 @@ exports[`ExecTask > can run pwd-2 command with configured workingDir > stdout 1`
 [log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-2</BoldDim> started
+
 [log] /ROOT/test/fixtures/exec-task
 
-[log] <Green>✓</Green> Task <Bold>pwd-2</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>pwd-2</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -29,9 +33,11 @@ exports[`ExecTask > can run pwd-3 command with configured workingDir > stdout 1`
 [log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-3</BoldDim> started
+
 [log] /ROOT/test/fixtures
 
-[log] <Green>✓</Green> Task <Bold>pwd-3</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>pwd-3</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -41,9 +47,11 @@ exports[`ExecTask > can run pwd-4 command with configured workingDir > stdout 1`
 [log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-4</BoldDim> started
+
 [log] /ROOT/test
 
-[log] <Green>✓</Green> Task <Bold>pwd-4</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>pwd-4</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -53,9 +61,11 @@ exports[`ExecTask > can run pwd-5 command with configured workingDir > stdout 1`
 [log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
 </BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-5</BoldDim> started
+
 [log] /ROOT/test/fixtures/main
 
-[log] <Green>✓</Green> Task <Bold>pwd-5</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>pwd-5</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
