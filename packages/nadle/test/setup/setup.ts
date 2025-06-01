@@ -1,10 +1,19 @@
 import { expect } from "vitest";
 
-import { serializeANSI, serializeVersion, serializeDuration, serializeFilePath } from "./snapshot-serializers.js";
+import {
+	serializeANSI,
+	serializeVersion,
+	serializeDuration,
+	serializeFilePath,
+	serializeLibFilePath,
+	serializeFileLocation,
+	serializeUnstableWords
+} from "./snapshot-serializers.js";
 
 expect.addSnapshotSerializer({
 	test: (val) => typeof val === "string",
-	serialize: (val) => serializeVersion(serializeFilePath(serializeDuration(serializeANSI(val))))
+	serialize: (val) =>
+		serializeVersion(serializeLibFilePath(serializeFilePath(serializeFileLocation(serializeDuration(serializeANSI(serializeUnstableWords(val)))))))
 });
 
 expect.extend({

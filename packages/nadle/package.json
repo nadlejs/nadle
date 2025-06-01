@@ -4,8 +4,10 @@
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
 	"scripts": {
-		"build": "tsup",
-		"start": "tsc -p tsconfig.build.json --watch",
+		"build": "pnpm \"/build:/\"",
+		"build:tsup": "tsup",
+		"build:ts": "tsc -p tsconfig.build.json",
+		"start": "pnpm run build:ts --watch --noEmit false",
 		"test": "vitest"
 	},
 	"files": [
