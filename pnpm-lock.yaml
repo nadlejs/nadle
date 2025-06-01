@@ -21,8 +21,8 @@ importers:
         specifier: ^7.52.8
         version: 7.52.8(@types/node@22.15.29)
       '@stylistic/eslint-plugin-ts':
-        specifier: ^4.2.0
-        version: 4.2.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
+        specifier: ^4.4.0
+        version: 4.4.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
       '@types/node':
         specifier: ^22.15.29
         version: 22.15.29
@@ -2185,8 +2185,8 @@ packages:
   '@slorber/remark-comment@1.0.0':
     resolution: {integrity: sha512-RCE24n7jsOj1M0UPvIQCHTe7fI0sFL4S2nwKVWwHyVr/wI/H8GosgsJGyhnsZoGFnD/P2hLf1mSbrrgSLN93NA==}
 
-  '@stylistic/eslint-plugin-ts@4.2.0':
-    resolution: {integrity: sha512-j2o2GvOx9v66x8hmp/HJ+0T+nOppiO5ycGsCkifh7JPGgjxEhpkGmIGx3RWsoxpWbad3VCX8e8/T8n3+7ze1Zg==}
+  '@stylistic/eslint-plugin-ts@4.4.0':
+    resolution: {integrity: sha512-i5fya8tZFbF/qbjhOJ9h7CbJr91KZqYOPwrARrcdhG837q/+CEF1Wua+cYK+F3jyeegzLskJgF2sFGizOxC2gQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=9.0.0'
@@ -10238,9 +10238,9 @@ snapshots:
       micromark-util-character: 1.2.0
       micromark-util-symbol: 1.1.0
 
-  '@stylistic/eslint-plugin-ts@4.2.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)':
+  '@stylistic/eslint-plugin-ts@4.4.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
-      '@typescript-eslint/utils': 8.32.1(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/utils': 8.33.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.25.1(jiti@2.4.2)
       eslint-visitor-keys: 4.2.0
       espree: 10.3.0
