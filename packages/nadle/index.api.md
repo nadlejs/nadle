@@ -47,9 +47,9 @@ export class DefaultReporter implements Reporter {
     // (undocumented)
     onTaskFinish(task: RegisteredTask): Promise<void>;
     // (undocumented)
-    onTaskQueued(task: RegisteredTask): Promise<void>;
+    onTasksScheduled(tasks: string[]): Promise<void>;
     // (undocumented)
-    onTaskStart(task: RegisteredTask): Promise<void>;
+    onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
 }
 
 // @public (undocumented)
@@ -114,9 +114,9 @@ export class Nadle {
     // (undocumented)
     onTaskFinish(task: RegisteredTask): Promise<void>;
     // (undocumented)
-    onTaskQueued(task: RegisteredTask): Promise<void>;
+    onTasksScheduled(tasks: string[]): Promise<void>;
     // (undocumented)
-    onTaskStart(task: RegisteredTask): Promise<void>;
+    onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
     // (undocumented)
     get options(): NadleResolvedOptions;
     // (undocumented)
@@ -212,9 +212,9 @@ export interface Reporter {
     // (undocumented)
     onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
     // (undocumented)
-    onTaskQueued?: (task: RegisteredTask) => Awaitable<void>;
+    onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
     // (undocumented)
-    onTaskStart?: (task: RegisteredTask) => Awaitable<void>;
+    onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
 }
 
 // @public (undocumented)
@@ -273,15 +273,13 @@ export class TaskRegistry {
     // (undocumented)
     getByName(taskName: string): RegisteredTask;
     // (undocumented)
-    getSimilarTasks(taskName: string): string[];
-    // (undocumented)
     has(name: string): boolean;
     // (undocumented)
     onTaskFailed(name: string): void;
     // (undocumented)
     onTaskFinish(name: string): void;
     // (undocumented)
-    onTaskQueued(name: string): void;
+    onTasksScheduled(names: string[]): void;
     // (undocumented)
     onTaskStart(name: string): void;
     // (undocumented)
@@ -303,11 +301,11 @@ export enum TaskStatus {
     // (undocumented)
     Finished = "finished",
     // (undocumented)
-    Queued = "queued",
-    // (undocumented)
     Registered = "registered",
     // (undocumented)
-    Running = "running"
+    Running = "running",
+    // (undocumented)
+    Scheduled = "scheduled"
 }
 
 // Warnings were encountered during analysis:

@@ -14,11 +14,13 @@ describe("--show-summary", () => {
 		expect(blurStdout).contain(`<Dim>Start at   </BoldDim>`);
 		expect(blurStdout).contain(`<Dim>Duration   </BoldDim> 0ms`);
 		expect(blurStdout).contain(
-			`<Dim>Tasks      </BoldDim> <Bold><Blue>1 queued</Blue></BoldDim>, <Bold><Yellow>0 running</Yellow></BoldDim>, <Bold><Green>0 finished</Green></BoldDim>`
+			`<Dim>Tasks      </BoldDim> <BrightCyan>2 pending</Cyan> <BrightBlack>|</Cyan> <Yellow>0 running</Yellow> <BrightBlack>|</Yellow> <Green>0 finished</Green> <Dim>(2 scheduled)</BoldDim>`
 		);
 		expect(blurStdout).contain(
-			`<Dim>Tasks      </BoldDim> <Bold><Blue>1 queued</Blue></BoldDim>, <Bold><Yellow>1 running</Yellow></BoldDim>, <Bold><Green>0 finished</Green></BoldDim>`
+			`<Dim>Tasks      </BoldDim> <BrightCyan>1 pending</Yellow> <BrightBlack>|</Yellow> <Yellow>1 running</Yellow> <BrightBlack>|</Yellow> <Green>0 finished</Green> <Dim>(2 scheduled)</BoldDim>`
 		);
+		expect(blurStdout).contain(`<Yellow>></Yellow> <Dim>IDLE</BoldDim>`);
+		expect(blurStdout).contain(`<Yellow>></Yellow> :<Bold>prepare</BoldDim>`);
 	});
 
 	it("should not show summary when disabled explicitly", async () => {

@@ -33,7 +33,7 @@ export class TaskPool {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();
 			poolPort.on("message", async (msg) => {
 				if (msg.type === "start") {
-					await this.nadle.onTaskStart(task);
+					await this.nadle.onTaskStart(task, msg.threadId);
 
 					return;
 				}
@@ -45,8 +45,6 @@ export class TaskPool {
 				env: process.env,
 				options: { ...this.nadle.options, showSummary: false, isWorkerThread: true }
 			};
-
-			await this.nadle.onTaskQueued(task);
 
 			await this.pool.run(workerParams, { transferList: [workerPort] });
 

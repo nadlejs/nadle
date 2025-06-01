@@ -1,5 +1,5 @@
 import Path from "node:path";
-import { type MessagePort } from "node:worker_threads";
+import { threadId, type MessagePort } from "node:worker_threads";
 
 import { Nadle } from "./nadle.js";
 import { type Context } from "./types.js";
@@ -22,7 +22,7 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 	const context: Context = { nadle };
 	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 
-	port.postMessage({ type: "start", taskName: name });
+	port.postMessage({ threadId, type: "start", taskName: name });
 	await new Promise((resolve) => setImmediate(resolve));
 	await new Promise((resolve) => process.nextTick(resolve));
 

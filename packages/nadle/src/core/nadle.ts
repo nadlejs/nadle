@@ -73,6 +73,8 @@ export class Nadle {
 		}
 
 		const scheduler = new TaskScheduler({ nadle: this }, tasks);
+		await this.onTasksScheduled(scheduler.scheduledTask);
+
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
 	}
 
@@ -213,9 +215,9 @@ export class Nadle {
 		await jiti.import(pathToFileURL(configFile).toString());
 	}
 
-	public async onTaskStart(task: RegisteredTask) {
+	public async onTaskStart(task: RegisteredTask, threadId: number) {
 		this.registry.onTaskStart(task.name);
-		await this.reporter.onTaskStart?.(task);
+		await this.reporter.onTaskStart?.(task, threadId);
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
@@ -228,8 +230,8 @@ export class Nadle {
 		await this.reporter.onTaskFailed?.(task);
 	}
 
-	public async onTaskQueued(task: RegisteredTask) {
-		this.registry.onTaskQueued(task.name);
-		await this.reporter.onTaskQueued?.(task);
+	public async onTasksScheduled(tasks: string[]) {
+		this.registry.onTasksScheduled(tasks);
+		await this.reporter.onTasksScheduled?.(tasks);
 	}
 }
