@@ -78,6 +78,10 @@ export class TaskScheduler {
 		this.transitiveDependencyGraph.set(taskName, transitiveDependencies);
 	}
 
+	public get scheduledTask(): string[] {
+		return Array.from(this.dependencyGraph.keys());
+	}
+
 	private getIndegreeEntries() {
 		const runningRootTask = this.runningRootTask;
 

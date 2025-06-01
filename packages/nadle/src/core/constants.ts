@@ -10,3 +10,4 @@ export const CLEAR_SCREEN: string = "\x1Bc";
 export const CROSS = "×";
 export const CHECK = "✓";
 export const RIGHT_ARROW = "→";
+export const VERTICAL_BAR = "|";

@@ -50,7 +50,7 @@ export interface ConfigBuilder {
 
 export enum TaskStatus {
 	Registered = "registered",
-	Queued = "queued",
+	Scheduled = "scheduled",
 	Running = "running",
 	Finished = "finished",
 	Failed = "failed"

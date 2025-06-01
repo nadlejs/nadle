@@ -2,9 +2,9 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { type Nadle } from "./nadle.js";
-import { CHECK, CROSS } from "./constants.js";
 import { type Renderer } from "./renderers/renderer.js";
 import { formatTime, formatTimeString } from "./utils.js";
+import { CHECK, CROSS, VERTICAL_BAR } from "./constants.js";
 import { NormalRenderer } from "./renderers/normal-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
 import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
@@ -16,10 +16,10 @@ export interface Reporter {
 	onExecutionFinish?: () => Awaitable<void>;
 	onExecutionFailed?: (error: any) => Awaitable<void>;
 
-	onTaskStart?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskQueued?: (task: RegisteredTask) => Awaitable<void>;
+	onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
 	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
 }
 
 const DURATION_UPDATE_INTERVAL_MS = 100;
@@ -28,10 +28,11 @@ export class DefaultReporter implements Reporter {
 	private renderer: Renderer;
 	private taskStat = {
 		failed: 0,
-		queued: 0,
 		running: 0,
-		finished: 0
+		finished: 0,
+		scheduled: 0
 	};
+	private threadIdPerWorker: Record<string, number> = {};
 	private startTime = "";
 	private currentTime = 0;
 	private duration = 0;
@@ -51,12 +52,12 @@ export class DefaultReporter implements Reporter {
 		const summary: string[] = [""];
 
 		const stats = [
-			c.bold(c.blue(`${this.taskStat.queued} queued`)),
-			c.bold(c.yellow(`${this.taskStat.running} running`)),
-			c.bold(c.green(`${this.taskStat.finished} finished`))
-		];
+			c.cyanBright(`${this.taskStat.scheduled - this.taskStat.running - this.taskStat.finished - this.taskStat.failed} pending`),
+			c.yellow(`${this.taskStat.running} running`),
+			c.green(`${this.taskStat.finished} finished`)
+		].join(` ${c.gray(VERTICAL_BAR)} `);
 
-		summary.push(`${this.printLabel("Tasks")} ${stats.join(", ")}`);
+		summary.push(`${this.printLabel("Tasks")} ${stats} ${c.dim(`(${this.taskStat.scheduled} scheduled)`)}`);
 		summary.push(`${this.printLabel("Start at")} ${this.startTime}`);
 		summary.push(`${this.printLabel("Duration")} ${formatTime(this.duration)}`);
 
@@ -68,10 +69,13 @@ export class DefaultReporter implements Reporter {
 	}
 
 	private printRunningTasks() {
-		return this.nadle.registry
-			.getAll()
-			.filter((task) => task.status === TaskStatus.Running)
-			.map((task) => c.bold(` ${c.yellow(">")} :${task.name}`));
+		const lines = Array.from({ length: this.nadle.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
+
+		for (const runningTask of this.nadle.registry.getAll().filter((task) => task.status === TaskStatus.Running)) {
+			lines[this.threadIdPerWorker[runningTask.name] - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
+		}
+
+		return lines;
 	}
 
 	onInit() {
@@ -84,9 +88,10 @@ export class DefaultReporter implements Reporter {
 		this.renderer.start();
 	}
 
-	async onTaskStart(task: RegisteredTask) {
+	async onTaskStart(task: RegisteredTask, threadId: number) {
 		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} started\n`);
 		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
+		this.threadIdPerWorker = { ...this.threadIdPerWorker, [task.name]: threadId };
 		this.renderer.schedule();
 	}
 
@@ -102,9 +107,9 @@ export class DefaultReporter implements Reporter {
 		this.renderer.schedule();
 	}
 
-	async onTaskQueued(task: RegisteredTask) {
-		this.nadle.logger.info(`Task ${c.bold(task.name)} queued`);
-		this.taskStat = { ...this.taskStat, queued: ++this.taskStat.queued };
+	async onTasksScheduled(tasks: string[]) {
+		this.nadle.logger.info(`Scheduled tasks: ${tasks.join(", ")}`);
+		this.taskStat = { ...this.taskStat, scheduled: tasks.length };
 		this.renderer.schedule();
 	}
 
