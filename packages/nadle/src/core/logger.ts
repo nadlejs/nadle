@@ -37,34 +37,34 @@ export class Logger {
 		}
 	}
 
-	log(message: string, ...args: unknown[]): void {
+	log(message: any, ...args: unknown[]): void {
 		l.log("log", message, ...args);
 		this._clearScreen();
 		this.consola.log(message, ...args);
 	}
 
-	error(message: string, ...args: unknown[]): void {
+	error(message: any, ...args: unknown[]): void {
 		l.log("error", message, ...args);
 
 		this._clearScreen();
 		this.consola.error(message, ...args);
 	}
 
-	warn(message: string, ...args: unknown[]): void {
+	warn(message: any, ...args: unknown[]): void {
 		l.log("warn", message, ...args);
 
 		this._clearScreen();
 		this.consola.warn(message, ...args);
 	}
 
-	info(message: string, ...args: unknown[]): void {
+	info(message: any, ...args: unknown[]): void {
 		l.log("info", message, ...args);
 
 		this._clearScreen();
 		this.consola.info(message, ...args);
 	}
 
-	debug(message: string, ...args: unknown[]): void {
+	debug(message: any, ...args: unknown[]): void {
 		l.log("debug", message, ...args);
 
 		this._clearScreen();

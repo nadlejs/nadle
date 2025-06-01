@@ -12,6 +12,8 @@ exports[`when passing unknown tasks > should throw error with suggestions if fin
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks > stdout 2`] = `
@@ -20,6 +22,8 @@ exports[`when passing unknown tasks > should throw error with suggestions if fin
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks > stdout 3`] = `
@@ -28,6 +32,8 @@ exports[`when passing unknown tasks > should throw error with suggestions if fin
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`when passing unknown tasks > should throw error without any suggestions if not find any similar tasks > stderr 1`] = `[error] Task <Yellow><Bold>unknown</BoldDim></Yellow> not found.`;
@@ -38,4 +44,6 @@ exports[`when passing unknown tasks > should throw error without any suggestions
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;

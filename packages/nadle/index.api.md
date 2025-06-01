@@ -35,7 +35,7 @@ export class DefaultReporter implements Reporter {
     // (undocumented)
     readonly nadle: Nadle;
     // (undocumented)
-    onExecutionFailed(): Promise<void>;
+    onExecutionFailed(error: any): Promise<void>;
     // (undocumented)
     onExecutionFinish(): Promise<void>;
     // (undocumented)
@@ -69,23 +69,23 @@ export class Logger {
     // (undocumented)
     clearScreen(message: string, force?: boolean): void;
     // (undocumented)
-    debug(message: string, ...args: unknown[]): void;
+    debug(message: any, ...args: unknown[]): void;
     // (undocumented)
-    error(message: string, ...args: unknown[]): void;
+    error(message: any, ...args: unknown[]): void;
     // (undocumented)
     errorStream: NodeJS.WriteStream | Writable;
     // (undocumented)
     getColumns(): number;
     // (undocumented)
-    info(message: string, ...args: unknown[]): void;
+    info(message: any, ...args: unknown[]): void;
     // (undocumented)
-    log(message: string, ...args: unknown[]): void;
+    log(message: any, ...args: unknown[]): void;
     // (undocumented)
     options: Required<LoggerOptions>;
     // (undocumented)
     outputStream: NodeJS.WriteStream | Writable;
     // (undocumented)
-    warn(message: string, ...args: unknown[]): void;
+    warn(message: any, ...args: unknown[]): void;
 }
 
 // @public (undocumented)
@@ -143,6 +143,8 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
     readonly list: boolean;
     // (undocumented)
     readonly showConfig: boolean;
+    // (undocumented)
+    readonly stacktrace?: boolean;
 }
 
 // @public (undocumented)
@@ -198,7 +200,7 @@ export interface RegisteredTask extends Task {
 // @public (undocumented)
 export interface Reporter {
     // (undocumented)
-    onExecutionFailed?: () => Awaitable<void>;
+    onExecutionFailed?: (error: any) => Awaitable<void>;
     // (undocumented)
     onExecutionFinish?: () => Awaitable<void>;
     // (undocumented)

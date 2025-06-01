@@ -20,11 +20,15 @@ const argv = yargs(hideBin(process.argv))
 	.option(CLIOptions.dryRun.key, CLIOptions.dryRun.options)
 	.option(CLIOptions.showConfig.key, CLIOptions.showConfig.options)
 	.option(CLIOptions.showSummary.key, CLIOptions.showSummary.options)
+	.option(CLIOptions.stacktrace.key, CLIOptions.stacktrace.options)
 	.version("version", "Show version number", VERSION)
 	.alias("v", "version")
 	.help("help", "Show this help")
 	.alias("h", "help")
-	.group([CLIOptions.sequence.key, CLIOptions.list.key, CLIOptions.dryRun.key, CLIOptions.showConfig.key], "Execution options:")
+	.group(
+		[CLIOptions.sequence.key, CLIOptions.list.key, CLIOptions.dryRun.key, CLIOptions.showConfig.key, CLIOptions.stacktrace.key],
+		"Execution options:"
+	)
 	.group([CLIOptions.configPath.key, CLIOptions.logLevel.key, CLIOptions.minWorkers.key, CLIOptions.maxWorkers.key], "General options:")
 	.group(["help", "version"], "Miscellaneous options:")
 	.wrap(100)

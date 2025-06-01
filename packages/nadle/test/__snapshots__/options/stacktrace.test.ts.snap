@@ -1,8 +1,14 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`when a task fails > should report correctly > stderr 1`] = ``;
+exports[`--stacktrace > should show stack trace > stderr 1`] = `
+[error] Error: This is an error
+    at Object.run (/ROOT/test/fixtures/main/nadle.config.ts:38:9)
+    at worker_default (file:///ROOT/lib/worker.js:22:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///REPO_ROOT/node_modules/.pnpm/tinypool@1.1.0/node_modules/tinypool/dist/entry/worker.js:47:17
+`;
 
-exports[`when a task fails > should report correctly > stdout 1`] = `
+exports[`--stacktrace > should show stack trace > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
 </BoldDim>
@@ -16,6 +22,4 @@ Hello from nadle!
 [log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
-[log] 
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;

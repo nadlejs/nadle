@@ -53,7 +53,7 @@ export class Nadle {
 				await this.runTasks(resolvedTasks);
 			}
 		} catch (error) {
-			this.reporter.onExecutionFailed?.();
+			this.reporter.onExecutionFailed?.(error);
 			// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
 			process.exit((error as any).errorCode || 1);
 		}

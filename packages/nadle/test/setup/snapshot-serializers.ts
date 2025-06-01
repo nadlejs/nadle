@@ -1,9 +1,14 @@
+import Path from "node:path";
+
 export function serializeVersion(input: string) {
 	return input.replace(/v\d+\.\d+\.\d+/g, "{version}");
 }
 
 export function serializeFilePath(input: string) {
-	return input.replaceAll(process.cwd(), "/ROOT");
+	const cwd = process.cwd();
+	const rootPath = Path.join(cwd, "..", "..");
+
+	return input.replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
 }
 
 const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;

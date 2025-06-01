@@ -47,7 +47,7 @@ Hello from nadle!
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`--log-level > shows error log only when passing --log-level=error > stdout 1`] = `"Hello from nadle!"`;
+exports[`--log-level > shows error log only when passing --log-level=error > stdout 1`] = `Hello from nadle!`;
 
 exports[`--log-level > shows error log only when passing --log-level=error > stdout 2`] = `"Hello from nadle!"`;
 

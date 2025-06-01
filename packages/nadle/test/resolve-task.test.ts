@@ -8,12 +8,12 @@ describe("resolveTask", () => {
 	it("resolves exact task names", () => {
 		expect(resolveTask("build", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": "build",
+			  result: build,
 			}
 		`);
 		expect(resolveTask("publish", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": "publish",
+			  result: publish,
 			}
 		`);
 	});
@@ -21,25 +21,25 @@ describe("resolveTask", () => {
 	it("resolves initials", () => {
 		expect(resolveTask("bdi", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": "buildDockerImage",
+			  result: buildDockerImage,
 			}
 		`);
 		expect(resolveTask("bDI", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": "buildDockerImage",
+			  result: buildDockerImage,
 			}
 		`);
 
 		expect(resolveTask("bDI", [...allTasks, "buildDockerIdentity"])).toMatchInlineSnapshot(`
 			{
-			  "result": undefined,
-			  "suggestions": [],
+			  result: undefined,
+			  suggestions: [],
 			}
 		`);
 		expect(resolveTask("bdx", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": undefined,
-			  "suggestions": [],
+			  result: undefined,
+			  suggestions: [],
 			}
 		`);
 	});
@@ -47,33 +47,33 @@ describe("resolveTask", () => {
 	it("resolves fuzzy", () => {
 		expect(resolveTask("publihs", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": "publish",
+			  result: publish,
 			}
 		`);
 		expect(resolveTask("publis", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": "publish",
+			  result: publish,
 			}
 		`);
 
 		expect(resolveTask("compile", allTasks)).toMatchInlineSnapshot(
 			`
 			{
-			  "result": undefined,
-			  "suggestions": [
-			    "compileTs",
-			    "compileJs",
-			    "compileCss",
+			  result: undefined,
+			  suggestions: [
+			    compileTs,
+			    compileJs,
+			    compileCss,
 			  ],
 			}
 		`
 		);
 		expect(resolveTask("plish", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": undefined,
-			  "suggestions": [
-			    "publish",
-			    "push",
+			  result: undefined,
+			  suggestions: [
+			    publish,
+			    push,
 			  ],
 			}
 		`);
@@ -82,10 +82,10 @@ describe("resolveTask", () => {
 	it("not found", () => {
 		expect(resolveTask("compil", allTasks)).toMatchInlineSnapshot(`
 			{
-			  "result": undefined,
-			  "suggestions": [
-			    "compileTs",
-			    "compileJs",
+			  result: undefined,
+			  suggestions: [
+			    compileTs,
+			    compileJs,
 			  ],
 			}
 		`);

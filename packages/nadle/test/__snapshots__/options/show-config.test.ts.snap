@@ -14,6 +14,7 @@ exports[`--show-config > should show config > stdout 1`] = `
   "minWorkers": 1,
   "list": false,
   "dryRun": false,
+  "stacktrace": false,
   "configPath": "/ROOT/test/fixtures/main/nadle.config.ts"
 }
 [log] 
@@ -34,6 +35,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
   "maxWorkers": 3,
   "list": false,
   "dryRun": false,
+  "stacktrace": false,
   "configPath": "/ROOT/test/fixtures/main/nadle.config.ts"
 }
 [log] 

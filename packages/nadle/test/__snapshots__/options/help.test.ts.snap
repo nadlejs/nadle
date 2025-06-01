@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`--help > prints help > stdout 1`] = `
-"nadle [tasks...]
+nadle [tasks...]
 
 Execute one or more named tasks
 
@@ -11,6 +11,7 @@ Execution options:
   -l, --list         List all available tasks                             [boolean] [default: false]
   -m, --dry-run      Run specified tasks in dry run mode                  [boolean] [default: false]
       --show-config  Print the resolved configuration                     [boolean] [default: false]
+      --stacktrace   Print stacktrace on error                            [boolean] [default: false]
 
 General options:
   -c, --config       Path to config file       [string] [default: <cwd>/build.nadle.{js,mjs,ts,mts}]
@@ -21,5 +22,5 @@ General options:
 
 Miscellaneous options:
   -h, --help     Show this help                                                            [boolean]
-  -v, --version  Show version number                                                       [boolean]"
+  -v, --version  Show version number                                                       [boolean]
 `;

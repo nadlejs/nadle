@@ -50,6 +50,13 @@ Simulate task execution without actually running the tasks. Shows what would be 
 nadle --dry-run build
 ```
 
+### `--stacktrace`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Displays the full error stack trace when a task fails. Useful for debugging and identifying the root cause of errors.
+
 ### `--show-config`
 
 - **Type:** `boolean`
