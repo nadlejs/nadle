@@ -14,7 +14,7 @@ export interface Reporter {
 
 	onExecutionStart?: () => Awaitable<void>;
 	onExecutionFinish?: () => Awaitable<void>;
-	onExecutionFailed?: () => Awaitable<void>;
+	onExecutionFailed?: (error: any) => Awaitable<void>;
 
 	onTaskStart?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskQueued?: (task: RegisteredTask) => Awaitable<void>;
@@ -124,7 +124,7 @@ export class DefaultReporter implements Reporter {
 		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed)`)}`);
 	}
 
-	async onExecutionFailed() {
+	async onExecutionFailed(error: any) {
 		this.nadle.logger.info("Execution failed");
 		this.renderer.finish();
 		clearInterval(this.durationInterval);
@@ -135,6 +135,14 @@ export class DefaultReporter implements Reporter {
 		this.nadle.logger.log(
 			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
 		);
+
+		if (!this.nadle.options.stacktrace) {
+			this.nadle.logger.log(
+				`\nFor more details, re-run the command with the ${c.yellow("--stacktrace")} option to display the full error and help identify the root cause.`
+			);
+		} else {
+			this.nadle.logger.error(error instanceof Error ? error.stack : error);
+		}
 	}
 
 	private startTimers() {

@@ -34,7 +34,8 @@ exports[`Configure > can override configured options from config file if the cli
    '/ROOT/test/fixtures/main/nadle.configure.ts',
   minWorkers: 1,
   list: false,
-  dryRun: false }
+  dryRun: false,
+  stacktrace: false }
 [info] Detected environments: { CI: false, TEST: true }
 [log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.configure.ts
 </BoldDim>
@@ -50,7 +51,8 @@ exports[`Configure > can override configured options from config file if the cli
   "configPath": "/ROOT/test/fixtures/main/nadle.configure.ts",
   "minWorkers": 1,
   "list": false,
-  "dryRun": false
+  "dryRun": false,
+  "stacktrace": false
 }
 [info] Execution finished
 [log] 
@@ -71,7 +73,8 @@ exports[`Configure > can use configured options from config file > stdout 1`] = 
   "configPath": "/ROOT/test/fixtures/main/nadle.configure.ts",
   "minWorkers": 1,
   "list": false,
-  "dryRun": false
+  "dryRun": false,
+  "stacktrace": false
 }
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>

@@ -9,9 +9,6 @@ export default defineConfig({
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
 		setupFiles: "./test/setup/setup.ts",
-		chaiConfig: {
-			truncateThreshold: 0
-		},
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"

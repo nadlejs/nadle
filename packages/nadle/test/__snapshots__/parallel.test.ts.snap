@@ -16,7 +16,7 @@ exports[`Parallel > should run tasks parallel > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>4</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`Parallel > should stop on error immediately > stderr 1`] = `""`;
+exports[`Parallel > should stop on error immediately > stderr 1`] = ``;
 
 exports[`Parallel > should stop on error immediately > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
@@ -30,4 +30,6 @@ exports[`Parallel > should stop on error immediately > stdout 1`] = `
 [log] <Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;

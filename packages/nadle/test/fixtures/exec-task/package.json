@@ -1,0 +1,8 @@
+{
+	"name": "@nadle/internal-fixture-exec-task",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	}
+}
