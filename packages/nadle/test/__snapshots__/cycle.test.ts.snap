@@ -8,6 +8,8 @@ exports[`detect cycle > should detect 1-task-cycle > stdout 1`] = `
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`detect cycle > should detect 2-tasks-cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-6</BoldDim> → <Bold>cycle-7</BoldDim> → <Bold>cycle-6</BoldDim>`;
@@ -20,6 +22,8 @@ exports[`detect cycle > should detect 2-tasks-cycle > stdout 1`] = `
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`detect cycle > should detect 2-tasks-cycle > stdout 2`] = `
@@ -28,6 +32,8 @@ exports[`detect cycle > should detect 2-tasks-cycle > stdout 2`] = `
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`detect cycle > should detect cycle from a task inside the cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-2</BoldDim> → <Bold>cycle-3</BoldDim> → <Bold>cycle-4</BoldDim> → <Bold>cycle-5</BoldDim> → <Bold>cycle-2</BoldDim>`;
@@ -38,6 +44,8 @@ exports[`detect cycle > should detect cycle from a task inside the cycle > stdou
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`detect cycle > should detect cycle from a task outside the cycle > stderr 1`] = `[error] Cycle detected: <Bold>cycle-2</BoldDim> → <Bold>cycle-3</BoldDim> → <Bold>cycle-4</BoldDim> → <Bold>cycle-5</BoldDim> → <Bold>cycle-2</BoldDim>`;
@@ -48,6 +56,8 @@ exports[`detect cycle > should detect cycle from a task outside the cycle > stdo
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
 
 exports[`detect cycle > should print the cycle from the first reach task > stderr 1`] = `[error] Cycle detected: <Bold>cycle-4</BoldDim> → <Bold>cycle-5</BoldDim> → <Bold>cycle-2</BoldDim> → <Bold>cycle-3</BoldDim> → <Bold>cycle-4</BoldDim>`;
@@ -58,4 +68,6 @@ exports[`detect cycle > should print the cycle from the first reach task > stdou
 </BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;

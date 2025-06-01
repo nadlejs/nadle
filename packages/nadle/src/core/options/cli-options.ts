@@ -68,6 +68,14 @@ export const CLIOptions = {
 			description: "Run specified tasks in dry run mode"
 		}
 	},
+	stacktrace: {
+		key: "stacktrace",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Print stacktrace on error"
+		}
+	},
 	showConfig: {
 		key: "show-config",
 		options: {

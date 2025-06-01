@@ -10,7 +10,7 @@ exports[`Pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`Pnpm Task > throw error when running tsc command with error ts file > stderr 1`] = `""`;
+exports[`Pnpm Task > throw error when running tsc command with error ts file > stderr 1`] = ``;
 
 exports[`Pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
@@ -30,4 +30,6 @@ Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
 [log] <Red>×</Red> Task <Bold>fail</BoldDim> failed in {duration}
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
