@@ -4,10 +4,10 @@ import {
 	TaskStatus,
 	type TaskFn,
 	type Resolver,
+	type Callback,
 	type ConfigBuilder,
 	type RegisteredTask,
-	type TaskConfiguration,
-	type ContextualResolver
+	type TaskConfiguration
 } from "./types.js";
 
 export function registerTask(name: string): ConfigBuilder;
@@ -18,7 +18,7 @@ export function registerTask(name: string, task?: TaskFn | Task, optionsResolver
 		throw new Error(`Task "${name}" already registered`);
 	}
 
-	let configCollector: ContextualResolver<TaskConfiguration> | TaskConfiguration = () => ({});
+	let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
 
 	const register = () => {
 		taskRegistry.register(name, {

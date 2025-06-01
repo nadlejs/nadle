@@ -10,9 +10,14 @@ import { Writable } from 'node:stream';
 export type Awaitable<T> = T | PromiseLike<T>;
 
 // @public (undocumented)
+export type Callback<T = unknown, P = {
+    context: Context;
+}> = (params: P) => T;
+
+// @public (undocumented)
 export interface ConfigBuilder {
     // (undocumented)
-    config(builder: ContextualResolver<TaskConfiguration> | TaskConfiguration): void;
+    config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
 }
 
 // @public (undocumented)
@@ -21,13 +26,8 @@ export function configure(options: Partial<NadleConfigFileOptions>): void;
 // @public (undocumented)
 export interface Context {
     // (undocumented)
-    nadle: Nadle;
+    readonly nadle: Nadle;
 }
-
-// @public (undocumented)
-export type ContextualResolver<T = unknown> = (params: {
-    context: Context;
-}) => T;
 
 // @public (undocumented)
 export class DefaultReporter implements Reporter {
@@ -181,7 +181,7 @@ export const PnpmTask: Task<{
 // @public (undocumented)
 export interface RegisteredTask extends Task {
     // (undocumented)
-    configResolver: ContextualResolver<TaskConfiguration>;
+    configResolver: Callback<TaskConfiguration>;
     // (undocumented)
     name: string;
     // (undocumented)
@@ -216,7 +216,7 @@ export interface Reporter {
 }
 
 // @public (undocumented)
-export type Resolver<T = unknown> = T | ContextualResolver<T>;
+export type Resolver<T = unknown> = T | Callback<T>;
 
 // @public (undocumented)
 export function resolveTask(input: string, allTasks: string[]): {
@@ -235,10 +235,12 @@ export const SupportLogLevels: ["error", "log", "info", "debug"];
 // @public (undocumented)
 export interface Task<Options = unknown> {
     // (undocumented)
-    run(params: {
+    run: Callback<Awaitable<void>, {
         options: Options;
-        context: Context;
-    }): Promise<void> | void;
+        context: Context & {
+            workingDir: string;
+        };
+    }>;
 }
 
 // @public (undocumented)
@@ -247,13 +249,18 @@ export interface TaskConfiguration {
     description?: string;
     env?: TaskEnv;
     group?: string;
+    workingDir?: string;
 }
 
 // @public (undocumented)
 export type TaskEnv = Record<string, string | number | boolean>;
 
 // @public (undocumented)
-export type TaskFn = ContextualResolver<Promise<void> | void>;
+export type TaskFn = Callback<Awaitable<void>, {
+    context: Context & {
+        workingDir: string;
+    };
+}>;
 
 // @public (undocumented)
 export class TaskRegistry {
@@ -303,7 +310,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:140:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:150:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

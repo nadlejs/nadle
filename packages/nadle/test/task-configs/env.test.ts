@@ -1,8 +1,8 @@
 import { it, expect, describe } from "vitest";
 
-import { getStdout, createExec } from "./setup/utils.js";
+import { getStdout, createExec } from "../setup/utils.js";
 
-describe("Env", () => {
+describe("env", () => {
 	const exec = createExec({ config: "env" });
 
 	it("can inject env to process.env from object config", async () => {

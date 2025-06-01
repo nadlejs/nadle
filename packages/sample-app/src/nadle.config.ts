@@ -149,3 +149,11 @@ const MyTask: Task = {
 };
 
 tasks.register("secondTask", MyTask, {}).config(() => ({ env: { SECOND_TASK_ENV: "second task env" } }));
+
+tasks
+	.register("printWorkingDir", ({ context }) => {
+		console.log(`Current working directory: ${context.workingDir}`);
+	})
+	.config({
+		workingDir: "../.."
+	});
