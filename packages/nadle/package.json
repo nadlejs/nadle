@@ -24,7 +24,7 @@
 		"jiti": "^2.4.2",
 		"lodash-es": "^4.17.21",
 		"std-env": "^3.9.0",
-		"tinypool": "^1.0.2",
+		"tinypool": "^1.1.0",
 		"tinyrainbow": "^2.0.0",
 		"yargs": "^17.7.2"
 	},
