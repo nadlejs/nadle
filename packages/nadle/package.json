@@ -1,6 +1,6 @@
 {
 	"name": "nadle",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
 	"scripts": {
@@ -12,7 +12,8 @@
 	},
 	"files": [
 		"lib",
-		"bin"
+		"bin",
+		"CHANGELOG.md"
 	],
 	"main": "lib/index.js",
 	"bin": {

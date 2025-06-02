@@ -1,5 +1,17 @@
 # nadle
 
+## 0.3.3
+
+### Patch Changes
+
+- 7941473: Print resolved tasks when user specifies abbreviations
+- 8e1e27a: propagate workingDir config to PnpmTask and ExecTask
+- 194cfde: add --stacktrace option
+- 7ea8e26: add new lines after task starts and before task done
+- f79ef08: pass resolved workingDir as param to task callback
+- b4488fc: support passing environment variables to tasks
+- f018665: improve in-progress info
+
 ## 0.3.2
 
 ### Patch Changes
