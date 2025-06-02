@@ -8,8 +8,8 @@ exports[`when passing unknown tasks > should throw error with suggestions if fin
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.unknown.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.unknown.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
 [log] 
@@ -18,8 +18,8 @@ For more details, re-run the command with the <Yellow>--stacktrace</Yellow> opti
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks > stdout 2`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.unknown.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.unknown.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
 [log] 
@@ -28,8 +28,8 @@ For more details, re-run the command with the <Yellow>--stacktrace</Yellow> opti
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks > stdout 3`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.unknown.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.unknown.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
 [log] 
@@ -40,8 +40,8 @@ exports[`when passing unknown tasks > should throw error without any suggestions
 
 exports[`when passing unknown tasks > should throw error without any suggestions if not find any similar tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.unknown.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.unknown.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
 [log] 

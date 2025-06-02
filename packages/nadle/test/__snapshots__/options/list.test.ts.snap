@@ -2,8 +2,8 @@
 
 exports[`--list > prints all available tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Greetings tasks</BoldDim>
 [log] <Bold>---------------</BoldDim>
 [log] <Bold><Green>goodbye</Green></BoldDim><Yellow> - Say goodbye to nadle!</Yellow>
@@ -23,8 +23,8 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 
 exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.empty.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.empty.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] No tasks found
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>

@@ -2,8 +2,8 @@
 
 exports[`ExecTask > can run pwd-1 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/exec-task/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-1</BoldDim> started
 
 [log] /ROOT/test/fixtures/exec-task
@@ -16,8 +16,8 @@ exports[`ExecTask > can run pwd-1 command with configured workingDir > stdout 1`
 
 exports[`ExecTask > can run pwd-2 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/exec-task/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-2</BoldDim> started
 
 [log] /ROOT/test/fixtures/exec-task
@@ -30,8 +30,8 @@ exports[`ExecTask > can run pwd-2 command with configured workingDir > stdout 1`
 
 exports[`ExecTask > can run pwd-3 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/exec-task/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-3</BoldDim> started
 
 [log] /ROOT/test/fixtures
@@ -44,8 +44,8 @@ exports[`ExecTask > can run pwd-3 command with configured workingDir > stdout 1`
 
 exports[`ExecTask > can run pwd-4 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/exec-task/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-4</BoldDim> started
 
 [log] /ROOT/test
@@ -58,8 +58,8 @@ exports[`ExecTask > can run pwd-4 command with configured workingDir > stdout 1`
 
 exports[`ExecTask > can run pwd-5 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/exec-task/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/exec-task/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pwd-5</BoldDim> started
 
 [log] /ROOT/test/fixtures/main

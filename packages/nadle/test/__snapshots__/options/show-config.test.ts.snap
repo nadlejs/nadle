@@ -2,8 +2,8 @@
 
 exports[`--show-config > should show config > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] {
   "sequence": false,
   "logLevel": "log",
@@ -23,8 +23,8 @@ exports[`--show-config > should show config > stdout 1`] = `
 
 exports[`--show-config > should show config with extra options > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 2–3 workers for task execution</BoldDim>
 [log] {
   "sequence": false,
   "logLevel": "log",

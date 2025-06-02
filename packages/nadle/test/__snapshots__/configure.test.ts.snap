@@ -24,7 +24,9 @@ exports[`Configure > can override configured options from config file if the cli
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Use nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.configure.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [info] Resolved options: { sequence: false,
   logLevel: 'info',
   showConfig: true,
@@ -38,8 +40,6 @@ exports[`Configure > can override configured options from config file if the cli
   dryRun: false,
   stacktrace: false }
 [info] Detected environments: { CI: false, TEST: true }
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.configure.ts
-</BoldDim>
 [info] Resolved tasks: [  ]
 [info] Execution started
 [log] {
@@ -62,8 +62,8 @@ exports[`Configure > can override configured options from config file if the cli
 
 exports[`Configure > can use configured options from config file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.configure.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.configure.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] {
   "sequence": false,
   "logLevel": "error",
