@@ -72,9 +72,10 @@ const config: Config = {
 					sidebarId: "docsSidebar"
 				},
 				{
-					label: "GitHub",
 					position: "right",
-					href: GITHUB_REPO_URL
+					href: GITHUB_REPO_URL,
+					className: "header-github-link",
+					"aria-label": "GitHub repository"
 				}
 			]
 		},

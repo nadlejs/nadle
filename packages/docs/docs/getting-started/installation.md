@@ -1,57 +1,16 @@
-# Getting Started
-
-## Try Nadle Online
-
-Want to try Nadle without installing anything? You can experiment with Nadle directly
-in your browser using our [StackBlitz](https://stackblitz.com/github/nadle/nadle-demo) integration.
-
-### What's in the Demo?
-
-The demo project includes:
-
-1. A basic TypeScript project setup
-2. Pre-configured `build.nadle.ts`
-3. Example tasks for common scenarios
-4. Interactive terminal to run commands
-
-### Example Tasks to Try
-
-Once the demo loads, try these commands in the terminal:
-
-```bash
-# List all available tasks
-nadle --list
-
-# Show the current resolved configuration
-nadle --show-config
-
-# Run the hello task
-npx nadle hello
-```
-
-### Exploring the Code
-
-The demo includes several example files:
-
-1. `build.nadle.ts` - Main build configuration
-2. `src/` - Sample source files
-3. `tests/` - Example test setup
-
-Feel free to modify the code and experiment with different configurations!
-
-## Installation
+# Installation
 
 Getting started with Nadle is straightforward. Follow these steps to add Nadle to your project.
 
-### Prerequisites
+## Prerequisites
 
 Before installing Nadle, make sure you have:
 
-- Node.js 22.x or later
+- Node.js 20.x or later
 - npm 10.x or later (or yarn/pnpm)
 - TypeScript 5.8+ (recommended)
 
-### Quick Install
+## Quick Install
 
 You can install Nadle using your preferred package manager:
 
@@ -90,11 +49,11 @@ nadle --version
 
 You should see the current version of Nadle printed to your terminal.
 
-## Write build.nadle.ts
+## Write nadle.config.ts
 
-The `build.nadle.ts` file serves as the central entry point for defining and organizing your Nadle tasks.
+The `nadle.config.ts` file serves as the central entry point for defining and organizing your Nadle tasks.
 It’s where task logic, metadata, and dependencies come together to form your build pipeline.
-Copy the following template to create your first `build.nadle.ts` file:
+Copy the following template to create your first `nadle.config.ts` file:
 
 ```typescript
 import { tasks } from "nadle";

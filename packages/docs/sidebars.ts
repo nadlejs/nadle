@@ -19,10 +19,11 @@ const sidebars: SidebarsConfig = {
 
 	// But you can create a sidebar manually
 	docsSidebar: [
+		"introduction",
 		{
 			type: "category",
-			label: "Introduction",
-			items: ["introduction/why-nadle", "introduction/getting-started", "introduction/features"]
+			label: "Getting Started",
+			items: ["getting-started/installation", "getting-started/playground", "getting-started/features"]
 		},
 		"config-reference",
 		"api-reference"
