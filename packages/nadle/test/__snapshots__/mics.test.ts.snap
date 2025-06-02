@@ -2,8 +2,8 @@
 
 exports[`when not given any tasks > show all available tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>

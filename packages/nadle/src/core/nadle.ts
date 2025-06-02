@@ -202,10 +202,6 @@ export class Nadle {
 	async registerTask() {
 		const configFile = this.options.configPath;
 
-		if (!this.options.isWorkerThread) {
-			this.logger.log(c.dim(`Using config file from ${configFile}\n`));
-		}
-
 		if (!existsSync(configFile)) {
 			throw new Error(`Config file not found: ${configFile}`);
 		}

@@ -2,8 +2,8 @@
 
 exports[`workingDir > should print correct working directory for task current > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.working-dir.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>current</BoldDim> started
 
 Current working directory: /ROOT/test/fixtures/main
@@ -15,8 +15,8 @@ Current working directory: /ROOT/test/fixtures/main
 
 exports[`workingDir > should print correct working directory for task oneLevelDown > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.working-dir.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>oneLevelDown</BoldDim> started
 
 Current working directory: /ROOT/test/fixtures/main/subdir1
@@ -28,8 +28,8 @@ Current working directory: /ROOT/test/fixtures/main/subdir1
 
 exports[`workingDir > should print correct working directory for task oneLevelUp > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.working-dir.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>oneLevelUp</BoldDim> started
 
 Current working directory: /ROOT/test/fixtures
@@ -41,8 +41,8 @@ Current working directory: /ROOT/test/fixtures
 
 exports[`workingDir > should print correct working directory for task twoLevelsDown > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.working-dir.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsDown</BoldDim> started
 
 Current working directory: /ROOT/test/fixtures/main/subdir1/subdir2
@@ -54,8 +54,8 @@ Current working directory: /ROOT/test/fixtures/main/subdir1/subdir2
 
 exports[`workingDir > should print correct working directory for task twoLevelsUp > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.working-dir.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.working-dir.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsUp</BoldDim> started
 
 Current working directory: /ROOT/test

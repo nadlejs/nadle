@@ -2,8 +2,8 @@
 
 exports[`Basic > can run a simple command > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 
 Hello from nadle!
@@ -15,8 +15,8 @@ Hello from nadle!
 
 exports[`Basic > can run dependent task first > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
 
 Preparing...
@@ -33,8 +33,8 @@ Copying from assets/ to dist/
 
 exports[`Basic > can run two commands sequentially > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
 
 Hello from nadle!
