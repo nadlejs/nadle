@@ -1,7 +1,7 @@
 import eslint from "@eslint/js";
 import nPlugin from "eslint-plugin-n";
 import tsEslint from "typescript-eslint";
-import stylistic from "@stylistic/eslint-plugin-ts";
+import stylistic from "@stylistic/eslint-plugin";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
 
