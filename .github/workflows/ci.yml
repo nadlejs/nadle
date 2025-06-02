@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - "**"
 
 permissions:
   contents: read
@@ -20,6 +20,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
         node-version:
+          - 20
           - 22
           - 24
 

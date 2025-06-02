@@ -7,7 +7,7 @@ export default defineConfig({
 	format: ["esm"],
 	splitting: true,
 	sourcemap: true,
-	target: "node22",
+	target: "node20",
 	tsconfig: "tsconfig.build.json",
 	entry: { cli: "src/cli.ts", index: "src/index.ts", worker: "src/core/worker.ts" }
 });

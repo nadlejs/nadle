@@ -1,7 +1,7 @@
-/* eslint-disable no-console */
 import * as Path from "node:path";
 import Fs from "node:fs/promises";
 
+import { glob } from "glob";
 import c from "tinyrainbow";
 import { type PackageJson } from "type-fest";
 
@@ -10,22 +10,17 @@ const nadlePackagePath = Path.join(rootDir, "packages", "nadle", "package.json")
 const nadlePackage = JSON.parse(await Fs.readFile(nadlePackagePath, "utf-8")) as PackageJson;
 
 export async function validatePackages() {
-	for await (const entry of Fs.glob("**/package.json", {
+	for (const entry of await glob("**/package.json", {
 		cwd: rootDir,
-		exclude: (path) => path.includes("node_modules")
+		ignore: "node_modules/**"
 	})) {
-		if (entry.includes("/nadle/lib/")) {
-			continue;
-		}
-
 		const path = Path.join(rootDir, entry);
 		const pkg = JSON.parse(await Fs.readFile(path, "utf-8"));
-		console.log(c.cyan(`Validating package.json at file://${path}`));
+		console.log(c.cyan(`Validating package.json at ${entry}`));
 
 		for (const validator of validators) {
 			try {
 				await validator({ pkg, path });
-				console.log(c.green(`✓ Passed ${validator.name}`));
 			} catch (error) {
 				console.error(c.red(`x Failed ${validator.name}`));
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -34,8 +29,6 @@ export async function validatePackages() {
 				throw error;
 			}
 		}
-
-		console.log();
 	}
 }
 
@@ -204,6 +197,7 @@ const keyIndicesMap = new Map(
 		"bugs",
 		"packageManager",
 		"pnpm",
+		"stackblitz",
 		"lint-staged"
 	].map((key, index) => [key, index])
 );
