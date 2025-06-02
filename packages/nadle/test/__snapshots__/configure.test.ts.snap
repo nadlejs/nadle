@@ -24,6 +24,7 @@ exports[`Configure > can override configured options from config file if the cli
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Use nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
 [info] Resolved options: { sequence: false,
   logLevel: 'info',
   showConfig: true,
