@@ -18,7 +18,7 @@ function HomepageHeader() {
 				</Heading>
 				<p className="hero__subtitle">Modern task runner for Node.js, inspired by Gradle and powered by TypeScript</p>
 				<div className={styles.buttons}>
-					<Link className="button button--primary button--lg" to="/docs/introduction/getting-started">
+					<Link className="button button--primary button--lg" to="/docs/introduction">
 						Get Started
 					</Link>
 					<Link

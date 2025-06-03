@@ -78,4 +78,4 @@ Nadle is perfect for:
 - Projects needing efficient parallel task execution
 - Developers seeking a modern alternative to traditional task runners
 
-Ready to get started? Check out our [Quick Start Guide](./getting-started.md) to begin using Nadle in your project.
+Ready to get started? Check out our [Quick Start Guide](./installation.md) to begin using Nadle in your project.
