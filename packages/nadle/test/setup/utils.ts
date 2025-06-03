@@ -4,8 +4,7 @@ import { expect } from "vitest";
 import stripAnsi from "strip-ansi";
 import { execa, type Result, type ResultPromise, parseCommandString, type Options as ExecaOptions } from "execa";
 
-export const cliPath = Path.resolve(import.meta.dirname, "..", "..", "bin", "nadle");
-export const fixturesDir = Path.resolve(import.meta.dirname, "..", "fixtures");
+import { cliPath, fixturesDir } from "./constants.js";
 
 interface ExecOptions extends ExecaOptions {
 	config?: string;
@@ -13,11 +12,13 @@ interface ExecOptions extends ExecaOptions {
 	env?: ExecaOptions["env"] & { CI?: "true" | "false"; TEST?: "true" | "false" };
 }
 
-export function createExec(options?: ExecOptions) {
+export type Exec = (strings: TemplateStringsArray, ...values: unknown[]) => ResultPromise;
+
+export function createExec(options?: ExecOptions): Exec {
 	const configFile = options?.config;
 	const autoDisabledSummary = options?.autoDisabledSummary ?? true;
 
-	return (strings: TemplateStringsArray, ...values: unknown[]): ResultPromise => {
+	return (strings, ...values) => {
 		let command = strings.reduce((acc, str, i) => acc + str + (i < values.length ? String(values[i]) : ""), "");
 
 		if (configFile !== undefined) {
@@ -46,7 +47,11 @@ export function createExec(options?: ExecOptions) {
 			env = { ...env, NODE_ENV: "production" };
 		}
 
-		return execa(cliPath, parseCommandString(command), { cwd: Path.join(fixturesDir, "main"), ...options, env });
+		return execa(cliPath, parseCommandString(command), {
+			cwd: Path.join(fixturesDir, "main"),
+			...options,
+			env
+		});
 	};
 }
 

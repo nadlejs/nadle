@@ -2,9 +2,11 @@ import { expect } from "vitest";
 
 import {
 	serializeANSI,
+	serializeHash,
 	serializeVersion,
 	serializeDuration,
 	serializeFilePath,
+	removeUnstableLines,
 	serializeLibFilePath,
 	serializeFileLocation,
 	serializeUnstableWords
@@ -13,7 +15,11 @@ import {
 expect.addSnapshotSerializer({
 	test: (val) => typeof val === "string",
 	serialize: (val) =>
-		serializeVersion(serializeLibFilePath(serializeFilePath(serializeFileLocation(serializeDuration(serializeANSI(serializeUnstableWords(val)))))))
+		removeUnstableLines(
+			serializeVersion(
+				serializeLibFilePath(serializeHash(serializeFilePath(serializeFileLocation(serializeDuration(serializeANSI(serializeUnstableWords(val)))))))
+			)
+		)
 });
 
 expect.extend({
