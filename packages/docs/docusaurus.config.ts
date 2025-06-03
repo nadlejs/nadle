@@ -72,9 +72,10 @@ const config: Config = {
 					sidebarId: "docsSidebar"
 				},
 				{
-					label: "GitHub",
 					position: "right",
-					href: GITHUB_REPO_URL
+					href: GITHUB_REPO_URL,
+					className: "header-github-link",
+					"aria-label": "GitHub repository"
 				}
 			]
 		},
@@ -86,16 +87,16 @@ const config: Config = {
 					title: "Documentation",
 					items: [
 						{
-							label: "Why Nadle?",
-							to: "/docs/introduction/why-nadle"
+							label: "Introduction",
+							to: "/docs/introduction"
 						},
 						{
-							label: "Getting Started",
-							to: "/docs/introduction/getting-started"
+							label: "Installation",
+							to: "/docs/getting-started/installation"
 						},
 						{
 							label: "Features",
-							to: "/docs/introduction/features"
+							to: "/docs/getting-started/features"
 						}
 					]
 				},
