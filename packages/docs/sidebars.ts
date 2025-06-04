@@ -19,6 +19,7 @@ const sidebars: SidebarsConfig = {
 
 	// But you can create a sidebar manually
 	docsSidebar: [
+		"why-nadle",
 		"introduction",
 		{
 			type: "category",

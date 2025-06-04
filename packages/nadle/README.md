@@ -15,10 +15,27 @@ supporting parallel execution and streamlined build automation.
 
 ## Getting Started
 
-- [Why Nadle?](https://www.nadle.dev/docs/introduction/why-nadle)
-- [Installation](https://www.nadle.dev/docs/introduction/getting-started#installation)
-- [Features](https://www.nadle.dev/docs/introduction/features)
+- [Why Nadle?](https://www.nadle.dev/docs/why-nadle)
+- [Installation](https://www.nadle.dev/docs/getting-started/installation)
+- [Features](https://www.nadle.dev/docs/getting-started/features)
+- [Playground](https://www.nadle.dev/docs/getting-started/playground)
 - [Configuration Reference](https://www.nadle.dev/docs/config-reference)
+
+## Build
+
+This repository uses **Nadle to build itself** — showcasing how it can serve as a fast, type-safe, and flexible build system for modern JavaScript/TypeScript projects.
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+Build with Nadle itself:
+
+```bash
+nadle build
+```
 
 ## Contribution
 
