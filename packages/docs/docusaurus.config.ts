@@ -110,6 +110,29 @@ const config: Config = {
 					]
 				}
 			]
+		},
+		algolia: {
+			// The application ID provided by Algolia
+			appId: "N3MF5K9FHG",
+
+			// Public API key: it is safe to commit it
+			apiKey: "a889ea985571abd223e1ffc5195e1769",
+
+			indexName: "nadle",
+
+			// Optional: see doc section below
+			contextualSearch: true,
+
+			// Optional: Algolia search parameters
+			searchParameters: {},
+
+			// Optional: path for search page that enabled by default (`false` to disable it)
+			searchPagePath: "search",
+
+			// Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+			insights: false
+
+			//... other Algolia params
 		}
 	} satisfies Preset.ThemeConfig,
 
