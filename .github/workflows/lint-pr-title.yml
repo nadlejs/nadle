@@ -30,6 +30,7 @@ jobs:
             release
             deps
             docs
+            security
           requireScope: false
           subjectPattern: ^[a-z].+$
           subjectPatternError: |

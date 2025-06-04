@@ -131,17 +131,6 @@ tasks.register("cycle-3").config({ dependsOn: ["cycle-4"] });
 tasks.register("cycle-4").config({ dependsOn: ["cycle-5"] });
 tasks.register("cycle-5").config({ dependsOn: ["cycle-2"] });
 
-tasks
-	.register("env", () => {
-		console.log(process.env);
-	})
-	.config({
-		env: {
-			NODE_ENV: "development",
-			CUSTOM_VAR: "custom_value"
-		}
-	});
-
 tasks.register("firstTask", () => console.log("firstTask")).config({ env: { FIRST_TASK_ENV: "first task env" } });
 
 const MyTask: Task = {

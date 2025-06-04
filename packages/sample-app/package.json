@@ -25,7 +25,6 @@
 		"task-cycle-3": "pnpm base task-cycle-3",
 		"task-cycle-6": "pnpm base task-cycle-6",
 		"show-config": "pnpm base --show-config",
-		"env": "pnpm base firstTask secondTask --sequence",
 		"printWorkingDir": "pnpm base printWorkingDir"
 	},
 	"dependencies": {
