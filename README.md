@@ -1,3 +1,5 @@
+![Demo](./assets/demo.gif)
+
 # nadle
 
 A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool,
