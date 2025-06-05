@@ -12,6 +12,7 @@ nadle.iml
 # build output
 **/build
 **/lib
+__temp__
 .docusaurus
 .vercel
 

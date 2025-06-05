@@ -10,6 +10,15 @@ export function serializeUnstableWords(input: string) {
 	return input;
 }
 
+const UnstableLines = ["ExperimentalWarning", "--trace-warnings"];
+
+export function removeUnstableLines(input: string) {
+	return input
+		.split("\n")
+		.filter((line) => !UnstableLines.some((unstableLine) => line.includes(unstableLine)))
+		.join("\n");
+}
+
 export function serializeVersion(input: string) {
 	return input.replace(/([v@])\d+\.\d+\.\d+/g, "{version}");
 }
@@ -29,6 +38,10 @@ export function serializeFileLocation(input: string) {
 	return input.replaceAll(/(\w+(\.\w)?):(\d+):(\d+)/g, (_match, file) => {
 		return `${file}:{line}:{column}`;
 	});
+}
+
+export function serializeHash(input: string) {
+	return input.replaceAll(/__[0-9a-f]+__/gi, `__{hash}__`);
 }
 
 const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;

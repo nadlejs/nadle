@@ -2,7 +2,8 @@ import * as Path from "node:path";
 
 import { it, describe } from "vitest";
 
-import { createExec, expectPass, fixturesDir } from "../setup/utils.js";
+import { fixturesDir } from "../setup/constants.js";
+import { createExec, expectPass } from "../setup/utils.js";
 
 describe("--config", () => {
 	it.each(["cjs-js", "cjs-ts", "esm-js", "esm-ts"])("should use the existent config path if not specify --config in %s package", async (pkg) => {

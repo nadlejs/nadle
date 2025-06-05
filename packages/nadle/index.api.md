@@ -4,6 +4,7 @@
 
 ```ts
 
+import { RimrafAsyncOptions } from 'rimraf';
 import { Writable } from 'node:stream';
 
 // @public (undocumented)
@@ -50,6 +51,15 @@ export class DefaultReporter implements Reporter {
     onTasksScheduled(tasks: string[]): Promise<void>;
     // (undocumented)
     onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
+}
+
+// @public (undocumented)
+export const DeleteTask: Task<DeleteTaskOptions>;
+
+// @public (undocumented)
+export interface DeleteTaskOptions extends RimrafAsyncOptions {
+    // (undocumented)
+    readonly paths: string | string[];
 }
 
 // @public (undocumented)
@@ -310,7 +320,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:150:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:151:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
