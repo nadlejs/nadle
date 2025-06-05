@@ -1,6 +1,5 @@
 import { it, expect, describe } from "vitest";
-
-import { exec, createExec, expectFail } from "./setup/utils.js";
+import { exec, createExec, expectFail } from "setup";
 
 describe("when register two tasks with the same name", () => {
 	it("should throw error", async () => {

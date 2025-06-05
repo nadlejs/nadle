@@ -3,6 +3,10 @@
 	"include": ["src", "test", "vitest.config.ts", "tsup.config.ts"],
 	"compilerOptions": {
 		"noEmit": true,
-		"allowJs": true
+		"allowJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"setup": ["test/__setup__/index.js"]
+		}
 	}
 }

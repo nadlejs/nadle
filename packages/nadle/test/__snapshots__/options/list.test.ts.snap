@@ -2,7 +2,7 @@
 
 exports[`--list > prints all available tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Greetings tasks</BoldDim>
 [log] <Bold>---------------</BoldDim>
@@ -23,7 +23,7 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 
 exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.empty.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.empty.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] No tasks found
 [log] 

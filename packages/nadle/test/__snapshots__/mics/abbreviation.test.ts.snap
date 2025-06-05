@@ -2,7 +2,7 @@
 
 exports[`Abbreviation > should log resolved tasks only > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] Resolved tasks:
     <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
@@ -34,7 +34,7 @@ Copying from assets/ to dist/
 
 exports[`Abbreviation > should resolve abbr task properly > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] Resolved tasks:
     <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>

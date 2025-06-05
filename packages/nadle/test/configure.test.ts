@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-
-import { createExec, expectPass } from "./setup/utils.js";
+import { createExec, expectPass } from "setup";
 
 describe("Configure", () => {
 	const exec = createExec({ config: "configure" });

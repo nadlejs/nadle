@@ -2,7 +2,7 @@
 
 exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.depends-on.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.depends-on.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim>
@@ -18,7 +18,7 @@ exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 
 exports[`--dry-run > should list for one task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim>

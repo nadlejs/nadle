@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-
-import { createExec, expectFail, expectPass } from "./setup/utils.js";
+import { createExec, expectFail, expectPass } from "setup";
 
 describe("Parallel", () => {
 	const exec = createExec({ config: "parallel" });

@@ -25,7 +25,7 @@ exports[`Configure > can override configured options from config file if the cli
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.configure.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.configure.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [info] Resolved options: { sequence: false,
   logLevel: 'info',
@@ -34,7 +34,7 @@ exports[`Configure > can override configured options from config file if the cli
   isWorkerThread: false,
   maxWorkers: 1,
   configPath:
-   '/ROOT/test/fixtures/main/nadle.configure.ts',
+   '/ROOT/test/__fixtures__/main/nadle.configure.ts',
   minWorkers: 1,
   list: false,
   dryRun: false,
@@ -49,7 +49,7 @@ exports[`Configure > can override configured options from config file if the cli
   "showSummary": false,
   "isWorkerThread": false,
   "maxWorkers": 1,
-  "configPath": "/ROOT/test/fixtures/main/nadle.configure.ts",
+  "configPath": "/ROOT/test/__fixtures__/main/nadle.configure.ts",
   "minWorkers": 1,
   "list": false,
   "dryRun": false,
@@ -62,7 +62,7 @@ exports[`Configure > can override configured options from config file if the cli
 
 exports[`Configure > can use configured options from config file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.configure.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.configure.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] {
   "sequence": false,
@@ -71,7 +71,7 @@ exports[`Configure > can use configured options from config file > stdout 1`] = 
   "showSummary": false,
   "isWorkerThread": false,
   "maxWorkers": 1,
-  "configPath": "/ROOT/test/fixtures/main/nadle.configure.ts",
+  "configPath": "/ROOT/test/__fixtures__/main/nadle.configure.ts",
   "minWorkers": 1,
   "list": false,
   "dryRun": false,

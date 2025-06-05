@@ -1,6 +1,5 @@
+import { getStdout, createExec } from "setup";
 import { it, expect, describe } from "vitest";
-
-import { getStdout, createExec } from "../setup/utils.js";
 
 describe("env", () => {
 	const exec = createExec({ config: "env" });

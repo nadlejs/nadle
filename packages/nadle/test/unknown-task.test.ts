@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-
-import { createExec, expectFail } from "./setup/utils.js";
+import { createExec, expectFail } from "setup";
 
 describe("when passing unknown tasks", () => {
 	const exec = createExec({ config: "unknown" });

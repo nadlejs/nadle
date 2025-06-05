@@ -1,8 +1,6 @@
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
-
-import { withFixture } from "../setup/fs.js";
-import { expectPass } from "../setup/utils.js";
+import { expectPass, withFixture } from "setup";
 
 describe("ExecTask", { retry: 0 }, () => {
 	const files: fixturify.DirJSON = {

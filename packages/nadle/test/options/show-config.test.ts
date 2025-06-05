@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-
-import { exec, expectPass } from "../setup/utils.js";
+import { exec, expectPass } from "setup";
 
 describe("--show-config", () => {
 	it("should show config", async () => {

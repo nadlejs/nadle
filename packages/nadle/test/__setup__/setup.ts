@@ -1,26 +1,8 @@
 import { expect } from "vitest";
 
-import {
-	serializeANSI,
-	serializeHash,
-	serializeVersion,
-	serializeDuration,
-	serializeFilePath,
-	removeUnstableLines,
-	serializeLibFilePath,
-	serializeFileLocation,
-	serializeUnstableWords
-} from "./snapshot-serializers.js";
+import { serialize } from "./serialize.js";
 
-expect.addSnapshotSerializer({
-	test: (val) => typeof val === "string",
-	serialize: (val) =>
-		removeUnstableLines(
-			serializeVersion(
-				serializeLibFilePath(serializeHash(serializeFilePath(serializeFileLocation(serializeDuration(serializeANSI(serializeUnstableWords(val)))))))
-			)
-		)
-});
+expect.addSnapshotSerializer({ serialize, test: (val) => typeof val === "string" });
 
 expect.extend({
 	toRunInOrder(stdout: string, ...groups: (string[] | string)[]) {

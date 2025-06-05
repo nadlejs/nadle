@@ -1,6 +1,5 @@
+import { createExec } from "setup";
 import { it, expect, describe } from "vitest";
-
-import { createExec } from "./setup/utils.js";
 
 describe("Logger", () => {
 	const environments = [
