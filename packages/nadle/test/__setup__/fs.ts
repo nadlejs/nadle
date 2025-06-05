@@ -4,7 +4,7 @@ import Fs from "node:fs/promises";
 import fixturify from "fixturify";
 
 import { randomHash } from "./random.js";
-import { type Exec, createExec } from "./utils.js";
+import { type Exec, createExec } from "./exec.js";
 import { fixturesDir, defaultConfigFile } from "./constants.js";
 
 const TEMP_DIR = "__temp__";

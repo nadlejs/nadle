@@ -2,7 +2,7 @@ import Path from "node:path";
 
 import { expect } from "vitest";
 import stripAnsi from "strip-ansi";
-import { execa, type Result, type ResultPromise, parseCommandString, type Options as ExecaOptions } from "execa";
+import { execa, parseCommandString, type ResultPromise, type Options as ExecaOptions } from "execa";
 
 import { cliPath, fixturesDir } from "./constants.js";
 
@@ -26,7 +26,7 @@ export function createExec(options?: ExecOptions): Exec {
 		}
 
 		// Disable summary if not specified
-		if (autoDisabledSummary && (!command.includes("--show-summary") || !command.includes("--no-show-summary"))) {
+		if (autoDisabledSummary && !command.includes("--show-summary") && !command.includes("--no-show-summary")) {
 			command = "--no-show-summary " + command;
 		}
 
@@ -57,17 +57,6 @@ export function createExec(options?: ExecOptions): Exec {
 
 export const exec = createExec();
 
-export async function expectFail(command: () => ResultPromise, options: BlurOptions[] = []) {
-	try {
-		await command();
-	} catch (error) {
-		const execaError = error as Result;
-		expect(execaError.exitCode).toBe(1);
-		expect(blurSnapshot(execaError.stdout, options)).toMatchSnapshot("stdout");
-		expect(blurSnapshot(execaError.stderr, options)).toMatchSnapshot("stderr");
-	}
-}
-
 export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
 	const { stdout, exitCode } = await command;
 	expect(exitCode).toBe(0);
@@ -77,41 +66,4 @@ export async function getStdout(command: ResultPromise, options?: { stripAnsi?: 
 	}
 
 	return stdout as string;
-}
-
-export async function expectPass(command: ResultPromise, options: BlurOptions[] = []) {
-	const { stdout, exitCode } = await command;
-	expect(exitCode).toBe(0);
-	expect(blurSnapshot(stdout, options)).toMatchSnapshot("stdout");
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function blurSnapshot(snapshot: any, options: BlurOptions[] = []) {
-	return options.reduce((result, option) => blur(result, option), snapshot);
-}
-
-export interface BlurOptions {
-	pattern: string | RegExp;
-	replacement: string | ((match: string) => string);
-}
-export function blur(snapshot: string, options?: BlurOptions) {
-	if (!options) {
-		return snapshot;
-	}
-
-	const { pattern, replacement } = options;
-
-	if (typeof pattern === "string") {
-		return snapshot.replaceAll(pattern, (match) => (typeof replacement === "string" ? replacement : replacement(match)));
-	}
-
-	if (pattern instanceof RegExp) {
-		if (!pattern.flags.includes("g")) {
-			throw new Error("The regex pattern must have the global flag 'g'");
-		}
-
-		return snapshot.replace(pattern, (match) => (typeof replacement === "string" ? replacement : replacement(match)));
-	}
-
-	throw new Error("Pattern must be a string or a RegExp");
 }

@@ -2,14 +2,14 @@
 
 exports[`--stacktrace > should show stack trace > stderr 1`] = `
 [error] Error: This is an error
-    at Object.run (/ROOT/test/fixtures/main/nadle.config.ts:{line}:{column})
+    at Object.run (/ROOT/test/__fixtures__/main/nadle.config.ts:{line}:{column})
     at process.processTicksAndRejections (node:internal/process/task_queues:{line}:{column})
     at async file:///REPO_ROOT/node_modules/.pnpm/tinypool{version}/node_modules/tinypool/dist/entry/worker.js:{line}:{column}
 `;
 
 exports[`--stacktrace > should show stack trace > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
 

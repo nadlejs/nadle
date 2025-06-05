@@ -10,7 +10,14 @@ const config = tsEslint.config(
 	tsEslint.configs.recommended,
 	nPlugin.configs["flat/recommended-module"],
 	{
-		ignores: ["**/lib", "**/build", "**/node_modules/", "**/.docusaurus", "packages/nadle/test/fixtures/mixed-ts-js/nadle.config.js"]
+		ignores: [
+			"**/lib",
+			"**/build",
+			"**/__temp__",
+			"**/node_modules/",
+			"**/.docusaurus",
+			"packages/nadle/test/__fixtures__/mixed-ts-js/nadle.config.js"
+		]
 	},
 	{
 		linterOptions: {

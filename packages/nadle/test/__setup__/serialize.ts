@@ -1,8 +1,22 @@
 import Path from "node:path";
 
+export function serialize(input: string): string {
+	return [
+		serializeUnstableWords,
+		serializeANSI,
+		serializeDuration,
+		serializeFileLocation,
+		serializeFilePath,
+		serializeHash,
+		serializeLibFilePath,
+		serializeVersion,
+		removeUnstableLines
+	].reduce((result, _serializer) => _serializer(result), input);
+}
+
 const UnstableWordsMap = [["worker_default", "default"]];
 
-export function serializeUnstableWords(input: string) {
+function serializeUnstableWords(input: string) {
 	for (const [word, replacement] of UnstableWordsMap) {
 		input = input.replaceAll(word, replacement);
 	}
@@ -12,40 +26,40 @@ export function serializeUnstableWords(input: string) {
 
 const UnstableLines = ["ExperimentalWarning", "--trace-warnings"];
 
-export function removeUnstableLines(input: string) {
+function removeUnstableLines(input: string) {
 	return input
 		.split("\n")
 		.filter((line) => !UnstableLines.some((unstableLine) => line.includes(unstableLine)))
 		.join("\n");
 }
 
-export function serializeVersion(input: string) {
+function serializeVersion(input: string) {
 	return input.replace(/([v@])\d+\.\d+\.\d+/g, "{version}");
 }
 
-export function serializeLibFilePath(input: string) {
+function serializeLibFilePath(input: string) {
 	return input.replaceAll(/^.*ROOT\/lib\/.*(?:\r?\n)?/gm, "");
 }
 
-export function serializeFilePath(input: string) {
+function serializeFilePath(input: string) {
 	const cwd = process.cwd();
 	const rootPath = Path.join(cwd, "..", "..");
 
 	return input.replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
 }
 
-export function serializeFileLocation(input: string) {
+function serializeFileLocation(input: string) {
 	return input.replaceAll(/(\w+(\.\w)?):(\d+):(\d+)/g, (_match, file) => {
 		return `${file}:{line}:{column}`;
 	});
 }
 
-export function serializeHash(input: string) {
+function serializeHash(input: string) {
 	return input.replaceAll(/__[0-9a-f]+__/gi, `__{hash}__`);
 }
 
 const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;
-export function serializeDuration(input: string) {
+function serializeDuration(input: string) {
 	return input.replace(DurationRegex, "{duration}");
 }
 

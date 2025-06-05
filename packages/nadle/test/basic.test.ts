@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-
-import { exec, expectPass } from "./setup/utils.js";
+import { exec, expectPass } from "setup";
 
 describe("Basic", () => {
 	it("can run a simple command", async () => {

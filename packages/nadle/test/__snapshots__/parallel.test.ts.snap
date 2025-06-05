@@ -2,7 +2,7 @@
 
 exports[`Parallel > should run tasks parallel > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.parallel.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.parallel.ts</BoldDim>
 [log] <Dim>Using 2 workers for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.[01]</BoldDim> started
 
@@ -28,7 +28,7 @@ exports[`Parallel > should stop on error immediately > stderr 1`] = ``;
 
 exports[`Parallel > should stop on error immediately > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.parallel.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.parallel.ts</BoldDim>
 [log] <Dim>Using 2 workers for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.[12]</BoldDim> started
 

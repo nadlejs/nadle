@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-
-import { exec, expectPass } from "../setup/utils.js";
+import { exec, expectPass } from "setup";
 
 describe("--log-level", () => {
 	it.skip("shows info log when passing --log-level=info", async () => {

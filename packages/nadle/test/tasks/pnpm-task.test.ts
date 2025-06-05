@@ -1,9 +1,7 @@
 import Path from "node:path";
 
 import { it, describe } from "vitest";
-
-import { fixturesDir } from "../setup/constants.js";
-import { createExec, expectFail, expectPass } from "../setup/utils.js";
+import { createExec, expectFail, expectPass, fixturesDir } from "setup";
 
 describe("Pnpm Task", () => {
 	const exec = createExec({ cwd: Path.join(fixturesDir, "pnpm-task") });

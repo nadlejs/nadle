@@ -4,11 +4,16 @@ import { isCI } from "std-env";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+	resolve: {
+		alias: {
+			setup: path.resolve(import.meta.dirname, "test/__setup__/index.js")
+		}
+	},
 	test: {
 		environment: "node",
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
-		setupFiles: "./test/setup/setup.ts",
+		setupFiles: "./test/__setup__/setup.ts",
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"

@@ -1,7 +1,5 @@
 import { it, expect, describe } from "vitest";
-
-import { exec, createExec } from "../setup/utils.js";
-import { serializeANSI } from "../setup/snapshot-serializers.js";
+import { exec, createExec, serializeANSI } from "setup";
 
 describe("--show-summary", () => {
 	it("should show in-progress summary when enable explicitly", async () => {

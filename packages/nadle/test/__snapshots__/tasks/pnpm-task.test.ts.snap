@@ -2,7 +2,7 @@
 
 exports[`Pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/pnpm-task/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> started
 
@@ -16,7 +16,7 @@ exports[`Pnpm Task > throw error when running tsc command with error ts file > s
 
 exports[`Pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/pnpm-task/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> started
 

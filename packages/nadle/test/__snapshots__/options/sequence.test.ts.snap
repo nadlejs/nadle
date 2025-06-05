@@ -2,7 +2,7 @@
 
 exports[`--sequence > with --dry-run > should list tasks in order 1 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
@@ -19,7 +19,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 1 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 2 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
@@ -36,7 +36,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 2 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 3 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
@@ -53,7 +53,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 3 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 4 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
@@ -66,7 +66,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 4 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 5 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
@@ -87,7 +87,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 5 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 6 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
@@ -108,7 +108,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 6 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 7 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
@@ -129,7 +129,7 @@ exports[`--sequence > with --dry-run > should list tasks in order 7 > stdout 1`]
 
 exports[`--sequence > with --dry-run > should list tasks in order 8 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/fixtures/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
