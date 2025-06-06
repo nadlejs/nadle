@@ -161,9 +161,10 @@ const repositoryValidator: PackageValidator = ({ pkg, path }) => {
 		throw new Error("Public packages must have repository url");
 	}
 
-	const relativePath = Path.dirname(Path.relative(rootDir, path));
+	const relativePath = Path.dirname(Path.relative(rootDir, path)).replace(/\\/g, "/");
+	const directory = pkg.repository.directory?.replace(/\\/g, "/");
 
-	if (pkg.repository.directory !== relativePath) {
+	if (directory !== relativePath) {
 		throw new Error(`Public packages must have a proper repository.directory. Expect ${relativePath}. Got: ${pkg.repository.directory}`);
 	}
 };
