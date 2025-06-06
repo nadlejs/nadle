@@ -1,5 +1,15 @@
 # nadle
 
+## 0.3.4
+
+### Patch Changes
+
+- e0c176d: print number of workers will be used
+- 795f945: add algolia search
+- fc590a4: add DeleteTask
+- b799d36: print nadle location
+- 97e5a1b: support Node.js 20
+
 ## 0.3.3
 
 ### Patch Changes
