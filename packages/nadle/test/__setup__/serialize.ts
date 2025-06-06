@@ -44,7 +44,7 @@ function serializeLibFilePath(input: string) {
 }
 
 function serializePwdGitBashWindows(input: string) {
-	return input.replaceAll(/\/[a-z](\/[a-zA-Z_0-9-]+)+/g, (match) => {
+	return input.replaceAll(/(?<=\s|^)\/[a-z](\/[a-zA-Z_0-9-]+)+/g, (match) => {
 		const [_empty, driveLetter, ...rest] = match.split("/");
 
 		return [`${driveLetter.toUpperCase()}:`, ...rest].join(`\\`);
