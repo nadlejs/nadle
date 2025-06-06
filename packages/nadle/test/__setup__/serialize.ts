@@ -50,7 +50,7 @@ function serializeFilePath(input: string) {
 }
 
 function normalizeFilePath(input: string) {
-	return input.replace(/\/(ROOT|REPO_ROOT)\w+/, (match) => match.replace(/\\/g, "/"));
+	return input.replace(/\/(ROOT|REPO_ROOT)\S+/g, (match) => match.replace(/\\/g, "/"));
 }
 
 function serializeFileLocation(input: string) {
