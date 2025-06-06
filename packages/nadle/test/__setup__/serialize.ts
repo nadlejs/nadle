@@ -6,6 +6,7 @@ export function serialize(input: string): string {
 		serializeANSI,
 		serializeDuration,
 		serializeFileLocation,
+		serializePwdGitBashWindows,
 		serializeFilePath,
 		normalizeFilePath,
 		serializeHash,
@@ -40,6 +41,14 @@ function serializeVersion(input: string) {
 
 function serializeLibFilePath(input: string) {
 	return input.replaceAll(/^.*ROOT\/lib\/.*(?:\r?\n)?/gm, "");
+}
+
+function serializePwdGitBashWindows(input: string) {
+	return input.replaceAll(/\/[a-z](\/[a-zA-Z_0-9-]+)+/g, (match) => {
+		const [driveLetter, ...rest] = match.split("/");
+
+		return [`${driveLetter}:`, ...rest.slice(2)].join(`\\`);
+	});
 }
 
 function serializeFilePath(input: string) {
