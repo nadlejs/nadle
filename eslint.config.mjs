@@ -40,6 +40,7 @@ const config = tsEslint.config(
 			"max-params": ["error", 4],
 			"no-restricted-imports": ["error", { patterns: ["consola"] }],
 
+			"n/hashbang": "off",
 			"n/no-missing-import": "off",
 			"n/no-unpublished-import": "off",
 			"n/prefer-node-protocol": "error",
