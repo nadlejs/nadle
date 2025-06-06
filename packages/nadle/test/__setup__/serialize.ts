@@ -7,6 +7,7 @@ export function serialize(input: string): string {
 		serializeDuration,
 		serializeFileLocation,
 		serializeFilePath,
+		normalizeFilePath,
 		serializeHash,
 		serializeLibFilePath,
 		serializeVersion,
@@ -46,6 +47,10 @@ function serializeFilePath(input: string) {
 	const rootPath = Path.join(cwd, "..", "..");
 
 	return input.replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
+}
+
+function normalizeFilePath(input: string) {
+	return input.replace(/\/(ROOT|REPO_ROOT)\w+/, (match) => match.replace(/\\/g, "/"));
 }
 
 function serializeFileLocation(input: string) {
