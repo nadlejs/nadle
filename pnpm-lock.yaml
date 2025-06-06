@@ -57,8 +57,8 @@ importers:
         specifier: ^16.1.0
         version: 16.1.0
       nadle:
-        specifier: ^0.3.3
-        version: 0.3.3
+        specifier: ^0.3.4
+        version: 0.3.4
       prettier:
         specifier: ^3.5.1
         version: 3.5.3
@@ -5587,6 +5587,11 @@ packages:
   nadle@0.3.3:
     resolution: {integrity: sha512-VoTVaiPhrGuY7CxJMlDTqQPJVTOE1NkeXI4b66DUhwDFDenrifjBkg+2KufzLAMGc7JfZOT3z7IVmINKm6JtVw==}
     engines: {node: '>=22'}
+    hasBin: true
+
+  nadle@0.3.4:
+    resolution: {integrity: sha512-yfesFEKCKU7fET2LyXARa8kHmtCgmV2NS6uWXXs5ps1B5hPhdstUFCepCsPZYASQuJU/16PcRH76KQpCjjCfEQ==}
+    engines: {node: '>=20'}
     hasBin: true
 
   nano-spawn@1.0.2:
@@ -14528,6 +14533,20 @@ snapshots:
       fastest-levenshtein: 1.0.16
       jiti: 2.4.2
       lodash-es: 4.17.21
+      std-env: 3.9.0
+      tinypool: 1.1.0
+      tinyrainbow: 2.0.0
+      yargs: 18.0.0
+
+  nadle@0.3.4:
+    dependencies:
+      consola: 3.4.2
+      execa: 9.6.0
+      fastest-levenshtein: 1.0.16
+      glob: 11.0.2
+      jiti: 2.4.2
+      lodash-es: 4.17.21
+      rimraf: 6.0.1
       std-env: 3.9.0
       tinypool: 1.1.0
       tinyrainbow: 2.0.0

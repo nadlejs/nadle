@@ -1,8 +1,6 @@
-import { tasks, ExecTask, PnpmTask } from "nadle";
+import { tasks, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
-tasks
-	.register("clean", PnpmTask, { args: ["-r", "exec", "rimraf", "lib", "build", "dist"] })
-	.config({ group: "Misc", description: "Clean build artifacts" });
+tasks.register("clean", DeleteTask, { paths: ["**/lib/**", "**/build/**"] }).config({ group: "Development", description: "Clean build artifacts" });
 
 tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] });
 tasks.register("eslint", PnpmTask, { args: ["-r", "exec", "eslint", "--quiet"] });
