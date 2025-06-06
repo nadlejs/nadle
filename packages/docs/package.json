@@ -4,7 +4,7 @@
 	"scripts": {
 		"clean": "docusaurus clear",
 		"dev": "docusaurus start",
-		"build": "node -v",
+		"build": "docusaurus build",
 		"serve": "docusaurus serve"
 	},
 	"dependencies": {
