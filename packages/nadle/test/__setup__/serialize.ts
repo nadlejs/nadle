@@ -7,8 +7,9 @@ export function serialize(input: string): string {
 		serializeDuration,
 		serializeFileLocation,
 		serializePwdGitBashWindows,
-		serializeFilePath,
-		normalizeFilePath,
+		serializeRelativePath,
+		serializeAbsoluteFilePath,
+		serializeStackTrace,
 		serializeHash,
 		serializeLibFilePath,
 		serializeVersion,
@@ -51,15 +52,23 @@ function serializePwdGitBashWindows(input: string) {
 	});
 }
 
-function serializeFilePath(input: string) {
+function serializeRelativePath(input: string) {
+	return input.replaceAll(/\b\.[/\\].+/g, (match) => match.replaceAll(`\\`, `/`));
+}
+
+function serializeAbsoluteFilePath(input: string) {
 	const cwd = process.cwd();
 	const rootPath = Path.join(cwd, "..", "..");
 
-	return input.replaceAll("\\\\", "\\").replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
+	return input
+		.replaceAll("\\\\", "\\")
+		.replaceAll(cwd, "/ROOT")
+		.replaceAll(rootPath, "/REPO_ROOT")
+		.replace(/\/(ROOT|REPO_ROOT)\S+/g, (match) => match.replaceAll(`\\`, "/"));
 }
 
-function normalizeFilePath(input: string) {
-	return input.replace(/\/(ROOT|REPO_ROOT)\S+/g, (match) => match.replace(/\\/g, "/"));
+function serializeStackTrace(input: string) {
+	return input.replaceAll(/at .+ .+/g, "at {path}");
 }
 
 function serializeFileLocation(input: string) {

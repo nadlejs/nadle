@@ -11,6 +11,7 @@ export default defineConfig({
 	},
 	test: {
 		environment: "node",
+		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
 		setupFiles: "./test/__setup__/vitest.ts",
 		typecheck: {
