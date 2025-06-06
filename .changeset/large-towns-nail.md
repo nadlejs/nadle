@@ -1,5 +1,0 @@
----
-"nadle": patch
----
-
-add DeleteTask
