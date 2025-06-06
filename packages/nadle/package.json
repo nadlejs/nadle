@@ -8,7 +8,7 @@
 		"build:tsup": "tsup",
 		"build:ts": "tsc -p tsconfig.build.json",
 		"start": "pnpm run build:ts --watch --noEmit false",
-		"test": "vitest unknown-task.test.ts"
+		"test": "vitest"
 	},
 	"files": [
 		"lib",
