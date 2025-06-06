@@ -46,7 +46,7 @@ function serializeFilePath(input: string) {
 	const cwd = process.cwd();
 	const rootPath = Path.join(cwd, "..", "..");
 
-	return input.replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
+	return input.replaceAll("\\\\", "\\").replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
 }
 
 function normalizeFilePath(input: string) {
