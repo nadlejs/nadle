@@ -1,5 +1,4 @@
 import process from "node:process";
-import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 import c from "tinyrainbow";
@@ -202,11 +201,7 @@ export class Nadle {
 	async registerTask() {
 		const configFile = this.options.configPath;
 
-		if (!existsSync(configFile)) {
-			throw new Error(`Config file not found: ${configFile}`);
-		}
-
-		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"] });
+		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
 
 		await jiti.import(pathToFileURL(configFile).toString());
 	}

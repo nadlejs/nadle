@@ -13,7 +13,7 @@ export default defineConfig({
 		environment: "node",
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
-		setupFiles: "./test/__setup__/setup.ts",
+		setupFiles: "./test/__setup__/vitest.ts",
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"
