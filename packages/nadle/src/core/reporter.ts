@@ -27,7 +27,7 @@ export interface Reporter {
 const DURATION_UPDATE_INTERVAL_MS = 100;
 
 export class DefaultReporter implements Reporter {
-	private renderer: Renderer;
+	private readonly renderer: Renderer;
 	private taskStat = {
 		failed: 0,
 		running: 0,
@@ -59,9 +59,9 @@ export class DefaultReporter implements Reporter {
 			c.green(`${this.taskStat.finished} finished`)
 		].join(` ${c.gray(VERTICAL_BAR)} `);
 
-		summary.push(`${this.printLabel("Tasks")} ${stats} ${c.dim(`(${this.taskStat.scheduled} scheduled)`)}`);
-		summary.push(`${this.printLabel("Start at")} ${this.startTime}`);
-		summary.push(`${this.printLabel("Duration")} ${formatTime(this.duration)}`);
+		summary.push([this.printLabel("Tasks"), stats, c.dim(`(${this.taskStat.scheduled} scheduled)`)].join(" "));
+		summary.push([this.printLabel("Start at"), this.startTime].join(" "));
+		summary.push([this.printLabel("Duration"), formatTime(this.duration)].join(" "));
 
 		summary.push(...this.printRunningTasks());
 

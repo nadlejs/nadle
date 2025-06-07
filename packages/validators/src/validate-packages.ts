@@ -32,9 +32,7 @@ export async function validatePackages() {
 	}
 }
 
-interface PackageValidator {
-	(context: { path: string; pkg: PackageJson }): void | Promise<void>;
-}
+type PackageValidator = (context: { path: string; pkg: PackageJson }) => void | Promise<void>;
 
 const nameValidator: PackageValidator = (context) => {
 	const { name } = context.pkg;

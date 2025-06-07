@@ -5,19 +5,19 @@ import { RIGHT_ARROW } from "./constants.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
-	private dependentsGraph = new Map<string, Set<string>>();
+	private readonly dependentsGraph = new Map<string, Set<string>>();
 
 	// Map between a task and the set of tasks that it depends on
-	private dependencyGraph = new Map<string, Set<string>>();
+	private readonly dependencyGraph = new Map<string, Set<string>>();
 
 	// Map between a task and the set of tasks that it depends on transitively
-	private transitiveDependencyGraph = new Map<string, Set<string>>();
+	private readonly transitiveDependencyGraph = new Map<string, Set<string>>();
 
 	// Map between a tasks and its indegree
-	private indegree = new Map<string, number>();
+	private readonly indegree = new Map<string, number>();
 
 	// Set of tasks that are ready to be executed
-	private readyTasks = new Set<string>();
+	private readonly readyTasks = new Set<string>();
 
 	private runningRootTask: string | undefined = undefined;
 
@@ -126,7 +126,7 @@ export class TaskScheduler {
 				}
 			}
 
-			this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `=> nextReadyTasks = ${Array.from(nextReadyTasks).join(",")}`);
+			this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 			return nextReadyTasks;
 		}
@@ -153,7 +153,6 @@ export class TaskScheduler {
 		}
 
 		if (finishedTaskName === this.runningRootTask) {
-			this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `Finished root task: ${finishedTaskName}`);
 			this.runningRootTask = this.getNextRootTask();
 
 			if (this.runningRootTask) {
@@ -163,7 +162,7 @@ export class TaskScheduler {
 			return new Set<string>();
 		}
 
-		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `=> nextReadyTasks = ${Array.from(nextReadyTasks).join(",")}`);
+		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 		return nextReadyTasks;
 	}

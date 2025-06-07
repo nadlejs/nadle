@@ -1,8 +1,7 @@
 import Path from "node:path";
 
-import { createExec } from "setup";
 import { it, describe } from "vitest";
-import { expectPass, fixturesDir } from "setup";
+import { createExec, expectPass, fixturesDir } from "setup";
 
 describe("traverse-up", () => {
 	const baseDir = Path.join(fixturesDir, "traverse-up");

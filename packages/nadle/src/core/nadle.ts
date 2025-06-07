@@ -113,9 +113,9 @@ export class Nadle {
 				const { description, name: taskName } = task;
 
 				if (description) {
-					this.logger.log(`${c.bold(c.green(taskName))}${c.yellow(` - ${description}`)}`);
+					this.logger.log(c.bold(c.green(taskName)) + c.yellow(` - ${description}`));
 				} else {
-					this.logger.log(`${c.green(taskName)}`);
+					this.logger.log(c.green(taskName));
 				}
 			}
 
