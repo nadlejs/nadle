@@ -173,6 +173,9 @@ importers:
       '@types/node':
         specifier: ^20.17.57
         version: 20.17.57
+      '@types/std-mocks':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/yargs':
         specifier: ^17.0.33
         version: 17.0.33
@@ -182,6 +185,9 @@ importers:
       knip:
         specifier: ^5.59.1
         version: 5.59.1(@types/node@20.17.57)(typescript@5.8.3)
+      std-mocks:
+        specifier: ^2.0.0
+        version: 2.0.0
       strip-ansi:
         specifier: ^7.1.0
         version: 7.1.0
@@ -2714,6 +2720,9 @@ packages:
 
   '@types/sockjs@0.3.36':
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
+
+  '@types/std-mocks@1.0.4':
+    resolution: {integrity: sha512-rtIF2umvrhu7jdIfMQDnGOG98x30s5nZnq1Llvw/DXDGoT2/InGOoWKLbHetRl+Fn6LBzVEqrPx5HdwMC+dh7A==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -6989,6 +6998,10 @@ packages:
   std-env@3.9.0:
     resolution: {integrity: sha512-UGvjygr6F6tpH7o2qyqR6QYpwraIjKSdtzyBdyytFOHmPZY917kwdwLG0RbOjWOnKmnm3PeHjaoLLMie7kPLQw==}
 
+  std-mocks@2.0.0:
+    resolution: {integrity: sha512-R1GZfUZ+ceyMcLP8uEqIcANzPCJHKcOjYzBHziP8vN0XTrfGmIl5IaA5gVtcy3VGewwLFD7oqzgOf0VMU3leDQ==}
+    engines: {node: '>=12.0.0'}
+
   string-argv@0.3.2:
     resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==}
     engines: {node: '>=0.6.19'}
@@ -10954,6 +10967,8 @@ snapshots:
   '@types/sockjs@0.3.36':
     dependencies:
       '@types/node': 20.17.57
+
+  '@types/std-mocks@1.0.4': {}
 
   '@types/unist@2.0.11': {}
 
@@ -16149,6 +16164,8 @@ snapshots:
   statuses@2.0.1: {}
 
   std-env@3.9.0: {}
+
+  std-mocks@2.0.0: {}
 
   string-argv@0.3.2: {}
 

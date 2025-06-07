@@ -9,5 +9,5 @@ export default defineConfig({
 	sourcemap: true,
 	target: "node20",
 	tsconfig: "tsconfig.build.json",
-	entry: { cli: "src/cli.ts", index: "src/index.ts", worker: "src/core/worker.ts" }
+	entry: { cli: "src/cli.ts", run: "src/run.ts", index: "src/index.ts", worker: "src/core/worker.ts" }
 });
