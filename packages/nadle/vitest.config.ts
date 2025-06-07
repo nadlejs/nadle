@@ -1,6 +1,5 @@
 import path from "node:path";
 
-import { isCI } from "std-env";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -10,12 +9,24 @@ export default defineConfig({
 		}
 	},
 	test: {
+		maxWorkers: 1,
+		isolate: false, // Don't isolate environment between test files
 		environment: "node",
-		fileParallelism: !isCI,
+		fileParallelism: false,
 		setupFiles: "./test/__setup__/vitest.ts",
+		coverage: {
+			enabled: true,
+			provider: "v8"
+		},
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"
+		},
+		poolOptions: {
+			forks: {
+				maxForks: 1,
+				singleFork: true // or poolOptions: { threads: { isolate: false } },
+			}
 		},
 		resolveSnapshotPath(testPath, snapshotExtension) {
 			const testDir = path.join(import.meta.dirname, "test");

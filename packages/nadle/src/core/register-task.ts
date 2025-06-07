@@ -1,4 +1,4 @@
-import { taskRegistry } from "./task-registry.js";
+import { taskRegistry } from "./nadle.js";
 import {
 	type Task,
 	TaskStatus,

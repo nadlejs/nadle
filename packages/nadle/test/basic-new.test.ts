@@ -1,7 +1,8 @@
 import stdMocks from "std-mocks";
 import { test, expect } from "vitest";
 
-import { runCli, setupCli } from "../lib/run.js";
+import { runCli } from "../lib/run-cli.js";
+import { setupCli } from "../lib/setup-cli.js";
 import { serializeANSI } from "./__setup__/serialize.js";
 
 // vi.mock("../src/core/import-meta-resolve.ts", () => ({
@@ -12,9 +13,9 @@ test("asd", async () => {
 	stdMocks.use();
 
 	process.chdir(`/Users/nhle/dev/open/nadle/packages/nadle/test/__fixtures__/main`);
-	const argv = await setupCli().parseAsync("hello --no-show-summary --stacktrace --log-level info");
 
 	try {
+		const argv = await setupCli().parseAsync("hello --no-show-summary --stacktrace --log-level info");
 		await runCli(argv);
 	} catch (e) {
 		const { stdout, stderr } = stdMocks.flush();
@@ -83,12 +84,12 @@ test("asd", async () => {
 		).toMatchInlineSnapshot(`
 			[error] Task <Yellow><Bold>hello</BoldDim></Yellow> not found.
 			[error] Error: Task <Yellow><Bold>hello</BoldDim></Yellow> not found.
-			    at /Users/nhle/dev/open/nadle/packages/nadle/src/core/nadle.ts:144:11
+			    at /Users/nhle/dev/open/nadle/packages/nadle/src/core/nadle.ts:213:11
 			    at Array.map (<anonymous>)
-			    at Nadle.resolveTasks (/Users/nhle/dev/open/nadle/packages/nadle/src/core/nadle.ts:138:31)
-			    at Nadle.execute (/Users/nhle/dev/open/nadle/packages/nadle/src/core/nadle.ts:42:31)
-			    at runCli (/Users/nhle/dev/open/nadle/packages/nadle/src/run.ts:40:2)
-			    at /Users/nhle/dev/open/nadle/packages/nadle/test/basic-new.test.ts:18:3
+			    at Nadle.resolveTasks (/Users/nhle/dev/open/nadle/packages/nadle/src/core/nadle.ts:207:31)
+			    at Nadle.execute (/Users/nhle/dev/open/nadle/packages/nadle/src/core/nadle.ts:110:31)
+			    at runCli (/Users/nhle/dev/open/nadle/packages/nadle/src/run-cli.ts:5:2)
+			    at /Users/nhle/dev/open/nadle/packages/nadle/test/basic-new.test.ts:19:3
 			    at file:///Users/nhle/dev/open/nadle/node_modules/.pnpm/@vitest+runner{version}/node_modules/@vitest/runner/dist/index.js:596:20
 		`);
 	}

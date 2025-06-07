@@ -8,21 +8,89 @@ import { Logger } from "./logger.js";
 import { VERSION } from "../version.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
-import { type RegisteredTask } from "./types.js";
 import { TaskScheduler } from "./task-scheduler.js";
 import { RIGHT_ARROW, UnnamedGroup } from "./constants.js";
+import { TaskStatus, type RegisteredTask } from "./types.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { resolveTask, formatSuggestions } from "./resolve-task.js";
-import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
+
+console.log("@@@", import.meta.dirname);
+
+class TaskRegistry {
+	public readonly registry = new Map<string, RegisteredTask>();
+
+	constructor(public id: number) {}
+
+	register(name: string, task: RegisteredTask) {
+		console.log(`registering task id = ${this.id}`, name, task);
+		this.registry.set(name, task);
+		console.log(`registeddd ${Array.from(this.registry.keys())}`);
+	}
+
+	has(name: string) {
+		return this.registry.has(name);
+	}
+
+	getAll(): RegisteredTask[] {
+		console.log(`getAll registeddd ${Array.from(this.registry.keys())}`);
+
+		return [...this.registry.values()];
+	}
+
+	findByName(taskName: string): RegisteredTask | undefined {
+		return this.registry.get(taskName);
+	}
+
+	getByName(taskName: string): RegisteredTask {
+		const task = this.findByName(taskName);
+
+		if (!task) {
+			throw new Error(`Task ${c.bold(taskName)} not found`);
+		}
+
+		return task;
+	}
+
+	onTaskStart(name: string) {
+		const task = this.getByName(name);
+
+		task.status = TaskStatus.Running;
+		task.result.startTime = Date.now();
+	}
+
+	onTaskFinish(name: string) {
+		const task = this.getByName(name);
+
+		task.status = TaskStatus.Finished;
+		task.result.duration = Date.now() - (task.result.startTime ?? 0);
+	}
+
+	onTaskFailed(name: string) {
+		const task = this.getByName(name);
+
+		task.status = TaskStatus.Failed;
+		task.result.duration = Date.now() - (task.result.startTime ?? 0);
+	}
+
+	onTasksScheduled(names: string[]) {
+		for (const name of names) {
+			this.getByName(name).status = TaskStatus.Scheduled;
+		}
+	}
+}
+
+let id = Date.now();
+console.log("initalize taskRegistry", id);
+export const taskRegistry = new TaskRegistry(id++);
 
 export class Nadle {
 	public readonly version = VERSION;
 
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
-	public readonly registry: TaskRegistry = taskRegistry;
+	public readonly registry = taskRegistry;
 
 	private readonly optionsResolver: OptionsResolver;
 
@@ -132,7 +200,7 @@ export class Nadle {
 
 	private resolveTasks(tasks: string[]) {
 		const allTasks = this.registry.getAll().map(({ name }) => name);
-		console.log("@resolveTasks", this.registry.id, Array.from(this.registry.registry.keys()));
+		console.log("@resolveTasks", this.registry.id, this.registry === taskRegistry, Array.from(taskRegistry.registry.keys()));
 
 		const resolveTaskPairs: { resolved: string; original: string }[] = [];
 
@@ -203,9 +271,14 @@ export class Nadle {
 	async registerTask() {
 		const configFile = this.options.configPath;
 
-		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
+		const jiti = createJiti(import.meta.url, {
+			interopDefault: true,
+			extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`)
+		});
 
+		console.log("before import");
 		await jiti.import(pathToFileURL(configFile).toString());
+		console.log("after import");
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
