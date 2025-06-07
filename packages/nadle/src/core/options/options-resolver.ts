@@ -9,7 +9,7 @@ import { findUpSync } from "find-up";
 import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
 export class OptionsResolver {
-	static SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
+	static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
 
 	private readonly defaultOptions = {
 		sequence: false,
@@ -22,7 +22,7 @@ export class OptionsResolver {
 
 	#options: NadleResolvedOptions;
 
-	constructor(private cliOptions: NadleCLIOptions) {
+	constructor(private readonly cliOptions: NadleCLIOptions) {
 		this.#options = this.resolve();
 	}
 

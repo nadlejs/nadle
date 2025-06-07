@@ -3,7 +3,7 @@ import c from "tinyrainbow";
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
 export class TaskRegistry {
-	private registry = new Map<string, RegisteredTask>();
+	private readonly registry = new Map<string, RegisteredTask>();
 
 	register(name: string, task: RegisteredTask) {
 		this.registry.set(name, task);

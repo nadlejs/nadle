@@ -32,15 +32,15 @@ const l = new FileLogger("WindowRenderer");
  * forwards all other intercepted `stdout` and `stderr` logs above it.
  */
 export class SummaryRenderer implements Renderer {
-	private options: Required<SummaryRenderer.Options>;
-	private streams!: Record<StreamType, Logger["outputStream" | "errorStream"]["write"]>;
-	private buffer: { message: string; type: StreamType }[] = [];
+	private readonly options: Required<SummaryRenderer.Options>;
+	private readonly streams!: Record<StreamType, Logger["outputStream" | "errorStream"]["write"]>;
+	private readonly buffer: { message: string; type: StreamType }[] = [];
 	private renderInterval: NodeJS.Timeout | undefined = undefined;
 	private renderScheduled = false;
 
 	private windowHeight = 0;
 	private finished = false;
-	private cleanups: (() => void)[] = [];
+	private readonly cleanups: (() => void)[] = [];
 
 	constructor(options: SummaryRenderer.Options) {
 		this.options = {
