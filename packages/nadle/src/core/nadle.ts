@@ -15,7 +15,7 @@ import { type Reporter, DefaultReporter } from "./reporter.js";
 import { resolveTask, formatSuggestions } from "./resolve-task.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
 	public readonly version = VERSION;

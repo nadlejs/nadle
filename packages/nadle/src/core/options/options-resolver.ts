@@ -97,4 +97,8 @@ export class OptionsResolver {
 	private getMaxWorkersCount() {
 		return typeof Os.availableParallelism === "function" ? Os.availableParallelism() : Os.cpus().length;
 	}
+
+	private asdasd() {
+		console.log("asdasd");
+	}
 }

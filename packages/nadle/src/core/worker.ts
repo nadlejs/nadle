@@ -4,7 +4,7 @@ import { threadId, type MessagePort } from "node:worker_threads";
 import { Nadle } from "./nadle.js";
 import { type Context } from "./types.js";
 import { taskRegistry } from "./task-registry.js";
-import { type NadleResolvedOptions } from "./options/index.js";
+import { type NadleResolvedOptions } from "./options/types.js";
 
 export interface WorkerParams {
 	readonly name: string;

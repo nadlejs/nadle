@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { resolveTask } from "../lib/index.js";
+import { resolveTask, formatSuggestions } from "../lib/index.js";
 
 const allTasks = ["build", "buildDockerImage", "buildDockerContainer", "publish", "push", "compileTs", "compileJs", "compileCss"];
 
@@ -89,5 +89,10 @@ describe("resolveTask", () => {
 			  ],
 			}
 		`);
+	});
+
+	it("formatSuggestions", () => {
+		expect(formatSuggestions(["as", "ab"])).toMatchInlineSnapshot(`Did you mean as or ab?`);
+		expect(formatSuggestions([])).toMatchInlineSnapshot(``);
 	});
 });

@@ -18,6 +18,12 @@ export default defineConfig({
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"
 		},
+		coverage: {
+			all: true,
+			enabled: true,
+			provider: "v8", // or 'istanbul'
+			reporter: ["text", "json", "html"]
+		},
 		resolveSnapshotPath(testPath, snapshotExtension) {
 			const testDir = path.join(import.meta.dirname, "test");
 			const relativePath = path.relative(testDir, testPath);

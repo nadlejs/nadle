@@ -5,7 +5,6 @@ export default defineConfig({
 	clean: true,
 	outDir: "lib",
 	format: ["esm"],
-	splitting: true,
 	sourcemap: true,
 	target: "node20",
 	tsconfig: "tsconfig.build.json",

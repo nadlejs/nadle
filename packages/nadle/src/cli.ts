@@ -5,7 +5,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { VERSION } from "./version.js";
-import { Nadle } from "./core/index.js";
+import { Nadle } from "./core/nadle.js";
 import { CLIOptions, resolveCLIOptions } from "./core/options/shared.js";
 
 const argv = yargs(hideBin(process.argv))
