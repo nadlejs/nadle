@@ -5,10 +5,10 @@
 	"type": "module",
 	"scripts": {
 		"build": "pnpm \"/build:/\"",
-		"build:tsup": "tsup",
+		"build:tsup": "tsup --watch",
 		"build:ts": "tsc -p tsconfig.build.json",
 		"start": "pnpm run build:ts --watch --noEmit false",
-		"test": "vitest"
+		"test": "vitest basic-new.test.ts"
 	},
 	"files": [
 		"lib",

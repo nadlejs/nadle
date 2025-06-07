@@ -53,6 +53,7 @@ export class Nadle {
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.(error);
+			throw error;
 			// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
 			process.exit((error as any).errorCode || 1);
 		}

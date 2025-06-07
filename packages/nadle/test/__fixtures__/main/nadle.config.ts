@@ -1,5 +1,6 @@
 import { tasks, type Task } from "nadle";
 
+console.log("@@");
 tasks
 	.register("hello", async () => {
 		await new Promise((r) => setTimeout(r, 100));

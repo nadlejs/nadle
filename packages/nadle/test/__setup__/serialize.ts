@@ -8,7 +8,7 @@ export function serialize(input: string): string {
 		serializeFileLocation,
 		serializePwdGitBashWindows,
 		serializeRelativePath,
-		serializeAbsoluteFilePath,
+		// serializeAbsoluteFilePath,
 		serializeStackTrace,
 		serializeHash,
 		serializeLibFilePath,
