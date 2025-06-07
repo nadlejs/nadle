@@ -132,6 +132,7 @@ export class Nadle {
 
 	private resolveTasks(tasks: string[]) {
 		const allTasks = this.registry.getAll().map(({ name }) => name);
+		console.log("@resolveTasks", this.registry.id, Array.from(this.registry.registry.keys()));
 
 		const resolveTaskPairs: { resolved: string; original: string }[] = [];
 

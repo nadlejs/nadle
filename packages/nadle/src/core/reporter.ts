@@ -89,6 +89,13 @@ export class DefaultReporter implements Reporter {
 			);
 			this.nadle.logger.info("Resolved options:", this.nadle.options);
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
+			this.nadle.logger.info(
+				"Detected tasks:",
+				this.nadle.registry
+					.getAll()
+					.map((e) => e.name)
+					.join(",")
+			);
 		}
 
 		this.renderer.start();

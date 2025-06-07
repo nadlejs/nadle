@@ -1,6 +1,5 @@
-import { tasks, type Task } from "nadle";
+import { tasks, type Task } from "../../../lib/index.js";
 
-console.log("@@");
 tasks
 	.register("hello", async () => {
 		await new Promise((r) => setTimeout(r, 100));

@@ -2,11 +2,17 @@ import c from "tinyrainbow";
 
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
+console.log("@@@", import.meta.dirname);
+
 export class TaskRegistry {
-	private readonly registry = new Map<string, RegisteredTask>();
+	public readonly registry = new Map<string, RegisteredTask>();
+
+	constructor(public id: number) {}
 
 	register(name: string, task: RegisteredTask) {
+		console.log(`registering task id = ${this.id}`, name, task);
 		this.registry.set(name, task);
+		console.log(`registeddd ${Array.from(this.registry.keys())}`);
 	}
 
 	has(name: string) {
@@ -59,4 +65,5 @@ export class TaskRegistry {
 	}
 }
 
-export const taskRegistry = new TaskRegistry();
+let id = 0;
+export const taskRegistry = new TaskRegistry(id++);
