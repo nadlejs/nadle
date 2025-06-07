@@ -2,9 +2,10 @@
 
 exports[`--stacktrace > should show stack trace > stderr 1`] = `
 [error] Error: This is an error
-    at Object.run (/ROOT/test/__fixtures__/main/nadle.config.ts:{line}:{column})
-    at process.processTicksAndRejections (node:internal/process/task_queues:{line}:{column})
-    at async file:///REPO_ROOT/node_modules/.pnpm/tinypool{version}/node_modules/tinypool/dist/entry/worker.js:{line}:{column}
+    at {path}
+    at {path}
+    at {path}
+    at {path}
 `;
 
 exports[`--stacktrace > should show stack trace > stdout 1`] = `

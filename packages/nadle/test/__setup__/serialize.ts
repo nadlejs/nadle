@@ -6,7 +6,10 @@ export function serialize(input: string): string {
 		serializeANSI,
 		serializeDuration,
 		serializeFileLocation,
-		serializeFilePath,
+		serializePwdGitBashWindows,
+		serializeRelativePath,
+		serializeAbsoluteFilePath,
+		serializeStackTrace,
 		serializeHash,
 		serializeLibFilePath,
 		serializeVersion,
@@ -41,11 +44,31 @@ function serializeLibFilePath(input: string) {
 	return input.replaceAll(/^.*ROOT\/lib\/.*(?:\r?\n)?/gm, "");
 }
 
-function serializeFilePath(input: string) {
+function serializePwdGitBashWindows(input: string) {
+	return input.replaceAll(/(?<=\s|^)\/[a-z](\/[a-zA-Z_0-9-]+)+/g, (match) => {
+		const [_empty, driveLetter, ...rest] = match.split("/");
+
+		return [`${driveLetter.toUpperCase()}:`, ...rest].join(`\\`);
+	});
+}
+
+function serializeRelativePath(input: string) {
+	return input.replaceAll(/(\s|^)\.[\\/].+/g, (match) => match.replaceAll(`\\`, `/`));
+}
+
+function serializeAbsoluteFilePath(input: string) {
 	const cwd = process.cwd();
 	const rootPath = Path.join(cwd, "..", "..");
 
-	return input.replaceAll(cwd, "/ROOT").replaceAll(rootPath, "/REPO_ROOT");
+	return input
+		.replaceAll("\\\\", "\\")
+		.replaceAll(cwd, "/ROOT")
+		.replaceAll(rootPath, "/REPO_ROOT")
+		.replace(/\/(ROOT|REPO_ROOT)\S+/g, (match) => match.replaceAll(`\\`, "/"));
+}
+
+function serializeStackTrace(input: string) {
+	return input.replaceAll(/at .+ .+/g, "at {path}");
 }
 
 function serializeFileLocation(input: string) {

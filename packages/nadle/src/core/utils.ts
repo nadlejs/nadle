@@ -1,3 +1,4 @@
+import Path from "node:path";
 export function capitalize(str: string): string {
 	if (str.length === 0) {
 		return str;
@@ -16,4 +17,12 @@ export function formatTime(time: number): string {
 
 export function formatTimeString(date: Date): string {
 	return date.toTimeString().split(" ")[0];
+}
+
+export function normalizeGlobPath(path: string) {
+	if (path.startsWith(".")) {
+		return path;
+	}
+
+	return `.${Path.sep}${path}`;
 }

@@ -2,7 +2,7 @@ import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
 import { expectPass, withFixture } from "setup";
 
-describe("ExecTask", { retry: 0 }, () => {
+describe("DeleteTask", () => {
 	const files: fixturify.DirJSON = {
 		"foo.txt": "foo.txt contents",
 		a: {
