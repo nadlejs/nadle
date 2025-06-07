@@ -1,4 +1,11 @@
-# nadle
+![Demo](https://raw.githubusercontent.com/nam-hle/nadle/main/.assets/demo.gif)
+
+[![npm](https://img.shields.io/npm/v/nadle)](https://www.npmjs.com/package/nadle)
+[![npm](https://img.shields.io/npm/dm/nadle)](https://www.npmjs.com/package/nadle)
+[![License](https://img.shields.io/github/license/nam-hle/nadle)](LICENSE)
+[![Build](https://github.com/nam-hle/nadle/actions/workflows/ci.yml/badge.svg)](https://github.com/nam-hle/nadle/actions/workflows/ci.yml)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=nam-hle_nadle&metric=alert_status)](https://sonarcloud.io/summary/?id=nam-hle_nadle)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nam-hle_nadle&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nam-hle_nadle)
 
 A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool,
 supporting parallel execution and streamlined build automation.

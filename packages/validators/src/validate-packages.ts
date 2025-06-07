@@ -30,9 +30,21 @@ export async function validatePackages() {
 			}
 		}
 	}
+
+	await readmeValidator();
 }
 
 type PackageValidator = (context: { path: string; pkg: PackageJson }) => void | Promise<void>;
+
+const readmeValidator = async () => {
+	console.log(c.cyan("Validating README.md"));
+	const rootReadme = await Fs.readFile(Path.join(rootDir, "README.md"));
+	const nadleReadme = await Fs.readFile(Path.join(nadlePackagePath, "..", "README.md"));
+
+	if (rootReadme.toString() !== nadleReadme.toString()) {
+		throw new Error("Root README.md must be the same as nadle README.md");
+	}
+};
 
 const nameValidator: PackageValidator = (context) => {
 	const { name } = context.pkg;
