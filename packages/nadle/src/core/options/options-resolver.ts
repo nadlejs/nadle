@@ -4,6 +4,7 @@ import Path from "node:path";
 import Process from "node:process";
 
 import { isCI } from "std-env";
+import { findUpSync } from "find-up";
 
 import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
@@ -50,20 +51,24 @@ export class OptionsResolver {
 		const cwd = Process.cwd();
 
 		if (configPath !== undefined) {
-			return Path.resolve(cwd, configPath);
-		}
+			const resolvedConfigPath = Path.resolve(cwd, configPath);
 
-		for (const ext of OptionsResolver.SUPPORT_EXTENSIONS) {
-			const fullPath = Path.resolve(cwd, `nadle.config.${ext}`);
-
-			if (Fs.existsSync(fullPath)) {
-				return fullPath;
+			if (!Fs.existsSync(resolvedConfigPath)) {
+				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
 			}
+
+			return resolvedConfigPath;
 		}
 
-		throw new Error(
-			`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory. Please use --config to specify a custom path.`
-		);
+		const resolveConfigPath = findUpSync(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `nadle.config.${ext}`));
+
+		if (!resolveConfigPath) {
+			throw new Error(
+				`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
+			);
+		}
+
+		return resolveConfigPath;
 	}
 
 	private resolveWorkerCount(configValue: string | number | undefined) {

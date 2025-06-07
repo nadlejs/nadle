@@ -119,7 +119,7 @@ importers:
     dependencies:
       nadle:
         specifier: latest
-        version: 0.3.3
+        version: 0.3.4
     devDependencies:
       tinyrainbow:
         specifier: ^2.0.0
@@ -139,6 +139,9 @@ importers:
       fastest-levenshtein:
         specifier: ^1.0.16
         version: 1.0.16
+      find-up:
+        specifier: ^7.0.0
+        version: 7.0.0
       glob:
         specifier: ^11.0.2
         version: 11.0.2
@@ -247,6 +250,12 @@ importers:
         version: link:../../..
 
   packages/nadle/test/__fixtures__/pnpm-task:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
+  packages/nadle/test/__fixtures__/traverse-up:
     dependencies:
       nadle:
         specifier: workspace:*
@@ -4294,6 +4303,10 @@ packages:
     resolution: {integrity: sha512-v2ZsoEuVHYy8ZIlYqwPe/39Cy+cFDzp4dXPaxNvkEuouymu+2Jbz0PxpKarJHYJTmv2HWT3O382qY8l4jMWthw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  find-up@7.0.0:
+    resolution: {integrity: sha512-YyZM99iHrqLKjmt4LJDj58KI+fYyufRLBSYcqycxf//KpBk9FoewoGX0450m9nB44qrZnovzC2oeP5hUibxc/g==}
+    engines: {node: '>=18'}
+
   fix-dts-default-cjs-exports@1.0.1:
     resolution: {integrity: sha512-pVIECanWFC61Hzl2+oOCtoJ3F17kglZC/6N94eRWycFgBH35hHx0Li604ZIzhseh97mf2p0cv7vVrOZGoqhlEg==}
 
@@ -5583,11 +5596,6 @@ packages:
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
-
-  nadle@0.3.3:
-    resolution: {integrity: sha512-VoTVaiPhrGuY7CxJMlDTqQPJVTOE1NkeXI4b66DUhwDFDenrifjBkg+2KufzLAMGc7JfZOT3z7IVmINKm6JtVw==}
-    engines: {node: '>=22'}
-    hasBin: true
 
   nadle@0.3.4:
     resolution: {integrity: sha512-yfesFEKCKU7fET2LyXARa8kHmtCgmV2NS6uWXXs5ps1B5hPhdstUFCepCsPZYASQuJU/16PcRH76KQpCjjCfEQ==}
@@ -7327,6 +7335,10 @@ packages:
   unicode-property-aliases-ecmascript@2.1.0:
     resolution: {integrity: sha512-6t3foTQI9qne+OZoVQB/8x8rk2k1eVy1gRXhV3oFQ5T6R1dqQ1xtin3XqSlx3+ATBkliTaR/hHyJBm+LVPNM8w==}
     engines: {node: '>=4'}
+
+  unicorn-magic@0.1.0:
+    resolution: {integrity: sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==}
+    engines: {node: '>=18'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -12894,6 +12906,12 @@ snapshots:
       locate-path: 7.2.0
       path-exists: 5.0.0
 
+  find-up@7.0.0:
+    dependencies:
+      locate-path: 7.2.0
+      path-exists: 5.0.0
+      unicorn-magic: 0.1.0
+
   fix-dts-default-cjs-exports@1.0.1:
     dependencies:
       magic-string: 0.30.17
@@ -14525,18 +14543,6 @@ snapshots:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
-
-  nadle@0.3.3:
-    dependencies:
-      consola: 3.4.2
-      execa: 9.6.0
-      fastest-levenshtein: 1.0.16
-      jiti: 2.4.2
-      lodash-es: 4.17.21
-      std-env: 3.9.0
-      tinypool: 1.1.0
-      tinyrainbow: 2.0.0
-      yargs: 18.0.0
 
   nadle@0.3.4:
     dependencies:
@@ -16498,6 +16504,8 @@ snapshots:
   unicode-match-property-value-ecmascript@2.2.0: {}
 
   unicode-property-aliases-ecmascript@2.1.0: {}
+
+  unicorn-magic@0.1.0: {}
 
   unicorn-magic@0.3.0: {}
 
