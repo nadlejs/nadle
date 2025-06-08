@@ -4,11 +4,11 @@ exports[`--config > should precedence the js config file over the ts config file
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/mixed-ts-js/nadle.config.js</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello-mixed-ts-js</BoldDim> started
 
 Hello from /ROOT/test/__fixtures__/mixed-ts-js/nadle.config.js!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello-mixed-ts-js</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -17,11 +17,11 @@ exports[`--config > should precedence the ts config file over the mts config fil
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/mixed-ts-mts/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello-mixed-ts-mts</BoldDim> started
 
 Hello from /ROOT/test/__fixtures__/mixed-ts-mts/nadle.config.ts!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello-mixed-ts-mts</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -30,11 +30,11 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/cjs-js/nadle.config.js</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello-cjs-js</BoldDim> started
 
 Hello from /ROOT/test/__fixtures__/cjs-js/nadle.config.js!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello-cjs-js</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -43,11 +43,11 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello-cjs-ts</BoldDim> started
 
 Hello from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello-cjs-ts</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -56,11 +56,11 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/esm-js/nadle.config.js</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello-esm-js</BoldDim> started
 
 Hello from /ROOT/test/__fixtures__/esm-js/nadle.config.js!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello-esm-js</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
@@ -69,11 +69,11 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/esm-ts/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello-esm-ts</BoldDim> started
 
 Hello from /ROOT/test/__fixtures__/esm-ts/nadle.config.ts!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello-esm-ts</BoldDim> done in {duration}
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;

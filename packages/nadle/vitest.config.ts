@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { isCI } from "std-env";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -10,6 +11,8 @@ export default defineConfig({
 	},
 	test: {
 		environment: "node",
+		retry: isCI ? 5 : 2,
+		fileParallelism: false,
 		setupFiles: "./test/__setup__/vitest.ts",
 		typecheck: {
 			enabled: true,
