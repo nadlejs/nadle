@@ -8,7 +8,7 @@
 		"build:tsup": "tsup --watch",
 		"build:ts": "tsc -p tsconfig.build.json",
 		"start": "pnpm run build:ts --watch --noEmit false",
-		"test": "vitest delete-task.test.ts"
+		"test": "vitest test/options/*.test.ts"
 	},
 	"files": [
 		"lib",
