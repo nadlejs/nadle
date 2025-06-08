@@ -1,16 +1,16 @@
 import Path from "node:path";
 
 import { it, describe } from "vitest";
-import { NewExec, fixturesDir } from "setup";
+import { createExec, expectPass, expectFail, fixturesDir } from "setup";
 
 describe("Pnpm Task", () => {
-	const exec = NewExec.createExec({ cwd: Path.join(fixturesDir, "pnpm-task") });
+	const exec = createExec({ cwd: Path.join(fixturesDir, "pnpm-task") });
 
 	it("can run tsc command with no error ts file", async () => {
-		await NewExec.expectPass(exec`pass`);
+		await expectPass(exec`pass`);
 	});
 
 	it("throw error when running tsc command with error ts file", async () => {
-		await NewExec.expectFail(() => exec`fail`);
+		await expectFail(() => exec`fail`);
 	});
 }, 10000);

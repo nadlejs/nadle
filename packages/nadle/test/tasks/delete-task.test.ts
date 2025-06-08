@@ -1,6 +1,6 @@
 import type fixturify from "fixturify";
-import { NewExec, withFixture } from "setup";
 import { it, expect, describe } from "vitest";
+import { expectPass, withFixture } from "setup";
 
 describe.sequential("DeleteTask", () => {
 	const files: fixturify.DirJSON = {
@@ -21,7 +21,7 @@ describe.sequential("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await NewExec.expectPass(exec`deleteFolderA`);
+					await expectPass(exec`deleteFolderA`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  b: {
@@ -44,7 +44,7 @@ describe.sequential("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await NewExec.expectPass(exec`deleteFolderB1`);
+					await expectPass(exec`deleteFolderB1`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -71,7 +71,7 @@ describe.sequential("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await NewExec.expectPass(exec`deleteFileBaz`);
+					await expectPass(exec`deleteFileBaz`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -98,7 +98,7 @@ describe.sequential("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await NewExec.expectPass(exec`deleteFilesFooBar`);
+					await expectPass(exec`deleteFilesFooBar`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -125,7 +125,7 @@ describe.sequential("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await NewExec.expectPass(exec`deleteJsonFiles`);
+					await expectPass(exec`deleteJsonFiles`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -152,7 +152,7 @@ describe.sequential("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await NewExec.expectPass(exec`deleteJsonFiles --log-level info`);
+					await expectPass(exec`deleteJsonFiles --log-level info`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {

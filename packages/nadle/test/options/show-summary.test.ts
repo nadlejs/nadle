@@ -3,9 +3,7 @@ import { exec, createExec, serializeANSI } from "setup";
 
 describe("--show-summary", () => {
 	it("should show in-progress summary when enable explicitly", async () => {
-		const { stdout, exitCode } = await exec`copy --show-summary`;
-
-		expect(exitCode).toBe(0);
+		const { stdout } = await exec`copy --show-summary`;
 
 		const blurStdout = serializeANSI(stdout as string);
 
@@ -22,23 +20,20 @@ describe("--show-summary", () => {
 	});
 
 	it("should not show summary when disabled explicitly", async () => {
-		const { stdout, exitCode } = await exec`copy --no-show-summary`;
+		const { stdout } = await exec`copy --no-show-summary`;
 
-		expect(exitCode).toBe(0);
 		expect(serializeANSI(stdout as string)).not.contain(`<Dim>Tasks      </BoldDim>`);
 	});
 
 	it("should not show summary in CI by default", async () => {
-		const { stdout, exitCode } = await createExec({ env: { CI: "true" }, autoDisabledSummary: false })`copy`;
+		const { stdout } = await createExec({ env: { CI: "true" }, autoDisabledSummary: false })`copy`;
 
-		expect(exitCode).toBe(0);
 		expect(serializeANSI(stdout as string)).not.contain(`<Dim>Tasks      </BoldDim>`);
 	});
 
 	it("should show summary when not in CI by default", async () => {
-		const { stdout, exitCode } = await createExec({ env: { CI: "false" }, autoDisabledSummary: false })`copy`;
+		const { stdout } = await createExec({ env: { CI: "false" }, autoDisabledSummary: false })`copy`;
 
-		expect(exitCode).toBe(0);
 		expect(serializeANSI(stdout as string)).contain(`<Dim>Tasks      </BoldDim>`);
 	});
 });

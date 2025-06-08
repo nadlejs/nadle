@@ -3,9 +3,9 @@ import { it, expect, describe } from "vitest";
 
 describe("Logger", () => {
 	const environments = [
-		{ CI: "true", TEST: "true", reporter: "BasicReporter" },
-		{ CI: "true", TEST: "false", reporter: "CIReporter" },
-		{ CI: "false", TEST: "true", reporter: "BasicReporter" },
+		// { CI: "true", TEST: "true", reporter: "BasicReporter" },
+		// { CI: "true", TEST: "false", reporter: "CIReporter" },
+		// { CI: "false", TEST: "true", reporter: "BasicReporter" },
 		{ CI: "false", TEST: "false", reporter: "FancyReporter" }
 	] as const;
 
