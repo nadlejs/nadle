@@ -1,8 +1,7 @@
 import stdMocks from "std-mocks";
 import { test, expect } from "vitest";
 
-import { runCli } from "../lib/run-cli.js";
-import { setupCli } from "../lib/setup-cli.js";
+import { runCli, setupCli } from "../lib/cli.js";
 import { serializeANSI } from "./__setup__/serialize.js";
 
 test("asd", async () => {

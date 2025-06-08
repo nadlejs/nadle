@@ -3,9 +3,7 @@ import c from "tinyrainbow";
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
 export class TaskRegistry {
-	public readonly registry = new Map<string, RegisteredTask>();
-
-	constructor(public id: number) {}
+	private readonly registry = new Map<string, RegisteredTask>();
 
 	register(name: string, task: RegisteredTask) {
 		this.registry.set(name, task);
@@ -61,14 +59,12 @@ export class TaskRegistry {
 	}
 }
 
-let id = Date.now();
-
 const globalKey = Symbol.for("nadle.registry");
 const globalSymbols = Object.getOwnPropertySymbols(globalThis);
 const hasRegistry = globalSymbols.includes(globalKey);
 
 if (!hasRegistry) {
-	(globalThis as any)[globalKey] = new TaskRegistry(id++);
+	(globalThis as any)[globalKey] = new TaskRegistry();
 }
 
 export const taskRegistry = (globalThis as any)[globalKey] as TaskRegistry;

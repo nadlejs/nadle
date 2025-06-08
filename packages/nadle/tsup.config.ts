@@ -12,9 +12,7 @@ export default defineConfig({
 	entry: {
 		cli: "src/cli.ts",
 		index: "src/index.ts",
-		"run-cli": "src/run-cli.ts",
 		worker: "src/core/worker.ts",
-		"setup-cli": "src/setup-cli.ts",
 		"import-meta-resolve": "src/core/import-meta-resolve.ts"
 	}
 });

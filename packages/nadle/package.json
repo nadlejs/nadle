@@ -12,10 +12,11 @@
 	},
 	"files": [
 		"lib",
+		"nadle.mjs",
 		"CHANGELOG.md"
 	],
 	"main": "lib/index.js",
-	"bin": "lib/cli.js",
+	"bin": "nadle.mjs",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"consola": "^3.4.2",
