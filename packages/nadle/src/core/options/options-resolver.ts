@@ -6,6 +6,7 @@ import Process from "node:process";
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
 
+import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
 import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
 export class OptionsResolver {
@@ -60,11 +61,11 @@ export class OptionsResolver {
 			return resolvedConfigPath;
 		}
 
-		const resolveConfigPath = findUpSync(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `nadle.config.${ext}`));
+		const resolveConfigPath = findUpSync(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${DEFAULT_CONFIG_FILE_NAME}.${ext}`));
 
 		if (!resolveConfigPath) {
 			throw new Error(
-				`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
+				`No ${DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
 			);
 		}
 
