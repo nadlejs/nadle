@@ -10,7 +10,7 @@ export default defineConfig({
 	},
 	test: {
 		maxWorkers: 1,
-		isolate: false, // Don't isolate environment between test files
+		isolate: false,
 		environment: "node",
 		fileParallelism: false,
 		setupFiles: "./test/__setup__/vitest.ts",

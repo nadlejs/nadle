@@ -1,4 +1,4 @@
-import { taskRegistry } from "./nadle.js";
+import { taskRegistry } from "./task-registry.js";
 import {
 	type Task,
 	TaskStatus,
@@ -14,8 +14,6 @@ export function registerTask(name: string): ConfigBuilder;
 export function registerTask(name: string, fnTask: TaskFn): ConfigBuilder;
 export function registerTask<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): ConfigBuilder;
 export function registerTask(name: string, task?: TaskFn | Task, optionsResolver?: Resolver): ConfigBuilder {
-	console.log("@registerTask", taskRegistry.id);
-
 	if (taskRegistry.has(name)) {
 		throw new Error(`Task "${name}" already registered`);
 	}

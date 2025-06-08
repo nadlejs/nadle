@@ -13,6 +13,7 @@ const config = tsEslint.config(
 		ignores: [
 			"**/lib",
 			"**/build",
+			"**/coverage",
 			"**/__temp__",
 			"**/node_modules/",
 			"**/.docusaurus",
