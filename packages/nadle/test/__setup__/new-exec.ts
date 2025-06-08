@@ -46,26 +46,27 @@ export function createExec(options?: NewExecOptions): NewExec {
 			command = "--max-workers 1 " + command;
 		}
 
-		let env: Env = { CI: "false", TEST: "true", ...options?.env };
-
-		if (env.CI === "false") {
-			// std-env requires GITHUB_ACTIONS to be undefined to not be detected as CI
-			env = { ...env, GITHUB_ACTIONS: undefined };
-		}
-
-		if (env.TEST === "false") {
-			// std-env requires TEST to be undefined to not be detected as TEST
-			env = { ...env, NODE_ENV: "production" };
-		}
+		// let env: Env = { CI: "false", TEST: "true", ...options?.env };
+		//
+		// if (env.CI === "false") {
+		// 	// std-env requires GITHUB_ACTIONS to be undefined to not be detected as CI
+		// 	env = { ...env, GITHUB_ACTIONS: undefined };
+		// }
+		//
+		// if (env.TEST === "false") {
+		// 	// std-env requires TEST to be undefined to not be detected as TEST
+		// 	env = { ...env, NODE_ENV: "production" };
+		// }
 
 		const originalCwd = process.cwd();
-		const originalEnv = process.env;
+		// const originalEnv = process.env;
 
 		const cwd = options?.cwd || Path.join(fixturesDir, "main");
 
 		process.chdir(cwd);
-		Object.assign(process.env, { ...originalEnv, ...env });
-		console.log({ env, originalEnv, merge: { ...originalEnv, ...env } });
+		console.log(process.env);
+		// Object.assign(process.env, { ...originalEnv, ...env });
+		// console.log({ env, originalEnv, merge: { ...originalEnv, ...env } });
 		stdMocks.use();
 		let stdout, stderr;
 
@@ -83,13 +84,13 @@ export function createExec(options?: NewExecOptions): NewExec {
 
 			process.chdir(originalCwd);
 
-			for (const [key] of Object.entries(env)) {
-				delete process.env[key];
-
-				if (Object.hasOwn(originalEnv, key)) {
-					process.env[key] = originalEnv[key];
-				}
-			}
+			// for (const [key] of Object.entries(env)) {
+			// 	delete process.env[key];
+			//
+			// 	if (Object.hasOwn(originalEnv, key)) {
+			// 		process.env[key] = originalEnv[key];
+			// 	}
+			// }
 		}
 
 		return { stdout: stdout.join(""), stderr: stderr.join("") };

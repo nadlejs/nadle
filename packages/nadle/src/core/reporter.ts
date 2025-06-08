@@ -166,3 +166,7 @@ export class DefaultReporter implements Reporter {
 		}, DURATION_UPDATE_INTERVAL_MS).unref();
 	}
 }
+
+export function toBoolean(val: boolean | string | undefined) {
+	return val ? val !== "false" : false;
+}

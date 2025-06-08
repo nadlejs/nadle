@@ -1,18 +1,31 @@
 import { createExec } from "setup";
-import { it, expect, describe } from "vitest";
+import { vi, it, expect, describe, beforeAll } from "vitest";
 
 describe("Logger", () => {
-	const environments = [
-		// { CI: "true", TEST: "true", reporter: "BasicReporter" },
-		// { CI: "true", TEST: "false", reporter: "CIReporter" },
-		// { CI: "false", TEST: "true", reporter: "BasicReporter" },
-		{ CI: "false", TEST: "false", reporter: "FancyReporter" }
-	] as const;
+	// const environments = [
+	// 	// { CI: "true", TEST: "true", reporter: "BasicReporter" },
+	// 	// { CI: "true", TEST: "false", reporter: "CIReporter" },
+	// 	// { CI: "false", TEST: "true", reporter: "BasicReporter" },
+	// 	{ CI: "false", TEST: "false", reporter: "FancyReporter" }
+	// ] as const;
 
-	it.each(environments)(`should use $reporter when CI=$CI and TEST=$TEST`, async ({ CI, TEST, reporter }) => {
-		const { stdout } = await createExec({ env: { CI, TEST } })`hello --log-level info`;
+	describe(`when CI=$CI and TEST=$TEST`, async () => {
+		beforeAll(() => {
+			vi.mock("std-env", async () => {
+				const actual = await vi.importActual("std-env");
 
-		expect(stdout).contain(`reporters: [ ${reporter} {} ] }`);
+				return {
+					...actual,
+					isCI: false,
+					isTest: false
+				};
+			});
+		});
+		it(`should use FancyReporter reporter`, async () => {
+			const { stdout } = await createExec()`hello --log-level info`;
+
+			expect(stdout).contain(`reporters: [ FancyReporter {} ] }`);
+		});
 	});
 
 	it("should not prepend log level in CI", async () => {
