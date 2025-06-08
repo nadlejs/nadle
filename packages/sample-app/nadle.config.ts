@@ -123,6 +123,16 @@ tasks
 	.register(...createTask("task-C", { subTaskCount: 3, subTaskDuration: 1000 }))
 	.config({ dependsOn: ["task-A", "task-B", "task-C.0", "task-C.1", "task-C.2"] });
 
+tasks.register(...createTask("task-D.0", { subTaskCount: 3, subTaskDuration: 1200 })).config({ dependsOn: ["task-C"] });
+tasks.register(...createTask("task-D.1", { subTaskCount: 3, subTaskDuration: 1500 })).config({ dependsOn: ["task-C"] });
+tasks.register(...createTask("task-D.2", { subTaskCount: 3, subTaskDuration: 1300 })).config({ dependsOn: ["task-C"] });
+tasks.register(...createTask("task-D.3", { subTaskCount: 3, subTaskDuration: 2000 })).config({ dependsOn: ["task-C"] });
+tasks.register(...createTask("task-D.4", { subTaskCount: 3, subTaskDuration: 2300 })).config({ dependsOn: ["task-C"] });
+
+tasks
+	.register(...createTask("task-D", { subTaskCount: 3, subTaskDuration: 1000 }))
+	.config({ dependsOn: ["task-D.0", "task-D.1", "task-D.2", "task-D.3", "task-D.4"] });
+
 /**
  * Cycle tasks
  */

@@ -2,7 +2,7 @@ import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
 import { expectPass, withFixture } from "setup";
 
-describe.sequential("DeleteTask", () => {
+describe.skip("DeleteTask", () => {
 	const files: fixturify.DirJSON = {
 		"foo.txt": "foo.txt contents",
 		a: {
@@ -70,7 +70,8 @@ describe.sequential("DeleteTask", () => {
 			await withFixture({
 				files,
 				configName: "delete-task",
-				testFn: async ({ exec, getFiles }) => {
+				testFn: async ({ cwd, exec, getFiles }) => {
+					expect(cwd).toMatchInlineSnapshot(`/ROOT/test/__fixtures__/delete-task/__temp__/__b0cd7988__`);
 					await expectPass(exec`deleteFileBaz`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{

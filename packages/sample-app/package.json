@@ -19,6 +19,7 @@
 		"sequence-test-compile": "pnpm test-compile --sequence",
 		"task-A": "nadle task-A",
 		"task-C": "nadle task-C",
+		"task-D": "nadle task-D",
 		"compileTs": "nadle compileTs",
 		"post-throwable": "nadle post-throwable",
 		"unknown": "nadle unknown",

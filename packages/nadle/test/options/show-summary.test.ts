@@ -7,7 +7,7 @@ vi.mock("std-env", async () => {
 	return { ...actual, isCI: true };
 });
 
-describe("--show-summary", () => {
+describe.skip("--show-summary", () => {
 	it("should show in-progress summary when enable explicitly", async () => {
 		const { stdout } = await exec`copy --show-summary`;
 

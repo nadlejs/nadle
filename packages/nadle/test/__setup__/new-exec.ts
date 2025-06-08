@@ -54,6 +54,7 @@ export function createExec(options?: NewExecOptions): NewExec {
 			const argv = await setupCli().parseAsync(command);
 			await runCli(argv, { cwd });
 		} catch (_err) {
+			// console.log(_err);
 		} finally {
 			const flushResult = stdMocks.flush();
 			stdout = flushResult.stdout;

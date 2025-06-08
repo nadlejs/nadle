@@ -2,13 +2,13 @@
 
 exports[`DeleteTask > given a file path > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__b0cd7988__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 `;
 
 exports[`DeleteTask > given a folder name > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__190d3773__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>deleteFolderA</BoldDim> started
 
@@ -20,13 +20,13 @@ exports[`DeleteTask > given a folder name > can delete it > stdout 1`] = `
 
 exports[`DeleteTask > given a folder path > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__d7a3f7f8__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 `;
 
 exports[`DeleteTask > given a glob > can delete all files match the glob > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__8ed6398d__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 `;
 
@@ -54,7 +54,7 @@ exports[`DeleteTask > given a glob with enable info log > can print will-delete 
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__4f3f8dd5__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [info] Resolved options: { sequence: false,
   logLevel: 'info',
@@ -67,12 +67,12 @@ exports[`DeleteTask > given a glob with enable info log > can print will-delete 
   dryRun: false,
   stacktrace: false,
   configPath:
-   '/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts' }
+   '/ROOT/test/__fixtures__/delete-task/__temp__/__4f3f8dd5__/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
 `;
 
 exports[`DeleteTask > given multiple file paths > can delete them > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__b6afc4e1__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 `;

@@ -9,13 +9,8 @@ export default defineConfig({
 		}
 	},
 	test: {
-		isolate: true,
 		environment: "node",
 		setupFiles: "./test/__setup__/vitest.ts",
-		// coverage: {
-		// 	enabled: true,
-		// 	provider: "v8"
-		// },
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"

@@ -31,5 +31,5 @@ function createConsolaReporters(): ConsolaReporter[] {
 }
 
 export function createNadleConsola(options: Required<LoggerOptions>) {
-	return createConsola({ formatOptions: { date: false }, level: LogLevels[options.logLevel], reporters: createConsolaReporters() });
+	return createConsola({ throttle: 100, formatOptions: { date: false }, level: LogLevels[options.logLevel], reporters: createConsolaReporters() });
 }
