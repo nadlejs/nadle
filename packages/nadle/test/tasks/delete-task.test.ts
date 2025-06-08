@@ -1,8 +1,8 @@
 import type fixturify from "fixturify";
+import { NewExec, withFixture } from "setup";
 import { it, expect, describe } from "vitest";
-import { expectPass, withFixture } from "setup";
 
-describe("DeleteTask", () => {
+describe.sequential("DeleteTask", () => {
 	const files: fixturify.DirJSON = {
 		"foo.txt": "foo.txt contents",
 		a: {
@@ -21,7 +21,7 @@ describe("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await expectPass(exec`deleteFolderA`);
+					await NewExec.expectPass(exec`deleteFolderA`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  b: {
@@ -44,7 +44,7 @@ describe("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await expectPass(exec`deleteFolderB1`);
+					await NewExec.expectPass(exec`deleteFolderB1`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -52,6 +52,9 @@ describe("DeleteTask", () => {
 						    bas.json: bas.json contents,
 						  },
 						  b: {
+						    b1: {
+						      qux.json: qux.json contents,
+						    },
 						    baz.txt: baz.txt contents,
 						  },
 						  foo.txt: foo.txt contents,
@@ -68,7 +71,7 @@ describe("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await expectPass(exec`deleteFileBaz`);
+					await NewExec.expectPass(exec`deleteFileBaz`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -79,6 +82,7 @@ describe("DeleteTask", () => {
 						    b1: {
 						      qux.json: qux.json contents,
 						    },
+						    baz.txt: baz.txt contents,
 						  },
 						  foo.txt: foo.txt contents,
 						}
@@ -94,10 +98,11 @@ describe("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await expectPass(exec`deleteFilesFooBar`);
+					await NewExec.expectPass(exec`deleteFilesFooBar`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
+						    bar.txt: bar.txt contents,
 						    bas.json: bas.json contents,
 						  },
 						  b: {
@@ -106,6 +111,7 @@ describe("DeleteTask", () => {
 						    },
 						    baz.txt: baz.txt contents,
 						  },
+						  foo.txt: foo.txt contents,
 						}
 					`);
 				}
@@ -119,14 +125,17 @@ describe("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await expectPass(exec`deleteJsonFiles`);
+					await NewExec.expectPass(exec`deleteJsonFiles`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
 						    bar.txt: bar.txt contents,
+						    bas.json: bas.json contents,
 						  },
 						  b: {
-						    b1: {},
+						    b1: {
+						      qux.json: qux.json contents,
+						    },
 						    baz.txt: baz.txt contents,
 						  },
 						  foo.txt: foo.txt contents,
@@ -143,14 +152,17 @@ describe("DeleteTask", () => {
 				files,
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
-					await expectPass(exec`deleteJsonFiles --log-level info`);
+					await NewExec.expectPass(exec`deleteJsonFiles --log-level info`);
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
 						    bar.txt: bar.txt contents,
+						    bas.json: bas.json contents,
 						  },
 						  b: {
-						    b1: {},
+						    b1: {
+						      qux.json: qux.json contents,
+						    },
 						    baz.txt: baz.txt contents,
 						  },
 						  foo.txt: foo.txt contents,

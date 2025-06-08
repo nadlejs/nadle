@@ -20,10 +20,10 @@ interface NewExecResults {
 	stderr: string;
 }
 
-type NewExec = (strings: TemplateStringsArray, ...values: unknown[]) => NewExecResults;
+export type NewExec = (strings: TemplateStringsArray, ...values: unknown[]) => Promise<NewExecResults>;
 
 export namespace NewExec {
-	export function createExec(options?: NewExecOptions) {
+	export function createExec(options?: NewExecOptions): NewExec {
 		const configFile = options?.config;
 		const autoDisabledSummary = options?.autoDisabledSummary ?? true;
 
@@ -50,7 +50,7 @@ export namespace NewExec {
 
 			stdMocks.use();
 			process.chdir(cwd);
-			let error: unknown, stdout, stderr;
+			let stdout, stderr;
 
 			try {
 				const argv = await setupCli().parseAsync(command);

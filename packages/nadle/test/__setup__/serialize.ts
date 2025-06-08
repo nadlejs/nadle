@@ -9,7 +9,7 @@ export function serialize(input: string): string {
 		serializePwdGitBashWindows,
 		serializeRelativePath,
 		serializeAbsoluteFilePath,
-		// serializeStackTrace,
+		serializeStackTrace,
 		serializeHash,
 		serializeLibFilePath,
 		serializeVersion,

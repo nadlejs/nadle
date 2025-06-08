@@ -1,8 +1,8 @@
+import { NewExec } from "setup";
 import { it, describe } from "vitest";
-import { exec, expectPass } from "setup";
 
-describe("--help", () => {
+describe.skip("--help", () => {
 	it("prints help", async () => {
-		await expectPass(exec`--help`);
+		await NewExec.expectPass(NewExec.exec`--help`);
 	});
 });

@@ -3,8 +3,8 @@ import Fs from "node:fs/promises";
 
 import fixturify from "fixturify";
 
+import { NewExec } from "./new-exec.js";
 import { randomHash } from "./random.js";
-import { type Exec, createExec } from "./exec.js";
 import { fixturesDir, defaultConfigFile } from "./constants.js";
 
 const TEMP_DIR = "__temp__";
@@ -13,7 +13,7 @@ export async function withFixture(params: {
 	preserve?: boolean;
 	configName: string;
 	files: fixturify.DirJSON;
-	testFn: (params: { exec: Exec; cwd: string; getFiles: () => fixturify.DirJSON }) => Promise<void>;
+	testFn: (params: { cwd: string; exec: NewExec; getFiles: () => fixturify.DirJSON }) => Promise<void>;
 }) {
 	const { files, testFn, configName, preserve = false } = params;
 	const cwd = Path.join(Path.join(fixturesDir, configName, TEMP_DIR, randomHash()));
@@ -26,7 +26,7 @@ export async function withFixture(params: {
 	const getFiles = () => fixturify.readSync(cwd, { ignore: [defaultConfigFile] });
 
 	try {
-		await testFn({ cwd, getFiles, exec: createExec({ cwd }) });
+		await testFn({ cwd, getFiles, exec: NewExec.createExec({ cwd }) });
 
 		if (!preserve) {
 			await Fs.rm(cwd, { force: true, recursive: true });

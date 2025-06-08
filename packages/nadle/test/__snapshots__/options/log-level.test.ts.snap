@@ -24,7 +24,10 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Resolved options: { logLevel: 'debug',
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[info] Resolved options: { sequence: false,
+  logLevel: 'debug',
   showConfig: false,
   showSummary: false,
   isWorkerThread: false,
@@ -32,24 +35,31 @@ exports[`--log-level > shows debug log when passing --log-level=debug > stdout 1
   minWorkers: 1,
   list: false,
   dryRun: false,
-  configPath: '/ROOT/test/fixtures/main/nadle.config.ts' }
+  stacktrace: false,
+  configPath:
+   '/ROOT/test/__fixtures__/main/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
 [info] Resolved tasks: [ hello ]
 [info] Execution started
-[info] Task <Bold>hello</BoldDim> queued
+[debug] <Yellow>[Scheduler]</Yellow> transitiveDependencyGraph Map(1) { 'hello' => Set(0) {} }
+[debug] <Yellow>[Scheduler]</Yellow> dependencyGraph Map(1) { 'hello' => Set(0) {} }
+[info] Scheduled tasks: hello
+[debug] <Yellow>[Scheduler]</Yellow> runningRoot = undefined, finishedTaskName = undefined
+[debug] <Yellow>[Scheduler]</Yellow> taskName = hello, indegree = 0
+[debug] <Yellow>[Scheduler]</Yellow> Next tasks = hello
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+
 Hello from nadle!
-[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+[debug] <Yellow>[Scheduler]</Yellow> runningRoot = undefined, finishedTaskName = hello
+[debug] <Yellow>[Scheduler]</Yellow> Next tasks = 
 [info] Execution finished
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
 exports[`--log-level > shows error log only when passing --log-level=error > stdout 1`] = `Hello from nadle!`;
-
-exports[`--log-level > shows error log only when passing --log-level=error > stdout 2`] = `"Hello from nadle!"`;
 
 exports[`--log-level > shows info log when passing --log-level=info > stdout 1`] = `
 [info] Initialized logger with consola options: { types:
@@ -75,7 +85,10 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Resolved options: { logLevel: 'info',
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[info] Resolved options: { sequence: false,
+  logLevel: 'info',
   showConfig: false,
   showSummary: false,
   isWorkerThread: false,
@@ -83,16 +96,18 @@ exports[`--log-level > shows info log when passing --log-level=info > stdout 1`]
   minWorkers: 1,
   list: false,
   dryRun: false,
-  configPath: '/ROOT/test/fixtures/main/nadle.config.ts' }
+  stacktrace: false,
+  configPath:
+   '/ROOT/test/__fixtures__/main/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
-[log] <Dim>Using config file from /ROOT/test/fixtures/main/nadle.config.ts
-</BoldDim>
 [info] Resolved tasks: [ hello ]
 [info] Execution started
-[info] Task <Bold>hello</BoldDim> queued
+[info] Scheduled tasks: hello
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+
 Hello from nadle!
-[log] <Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+[log] 
+<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
 [info] Execution finished
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>

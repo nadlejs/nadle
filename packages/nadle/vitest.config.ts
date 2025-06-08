@@ -9,11 +9,18 @@ export default defineConfig({
 		}
 	},
 	test: {
+		isolate:true,
+		pool: "forks",
 		environment: "node",
 		setupFiles: "./test/__setup__/vitest.ts",
 		coverage: {
 			enabled: true,
 			provider: "v8"
+		},
+		poolOptions: {
+			forks: {
+				singleFork: true
+			}
 		},
 		typecheck: {
 			enabled: true,

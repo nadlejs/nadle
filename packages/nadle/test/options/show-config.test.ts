@@ -1,12 +1,12 @@
+import { NewExec } from "setup";
 import { it, describe } from "vitest";
-import { exec, expectPass } from "setup";
 
 describe("--show-config", () => {
 	it("should show config", async () => {
-		await expectPass(exec`hello --show-config`);
+		await NewExec.expectPass(NewExec.exec`hello --show-config`);
 	});
 
 	it("should show config with extra options", async () => {
-		await expectPass(exec`hello --show-config --min-workers 2 --max-workers 3`);
+		await NewExec.expectPass(NewExec.exec`hello --show-config --min-workers 2 --max-workers 3`);
 	});
 });
