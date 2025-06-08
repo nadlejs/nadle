@@ -9,10 +9,7 @@ export default defineConfig({
 		}
 	},
 	test: {
-		maxWorkers: 1,
-		isolate: false,
 		environment: "node",
-		fileParallelism: false,
 		setupFiles: "./test/__setup__/vitest.ts",
 		coverage: {
 			enabled: true,
@@ -21,12 +18,6 @@ export default defineConfig({
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"
-		},
-		poolOptions: {
-			forks: {
-				maxForks: 1,
-				singleFork: true // or poolOptions: { threads: { isolate: false } },
-			}
 		},
 		resolveSnapshotPath(testPath, snapshotExtension) {
 			const testDir = path.join(import.meta.dirname, "test");

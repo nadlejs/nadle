@@ -2,7 +2,7 @@ import c from "tinyrainbow";
 
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
-class TaskRegistry {
+export class TaskRegistry {
 	public readonly registry = new Map<string, RegisteredTask>();
 
 	constructor(public id: number) {}

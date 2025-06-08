@@ -9,11 +9,11 @@ import { VERSION } from "../version.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
 import { type RegisteredTask } from "./types.js";
-import { taskRegistry } from "./task-registry.js";
 import { TaskScheduler } from "./task-scheduler.js";
 import { RIGHT_ARROW, UnnamedGroup } from "./constants.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { resolveTask, formatSuggestions } from "./resolve-task.js";
+import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
 
@@ -22,7 +22,7 @@ export class Nadle {
 
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
-	public readonly registry = taskRegistry;
+	public readonly registry: TaskRegistry = taskRegistry;
 
 	private readonly optionsResolver: OptionsResolver;
 
@@ -35,31 +35,29 @@ export class Nadle {
 	}
 
 	async execute(tasks: string[]) {
-		await this.registerTask().then(async () => {
-			this.optionsResolver.addConfigFileOptions(optionRegistry.get());
+		await this.registerTask();
+		this.optionsResolver.addConfigFileOptions(optionRegistry.get());
 
-			try {
-				const resolvedTasks = this.resolveTasks(tasks);
-				this.reporter.onExecutionStart?.();
+		try {
+			const resolvedTasks = this.resolveTasks(tasks);
+			this.reporter.onExecutionStart?.();
 
-				if (this.options.showConfig) {
-					this.showConfig();
-				} else if (this.options.list) {
-					this.listTasks();
-				} else if (this.options.dryRun) {
-					this.dryRunTasks(resolvedTasks);
-				} else {
-					await this.runTasks(resolvedTasks);
-				}
-			} catch (error) {
-				this.reporter.onExecutionFailed?.(error);
-				throw error;
-				// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
-				process.exit((error as any).errorCode || 1);
+			if (this.options.showConfig) {
+				this.showConfig();
+			} else if (this.options.list) {
+				this.listTasks();
+			} else if (this.options.dryRun) {
+				this.dryRunTasks(resolvedTasks);
+			} else {
+				await this.runTasks(resolvedTasks);
 			}
+		} catch (error) {
+			this.reporter.onExecutionFailed?.(error);
+			// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
+			process.exit((error as any).errorCode || 1);
+		}
 
-			this.reporter.onExecutionFinish?.();
-		});
+		this.reporter.onExecutionFinish?.();
 	}
 
 	get options(): NadleResolvedOptions {
@@ -203,11 +201,7 @@ export class Nadle {
 	async registerTask() {
 		const configFile = this.options.configPath;
 
-		const jiti = createJiti(import.meta.url, {
-			fsCache: true,
-			interopDefault: true,
-			extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`)
-		});
+		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
 
 		await jiti.import(pathToFileURL(configFile).toString());
 	}
