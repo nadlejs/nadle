@@ -5,7 +5,7 @@ import stylistic from "@stylistic/eslint-plugin";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
 
-const config = tsEslint.config(
+export default tsEslint.config(
 	eslint.configs.recommended,
 	tsEslint.configs.recommended,
 	nPlugin.configs["flat/recommended-module"],
@@ -87,5 +87,3 @@ const config = tsEslint.config(
 		}
 	}
 );
-
-export default config;
