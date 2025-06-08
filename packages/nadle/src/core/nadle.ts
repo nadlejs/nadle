@@ -1,4 +1,3 @@
-import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import c from "tinyrainbow";
@@ -53,8 +52,9 @@ export class Nadle {
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.(error);
-			// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
-			process.exit((error as any).errorCode || 1);
+
+			throw error;
+			// process.exit((error as any).errorCode || 1);
 		}
 
 		this.reporter.onExecutionFinish?.();

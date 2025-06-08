@@ -24,7 +24,6 @@ exports[`Configure > can override configured options from config file if the cli
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.configure.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [info] Resolved options: { sequence: false,

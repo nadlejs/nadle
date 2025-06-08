@@ -55,6 +55,6 @@ function assertOrder(stdout: string, firstTask: string, secondTask: string) {
 		message: () =>
 			pass
 				? `Expected task '${firstTask}' not to run before '${secondTask}', but it did. Stdout:\n${stdout}`
-				: `Expected task '${firstTask}' to run before '${secondTask}', but the order was incorrect. Stdout:\n${stdout}`
+				: `Expected task '${firstTask}' to run before '${secondTask}', but it did not. Stdout:\n${stdout}`
 	};
 }

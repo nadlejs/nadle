@@ -1,26 +1,26 @@
+import { NewExec } from "setup";
 import { it, describe } from "vitest";
-import { createExec, expectFail } from "setup";
 
 describe("detect cycle", () => {
-	const exec = createExec({ config: "cycle" });
+	const exec = NewExec.createExec({ config: "cycle" });
 
 	it("should detect cycle from a task outside the cycle", async () => {
-		await expectFail(() => exec`cycle-1`);
+		await NewExec.expectFail(() => exec`cycle-1`);
 	});
 
 	it("should detect cycle from a task inside the cycle", async () => {
-		await expectFail(() => exec`cycle-2`);
+		await NewExec.expectFail(() => exec`cycle-2`);
 	});
 
 	it("should print the cycle from the first reach task", async () => {
-		await expectFail(() => exec`cycle-4`);
+		await NewExec.expectFail(() => exec`cycle-4`);
 	});
 
 	it("should detect 2-tasks-cycle", async () => {
-		await expectFail(() => exec`cycle-6`);
-		await expectFail(() => exec`cycle-7`);
+		await NewExec.expectFail(() => exec`cycle-6`);
+		await NewExec.expectFail(() => exec`cycle-7`);
 	});
 	it("should detect 1-task-cycle", async () => {
-		await expectFail(() => exec`cycle-8`);
+		await NewExec.expectFail(() => exec`cycle-8`);
 	});
 });
