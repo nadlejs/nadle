@@ -1,16 +1,16 @@
 import { it, describe } from "vitest";
-import { exec, expectPass } from "setup";
+import { newExec, newExpectPass } from "setup";
 
 describe("Basic", () => {
 	it("can run a simple command", async () => {
-		await expectPass(exec`hello`);
+		await newExpectPass(newExec`hello`);
 	});
 
 	it("can run two commands sequentially", async () => {
-		await expectPass(exec`hello goodbye`);
+		await newExpectPass(newExec`hello goodbye`);
 	});
 
 	it("can run dependent task first", async () => {
-		await expectPass(exec`copy`);
+		await newExpectPass(newExec`copy`);
 	});
 });

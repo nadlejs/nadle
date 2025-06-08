@@ -8,13 +8,18 @@ export function serialize(input: string): string {
 		// serializeFileLocation,
 		serializePwdGitBashWindows,
 		serializeRelativePath,
-		// serializeAbsoluteFilePath,
+		serializeAbsoluteFilePath,
 		// serializeStackTrace,
 		serializeHash,
 		serializeLibFilePath,
 		serializeVersion,
-		removeUnstableLines
+		removeUnstableLines,
+		removeTrailingSpaces
 	].reduce((result, _serializer) => _serializer(result), input);
+}
+
+function removeTrailingSpaces(input: string) {
+	return input.trimEnd();
 }
 
 const UnstableWordsMap = [["worker_default", "default"]];
