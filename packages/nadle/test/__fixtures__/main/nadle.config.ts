@@ -30,6 +30,8 @@ tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({
 });
 
 tasks.register("prepare", async () => {
+	await new Promise((r) => setTimeout(r, 2000));
+
 	console.log("Preparing...");
 });
 

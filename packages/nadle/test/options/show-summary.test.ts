@@ -9,8 +9,7 @@ describe("--show-summary", () => {
 
 		const blurStdout = serializeANSI(stdout as string);
 
-		expect(blurStdout).contain(`<Dim>Start at   </BoldDim>`);
-		expect(blurStdout).contain(`<Dim>Duration   </BoldDim> 0ms`);
+		expect(blurStdout).contain(`<Dim>Duration   </BoldDim> 1s`);
 		expect(blurStdout).contain(
 			`<Dim>Tasks      </BoldDim> <BrightCyan>2 pending</Cyan> <BrightBlack>|</Cyan> <Yellow>0 running</Yellow> <BrightBlack>|</Yellow> <Green>0 finished</Green> <Dim>(2 scheduled)</BoldDim>`
 		);

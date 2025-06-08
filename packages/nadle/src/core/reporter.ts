@@ -60,7 +60,6 @@ export class DefaultReporter implements Reporter {
 		].join(` ${c.gray(VERTICAL_BAR)} `);
 
 		summary.push([this.printLabel("Tasks"), stats, c.dim(`(${this.taskStat.scheduled} scheduled)`)].join(" "));
-		summary.push([this.printLabel("Start at"), this.startTime].join(" "));
 		summary.push([this.printLabel("Duration"), formatTime(this.duration)].join(" "));
 
 		summary.push(...this.printRunningTasks());
