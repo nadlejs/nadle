@@ -87,7 +87,8 @@ export class DefaultReporter implements Reporter {
 			this.nadle.logger.log(
 				c.dim(`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`)
 			);
-			this.nadle.logger.info("Resolved options:", this.nadle.options);
+			const { cwd, ...rest } = this.nadle.options;
+			this.nadle.logger.info("Resolved options:", rest);
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 		}
 

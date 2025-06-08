@@ -37,6 +37,6 @@ export function setupCli() {
 		.strict();
 }
 
-export async function runCli(argv: any) {
-	await new Nadle(resolveCLIOptions(argv)).execute((argv as any).tasks ?? []);
+export async function runCli(argv: any, options?: { cwd?: string }) {
+	await new Nadle(resolveCLIOptions({ ...argv, cwd: options?.cwd ?? process.cwd() })).execute((argv as any).tasks ?? []);
 }

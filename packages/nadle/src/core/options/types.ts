@@ -12,6 +12,7 @@ export interface NadleUserBaseOptions {
 }
 
 export interface NadleCLIOptions extends NadleUserBaseOptions {
+	readonly cwd: string;
 	readonly list: boolean;
 	readonly dryRun: boolean;
 	readonly configPath?: string;

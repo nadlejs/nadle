@@ -3,7 +3,7 @@ import { exec, expectPass } from "setup";
 
 describe("Basic", () => {
 	it("can run a simple command", async () => {
-		await expectPass(exec`hello`);
+		await expectPass(exec`hello --stacktrace`);
 	});
 
 	it("can run two commands sequentially", async () => {

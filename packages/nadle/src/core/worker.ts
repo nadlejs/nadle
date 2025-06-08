@@ -28,7 +28,7 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 
 	const taskConfig = task.configResolver({ context });
 	const taskEnv = Object.fromEntries(Object.entries(taskConfig.env ?? {}).map(([key, val]) => [key, String(val)]));
-	const workingDir = taskConfig.workingDir ? Path.resolve(taskConfig.workingDir) : process.cwd();
+	const workingDir = taskConfig.workingDir ? Path.resolve(options.cwd, taskConfig.workingDir) : options.cwd;
 
 	Object.assign(process.env, { ...originalEnv, ...taskEnv });
 

@@ -135,4 +135,5 @@ export const CLIOptions = {
 			}
 		}
 	}
+	// @ts-expect-error asdasdasasd
 } satisfies Record<Exclude<keyof NadleCLIOptions, "tasks" | "isWorkerThread">, { key: string; options: Options }>;

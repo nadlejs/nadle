@@ -1,7 +1,6 @@
 import Os from "node:os";
 import Fs from "node:fs";
 import Path from "node:path";
-import Process from "node:process";
 
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
@@ -44,12 +43,10 @@ export class OptionsResolver {
 		const maxWorkers = this.resolveWorkerCount(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkerCount(baseOptions.minWorkers), maxWorkers);
 
-		return { ...baseOptions, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseOptions.configPath) };
+		return { ...baseOptions, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseOptions.configPath, this.cliOptions.cwd) };
 	}
 
-	private resolveConfigPath(configPath: string | undefined): string {
-		const cwd = Process.cwd();
-
+	private resolveConfigPath(configPath: string | undefined, cwd: string): string {
 		if (configPath !== undefined) {
 			const resolvedConfigPath = Path.resolve(cwd, configPath);
 
@@ -60,11 +57,14 @@ export class OptionsResolver {
 			return resolvedConfigPath;
 		}
 
-		const resolveConfigPath = findUpSync(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `nadle.config.${ext}`));
+		const resolveConfigPath = findUpSync(
+			OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `nadle.config.${ext}`),
+			{ cwd }
+		);
 
 		if (!resolveConfigPath) {
 			throw new Error(
-				`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
+				`No nadle.config.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${cwd} directory or parent directories. Please use --config to specify a custom path.`
 			);
 		}
 

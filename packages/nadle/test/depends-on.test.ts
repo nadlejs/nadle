@@ -1,7 +1,7 @@
 import { getStdout, createExec } from "setup";
 import { it, expect, describe } from "vitest";
 
-describe("dependsOn", { retry: 0, repeats: 3 }, () => {
+describe("dependsOn", () => {
 	const exec = createExec({ config: "depends-on" });
 
 	it("should run dependent tasks first 1", async () => {

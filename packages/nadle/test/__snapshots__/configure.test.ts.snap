@@ -52,7 +52,8 @@ exports[`Configure > can override configured options from config file if the cli
   "minWorkers": 1,
   "list": false,
   "dryRun": false,
-  "stacktrace": false
+  "stacktrace": false,
+  "cwd": "/ROOT/test/__fixtures__/main"
 }
 [info] Execution finished
 [log] 
