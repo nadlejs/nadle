@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import * as process from "node:process";
 
 import yargs from "yargs";

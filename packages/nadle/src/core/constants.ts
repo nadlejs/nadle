@@ -11,3 +11,5 @@ export const CROSS = "×";
 export const CHECK = "✓";
 export const RIGHT_ARROW = "→";
 export const VERTICAL_BAR = "|";
+
+export const DEFAULT_CONFIG_FILE_NAME = "nadle.config";
