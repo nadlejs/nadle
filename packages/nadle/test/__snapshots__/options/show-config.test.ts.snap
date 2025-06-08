@@ -11,10 +11,10 @@ exports[`--show-config > should show config > stdout 1`] = `
   "showSummary": false,
   "isWorkerThread": false,
   "maxWorkers": 1,
-  "minWorkers": 1,
   "list": false,
   "dryRun": false,
   "stacktrace": false,
+  "minWorkers": 1,
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
 [log] 

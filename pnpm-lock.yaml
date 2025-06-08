@@ -264,6 +264,12 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
+  packages/nadle/test/__fixtures__/workers:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/sample-app:
     dependencies:
       nadle:
