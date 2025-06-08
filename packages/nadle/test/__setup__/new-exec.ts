@@ -64,9 +64,6 @@ export function createExec(options?: NewExecOptions): NewExec {
 		const cwd = options?.cwd || Path.join(fixturesDir, "main");
 
 		process.chdir(cwd);
-		console.log(process.env);
-		// Object.assign(process.env, { ...originalEnv, ...env });
-		// console.log({ env, originalEnv, merge: { ...originalEnv, ...env } });
 		stdMocks.use();
 		let stdout, stderr;
 
