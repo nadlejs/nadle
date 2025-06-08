@@ -2,13 +2,14 @@ import Path from "node:path";
 
 import { expect } from "vitest";
 import stripAnsi from "strip-ansi";
-import { execa, parseCommandString, type ResultPromise, type Options as ExecaOptions } from "execa";
+import { execa, type Result, parseCommandString, type ResultPromise, type Options as ExecaOptions } from "execa";
 
 import { cliPath, fixturesDir } from "./constants.js";
 
 interface ExecOptions extends ExecaOptions {
 	config?: string;
 	autoDisabledSummary?: boolean;
+	autoInjectMaxWorkers?: boolean;
 	env?: ExecaOptions["env"] & { CI?: "true" | "false"; TEST?: "true" | "false" };
 }
 
@@ -16,6 +17,7 @@ export type Exec = (strings: TemplateStringsArray, ...values: unknown[]) => Resu
 
 export function createExec(options?: ExecOptions): Exec {
 	const configFile = options?.config;
+	const autoInjectMaxWorkers = options?.autoInjectMaxWorkers ?? true;
 	const autoDisabledSummary = options?.autoDisabledSummary ?? true;
 
 	return (strings, ...values) => {
@@ -31,7 +33,7 @@ export function createExec(options?: ExecOptions): Exec {
 		}
 
 		// Enforce one worker if not specified
-		if (!command.includes("--max-workers")) {
+		if (autoInjectMaxWorkers && !command.includes("--max-workers")) {
 			command = "--max-workers 1 " + command;
 		}
 
@@ -66,4 +68,24 @@ export async function getStdout(command: ResultPromise, options?: { stripAnsi?: 
 	}
 
 	return stdout as string;
+}
+
+export async function getStderr(command: () => ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
+	let stderr = "";
+
+	try {
+		await command();
+		throw new Error("Expected command to fail, but it succeeded.");
+	} catch (error) {
+		const execaError = error as Result;
+		expect(execaError.exitCode).not.toBe(0);
+
+		stderr = execaError.stderr as string;
+	}
+
+	if (options?.stripAnsi ?? true) {
+		return stripAnsi(stderr);
+	}
+
+	return stderr;
 }

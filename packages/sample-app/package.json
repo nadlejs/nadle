@@ -5,7 +5,6 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc -b",
-		"base": "nadle --log-level info",
 		"empty": "nadle",
 		"help": "nadle -h",
 		"list": "nadle --list",

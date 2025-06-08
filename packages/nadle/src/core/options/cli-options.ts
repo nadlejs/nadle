@@ -17,6 +17,10 @@ export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOption
 			continue;
 		}
 
+		if ((key === "minWorkers" || key === "maxWorkers") && value === undefined) {
+			continue;
+		}
+
 		if (key === "config") {
 			if (value !== undefined) {
 				resolvedOptions = { ...resolvedOptions, configPath: value };
@@ -105,34 +109,36 @@ export const CLIOptions = {
 		key: "min-workers",
 		options: {
 			type: "string",
-			default: undefined,
 			describe: "Minimum number of workers (integer or percentage)",
-			coerce: (value) => {
-				const parsedValue = Number(value);
-
-				if (!isNaN(parsedValue)) {
-					return parsedValue;
-				}
-
-				return value;
-			}
+			defaultDescription: "Os.availableParallelism() - 1",
+			coerce: createWorkerCoercer("min")
 		}
 	},
 	maxWorkers: {
 		key: "max-workers",
 		options: {
 			type: "string",
-			default: undefined,
 			describe: "Maximum number of workers (integer or percentage)",
-			coerce: (value) => {
-				const parsedValue = Number(value);
-
-				if (!isNaN(parsedValue)) {
-					return parsedValue;
-				}
-
-				return value;
-			}
+			defaultDescription: "Os.availableParallelism() - 1",
+			coerce: createWorkerCoercer("max")
 		}
 	}
 } satisfies Record<Exclude<keyof NadleCLIOptions, "tasks" | "isWorkerThread">, { key: string; options: Options }>;
+
+function createWorkerCoercer(type: "min" | "max") {
+	return (workers: string | undefined) => {
+		if (workers === undefined) {
+			return undefined;
+		}
+
+		if (/^\d+$/.test(workers)) {
+			return Number(workers);
+		}
+
+		if (/^\d+(\.\d+)?%$/.test(workers)) {
+			return workers;
+		}
+
+		throw new Error(`Invalid value for --${type}-workers. It should be an integer or a percentage (e.g., 50%).`);
+	};
+}

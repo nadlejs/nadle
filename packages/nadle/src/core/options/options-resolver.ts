@@ -1,11 +1,12 @@
-import Os from "node:os";
 import Fs from "node:fs";
+import Os from "node:os";
 import Path from "node:path";
 import Process from "node:process";
 
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
 
+import { clamp } from "../utils.js";
 import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
 import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
@@ -42,8 +43,8 @@ export class OptionsResolver {
 			...this.cliOptions
 		};
 
-		const maxWorkers = this.resolveWorkerCount(baseOptions.maxWorkers);
-		const minWorkers = Math.min(this.resolveWorkerCount(baseOptions.minWorkers), maxWorkers);
+		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
+		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
 
 		return { ...baseOptions, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseOptions.configPath) };
 	}
@@ -72,30 +73,27 @@ export class OptionsResolver {
 		return resolveConfigPath;
 	}
 
-	private resolveWorkerCount(configValue: string | number | undefined) {
+	private resolveWorkers(configValue: string | number | undefined) {
+		let result: number;
+
 		if (configValue === undefined) {
-			return Math.max(this.getMaxWorkersCount() - 1, 1);
+			result = this.availableWorkers - 1;
+		} else if (typeof configValue === "number") {
+			result = configValue;
+		} else if (typeof configValue === "string") {
+			result = Math.round((Number.parseInt(configValue) / 100) * this.availableWorkers);
+		} else {
+			throw new Error(`Invalid worker value: ${configValue}`);
 		}
 
-		if (typeof configValue === "number") {
-			return configValue;
-		}
-
-		if (typeof configValue === "string") {
-			return this.getWorkersCountByPercentage(configValue);
-		}
-
-		throw new Error(`Invalid worker value: ${configValue}`);
+		return clamp(result, 1, this.availableWorkers);
 	}
 
-	private getWorkersCountByPercentage(percent: string): number {
-		const maxWorkersCount = this.getMaxWorkersCount();
-		const workersCountByPercentage = Math.round((Number.parseInt(percent) / 100) * maxWorkersCount);
+	private get availableWorkers() {
+		if (process.env.NADLE_MAX_WORKERS) {
+			return Number(process.env.NADLE_MAX_WORKERS);
+		}
 
-		return Math.max(1, Math.min(maxWorkersCount, workersCountByPercentage));
-	}
-
-	private getMaxWorkersCount() {
-		return typeof Os.availableParallelism === "function" ? Os.availableParallelism() : Os.cpus().length;
+		return Os.availableParallelism();
 	}
 }
