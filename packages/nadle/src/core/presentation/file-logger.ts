@@ -37,7 +37,8 @@ const ANSI: Record<string, string> = {
 };
 
 const filePath: string = Path.join(import.meta.dirname, "..", "..", "logs", `${new Date().toISOString()}.txt`);
-export async function emit(): Promise<void> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function emit(): Promise<void> {
 	let data = logItems
 		.map(({ args, subspace, namespace }) => {
 			return `[${namespace}] ${subspace}\n${inspect(args, { depth: 2 })}`;

@@ -25,7 +25,7 @@ export interface RegisteredTask extends Task {
 	};
 }
 
-export type TaskEnv = Record<string, string | number | boolean>;
+type TaskEnv = Record<string, string | number | boolean>;
 
 export interface TaskConfiguration {
 	/**
