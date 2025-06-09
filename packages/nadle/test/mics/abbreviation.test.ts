@@ -1,7 +1,7 @@
 import { it, describe } from "vitest";
 import { exec, expectPass } from "setup";
 
-describe("Abbreviation", () => {
+describe("abbreviation", () => {
 	it("should resolve abbr task properly", async () => {
 		await expectPass(exec`hell`);
 	});

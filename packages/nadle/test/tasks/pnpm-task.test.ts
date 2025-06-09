@@ -3,7 +3,7 @@ import Path from "node:path";
 import { it, describe } from "vitest";
 import { createExec, expectFail, expectPass, fixturesDir } from "setup";
 
-describe("Pnpm Task", () => {
+describe("pnpm Task", () => {
 	const exec = createExec({ cwd: Path.join(fixturesDir, "pnpm-task") });
 
 	it("can run tsc command with no error ts file", async () => {

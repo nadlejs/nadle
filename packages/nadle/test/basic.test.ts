@@ -1,7 +1,7 @@
 import { it, describe } from "vitest";
 import { exec, expectPass } from "setup";
 
-describe("Basic", () => {
+describe("basic", () => {
 	it("can run a simple command", async () => {
 		await expectPass(exec`hello`);
 	});

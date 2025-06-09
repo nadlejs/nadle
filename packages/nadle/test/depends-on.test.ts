@@ -6,23 +6,27 @@ describe("dependsOn", { retry: 0, repeats: 3 }, () => {
 
 	it("should run dependent tasks first 1", async () => {
 		const stdout = await getStdout(exec`compile`);
+
 		expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
 	});
 
 	it("should run dependent tasks first 2", async () => {
 		const stdout = await getStdout(exec`compile test`);
+
 		expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
 		expect(stdout).toRunInOrder("install", "test");
 	});
 
 	it("should run dependent tasks first 3", async () => {
 		const stdout = await getStdout(exec`test compile`);
+
 		expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
 		expect(stdout).toRunInOrder("install", "test");
 	});
 
-	it("should run dependent tasks first 3", async () => {
+	it("should run dependent tasks first 4", async () => {
 		const stdout = await getStdout(exec`build`);
+
 		expect(stdout).toRunInOrder("node", "install", ["compileSvg", "compileTs"], "compile");
 		expect(stdout).toRunInOrder("install", "test");
 		expect(stdout).toRunInOrder(["test", "compile"], "build");
