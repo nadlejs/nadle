@@ -14,7 +14,7 @@ export class OptionsResolver {
 	static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
 
 	private readonly defaultOptions = {
-		sequence: false,
+		parallel: false,
 		logLevel: "log",
 		showConfig: false,
 		showSummary: !isCI,

@@ -48,3 +48,99 @@ Goodbye, tak!
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;
+
+exports[`basic > single command > can run a simple command 1 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>test</BoldDim> done in {duration}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
+`;
+
+exports[`basic > single command > can run a simple command 2 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compile</BoldDim> done in {duration}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>5</BoldDim><Dim> tasks executed)</BoldDim>
+`;
+
+exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compile</BoldDim> done in {duration}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>5</BoldDim><Dim> tasks executed)</BoldDim>
+`;
+
+exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>test</BoldDim> done in {duration}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
+`;
