@@ -1,7 +1,7 @@
 import { type SupportLogLevel } from "../logger.js";
 
 export interface NadleUserBaseOptions {
-	readonly sequence?: boolean;
+	readonly parallel?: boolean;
 	readonly showSummary?: boolean;
 	readonly logLevel?: SupportLogLevel;
 	readonly minWorkers?: number | string;

@@ -54,13 +54,12 @@ export const CLIOptions = {
 			description: "List all available tasks"
 		}
 	},
-	sequence: {
-		key: "sequence",
+	parallel: {
+		key: "parallel",
 		options: {
-			alias: "s",
 			default: false,
 			type: "boolean",
-			description: "Executes the specified tasks sequentially as listed, while still respecting their configured dependencies"
+			description: "Run all specified tasks in parallel regardless of their order, while still respecting task dependencies."
 		}
 	},
 	dryRun: {

@@ -75,7 +75,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 [info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[info] Resolved options: { sequence: false,
+[info] Resolved options: { parallel: false,
   logLevel: 'info',
   showConfig: false,
   showSummary: false,

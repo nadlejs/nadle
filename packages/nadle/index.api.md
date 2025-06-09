@@ -180,7 +180,7 @@ export interface NadleUserBaseOptions {
     // (undocumented)
     readonly minWorkers?: number | string;
     // (undocumented)
-    readonly sequence?: boolean;
+    readonly parallel?: boolean;
     // (undocumented)
     readonly showSummary?: boolean;
 }

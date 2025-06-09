@@ -1,7 +1,8 @@
 import "vitest";
 
 interface CustomMatchers<R = unknown> {
-	toRunInOrder: (...taskGroups: (string[] | string)[]) => R;
+	toRunInOrder: (...tasks: (string[] | string)[]) => R;
+	toDoneInOrder: (...taskGroups: (string | string)[]) => R;
 }
 
 declare module "vitest" {

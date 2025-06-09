@@ -12,7 +12,7 @@ const argv = yargs(hideBin(process.argv))
 	.command("$0 [tasks...]", "Execute one or more named tasks")
 
 	.option(CLIOptions.configPath.key, CLIOptions.configPath.options)
-	.option(CLIOptions.sequence.key, CLIOptions.sequence.options)
+	.option(CLIOptions.parallel.key, CLIOptions.parallel.options)
 	.option(CLIOptions.minWorkers.key, CLIOptions.minWorkers.options)
 	.option(CLIOptions.maxWorkers.key, CLIOptions.maxWorkers.options)
 	.option(CLIOptions.logLevel.key, CLIOptions.logLevel.options)
@@ -26,7 +26,7 @@ const argv = yargs(hideBin(process.argv))
 	.help("help", "Show this help")
 	.alias("h", "help")
 	.group(
-		[CLIOptions.sequence.key, CLIOptions.list.key, CLIOptions.dryRun.key, CLIOptions.showConfig.key, CLIOptions.stacktrace.key],
+		[CLIOptions.parallel.key, CLIOptions.list.key, CLIOptions.dryRun.key, CLIOptions.showConfig.key, CLIOptions.stacktrace.key],
 		"Execution options:"
 	)
 	.group([CLIOptions.configPath.key, CLIOptions.logLevel.key, CLIOptions.minWorkers.key, CLIOptions.maxWorkers.key], "General options:")

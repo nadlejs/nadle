@@ -1,50 +1,197 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`basic > can run a simple command > stdout 1`] = `
+exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 
-Hello from nadle!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
+
+[log] 
+<Green>✓</Green> Task <Bold>compile</BoldDim> done in {duration}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>5</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`basic > can run dependent task first > stdout 1`] = `
+exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
 
-Preparing...
 [log] 
-<Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>copy</BoldDim> started
+<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
 
-Copying from assets/ to dist/
 [log] 
-<Green>✓</Green> Task <Bold>copy</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
+
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
+<Green>✓</Green> Task <Bold>test</BoldDim> done in {duration}
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`basic > can run two commands sequentially > stdout 1`] = `
+exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
 
-Hello from nadle!
+exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> started
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
 
-Goodbye, tak!
+exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] 
-<Green>✓</Green> Task <Bold>goodbye</BoldDim> done in {duration}
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`basic > with --dry-run > should list tasks in order 8 > stdout 1`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.abc.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
 `;

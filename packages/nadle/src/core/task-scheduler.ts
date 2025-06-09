@@ -31,7 +31,7 @@ export class TaskScheduler {
 		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `transitiveDependencyGraph`, this.transitiveDependencyGraph);
 		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `dependencyGraph`, this.dependencyGraph);
 
-		if (context.nadle.options.sequence) {
+		if (!context.nadle.options.parallel) {
 			this.runningRootTask = taskNames[0];
 		}
 	}

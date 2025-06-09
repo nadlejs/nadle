@@ -5,7 +5,7 @@ exports[`--show-config > should show config > stdout 1`] = `
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] {
-  "sequence": false,
+  "parallel": false,
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
@@ -26,7 +26,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 2–3 workers for task execution</BoldDim>
 [log] {
-  "sequence": false,
+  "parallel": false,
   "logLevel": "log",
   "showConfig": true,
   "showSummary": false,
