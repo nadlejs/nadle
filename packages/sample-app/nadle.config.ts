@@ -5,7 +5,6 @@ import { tasks, type Task, configure } from "nadle";
 import { createTask } from "./create-task.js";
 
 configure({
-	maxWorkers: 1,
 	logLevel: "info",
 	showSummary: false
 });
@@ -147,3 +146,15 @@ tasks
 	.config({
 		workingDir: "../.."
 	});
+
+tasks.register("base");
+tasks
+	.register("fast", async () => {
+		await new Promise((r) => setTimeout(r, 2000));
+	})
+	.config({ dependsOn: ["base"] });
+tasks
+	.register("slow", async () => {
+		await new Promise((r) => setTimeout(r, 3000));
+	})
+	.config({ dependsOn: ["base"] });

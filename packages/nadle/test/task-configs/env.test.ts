@@ -19,7 +19,7 @@ describe("env", () => {
 	});
 
 	it("should not inject env from other task", async () => {
-		const stdout = await getStdout(exec`firstTask secondTask --sequence`);
+		const stdout = await getStdout(exec`firstTask secondTask`);
 
 		expect(stdout.match(/first task env/g)).toHaveLength(1);
 		expect(stdout.match(/second task env/g)).toHaveLength(1);

@@ -5,6 +5,31 @@ import { serialize } from "./serialize.js";
 expect.addSnapshotSerializer({ serialize, test: (val) => typeof val === "string" });
 
 expect.extend({
+	toDoneInOrder(stdout: string, ...tasks: string[]) {
+		for (let firstTaskIndex = 0; firstTaskIndex < tasks.length - 1; firstTaskIndex++) {
+			for (let secondTaskIndex = firstTaskIndex + 1; secondTaskIndex < tasks.length; secondTaskIndex++) {
+				const firstTask = tasks[firstTaskIndex];
+				const secondTask = tasks[secondTaskIndex];
+
+				const firstTaskDoneIndex = stdout.indexOf(`Task ${firstTask} done`);
+				const secondTaskDoneIndex = stdout.indexOf(`Task ${secondTask} done`);
+
+				const pass = firstTaskDoneIndex < secondTaskDoneIndex;
+
+				if (!pass) {
+					return {
+						pass,
+						message: () => `Expected task '${firstTask}' to be done before '${secondTask}', but it did not. Stdout:\n${stdout}`
+					};
+				}
+			}
+		}
+
+		return {
+			pass: true,
+			message: () => `All tasks done in the expected order.`
+		};
+	},
 	toRunInOrder(stdout: string, ...groups: (string[] | string)[]) {
 		for (let firstGroupIndex = 0; firstGroupIndex < groups.length - 1; firstGroupIndex++) {
 			for (let secondGroupIndex = firstGroupIndex + 1; secondGroupIndex < groups.length; secondGroupIndex++) {

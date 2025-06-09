@@ -16,7 +16,7 @@
 		"sequence-compile-test": "pnpm compile-test --sequence",
 		"test-compile": "nadle test compile",
 		"sequence-test-compile": "pnpm test-compile --sequence",
-		"task-A": "nadle task-A",
+		"task-A": "nadle task-A --log-level debug",
 		"task-C": "nadle task-C",
 		"compileTs": "nadle compileTs",
 		"post-throwable": "nadle post-throwable",
@@ -24,7 +24,8 @@
 		"task-cycle-3": "nadle task-cycle-3",
 		"task-cycle-6": "nadle task-cycle-6",
 		"show-config": "nadle --show-config",
-		"printWorkingDir": "nadle printWorkingDir"
+		"printWorkingDir": "nadle printWorkingDir",
+		"parallel": "nadle slow fast --parallel"
 	},
 	"dependencies": {
 		"nadle": "workspace:*"
