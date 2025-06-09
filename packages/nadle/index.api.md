@@ -5,7 +5,7 @@
 ```ts
 
 import { RimrafAsyncOptions } from 'rimraf';
-import { Writable } from 'node:stream';
+import type { Writable } from 'node:stream';
 
 // @public (undocumented)
 export type Awaitable<T> = T | PromiseLike<T>;
@@ -16,41 +16,12 @@ export type Callback<T = unknown, P = {
 }> = (params: P) => T;
 
 // @public (undocumented)
-export interface ConfigBuilder {
-    // (undocumented)
-    config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
-}
-
-// @public (undocumented)
-export function configure(options: Partial<NadleConfigFileOptions>): void;
+export function configure(configs: Partial<NadleConfigFileConfigurations>): void;
 
 // @public (undocumented)
 export interface Context {
     // (undocumented)
     readonly nadle: Nadle;
-}
-
-// @public (undocumented)
-export class DefaultReporter implements Reporter {
-    constructor(nadle: Nadle);
-    // (undocumented)
-    readonly nadle: Nadle;
-    // (undocumented)
-    onExecutionFailed(error: any): Promise<void>;
-    // (undocumented)
-    onExecutionFinish(): Promise<void>;
-    // (undocumented)
-    onExecutionStart(): Promise<void>;
-    // (undocumented)
-    onInit(): void;
-    // (undocumented)
-    onTaskFailed(task: RegisteredTask): Promise<void>;
-    // (undocumented)
-    onTaskFinish(task: RegisteredTask): Promise<void>;
-    // (undocumented)
-    onTasksScheduled(tasks: string[]): Promise<void>;
-    // (undocumented)
-    onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
 }
 
 // @public (undocumented)
@@ -69,54 +40,25 @@ export const ExecTask: Task<{
 }>;
 
 // @public (undocumented)
-export function formatSuggestions(names: string[]): string;
-
-// @public (undocumented)
-export class Logger {
-    constructor(options: LoggerOptions);
-    // (undocumented)
-    clearFullScreen(message?: string): void;
-    // (undocumented)
-    clearScreen(message: string, force?: boolean): void;
-    // (undocumented)
-    debug(message: any, ...args: unknown[]): void;
-    // (undocumented)
-    error(message: any, ...args: unknown[]): void;
-    // (undocumented)
-    errorStream: NodeJS.WriteStream | Writable;
-    // (undocumented)
-    getColumns(): number;
-    // (undocumented)
-    info(message: any, ...args: unknown[]): void;
-    // (undocumented)
-    log(message: any, ...args: unknown[]): void;
-    // (undocumented)
-    options: Required<LoggerOptions>;
-    // (undocumented)
-    outputStream: NodeJS.WriteStream | Writable;
-    // (undocumented)
-    warn(message: any, ...args: unknown[]): void;
-}
-
-// @public (undocumented)
-export interface LoggerOptions {
-    // @internal (undocumented)
-    readonly isWorkerThread?: boolean;
-    // (undocumented)
-    readonly logLevel?: SupportLogLevel;
-}
-
-// @public (undocumented)
 export class Nadle {
-    constructor(options: NadleCLIOptions);
+    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "NadleCLIConfigurations" which is marked as @internal
+    constructor(configs: NadleCLIConfigurations);
+    // Warning: (ae-forgotten-export) The symbol "RegisteredTask" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
     computeTaskGroups(): [string, (RegisteredTask & {
         description?: string;
     })[]][];
+    // Warning: (ae-incompatible-release-tags) The symbol "configs" is marked as @public, but its signature references "NadleResolvedConfigurations" which is marked as @internal
+    //
+    // (undocumented)
+    get configs(): NadleResolvedConfigurations;
     // (undocumented)
     execute(tasks: string[]): Promise<void>;
     // (undocumented)
     listTasks(): void;
+    // Warning: (ae-forgotten-export) The symbol "Logger" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
     readonly logger: Logger;
     // (undocumented)
@@ -128,13 +70,15 @@ export class Nadle {
     // (undocumented)
     onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
     // (undocumented)
-    get options(): NadleResolvedOptions;
-    // (undocumented)
     printNoTasksFound(): void;
     // (undocumented)
     registerTask(): Promise<void>;
+    // Warning: (ae-forgotten-export) The symbol "TaskRegistry" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
     readonly registry: TaskRegistry;
+    // Warning: (ae-forgotten-export) The symbol "Reporter" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
     readonly reporter: Reporter;
     // (undocumented)
@@ -143,8 +87,10 @@ export class Nadle {
     readonly version: string;
 }
 
-// @public (undocumented)
-export interface NadleCLIOptions extends NadleUserBaseOptions {
+// Warning: (ae-internal-missing-underscore) The name "NadleCLIConfigurations" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export interface NadleCLIConfigurations extends NadleUserBaseConfigurations {
     // (undocumented)
     readonly configPath?: string;
     // (undocumented)
@@ -158,11 +104,13 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
 }
 
 // @public (undocumented)
-export interface NadleConfigFileOptions extends NadleUserBaseOptions {
+export interface NadleConfigFileConfigurations extends NadleUserBaseConfigurations {
 }
 
-// @public (undocumented)
-export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
+// Warning: (ae-internal-missing-underscore) The name "NadleResolvedConfigurations" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export interface NadleResolvedConfigurations extends Required<Omit<NadleCLIConfigurations, "maxWorkers" | "minWorkers">> {
     // (undocumented)
     readonly maxWorkers: number;
     // (undocumented)
@@ -170,9 +118,11 @@ export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "ma
 }
 
 // @public (undocumented)
-export interface NadleUserBaseOptions {
+export interface NadleUserBaseConfigurations {
     // @internal (undocumented)
     readonly isWorkerThread?: boolean;
+    // Warning: (ae-forgotten-export) The symbol "SupportLogLevel" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
     readonly logLevel?: SupportLogLevel;
     // (undocumented)
@@ -191,58 +141,7 @@ export const PnpmTask: Task<{
 }>;
 
 // @public (undocumented)
-export interface RegisteredTask extends Task {
-    // (undocumented)
-    configResolver: Callback<TaskConfiguration>;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    optionsResolver: Resolver | undefined;
-    // (undocumented)
-    result: {
-        duration: number | null;
-        startTime: number | null;
-    };
-    // (undocumented)
-    status: TaskStatus;
-}
-
-// @public (undocumented)
-export interface Reporter {
-    // (undocumented)
-    onExecutionFailed?: (error: any) => Awaitable<void>;
-    // (undocumented)
-    onExecutionFinish?: () => Awaitable<void>;
-    // (undocumented)
-    onExecutionStart?: () => Awaitable<void>;
-    // (undocumented)
-    onInit?: () => void;
-    // (undocumented)
-    onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
-    // (undocumented)
-    onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
-    // (undocumented)
-    onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
-    // (undocumented)
-    onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
-}
-
-// @public (undocumented)
 export type Resolver<T = unknown> = T | Callback<T>;
-
-// @public (undocumented)
-export function resolveTask(input: string, allTasks: string[]): {
-    result: string;
-} | {
-    result: undefined;
-    suggestions: string[];
-};
-
-// @public (undocumented)
-export type SupportLogLevel = (typeof SupportLogLevels)[number];
-
-// @public (undocumented)
-export const SupportLogLevels: ["error", "log", "info", "debug"];
 
 // @public (undocumented)
 export interface Task<Options = unknown> {
@@ -256,71 +155,13 @@ export interface Task<Options = unknown> {
 }
 
 // @public (undocumented)
-export interface TaskConfiguration {
-    dependsOn?: string[];
-    description?: string;
-    env?: TaskEnv;
-    group?: string;
-    workingDir?: string;
-}
-
-// @public (undocumented)
-export type TaskEnv = Record<string, string | number | boolean>;
-
-// @public (undocumented)
-export type TaskFn = Callback<Awaitable<void>, {
-    context: Context & {
-        workingDir: string;
-    };
-}>;
-
-// @public (undocumented)
-export class TaskRegistry {
-    // (undocumented)
-    findByName(taskName: string): RegisteredTask | undefined;
-    // (undocumented)
-    getAll(): RegisteredTask[];
-    // (undocumented)
-    getByName(taskName: string): RegisteredTask;
-    // (undocumented)
-    has(name: string): boolean;
-    // (undocumented)
-    onTaskFailed(name: string): void;
-    // (undocumented)
-    onTaskFinish(name: string): void;
-    // (undocumented)
-    onTasksScheduled(names: string[]): void;
-    // (undocumented)
-    onTaskStart(name: string): void;
-    // (undocumented)
-    register(name: string, task: RegisteredTask): void;
-}
-
-// @public (undocumented)
-export const taskRegistry: TaskRegistry;
-
-// @public (undocumented)
 export const tasks: {
     register: typeof registerTask;
 };
 
-// @public (undocumented)
-export enum TaskStatus {
-    // (undocumented)
-    Failed = "failed",
-    // (undocumented)
-    Finished = "finished",
-    // (undocumented)
-    Registered = "registered",
-    // (undocumented)
-    Running = "running",
-    // (undocumented)
-    Scheduled = "scheduled"
-}
-
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:151:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// src/api.ts:3:19 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

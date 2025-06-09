@@ -1,13 +1,23 @@
 import { defineConfig } from "tsup";
 
-export default defineConfig({
-	dts: true,
+const baseConfig = {
 	clean: true,
 	outDir: "lib",
-	format: ["esm"],
 	splitting: true,
 	sourcemap: true,
 	target: "node20",
-	tsconfig: "tsconfig.build.json",
-	entry: { cli: "src/cli.ts", index: "src/index.ts", worker: "src/core/worker.ts" }
-});
+	format: ["esm" as const],
+	tsconfig: "tsconfig.build.json"
+};
+
+export default defineConfig([
+	{
+		...baseConfig,
+		entry: { cli: "src/cli.ts", worker: "src/core/engine/worker.ts" }
+	},
+	{
+		...baseConfig,
+		dts: true,
+		entry: { index: "src/index.ts" }
+	}
+]);

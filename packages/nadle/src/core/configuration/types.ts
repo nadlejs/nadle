@@ -11,6 +11,9 @@ export interface NadleUserBaseConfigurations {
 	readonly isWorkerThread?: boolean;
 }
 
+export interface NadleConfigFileConfigurations extends NadleUserBaseConfigurations {}
+
+/** @internal */
 export interface NadleCLIConfigurations extends NadleUserBaseConfigurations {
 	readonly list: boolean;
 	readonly dryRun: boolean;
@@ -19,8 +22,7 @@ export interface NadleCLIConfigurations extends NadleUserBaseConfigurations {
 	readonly stacktrace: boolean;
 }
 
-export interface NadleConfigFileConfigurations extends NadleUserBaseConfigurations {}
-
+/** @internal */
 export interface NadleResolvedConfigurations extends Required<Omit<NadleCLIConfigurations, "maxWorkers" | "minWorkers">> {
 	readonly minWorkers: number;
 	readonly maxWorkers: number;

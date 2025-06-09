@@ -2,7 +2,7 @@ import Path from "node:path";
 import { threadId, type MessagePort } from "node:worker_threads";
 
 import { Nadle } from "../orchestration/nadle.js";
-import { type Context } from "../../interfaces.js";
+import { type Context } from "../interfaces/common.js";
 import { taskRegistry } from "../task/task-registry.js";
 import { type NadleResolvedConfigurations } from "../configuration/types.js";
 

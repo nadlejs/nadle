@@ -5,11 +5,12 @@ import { isCI, isTest } from "std-env";
 
 import { type Nadle } from "../orchestration/nadle.js";
 import { type Renderer } from "./renderers/renderer.js";
+import { type Awaitable } from "../interfaces/common.js";
 import { CHECK, CROSS, VERTICAL_BAR } from "../constants.js";
 import { NormalRenderer } from "./renderers/normal-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
 import { formatTime, formatTimeString } from "../utilities/utils.js";
-import { TaskStatus, type Awaitable, type RegisteredTask } from "../../interfaces.js";
+import { TaskStatus, type RegisteredTask } from "../interfaces/task.js";
 
 export interface Reporter {
 	onInit?: () => void;

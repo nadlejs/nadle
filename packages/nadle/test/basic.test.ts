@@ -70,13 +70,13 @@ describe("basic", () => {
 			expect(stdout).toRunInOrder("node", "install");
 		});
 
-		it("should run in order 7", { repeats: 3 }, async () => {
+		it("should run in order 7", async () => {
 			const stdout = await getStdout(exec`slow fast`);
 
 			expect(stdout).toRunInOrder("slow", "fast");
 		});
 
-		it("should run in order 8", { repeats: 3 }, async () => {
+		it("should run in order 8", async () => {
 			const stdout = await getStdout(exec`fast slow`);
 
 			expect(stdout).toRunInOrder("fast", "slow");

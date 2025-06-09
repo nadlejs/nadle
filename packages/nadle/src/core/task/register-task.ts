@@ -1,14 +1,7 @@
 import { taskRegistry } from "./task-registry.js";
-import {
-	type Task,
-	TaskStatus,
-	type TaskFn,
-	type Resolver,
-	type Callback,
-	type ConfigBuilder,
-	type RegisteredTask,
-	type TaskConfiguration
-} from "../../interfaces.js";
+import { type ConfigBuilder } from "../interfaces/configuration.js";
+import { type Resolver, type Callback } from "../interfaces/common.js";
+import { type Task, TaskStatus, type TaskFn, type RegisteredTask, type TaskConfiguration } from "../interfaces/task.js";
 
 export function registerTask(name: string): ConfigBuilder;
 export function registerTask(name: string, fnTask: TaskFn): ConfigBuilder;

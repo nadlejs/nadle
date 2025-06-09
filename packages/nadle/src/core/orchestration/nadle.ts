@@ -8,7 +8,7 @@ import { VERSION } from "../../version.js";
 import { TaskPool } from "../engine/task-pool.js";
 import { Logger } from "../presentation/logger.js";
 import { capitalize } from "../utilities/utils.js";
-import { type RegisteredTask } from "../../interfaces.js";
+import { type RegisteredTask } from "../interfaces/task.js";
 import { RIGHT_ARROW, UnnamedGroup } from "../constants.js";
 import { TaskScheduler } from "../scheduling/task-scheduler.js";
 import { configsRegistry } from "../configuration/configs-registry.js";
@@ -202,7 +202,10 @@ export class Nadle {
 	async registerTask() {
 		const configFile = this.configs.configPath;
 
-		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: ConfigsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
+		const jiti = createJiti(import.meta.url, {
+			interopDefault: true,
+			extensions: ConfigsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`)
+		});
 
 		await jiti.import(pathToFileURL(configFile).toString());
 	}

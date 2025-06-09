@@ -1,6 +1,6 @@
 import { execa } from "execa";
 
-import { type Task } from "../interfaces.js";
+import { type Task } from "../core/interfaces/task.js";
 
 export const PnpmTask: Task<{ args: string[] }> = {
 	run: async ({ options, context }) => {

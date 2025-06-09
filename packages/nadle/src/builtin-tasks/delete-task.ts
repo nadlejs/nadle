@@ -1,7 +1,7 @@
 import { glob } from "glob";
 import { rimraf, type RimrafAsyncOptions } from "rimraf";
 
-import { type Task } from "../interfaces.js";
+import { type Task } from "../core/interfaces/task.js";
 import { normalizeGlobPath } from "../core/utilities/utils.js";
 
 export interface DeleteTaskOptions extends RimrafAsyncOptions {

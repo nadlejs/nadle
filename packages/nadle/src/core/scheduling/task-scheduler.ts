@@ -1,7 +1,7 @@
 import c from "tinyrainbow";
 
 import { RIGHT_ARROW } from "../constants.js";
-import { type Context } from "../../interfaces.js";
+import { type Context } from "../interfaces/common.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
