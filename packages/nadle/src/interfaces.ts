@@ -1,4 +1,4 @@
-import { type Nadle } from "./layers/orchestration/nadle.js";
+import { type Nadle } from "./core/orchestration/nadle.js";
 
 export type Awaitable<T> = T | PromiseLike<T>;
 
