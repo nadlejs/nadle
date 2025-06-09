@@ -2,7 +2,7 @@ import type { Writable } from "node:stream";
 
 import { FileLogger } from "./file-logger.js";
 import { type LogType, createNadleConsola, type ConsolaInstance } from "./consola-reporters.js";
-import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
+import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../constants.js";
 
 export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
 export type SupportLogLevel = (typeof SupportLogLevels)[number];

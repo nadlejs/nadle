@@ -6,7 +6,7 @@ import Process from "node:process";
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
 
-import { clamp } from "../utils.js";
+import { clamp } from "../utilities/utils.js";
 import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
 import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 

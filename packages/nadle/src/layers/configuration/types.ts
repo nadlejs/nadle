@@ -1,4 +1,4 @@
-import { type SupportLogLevel } from "../logger.js";
+import { type SupportLogLevel } from "../presentation/logger.js";
 
 export interface NadleUserBaseOptions {
 	readonly parallel?: boolean;

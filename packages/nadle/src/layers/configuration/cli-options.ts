@@ -1,9 +1,9 @@
 /* eslint-disable perfectionist/sort-objects */
 import { type Options } from "yargs";
 
-import { SupportLogLevels } from "../logger.js";
 import { type NadleCLIOptions } from "./types.js";
 import { OptionsResolver } from "./options-resolver.js";
+import { SupportLogLevels } from "../presentation/logger.js";
 
 export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOptions {
 	let resolvedOptions = {};

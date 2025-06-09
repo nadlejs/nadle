@@ -4,18 +4,19 @@ import { pathToFileURL } from "node:url";
 import c from "tinyrainbow";
 import { createJiti } from "jiti";
 
-import { Logger } from "./logger.js";
-import { VERSION } from "../version.js";
-import { capitalize } from "./utils.js";
-import { TaskPool } from "./task-pool.js";
-import { type RegisteredTask } from "./types.js";
-import { TaskScheduler } from "./task-scheduler.js";
-import { RIGHT_ARROW, UnnamedGroup } from "./constants.js";
-import { type Reporter, DefaultReporter } from "./reporter.js";
-import { resolveTask, formatSuggestions } from "./resolve-task.js";
-import { taskRegistry, type TaskRegistry } from "./task-registry.js";
-import { optionRegistry, OptionsResolver } from "./options/shared.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
+import { VERSION } from "../../version.js";
+import { TaskPool } from "../engine/task-pool.js";
+import { Logger } from "../presentation/logger.js";
+import { capitalize } from "../utilities/utils.js";
+import { type RegisteredTask } from "../../interfaces.js";
+import { RIGHT_ARROW, UnnamedGroup } from "../constants.js";
+import { TaskScheduler } from "../scheduling/task-scheduler.js";
+import { optionRegistry } from "../configuration/options-registry.js";
+import { OptionsResolver } from "../configuration/options-resolver.js";
+import { resolveTask, formatSuggestions } from "../task/resolve-task.js";
+import { taskRegistry, type TaskRegistry } from "../task/task-registry.js";
+import { type Reporter, DefaultReporter } from "../presentation/reporter.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "../configuration/types.js";
 
 export class Nadle {
 	public readonly version = VERSION;

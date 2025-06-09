@@ -1,6 +1,6 @@
 import c from "tinyrainbow";
 
-import { TaskStatus, type RegisteredTask } from "./types.js";
+import { TaskStatus, type RegisteredTask } from "../../interfaces.js";
 
 export class TaskRegistry {
 	private readonly registry = new Map<string, RegisteredTask>();

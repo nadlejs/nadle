@@ -1,7 +1,7 @@
 import TinyPool from "tinypool";
 
-import { type Nadle } from "./nadle.js";
 import { type WorkerParams } from "./worker.js";
+import { type Nadle } from "../orchestration/nadle.js";
 
 export class TaskPool {
 	private readonly pool: TinyPool;

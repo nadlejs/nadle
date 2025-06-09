@@ -1,6 +1,6 @@
 import { execa, parseCommandString } from "execa";
 
-import { type Task } from "../core/index.js";
+import { type Task } from "../interfaces.js";
 
 export const ExecTask: Task<{ command: string; args: string[] | string }> = {
 	run: async ({ options, context }) => {

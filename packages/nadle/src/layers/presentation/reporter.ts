@@ -3,13 +3,13 @@ import { fileURLToPath } from "node:url";
 import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
-import { type Nadle } from "./nadle.js";
+import { type Nadle } from "../orchestration/nadle.js";
 import { type Renderer } from "./renderers/renderer.js";
-import { formatTime, formatTimeString } from "./utils.js";
-import { CHECK, CROSS, VERTICAL_BAR } from "./constants.js";
+import { CHECK, CROSS, VERTICAL_BAR } from "../constants.js";
 import { NormalRenderer } from "./renderers/normal-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
-import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
+import { formatTime, formatTimeString } from "../utilities/utils.js";
+import { TaskStatus, type Awaitable, type RegisteredTask } from "../../interfaces.js";
 
 export interface Reporter {
 	onInit?: () => void;

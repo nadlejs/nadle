@@ -8,7 +8,7 @@ import {
 	type ConfigBuilder,
 	type RegisteredTask,
 	type TaskConfiguration
-} from "./types.js";
+} from "../../interfaces.js";
 
 export function registerTask(name: string): ConfigBuilder;
 export function registerTask(name: string, fnTask: TaskFn): ConfigBuilder;
