@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`DeleteTask > given a file path > can delete it > stdout 1`] = `
+exports[`deleteTask > given a file path > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -12,7 +12,7 @@ exports[`DeleteTask > given a file path > can delete it > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`DeleteTask > given a folder name > can delete it > stdout 1`] = `
+exports[`deleteTask > given a folder name > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -24,7 +24,7 @@ exports[`DeleteTask > given a folder name > can delete it > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`DeleteTask > given a folder path > can delete it > stdout 1`] = `
+exports[`deleteTask > given a folder path > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -36,7 +36,7 @@ exports[`DeleteTask > given a folder path > can delete it > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`DeleteTask > given a glob > can delete all files match the glob > stdout 1`] = `
+exports[`deleteTask > given a glob > can delete all files match the glob > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -48,7 +48,7 @@ exports[`DeleteTask > given a glob > can delete all files match the glob > stdou
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`DeleteTask > given a glob with enable info log > can print will-delete files > stdout 1`] = `
+exports[`deleteTask > given a glob with enable info log > can print will-delete files > stdout 1`] = `
 [info] Initialized logger with consola options: { types:
    { silent: { level: -1 },
      fatal: { level: 0 },
@@ -102,7 +102,7 @@ exports[`DeleteTask > given a glob with enable info log > can print will-delete 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`DeleteTask > given multiple file paths > can delete them > stdout 1`] = `
+exports[`deleteTask > given multiple file paths > can delete them > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>

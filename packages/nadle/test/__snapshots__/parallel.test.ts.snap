@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Parallel > should run tasks parallel > stdout 1`] = `
+exports[`parallel > should run tasks parallel > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.parallel.ts</BoldDim>
 [log] <Dim>Using 2 workers for task execution</BoldDim>
@@ -24,9 +24,9 @@ exports[`Parallel > should run tasks parallel > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>4</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`Parallel > should stop on error immediately > stderr 1`] = ``;
+exports[`parallel > should stop on error immediately > stderr 1`] = ``;
 
-exports[`Parallel > should stop on error immediately > stdout 1`] = `
+exports[`parallel > should stop on error immediately > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.parallel.ts</BoldDim>
 [log] <Dim>Using 2 workers for task execution</BoldDim>

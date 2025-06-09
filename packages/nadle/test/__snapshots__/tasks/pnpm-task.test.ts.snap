@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
+exports[`pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -12,9 +12,9 @@ exports[`Pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`Pnpm Task > throw error when running tsc command with error ts file > stderr 1`] = ``;
+exports[`pnpm Task > throw error when running tsc command with error ts file > stderr 1`] = ``;
 
-exports[`Pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
+exports[`pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>

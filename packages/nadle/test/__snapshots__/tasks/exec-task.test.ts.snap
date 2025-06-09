@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ExecTask > can run pwd-1 command with configured workingDir > stdout 1`] = `
+exports[`execTask > can run pwd-1 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/exec-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -14,7 +14,7 @@ exports[`ExecTask > can run pwd-1 command with configured workingDir > stdout 1`
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`ExecTask > can run pwd-2 command with configured workingDir > stdout 1`] = `
+exports[`execTask > can run pwd-2 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/exec-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -28,7 +28,7 @@ exports[`ExecTask > can run pwd-2 command with configured workingDir > stdout 1`
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`ExecTask > can run pwd-3 command with configured workingDir > stdout 1`] = `
+exports[`execTask > can run pwd-3 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/exec-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -42,7 +42,7 @@ exports[`ExecTask > can run pwd-3 command with configured workingDir > stdout 1`
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`ExecTask > can run pwd-4 command with configured workingDir > stdout 1`] = `
+exports[`execTask > can run pwd-4 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/exec-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -56,7 +56,7 @@ exports[`ExecTask > can run pwd-4 command with configured workingDir > stdout 1`
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`ExecTask > can run pwd-5 command with configured workingDir > stdout 1`] = `
+exports[`execTask > can run pwd-5 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/exec-task/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
