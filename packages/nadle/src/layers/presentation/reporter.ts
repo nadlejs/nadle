@@ -41,7 +41,7 @@ export class DefaultReporter implements Reporter {
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
 
 	constructor(public readonly nadle: Nadle) {
-		this.renderer = this.nadle.options.showSummary
+		this.renderer = this.nadle.configs.showSummary
 			? new SummaryRenderer({ logger: this.nadle.logger, getWindow: () => this.createSummary() })
 			: new NormalRenderer();
 	}
@@ -70,7 +70,7 @@ export class DefaultReporter implements Reporter {
 	}
 
 	private printRunningTasks() {
-		const lines = Array.from({ length: this.nadle.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
+		const lines = Array.from({ length: this.nadle.configs.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
 
 		for (const runningTask of this.nadle.registry.getAll().filter((task) => task.status === TaskStatus.Running)) {
 			lines[this.threadIdPerWorker[runningTask.name] - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
@@ -80,16 +80,16 @@ export class DefaultReporter implements Reporter {
 	}
 
 	onInit() {
-		const { minWorkers, maxWorkers } = this.nadle.options;
+		const { minWorkers, maxWorkers } = this.nadle.configs;
 
-		if (!this.nadle.options.isWorkerThread) {
+		if (!this.nadle.configs.isWorkerThread) {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${this.nadle.version}!`)));
 			this.nadle.logger.info(`Using Nadle from: ${fileURLToPath(import.meta.resolve("nadle"))}`);
-			this.nadle.logger.log(c.dim(`Loading configuration file from: ${this.nadle.options.configPath}`));
+			this.nadle.logger.log(c.dim(`Loading configuration file from: ${this.nadle.configs.configPath}`));
 			this.nadle.logger.log(
 				c.dim(`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`)
 			);
-			this.nadle.logger.info("Resolved options:", this.nadle.options);
+			this.nadle.logger.info("Resolved options:", this.nadle.configs);
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 		}
 
@@ -149,7 +149,7 @@ export class DefaultReporter implements Reporter {
 			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
 		);
 
-		if (!this.nadle.options.stacktrace) {
+		if (!this.nadle.configs.stacktrace) {
 			this.nadle.logger.log(
 				`\nFor more details, re-run the command with the ${c.yellow("--stacktrace")} option to display the full error and help identify the root cause.`
 			);

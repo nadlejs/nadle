@@ -1,14 +1,13 @@
-/* eslint-disable perfectionist/sort-objects */
 import { type Options } from "yargs";
 
-import { type NadleCLIOptions } from "./types.js";
-import { OptionsResolver } from "./options-resolver.js";
+import { ConfigsResolver } from "./configs-resolver.js";
+import { type NadleCLIConfigurations } from "./types.js";
 import { SupportLogLevels } from "../presentation/logger.js";
 
-export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOptions {
-	let resolvedOptions = {};
+export function resolveCLIConfigs(argv: Record<string, unknown>): NadleCLIConfigurations {
+	let resolvedConfigs = {};
 
-	const aliases = Object.values(CLIOptions)
+	const aliases = Object.values(CLIConfigs)
 		.map(({ options }) => (options as Options).alias)
 		.filter(Boolean);
 
@@ -23,26 +22,28 @@ export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOption
 
 		if (key === "config") {
 			if (value !== undefined) {
-				resolvedOptions = { ...resolvedOptions, configPath: value };
+				resolvedConfigs = { ...resolvedConfigs, configPath: value };
 			}
 
 			continue;
 		}
 
-		resolvedOptions = { ...resolvedOptions, [key]: value };
+		resolvedConfigs = { ...resolvedConfigs, [key]: value };
 	}
 
-	return resolvedOptions as NadleCLIOptions;
+	return resolvedConfigs as NadleCLIConfigurations;
 }
 
-export const CLIOptions = {
+/* eslint-disable perfectionist/sort-objects */
+
+export const CLIConfigs = {
 	configPath: {
 		key: "config",
 		options: {
 			alias: "c",
 			type: "string",
 			description: "Path to config file",
-			defaultDescription: `<cwd>/build.nadle.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}}`
+			defaultDescription: `<cwd>/build.nadle.{${ConfigsResolver.SUPPORT_EXTENSIONS.join(",")}}`
 		}
 	},
 	list: {
@@ -122,7 +123,7 @@ export const CLIOptions = {
 			coerce: createWorkerCoercer("max")
 		}
 	}
-} satisfies Record<Exclude<keyof NadleCLIOptions, "tasks" | "isWorkerThread">, { key: string; options: Options }>;
+} satisfies Record<Exclude<keyof NadleCLIConfigurations, "tasks" | "isWorkerThread">, { key: string; options: Options }>;
 
 function createWorkerCoercer(type: "min" | "max") {
 	return (workers: string | undefined) => {

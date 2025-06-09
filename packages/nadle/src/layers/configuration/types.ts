@@ -1,6 +1,6 @@
 import { type SupportLogLevel } from "../presentation/logger.js";
 
-export interface NadleUserBaseOptions {
+export interface NadleUserBaseConfigurations {
 	readonly parallel?: boolean;
 	readonly showSummary?: boolean;
 	readonly logLevel?: SupportLogLevel;
@@ -11,7 +11,7 @@ export interface NadleUserBaseOptions {
 	readonly isWorkerThread?: boolean;
 }
 
-export interface NadleCLIOptions extends NadleUserBaseOptions {
+export interface NadleCLIConfigurations extends NadleUserBaseConfigurations {
 	readonly list: boolean;
 	readonly dryRun: boolean;
 	readonly configPath?: string;
@@ -19,9 +19,9 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
 	readonly stacktrace: boolean;
 }
 
-export interface NadleConfigFileOptions extends NadleUserBaseOptions {}
+export interface NadleConfigFileConfigurations extends NadleUserBaseConfigurations {}
 
-export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
+export interface NadleResolvedConfigurations extends Required<Omit<NadleCLIConfigurations, "maxWorkers" | "minWorkers">> {
 	readonly minWorkers: number;
 	readonly maxWorkers: number;
 }

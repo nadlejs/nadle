@@ -1,10 +1,10 @@
-import { optionRegistry } from "./options-registry.js";
-import { type NadleConfigFileOptions } from "./types.js";
+import { configsRegistry } from "./configs-registry.js";
+import { type NadleConfigFileConfigurations } from "./types.js";
 
-export function configure(options: Partial<NadleConfigFileOptions>) {
-	if (typeof options !== "object" || options === null) {
-		throw new TypeError("Options must be an object");
+export function configure(configs: Partial<NadleConfigFileConfigurations>) {
+	if (typeof configs !== "object" || configs === null) {
+		throw new TypeError("Configs must be an object");
 	}
 
-	optionRegistry.add(options);
+	configsRegistry.add(configs);
 }

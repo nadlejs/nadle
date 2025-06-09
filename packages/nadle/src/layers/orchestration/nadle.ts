@@ -11,12 +11,12 @@ import { capitalize } from "../utilities/utils.js";
 import { type RegisteredTask } from "../../interfaces.js";
 import { RIGHT_ARROW, UnnamedGroup } from "../constants.js";
 import { TaskScheduler } from "../scheduling/task-scheduler.js";
-import { optionRegistry } from "../configuration/options-registry.js";
-import { OptionsResolver } from "../configuration/options-resolver.js";
+import { configsRegistry } from "../configuration/configs-registry.js";
+import { ConfigsResolver } from "../configuration/configs-resolver.js";
 import { resolveTask, formatSuggestions } from "../task/resolve-task.js";
 import { taskRegistry, type TaskRegistry } from "../task/task-registry.js";
 import { type Reporter, DefaultReporter } from "../presentation/reporter.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "../configuration/types.js";
+import { type NadleCLIConfigurations, type NadleResolvedConfigurations } from "../configuration/types.js";
 
 export class Nadle {
 	public readonly version = VERSION;
@@ -25,11 +25,11 @@ export class Nadle {
 	public readonly reporter: Reporter;
 	public readonly registry: TaskRegistry = taskRegistry;
 
-	private readonly optionsResolver: OptionsResolver;
+	private readonly configsResolver: ConfigsResolver;
 
-	constructor(options: NadleCLIOptions) {
-		this.optionsResolver = new OptionsResolver(options);
-		this.logger = new Logger(options);
+	constructor(configs: NadleCLIConfigurations) {
+		this.configsResolver = new ConfigsResolver(configs);
+		this.logger = new Logger(configs);
 		this.reporter = new DefaultReporter(this);
 
 		this.reporter.onInit?.();
@@ -37,17 +37,17 @@ export class Nadle {
 
 	async execute(tasks: string[]) {
 		await this.registerTask();
-		this.optionsResolver.addConfigFileOptions(optionRegistry.get());
+		this.configsResolver.addConfigFileConfigs(configsRegistry.get());
 
 		try {
 			const resolvedTasks = this.resolveTasks(tasks);
 			this.reporter.onExecutionStart?.();
 
-			if (this.options.showConfig) {
+			if (this.configs.showConfig) {
 				this.showConfig();
-			} else if (this.options.list) {
+			} else if (this.configs.list) {
 				this.listTasks();
-			} else if (this.options.dryRun) {
+			} else if (this.configs.dryRun) {
 				this.dryRunTasks(resolvedTasks);
 			} else {
 				await this.runTasks(resolvedTasks);
@@ -61,8 +61,8 @@ export class Nadle {
 		this.reporter.onExecutionFinish?.();
 	}
 
-	get options(): NadleResolvedOptions {
-		return this.optionsResolver.options;
+	get configs(): NadleResolvedConfigurations {
+		return this.configsResolver.configs;
 	}
 
 	private async runTasks(tasks: string[]) {
@@ -127,7 +127,7 @@ export class Nadle {
 	}
 
 	showConfig() {
-		this.logger.log(JSON.stringify(this.options, null, 2));
+		this.logger.log(JSON.stringify(this.configs, null, 2));
 	}
 
 	private resolveTasks(tasks: string[]) {
@@ -200,9 +200,9 @@ export class Nadle {
 	}
 
 	async registerTask() {
-		const configFile = this.options.configPath;
+		const configFile = this.configs.configPath;
 
-		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
+		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: ConfigsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
 
 		await jiti.import(pathToFileURL(configFile).toString());
 	}

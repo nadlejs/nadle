@@ -8,12 +8,12 @@ import { findUpSync } from "find-up";
 
 import { clamp } from "../utilities/utils.js";
 import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
-import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
+import { type NadleCLIConfigurations, type NadleResolvedConfigurations, type NadleConfigFileConfigurations } from "./types.js";
 
-export class OptionsResolver {
+export class ConfigsResolver {
 	static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
 
-	private readonly defaultOptions = {
+	private readonly defaultConfigs = {
 		parallel: false,
 		logLevel: "log",
 		showConfig: false,
@@ -22,31 +22,31 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	#options: NadleResolvedOptions;
+	#configs: NadleResolvedConfigurations;
 
-	constructor(private readonly cliOptions: NadleCLIOptions) {
-		this.#options = this.resolve();
+	constructor(private readonly cliConfigs: NadleCLIConfigurations) {
+		this.#configs = this.resolve();
 	}
 
-	public get options(): NadleResolvedOptions {
-		return this.#options;
+	public get configs(): NadleResolvedConfigurations {
+		return this.#configs;
 	}
 
-	public addConfigFileOptions(configFileOptions: Partial<NadleConfigFileOptions>) {
-		this.#options = this.resolve(configFileOptions);
+	public addConfigFileConfigs(configFileConfigs: Partial<NadleConfigFileConfigurations>) {
+		this.#configs = this.resolve(configFileConfigs);
 	}
 
-	private resolve(configFileOptions?: Partial<NadleConfigFileOptions>): NadleResolvedOptions {
-		const baseOptions = {
-			...this.defaultOptions,
-			...configFileOptions,
-			...this.cliOptions
+	private resolve(configFileConfigs?: Partial<NadleConfigFileConfigurations>): NadleResolvedConfigurations {
+		const baseConfigs = {
+			...this.defaultConfigs,
+			...configFileConfigs,
+			...this.cliConfigs
 		};
 
-		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
-		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
+		const maxWorkers = this.resolveWorkers(baseConfigs.maxWorkers);
+		const minWorkers = Math.min(this.resolveWorkers(baseConfigs.minWorkers), maxWorkers);
 
-		return { ...baseOptions, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseOptions.configPath) };
+		return { ...baseConfigs, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseConfigs.configPath) };
 	}
 
 	private resolveConfigPath(configPath: string | undefined): string {
@@ -62,11 +62,11 @@ export class OptionsResolver {
 			return resolvedConfigPath;
 		}
 
-		const resolveConfigPath = findUpSync(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${DEFAULT_CONFIG_FILE_NAME}.${ext}`));
+		const resolveConfigPath = findUpSync(ConfigsResolver.SUPPORT_EXTENSIONS.map((ext) => `${DEFAULT_CONFIG_FILE_NAME}.${ext}`));
 
 		if (!resolveConfigPath) {
 			throw new Error(
-				`No ${DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
+				`No ${DEFAULT_CONFIG_FILE_NAME}.{${ConfigsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
 			);
 		}
 

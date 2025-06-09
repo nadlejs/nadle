@@ -12,8 +12,8 @@ export class TaskPool {
 	) {
 		this.pool = new TinyPool({
 			concurrentTasksPerWorker: 1,
-			minThreads: this.nadle.options.minWorkers,
-			maxThreads: this.nadle.options.maxWorkers,
+			minThreads: this.nadle.configs.minWorkers,
+			maxThreads: this.nadle.configs.maxWorkers,
 			filename: new URL("./worker.js", import.meta.url).href
 		});
 	}
@@ -43,7 +43,7 @@ export class TaskPool {
 				name: task.name,
 				port: workerPort,
 				env: process.env,
-				options: { ...this.nadle.options, showSummary: false, isWorkerThread: true }
+				options: { ...this.nadle.configs, showSummary: false, isWorkerThread: true }
 			};
 
 			await this.pool.run(workerParams, { transferList: [workerPort] });
