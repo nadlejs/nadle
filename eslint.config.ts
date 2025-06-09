@@ -1,6 +1,7 @@
 import eslint from "@eslint/js";
 import nPlugin from "eslint-plugin-n";
 import tsEslint from "typescript-eslint";
+import vitest from "@vitest/eslint-plugin";
 import stylistic from "@stylistic/eslint-plugin";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
@@ -84,6 +85,21 @@ export default tsEslint.config(
 		files: ["packages/nadle/test/fixtures/**"],
 		rules: {
 			"no-restricted-imports": ["error", { patterns: ["../**/src/*"] }]
+		}
+	},
+	{
+		plugins: {
+			vitest
+		},
+		files: ["**/test/**/*.test.ts"],
+		rules: {
+			...vitest.configs.recommended.rules,
+			"vitest/expect-expect": [
+				"error",
+				{
+					assertFunctionNames: ["expectPass", "expectFail", "expect"]
+				}
+			]
 		}
 	}
 );

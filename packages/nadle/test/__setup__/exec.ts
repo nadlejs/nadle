@@ -61,6 +61,7 @@ export const exec = createExec();
 
 export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
 	const { stdout, exitCode } = await command;
+
 	expect(exitCode).toBe(0);
 
 	if (options?.stripAnsi ?? true) {
@@ -78,6 +79,7 @@ export async function getStderr(command: () => ResultPromise, options?: { stripA
 		throw new Error("Expected command to fail, but it succeeded.");
 	} catch (error) {
 		const execaError = error as Result;
+
 		expect(execaError.exitCode).not.toBe(0);
 
 		stderr = execaError.stderr as string;

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Basic > can run a simple command > stdout 1`] = `
+exports[`basic > can run a simple command > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -13,7 +13,7 @@ Hello from nadle!
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
 `;
 
-exports[`Basic > can run dependent task first > stdout 1`] = `
+exports[`basic > can run dependent task first > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
@@ -31,7 +31,7 @@ Copying from assets/ to dist/
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed)</BoldDim>
 `;
 
-exports[`Basic > can run two commands sequentially > stdout 1`] = `
+exports[`basic > can run two commands sequentially > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>

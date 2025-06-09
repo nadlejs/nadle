@@ -37,6 +37,7 @@ export class Logger {
 		}
 	}
 
+	/* eslint-disable @typescript-eslint/no-explicit-any */
 	log(message: any, ...args: unknown[]): void {
 		l.log("log", message, ...args);
 		this._clearScreen();
@@ -70,6 +71,8 @@ export class Logger {
 		this._clearScreen();
 		this.consola.debug(message, ...args);
 	}
+
+	/* eslint-enable @typescript-eslint/no-explicit-any */
 
 	clearFullScreen(message = ""): void {
 		l.log("clearFullScreen");

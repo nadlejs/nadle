@@ -1,7 +1,7 @@
 import { it, describe } from "vitest";
 import { createExec, expectFail, expectPass } from "setup";
 
-describe("Parallel", () => {
+describe("parallel", () => {
 	const exec = createExec({ config: "parallel" });
 
 	it("should run tasks parallel", async () => {

@@ -20,6 +20,7 @@ describe("detect cycle", () => {
 		await expectFail(() => exec`cycle-6`);
 		await expectFail(() => exec`cycle-7`);
 	});
+
 	it("should detect 1-task-cycle", async () => {
 		await expectFail(() => exec`cycle-8`);
 	});

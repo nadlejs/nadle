@@ -1,7 +1,7 @@
 import { it, describe } from "vitest";
 import { createExec, expectPass } from "setup";
 
-describe("Configure", () => {
+describe("configure", () => {
 	const exec = createExec({ config: "configure" });
 
 	it("can use configured options from config file", async () => {

@@ -2,7 +2,7 @@ import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
 import { expectPass, withFixture } from "setup";
 
-describe("DeleteTask", () => {
+describe("deleteTask", () => {
 	const files: fixturify.DirJSON = {
 		"foo.txt": "foo.txt contents",
 		a: {
@@ -22,6 +22,7 @@ describe("DeleteTask", () => {
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFolderA`);
+
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  b: {
@@ -45,6 +46,7 @@ describe("DeleteTask", () => {
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFolderB1`);
+
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -69,6 +71,7 @@ describe("DeleteTask", () => {
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFileBaz`);
+
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -95,6 +98,7 @@ describe("DeleteTask", () => {
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFilesFooBar`);
+
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -120,6 +124,7 @@ describe("DeleteTask", () => {
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteJsonFiles`);
+
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
@@ -144,6 +149,7 @@ describe("DeleteTask", () => {
 				configName: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteJsonFiles --log-level info`);
+
 					expect(getFiles()).toMatchInlineSnapshot(`
 						{
 						  a: {
