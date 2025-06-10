@@ -37,3 +37,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           skip_step: install
           directory: packages/nadle
+          package_manager: pnpm
