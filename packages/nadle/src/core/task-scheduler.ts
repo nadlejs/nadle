@@ -19,7 +19,8 @@ export class TaskScheduler {
 	// Set of tasks that are ready to be executed
 	private readonly readyTasks = new Set<string>();
 
-	private runningRootTask: string | undefined = undefined;
+	// The main task listed in the tasks argument need to be focused on
+	private mainTask: string | undefined = undefined;
 
 	constructor(
 		private readonly context: Context,
@@ -28,11 +29,11 @@ export class TaskScheduler {
 		taskNames.forEach((taskName) => this.analyze(taskName));
 		taskNames.forEach((taskName) => this.detectCycle(taskName, [taskName]));
 
-		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `transitiveDependencyGraph`, this.transitiveDependencyGraph);
-		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `dependencyGraph`, this.dependencyGraph);
+		this.context.nadle.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
+		this.context.nadle.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
 
 		if (!context.nadle.options.parallel) {
-			this.runningRootTask = taskNames[0];
+			this.mainTask = taskNames[0];
 		}
 	}
 
@@ -83,7 +84,7 @@ export class TaskScheduler {
 	}
 
 	private getIndegreeEntries() {
-		const runningRootTask = this.runningRootTask;
+		const runningRootTask = this.mainTask;
 
 		if (!runningRootTask) {
 			return this.indegree.entries();
@@ -97,41 +98,27 @@ export class TaskScheduler {
 	}
 
 	private isBelongToRootTaskTree(taskName: string): boolean {
-		if (!this.runningRootTask) {
+		if (!this.mainTask) {
 			return true;
 		}
 
-		return (taskName === this.runningRootTask || this.transitiveDependencyGraph.get(this.runningRootTask)?.has(taskName)) ?? false;
-	}
-
-	private getNextRootTask(): string | undefined {
-		if (this.runningRootTask === undefined) {
-			return undefined;
+		if (taskName === this.mainTask) {
+			return true;
 		}
 
-		return this.taskNames[this.taskNames.indexOf(this.runningRootTask) + 1];
+		return this.transitiveDependencyGraph.get(this.mainTask)?.has(taskName) ?? false;
 	}
 
-	public getReadyTasks(finishedTaskName?: string): Set<string> {
-		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `runningRoot = ${this.runningRootTask}, finishedTaskName = ${finishedTaskName}`);
+	public getReadyTasks(doneTask?: string): Set<string> {
+		this.context.nadle.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTask}, finishedTaskName = ${doneTask}`);
+
+		if (doneTask === undefined) {
+			return this.getInitialReadyTasks();
+		}
+
 		const nextReadyTasks = new Set<string>();
 
-		if (finishedTaskName === undefined) {
-			for (const [taskName, indegree] of this.getIndegreeEntries()) {
-				this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `taskName = ${taskName}, indegree = ${indegree}`);
-
-				if (indegree === 0 && !this.readyTasks.has(taskName)) {
-					nextReadyTasks.add(taskName);
-					this.readyTasks.add(taskName);
-				}
-			}
-
-			this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
-
-			return nextReadyTasks;
-		}
-
-		for (const dependentTask of this.dependentsGraph.get(finishedTaskName) ?? []) {
+		for (const dependentTask of this.dependentsGraph.get(doneTask) ?? []) {
 			if (this.readyTasks.has(dependentTask)) {
 				continue;
 			}
@@ -139,7 +126,7 @@ export class TaskScheduler {
 			let indegree = this.indegree.get(dependentTask) || 0;
 
 			if (indegree === 0) {
-				const message = `Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${finishedTaskName}`;
+				const message = `Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${doneTask}`;
 				this.context.nadle.logger.error(message);
 				throw new Error(message);
 			}
@@ -152,26 +139,49 @@ export class TaskScheduler {
 			}
 		}
 
-		if (finishedTaskName === this.runningRootTask) {
-			this.runningRootTask = this.getNextRootTask();
+		if (doneTask === this.mainTask) {
+			const nextMainTask = this.moveToNextMainTask();
 
-			if (this.runningRootTask) {
-				return this.getReadyTasks();
+			if (!nextMainTask) {
+				return new Set<string>();
 			}
 
-			return new Set<string>();
+			return this.getReadyTasks();
 		}
 
-		this.context.nadle.logger.debug(c.yellow("[Scheduler]"), `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+		this.context.nadle.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 		return nextReadyTasks;
+	}
+
+	private getInitialReadyTasks() {
+		const nextReadyTasks = new Set<string>();
+
+		for (const [taskName, indegree] of this.getIndegreeEntries()) {
+			this.context.nadle.logger.debug({ tag: "Scheduler" }, `taskName = ${taskName}, indegree = ${indegree}`);
+
+			if (indegree === 0 && !this.readyTasks.has(taskName)) {
+				nextReadyTasks.add(taskName);
+				this.readyTasks.add(taskName);
+			}
+		}
+
+		this.context.nadle.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+
+		return nextReadyTasks;
+	}
+
+	private moveToNextMainTask() {
+		this.mainTask = this.mainTask !== undefined ? this.taskNames[this.taskNames.indexOf(this.mainTask) + 1] : undefined;
+
+		return this.mainTask;
 	}
 
 	public getOrderedTasks(task?: string): string[] {
 		const readyTasks = Array.from(this.getReadyTasks(task));
 
 		for (const readyTask of readyTasks) {
-			readyTasks.push(...Array.from(this.getOrderedTasks(readyTask)));
+			readyTasks.push(...this.getOrderedTasks(readyTask));
 		}
 
 		return readyTasks;
