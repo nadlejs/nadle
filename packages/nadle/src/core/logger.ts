@@ -1,5 +1,9 @@
 import type { Writable } from "node:stream";
 
+import c from "tinyrainbow";
+// eslint-disable-next-line no-restricted-imports
+import { type InputLogObject } from "consola";
+
 import { FileLogger } from "./file-logger.js";
 import { type LogType, createNadleConsola, type ConsolaInstance } from "./consola-reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
@@ -65,11 +69,26 @@ export class Logger {
 		this.consola.info(message, ...args);
 	}
 
-	debug(message: any, ...args: unknown[]): void {
+	debug(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("debug", message, ...args);
 
 		this._clearScreen();
-		this.consola.debug(message, ...args);
+
+		if (typeof message === "string") {
+			this.consola.debug(message, ...args);
+
+			return;
+		}
+
+		const { tag, ...rest } = message;
+
+		if (Object.keys(rest).length === 0) {
+			this.consola.debug(c.yellow(tag), ...args);
+
+			return;
+		}
+
+		this.consola.debug(rest, c.yellow(tag), ...args);
 	}
 
 	/* eslint-enable @typescript-eslint/no-explicit-any */
