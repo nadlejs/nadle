@@ -209,7 +209,8 @@ const keyIndicesMap = new Map(
 		"packageManager",
 		"pnpm",
 		"stackblitz",
-		"lint-staged"
+		"lint-staged",
+		"size-limit"
 	].map((key, index) => [key, index])
 );
 
