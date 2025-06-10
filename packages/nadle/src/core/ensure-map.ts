@@ -14,10 +14,6 @@ export class EnsureMap<K, V> extends Map<K, V> {
 		return value;
 	}
 
-	set(key: K, value: V): this {
-		return super.set(key, value);
-	}
-
 	update(key: K, updater: (value: V) => V): V {
 		const value = this.get(key);
 
