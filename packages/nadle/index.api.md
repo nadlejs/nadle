@@ -4,6 +4,7 @@
 
 ```ts
 
+import { InputLogObject } from 'consola';
 import { RimrafAsyncOptions } from 'rimraf';
 import { Writable } from 'node:stream';
 
@@ -79,7 +80,7 @@ export class Logger {
     // (undocumented)
     clearScreen(message: string, force?: boolean): void;
     // (undocumented)
-    debug(message: any, ...args: unknown[]): void;
+    debug(message: InputLogObject | string, ...args: unknown[]): void;
     // (undocumented)
     error(message: any, ...args: unknown[]): void;
     // (undocumented)
@@ -320,7 +321,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:151:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:152:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
