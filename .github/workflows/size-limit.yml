@@ -1,6 +1,13 @@
 name: Size Limit
 
-on: [pull_request, push]
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   size-limit:
