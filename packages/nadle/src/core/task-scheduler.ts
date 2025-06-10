@@ -1,20 +1,21 @@
 import c from "tinyrainbow";
 
 import { type Context } from "./types.js";
+import { EnsureMap } from "./ensure-map.js";
 import { RIGHT_ARROW } from "./constants.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
-	private readonly dependentsGraph = new Map<string, Set<string>>();
+	private readonly dependentsGraph = new EnsureMap<string, Set<string>>(() => new Set());
 
 	// Map between a task and the set of tasks that it depends on
-	private readonly dependencyGraph = new Map<string, Set<string>>();
+	private readonly dependencyGraph = new EnsureMap<string, Set<string>>(() => new Set());
 
 	// Map between a task and the set of tasks that it depends on transitively
-	private readonly transitiveDependencyGraph = new Map<string, Set<string>>();
+	private readonly transitiveDependencyGraph = new EnsureMap<string, Set<string>>(() => new Set());
 
 	// Map between a tasks and its indegree
-	private readonly indegree = new Map<string, number>();
+	private readonly indegree = new EnsureMap<string, number>(() => 0);
 
 	// Set of tasks that are ready to be executed
 	private readonly readyTasks = new Set<string>();
@@ -38,7 +39,7 @@ export class TaskScheduler {
 	}
 
 	private detectCycle(taskName: string, paths: string[]) {
-		for (const dependency of this.dependencyGraph.get(taskName) ?? []) {
+		for (const dependency of this.dependencyGraph.get(taskName)) {
 			const startTaskIndex = paths.indexOf(dependency);
 
 			if (startTaskIndex !== -1) {
@@ -57,26 +58,24 @@ export class TaskScheduler {
 		}
 
 		const task = this.context.nadle.registry.getByName(taskName);
-
 		const dependencies = new Set(task.configResolver({ context: this.context }).dependsOn ?? []);
 
 		this.dependencyGraph.set(taskName, dependencies);
 		this.indegree.set(taskName, dependencies.size);
 
-		const transitiveDependencies = new Set(dependencies);
+		this.transitiveDependencyGraph.set(taskName, new Set<string>(dependencies));
 
 		for (const dependency of dependencies) {
-			if (!this.dependentsGraph.has(dependency)) {
-				this.dependentsGraph.set(dependency, new Set<string>());
-			}
-
-			this.dependentsGraph.get(dependency)?.add(taskName);
+			this.dependentsGraph.update(dependency, (oldDependents) => oldDependents.add(taskName));
 
 			this.analyze(dependency);
-			this.transitiveDependencyGraph.get(dependency)?.forEach((d) => transitiveDependencies.add(d));
-		}
 
-		this.transitiveDependencyGraph.set(taskName, transitiveDependencies);
+			this.transitiveDependencyGraph.update(taskName, (current) => {
+				this.transitiveDependencyGraph.get(dependency).forEach((d) => current.add(d));
+
+				return current;
+			});
+		}
 	}
 
 	public get scheduledTask(): string[] {
@@ -106,7 +105,7 @@ export class TaskScheduler {
 			return true;
 		}
 
-		return this.transitiveDependencyGraph.get(this.mainTask)?.has(taskName) ?? false;
+		return this.transitiveDependencyGraph.get(this.mainTask).has(taskName);
 	}
 
 	public getReadyTasks(doneTask?: string): Set<string> {
@@ -118,12 +117,12 @@ export class TaskScheduler {
 
 		const nextReadyTasks = new Set<string>();
 
-		for (const dependentTask of this.dependentsGraph.get(doneTask) ?? []) {
+		for (const dependentTask of this.dependentsGraph.get(doneTask)) {
 			if (this.readyTasks.has(dependentTask)) {
 				continue;
 			}
 
-			let indegree = this.indegree.get(dependentTask) || 0;
+			let indegree = this.indegree.get(dependentTask);
 
 			if (indegree === 0) {
 				const message = `Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${doneTask}`;
