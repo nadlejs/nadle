@@ -71,7 +71,7 @@ export class TaskScheduler {
 			this.analyze(dependency);
 
 			this.transitiveDependencyGraph.update(taskName, (current) => {
-				this.transitiveDependencyGraph.get(dependency).forEach(current.add);
+				this.transitiveDependencyGraph.get(dependency).forEach((d) => current.add(d));
 
 				return current;
 			});
