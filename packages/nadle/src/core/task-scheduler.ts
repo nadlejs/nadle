@@ -63,7 +63,7 @@ export class TaskScheduler {
 		this.dependencyGraph.set(taskName, dependencies);
 		this.indegree.set(taskName, dependencies.size);
 
-		this.transitiveDependencyGraph.set(taskName, dependencies);
+		this.transitiveDependencyGraph.set(taskName, new Set<string>(dependencies));
 
 		for (const dependency of dependencies) {
 			this.dependentsGraph.update(dependency, (oldDependents) => oldDependents.add(taskName));
