@@ -17,5 +17,13 @@
 		"vercel"
 	],
 	"ignoreWords": ["Hoang"],
-	"ignorePaths": ["pnpm-lock.yaml", "**/lib", "*.vitest-temp.json", "**/*.svg", "./packages/docs/**", "packages/nadle/test/resolve-task.test.ts"]
+	"ignorePaths": [
+		"pnpm-lock.yaml",
+		"**/lib",
+		"*.vitest-temp.json",
+		"**/*.svg",
+		"./packages/docs/**",
+		"packages/nadle/test/resolve-task.test.ts",
+		".github/workflows/**"
+	]
 }
