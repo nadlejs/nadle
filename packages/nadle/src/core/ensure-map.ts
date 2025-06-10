@@ -1,5 +1,5 @@
 export class EnsureMap<K, V> extends Map<K, V> {
-	constructor(private initializer: () => V) {
+	constructor(private readonly initializer: () => V) {
 		super();
 	}
 
