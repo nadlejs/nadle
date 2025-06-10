@@ -321,7 +321,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:152:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:198:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

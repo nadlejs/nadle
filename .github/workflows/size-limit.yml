@@ -30,10 +30,8 @@ jobs:
         run: pnpm install
 
       - name: Run Size Limit
-        # This action will automatically install size-limit and run it.
-        # It also comments on pull requests with size changes.
         uses: andresz1/size-limit-action@v1.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_step: install
           directory: packages/nadle
+          package_manager: pnpm
