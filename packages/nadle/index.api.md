@@ -6,7 +6,6 @@
 
 import { InputLogObject } from 'consola';
 import { RimrafAsyncOptions } from 'rimraf';
-import { Writable } from 'node:stream';
 
 // @public (undocumented)
 export type Awaitable<T> = T | PromiseLike<T>;
@@ -84,7 +83,7 @@ export class Logger {
     // (undocumented)
     error(message: any, ...args: unknown[]): void;
     // (undocumented)
-    errorStream: NodeJS.WriteStream | Writable;
+    readonly errorStream: NodeJS.WriteStream;
     // (undocumented)
     getColumns(): number;
     // (undocumented)
@@ -92,9 +91,9 @@ export class Logger {
     // (undocumented)
     log(message: any, ...args: unknown[]): void;
     // (undocumented)
-    options: Required<LoggerOptions>;
+    readonly options: Required<LoggerOptions>;
     // (undocumented)
-    outputStream: NodeJS.WriteStream | Writable;
+    readonly outputStream: NodeJS.WriteStream;
     // (undocumented)
     warn(message: any, ...args: unknown[]): void;
 }
@@ -321,7 +320,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:198:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:197:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
