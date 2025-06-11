@@ -1,5 +1,18 @@
 # nadle
 
+## 0.3.5
+
+### Patch Changes
+
+- 52d11e6: correct workers configurations resolve
+- 6e62514: upgrade nadle from 0.3.3 to 0.3.4
+- 23036af: remove bin folder
+- 65f2924: fix permission error when installing and running test using tsc
+- 687a8de: allow configuration file resolution from nested directories
+- fbf298b: reduce default render interval and improve duration formatting
+- 033d31c: execute task sequentially as default
+- df2caeb: bundle index.d.ts only
+
 ## 0.3.4
 
 ### Patch Changes
