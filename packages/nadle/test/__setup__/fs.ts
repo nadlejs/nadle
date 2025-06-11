@@ -5,7 +5,7 @@ import fixturify from "fixturify";
 
 import { randomHash } from "./random.js";
 import { type Exec, createExec } from "./exec.js";
-import { fixturesDir, defaultConfigFile } from "./constants.js";
+import { tempDir, fixturesDir, defaultConfigFile } from "./constants.js";
 
 const TEMP_DIR = "__temp__";
 
@@ -33,6 +33,23 @@ export async function withFixture(params: {
 		}
 	} catch (err) {
 		console.warn(`⚠️  Test failed — fixture preserved at: ${cwd}`);
+		throw err;
+	}
+}
+
+export async function withTemp(params: { preserve?: boolean; testFn: (params: { cwd: string }) => Promise<void> }) {
+	const { testFn, preserve = false } = params;
+	const cwd = Path.join(tempDir, randomHash());
+	await Fs.mkdir(cwd, { recursive: true });
+
+	try {
+		await testFn({ cwd });
+
+		if (!preserve) {
+			await Fs.rm(cwd, { force: true, recursive: true });
+		}
+	} catch (err) {
+		console.warn(`⚠️  Test failed — files preserved at: ${cwd}`);
 		throw err;
 	}
 }
