@@ -22,17 +22,17 @@ export interface LoggerOptions {
 
 export class Logger {
 	private _clearScreenPending: string | undefined;
-	private consola: ConsolaInstance;
-	public options: Required<LoggerOptions>;
-	public outputStream: NodeJS.WriteStream | Writable = process.stdout;
-	public errorStream: NodeJS.WriteStream | Writable = process.stderr;
+	private readonly consola: ConsolaInstance;
+	public readonly options: Required<LoggerOptions>;
+	public readonly outputStream: NodeJS.WriteStream = process.stdout;
+	public readonly errorStream: NodeJS.WriteStream = process.stderr;
 
 	constructor(options: LoggerOptions) {
 		this.options = { logLevel: "log", isWorkerThread: false, ...options };
 		this.consola = createNadleConsola(this.options);
 
-		if ((this.outputStream as typeof process.stdout).isTTY) {
-			(this.outputStream as Writable).write(HIDE_CURSOR);
+		if (this.outputStream.isTTY) {
+			this.outputStream.write(HIDE_CURSOR);
 		}
 
 		if (!this.options.isWorkerThread) {

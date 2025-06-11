@@ -73,7 +73,7 @@ export class SummaryRenderer implements Renderer {
 	stop(): void {
 		l.log("stop");
 
-		this.cleanups.splice(0).map((fn) => fn());
+		this.cleanups.splice(0).forEach((fn) => fn());
 		clearInterval(this.renderInterval);
 	}
 
@@ -137,7 +137,7 @@ export class SummaryRenderer implements Renderer {
 		if (this.finished) {
 			this.clearWindow();
 
-			return this.write(message || "", type);
+			return this.write(message ?? "", type);
 		}
 
 		const win = this.windowHeight;
