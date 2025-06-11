@@ -49,4 +49,4 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: npx nadle --sequence check build test
+        run: npx nadle check build test
