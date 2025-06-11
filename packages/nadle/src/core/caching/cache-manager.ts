@@ -1,7 +1,8 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { createStructuredHash } from "../utils.js";
+import objectHash from "object-hash";
+
 import type { CacheMetadata, CacheKeyContext } from "./types.js";
 
 export class CacheManager {
@@ -9,7 +10,7 @@ export class CacheManager {
 	constructor(private readonly baseDir: string) {}
 
 	computeCacheKey(context: CacheKeyContext): string {
-		return createStructuredHash(context);
+		return objectHash(context, { encoding: "hex", algorithm: "sha256", unorderedArrays: true, unorderedObjects: true });
 	}
 
 	async hasCache(taskName: string, cacheKey: string): Promise<boolean> {
