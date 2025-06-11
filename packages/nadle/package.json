@@ -43,7 +43,7 @@
 		"strip-ansi": "^7.1.0",
 		"tsup": "^8.5.0",
 		"typescript": "^5.8.2",
-		"vitest": "3.2.2"
+		"vitest": "3.2.3"
 	},
 	"engines": {
 		"node": ">=20"
