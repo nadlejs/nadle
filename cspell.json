@@ -24,6 +24,7 @@
 		"**/*.svg",
 		"./packages/docs/**",
 		"packages/nadle/test/resolve-task.test.ts",
+		"packages/nadle/CHANGELOG.md",
 		".github/workflows/**"
 	]
 }
