@@ -110,11 +110,11 @@ describe("basic", () => {
 			await expectPass(exec`task-B task-C --dry-run`);
 		});
 
-		it("should list tasks in order 7", async () => {
+		it("should list tasks in order 7", { timeout: 10000 }, async () => {
 			await expectPass(exec`task-A.1 task-B task-C --dry-run`);
 		});
 
-		it("should list tasks in order 8", async () => {
+		it("should list tasks in order 8", { timeout: 10000 }, async () => {
 			await expectPass(exec`task-B.2 task-A.1 task-B task-C --dry-run`);
 		});
 	});

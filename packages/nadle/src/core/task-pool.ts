@@ -34,8 +34,6 @@ export class TaskPool {
 			poolPort.on("message", async (msg) => {
 				if (msg.type === "start") {
 					await this.nadle.onTaskStart(task, msg.threadId);
-
-					return;
 				}
 			});
 
