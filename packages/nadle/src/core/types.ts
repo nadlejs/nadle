@@ -42,6 +42,20 @@ export interface TaskConfiguration {
 	 * Changes the working directory for the task.
 	 */
 	workingDir?: string;
+
+	/**
+	 * Input declaration for the task.
+	 * Declare any files, directories or globs that the task reads from.
+	 * These are used for cache key generation.
+	 */
+	inputs?: FileDeclarations;
+
+	/**
+	 * Output declaration for the task.
+	 * Declare any files or directories that the task produces.
+	 * These are used for caching, restoring, and cleanup.
+	 */
+	outputs?: FileDeclarations;
 }
 
 export interface ConfigBuilder {
@@ -66,3 +80,5 @@ export interface RegisteredTask extends Task {
 		startTime: number | null;
 	};
 }
+
+export type FileDeclarations = string[];

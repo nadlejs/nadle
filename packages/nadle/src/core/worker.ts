@@ -1,10 +1,14 @@
 import Path from "node:path";
+import Fs from "node:fs/promises";
 import { threadId, type MessagePort } from "node:worker_threads";
 
+import { glob } from "glob";
+import c from "tinyrainbow";
+
 import { Nadle } from "./nadle.js";
-import { type Context } from "./types.js";
 import { taskRegistry } from "./task-registry.js";
 import { type NadleResolvedOptions } from "./options/index.js";
+import { type Context, type FileDeclarations } from "./types.js";
 
 export interface WorkerParams {
 	readonly name: string;
@@ -29,10 +33,21 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 	const taskConfig = task.configResolver({ context });
 	const taskEnv = Object.fromEntries(Object.entries(taskConfig.env ?? {}).map(([key, val]) => [key, String(val)]));
 	const workingDir = taskConfig.workingDir ? Path.resolve(taskConfig.workingDir) : process.cwd();
+	const inputs = await resolveFileDeclarations(workingDir, taskConfig.inputs);
+
+	if (taskConfig.inputs !== undefined) {
+		nadle.logger.info(`${c.yellow(name)} inputs:`, printArray(inputs));
+	}
 
 	Object.assign(process.env, { ...originalEnv, ...taskEnv });
 
 	await task.run({ options: taskOptions, context: { ...context, workingDir } });
+
+	const outputs = await resolveFileDeclarations(workingDir, taskConfig.outputs);
+
+	if (taskConfig.outputs !== undefined) {
+		nadle.logger.info(`${c.yellow(name)} outputs:`, printArray(outputs));
+	}
 
 	for (const [key] of Object.entries(taskEnv)) {
 		delete process.env[key];
@@ -42,3 +57,33 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 		}
 	}
 };
+
+async function resolveFileDeclarations(workingDir: string, declarations: FileDeclarations | undefined) {
+	const normalizedDeclarations = await Promise.all((declarations ?? []).map((declaration) => normalizeToGlob(workingDir, declaration)));
+
+	return glob(normalizedDeclarations, { nodir: true, absolute: true, cwd: workingDir });
+}
+
+function printArray(array: unknown[]) {
+	if (array.length === 0) {
+		return "[]";
+	}
+
+	return array.join(", ");
+}
+
+export async function normalizeToGlob(workingDir: string, path: string): Promise<string> {
+	const fullPath = Path.resolve(workingDir, path);
+
+	try {
+		const stats = await Fs.stat(fullPath);
+
+		if (stats.isDirectory()) {
+			return Path.join(path, "**/*");
+		}
+	} catch {
+		// File doesn't exist or is a glob pattern — return as-is
+	}
+
+	return path;
+}

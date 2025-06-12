@@ -11,6 +11,7 @@ nadle.iml
 
 # build output
 **/build
+**/dist
 **/lib
 __temp__
 .docusaurus

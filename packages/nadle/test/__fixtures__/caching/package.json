@@ -1,0 +1,8 @@
+{
+	"name": "@nadle/internal-fixture-caching",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	}
+}
