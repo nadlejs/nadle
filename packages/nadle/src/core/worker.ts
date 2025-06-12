@@ -58,12 +58,14 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 	}
 };
 
+const collator = new Intl.Collator(undefined, { sensitivity: "base" });
+
 async function resolveFileDeclarations(workingDir: string, declarations: FileDeclarations | undefined) {
 	const normalizedDeclarations = await Promise.all((declarations ?? []).map((declaration) => normalizeToGlob(workingDir, declaration)));
 
 	const files = await glob(normalizedDeclarations, { nodir: true, absolute: true, cwd: workingDir });
 
-	return files.sort((a, b) => a.localeCompare(b, "en", { usage: "sort", numeric: true, sensitivity: "base" }));
+	return files.sort(collator.compare);
 }
 
 function printArray(array: unknown[]) {
