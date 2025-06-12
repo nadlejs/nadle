@@ -2,10 +2,7 @@
 
 exports[`--stacktrace > should show stack trace > stderr 1`] = `
 [error] Error: This is an error
-    at {path}
-    at {path}
-    at {path}
-    at {path}
+    {stackTrace...}
 `;
 
 exports[`--stacktrace > should show stack trace > stdout 1`] = `

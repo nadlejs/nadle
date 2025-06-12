@@ -69,6 +69,9 @@ export const ExecTask: Task<{
 }>;
 
 // @public (undocumented)
+export type FileDeclarations = string[];
+
+// @public (undocumented)
 export function formatSuggestions(names: string[]): string;
 
 // @public (undocumented)
@@ -261,6 +264,8 @@ export interface TaskConfiguration {
     description?: string;
     env?: TaskEnv;
     group?: string;
+    inputs?: FileDeclarations;
+    outputs?: FileDeclarations;
     workingDir?: string;
 }
 
@@ -320,7 +325,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:197:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:210:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

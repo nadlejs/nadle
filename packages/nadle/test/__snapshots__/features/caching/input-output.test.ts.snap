@@ -1,0 +1,161 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`inputs/outputs > can print inputs/outputs > stdout 1`] = `
+[info] Initialized logger with consola options: { types:
+   { silent: { level: -1 },
+     fatal: { level: 0 },
+     error: { level: 0 },
+     warn: { level: 1 },
+     log: { level: 2 },
+     info: { level: 3 },
+     success: { level: 3 },
+     fail: { level: 3 },
+     ready: { level: 3 },
+     start: { level: 3 },
+     box: { level: 3 },
+     debug: { level: 4 },
+     trace: { level: 5 },
+     verbose: { level: Infinity } },
+  throttle: 1000,
+  throttleMin: 5,
+  formatOptions: { date: false, colors: false, compact: true },
+  level: 3,
+  defaults: { level: 1 },
+  prompt: [Function: prompt],
+  reporters: [ BasicReporter {} ] }
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/caching/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[info] Resolved options: { parallel: false,
+  logLevel: 'info',
+  showConfig: false,
+  showSummary: false,
+  isWorkerThread: false,
+  maxWorkers: 1,
+  list: false,
+  dryRun: false,
+  stacktrace: false,
+  minWorkers: 1,
+  configPath:
+   '/ROOT/test/__fixtures__/caching/nadle.config.ts' }
+[info] Detected environments: { CI: false, TEST: true }
+[info] Resolved tasks: [ bundle-resources ]
+[info] Execution started
+[info] Scheduled tasks: bundle-resources
+[log] <Yellow>></Yellow> Task <Bold>bundle-resources</BoldDim> started
+
+[info] <Yellow>bundle-resources</Yellow> inputs: /ROOT/test/__fixtures__/caching/resources/a/a-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/resources/b/b-input.txt, /ROOT/test/__fixtures__/caching/resources/main-input.txt
+[info] <Yellow>bundle-resources</Yellow> outputs: /ROOT/test/__fixtures__/caching/dist/a/a-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/dist/b/b-input.txt, /ROOT/test/__fixtures__/caching/dist/main-input.txt
+[log] 
+<Green>✓</Green> Task <Bold>bundle-resources</BoldDim> done in {duration}
+[info] Execution finished
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`inputs/outputs > can resolve inputs by glob > stdout 1`] = `
+[info] Initialized logger with consola options: { types:
+   { silent: { level: -1 },
+     fatal: { level: 0 },
+     error: { level: 0 },
+     warn: { level: 1 },
+     log: { level: 2 },
+     info: { level: 3 },
+     success: { level: 3 },
+     fail: { level: 3 },
+     ready: { level: 3 },
+     start: { level: 3 },
+     box: { level: 3 },
+     debug: { level: 4 },
+     trace: { level: 5 },
+     verbose: { level: Infinity } },
+  throttle: 1000,
+  throttleMin: 5,
+  formatOptions: { date: false, colors: false, compact: true },
+  level: 3,
+  defaults: { level: 1 },
+  prompt: [Function: prompt],
+  reporters: [ BasicReporter {} ] }
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/caching/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[info] Resolved options: { parallel: false,
+  logLevel: 'info',
+  showConfig: false,
+  showSummary: false,
+  isWorkerThread: false,
+  maxWorkers: 1,
+  list: false,
+  dryRun: false,
+  stacktrace: false,
+  minWorkers: 1,
+  configPath:
+   '/ROOT/test/__fixtures__/caching/nadle.config.ts' }
+[info] Detected environments: { CI: false, TEST: true }
+[info] Resolved tasks: [ bundle-resources-a ]
+[info] Execution started
+[info] Scheduled tasks: bundle-resources-a
+[log] <Yellow>></Yellow> Task <Bold>bundle-resources-a</BoldDim> started
+
+[info] <Yellow>bundle-resources-a</Yellow> inputs: /ROOT/test/__fixtures__/caching/resources/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a2/a2-input.txt
+[log] 
+<Green>✓</Green> Task <Bold>bundle-resources-a</BoldDim> done in {duration}
+[info] Execution finished
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+`;
+
+exports[`inputs/outputs > can resolve outputs by glob > stdout 1`] = `
+[info] Initialized logger with consola options: { types:
+   { silent: { level: -1 },
+     fatal: { level: 0 },
+     error: { level: 0 },
+     warn: { level: 1 },
+     log: { level: 2 },
+     info: { level: 3 },
+     success: { level: 3 },
+     fail: { level: 3 },
+     ready: { level: 3 },
+     start: { level: 3 },
+     box: { level: 3 },
+     debug: { level: 4 },
+     trace: { level: 5 },
+     verbose: { level: Infinity } },
+  throttle: 1000,
+  throttleMin: 5,
+  formatOptions: { date: false, colors: false, compact: true },
+  level: 3,
+  defaults: { level: 1 },
+  prompt: [Function: prompt],
+  reporters: [ BasicReporter {} ] }
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/caching/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[info] Resolved options: { parallel: false,
+  logLevel: 'info',
+  showConfig: false,
+  showSummary: false,
+  isWorkerThread: false,
+  maxWorkers: 1,
+  list: false,
+  dryRun: false,
+  stacktrace: false,
+  minWorkers: 1,
+  configPath:
+   '/ROOT/test/__fixtures__/caching/nadle.config.ts' }
+[info] Detected environments: { CI: false, TEST: true }
+[info] Resolved tasks: [ bundle-resources-b ]
+[info] Execution started
+[info] Scheduled tasks: bundle-resources-b
+[log] <Yellow>></Yellow> Task <Bold>bundle-resources-b</BoldDim> started
+
+[info] <Yellow>bundle-resources-b</Yellow> outputs: /ROOT/test/__fixtures__/caching/dist/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/dist/main-input.txt
+[log] 
+<Green>✓</Green> Task <Bold>bundle-resources-b</BoldDim> done in {duration}
+[info] Execution finished
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+`;

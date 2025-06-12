@@ -1,6 +1,6 @@
 import process from "node:process";
 
-import { tasks, type Task, configure } from "nadle";
+import { tasks, ExecTask, type Task, configure } from "nadle";
 
 import { createTask } from "./create-task.js";
 
@@ -72,10 +72,11 @@ tasks
 	.config({ dependsOn: ["node"] });
 
 tasks
-	.register("compileTs", () => {
-		console.log("Compiling ts...");
+	.register("compileTs", ExecTask, {
+		command: "tsc",
+		args: ["--project", "tsconfig.src.json"]
 	})
-	.config({ dependsOn: ["install"] });
+	.config({ dependsOn: ["install"], inputs: ["src/**/*.ts"], outputs: ["dist/**/*.js"] });
 
 tasks
 	.register("compileSvg", () => {

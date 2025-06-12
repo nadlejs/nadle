@@ -213,6 +213,12 @@ importers:
         specifier: 3.2.3
         version: 3.2.3(@types/debug@4.1.12)(@types/node@20.17.57)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.1)(yaml@2.8.0)
 
+  packages/nadle/test/__fixtures__/caching:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/nadle/test/__fixtures__/cjs-js:
     dependencies:
       nadle:

@@ -55,5 +55,5 @@ function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Reso
 		throw new Error("Option builder is required for option task");
 	}
 
-	return { ...task, optionsResolver: optionsResolver };
+	return { ...task, optionsResolver };
 }
