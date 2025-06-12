@@ -1,5 +1,7 @@
 import Path from "node:path";
 
+import objectHash from "object-hash";
+
 export function noop() {}
 
 export function capitalize(str: string): string {
@@ -32,4 +34,8 @@ export function normalizeGlobPath(path: string) {
 
 export function clamp(value: number, min: number, max: number): number {
 	return Math.min(Math.max(value, min), max);
+}
+
+export function hashObject(object: Record<string, unknown>): string {
+	return objectHash(object, { encoding: "hex", algorithm: "sha256", unorderedArrays: true, unorderedObjects: true });
 }

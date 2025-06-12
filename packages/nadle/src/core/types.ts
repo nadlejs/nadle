@@ -1,4 +1,5 @@
 import { type Nadle } from "./nadle.js";
+import { type FileDeclarations } from "./caching/file-declarations.js";
 
 export type Awaitable<T> = T | PromiseLike<T>;
 
@@ -80,5 +81,3 @@ export interface RegisteredTask extends Task {
 		startTime: number | null;
 	};
 }
-
-export type FileDeclarations = string[];

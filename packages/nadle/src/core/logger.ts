@@ -62,11 +62,26 @@ export class Logger {
 		this.consola.warn(message, ...args);
 	}
 
-	info(message: any, ...args: unknown[]): void {
+	info(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("info", message, ...args);
 
 		this._clearScreen();
-		this.consola.info(message, ...args);
+
+		if (typeof message === "string") {
+			this.consola.info(message, ...args);
+
+			return;
+		}
+
+		const { tag, ...rest } = message;
+
+		if (Object.keys(rest).length === 0) {
+			this.consola.info(c.yellow(tag), ...args);
+
+			return;
+		}
+
+		this.consola.info(rest, c.yellow(tag), ...args);
 	}
 
 	debug(message: InputLogObject | string, ...args: unknown[]): void {

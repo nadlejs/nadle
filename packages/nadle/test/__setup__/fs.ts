@@ -5,6 +5,7 @@ import fixturify from "fixturify";
 
 import { randomHash } from "./random.js";
 import { type Exec, createExec } from "./exec.js";
+import { isFileExists } from "../../src/core/fs-utils.js";
 import { tempDir, fixturesDir, defaultConfigFile } from "./constants.js";
 
 const TEMP_DIR = "__temp__";
@@ -52,4 +53,81 @@ export async function withTemp(params: { preserve?: boolean; testFn: (params: { 
 		console.warn(`⚠️  Test failed — files preserved at: ${cwd}`);
 		throw err;
 	}
+}
+
+type FileChange =
+	| { type: "add"; path: string; content: string }
+	| { path: string; type: "delete" }
+	| { path: string; type: "modify"; newContent: string };
+
+export function createFileModifier(baseDir: string) {
+	const backup = new Map<string, string | null>(); // null means "file did not exist"
+
+	async function apply(changes: FileChange[]) {
+		for (const change of changes) {
+			try {
+				const path = Path.resolve(baseDir, change.path);
+
+				switch (change.type) {
+					case "add": {
+						const originalExists = await isFileExists(path);
+
+						if (originalExists) {
+							throw new Error(`File already exists at ${path}. Cannot add new file.`);
+						}
+
+						backup.set(path, null);
+
+						await Fs.mkdir(Path.dirname(path), { recursive: true });
+						await Fs.writeFile(path, change.content);
+						break;
+					}
+
+					case "delete": {
+						const originalExists = await isFileExists(path);
+
+						if (!originalExists) {
+							throw new Error(`File does not exist at ${path}. Cannot delete.`);
+						}
+
+						backup.set(path, await Fs.readFile(path, "utf8"));
+
+						await Fs.rm(path, { force: true });
+						break;
+					}
+
+					case "modify": {
+						const originalExists = await isFileExists(path);
+
+						if (!originalExists) {
+							throw new Error(`File does not exist at ${path}. Cannot modify.`);
+						}
+
+						backup.set(path, await Fs.readFile(path, "utf8"));
+
+						await Fs.writeFile(path, change.newContent);
+						break;
+					}
+				}
+			} catch (err) {
+				throw new Error(`Failed to apply change to ${change.path}: ${err}`);
+			}
+		}
+	}
+
+	async function restore() {
+		for (const [path, content] of backup) {
+			if (content === null) {
+				// File did not exist originally
+				await Fs.rm(path, { force: true });
+			} else {
+				await Fs.mkdir(Path.dirname(path), { recursive: true });
+				await Fs.writeFile(path, content);
+			}
+		}
+
+		backup.clear();
+	}
+
+	return { apply, restore };
 }

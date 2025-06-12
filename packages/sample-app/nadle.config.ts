@@ -5,6 +5,7 @@ import { tasks, ExecTask, type Task, configure } from "nadle";
 import { createTask } from "./create-task.js";
 
 configure({
+	maxWorkers: 3,
 	logLevel: "info",
 	showSummary: false
 });
