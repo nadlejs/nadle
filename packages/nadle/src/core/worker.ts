@@ -58,7 +58,7 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 	}
 };
 
-const collator = new Intl.Collator(undefined, { sensitivity: "base" });
+const collator = new Intl.Collator("en", { sensitivity: "base" });
 
 async function resolveFileDeclarations(workingDir: string, declarations: FileDeclarations | undefined) {
 	const normalizedDeclarations = await Promise.all((declarations ?? []).map((declaration) => normalizeToGlob(workingDir, declaration)));

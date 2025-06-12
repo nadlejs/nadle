@@ -45,8 +45,8 @@ exports[`inputs/outputs > can print inputs/outputs > stdout 1`] = `
 [info] Scheduled tasks: bundle-resources
 [log] <Yellow>></Yellow> Task <Bold>bundle-resources</BoldDim> started
 
-[info] <Yellow>bundle-resources</Yellow> inputs: /ROOT/test/__fixtures__/caching/resources/main-input.txt, /ROOT/test/__fixtures__/caching/resources/b/b-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a1/a1-input.txt
-[info] <Yellow>bundle-resources</Yellow> outputs: /ROOT/test/__fixtures__/caching/dist/main-input.txt, /ROOT/test/__fixtures__/caching/dist/b/b-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a1/a1-input.txt
+[info] <Yellow>bundle-resources</Yellow> inputs: /ROOT/test/__fixtures__/caching/resources/a/a-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/resources/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/resources/b/b-input.txt, /ROOT/test/__fixtures__/caching/resources/main-input.txt
+[info] <Yellow>bundle-resources</Yellow> outputs: /ROOT/test/__fixtures__/caching/dist/a/a-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/dist/b/b-input.txt, /ROOT/test/__fixtures__/caching/dist/main-input.txt
 [log] 
 <Green>✓</Green> Task <Bold>bundle-resources</BoldDim> done in {duration}
 [info] Execution finished
@@ -152,7 +152,7 @@ exports[`inputs/outputs > can resolve outputs by glob > stdout 1`] = `
 [info] Scheduled tasks: bundle-resources-b
 [log] <Yellow>></Yellow> Task <Bold>bundle-resources-b</BoldDim> started
 
-[info] <Yellow>bundle-resources-b</Yellow> outputs: /ROOT/test/__fixtures__/caching/dist/main-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a1/a1-input.txt
+[info] <Yellow>bundle-resources-b</Yellow> outputs: /ROOT/test/__fixtures__/caching/dist/a/a1/a1-input.txt, /ROOT/test/__fixtures__/caching/dist/a/a2/a2-input.txt, /ROOT/test/__fixtures__/caching/dist/main-input.txt
 [log] 
 <Green>✓</Green> Task <Bold>bundle-resources-b</BoldDim> done in {duration}
 [info] Execution finished
