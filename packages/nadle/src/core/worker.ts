@@ -61,7 +61,9 @@ export default async ({ name, port, options, env: originalEnv }: WorkerParams) =
 async function resolveFileDeclarations(workingDir: string, declarations: FileDeclarations | undefined) {
 	const normalizedDeclarations = await Promise.all((declarations ?? []).map((declaration) => normalizeToGlob(workingDir, declaration)));
 
-	return glob(normalizedDeclarations, { nodir: true, absolute: true, cwd: workingDir });
+	const files = await glob(normalizedDeclarations, { nodir: true, absolute: true, cwd: workingDir });
+
+	return files.sort((a, b) => a.localeCompare(b, "en", { usage: "sort", numeric: true, sensitivity: "base" }));
 }
 
 function printArray(array: unknown[]) {
@@ -72,7 +74,7 @@ function printArray(array: unknown[]) {
 	return array.join(", ");
 }
 
-export async function normalizeToGlob(workingDir: string, path: string): Promise<string> {
+async function normalizeToGlob(workingDir: string, path: string): Promise<string> {
 	const fullPath = Path.resolve(workingDir, path);
 
 	try {

@@ -185,59 +185,73 @@ const privateValidator: PackageValidator = ({ pkg }) => {
 	}
 };
 
-const keyIndicesMap = new Map(
-	[
-		"name",
-		"version",
-		"description",
-		"type",
-		"private",
-		"scripts",
-		"files",
-		"main",
-		"bin",
-		"types",
-		"dependencies",
-		"devDependencies",
-		"engines",
-		"browserslist",
-		"author",
-		"repository",
-		"keywords",
-		"homepage",
-		"bugs",
-		"packageManager",
-		"pnpm",
-		"stackblitz",
-		"lint-staged",
-		"size-limit"
-	].map((key, index) => [key, index])
-);
+const FIELD_ORDER = [
+	"name",
+	"version",
+	"description",
+	"type",
+	"private",
+	"scripts",
+	"files",
+	"main",
+	"bin",
+	"types",
+	"dependencies",
+	"devDependencies",
+	"engines",
+	"browserslist",
+	"author",
+	"repository",
+	"keywords",
+	"homepage",
+	"bugs",
+	"packageManager",
+	"pnpm",
+	"stackblitz",
+	"lint-staged",
+	"size-limit"
+];
 
-const orderValidator: PackageValidator = ({ pkg }) => {
-	const actualKeys = Object.keys(pkg);
+const fieldsOrderValidator: PackageValidator = ({ pkg }) => {
+	validateOrder(Object.keys(pkg), FIELD_ORDER);
+};
 
-	for (let i = 0; i < actualKeys.length; i++) {
-		for (let j = i + 1; j < actualKeys.length; j++) {
-			const keyA = actualKeys[i];
-			const keyB = actualKeys[j];
-			const idxA = keyIndicesMap.get(keyA);
-			const idxB = keyIndicesMap.get(keyB);
+function validateOrder(actualList: string[], order?: string[]) {
+	const expectedList = order ?? [...actualList].sort((a, b) => a.localeCompare(b, "en"));
 
-			if (idxA === undefined) {
-				throw new Error(`The field "${keyA}" is not allowed`);
+	for (let i = 0; i < actualList.length; i++) {
+		for (let j = i + 1; j < actualList.length; j++) {
+			const itemA = actualList[i];
+			const itemB = actualList[j];
+			const indexA = expectedList.indexOf(itemA);
+			const indexB = expectedList.indexOf(itemB);
+
+			if (indexA === undefined) {
+				throw new Error(`The field "${itemA}" is not allowed`);
 			}
 
-			if (idxB === undefined) {
-				throw new Error(`The field "${keyB}" is not allowed`);
+			if (indexB === undefined) {
+				throw new Error(`The field "${itemB}" is not allowed`);
 			}
 
-			if (idxA > idxB) {
-				throw new Error(`The field "${keyB}" should be before "${keyA}"`);
+			if (indexA > indexB) {
+				throw new Error(`The field "${itemB}" should be before "${itemA}"`);
 			}
 		}
 	}
-};
+}
+
+function createDependenciesOrderValidator(type: "dependencies" | "devDependencies"): PackageValidator {
+	return ({ pkg }) => {
+		const dependencies = pkg[type];
+
+		if (!dependencies) {
+			return;
+		}
+
+		validateOrder(Object.keys(dependencies));
+	};
+}
 
 const validators: PackageValidator[] = [
 	nameValidator,
@@ -252,7 +266,9 @@ const validators: PackageValidator[] = [
 	typesValidator,
 	repositoryValidator,
 	privateValidator,
-	orderValidator
+	fieldsOrderValidator,
+	createDependenciesOrderValidator("dependencies"),
+	createDependenciesOrderValidator("devDependencies")
 ];
 
 function isEqual(a: unknown, b: unknown) {

@@ -68,7 +68,7 @@ function serializeAbsoluteFilePath(input: string) {
 }
 
 function serializeStackTrace(input: string) {
-	return input.replaceAll(/at .+ .+/g, "at {path}");
+	return input.replaceAll(/at .+ .+(\s+at .+ .+)+/g, "{stackTrace...}");
 }
 
 function serializeFileLocation(input: string) {
