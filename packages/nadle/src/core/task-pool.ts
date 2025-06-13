@@ -38,9 +38,9 @@ export class TaskPool {
 			});
 
 			const workerParams: WorkerParams = {
-				name: task.name,
 				port: workerPort,
 				env: process.env,
+				taskName: task.name,
 				options: { ...this.nadle.options, showSummary: false, isWorkerThread: true }
 			};
 

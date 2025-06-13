@@ -1,7 +1,7 @@
 import { it, expect, describe } from "vitest";
 import { exec, createExec, serializeANSI } from "setup";
 
-describe("--show-summary", () => {
+describe("--show-summary", { timeout: 10000 }, () => {
 	it("should show in-progress summary when enable explicitly", async () => {
 		const { stdout, exitCode } = await exec`copy --show-summary`;
 

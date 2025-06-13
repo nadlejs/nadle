@@ -1,93 +1,84 @@
 import Path from "node:path";
-import Fs from "node:fs/promises";
 import { threadId, type MessagePort } from "node:worker_threads";
 
-import { glob } from "glob";
 import c from "tinyrainbow";
 
 import { Nadle } from "./nadle.js";
 import { taskRegistry } from "./task-registry.js";
-import { type NadleResolvedOptions } from "./options/index.js";
-import { type Context, type FileDeclarations } from "./types.js";
+import { type Context, type TaskEnv } from "./types.js";
+import { CacheValidator } from "./caching/cache-validator.js";
+import { type NadleResolvedOptions } from "./options/types.js";
+import { CacheMissReason } from "./caching/cache-miss-reason.js";
 
 export interface WorkerParams {
-	readonly name: string;
+	readonly taskName: string;
 	readonly port: MessagePort;
 	readonly env: NodeJS.ProcessEnv;
 	readonly options: NadleResolvedOptions;
 }
 
-export default async ({ name, port, options, env: originalEnv }: WorkerParams) => {
+export default async ({ port, options, taskName, env: originalEnv }: WorkerParams) => {
 	const nadle = new Nadle(options);
 	await nadle.registerTask();
 
-	const task = taskRegistry.getByName(name);
+	const task = taskRegistry.getByName(taskName);
 	const { optionsResolver } = task;
 	const context: Context = { nadle };
 	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 
-	port.postMessage({ threadId, type: "start", taskName: name });
+	port.postMessage({ threadId, type: "start", taskName: taskName });
 	await new Promise((resolve) => setImmediate(resolve));
 	await new Promise((resolve) => process.nextTick(resolve));
 
 	const taskConfig = task.configResolver({ context });
-	const taskEnv = Object.fromEntries(Object.entries(taskConfig.env ?? {}).map(([key, val]) => [key, String(val)]));
-	const workingDir = taskConfig.workingDir ? Path.resolve(taskConfig.workingDir) : process.cwd();
-	const inputs = await resolveFileDeclarations(workingDir, taskConfig.inputs);
 
-	if (taskConfig.inputs !== undefined) {
-		nadle.logger.info(`${c.yellow(name)} inputs:`, printArray(inputs));
+	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
+	const workingDir = taskConfig.workingDir ? Path.resolve(taskConfig.workingDir) : process.cwd();
+
+	const cacheValidator = new CacheValidator(taskName, taskConfig, workingDir, Path.dirname(options.configPath));
+	const validationResult = await cacheValidator.validate();
+
+	if (validationResult.result !== "no-cache-configurations") {
+		nadle.logger.info({ tag: "Caching" }, c.yellow(taskName), validationResult.result);
+
+		if (validationResult.result === "miss") {
+			nadle.logger.info("Reason:");
+
+			for (const reason of validationResult.reasons) {
+				nadle.logger.info(`  - ${CacheMissReason.toString(reason)}`);
+			}
+		}
 	}
 
-	Object.assign(process.env, { ...originalEnv, ...taskEnv });
+	environmentInjector.apply();
 
 	await task.run({ options: taskOptions, context: { ...context, workingDir } });
 
-	const outputs = await resolveFileDeclarations(workingDir, taskConfig.outputs);
+	await cacheValidator.update(validationResult);
 
-	if (taskConfig.outputs !== undefined) {
-		nadle.logger.info(`${c.yellow(name)} outputs:`, printArray(outputs));
-	}
-
-	for (const [key] of Object.entries(taskEnv)) {
-		delete process.env[key];
-
-		if (Object.hasOwn(originalEnv, key)) {
-			process.env[key] = originalEnv[key];
-		}
-	}
+	environmentInjector.restore();
 };
 
-const collator = new Intl.Collator("en", { sensitivity: "base" });
-
-async function resolveFileDeclarations(workingDir: string, declarations: FileDeclarations | undefined) {
-	const normalizedDeclarations = await Promise.all((declarations ?? []).map((declaration) => normalizeToGlob(workingDir, declaration)));
-
-	const files = await glob(normalizedDeclarations, { nodir: true, absolute: true, cwd: workingDir });
-
-	return files.sort(collator.compare);
+interface Injector<T> {
+	apply: () => T;
+	restore: () => T;
 }
 
-function printArray(array: unknown[]) {
-	if (array.length === 0) {
-		return "[]";
-	}
+function createEnvironmentInjector(originalEnv: NodeJS.ProcessEnv, taskEnv: TaskEnv | undefined): Injector<void> {
+	const serializedTaskEnv = Object.fromEntries(Object.entries(taskEnv ?? {}).map(([key, val]) => [key, String(val)]));
 
-	return array.join(", ");
-}
+	return {
+		apply() {
+			Object.assign(process.env, { ...originalEnv, ...taskEnv });
+		},
+		restore() {
+			for (const [key] of Object.entries(serializedTaskEnv)) {
+				delete process.env[key];
 
-async function normalizeToGlob(workingDir: string, path: string): Promise<string> {
-	const fullPath = Path.resolve(workingDir, path);
-
-	try {
-		const stats = await Fs.stat(fullPath);
-
-		if (stats.isDirectory()) {
-			return Path.join(path, "**/*");
+				if (Object.hasOwn(originalEnv, key)) {
+					process.env[key] = originalEnv[key];
+				}
+			}
 		}
-	} catch {
-		// File doesn't exist or is a glob pattern — return as-is
-	}
-
-	return path;
+	};
 }
