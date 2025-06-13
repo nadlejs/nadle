@@ -27,8 +27,8 @@ importers:
         specifier: ^20.17.57
         version: 20.17.57
       '@vitest/eslint-plugin':
-        specifier: ^1.2.2
-        version: 1.2.2(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.2.3(@types/debug@4.1.12)(@types/node@20.17.57)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.2)(yaml@2.8.0))
+        specifier: ^1.2.4
+        version: 1.2.4(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.2.3(@types/debug@4.1.12)(@types/node@20.17.57)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.2)(yaml@2.8.0))
       changelogithub:
         specifier: ^13.15.0
         version: 13.15.0
@@ -2909,8 +2909,8 @@ packages:
       vue-router:
         optional: true
 
-  '@vitest/eslint-plugin@1.2.2':
-    resolution: {integrity: sha512-R8NwW+VxyKqVGcMfYsUbdThQyMbtNcoeg+jJeTgMHqWdFdcS0nrODAQXhkplvWzgd7jIJ+GQeydGqFLibsxMxg==}
+  '@vitest/eslint-plugin@1.2.4':
+    resolution: {integrity: sha512-4gcw3Kvh1cvwEA1dhPbcwoNmJJXQAaeSiP4UZ8Y9SFdxKuMKrt3moxQ1DLklugjw8S1zhziDp/vPrB3x0UEHKQ==}
     peerDependencies:
       eslint: '>= 8.57.0'
       typescript: '>= 5.0.0'
@@ -11277,7 +11277,7 @@ snapshots:
     optionalDependencies:
       react: 18.3.1
 
-  '@vitest/eslint-plugin@1.2.2(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.2.3(@types/debug@4.1.12)(@types/node@20.17.57)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.2)(yaml@2.8.0))':
+  '@vitest/eslint-plugin@1.2.4(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.2.3(@types/debug@4.1.12)(@types/node@20.17.57)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.2)(yaml@2.8.0))':
     dependencies:
       '@typescript-eslint/utils': 8.34.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.28.0(jiti@2.4.2)
