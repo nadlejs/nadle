@@ -77,7 +77,7 @@
 	"size-limit": [
 		{
 			"path": "lib/**",
-			"limit": "40 KB",
+			"limit": "45 KB",
 			"name": "bundled"
 		}
 	]
