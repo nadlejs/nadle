@@ -56,7 +56,7 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 		// TODO: Implement cache restore logic
 		await execute();
 	} else if (validationResult.result === "cache-miss") {
-		nadle.logger.info("Reason:");
+		nadle.logger.info("Reasons:");
 
 		for (const reason of validationResult.reasons) {
 			nadle.logger.info(`  - ${CacheMissReason.toString(reason)}`);

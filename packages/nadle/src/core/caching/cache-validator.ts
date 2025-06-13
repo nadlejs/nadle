@@ -97,7 +97,7 @@ export class CacheValidator {
 				return [{ file, type: "input-added" }];
 			}
 
-			if (currentHash !== undefined) {
+			if (oldHash !== currentHash) {
 				return [{ file, type: "input-changed" }];
 			}
 
@@ -109,28 +109,20 @@ export class CacheValidator {
 
 	async update(validationResult: CacheValidationResult) {
 		if (validationResult.result === "not-cacheable") {
-			return;
-		}
-
-		if (validationResult.result === "up-to-date") {
-			return;
-		}
-
-		if (validationResult.result === "restore-from-cache") {
+			// Do nothing, the task is not cacheable
+		} else if (validationResult.result === "up-to-date") {
+			// Do nothing, the task is up-to-date
+		} else if (validationResult.result === "restore-from-cache") {
 			await this.cacheManager.writeLatestRunMetadata(validationResult.cacheQuery);
-
-			return;
-		}
-
-		if (validationResult.result === "cache-miss") {
+		} else if (validationResult.result === "cache-miss") {
 			const { cacheQuery, inputHashes } = validationResult;
 
 			const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
 			const outputHashes = await hashFiles(outputs);
 
 			await this.cacheManager.writeRunMetadata(cacheQuery, RunCacheMetadata.create({ inputs: inputHashes, outputs: outputHashes, ...cacheQuery }));
+		} else {
+			throw new Error("Unknown cache validation result: " + JSON.stringify(validationResult));
 		}
-
-		throw new Error("Unknown cache validation result: " + JSON.stringify(validationResult));
 	}
 }

@@ -18,7 +18,7 @@
 		"sequence-test-compile": "pnpm test-compile --sequence",
 		"task-A": "nadle task-A --log-level debug",
 		"task-C": "nadle task-C",
-		"compileTs": "nadle compileTs",
+		"compileTs": "nadle compileTs --stacktrace",
 		"post-throwable": "nadle post-throwable",
 		"unknown": "nadle unknown",
 		"task-cycle-3": "nadle task-cycle-3",
