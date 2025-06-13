@@ -1,4 +1,6 @@
 import Path from "node:path";
+import Crypto from "node:crypto";
+import Fs from "node:fs/promises";
 
 import objectHash from "object-hash";
 
@@ -38,4 +40,20 @@ export function clamp(value: number, min: number, max: number): number {
 
 export function hashObject(object: Record<string, unknown>): string {
 	return objectHash(object, { encoding: "hex", algorithm: "sha256", unorderedArrays: true, unorderedObjects: true });
+}
+
+export async function hashFiles(filePaths: string[]): Promise<Record<string, string>> {
+	const inputHashes = await Promise.all(
+		filePaths.map(async (filePath) => {
+			const hash = Crypto.createHash("sha256");
+
+			hash.update(`path:${filePath}\n`);
+			hash.update(await Fs.readFile(filePath));
+			hash.update("\n---\n");
+
+			return [filePath, hash.digest("hex")];
+		})
+	);
+
+	return Object.fromEntries(inputHashes);
 }

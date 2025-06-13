@@ -54,7 +54,7 @@ export interface RunCacheMetadata {
 	 * List of output file paths or directories produced by the task.
 	 * These are copied into the cache and restored on cache hit.
 	 */
-	// outputs: string[];
+	outputs: Record<string, string>;
 
 	/**
 	 * Task-specific config or options (e.g., { minify: true }).
@@ -70,7 +70,12 @@ export interface RunCacheMetadata {
 }
 
 export namespace RunCacheMetadata {
-	export function create(params: { taskName: string; cacheKey: CacheKey; inputs: Record<string, string> }): RunCacheMetadata {
+	export function create(params: {
+		taskName: string;
+		cacheKey: CacheKey;
+		inputs: Record<string, string>;
+		outputs: Record<string, string>;
+	}): RunCacheMetadata {
 		return {
 			version: 1,
 			timestamp: new Date().toISOString(),

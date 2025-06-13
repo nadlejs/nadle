@@ -1,3 +1,4 @@
+import { hashFiles } from "../utils.js";
 import { FileSet } from "./file-set.js";
 import { CacheKey } from "./cache-key.js";
 import { RunCacheMetadata } from "./metadata.js";
@@ -7,14 +8,12 @@ import { type TaskConfiguration } from "../types.js";
 import { type CacheMissReason } from "./cache-miss-reason.js";
 
 type CacheValidationResult =
-	| { result: "no-cache-configurations" }
+	| { result: "not-cacheable" }
+	| { result: "up-to-date" }
+	// | { result: "disabled" }
+	| { cacheQuery: CacheQuery; result: "restore-from-cache" }
 	| {
-			result: "hit";
-			cacheQuery: CacheQuery;
-			inputHashes: Record<string, string>;
-	  }
-	| {
-			result: "miss";
+			result: "cache-miss";
 			cacheQuery: CacheQuery;
 			reasons: CacheMissReason[];
 			inputHashes: Record<string, string>;
@@ -34,25 +33,51 @@ export class CacheValidator {
 
 	async validate(): Promise<CacheValidationResult> {
 		if (this.taskConfiguration.inputs === undefined || this.taskConfiguration.outputs === undefined) {
-			return { result: "no-cache-configurations" };
+			return { result: "not-cacheable" };
 		}
 
 		const inputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.inputs);
 		const { cacheKey, inputHashes } = await CacheKey.compute({ inputs, taskName: this.taskName });
 		const cacheQuery: CacheQuery = { cacheKey, taskName: this.taskName };
-		const hit = await this.cacheManager.hasCache(cacheQuery);
 
-		if (hit) {
-			return { cacheQuery, inputHashes, result: "hit" };
-		}
+		const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
+		const outputHashes = await hashFiles(outputs);
 
+		const hasCache = await this.cacheManager.hasCache(cacheQuery);
 		const latestRunMetadata = await this.cacheManager.readLatestRunMetadata(this.taskName);
 
-		if (!latestRunMetadata) {
-			return { cacheQuery, inputHashes, result: "miss", reasons: [{ type: "no-previous-metadata" }] };
+		if (!hasCache) {
+			return {
+				cacheQuery,
+				inputHashes,
+				result: "cache-miss",
+				reasons: latestRunMetadata ? this.diffInputs(latestRunMetadata.inputs, inputHashes) : [{ type: "no-previous-cache" }]
+			};
 		}
 
-		return { cacheQuery, inputHashes, result: "miss", reasons: this.diffInputs(latestRunMetadata.inputs, inputHashes) };
+		if (latestRunMetadata === null) {
+			throw new Error("Unable to read latest run metadata for task: " + this.taskName);
+		}
+
+		if (latestRunMetadata.cacheKey === cacheKey && this.areOutputsEqual(latestRunMetadata.outputs, outputHashes)) {
+			return { result: "up-to-date" };
+		}
+
+		return { cacheQuery, result: "restore-from-cache" };
+	}
+
+	private areOutputsEqual(oldOutputs: Record<string, string>, currentOutputs: Record<string, string>): boolean {
+		if (Object.keys(oldOutputs).length !== Object.keys(currentOutputs).length) {
+			return false;
+		}
+
+		for (const [file, hash] of Object.entries(oldOutputs)) {
+			if (currentOutputs[file] !== hash) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private diffInputs(oldInputs: Record<string, string>, currentInputs: Record<string, string>): CacheMissReason[] {
@@ -83,14 +108,29 @@ export class CacheValidator {
 	}
 
 	async update(validationResult: CacheValidationResult) {
-		if (validationResult.result === "no-cache-configurations") {
+		if (validationResult.result === "not-cacheable") {
 			return;
 		}
 
-		const { cacheQuery, inputHashes } = validationResult;
-		await this.cacheManager.writeRunMetadata(
-			cacheQuery,
-			RunCacheMetadata.create({ inputs: inputHashes, taskName: this.taskName, cacheKey: cacheQuery.cacheKey })
-		);
+		if (validationResult.result === "up-to-date") {
+			return;
+		}
+
+		if (validationResult.result === "restore-from-cache") {
+			await this.cacheManager.writeLatestRunMetadata(validationResult.cacheQuery);
+
+			return;
+		}
+
+		if (validationResult.result === "cache-miss") {
+			const { cacheQuery, inputHashes } = validationResult;
+
+			const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
+			const outputHashes = await hashFiles(outputs);
+
+			await this.cacheManager.writeRunMetadata(cacheQuery, RunCacheMetadata.create({ inputs: inputHashes, outputs: outputHashes, ...cacheQuery }));
+		}
+
+		throw new Error("Unknown cache validation result: " + JSON.stringify(validationResult));
 	}
 }
