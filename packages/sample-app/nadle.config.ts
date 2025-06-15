@@ -77,7 +77,7 @@ tasks
 		command: "tsc",
 		args: ["--project", "tsconfig.src.json"]
 	})
-	.config({ dependsOn: ["install"], inputs: ["src/**/*.ts"], outputs: ["dist/**/*.js"] });
+	.config({ outputs: ["dist/**"], dependsOn: ["install"], inputs: ["src/**/*.ts"] });
 
 tasks
 	.register("compileSvg", () => {

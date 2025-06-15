@@ -38,25 +38,36 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 	const cacheValidator = new CacheValidator(taskName, taskConfig, workingDir, Path.dirname(options.configPath));
 	const validationResult = await cacheValidator.validate();
 
-	if (validationResult.result !== "no-cache-configurations") {
-		nadle.logger.info({ tag: "Caching" }, c.yellow(taskName), validationResult.result);
+	const execute = async () => {
+		environmentInjector.apply();
 
-		if (validationResult.result === "miss") {
-			nadle.logger.info("Reason:");
+		await task.run({ options: taskOptions, context: { ...context, workingDir } });
 
-			for (const reason of validationResult.reasons) {
-				nadle.logger.info(`  - ${CacheMissReason.toString(reason)}`);
-			}
+		environmentInjector.restore();
+	};
+
+	nadle.logger.info({ tag: "Caching" }, c.yellow(taskName), validationResult.result);
+
+	if (validationResult.result === "not-cacheable") {
+		await execute();
+	} else if (validationResult.result === "up-to-date") {
+		// Do nothing, the task is up-to-date
+	} else if (validationResult.result === "restore-from-cache") {
+		// TODO: Implement cache restore logic
+		await execute();
+	} else if (validationResult.result === "cache-miss") {
+		nadle.logger.info("Reasons:");
+
+		for (const reason of validationResult.reasons) {
+			nadle.logger.info(`  - ${CacheMissReason.toString(reason)}`);
 		}
+
+		await execute();
+
+		await cacheValidator.update(validationResult);
+	} else {
+		throw new Error(`Unexpected cache validation result: ${validationResult}`);
 	}
-
-	environmentInjector.apply();
-
-	await task.run({ options: taskOptions, context: { ...context, workingDir } });
-
-	await cacheValidator.update(validationResult);
-
-	environmentInjector.restore();
 };
 
 interface Injector<T> {

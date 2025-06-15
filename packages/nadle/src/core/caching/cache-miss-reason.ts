@@ -2,11 +2,11 @@ export type CacheMissReason =
 	| { file: string; type: "input-changed" }
 	| { file: string; type: "input-removed" }
 	| { file: string; type: "input-added" }
-	| { type: "no-previous-metadata" };
+	| { type: "no-previous-cache" };
 export namespace CacheMissReason {
 	export function toString(reason: CacheMissReason): string {
 		switch (reason.type) {
-			case "no-previous-metadata":
+			case "no-previous-cache":
 				return "No previous cache found";
 			case "input-changed":
 				return `File ${reason.file} was changed`;
