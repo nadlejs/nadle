@@ -10,7 +10,7 @@ import { type CacheMissReason } from "./cache-miss-reason.js";
 type CacheValidationResult =
 	| { result: "not-cacheable" }
 	| { result: "up-to-date" }
-	| { cacheQuery: CacheQuery; result: "restore-from-cache" }
+	| { cacheQuery: CacheQuery; result: "restore-from-cache"; restore: () => Promise<void> }
 	| {
 			result: "cache-miss";
 			cacheQuery: CacheQuery;
@@ -39,9 +39,6 @@ export class CacheValidator {
 		const { cacheKey, inputHashes } = await CacheKey.compute({ inputs, taskName: this.taskName });
 		const cacheQuery: CacheQuery = { cacheKey, taskName: this.taskName };
 
-		const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
-		const outputHashes = await hashFiles(outputs);
-
 		const hasCache = await this.cacheManager.hasCache(cacheQuery);
 		const latestRunMetadata = await this.cacheManager.readLatestRunMetadata(this.taskName);
 
@@ -58,11 +55,20 @@ export class CacheValidator {
 			throw new Error("Unable to read latest run metadata for task: " + this.taskName);
 		}
 
+		const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
+		const outputHashes = await hashFiles(outputs);
+
 		if (latestRunMetadata.cacheKey === cacheKey && this.areOutputsEqual(latestRunMetadata.outputs, outputHashes)) {
 			return { result: "up-to-date" };
 		}
 
-		return { cacheQuery, result: "restore-from-cache" };
+		return {
+			cacheQuery,
+			result: "restore-from-cache",
+			restore: async () => {
+				await this.cacheManager.restoreOutputs(cacheQuery, this.workingDir);
+			}
+		};
 	}
 
 	private areOutputsEqual(oldOutputs: Record<string, string>, currentOutputs: Record<string, string>): boolean {
@@ -120,6 +126,7 @@ export class CacheValidator {
 			const outputHashes = await hashFiles(outputs);
 
 			await this.cacheManager.writeRunMetadata(cacheQuery, RunCacheMetadata.create({ inputs: inputHashes, outputs: outputHashes, ...cacheQuery }));
+			await this.cacheManager.saveOutputs(cacheQuery, this.workingDir, outputs);
 		} else {
 			throw new Error("Unknown cache validation result: " + JSON.stringify(validationResult));
 		}
