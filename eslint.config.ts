@@ -14,6 +14,7 @@ export default tsEslint.config(
 		ignores: [
 			"**/lib",
 			"**/build",
+			"**/.nadle",
 			"**/__temp__",
 			"**/node_modules/",
 			"**/.docusaurus",

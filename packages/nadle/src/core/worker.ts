@@ -53,8 +53,9 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 	} else if (validationResult.result === "up-to-date") {
 		// Do nothing, the task is up-to-date
 	} else if (validationResult.result === "restore-from-cache") {
-		// TODO: Implement cache restore logic
-		await execute();
+		await validationResult.restore();
+
+		await cacheValidator.update(validationResult);
 	} else if (validationResult.result === "cache-miss") {
 		nadle.logger.info("Reasons:");
 
