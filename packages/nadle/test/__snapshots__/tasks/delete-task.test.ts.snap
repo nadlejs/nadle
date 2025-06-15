@@ -93,6 +93,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 [info] Scheduled tasks: deleteJsonFiles
 [log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> started
 
+[info] <Yellow>Caching</Yellow> <Yellow>deleteJsonFiles</Yellow> not-cacheable
 [info] Current working dir: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Deleting paths: ./a/bas.json, ./b/b1/qux.json
 [log] 
