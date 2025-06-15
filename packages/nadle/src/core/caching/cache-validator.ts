@@ -10,7 +10,6 @@ import { type CacheMissReason } from "./cache-miss-reason.js";
 type CacheValidationResult =
 	| { result: "not-cacheable" }
 	| { result: "up-to-date" }
-	// | { result: "disabled" }
 	| { cacheQuery: CacheQuery; result: "restore-from-cache" }
 	| {
 			result: "cache-miss";
