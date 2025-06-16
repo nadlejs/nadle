@@ -28,7 +28,7 @@
 		"nadle": "^0.3.5",
 		"prettier": "^3.5.1",
 		"rimraf": "^6.0.1",
-		"tsx": "^4.20.2",
+		"tsx": "^4.20.3",
 		"typescript": "^5.8.2",
 		"typescript-eslint": "^8.34.0"
 	},
