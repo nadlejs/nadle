@@ -1,3 +1,5 @@
+import Path from "node:path";
+
 import { hashFiles } from "../utils.js";
 import { FileSet } from "./file-set.js";
 import { CacheKey } from "./cache-key.js";
@@ -18,16 +20,20 @@ type CacheValidationResult =
 			inputHashes: Record<string, string>;
 	  };
 
+interface CacheValidatorContext {
+	readonly projectDir: string;
+	readonly workingDir: string;
+}
+
 export class CacheValidator {
 	private readonly cacheManager: CacheManager;
 
 	constructor(
 		private readonly taskName: string,
 		private readonly taskConfiguration: TaskConfiguration,
-		private readonly workingDir: string,
-		readonly cacheDir: string
+		private readonly context: CacheValidatorContext
 	) {
-		this.cacheManager = new CacheManager(cacheDir);
+		this.cacheManager = new CacheManager(Path.join(this.context.projectDir, CacheManager.CACHE_DIR_NAME));
 	}
 
 	async validate(): Promise<CacheValidationResult> {
@@ -35,7 +41,7 @@ export class CacheValidator {
 			return { result: "not-cacheable" };
 		}
 
-		const inputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.inputs);
+		const inputs = await FileSet.resolve(this.context.workingDir, this.taskConfiguration.inputs);
 		const { cacheKey, inputHashes } = await CacheKey.compute({ inputs, taskName: this.taskName });
 		const cacheQuery: CacheQuery = { cacheKey, taskName: this.taskName };
 
@@ -55,7 +61,7 @@ export class CacheValidator {
 			throw new Error("Unable to read latest run metadata for task: " + this.taskName);
 		}
 
-		const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
+		const outputs = await FileSet.resolve(this.context.workingDir, this.taskConfiguration.outputs);
 		const outputHashes = await hashFiles(outputs);
 
 		if (latestRunMetadata.cacheKey === cacheKey && this.areOutputsEqual(latestRunMetadata.outputs, outputHashes)) {
@@ -66,7 +72,7 @@ export class CacheValidator {
 			cacheQuery,
 			result: "restore-from-cache",
 			restore: async () => {
-				await this.cacheManager.restoreOutputs(cacheQuery, this.workingDir);
+				await this.cacheManager.restoreOutputs(cacheQuery, this.context.projectDir);
 			}
 		};
 	}
@@ -122,11 +128,11 @@ export class CacheValidator {
 		} else if (validationResult.result === "cache-miss") {
 			const { cacheQuery, inputHashes } = validationResult;
 
-			const outputs = await FileSet.resolve(this.workingDir, this.taskConfiguration.outputs);
+			const outputs = await FileSet.resolve(this.context.workingDir, this.taskConfiguration.outputs);
 			const outputHashes = await hashFiles(outputs);
 
 			await this.cacheManager.writeRunMetadata(cacheQuery, RunCacheMetadata.create({ inputs: inputHashes, outputs: outputHashes, ...cacheQuery }));
-			await this.cacheManager.saveOutputs(cacheQuery, this.workingDir, outputs);
+			await this.cacheManager.saveOutputs(cacheQuery, this.context.projectDir, outputs);
 		} else {
 			throw new Error("Unknown cache validation result: " + JSON.stringify(validationResult));
 		}
