@@ -7,8 +7,9 @@ import { type CacheQuery } from "./cache-query.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
 
 export class CacheManager {
+	public static readonly CACHE_DIR_NAME = ".nadle";
+
 	private static readonly META_FILE_NAME = "metadata.json";
-	private static readonly CACHE_DIR_NAME = ".nadle";
 	private static readonly TASKS_DIR_NAME = "tasks";
 	private static readonly RUNS_DIR_NAME = "runs";
 	private static readonly OUTPUTS_DIR_NAME = "outputs";
@@ -45,10 +46,10 @@ export class CacheManager {
 		return Path.join(this.getBaseTaskPath(taskName), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.META_FILE_NAME);
 	}
 
-	async restoreOutputs(cacheQuery: CacheQuery, workingDir: string): Promise<void> {
-		const basePath = this.getOutputBasePath(cacheQuery);
+	async restoreOutputs(cacheQuery: CacheQuery, projectDir: string): Promise<void> {
+		const outputsCacheDir = this.getOutputsCacheDirPath(cacheQuery);
 
-		const entries = await Fs.readdir(basePath, { recursive: true, withFileTypes: true });
+		const entries = await Fs.readdir(outputsCacheDir, { recursive: true, withFileTypes: true });
 
 		for (const entry of entries) {
 			if (!entry.isFile()) {
@@ -56,26 +57,26 @@ export class CacheManager {
 			}
 
 			const sourcePath = Path.join(entry.parentPath, entry.name);
-			const targetPath = Path.join(workingDir, Path.relative(basePath, sourcePath));
+			const targetPath = Path.join(projectDir, Path.relative(outputsCacheDir, sourcePath));
 
 			await Fs.mkdir(Path.dirname(targetPath), { recursive: true });
 			await Fs.copyFile(sourcePath, targetPath);
 		}
 	}
 
-	async saveOutputs(cacheQuery: CacheQuery, workingDir: string, outputs: FileSet): Promise<void> {
-		const basePath = this.getOutputBasePath(cacheQuery);
+	async saveOutputs(cacheQuery: CacheQuery, projectDir: string, outputs: FileSet): Promise<void> {
+		const outputsCacheDir = this.getOutputsCacheDirPath(cacheQuery);
 
 		for (const sourcePath of outputs) {
-			const relativePath = Path.relative(workingDir, sourcePath);
-			const targetPath = Path.join(basePath, relativePath);
+			const relativePath = Path.relative(projectDir, sourcePath);
+			const targetPath = Path.join(outputsCacheDir, relativePath);
 
 			await Fs.mkdir(Path.dirname(targetPath), { recursive: true });
 			await Fs.copyFile(sourcePath, targetPath);
 		}
 	}
 
-	private getOutputBasePath({ taskName, cacheKey }: CacheQuery): string {
+	private getOutputsCacheDirPath({ taskName, cacheKey }: CacheQuery): string {
 		return Path.join(this.getBaseTaskPath(taskName), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.OUTPUTS_DIR_NAME);
 	}
 
