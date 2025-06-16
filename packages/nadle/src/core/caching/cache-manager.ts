@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { type FileSet } from "./file-set.js";
-import { isFileExists } from "../fs-utils.js";
+import { isPathExists } from "../fs-utils.js";
 import { type CacheQuery } from "./cache-query.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
 
@@ -16,7 +16,7 @@ export class CacheManager {
 	constructor(private readonly baseDir: string) {}
 
 	async hasCache(cacheQuery: CacheQuery): Promise<boolean> {
-		return isFileExists(this.getRunMetadataPath(cacheQuery));
+		return isPathExists(this.getRunMetadataPath(cacheQuery));
 	}
 
 	async readRunMetadata(cacheQuery: CacheQuery): Promise<RunCacheMetadata | null> {

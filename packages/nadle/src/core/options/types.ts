@@ -22,6 +22,14 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
 export interface NadleConfigFileOptions extends NadleUserBaseOptions {}
 
 export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
+	readonly projectDir: string;
+
 	readonly minWorkers: number;
 	readonly maxWorkers: number;
+}
+
+export interface NadlePackageJson {
+	readonly nadle?: {
+		root?: true;
+	};
 }

@@ -5,10 +5,12 @@ import Process from "node:process";
 
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
+import { findRootSync } from "@manypkg/find-root";
 
 import { clamp } from "../utils.js";
+import { isPathExistsSync } from "../fs-utils.js";
 import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
-import { type NadleCLIOptions, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
+import { type NadleCLIOptions, type NadlePackageJson, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
 export class OptionsResolver {
 	static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
@@ -46,7 +48,43 @@ export class OptionsResolver {
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
 
-		return { ...baseOptions, minWorkers, maxWorkers, configPath: this.resolveConfigPath(baseOptions.configPath) };
+		return {
+			...baseOptions,
+			minWorkers,
+			maxWorkers,
+			projectDir: this.resolveProjectDir(),
+			configPath: this.resolveConfigPath(baseOptions.configPath)
+		};
+	}
+
+	private resolveProjectDir(): string {
+		const projectDir = findUpSync(
+			(directory) => {
+				const packageJsonPath = Path.join(directory, "package.json");
+				const hasPackageJson = isPathExistsSync(packageJsonPath);
+
+				if (!hasPackageJson) {
+					return undefined;
+				}
+
+				const packageJson = JSON.parse(Fs.readFileSync(packageJsonPath, "utf-8")) as NadlePackageJson;
+
+				if (!packageJson.nadle?.root) {
+					return undefined;
+				}
+
+				return directory;
+			},
+			{ type: "directory" }
+		);
+
+		if (projectDir !== undefined) {
+			return projectDir;
+		}
+
+		const root = findRootSync(process.cwd());
+
+		return root.rootDir;
 	}
 
 	private resolveConfigPath(configPath: string | undefined): string {

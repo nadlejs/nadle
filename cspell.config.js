@@ -13,6 +13,12 @@ function extractLibraryNames() {
 			if (packageJson[depType]) {
 				for (const depName of Object.keys(packageJson[depType])) {
 					packageNames.add(depName);
+
+					if (depName.includes("@")) {
+						const [scope, name] = depName.split("/");
+						packageNames.add(scope.slice(1));
+						packageNames.add(name);
+					}
 				}
 			}
 		}

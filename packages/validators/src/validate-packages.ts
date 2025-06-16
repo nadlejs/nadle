@@ -207,6 +207,7 @@ const FIELD_ORDER = [
 	"bugs",
 	"packageManager",
 	"pnpm",
+	"nadle",
 	"stackblitz",
 	"lint-staged",
 	"size-limit"
@@ -226,11 +227,11 @@ function validateOrder(actualList: string[], order?: string[]) {
 			const indexA = expectedList.indexOf(itemA);
 			const indexB = expectedList.indexOf(itemB);
 
-			if (indexA === undefined) {
+			if (indexA === -1) {
 				throw new Error(`The field "${itemA}" is not allowed`);
 			}
 
-			if (indexB === undefined) {
+			if (indexB === -1) {
 				throw new Error(`The field "${itemB}" is not allowed`);
 			}
 
@@ -253,6 +254,14 @@ function createDependenciesOrderValidator(type: "dependencies" | "devDependencie
 	};
 }
 
+const fixturesValidator: PackageValidator = ({ pkg, path }) => {
+	if (path.includes(Path.join(Path.dirname(nadlePackagePath), "test", "__fixtures__"))) {
+		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true)) {
+			throw new Error(`Test packages must have nadle.root = true field`);
+		}
+	}
+};
+
 const validators: PackageValidator[] = [
 	nameValidator,
 	versionValidator,
@@ -266,6 +275,7 @@ const validators: PackageValidator[] = [
 	typesValidator,
 	repositoryValidator,
 	privateValidator,
+	fixturesValidator,
 	fieldsOrderValidator,
 	createDependenciesOrderValidator("dependencies"),
 	createDependenciesOrderValidator("devDependencies")

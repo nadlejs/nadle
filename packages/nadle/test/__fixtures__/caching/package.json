@@ -4,5 +4,8 @@
 	"private": true,
 	"dependencies": {
 		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
 	}
 }
