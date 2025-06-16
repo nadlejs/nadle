@@ -14,7 +14,7 @@
 		"@types/node": "^20.17.57",
 		"@vitest/eslint-plugin": "^1.2.4",
 		"changelogithub": "^13.15.0",
-		"cspell": "^9.0.2",
+		"cspell": "^9.1.1",
 		"eslint": "^9.29.0",
 		"eslint-plugin-import": "^2.31.0",
 		"eslint-plugin-n": "^17.20.0",
