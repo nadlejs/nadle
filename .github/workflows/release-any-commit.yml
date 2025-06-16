@@ -40,4 +40,4 @@ jobs:
       - name: Build
         run: npx nadle build
 
-      - run: pnpm dlx pkg-pr-new publish --bin --comment=update --compact
+      - run: pnpm dlx pkg-pr-new publish --bin --comment=update --compact './packages/nadle'
