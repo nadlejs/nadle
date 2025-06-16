@@ -162,11 +162,21 @@ export interface NadleConfigFileOptions extends NadleUserBaseOptions {
 }
 
 // @public (undocumented)
+export interface NadlePackageJson {
+    // (undocumented)
+    readonly nadle?: {
+        root?: true;
+    };
+}
+
+// @public (undocumented)
 export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
     // (undocumented)
     readonly maxWorkers: number;
     // (undocumented)
     readonly minWorkers: number;
+    // (undocumented)
+    readonly projectDir: string;
 }
 
 // @public (undocumented)
@@ -323,7 +333,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:211:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:217:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
