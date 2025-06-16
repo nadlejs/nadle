@@ -5,7 +5,7 @@ import fixturify from "fixturify";
 
 import { randomHash } from "./random.js";
 import { type Exec, createExec } from "./exec.js";
-import { isFileExists } from "../../src/core/fs-utils.js";
+import { isPathExists } from "../../src/core/fs-utils.js";
 import { tempDir, fixturesDir, defaultConfigFile } from "./constants.js";
 
 const TEMP_DIR = "__temp__";
@@ -70,7 +70,7 @@ export function createFileModifier(baseDir: string) {
 
 				switch (change.type) {
 					case "add": {
-						const originalExists = await isFileExists(path);
+						const originalExists = await isPathExists(path);
 
 						if (originalExists) {
 							throw new Error(`File already exists at ${path}. Cannot add new file.`);
@@ -84,7 +84,7 @@ export function createFileModifier(baseDir: string) {
 					}
 
 					case "delete": {
-						const originalExists = await isFileExists(path);
+						const originalExists = await isPathExists(path);
 
 						if (!originalExists) {
 							throw new Error(`File does not exist at ${path}. Cannot delete.`);
@@ -97,7 +97,7 @@ export function createFileModifier(baseDir: string) {
 					}
 
 					case "modify": {
-						const originalExists = await isFileExists(path);
+						const originalExists = await isPathExists(path);
 
 						if (!originalExists) {
 							throw new Error(`File does not exist at ${path}. Cannot modify.`);

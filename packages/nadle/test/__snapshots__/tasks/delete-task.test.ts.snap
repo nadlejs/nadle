@@ -85,6 +85,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
   dryRun: false,
   stacktrace: false,
   minWorkers: 1,
+  projectDir: '/ROOT/test/__fixtures__/delete-task',
   configPath:
    '/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
