@@ -173,8 +173,8 @@ importers:
         specifier: ^3.9.0
         version: 3.9.0
       tinypool:
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.1.1
+        version: 1.1.1
       tinyrainbow:
         specifier: ^2.0.0
         version: 2.0.0
@@ -7333,6 +7333,10 @@ packages:
 
   tinypool@1.1.0:
     resolution: {integrity: sha512-7CotroY9a8DKsKprEy/a14aCCm8jYVmR7aFy4fpkZM8sdpNJbKkixuNjgM50yCmip2ezc8z4N7k3oe2+rfRJCQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+
+  tinypool@1.1.1:
+    resolution: {integrity: sha512-Zba82s87IFq9A9XmjiX5uZA/ARWDrB03OHlq+Vw1fSdt0I+4/Kutwy8BP4Y/y/aORMo61FQ0vIb5j44vSo5Pkg==}
     engines: {node: ^18.0.0 || >=20.0.0}
 
   tinyrainbow@2.0.0:
@@ -16656,6 +16660,8 @@ snapshots:
 
   tinypool@1.1.0: {}
 
+  tinypool@1.1.1: {}
+
   tinyrainbow@2.0.0: {}
 
   tinyspy@4.0.3: {}
@@ -17003,7 +17009,7 @@ snapshots:
       tinybench: 2.9.0
       tinyexec: 0.3.2
       tinyglobby: 0.2.14
-      tinypool: 1.1.0
+      tinypool: 1.1.1
       tinyrainbow: 2.0.0
       vite: 6.3.5(@types/node@20.19.1)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.3)(yaml@2.8.0)
       vite-node: 3.2.3(@types/node@20.19.1)(jiti@2.4.2)(terser@5.41.0)(tsx@4.20.3)(yaml@2.8.0)
