@@ -18,7 +18,8 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 [log] <Green>prepare</Green>
 [log] <Green>throwable</Green>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
@@ -27,5 +28,6 @@ exports[`--list > prints no task message when no registered tasks > stdout 1`] =
 [log] <Dim>Using 1 worker for task execution</BoldDim>
 [log] No tasks found
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;

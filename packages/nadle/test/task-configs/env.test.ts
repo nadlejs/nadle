@@ -23,8 +23,8 @@ describe("env", () => {
 
 		expect(stdout.match(/first task env/g)).toHaveLength(1);
 		expect(stdout.match(/second task env/g)).toHaveLength(1);
-		expect(stdout.indexOf("Task firstTask done")).toBeGreaterThan(stdout.indexOf("first task env"));
-		expect(stdout.indexOf("second task env")).toBeGreaterThan(stdout.indexOf("Task secondTask started"));
+		expect(stdout.indexOf("Task firstTask DONE")).toBeGreaterThan(stdout.indexOf("first task env"));
+		expect(stdout.indexOf("second task env")).toBeGreaterThan(stdout.indexOf("Task secondTask STARTED"));
 	});
 
 	it("should not inject env from other task 2", async () => {

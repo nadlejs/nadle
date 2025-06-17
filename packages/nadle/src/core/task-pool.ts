@@ -31,9 +31,14 @@ export class TaskPool {
 
 		try {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();
+			let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
 			poolPort.on("message", async (msg) => {
 				if (msg.type === "start") {
 					await this.nadle.onTaskStart(task, msg.threadId);
+				} else if (msg.type === "up-to-date") {
+					executeType = "up-to-date";
+				} else if (msg.type === "from-cache") {
+					executeType = "from-cache";
 				}
 			});
 
@@ -46,7 +51,15 @@ export class TaskPool {
 
 			await this.pool.run(workerParams, { transferList: [workerPort] });
 
-			await this.nadle.onTaskFinish(task);
+			if (executeType === "execute") {
+				await this.nadle.onTaskFinish(task);
+			} else if (executeType === "up-to-date") {
+				await this.nadle.onTaskUpToDate(task);
+			} else if (executeType === "from-cache") {
+				await this.nadle.onTaskRestoreFromCache(task);
+			} else {
+				throw new Error(`Unknown execute type: ${executeType}`);
+			}
 		} catch (error) {
 			await this.nadle.onTaskFailed(task);
 			throw error;

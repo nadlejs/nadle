@@ -221,6 +221,9 @@ importers:
 
   packages/nadle/test/__fixtures__/caching:
     dependencies:
+      glob:
+        specifier: ^11.0.3
+        version: 11.0.3
       nadle:
         specifier: workspace:*
         version: link:../../..

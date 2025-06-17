@@ -26,10 +26,6 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 	const context: Context = { nadle };
 	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 
-	port.postMessage({ threadId, type: "start", taskName: taskName });
-	await new Promise((resolve) => setImmediate(resolve));
-	await new Promise((resolve) => process.nextTick(resolve));
-
 	const taskConfig = task.configResolver({ context });
 
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
@@ -39,6 +35,8 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 	const validationResult = await cacheValidator.validate();
 
 	const execute = async () => {
+		port.postMessage({ threadId, type: "start", taskName: taskName });
+
 		environmentInjector.apply();
 
 		await task.run({ options: taskOptions, context: { ...context, workingDir } });
@@ -46,16 +44,18 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 		environmentInjector.restore();
 	};
 
-	nadle.logger.info({ tag: "Caching" }, c.yellow(taskName), validationResult.result);
+	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskName), validationResult.result);
 
 	if (validationResult.result === "not-cacheable") {
 		await execute();
 	} else if (validationResult.result === "up-to-date") {
+		port.postMessage({ threadId, type: "up-to-date", taskName: taskName });
 		// Do nothing, the task is up-to-date
 	} else if (validationResult.result === "restore-from-cache") {
 		await validationResult.restore();
 
 		await cacheValidator.update(validationResult);
+		port.postMessage({ threadId, type: "from-cache", taskName: taskName });
 	} else if (validationResult.result === "cache-miss") {
 		nadle.logger.info("Reasons:");
 

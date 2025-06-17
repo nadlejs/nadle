@@ -45,6 +45,18 @@ export class TaskRegistry {
 		task.result.duration = Date.now() - (task.result.startTime ?? 0);
 	}
 
+	onTaskUpToDate(name: string) {
+		const task = this.getByName(name);
+
+		task.status = TaskStatus.UpToDate;
+	}
+
+	onTaskRestoreFromCache(name: string) {
+		const task = this.getByName(name);
+
+		task.status = TaskStatus.FromCache;
+	}
+
 	onTaskFailed(name: string) {
 		const task = this.getByName(name);
 

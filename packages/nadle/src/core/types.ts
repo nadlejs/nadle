@@ -68,6 +68,8 @@ export enum TaskStatus {
 	Scheduled = "scheduled",
 	Running = "running",
 	Finished = "finished",
+	UpToDate = "up-to-date",
+	FromCache = "from-cache",
 	Failed = "failed"
 }
 

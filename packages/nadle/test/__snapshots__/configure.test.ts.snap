@@ -59,7 +59,8 @@ exports[`configure > can override configured options from config file if the cli
 }
 [info] Execution finished
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`configure > can use configured options from config file > stdout 1`] = `
@@ -81,5 +82,6 @@ exports[`configure > can use configured options from config file > stdout 1`] = 
   "projectDir": "/ROOT/test/__fixtures__/main"
 }
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;

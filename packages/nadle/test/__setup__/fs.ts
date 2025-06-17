@@ -60,8 +60,10 @@ type FileChange =
 	| { path: string; type: "delete" }
 	| { path: string; type: "modify"; newContent: string };
 
+type RevertFileChange = { path: string; type: "delete" } | { type: "add"; path: string; content: string };
+
 export function createFileModifier(baseDir: string) {
-	const backup = new Map<string, string | null>(); // null means "file did not exist"
+	let backups: RevertFileChange[] = [];
 
 	async function apply(changes: FileChange[]) {
 		for (const change of changes) {
@@ -76,7 +78,7 @@ export function createFileModifier(baseDir: string) {
 							throw new Error(`File already exists at ${path}. Cannot add new file.`);
 						}
 
-						backup.set(path, null);
+						backups.push({ path, type: "delete" });
 
 						await Fs.mkdir(Path.dirname(path), { recursive: true });
 						await Fs.writeFile(path, change.content);
@@ -90,7 +92,7 @@ export function createFileModifier(baseDir: string) {
 							throw new Error(`File does not exist at ${path}. Cannot delete.`);
 						}
 
-						backup.set(path, await Fs.readFile(path, "utf8"));
+						backups.push({ path, type: "add", content: await Fs.readFile(path, "utf8") });
 
 						await Fs.rm(path, { force: true });
 						break;
@@ -103,7 +105,7 @@ export function createFileModifier(baseDir: string) {
 							throw new Error(`File does not exist at ${path}. Cannot modify.`);
 						}
 
-						backup.set(path, await Fs.readFile(path, "utf8"));
+						backups.push({ path, type: "add", content: await Fs.readFile(path, "utf8") });
 
 						await Fs.writeFile(path, change.newContent);
 						break;
@@ -116,17 +118,18 @@ export function createFileModifier(baseDir: string) {
 	}
 
 	async function restore() {
-		for (const [path, content] of backup) {
-			if (content === null) {
-				// File did not exist originally
-				await Fs.rm(path, { force: true });
+		for (const backup of [...backups].reverse()) {
+			if (backup.type === "delete") {
+				await Fs.rm(backup.path, { force: true });
+			} else if (backup.type === "add") {
+				await Fs.mkdir(Path.dirname(backup.path), { recursive: true });
+				await Fs.writeFile(backup.path, backup.content);
 			} else {
-				await Fs.mkdir(Path.dirname(path), { recursive: true });
-				await Fs.writeFile(path, content);
+				throw new Error(`Unknown backup: ${JSON.stringify(backup)}`);
 			}
 		}
 
-		backup.clear();
+		backups = [];
 	}
 
 	return { apply, restore };
