@@ -2,6 +2,8 @@
 
 exports[`when a task fails > should report correctly > stderr 1`] = ``;
 
+exports[`when a task fails > should report correctly > stderr 2`] = ``;
+
 exports[`when a task fails > should report correctly > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
@@ -20,6 +22,30 @@ Hello from nadle!
 
 [log] 
 <Red>×</Red> Task <Bold>throwable</BoldDim> <Red>FAILED</Red> {duration}
+[log] 
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+[log] 
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
+`;
+
+exports[`when a task fails > should report correctly > stdout 2`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
+[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
+
+Preparing...
+[log] 
+<Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+
+Hello from nadle!
+[log] 
+<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+[log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> started
+
+[log] 
+<Red>×</Red> Task <Bold>throwable</BoldDim> failed in {duration}
 [log] 
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 [log] 
