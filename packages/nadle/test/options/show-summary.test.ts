@@ -3,7 +3,7 @@ import { exec, createExec, serializeANSI } from "setup";
 
 describe("--show-summary", { timeout: 10000 }, () => {
 	it("should show in-progress summary when enable explicitly", async () => {
-		const { stdout, exitCode } = await exec`copy --show-summary`;
+		const { stdout, exitCode } = await exec`copy --show-summary --max-workers 2`;
 
 		expect(exitCode).toBe(0);
 
@@ -11,11 +11,12 @@ describe("--show-summary", { timeout: 10000 }, () => {
 
 		expect(blurStdout).contain(`<Dim>Duration   </BoldDim> 1s`);
 		expect(blurStdout).contain(
-			`<Dim>Tasks      </BoldDim> <BrightCyan>2 pending</Cyan> <BrightBlack>|</Cyan> <Yellow>0 running</Yellow> <BrightBlack>|</Yellow> <Green>0 done</Green> <Dim>(2 scheduled)</BoldDim>`
+			`<Dim>Tasks      </BoldDim> <BrightCyan>3 pending</Cyan> <BrightBlack>|</Cyan> <Yellow>0 running</Yellow> <BrightBlack>|</Yellow> <Green>0 done</Green> <Dim>(3 scheduled)</BoldDim>`
 		);
 		expect(blurStdout).contain(
-			`<Dim>Tasks      </BoldDim> <BrightCyan>1 pending</Yellow> <BrightBlack>|</Yellow> <Yellow>1 running</Yellow> <BrightBlack>|</Yellow> <Green>0 done</Green> <Dim>(2 scheduled)</BoldDim>`
+			`<Dim>Tasks      </BoldDim> <BrightCyan>1 pending</Yellow> <BrightBlack>|</Yellow> <Yellow>1 running</Yellow> <BrightBlack>|</Yellow> <Green>1 done</Green> <Dim>(3 scheduled)</BoldDim>`
 		);
+		expect(blurStdout).contain(`<Yellow>></Yellow> <Dim>IDLE</BoldDim>`);
 		expect(blurStdout).contain(`<Yellow>></Yellow> :<Bold>prepare</BoldDim>`);
 	});
 

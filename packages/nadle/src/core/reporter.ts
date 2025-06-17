@@ -76,14 +76,18 @@ export class DefaultReporter implements Reporter {
 	}
 
 	private printRunningTasks() {
-		const runningWorkers = new Set(Object.values(this.threadIdPerWorker)).size;
-		const lines = Array.from({ length: runningWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
+		const lines = Array.from({ length: this.nadle.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
+
+		let maxWorkerId = 0;
 
 		for (const runningTask of this.nadle.registry.getAll().filter((task) => task.status === TaskStatus.Running)) {
-			lines[this.threadIdPerWorker[runningTask.name] - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
+			const workerId = this.threadIdPerWorker[runningTask.name];
+
+			lines[workerId - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
+			maxWorkerId = Math.max(maxWorkerId, workerId);
 		}
 
-		return lines;
+		return lines.slice(0, maxWorkerId);
 	}
 
 	onInit() {
@@ -114,7 +118,6 @@ export class DefaultReporter implements Reporter {
 	async onTaskFinish(task: RegisteredTask) {
 		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.name)} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
-		delete this.threadIdPerWorker[task.name];
 		this.renderer.schedule();
 	}
 
