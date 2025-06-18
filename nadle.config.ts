@@ -5,7 +5,7 @@ tasks
 	.config({ group: "Development", description: "Clean build artifacts" });
 
 tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] });
-tasks.register("eslint", PnpmTask, { args: ["-r", "exec", "eslint", "--quiet"] });
+tasks.register("eslint", PnpmTask, { args: ["-r", "--filter", "!@nadle/internal-fixture-*", "exec", "eslint", ".", "--quiet"] });
 tasks.register("prettier", ExecTask, { command: "prettier", args: ["--check", "."] });
 tasks.register("knip", ExecTask, { args: [], command: "knip" }).config({ workingDir: "./packages/nadle" });
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
