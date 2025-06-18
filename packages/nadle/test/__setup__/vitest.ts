@@ -11,8 +11,8 @@ expect.extend({
 				const firstTask = tasks[firstTaskIndex];
 				const secondTask = tasks[secondTaskIndex];
 
-				const firstTaskDoneIndex = stdout.indexOf(`Task ${firstTask} done`);
-				const secondTaskDoneIndex = stdout.indexOf(`Task ${secondTask} done`);
+				const firstTaskDoneIndex = stdout.indexOf(`Task ${firstTask} DONE`);
+				const secondTaskDoneIndex = stdout.indexOf(`Task ${secondTask} DONE`);
 
 				const pass = firstTaskDoneIndex < secondTaskDoneIndex;
 
@@ -56,8 +56,8 @@ expect.extend({
 });
 
 function assertOrder(stdout: string, firstTask: string, secondTask: string) {
-	const firstTaskDoneIndex = stdout.indexOf(`Task ${firstTask} done`);
-	const secondTaskStartedIndex = stdout.indexOf(`Task ${secondTask} started`);
+	const firstTaskDoneIndex = stdout.indexOf(`Task ${firstTask} DONE`);
+	const secondTaskStartedIndex = stdout.indexOf(`Task ${secondTask} STARTED`);
 
 	if (firstTaskDoneIndex === -1) {
 		return {

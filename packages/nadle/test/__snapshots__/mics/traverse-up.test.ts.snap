@@ -4,50 +4,54 @@ exports[`traverse-up > can traverse up to pick the config file from ./a > stdout
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/traverse-up/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`traverse-up > can traverse up to pick the config file from ./a/a1 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/traverse-up/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a/a1
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`traverse-up > can traverse up to pick the config file from ./a/a1/a11/a112 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/traverse-up/a/a1/a11/nadle.config.mjs</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a/a1/a11/a112
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`traverse-up > can traverse up to pick the config file from ./a/a1/a12 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/traverse-up/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a/a1/a12
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;

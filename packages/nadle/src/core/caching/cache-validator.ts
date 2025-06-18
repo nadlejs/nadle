@@ -1,5 +1,3 @@
-import Path from "node:path";
-
 import { hashFiles } from "../utils.js";
 import { FileSet } from "./file-set.js";
 import { CacheKey } from "./cache-key.js";
@@ -33,7 +31,7 @@ export class CacheValidator {
 		private readonly taskConfiguration: TaskConfiguration,
 		private readonly context: CacheValidatorContext
 	) {
-		this.cacheManager = new CacheManager(Path.join(this.context.projectDir, CacheManager.CACHE_DIR_NAME));
+		this.cacheManager = new CacheManager(this.context.projectDir);
 	}
 
 	async validate(): Promise<CacheValidationResult> {

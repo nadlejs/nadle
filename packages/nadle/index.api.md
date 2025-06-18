@@ -48,9 +48,13 @@ export class DefaultReporter implements Reporter {
     // (undocumented)
     onTaskFinish(task: RegisteredTask): Promise<void>;
     // (undocumented)
+    onTaskRestoreFromCache(task: RegisteredTask): Promise<void>;
+    // (undocumented)
     onTasksScheduled(tasks: string[]): Promise<void>;
     // (undocumented)
     onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
+    // (undocumented)
+    onTaskUpToDate(task: RegisteredTask): Promise<void>;
 }
 
 // @public (undocumented)
@@ -124,9 +128,13 @@ export class Nadle {
     // (undocumented)
     onTaskFinish(task: RegisteredTask): Promise<void>;
     // (undocumented)
+    onTaskRestoreFromCache(task: RegisteredTask): Promise<void>;
+    // (undocumented)
     onTasksScheduled(tasks: string[]): Promise<void>;
     // (undocumented)
     onTaskStart(task: RegisteredTask, threadId: number): Promise<void>;
+    // (undocumented)
+    onTaskUpToDate(task: RegisteredTask): Promise<void>;
     // (undocumented)
     get options(): NadleResolvedOptions;
     // (undocumented)
@@ -232,9 +240,13 @@ export interface Reporter {
     // (undocumented)
     onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
     // (undocumented)
+    onTaskRestoreFromCache?: (task: RegisteredTask) => Awaitable<void>;
+    // (undocumented)
     onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
     // (undocumented)
     onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
+    // (undocumented)
+    onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
 }
 
 // @public (undocumented)
@@ -302,9 +314,13 @@ export class TaskRegistry {
     // (undocumented)
     onTaskFinish(name: string): void;
     // (undocumented)
+    onTaskRestoreFromCache(name: string): void;
+    // (undocumented)
     onTasksScheduled(names: string[]): void;
     // (undocumented)
     onTaskStart(name: string): void;
+    // (undocumented)
+    onTaskUpToDate(name: string): void;
     // (undocumented)
     register(name: string, task: RegisteredTask): void;
 }
@@ -324,16 +340,20 @@ export enum TaskStatus {
     // (undocumented)
     Finished = "finished",
     // (undocumented)
+    FromCache = "from-cache",
+    // (undocumented)
     Registered = "registered",
     // (undocumented)
     Running = "running",
     // (undocumented)
-    Scheduled = "scheduled"
+    Scheduled = "scheduled",
+    // (undocumented)
+    UpToDate = "up-to-date"
 }
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:217:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:226:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

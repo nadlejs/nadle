@@ -8,28 +8,29 @@ exports[`abbreviation > should log resolved tasks only > stdout 1`] = `
     <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
     <Yellow><Bold>cop </BoldDim></Yellow>  → <Green><Bold>copy</BoldDim></Green>
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from nadle!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> started
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> <Yellow>STARTED</Yellow>
 
 Goodbye, tak!
 [log] 
-<Green>✓</Green> Task <Bold>goodbye</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> started
+<Green>✓</Green> Task <Bold>goodbye</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> <Yellow>STARTED</Yellow>
 
 Preparing...
 [log] 
-<Green>✓</Green> Task <Bold>prepare</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>copy</BoldDim> started
+<Green>✓</Green> Task <Bold>prepare</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>copy</BoldDim> <Yellow>STARTED</Yellow>
 
 Copying from assets/ to dist/
 [log] 
-<Green>✓</Green> Task <Bold>copy</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>copy</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>4</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>4</BoldDim> tasks executed
 `;
 
 exports[`abbreviation > should resolve abbr task properly > stdout 1`] = `
@@ -39,11 +40,12 @@ exports[`abbreviation > should resolve abbr task properly > stdout 1`] = `
 [log] Resolved tasks:
     <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from nadle!
 [log] 
-<Green>✓</Green> Task <Bold>hello</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;

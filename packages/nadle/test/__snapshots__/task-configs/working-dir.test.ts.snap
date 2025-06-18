@@ -4,63 +4,68 @@ exports[`workingDir > should print correct working directory for task current > 
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.working-dir.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>current</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>current</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__/main
 [log] 
-<Green>✓</Green> Task <Bold>current</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>current</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`workingDir > should print correct working directory for task oneLevelDown > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.working-dir.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>oneLevelDown</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>oneLevelDown</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__/main/subdir1
 [log] 
-<Green>✓</Green> Task <Bold>oneLevelDown</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>oneLevelDown</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`workingDir > should print correct working directory for task oneLevelUp > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.working-dir.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>oneLevelUp</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>oneLevelUp</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__
 [log] 
-<Green>✓</Green> Task <Bold>oneLevelUp</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>oneLevelUp</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`workingDir > should print correct working directory for task twoLevelsDown > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.working-dir.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>twoLevelsDown</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>twoLevelsDown</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__/main/subdir1/subdir2
 [log] 
-<Green>✓</Green> Task <Bold>twoLevelsDown</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>twoLevelsDown</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`workingDir > should print correct working directory for task twoLevelsUp > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.working-dir.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>twoLevelsUp</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>twoLevelsUp</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test
 [log] 
-<Green>✓</Green> Task <Bold>twoLevelsUp</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>twoLevelsUp</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;

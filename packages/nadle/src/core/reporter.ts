@@ -4,12 +4,13 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { type Nadle } from "./nadle.js";
+import { formatTime } from "./utils.js";
+import { StringBuilder } from "./string-builder.js";
 import { type Renderer } from "./renderers/renderer.js";
-import { formatTime, formatTimeString } from "./utils.js";
-import { CHECK, CROSS, VERTICAL_BAR } from "./constants.js";
 import { NormalRenderer } from "./renderers/normal-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
 import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
+import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "./constants.js";
 
 export interface Reporter {
 	onInit?: () => void;
@@ -21,6 +22,8 @@ export interface Reporter {
 	onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
 	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskRestoreFromCache?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
 }
 
@@ -31,11 +34,12 @@ export class DefaultReporter implements Reporter {
 	private taskStat = {
 		failed: 0,
 		running: 0,
+		upToDate: 0,
 		finished: 0,
+		fromCache: 0,
 		scheduled: 0
 	};
 	private threadIdPerWorker: Record<string, number> = {};
-	private startTime = "";
 	private currentTime = 0;
 	private duration = 0;
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
@@ -53,10 +57,12 @@ export class DefaultReporter implements Reporter {
 	private createSummary() {
 		const summary: string[] = [""];
 
+		const doneTask = this.taskStat.finished + this.taskStat.fromCache + this.taskStat.upToDate;
+
 		const stats = [
-			c.cyanBright(`${this.taskStat.scheduled - this.taskStat.running - this.taskStat.finished - this.taskStat.failed} pending`),
+			c.cyanBright(`${this.taskStat.scheduled - this.taskStat.running - this.taskStat.failed - doneTask} pending`),
 			c.yellow(`${this.taskStat.running} running`),
-			c.green(`${this.taskStat.finished} finished`)
+			c.green(`${this.taskStat.finished} done`)
 		].join(` ${c.gray(VERTICAL_BAR)} `);
 
 		summary.push([this.printLabel("Tasks"), stats, c.dim(`(${this.taskStat.scheduled} scheduled)`)].join(" "));
@@ -98,20 +104,32 @@ export class DefaultReporter implements Reporter {
 	}
 
 	async onTaskStart(task: RegisteredTask, threadId: number) {
-		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} started\n`);
+		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} ${c.yellow("STARTED")}\n`);
 		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
 		this.threadIdPerWorker = { ...this.threadIdPerWorker, [task.name]: threadId };
 		this.renderer.schedule();
 	}
 
 	async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.name)} done in ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.name)} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
 		this.renderer.schedule();
 	}
 
+	async onTaskUpToDate(task: RegisteredTask) {
+		this.nadle.logger.log(`\n${c.green(DASH)} Task ${c.bold(task.name)} ${c.green("UP-TO-DATE")}`);
+		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, upToDate: ++this.taskStat.upToDate };
+		this.renderer.schedule();
+	}
+
+	async onTaskRestoreFromCache(task: RegisteredTask) {
+		this.nadle.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(task.name)} ${c.green("FROM-CACHE")}`);
+		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, fromCache: ++this.taskStat.fromCache };
+		this.renderer.schedule();
+	}
+
 	async onTaskFailed(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.name)} failed in ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.name)} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
 		this.renderer.schedule();
 	}
@@ -133,9 +151,16 @@ export class DefaultReporter implements Reporter {
 		this.renderer.finish();
 		clearInterval(this.durationInterval);
 
-		const finishedTasks = `${c.bold(this.taskStat.finished)} task${this.taskStat.finished > 1 ? "s" : ""}`;
+		const print = (count: number) => `${c.bold(count)} task${count > 1 ? "s" : ""}`;
 
-		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed)`)}`);
+		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))}`);
+		this.nadle.logger.log(
+			new StringBuilder()
+				.add(`${print(this.taskStat.finished)} executed`)
+				.add(this.taskStat.upToDate > 0 && `${print(this.taskStat.upToDate)} up-to-date`)
+				.add(this.taskStat.fromCache > 0 && `${print(this.taskStat.fromCache)} restored from cache`)
+				.build()
+		);
 	}
 
 	async onExecutionFailed(error: any) {
@@ -161,7 +186,6 @@ export class DefaultReporter implements Reporter {
 
 	private startTimers() {
 		const start = performance.now();
-		this.startTime = formatTimeString(new Date());
 
 		this.durationInterval = setInterval(() => {
 			this.currentTime = performance.now();

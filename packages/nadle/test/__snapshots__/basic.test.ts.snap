@@ -4,48 +4,50 @@ exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+<Green>✓</Green> Task <Bold>node</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> started
+<Green>✓</Green> Task <Bold>install</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>compileSvg</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> started
+<Green>✓</Green> Task <Bold>compileSvg</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>compileTs</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> started
+<Green>✓</Green> Task <Bold>compileTs</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compile</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>compile</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>compile</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>5</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>5</BoldDim> tasks executed
 `;
 
 exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.basic.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>node</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>node</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> started
+<Green>✓</Green> Task <Bold>node</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>install</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>install</BoldDim> done in {duration}
-[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> started
+<Green>✓</Green> Task <Bold>install</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>test</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>test</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>3</BoldDim><Dim> tasks executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>3</BoldDim> tasks executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
@@ -62,7 +64,8 @@ exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
@@ -79,7 +82,8 @@ exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
@@ -96,7 +100,8 @@ exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
@@ -109,7 +114,8 @@ exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
@@ -130,7 +136,8 @@ exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
@@ -151,7 +158,8 @@ exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
@@ -172,7 +180,8 @@ exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 8 > stdout 1`] = `
@@ -193,5 +202,6 @@ exports[`basic > with --dry-run > should list tasks in order 8 > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;

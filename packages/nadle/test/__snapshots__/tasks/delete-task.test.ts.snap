@@ -4,48 +4,52 @@ exports[`deleteTask > given a file path > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>deleteFileBaz</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>deleteFileBaz</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>deleteFileBaz</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>deleteFileBaz</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`deleteTask > given a folder name > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>deleteFolderA</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>deleteFolderA</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>deleteFolderA</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>deleteFolderA</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`deleteTask > given a folder path > can delete it > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>deleteFolderB1</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>deleteFolderB1</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>deleteFolderB1</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>deleteFolderB1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`deleteTask > given a glob > can delete all files match the glob > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`deleteTask > given a glob with enable info log > can print will-delete files > stdout 1`] = `
@@ -92,26 +96,27 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 [info] Resolved tasks: [ deleteJsonFiles ]
 [info] Execution started
 [info] Scheduled tasks: deleteJsonFiles
-[log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> <Yellow>STARTED</Yellow>
 
-[info] <Yellow>Caching</Yellow> <Yellow>deleteJsonFiles</Yellow> not-cacheable
 [info] Current working dir: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Deleting paths: ./a/bas.json, ./b/b1/qux.json
 [log] 
-<Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [info] Execution finished
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;
 
 exports[`deleteTask > given multiple file paths > can delete them > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts</BoldDim>
 [log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>deleteFilesFooBar</BoldDim> started
+[log] <Yellow>></Yellow> Task <Bold>deleteFilesFooBar</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
-<Green>✓</Green> Task <Bold>deleteFilesFooBar</BoldDim> done in {duration}
+<Green>✓</Green> Task <Bold>deleteFilesFooBar</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>1</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
 `;

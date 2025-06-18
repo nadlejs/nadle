@@ -215,6 +215,15 @@ export class Nadle {
 		this.registry.onTaskFinish(task.name);
 		await this.reporter.onTaskFinish?.(task);
 	}
+	public async onTaskUpToDate(task: RegisteredTask) {
+		this.registry.onTaskUpToDate(task.name);
+		await this.reporter.onTaskUpToDate?.(task);
+	}
+
+	public async onTaskRestoreFromCache(task: RegisteredTask) {
+		this.registry.onTaskRestoreFromCache(task.name);
+		await this.reporter.onTaskRestoreFromCache?.(task);
+	}
 
 	public async onTaskFailed(task: RegisteredTask) {
 		this.registry.onTaskFailed(task.name);

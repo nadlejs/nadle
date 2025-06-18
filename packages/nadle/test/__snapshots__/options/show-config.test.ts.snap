@@ -19,7 +19,8 @@ exports[`--show-config > should show config > stdout 1`] = `
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--show-config > should show config with extra options > stdout 1`] = `
@@ -41,5 +42,6 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
 [log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed)</BoldDim>
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
 `;

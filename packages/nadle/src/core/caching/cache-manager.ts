@@ -7,14 +7,14 @@ import { type CacheQuery } from "./cache-query.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
 
 export class CacheManager {
-	public static readonly CACHE_DIR_NAME = ".nadle";
+	private static readonly CACHE_DIR_NAME = ".nadle";
 
-	private static readonly META_FILE_NAME = "metadata.json";
-	private static readonly TASKS_DIR_NAME = "tasks";
 	private static readonly RUNS_DIR_NAME = "runs";
+	private static readonly TASKS_DIR_NAME = "tasks";
 	private static readonly OUTPUTS_DIR_NAME = "outputs";
+	private static readonly META_FILE_NAME = "metadata.json";
 
-	constructor(private readonly baseDir: string) {}
+	constructor(private readonly projectDir: string) {}
 
 	async hasCache(cacheQuery: CacheQuery): Promise<boolean> {
 		return isPathExists(this.getRunMetadataPath(cacheQuery));
@@ -108,6 +108,6 @@ export class CacheManager {
 	}
 
 	private getBaseTaskPath(taskName: string) {
-		return Path.join(this.baseDir, CacheManager.CACHE_DIR_NAME, CacheManager.TASKS_DIR_NAME, taskName);
+		return Path.join(this.projectDir, CacheManager.CACHE_DIR_NAME, CacheManager.TASKS_DIR_NAME, taskName);
 	}
 }

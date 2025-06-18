@@ -22,10 +22,6 @@ export function formatTime(time: number): string {
 	return `${Math.round(time)}ms`;
 }
 
-export function formatTimeString(date: Date): string {
-	return date.toTimeString().split(" ")[0];
-}
-
 export function normalizeGlobPath(path: string) {
 	if (path.startsWith(".")) {
 		return path;
