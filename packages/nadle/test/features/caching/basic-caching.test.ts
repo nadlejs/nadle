@@ -1,10 +1,11 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
+import { isWindows } from "std-env";
 import { it, expect, describe, afterEach, beforeEach } from "vitest";
 import { getStdout, createExec, fixturesDir, createFileModifier } from "setup";
 
-describe("basic caching", () => {
+describe.skipIf(isWindows)("basic caching", () => {
 	const cwd = Path.join(fixturesDir, "caching");
 	const exec = createExec({ cwd });
 	const fileModifier = createFileModifier(Path.join(cwd, "resources"));

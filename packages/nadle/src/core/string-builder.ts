@@ -1,12 +1,7 @@
-interface StringBuilderParams {
-	readonly separator?: string;
-}
-
 export class StringBuilder {
 	private readonly items: string[] = [];
-	constructor(private params?: StringBuilderParams) {}
 
-	add(item: string | false): StringBuilder {
+	add(item: string | false): this {
 		if (item === false) {
 			return this;
 		}
@@ -21,8 +16,6 @@ export class StringBuilder {
 			return "";
 		}
 
-		const separator = this.params?.separator ?? ", ";
-
-		return this.items.join(separator);
+		return this.items.join(", ");
 	}
 }
