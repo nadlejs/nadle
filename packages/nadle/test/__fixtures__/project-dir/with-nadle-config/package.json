@@ -1,0 +1,8 @@
+{
+	"name": "@nadle/internal-fixture-project-dir-with-nadle-object",
+	"type": "module",
+	"private": true,
+	"nadle": {
+		"root": true
+	}
+}

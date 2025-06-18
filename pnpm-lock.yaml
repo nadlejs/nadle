@@ -288,6 +288,22 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
+  packages/nadle/test/__fixtures__/project-dir/with-nadle-config: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-nadle-config/sub-package: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-npm: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-npm/sub-package: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-pnpm: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-pnpm/sub-package: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-yarn: {}
+
+  packages/nadle/test/__fixtures__/project-dir/with-yarn/sub-package: {}
+
   packages/nadle/test/__fixtures__/traverse-up:
     dependencies:
       nadle:
