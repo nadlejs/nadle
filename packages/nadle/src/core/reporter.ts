@@ -78,11 +78,16 @@ export class DefaultReporter implements Reporter {
 	private printRunningTasks() {
 		const lines = Array.from({ length: this.nadle.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
 
+		let maxWorkerId = 0;
+
 		for (const runningTask of this.nadle.registry.getAll().filter((task) => task.status === TaskStatus.Running)) {
-			lines[this.threadIdPerWorker[runningTask.name] - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
+			const workerId = this.threadIdPerWorker[runningTask.name];
+
+			lines[workerId - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
+			maxWorkerId = Math.max(maxWorkerId, workerId);
 		}
 
-		return lines;
+		return lines.slice(0, maxWorkerId);
 	}
 
 	onInit() {

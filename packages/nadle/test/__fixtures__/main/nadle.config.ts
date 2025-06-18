@@ -26,7 +26,7 @@ const CopyTask: Task<CopyOptions> = {
 };
 tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({
 	group: "Utils",
-	dependsOn: ["prepare"]
+	dependsOn: ["hello", "prepare"]
 });
 
 tasks.register("prepare", async () => {
