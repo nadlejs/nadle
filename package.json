@@ -38,7 +38,9 @@
 	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",
 	"pnpm": {
 		"overrides": {
-			"@vitest/pretty-format": "3.1.2"
+			"@vitest/pretty-format": "3.1.2",
+			"webpack-dev-server@<=5.2.0": ">=5.2.1",
+			"brace-expansion@>=1.0.0 <=1.1.11": ">=1.1.12"
 		}
 	},
 	"lint-staged": {
