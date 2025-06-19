@@ -45,5 +45,6 @@
 		"*": "cspell --no-must-find-files --gitignore",
 		"*.ts": "eslint --fix",
 		"*.{ts,yml,json}": "prettier --write"
-	}
+	},
+	"version": "0.4.0"
 }
