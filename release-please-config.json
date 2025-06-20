@@ -4,14 +4,15 @@
 	"bump-patch-for-minor-pre-major": true,
 	"pull-request-title-pattern": "chore: release v${version}",
 	"include-component-in-tag": false,
-	"extra-files": [
-		{
-			"type": "generic",
-			"path": "packages/nadle/src/core/nadle.ts"
-		}
-	],
+
 	"packages": {
 		"packages/nadle": {
+			"extra-files": [
+				{
+					"type": "generic",
+					"path": "src/core/nadle.ts"
+				}
+			],
 			"release-type": "node",
 			"draft-pull-request": true,
 			"draft": true,

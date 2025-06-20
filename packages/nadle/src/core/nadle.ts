@@ -17,9 +17,7 @@ import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
 
 export class Nadle {
-	// x-release-please-start-version
-	public static readonly version = "0.3.5";
-	// x-release-please-end
+	public static readonly version = "0.3.5"; // x-release-please-version
 
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
