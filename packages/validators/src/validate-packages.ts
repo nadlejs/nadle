@@ -210,7 +210,9 @@ const FIELD_ORDER = [
 	"nadle",
 	"stackblitz",
 	"lint-staged",
-	"size-limit"
+	"size-limit",
+	// For yarn/npm fixtures
+	"workspaces"
 ];
 
 const fieldsOrderValidator: PackageValidator = ({ pkg }) => {
@@ -256,7 +258,7 @@ function createDependenciesOrderValidator(type: "dependencies" | "devDependencie
 
 const fixturesValidator: PackageValidator = ({ pkg, path }) => {
 	if (path.includes(Path.join(Path.dirname(nadlePackagePath), "test", "__fixtures__"))) {
-		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true)) {
+		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true) && !pkg.name?.startsWith("@nadle/internal-fixture-project-dir")) {
 			throw new Error(`Test packages must have nadle.root = true field`);
 		}
 	}

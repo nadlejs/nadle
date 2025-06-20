@@ -1,0 +1,8 @@
+{
+	"name": "@nadle/internal-fixture-project-dir-with-npm",
+	"type": "module",
+	"private": true,
+	"workspaces": [
+		"./sub-package"
+	]
+}

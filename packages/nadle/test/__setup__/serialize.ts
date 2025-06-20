@@ -14,7 +14,7 @@ export function serialize(input: string): string {
 		serializeLibFilePath,
 		serializeVersion,
 		removeUnstableLines
-	].reduce((result, _serializer) => _serializer(result), input);
+	].reduce((result, serializer) => serializer(result), input);
 }
 
 const UnstableWordsMap = [["worker_default", "default"]];

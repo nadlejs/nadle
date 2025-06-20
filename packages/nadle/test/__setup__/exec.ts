@@ -4,6 +4,7 @@ import { expect } from "vitest";
 import stripAnsi from "strip-ansi";
 import { execa, type Result, parseCommandString, type ResultPromise, type Options as ExecaOptions } from "execa";
 
+import { serialize } from "./serialize.js";
 import { cliPath, fixturesDir } from "./constants.js";
 
 interface ExecOptions extends ExecaOptions {
@@ -59,16 +60,22 @@ export function createExec(options?: ExecOptions): Exec {
 
 export const exec = createExec();
 
-export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
+export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean; serializeAll?: boolean }): Promise<string> {
 	const { stdout, exitCode } = await command;
 
 	expect(exitCode).toBe(0);
 
-	if (options?.stripAnsi ?? true) {
-		return stripAnsi(stdout as string);
+	const output = stdout as string;
+
+	if (options?.serializeAll) {
+		return serialize(output);
 	}
 
-	return stdout as string;
+	if (options?.stripAnsi ?? true) {
+		return stripAnsi(output);
+	}
+
+	return output;
 }
 
 export async function getStderr(command: () => ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
