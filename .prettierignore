@@ -2,3 +2,4 @@
 /lib
 pnpm-lock.yaml
 **/index.api.md
+**/CHANGELOG.md
