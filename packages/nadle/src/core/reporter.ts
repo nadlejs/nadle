@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
-import { type Nadle } from "./nadle.js";
+import { Nadle } from "./nadle.js";
 import { formatTime } from "./utils.js";
 import { StringBuilder } from "./string-builder.js";
 import { type Renderer } from "./renderers/renderer.js";
@@ -94,7 +94,7 @@ export class DefaultReporter implements Reporter {
 		const { minWorkers, maxWorkers, configPath, projectDir } = this.nadle.options;
 
 		if (!this.nadle.options.isWorkerThread) {
-			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${this.nadle.version}!`)));
+			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
 			this.nadle.logger.info(`Using Nadle from: ${fileURLToPath(import.meta.resolve("nadle"))}`);
 			this.nadle.logger.debug(`Project dir: ${projectDir}`);
 			this.nadle.logger.log(c.dim(`Loading configuration file from: ${configPath}`));

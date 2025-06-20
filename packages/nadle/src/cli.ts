@@ -3,7 +3,6 @@ import * as process from "node:process";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { VERSION } from "./version.js";
 import { Nadle } from "./core/index.js";
 import { CLIOptions, resolveCLIOptions } from "./core/options/shared.js";
 
@@ -21,7 +20,7 @@ const argv = yargs(hideBin(process.argv))
 	.option(CLIOptions.showConfig.key, CLIOptions.showConfig.options)
 	.option(CLIOptions.showSummary.key, CLIOptions.showSummary.options)
 	.option(CLIOptions.stacktrace.key, CLIOptions.stacktrace.options)
-	.version("version", "Show version number", VERSION)
+	.version("version", "Show version number", Nadle.version)
 	.alias("v", "version")
 	.help("help", "Show this help")
 	.alias("h", "help")
