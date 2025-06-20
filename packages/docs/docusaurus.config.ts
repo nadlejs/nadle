@@ -2,6 +2,8 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import { themes as prismThemes } from "prism-react-renderer";
 
+import NadlePackageJson from "../nadle/package.json";
+
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const GITHUB_REPO_URL = "https://github.com/nam-hle/nadle";
@@ -70,6 +72,12 @@ const config: Config = {
 					position: "left",
 					type: "docSidebar",
 					sidebarId: "docsSidebar"
+				},
+				{
+					position: "right",
+					label: NadlePackageJson.version,
+					className: "navbar-version-label",
+					href: `${GITHUB_REPO_URL}/releases/tag/v${NadlePackageJson.version}`
 				},
 				{
 					position: "right",

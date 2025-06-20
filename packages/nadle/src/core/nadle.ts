@@ -5,7 +5,6 @@ import c from "tinyrainbow";
 import { createJiti } from "jiti";
 
 import { Logger } from "./logger.js";
-import { VERSION } from "../version.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
 import { type RegisteredTask } from "./types.js";
@@ -18,7 +17,7 @@ import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
 
 export class Nadle {
-	public readonly version = VERSION;
+	public static readonly version = "0.3.5"; // x-release-please-version
 
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
