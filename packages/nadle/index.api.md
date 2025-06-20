@@ -200,7 +200,7 @@ export class Nadle {
     // (undocumented)
     showConfig(): void;
     // (undocumented)
-    readonly version: string;
+    static readonly version = "0.3.5";
 }
 
 // @public (undocumented)
