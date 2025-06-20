@@ -1,4 +1,5 @@
 import { type CacheKey } from "./cache-key.js";
+import { type FileFingerprints } from "./fingerprint.js";
 
 export interface TaskCacheMetadata {
 	/**
@@ -48,13 +49,12 @@ export interface RunCacheMetadata {
 	 * Keys are absolute file paths,
 	 * and values are stable content hashes used to detect changes.
 	 */
-	inputs: Record<string, string>;
+	inputsFingerprints: FileFingerprints;
 
 	/**
-	 * List of output file paths or directories produced by the task.
-	 * These are copied into the cache and restored on cache hit.
+	 * The SHA-256 hash of the outputs produced by this task run.
 	 */
-	outputs: Record<string, string>;
+	outputsFingerprint: string;
 
 	/**
 	 * Task-specific config or options (e.g., { minify: true }).
@@ -73,13 +73,9 @@ export namespace RunCacheMetadata {
 	export function create(params: {
 		taskName: string;
 		cacheKey: CacheKey;
-		inputs: Record<string, string>;
-		outputs: Record<string, string>;
+		outputsFingerprint: string;
+		inputsFingerprints: FileFingerprints;
 	}): RunCacheMetadata {
-		return {
-			version: 1,
-			timestamp: new Date().toISOString(),
-			...params
-		};
+		return { version: 1, timestamp: new Date().toISOString(), ...params };
 	}
 }

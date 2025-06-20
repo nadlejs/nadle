@@ -1,5 +1,5 @@
 import { type Nadle } from "./nadle.js";
-import { type FileDeclarations } from "./caching/file-declarations.js";
+import { type Declaration } from "./caching/declaration.js";
 
 export type Awaitable<T> = T | PromiseLike<T>;
 
@@ -49,14 +49,14 @@ export interface TaskConfiguration {
 	 * Declare any files, directories or globs that the task reads from.
 	 * These are used for cache key generation.
 	 */
-	inputs?: FileDeclarations;
+	inputs?: Declaration[];
 
 	/**
 	 * Output declaration for the task.
 	 * Declare any files or directories that the task produces.
 	 * These are used for caching, restoring, and cleanup.
 	 */
-	outputs?: FileDeclarations;
+	outputs?: Declaration[];
 }
 
 export interface ConfigBuilder {

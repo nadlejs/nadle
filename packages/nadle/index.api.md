@@ -11,6 +11,46 @@ import { RimrafAsyncOptions } from 'rimraf';
 export type Awaitable<T> = T | PromiseLike<T>;
 
 // @public (undocumented)
+export type CacheKey = string;
+
+// @public (undocumented)
+export namespace CacheKey {
+    // (undocumented)
+    export function compute(input: CacheKeyInput): Promise<CacheKey>;
+}
+
+// @public (undocumented)
+export interface CacheKeyInput {
+    // Warning: (ae-forgotten-export) The symbol "FileFingerprints" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly inputsFingerprints: FileFingerprints;
+    // (undocumented)
+    readonly taskName: string;
+}
+
+// @public (undocumented)
+export class CacheManager {
+    constructor(projectDir: string);
+    // Warning: (ae-forgotten-export) The symbol "CacheQuery" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    hasCache(cacheQuery: CacheQuery): Promise<boolean>;
+    // (undocumented)
+    readLatestRunMetadata(taskName: string): Promise<RunCacheMetadata | null>;
+    // (undocumented)
+    readRunMetadata(cacheQuery: CacheQuery): Promise<RunCacheMetadata | null>;
+    // (undocumented)
+    restoreOutputs(cacheQuery: CacheQuery, projectDir: string): Promise<void>;
+    // (undocumented)
+    saveOutputs(cacheQuery: CacheQuery, projectDir: string, outputPaths: string[]): Promise<void>;
+    // (undocumented)
+    writeLatestRunMetadata({ taskName, cacheKey }: CacheQuery): Promise<void>;
+    // (undocumented)
+    writeRunMetadata(cacheQuery: CacheQuery, metadata: RunCacheMetadata): Promise<void>;
+}
+
+// @public (undocumented)
 export type Callback<T = unknown, P = {
     context: Context;
 }> = (params: P) => T;
@@ -74,6 +114,18 @@ export const ExecTask: Task<{
 
 // @public (undocumented)
 export function formatSuggestions(names: string[]): string;
+
+// @public (undocumented)
+export namespace Inputs {
+    // Warning: (ae-forgotten-export) The symbol "DirDeclaration" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    export function dirs(...patterns: string[]): DirDeclaration;
+    // Warning: (ae-forgotten-export) The symbol "FileDeclaration" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    export function files(...patterns: string[]): FileDeclaration;
+}
 
 // @public (undocumented)
 export class Logger {
@@ -204,6 +256,14 @@ export interface NadleUserBaseOptions {
 }
 
 // @public (undocumented)
+export namespace Outputs {
+    const // (undocumented)
+    files: typeof Inputs.files;
+    const // (undocumented)
+    dirs: typeof Inputs.dirs;
+}
+
+// @public (undocumented)
 export const PnpmTask: Task<{
     args: string[];
 }>;
@@ -260,6 +320,27 @@ export function resolveTask(input: string, allTasks: string[]): {
     suggestions: string[];
 };
 
+// @public
+export interface RunCacheMetadata {
+    cacheKey: string;
+    inputsFingerprints: FileFingerprints;
+    outputsFingerprint: string;
+    taskName: string;
+    timestamp: string;
+    version: 1;
+}
+
+// @public (undocumented)
+export namespace RunCacheMetadata {
+    // (undocumented)
+    export function create(params: {
+        taskName: string;
+        cacheKey: CacheKey;
+        outputsFingerprint: string;
+        inputsFingerprints: FileFingerprints;
+    }): RunCacheMetadata;
+}
+
 // @public (undocumented)
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
@@ -278,14 +359,25 @@ export interface Task<Options = unknown> {
 }
 
 // @public (undocumented)
+export interface TaskCacheMetadata {
+    readonly latest: string;
+}
+
+// @public (undocumented)
+export namespace TaskCacheMetadata {
+    // (undocumented)
+    export function create(latestCacheKey: string): TaskCacheMetadata;
+}
+
+// @public (undocumented)
 export interface TaskConfiguration {
     dependsOn?: string[];
     description?: string;
     env?: TaskEnv;
     group?: string;
-    // Warning: (ae-forgotten-export) The symbol "FileDeclarations" needs to be exported by the entry point index.d.ts
-    inputs?: FileDeclarations;
-    outputs?: FileDeclarations;
+    // Warning: (ae-forgotten-export) The symbol "Declaration" needs to be exported by the entry point index.d.ts
+    inputs?: Declaration[];
+    outputs?: Declaration[];
     workingDir?: string;
 }
 
@@ -353,7 +445,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:226:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:241:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

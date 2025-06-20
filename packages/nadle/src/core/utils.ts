@@ -34,22 +34,16 @@ export function clamp(value: number, min: number, max: number): number {
 	return Math.min(Math.max(value, min), max);
 }
 
-export function hashObject(object: Record<string, unknown>): string {
+export function hashObject(object: object): string {
 	return objectHash(object, { encoding: "hex", algorithm: "sha256", unorderedArrays: true, unorderedObjects: true });
 }
 
-export async function hashFiles(filePaths: string[]): Promise<Record<string, string>> {
-	const inputHashes = await Promise.all(
-		filePaths.map(async (filePath) => {
-			const hash = Crypto.createHash("sha256");
+export async function hashFile(filePath: string): Promise<string> {
+	const content = await Fs.readFile(filePath);
 
-			hash.update(`path:${filePath}\n`);
-			hash.update(await Fs.readFile(filePath));
-			hash.update("\n---\n");
+	return Crypto.createHash("sha256").update(content).digest("hex");
+}
 
-			return [filePath, hash.digest("hex")];
-		})
-	);
-
-	return Object.fromEntries(inputHashes);
+export function isGlob(str: string): boolean {
+	return /[*?[\]]/.test(str);
 }

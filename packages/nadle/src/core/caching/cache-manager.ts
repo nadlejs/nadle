@@ -1,7 +1,6 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { type FileSet } from "./file-set.js";
 import { isPathExists } from "../fs-utils.js";
 import { type CacheQuery } from "./cache-query.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
@@ -64,10 +63,10 @@ export class CacheManager {
 		}
 	}
 
-	async saveOutputs(cacheQuery: CacheQuery, projectDir: string, outputs: FileSet): Promise<void> {
+	async saveOutputs(cacheQuery: CacheQuery, projectDir: string, outputPaths: string[]): Promise<void> {
 		const outputsCacheDir = this.getOutputsCacheDirPath(cacheQuery);
 
-		for (const sourcePath of outputs) {
+		for (const sourcePath of outputPaths) {
 			const relativePath = Path.relative(projectDir, sourcePath);
 			const targetPath = Path.join(outputsCacheDir, relativePath);
 

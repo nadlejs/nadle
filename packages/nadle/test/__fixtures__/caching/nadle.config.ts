@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { glob } from "glob";
-import { tasks } from "nadle";
+import { tasks, Inputs, Outputs } from "nadle";
 
 tasks
 	.register("bundle-resources", async ({ context }) => {
@@ -16,4 +16,4 @@ tasks
 			await Fs.writeFile(outputPath, modifiedContent);
 		}
 	})
-	.config({ outputs: ["dist"], inputs: ["resources"] });
+	.config({ outputs: [Outputs.dirs("dist")], inputs: [Inputs.dirs("resources")] });
