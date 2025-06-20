@@ -262,6 +262,12 @@ const fixturesValidator: PackageValidator = ({ pkg, path }) => {
 	}
 };
 
+const testScriptValidator: PackageValidator = ({ pkg, path }) => {
+	if (pkg.scripts?.test?.includes("--update")) {
+		throw new Error(`Test script in ${path} should not include "--update" flag`);
+	}
+};
+
 const validators: PackageValidator[] = [
 	nameValidator,
 	versionValidator,
@@ -278,7 +284,8 @@ const validators: PackageValidator[] = [
 	fixturesValidator,
 	fieldsOrderValidator,
 	createDependenciesOrderValidator("dependencies"),
-	createDependenciesOrderValidator("devDependencies")
+	createDependenciesOrderValidator("devDependencies"),
+	testScriptValidator
 ];
 
 function isEqual(a: unknown, b: unknown) {

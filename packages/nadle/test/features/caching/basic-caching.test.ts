@@ -22,7 +22,7 @@ describe.skipIf(isWindows)("basic caching", () => {
 	});
 
 	it("should execute in the first run", async () => {
-		const stdout = await getStdout(exec`bundle-resources`);
+		const stdout = await getStdout(exec`bundle-resources --stacktrace`);
 
 		expect(stdout).toContain(`Task bundle-resources DONE`);
 	});

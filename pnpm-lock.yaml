@@ -150,6 +150,9 @@ importers:
       execa:
         specifier: ^9.6.0
         version: 9.6.0
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
       fastest-levenshtein:
         specifier: ^1.0.16
         version: 1.0.16

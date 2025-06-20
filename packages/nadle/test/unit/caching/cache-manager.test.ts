@@ -10,7 +10,7 @@ describe.skip("CacheManager", () => {
 
 			const context: CacheKeyInput = {
 				taskName: "build",
-				inputs: ["package.json", "tsconfig.json", "src/index.ts"]
+				inputsFingerprints: ["package.json", "tsconfig.json", "src/index.ts"]
 			};
 
 			expect(cacheManager.computeCacheKey(context)).toMatch(/^[a-f0-9]{64}$/);
@@ -21,7 +21,7 @@ describe.skip("CacheManager", () => {
 
 			const context: CacheKeyInput = {
 				taskName: "build",
-				inputs: ["package.json", "tsconfig.json", "src/index.ts"]
+				inputsFingerprints: ["package.json", "tsconfig.json", "src/index.ts"]
 			};
 
 			const key1 = cacheManager.computeCacheKey(context);
@@ -30,7 +30,7 @@ describe.skip("CacheManager", () => {
 			expect(key1).toBe(key2);
 
 			const context2: CacheKeyInput = {
-				inputs: ["src/index.ts", "tsconfig.json", "package.json"],
+				inputsFingerprints: ["src/index.ts", "tsconfig.json", "package.json"],
 				// eslint-disable-next-line perfectionist/sort-objects
 				taskName: "build"
 			};
@@ -54,9 +54,9 @@ describe.skip("CacheManager", () => {
 						version: 1,
 						taskName: "build",
 						cacheKey: cacheKey,
-						inputs: ["src/index.ts"],
-						outputs: ["lib/index.js"],
-						timestamp: new Date().toISOString()
+						timestamp: new Date().toISOString(),
+						inputsFingerprints: ["src/index.ts"],
+						outputsFingerprint: ["lib/index.js"]
 					};
 
 					await cacheManager.writeRunMetadata(taskName, cacheKey, metadata);
