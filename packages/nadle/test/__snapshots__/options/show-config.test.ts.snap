@@ -6,6 +6,7 @@ exports[`--show-config > should show config > stdout 1`] = `
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] {
+  "cache": true,
   "parallel": false,
   "logLevel": "log",
   "showConfig": true,
@@ -30,6 +31,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] {
+  "cache": true,
   "parallel": false,
   "logLevel": "log",
   "showConfig": true,

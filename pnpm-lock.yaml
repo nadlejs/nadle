@@ -287,6 +287,12 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
+  packages/nadle/test/__fixtures__/no-cache:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/nadle/test/__fixtures__/pnpm-task:
     dependencies:
       nadle:

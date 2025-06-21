@@ -29,7 +29,8 @@ exports[`configure > can override configured options from config file if the cli
 
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/main
-[info] Resolved options: { parallel: false,
+[info] Resolved options: { cache: true,
+  parallel: false,
   logLevel: 'info',
   showConfig: true,
   showSummary: false,
@@ -46,6 +47,7 @@ exports[`configure > can override configured options from config file if the cli
 [info] Execution started
 [info] Resolved tasks: [  ]
 [log] {
+  "cache": true,
   "parallel": false,
   "logLevel": "info",
   "showConfig": true,

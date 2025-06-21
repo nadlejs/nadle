@@ -29,6 +29,14 @@ export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOption
 			continue;
 		}
 
+		if (key === "cache") {
+			if (value !== undefined) {
+				resolvedOptions = { ...resolvedOptions, cache: !!value };
+			}
+
+			continue;
+		}
+
 		resolvedOptions = { ...resolvedOptions, [key]: value };
 	}
 
@@ -92,6 +100,22 @@ export const CLIOptions = {
 		options: {
 			hidden: true,
 			type: "boolean"
+		}
+	},
+	cache: {
+		key: "cache",
+		options: {
+			hidden: true,
+			type: "boolean"
+		}
+	},
+	// @ts-expect-error to show --no-cache option when using -h
+	noCache: {
+		key: "no-cache",
+		options: {
+			type: "boolean" as const,
+			defaultDescription: "false",
+			description: "Disable task caching. All tasks will be executed and their results will not be stored"
 		}
 	},
 
