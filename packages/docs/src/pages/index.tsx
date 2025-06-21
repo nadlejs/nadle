@@ -23,7 +23,7 @@ function HomepageHeader() {
 					</Link>
 					<Link
 						className="button button--info button--outline button--lg"
-						to="https://stackblitz.com/github/nam-hle/nadle/tree/main/packages/examples/basic?file=package.json">
+						to="https://codesandbox.io/p/sandbox/github/nam-hle/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
 						Try it Online
 					</Link>
 					<span className={styles.indexCtasGitHubButtonWrapper}>

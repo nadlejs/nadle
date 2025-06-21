@@ -127,14 +127,10 @@ importers:
         version: 5.8.3
 
   packages/examples/basic:
-    dependencies:
+    devDependencies:
       nadle:
         specifier: latest
         version: 0.3.5
-    devDependencies:
-      tinyrainbow:
-        specifier: ^2.0.0
-        version: 2.0.0
       typescript:
         specifier: ^5.8.2
         version: 5.8.3
