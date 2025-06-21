@@ -28,5 +28,6 @@
 				{ "type": "ci", "section": "Miscellaneous" }
 			]
 		}
-	}
+	},
+	"plugins": [{ "type": "sentence-case" }]
 }
