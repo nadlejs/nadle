@@ -2,8 +2,9 @@
 
 exports[`--list > prints all available tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
+
 [log] <Bold>Greetings tasks</BoldDim>
 [log] <Bold>---------------</BoldDim>
 [log] <Bold><Green>goodbye</Green></BoldDim><Yellow> - Say goodbye to nadle!</Yellow>
@@ -24,8 +25,9 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 
 exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.empty.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.empty.ts
+
 [log] No tasks found
 [log] 
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>

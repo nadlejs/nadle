@@ -5,8 +5,8 @@ import c from "tinyrainbow";
 import { type InputLogObject } from "consola";
 
 import { FileLogger } from "./file-logger.js";
-import { type LogType, createNadleConsola, type ConsolaInstance } from "./consola-reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
+import { LogLevels, type LogType, createNadleConsola, type ConsolaInstance } from "./consola-reporters.js";
 
 export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
@@ -39,6 +39,10 @@ export class Logger {
 			const { stderr, stdout, ...consoleOptions } = this.consola.options;
 			this.info(`Initialized logger with consola options:`, consoleOptions);
 		}
+	}
+
+	updateLogLevel(logLevel: SupportLogLevel): void {
+		this.consola.level = LogLevels[logLevel];
 	}
 
 	/* eslint-disable @typescript-eslint/no-explicit-any */

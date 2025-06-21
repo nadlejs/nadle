@@ -17,7 +17,7 @@ import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
 
 export class Nadle {
-	public static readonly version = "0.3.5"; // x-release-please-version
+	public static readonly version: string = "0.3.5"; // x-release-please-version
 
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
@@ -29,17 +29,16 @@ export class Nadle {
 		this.optionsResolver = new OptionsResolver(options);
 		this.logger = new Logger(options);
 		this.reporter = new DefaultReporter(this);
-
-		this.reporter.onInit?.();
 	}
 
 	async execute(tasks: string[]) {
 		await this.registerTask();
 		this.optionsResolver.addConfigFileOptions(optionRegistry.get());
+		this.logger.updateLogLevel(this.options.logLevel);
 
 		try {
-			const resolvedTasks = this.resolveTasks(tasks);
 			this.reporter.onExecutionStart?.();
+			const resolvedTasks = this.resolveTasks(tasks);
 
 			if (this.options.showConfig) {
 				this.showConfig();
