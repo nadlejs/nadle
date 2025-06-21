@@ -206,6 +206,8 @@ export class Nadle {
 // @public (undocumented)
 export interface NadleCLIOptions extends NadleUserBaseOptions {
     // (undocumented)
+    readonly cache?: boolean;
+    // (undocumented)
     readonly configPath?: string;
     // (undocumented)
     readonly dryRun: boolean;
@@ -443,7 +445,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:240:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:241:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

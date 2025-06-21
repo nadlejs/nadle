@@ -31,7 +31,7 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 	const workingDir = taskConfig.workingDir ? Path.resolve(taskConfig.workingDir) : process.cwd();
 
-	const cacheValidator = new CacheValidator(taskName, taskConfig, { workingDir, projectDir: nadle.options.projectDir });
+	const cacheValidator = new CacheValidator(taskName, taskConfig, { workingDir, cache: nadle.options.cache, projectDir: nadle.options.projectDir });
 	const validationResult = await cacheValidator.validate();
 
 	const execute = async () => {
@@ -46,7 +46,7 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 
 	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskName), validationResult.result);
 
-	if (validationResult.result === "not-cacheable") {
+	if (validationResult.result === "not-cacheable" || validationResult.result === "cache-disabled") {
 		await execute();
 	} else if (validationResult.result === "up-to-date") {
 		port.postMessage({ threadId, type: "up-to-date", taskName: taskName });

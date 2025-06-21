@@ -10,11 +10,13 @@ import { CacheMissReason } from "./cache-miss-reason.js";
 
 type CacheValidationResult =
 	| { result: "not-cacheable" }
+	| { result: "cache-disabled" }
 	| { result: "up-to-date" }
 	| { cacheQuery: CacheQuery; result: "restore-from-cache"; restore: () => Promise<void> }
 	| { result: "cache-miss"; cacheQuery: CacheQuery; reasons: CacheMissReason[]; inputsFingerprints: FileFingerprints };
 
 interface CacheValidatorContext {
+	readonly cache: boolean;
 	readonly projectDir: string;
 	readonly workingDir: string;
 }
@@ -33,6 +35,10 @@ export class CacheValidator {
 	async validate(): Promise<CacheValidationResult> {
 		if (this.taskConfiguration.inputs === undefined || this.taskConfiguration.outputs === undefined) {
 			return { result: "not-cacheable" };
+		}
+
+		if (!this.context.cache) {
+			return { result: "cache-disabled" };
 		}
 
 		const taskName = this.taskName;

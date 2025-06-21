@@ -85,7 +85,8 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/delete-task
-[info] Resolved options: { parallel: false,
+[info] Resolved options: { cache: true,
+  parallel: false,
   logLevel: 'info',
   showConfig: false,
   showSummary: false,
