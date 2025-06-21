@@ -24,9 +24,11 @@ exports[`configure > can override configured options from config file if the cli
   prompt: [Function: prompt],
   reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[info] Using Nadle from: /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.configure.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.configure.ts
+
+[info] Using 1 worker for task execution
+[info] Project directory: /ROOT/test/__fixtures__/main
 [info] Resolved options: { parallel: false,
   logLevel: 'info',
   showConfig: true,
@@ -41,8 +43,8 @@ exports[`configure > can override configured options from config file if the cli
   minWorkers: 1,
   projectDir: '/ROOT/test/__fixtures__/main' }
 [info] Detected environments: { CI: false, TEST: true }
-[info] Resolved tasks: [  ]
 [info] Execution started
+[info] Resolved tasks: [  ]
 [log] {
   "parallel": false,
   "logLevel": "info",
@@ -63,25 +65,4 @@ exports[`configure > can override configured options from config file if the cli
 [log] <Bold>0</BoldDim> task executed
 `;
 
-exports[`configure > can use configured options from config file > stdout 1`] = `
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.configure.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
-[log] {
-  "parallel": false,
-  "logLevel": "error",
-  "showConfig": true,
-  "showSummary": false,
-  "isWorkerThread": false,
-  "maxWorkers": 1,
-  "configPath": "/ROOT/test/__fixtures__/main/nadle.configure.ts",
-  "list": false,
-  "dryRun": false,
-  "stacktrace": false,
-  "minWorkers": 1,
-  "projectDir": "/ROOT/test/__fixtures__/main"
-}
-[log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
-`;
+exports[`configure > can use configured options from config file > stdout 1`] = ``;

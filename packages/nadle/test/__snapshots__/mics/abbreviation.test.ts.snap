@@ -2,8 +2,9 @@
 
 exports[`abbreviation > should log resolved tasks only > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
+
 [log] Resolved tasks:
     <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
     <Yellow><Bold>cop </BoldDim></Yellow>  → <Green><Bold>copy</BoldDim></Green>
@@ -35,8 +36,9 @@ Copying from assets/ to dist/
 
 exports[`abbreviation > should resolve abbr task properly > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
+
 [log] Resolved tasks:
     <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
 

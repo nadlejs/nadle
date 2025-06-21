@@ -2,8 +2,9 @@
 
 exports[`pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
+
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] 
@@ -17,8 +18,9 @@ exports[`pnpm Task > throw error when running tsc command with error ts file > s
 
 exports[`pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
+
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] <BrightCyan>src/fail.ts</Reset>:<BrightYellow>1</Reset>:<BrightYellow>14</Reset> - <BrightRed>error</Reset><BrightBlack> TS2322: </Reset>Type 'number' is not assignable to type 'string'.

@@ -4,8 +4,9 @@ exports[`when a task fails > should report correctly > stderr 1`] = ``;
 
 exports[`when a task fails > should report correctly > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] <Dim>Loading configuration file from: /ROOT/test/__fixtures__/main/nadle.config.ts</BoldDim>
-[log] <Dim>Using 1 worker for task execution</BoldDim>
+[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
+
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> <Yellow>STARTED</Yellow>
 
 Preparing...

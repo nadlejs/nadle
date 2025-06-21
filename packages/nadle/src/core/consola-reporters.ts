@@ -4,7 +4,7 @@ import { LogLevels, type LogType, createConsola, type LogObject, type ConsolaOpt
 
 import { type LoggerOptions } from "./logger.js";
 
-export { LogType, ConsolaInstance };
+export { LogType, ConsolaInstance, LogLevels };
 
 // Workaround to get builtin BasicReporter
 const [BasicReporter] = createConsola({ fancy: false }).options.reporters;

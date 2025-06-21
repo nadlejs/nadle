@@ -13,8 +13,6 @@ import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "./constants.js";
 
 export interface Reporter {
-	onInit?: () => void;
-
 	onExecutionStart?: () => Awaitable<void>;
 	onExecutionFinish?: () => Awaitable<void>;
 	onExecutionFailed?: (error: any) => Awaitable<void>;
@@ -90,24 +88,6 @@ export class DefaultReporter implements Reporter {
 		return lines.slice(0, maxWorkerId);
 	}
 
-	onInit() {
-		const { minWorkers, maxWorkers, configPath, projectDir } = this.nadle.options;
-
-		if (!this.nadle.options.isWorkerThread) {
-			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
-			this.nadle.logger.info(`Using Nadle from: ${fileURLToPath(import.meta.resolve("nadle"))}`);
-			this.nadle.logger.debug(`Project dir: ${projectDir}`);
-			this.nadle.logger.log(c.dim(`Loading configuration file from: ${configPath}`));
-			this.nadle.logger.log(
-				c.dim(`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`)
-			);
-			this.nadle.logger.info("Resolved options:", this.nadle.options);
-			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
-		}
-
-		this.renderer.start();
-	}
-
 	async onTaskStart(task: RegisteredTask, threadId: number) {
 		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} ${c.yellow("STARTED")}\n`);
 		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
@@ -146,8 +126,23 @@ export class DefaultReporter implements Reporter {
 	}
 
 	async onExecutionStart() {
-		this.nadle.logger.info("Execution started");
 		this.startTimers();
+
+		const { minWorkers, maxWorkers, projectDir, configPath } = this.nadle.options;
+
+		if (!this.nadle.options.isWorkerThread) {
+			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
+			this.nadle.logger.log(`Using Nadle from ${fileURLToPath(import.meta.resolve("nadle"))}`);
+			this.nadle.logger.log(`Loaded configuration from ${configPath}\n`);
+			this.nadle.logger.info(
+				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
+			);
+			this.nadle.logger.info(`Project directory: ${projectDir}`);
+			this.nadle.logger.info("Resolved options:", this.nadle.options);
+			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
+			this.nadle.logger.info("Execution started");
+		}
+
 		this.renderer.start();
 	}
 

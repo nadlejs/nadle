@@ -82,8 +82,6 @@ export class DefaultReporter implements Reporter {
     // (undocumented)
     onExecutionStart(): Promise<void>;
     // (undocumented)
-    onInit(): void;
-    // (undocumented)
     onTaskFailed(task: RegisteredTask): Promise<void>;
     // (undocumented)
     onTaskFinish(task: RegisteredTask): Promise<void>;
@@ -151,6 +149,8 @@ export class Logger {
     // (undocumented)
     readonly outputStream: NodeJS.WriteStream;
     // (undocumented)
+    updateLogLevel(logLevel: SupportLogLevel): void;
+    // (undocumented)
     warn(message: any, ...args: unknown[]): void;
 }
 
@@ -200,7 +200,7 @@ export class Nadle {
     // (undocumented)
     showConfig(): void;
     // (undocumented)
-    static readonly version = "0.3.5";
+    static readonly version: string;
 }
 
 // @public (undocumented)
@@ -293,8 +293,6 @@ export interface Reporter {
     onExecutionFinish?: () => Awaitable<void>;
     // (undocumented)
     onExecutionStart?: () => Awaitable<void>;
-    // (undocumented)
-    onInit?: () => void;
     // (undocumented)
     onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
     // (undocumented)
@@ -445,7 +443,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:241:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:240:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
