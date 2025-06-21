@@ -1,19 +1,14 @@
 {
 	"name": "@nadle/internal-example-basic",
-	"description": "Sample package to demonstrate nadle usage",
+	"description": "Sample package to demonstrate Nadle usage",
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"hello": "nadle hello"
-	},
-	"dependencies": {
-		"nadle": "latest"
+		"hello": "nadle hello",
+		"goodbye": "nadle goodbye"
 	},
 	"devDependencies": {
-		"tinyrainbow": "^2.0.0",
+		"nadle": "latest",
 		"typescript": "^5.8.2"
-	},
-	"stackblitz": {
-		"startCommand": "nadle hello"
 	}
 }
