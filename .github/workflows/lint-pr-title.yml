@@ -22,14 +22,12 @@ jobs:
           types: |
             fix
             feat
-            chore
-            style
-            refactor
             test
             perf
-            release
             deps
             docs
+            chore
+            refactor
             security
           requireScope: false
           subjectPattern: ^[a-z].+$

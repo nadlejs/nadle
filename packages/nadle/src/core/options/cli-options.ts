@@ -5,52 +5,6 @@ import { SupportLogLevels } from "../logger.js";
 import { type NadleCLIOptions } from "./types.js";
 import { OptionsResolver } from "./options-resolver.js";
 
-export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOptions {
-	let resolvedOptions = {};
-
-	const aliases = Object.values(CLIOptions)
-		.map(({ options }) => (options as Options).alias)
-		.filter(Boolean);
-
-	for (const [key, value] of Object.entries(argv)) {
-		if (aliases.includes(key) || key.includes("-") || key === "_" || key === "$0" || key === "tasks") {
-			continue;
-		}
-
-		if ((key === "minWorkers" || key === "maxWorkers") && value === undefined) {
-			continue;
-		}
-
-		if (key === "config") {
-			if (value !== undefined) {
-				resolvedOptions = { ...resolvedOptions, configPath: value };
-			}
-
-			continue;
-		}
-
-		if (key === "cache") {
-			if (value !== undefined) {
-				resolvedOptions = { ...resolvedOptions, cache: !!value };
-			}
-
-			continue;
-		}
-
-		if (key === "exclude") {
-			if (value !== undefined) {
-				resolvedOptions = { ...resolvedOptions, excludedTasks: value };
-			}
-
-			continue;
-		}
-
-		resolvedOptions = { ...resolvedOptions, [key]: value };
-	}
-
-	return resolvedOptions as NadleCLIOptions;
-}
-
 export const CLIOptions = {
 	configPath: {
 		key: "config",
