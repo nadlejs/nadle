@@ -1,6 +1,6 @@
 {
 	"name": "nadle",
-	"version": "0.3.5",
+	"version": "0.3.6",
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
 	"type": "module",
 	"scripts": {
