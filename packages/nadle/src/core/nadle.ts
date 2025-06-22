@@ -7,11 +7,11 @@ import { createJiti } from "jiti";
 import { Logger } from "./logger.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
+import { UnnamedGroup } from "./constants.js";
 import { type RegisteredTask } from "./types.js";
+import { TaskResolver } from "./resolve-task.js";
 import { TaskScheduler } from "./task-scheduler.js";
-import { RIGHT_ARROW, UnnamedGroup } from "./constants.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
-import { resolveTask, formatSuggestions } from "./resolve-task.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
@@ -22,12 +22,14 @@ export class Nadle {
 	public readonly logger: Logger;
 	public readonly reporter: Reporter;
 	public readonly registry: TaskRegistry = taskRegistry;
+	public readonly taskResolver: TaskResolver;
 
 	private readonly optionsResolver: OptionsResolver;
 
 	constructor(options: NadleCLIOptions) {
-		this.optionsResolver = new OptionsResolver(options);
 		this.logger = new Logger(options);
+		this.taskResolver = new TaskResolver(this.logger);
+		this.optionsResolver = new OptionsResolver(options, this.taskResolver, this.registry);
 		this.reporter = new DefaultReporter(this);
 	}
 
@@ -38,7 +40,9 @@ export class Nadle {
 
 		try {
 			this.reporter.onExecutionStart?.();
-			const resolvedTasks = this.resolveTasks(tasks);
+			const resolvedTasks = this.taskResolver
+				.resolve(tasks, this.registry.getAllByName())
+				.filter((task) => !this.options.excludedTasks.includes(task));
 
 			if (this.options.showConfig) {
 				this.showConfig();
@@ -125,44 +129,6 @@ export class Nadle {
 
 	showConfig() {
 		this.logger.log(JSON.stringify(this.options, null, 2));
-	}
-
-	private resolveTasks(tasks: string[]) {
-		const allTasks = this.registry.getAll().map(({ name }) => name);
-
-		const resolveTaskPairs: { resolved: string; original: string }[] = [];
-
-		const resolvedTasks = tasks.map((task) => {
-			const resolvedTask = resolveTask(task, allTasks);
-
-			if (resolvedTask.result === undefined) {
-				const message = `Task ${c.yellow(c.bold(task))} not found.${formatSuggestions(resolvedTask.suggestions.map((task) => c.yellow(c.bold(task))))}`;
-				this.logger.error(message);
-				throw new Error(message);
-			}
-
-			if (resolvedTask.result !== task) {
-				resolveTaskPairs.push({ original: task, resolved: resolvedTask.result });
-			}
-
-			return resolvedTask.result;
-		});
-
-		if (resolveTaskPairs.length > 0) {
-			const maxOriginTaskLength = Math.max(...resolveTaskPairs.map(({ original }) => original?.length ?? 0));
-			const message = [
-				`Resolved tasks:\n`,
-				...resolveTaskPairs.map(
-					({ resolved, original }) =>
-						`${" ".repeat(4)}${c.yellow(c.bold(original?.padEnd(maxOriginTaskLength, " ")))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
-				)
-			].join("");
-			this.logger.log(message);
-		}
-
-		this.logger.info(`Resolved tasks: [ ${resolvedTasks.join(", ")} ]`);
-
-		return resolvedTasks;
 	}
 
 	computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {

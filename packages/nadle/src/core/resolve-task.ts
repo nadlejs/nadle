@@ -1,5 +1,49 @@
+import c from "tinyrainbow";
 import { words } from "lodash-es";
 import { distance } from "fastest-levenshtein";
+
+import { type Logger } from "./logger.js";
+import { RIGHT_ARROW } from "./constants.js";
+
+export class TaskResolver {
+	constructor(private readonly logger: Logger) {}
+
+	resolve(tasks: string[], allTasks: string[]) {
+		const resolveTaskPairs: { resolved: string; original: string }[] = [];
+
+		const resolvedTasks = tasks.map((task) => {
+			const resolvedTask = resolveTask(task, allTasks);
+
+			if (resolvedTask.result === undefined) {
+				const message = `Task ${c.yellow(c.bold(task))} not found.${formatSuggestions(resolvedTask.suggestions.map((task) => c.yellow(c.bold(task))))}`;
+				this.logger.error(message);
+				throw new Error(message);
+			}
+
+			if (resolvedTask.result !== task) {
+				resolveTaskPairs.push({ original: task, resolved: resolvedTask.result });
+			}
+
+			return resolvedTask.result;
+		});
+
+		if (resolveTaskPairs.length > 0) {
+			const maxOriginTaskLength = Math.max(...resolveTaskPairs.map(({ original }) => original?.length ?? 0));
+			const message = [
+				`Resolved tasks:\n`,
+				...resolveTaskPairs.map(
+					({ resolved, original }) =>
+						`${" ".repeat(4)}${c.yellow(c.bold(original?.padEnd(maxOriginTaskLength, " ")))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
+				)
+			].join("");
+			this.logger.log(message);
+		}
+
+		this.logger.info(`Resolved tasks: [ ${resolvedTasks.join(", ")} ]`);
+
+		return resolvedTasks;
+	}
+}
 
 interface Matcher {
 	readonly name: string;

@@ -17,6 +17,10 @@ export class TaskRegistry {
 		return [...this.registry.values()];
 	}
 
+	getAllByName(): string[] {
+		return this.getAll().map(({ name }) => name);
+	}
+
 	findByName(taskName: string): RegisteredTask | undefined {
 		return this.registry.get(taskName);
 	}

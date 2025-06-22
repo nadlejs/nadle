@@ -18,6 +18,8 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
 	readonly configPath?: string;
 	readonly showConfig: boolean;
 	readonly stacktrace: boolean;
+
+	readonly excludedTasks?: string[];
 }
 
 export interface NadleConfigFileOptions extends NadleUserBaseOptions {}

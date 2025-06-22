@@ -200,6 +200,8 @@ export class Nadle {
     // (undocumented)
     showConfig(): void;
     // (undocumented)
+    readonly taskResolver: TaskResolver;
+    // (undocumented)
     static readonly version: string;
 }
 
@@ -211,6 +213,8 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
     readonly configPath?: string;
     // (undocumented)
     readonly dryRun: boolean;
+    // (undocumented)
+    readonly excludedTasks?: string[];
     // (undocumented)
     readonly list: boolean;
     // (undocumented)
@@ -398,6 +402,8 @@ export class TaskRegistry {
     // (undocumented)
     getAll(): RegisteredTask[];
     // (undocumented)
+    getAllByName(): string[];
+    // (undocumented)
     getByName(taskName: string): RegisteredTask;
     // (undocumented)
     has(name: string): boolean;
@@ -419,6 +425,13 @@ export class TaskRegistry {
 
 // @public (undocumented)
 export const taskRegistry: TaskRegistry;
+
+// @public (undocumented)
+export class TaskResolver {
+    constructor(logger: Logger);
+    // (undocumented)
+    resolve(tasks: string[], allTasks: string[]): string[];
+}
 
 // @public (undocumented)
 export const tasks: {
@@ -445,7 +458,7 @@ export enum TaskStatus {
 
 // Warnings were encountered during analysis:
 //
-// lib/index.d.ts:241:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
+// lib/index.d.ts:256:5 - (ae-forgotten-export) The symbol "registerTask" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

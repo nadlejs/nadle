@@ -14,6 +14,7 @@ const argv = yargs(hideBin(process.argv))
 	.option(CLIOptions.parallel.key, CLIOptions.parallel.options)
 	.option(CLIOptions.minWorkers.key, CLIOptions.minWorkers.options)
 	.option(CLIOptions.maxWorkers.key, CLIOptions.maxWorkers.options)
+	.option(CLIOptions.exclude.key, CLIOptions.exclude.options)
 	.option(CLIOptions.noCache.key, CLIOptions.noCache.options)
 	.option(CLIOptions.cache.key, CLIOptions.cache.options)
 	.option(CLIOptions.logLevel.key, CLIOptions.logLevel.options)
@@ -29,6 +30,7 @@ const argv = yargs(hideBin(process.argv))
 	.group(
 		[
 			CLIOptions.parallel.key,
+			CLIOptions.exclude.key,
 			CLIOptions.noCache.key,
 			CLIOptions.list.key,
 			CLIOptions.dryRun.key,
