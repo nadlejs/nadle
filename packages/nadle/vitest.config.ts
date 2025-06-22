@@ -4,6 +4,11 @@ import { isCI } from "std-env";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+	server: {
+		watch: {
+			ignored: "**/__temp__/**"
+		}
+	},
 	resolve: {
 		alias: {
 			setup: path.resolve(import.meta.dirname, "test/__setup__/index.js")

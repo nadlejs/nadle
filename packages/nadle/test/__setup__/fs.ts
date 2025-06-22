@@ -21,10 +21,11 @@ export async function withFixture(params: {
 
 	await Fs.mkdir(cwd, { recursive: true });
 	await Fs.copyFile(Path.join(fixturesDir, configName, defaultConfigFile), Path.join(cwd, defaultConfigFile));
+	await Fs.copyFile(Path.join(fixturesDir, configName, "package.json"), Path.join(cwd, "package.json"));
 
 	fixturify.writeSync(cwd, files);
 
-	const getFiles = () => fixturify.readSync(cwd, { ignore: [defaultConfigFile] });
+	const getFiles = () => fixturify.readSync(cwd, { ignore: [defaultConfigFile, "package.json"] });
 
 	try {
 		await testFn({ cwd, getFiles, exec: createExec({ cwd }) });

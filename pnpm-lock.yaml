@@ -308,6 +308,12 @@ importers:
 
   packages/nadle/test/__fixtures__/project-dir/with-yarn/sub-package: {}
 
+  packages/nadle/test/__fixtures__/task-context-working-dir:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/nadle/test/__fixtures__/traverse-up:
     dependencies:
       nadle:

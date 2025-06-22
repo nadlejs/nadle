@@ -1,0 +1,11 @@
+{
+	"name": "@nadle/internal-fixture-task-context-working-dir",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}
