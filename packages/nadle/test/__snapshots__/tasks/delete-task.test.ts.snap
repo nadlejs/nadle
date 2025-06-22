@@ -84,7 +84,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 
 [info] Using 1 worker for task execution
-[info] Project directory: /ROOT/test/__fixtures__/delete-task
+[info] Project directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Resolved options: { cache: true,
   parallel: false,
   logLevel: 'info',
@@ -97,7 +97,8 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
   dryRun: false,
   stacktrace: false,
   minWorkers: 1,
-  projectDir: '/ROOT/test/__fixtures__/delete-task',
+  projectDir:
+   '/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__',
   configPath:
    '/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }
@@ -107,7 +108,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 [log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> <Yellow>STARTED</Yellow>
 
 [info] Current working dir: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
-[info] Deleting paths: ./a/bas.json, ./b/b1/qux.json
+[info] Deleting paths: ./package.json, ./a/bas.json, ./b/b1/qux.json
 [log] 
 <Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [info] Execution finished
