@@ -44,8 +44,3 @@ jobs:
         run: |
           npm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}" # pnpm config set is broken
           pnpm publish -r --no-git-checks
-
-      - name: Generate Changelog
-        run: npx changelogithub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
