@@ -14,8 +14,6 @@
 				}
 			],
 			"release-type": "node",
-			"draft-pull-request": true,
-			"draft": true,
 			"changelog-sections": [
 				{ "type": "feat", "section": "Features" },
 				{ "type": "fix", "section": "Bug Fixes" },

@@ -1,4 +1,4 @@
-import { tasks, ExecTask, PnpmTask, DeleteTask } from "nadle";
+import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
 tasks
 	.register("clean", DeleteTask, { paths: ["**/lib/**", "**/build/**", "**/__temp__/**"] })
@@ -11,7 +11,15 @@ tasks.register("knip", ExecTask, { args: [], command: "knip" }).config({ working
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
-tasks.register("build", PnpmTask, { args: ["-r", "build"] });
+tasks.register("buildNadle", PnpmTask, { args: ["--filter", "nadle", "build"] }).config({
+	inputs: [Inputs.dirs("packages/nadle/src")],
+	outputs: [Outputs.dirs("packages/nadle/lib")]
+});
+tasks.register("buildDoc", PnpmTask, { args: ["--filter", "@nadle/internal-docs", "build"] }).config({
+	outputs: [Outputs.dirs("packages/docs/build")],
+	inputs: [Inputs.dirs("packages/docs/{src,docs,static}"), Inputs.files("packages/docs/docusaurus.config.ts", "packages/docs/sidebars.ts")]
+});
+tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["build"] });
 tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({ dependsOn: ["build"], workingDir: "./packages/nadle" });
@@ -22,4 +30,4 @@ tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write",
 tasks.register("format").config({ dependsOn: ["fixEslint", "fixPrettier"] });
 tasks
 	.register("updateAPI", ExecTask, { command: "api-extractor", args: ["run", "--local"] })
-	.config({ dependsOn: ["build"], workingDir: "./packages/nadle" });
+	.config({ dependsOn: ["buildNadle"], workingDir: "./packages/nadle" });
