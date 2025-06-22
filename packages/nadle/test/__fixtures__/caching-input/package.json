@@ -1,0 +1,12 @@
+{
+	"name": "@nadle/internal-fixture-caching-input",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"glob": "^11.0.3",
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}
