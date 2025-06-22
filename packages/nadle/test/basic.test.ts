@@ -6,15 +6,11 @@ describe("basic", () => {
 
 	describe("single command", () => {
 		it("can run a simple command 1", async () => {
-			const stdout = await getStdout(exec`node`);
-
-			expect(stdout).toRunInOrder("node");
+			await expect(getStdout(exec`node`)).resolves.toRunInOrder("node");
 		});
 
 		it("can run a simple command 2", async () => {
-			const stdout = await getStdout(exec`install`);
-
-			expect(stdout).toRunInOrder("node", "install");
+			await expect(getStdout(exec`install`)).resolves.toRunInOrder("node", "install");
 		});
 
 		it("can run a simple command 3", async () => {
@@ -59,27 +55,19 @@ describe("basic", () => {
 		});
 
 		it("should run in order 5", async () => {
-			const stdout = await getStdout(exec`node install`);
-
-			expect(stdout).toRunInOrder("node", "install");
+			await expect(getStdout(exec`node install`)).resolves.toRunInOrder("node", "install");
 		});
 
 		it("should run in order 6", async () => {
-			const stdout = await getStdout(exec`install node`);
-
-			expect(stdout).toRunInOrder("node", "install");
+			await expect(getStdout(exec`install node`)).resolves.toRunInOrder("node", "install");
 		});
 
 		it("should run in order 7", { timeout: 10000 }, async () => {
-			const stdout = await getStdout(exec`slow fast`);
-
-			expect(stdout).toRunInOrder("slow", "fast");
+			await expect(getStdout(exec`slow fast`)).resolves.toRunInOrder("slow", "fast");
 		});
 
 		it("should run in order 8", { timeout: 10000 }, async () => {
-			const stdout = await getStdout(exec`fast slow`);
-
-			expect(stdout).toRunInOrder("fast", "slow");
+			await expect(getStdout(exec`fast slow`)).resolves.toRunInOrder("fast", "slow");
 		});
 	});
 

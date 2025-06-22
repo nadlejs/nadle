@@ -41,6 +41,7 @@
 		"@types/node": "^20.19.0",
 		"@types/object-hash": "^3.0.6",
 		"@types/yargs": "^17.0.33",
+		"@vitest/expect": "^3.2.4",
 		"fixturify": "^3.0.0",
 		"knip": "^5.61.0",
 		"size-limit": "^11.2.0",

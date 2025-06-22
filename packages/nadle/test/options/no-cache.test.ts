@@ -35,16 +35,16 @@ describe("--no-cache", () => {
 		it("should create create the .nadle directory by default", async () => {
 			const exec = createExec({ cwd });
 
-			await expect(getStdout(exec`bundle`)).resolves.toContain(`Task bundle DONE`);
-			await expect(getStdout(exec`bundle`)).resolves.toContain(`Task bundle UP-TO-DATE`);
+			await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "done");
+			await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "up-to-date");
 			await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(true);
 		});
 
 		it("should not create the .nadle directory when specifying --no-cache", async () => {
 			const exec = createExec({ cwd });
 
-			await expect(getStdout(exec`bundle --no-cache`)).resolves.toContain(`Task bundle DONE`);
-			await expect(getStdout(exec`bundle --no-cache`)).resolves.toContain(`Task bundle DONE`);
+			await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
+			await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
 			await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(false);
 		});
 	});
