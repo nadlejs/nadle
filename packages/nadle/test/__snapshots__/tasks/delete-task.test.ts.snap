@@ -90,6 +90,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
   logLevel: 'info',
   showConfig: false,
   showSummary: false,
+  excludedTasks: [],
   isWorkerThread: false,
   maxWorkers: 1,
   list: false,

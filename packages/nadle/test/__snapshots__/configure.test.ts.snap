@@ -34,6 +34,7 @@ exports[`configure > can override configured options from config file if the cli
   logLevel: 'info',
   showConfig: true,
   showSummary: false,
+  excludedTasks: [],
   isWorkerThread: false,
   maxWorkers: 1,
   configPath:
@@ -52,6 +53,7 @@ exports[`configure > can override configured options from config file if the cli
   "logLevel": "info",
   "showConfig": true,
   "showSummary": false,
+  "excludedTasks": [],
   "isWorkerThread": false,
   "maxWorkers": 1,
   "configPath": "/ROOT/test/__fixtures__/main/nadle.configure.ts",
