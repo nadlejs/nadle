@@ -1,11 +1,13 @@
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
+const baseEslintArgs = ["-r", "--filter", "!@nadle/internal-fixture-*", "exec", "eslint", ".", "--quiet"];
+
 tasks
 	.register("clean", DeleteTask, { paths: ["**/lib/**", "**/build/**", "**/__temp__/**"] })
 	.config({ group: "Development", description: "Clean build artifacts" });
 
 tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] });
-tasks.register("eslint", PnpmTask, { args: ["-r", "--filter", "!@nadle/internal-fixture-*", "exec", "eslint", ".", "--quiet"] });
+tasks.register("eslint", PnpmTask, { args: baseEslintArgs });
 tasks.register("prettier", ExecTask, { command: "prettier", args: ["--check", "."] });
 tasks.register("knip", ExecTask, { args: [], command: "knip" }).config({ workingDir: "./packages/nadle" });
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
@@ -25,7 +27,7 @@ tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ d
 tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({ dependsOn: ["build"], workingDir: "./packages/nadle" });
 tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
 
-tasks.register("fixEslint", PnpmTask, { args: ["-r", "exec", "eslint", "--quiet", "--fix"] });
+tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
 tasks.register("format").config({ dependsOn: ["fixEslint", "fixPrettier"] });
 tasks

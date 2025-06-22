@@ -9,6 +9,8 @@ import { findRootSync } from "@manypkg/find-root";
 
 import { clamp } from "../utils.js";
 import { isPathExistsSync } from "../fs-utils.js";
+import { type TaskResolver } from "../resolve-task.js";
+import { type TaskRegistry } from "../task-registry.js";
 import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
 import { type NadleCLIOptions, type NadlePackageJson, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
@@ -21,13 +23,18 @@ export class OptionsResolver {
 		logLevel: "log",
 		showConfig: false,
 		showSummary: !isCI,
+		excludedTasks: [] as string[],
 
 		isWorkerThread: false
 	} as const;
 
 	#options: NadleResolvedOptions;
 
-	constructor(private readonly cliOptions: NadleCLIOptions) {
+	constructor(
+		private readonly cliOptions: NadleCLIOptions,
+		private readonly taskResolver: TaskResolver,
+		private readonly taskRegistry: TaskRegistry
+	) {
 		this.#options = this.resolve();
 	}
 
@@ -49,10 +56,14 @@ export class OptionsResolver {
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
 
+		const allTasks = this.taskRegistry.getAllByName();
+		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? this.taskResolver.resolve(baseOptions.excludedTasks, allTasks) : [];
+
 		return {
 			...baseOptions,
 			minWorkers,
 			maxWorkers,
+			excludedTasks,
 			projectDir: this.resolveProjectDir(),
 			configPath: this.resolveConfigPath(baseOptions.configPath)
 		};

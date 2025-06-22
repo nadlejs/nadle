@@ -16,7 +16,7 @@ You can also specify a custom configuration file location using the `--config` C
 
 ## CLI Options
 
-### `--config <path>`
+### `--config`
 
 - **Type:** `string`
 - **Alias:** `-c`
@@ -27,9 +27,23 @@ This allows using different configurations for different environments or purpose
 The path can be either absolute or relative to the current working directory.
 Use this flag to override the default resolution behavior and point to a specific configuration file as needed.
 
+**Example:**
+
 ```bash
 nadle --config ./configs/nadle.config.ts
 ```
+
+### `--exclude`
+
+- **Type:** `string[]`
+- **Alias:** `-x`
+- **Default:** `[]` (no tasks excluded)
+
+Specifies one or more task names to exclude from execution.
+
+This flag allows selectively skipping certain tasks, which is useful when running a broad task group but needing to omit specific ones.  
+Multiple exclusions can be provided either as separate flags (`--exclude lint --exclude test`) or as a comma-separated list (`--exclude lint,test`).  
+Whitespace around task names is trimmed automatically.
 
 ### `--list`
 
@@ -152,6 +166,19 @@ You can pass:
 - A percentage string (e.g., `50%`), which will be interpreted as a percentage of the available CPU cores.
 
 For example, on an 8-core machine, `50%` means at least 4 workers will be used.
+
+### `cache`
+
+- **Type:** `boolean`
+- **Default:** `true`
+- **CLI:** `--no-cache`, `--cache=false`
+
+Disables the caching mechanism for all tasks in the current run.
+
+When this flag is set, all tasks will be executed unconditionally, regardless of whether their inputs or outputs have changed.  
+This is useful in scenarios where the cache might be outdated, or when debugging and ensuring that all logic runs from scratch.
+
+Use this flag to force fresh execution and bypass any cached results.
 
 ## Configuration File Example
 

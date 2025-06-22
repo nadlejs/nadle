@@ -8,6 +8,7 @@ Execute one or more named tasks
 Execution options:
       --parallel     Run all specified tasks in parallel regardless of their order, while still
                      respecting task dependencies.                        [boolean] [default: false]
+  -x, --exclude      Tasks to exclude from execution                                         [array]
       --no-cache     Disable task caching. All tasks will be executed and their results will not be
                      stored                                               [boolean] [default: false]
   -l, --list         List all available tasks                             [boolean] [default: false]

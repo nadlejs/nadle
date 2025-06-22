@@ -37,6 +37,14 @@ export function resolveCLIOptions(argv: Record<string, unknown>): NadleCLIOption
 			continue;
 		}
 
+		if (key === "exclude") {
+			if (value !== undefined) {
+				resolvedOptions = { ...resolvedOptions, excludedTasks: value };
+			}
+
+			continue;
+		}
+
 		resolvedOptions = { ...resolvedOptions, [key]: value };
 	}
 
@@ -116,6 +124,16 @@ export const CLIOptions = {
 			type: "boolean" as const,
 			defaultDescription: "false",
 			description: "Disable task caching. All tasks will be executed and their results will not be stored"
+		}
+	},
+	exclude: {
+		key: "exclude",
+		options: {
+			type: "string" as const,
+			alias: "x",
+			description: "Tasks to exclude from execution",
+			array: true,
+			coerce: (val: string[]) => val.flatMap((v) => v.split(",").map((s) => s.trim())).filter(Boolean)
 		}
 	},
 

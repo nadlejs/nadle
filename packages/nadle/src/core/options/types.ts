@@ -1,6 +1,7 @@
 import { type SupportLogLevel } from "../logger.js";
 
 export interface NadleUserBaseOptions {
+	readonly cache?: boolean;
 	readonly parallel?: boolean;
 	readonly showSummary?: boolean;
 	readonly logLevel?: SupportLogLevel;
@@ -14,10 +15,11 @@ export interface NadleUserBaseOptions {
 export interface NadleCLIOptions extends NadleUserBaseOptions {
 	readonly list: boolean;
 	readonly dryRun: boolean;
-	readonly cache?: boolean;
 	readonly configPath?: string;
 	readonly showConfig: boolean;
 	readonly stacktrace: boolean;
+
+	readonly excludedTasks?: string[];
 }
 
 export interface NadleConfigFileOptions extends NadleUserBaseOptions {}

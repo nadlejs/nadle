@@ -58,7 +58,9 @@ export class TaskScheduler {
 		}
 
 		const task = this.context.nadle.registry.getByName(taskName);
-		const dependencies = new Set(task.configResolver({ context: this.context }).dependsOn ?? []);
+		const dependencies = new Set(
+			(task.configResolver({ context: this.context }).dependsOn ?? []).filter((task) => !this.context.nadle.options.excludedTasks.includes(task))
+		);
 
 		this.dependencyGraph.set(taskName, dependencies);
 		this.indegree.set(taskName, dependencies.size);
