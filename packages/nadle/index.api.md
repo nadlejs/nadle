@@ -208,8 +208,6 @@ export class Nadle {
 // @public (undocumented)
 export interface NadleCLIOptions extends NadleUserBaseOptions {
     // (undocumented)
-    readonly cache?: boolean;
-    // (undocumented)
     readonly configPath?: string;
     // (undocumented)
     readonly dryRun: boolean;
@@ -247,6 +245,8 @@ export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "ma
 
 // @public (undocumented)
 export interface NadleUserBaseOptions {
+    // (undocumented)
+    readonly cache?: boolean;
     // @internal (undocumented)
     readonly isWorkerThread?: boolean;
     // (undocumented)
