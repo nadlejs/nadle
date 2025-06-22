@@ -43,7 +43,3 @@ export async function hashFile(filePath: string): Promise<string> {
 
 	return Crypto.createHash("sha256").update(content).digest("hex");
 }
-
-export function isGlob(str: string): boolean {
-	return /[*?[\]]/.test(str);
-}

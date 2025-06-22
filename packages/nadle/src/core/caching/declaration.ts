@@ -2,7 +2,7 @@ import Path from "node:path";
 
 import fg from "fast-glob";
 
-import { isGlob, hashFile } from "../utils.js";
+import { hashFile } from "../utils.js";
 import type { FileFingerprints } from "./fingerprint.js";
 
 export interface FileDeclaration {
@@ -39,7 +39,7 @@ export namespace Declaration {
 			const paths: string[] = [];
 
 			for (const pattern of declaration.patterns) {
-				if (!isGlob(pattern)) {
+				if (!fg.isDynamicPattern(pattern)) {
 					paths.push(Path.resolve(workingDir, pattern));
 					continue;
 				}
@@ -53,13 +53,13 @@ export namespace Declaration {
 		if (declaration.type === "dir") {
 			const paths: string[] = [];
 
-			for (const patterns of declaration.patterns) {
-				if (!isGlob(patterns)) {
-					paths.push(...(await fg(`${patterns}/**/*`, { absolute: true, cwd: workingDir, onlyFiles: true })));
+			for (const pattern of declaration.patterns) {
+				if (!fg.isDynamicPattern(pattern)) {
+					paths.push(...(await fg(`${pattern}/**/*`, { absolute: true, cwd: workingDir, onlyFiles: true })));
 					continue;
 				}
 
-				const matchedDirs = await fg(patterns, { absolute: true, cwd: workingDir, onlyDirectories: true });
+				const matchedDirs = await fg(pattern, { absolute: true, cwd: workingDir, onlyDirectories: true });
 
 				for (const dir of matchedDirs) {
 					paths.push(...(await fg(`${dir}/**/*`, { absolute: true, onlyFiles: true })));
