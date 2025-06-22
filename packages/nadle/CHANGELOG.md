@@ -1,5 +1,17 @@
 # nadle
 
+## [0.3.7](https://github.com/nam-hle/nadle/compare/v0.3.6...v0.3.7) (2025-06-22)
+
+
+### Features
+
+* Add --exclude option to prevent specified tasks from executing ([#250](https://github.com/nam-hle/nadle/issues/250)) ([88edd7e](https://github.com/nam-hle/nadle/commit/88edd7ee5201d60d57065178ced846a00560a65c))
+
+
+### Bug Fixes
+
+* Resolve working directory relative to project directory instead of cwd ([#252](https://github.com/nam-hle/nadle/issues/252)) ([09aec98](https://github.com/nam-hle/nadle/commit/09aec9807f2664a6d44d8eab20e0f563144aedc5))
+
 ## [0.3.6](https://github.com/nam-hle/nadle/compare/v0.3.5...v0.3.6) (2025-06-22)
 
 
