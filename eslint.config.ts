@@ -77,6 +77,24 @@ export default tsEslint.config(
 		}
 	},
 	{
+		files: ["packages/nadle/src/**"],
+		rules: {
+			"no-restricted-properties": [
+				"error",
+				{
+					property: "cwd",
+					object: "process",
+					message: "Avoid using process.cwd()"
+				},
+				{
+					property: "cwd",
+					object: "Process",
+					message: "Avoid using Process.cwd()"
+				}
+			]
+		}
+	},
+	{
 		rules: {
 			"no-console": "off"
 		},

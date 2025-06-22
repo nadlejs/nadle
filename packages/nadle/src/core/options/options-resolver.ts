@@ -1,7 +1,6 @@
 import Fs from "node:fs";
 import Os from "node:os";
 import Path from "node:path";
-import Process from "node:process";
 
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
@@ -15,6 +14,8 @@ import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
 import { type NadleCLIOptions, type NadlePackageJson, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
 export class OptionsResolver {
+	// eslint-disable-next-line no-restricted-properties
+	private readonly cwd = process.cwd();
 	static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
 
 	private readonly defaultOptions = {
@@ -94,16 +95,14 @@ export class OptionsResolver {
 			return projectDir;
 		}
 
-		const root = findRootSync(process.cwd());
+		const root = findRootSync(this.cwd);
 
 		return root.rootDir;
 	}
 
 	private resolveConfigPath(configPath: string | undefined): string {
-		const cwd = Process.cwd();
-
 		if (configPath !== undefined) {
-			const resolvedConfigPath = Path.resolve(cwd, configPath);
+			const resolvedConfigPath = Path.resolve(this.cwd, configPath);
 
 			if (!Fs.existsSync(resolvedConfigPath)) {
 				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
@@ -116,7 +115,7 @@ export class OptionsResolver {
 
 		if (!resolveConfigPath) {
 			throw new Error(
-				`No ${DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${Process.cwd()} directory or parent directories. Please use --config to specify a custom path.`
+				`No ${DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${this.cwd} directory or parent directories. Please use --config to specify a custom path.`
 			);
 		}
 
