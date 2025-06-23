@@ -12,7 +12,7 @@ const nadlePackage = JSON.parse(await Fs.readFile(nadlePackagePath, "utf-8")) as
 export async function validatePackages() {
 	for (const entry of await glob("**/package.json", {
 		cwd: rootDir,
-		ignore: "node_modules/**"
+		ignore: ["node_modules/**", "**/__temp__/**"]
 	})) {
 		const path = Path.join(rootDir, entry);
 		const pkg = JSON.parse(await Fs.readFile(path, "utf-8"));
@@ -96,6 +96,12 @@ const descriptionValidator: PackageValidator = ({ pkg }) => {
 	}
 };
 
+const licenseValidator: PackageValidator = ({ pkg }) => {
+	if (isPublic(pkg) && pkg.license !== "MIT") {
+		throw new Error("Public packages must have 'MIT' license");
+	}
+};
+
 function createSimpleValidator(field: string): PackageValidator {
 	const obj = {
 		[`${field}Validator`]: function (context: { pkg: PackageJson }) {
@@ -124,7 +130,7 @@ const filesValidator: PackageValidator = ({ pkg }) => {
 	}
 };
 
-const mainValidator: PackageValidator = ({ pkg }) => {
+const exportsValidator: PackageValidator = ({ pkg }) => {
 	if (isPrivate(pkg)) {
 		return;
 	}
@@ -133,8 +139,8 @@ const mainValidator: PackageValidator = ({ pkg }) => {
 		return;
 	}
 
-	if (!pkg.main) {
-		throw new Error("Public packages must have 'main' field");
+	if (!pkg.exports) {
+		throw new Error("Public packages must have 'exports' field");
 	}
 };
 
@@ -152,7 +158,7 @@ const typesValidator: PackageValidator = ({ pkg }) => {
 	}
 };
 
-const REPOSITORY_URL = "https://github.com/nam-hle/nadle.git";
+const REPOSITORY_URL = "git+https://github.com/nam-hle/nadle.git";
 
 const repositoryValidator: PackageValidator = ({ pkg, path }) => {
 	if (isPrivate(pkg)) {
@@ -189,11 +195,12 @@ const FIELD_ORDER = [
 	"name",
 	"version",
 	"description",
+	"license",
 	"type",
 	"private",
 	"scripts",
 	"files",
-	"main",
+	"exports",
 	"bin",
 	"types",
 	"dependencies",
@@ -275,11 +282,12 @@ const validators: PackageValidator[] = [
 	versionValidator,
 	typeValidator,
 	descriptionValidator,
+	licenseValidator,
 	createSimpleValidator("keywords"),
 	createSimpleValidator("homepage"),
 	createSimpleValidator("bugs"),
 	filesValidator,
-	mainValidator,
+	exportsValidator,
 	typesValidator,
 	repositoryValidator,
 	privateValidator,

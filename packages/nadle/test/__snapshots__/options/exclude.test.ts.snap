@@ -2,7 +2,7 @@
 
 exports[`--exclude > should do nothing if it is also the only main specify task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.
@@ -13,7 +13,7 @@ exports[`--exclude > should do nothing if it is also the only main specify task 
 
 exports[`--exclude > should exclude the specified excluded task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim> <Yellow>STARTED</Yellow>
@@ -35,7 +35,7 @@ exports[`--exclude > should exclude the specified excluded task > stdout 1`] = `
 
 exports[`--exclude > should exclude the specified excluded tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim> <Yellow>STARTED</Yellow>
@@ -53,7 +53,7 @@ exports[`--exclude > should exclude the specified excluded tasks > stdout 1`] = 
 
 exports[`--exclude > should run other tasks if it is also the main task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim> <Yellow>STARTED</Yellow>
@@ -79,7 +79,7 @@ exports[`--exclude > should run other tasks if it is also the main task > stdout
 
 exports[`--exclude > should work with dry run > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>

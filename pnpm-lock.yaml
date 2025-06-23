@@ -253,18 +253,6 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
-  packages/nadle/test/__fixtures__/delete-task/__temp__/__254e81c2__:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../..
-
-  packages/nadle/test/__fixtures__/delete-task/__temp__/__e108ac02__:
-    dependencies:
-      nadle:
-        specifier: workspace:*
-        version: link:../../../../..
-
   packages/nadle/test/__fixtures__/esm-js:
     dependencies:
       nadle:

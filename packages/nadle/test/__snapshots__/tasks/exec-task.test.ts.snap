@@ -2,7 +2,7 @@
 
 exports[`execTask > can run pwd-1 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>pwd-1</BoldDim> <Yellow>STARTED</Yellow>
@@ -18,7 +18,7 @@ exports[`execTask > can run pwd-1 command with configured workingDir > stdout 1`
 
 exports[`execTask > can run pwd-2 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>pwd-2</BoldDim> <Yellow>STARTED</Yellow>
@@ -34,7 +34,7 @@ exports[`execTask > can run pwd-2 command with configured workingDir > stdout 1`
 
 exports[`execTask > can run pwd-3 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>pwd-3</BoldDim> <Yellow>STARTED</Yellow>
@@ -50,7 +50,7 @@ exports[`execTask > can run pwd-3 command with configured workingDir > stdout 1`
 
 exports[`execTask > can run pwd-4 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>pwd-4</BoldDim> <Yellow>STARTED</Yellow>
@@ -66,7 +66,7 @@ exports[`execTask > can run pwd-4 command with configured workingDir > stdout 1`
 
 exports[`execTask > can run pwd-5 command with configured workingDir > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>pwd-5</BoldDim> <Yellow>STARTED</Yellow>

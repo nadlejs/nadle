@@ -2,7 +2,6 @@ import Path from "node:path";
 
 export function serialize(input: string): string {
 	return [
-		serializeUnstableWords,
 		serializeANSI,
 		serializeDuration,
 		serializeFileLocation,
@@ -11,20 +10,9 @@ export function serialize(input: string): string {
 		serializeAbsoluteFilePath,
 		serializeStackTrace,
 		serializeHash,
-		serializeLibFilePath,
 		serializeVersion,
 		removeUnstableLines
 	].reduce((result, serializer) => serializer(result), input);
-}
-
-const UnstableWordsMap = [["worker_default", "default"]];
-
-function serializeUnstableWords(input: string) {
-	for (const [word, replacement] of UnstableWordsMap) {
-		input = input.replaceAll(word, replacement);
-	}
-
-	return input;
 }
 
 const UnstableLines = ["ExperimentalWarning", "--trace-warnings"];
@@ -38,10 +26,6 @@ function removeUnstableLines(input: string) {
 
 function serializeVersion(input: string) {
 	return input.replace(/([v@])\d+\.\d+\.\d+/g, "{version}");
-}
-
-function serializeLibFilePath(input: string) {
-	return input.replaceAll(/^.*ROOT\/lib\/.*(?:\r?\n)?/gm, "");
 }
 
 function serializePwdGitBashWindows(input: string) {

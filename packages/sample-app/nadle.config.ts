@@ -1,6 +1,6 @@
 import process from "node:process";
 
-import { Inputs } from "nadle/src/index.js";
+import { Inputs } from "nadle";
 import { tasks, Outputs, ExecTask, type Task, configure } from "nadle";
 
 import { createTask } from "./create-task.js";

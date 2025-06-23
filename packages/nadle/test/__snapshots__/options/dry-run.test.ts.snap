@@ -2,7 +2,7 @@
 
 exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.depends-on.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -20,7 +20,7 @@ exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 
 exports[`--dry-run > should list for one task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] <Bold>Execution plan:</BoldDim>
