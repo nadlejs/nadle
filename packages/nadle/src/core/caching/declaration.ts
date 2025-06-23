@@ -17,6 +17,7 @@ export interface DirDeclaration {
 
 export type Declaration = FileDeclaration | DirDeclaration;
 
+/** @internal */
 export namespace Declaration {
 	export async function computeFileFingerprints(workingDir: string, declarations: Declaration[]): Promise<FileFingerprints> {
 		const fingerprint: FileFingerprints = {};

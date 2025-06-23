@@ -12,6 +12,7 @@
 		"declarationMap": true,
 		"strict": true,
 		"skipLibCheck": true,
+		"stripInternal": true,
 		"preserveWatchOutput": true,
 		"noEmit": true,
 		"tsBuildInfoFile": "${configDir}/build/tsconfig.tsbuildinfo.json"

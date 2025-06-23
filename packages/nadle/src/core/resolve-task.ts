@@ -111,7 +111,7 @@ function getInitials(name: string): string {
 		.toLowerCase();
 }
 
-export function formatSuggestions(names: string[]): string {
+function formatSuggestions(names: string[]): string {
 	if (names.length === 0) {
 		return "";
 	}

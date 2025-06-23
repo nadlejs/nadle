@@ -1,7 +1,7 @@
 import { hashObject } from "../utils.js";
 import type { FileFingerprints } from "./fingerprint.js";
 
-export interface CacheKeyInput {
+interface CacheKeyInput {
 	readonly taskName: string;
 	readonly inputsFingerprints: FileFingerprints;
 }

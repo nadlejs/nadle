@@ -1,5 +1,3 @@
-export * from "./inputs.js";
-export * from "./outputs.js";
-export * from "./metadata.js";
-export * from "./cache-key.js";
-export * from "./cache-manager.js";
+export { Inputs } from "./inputs.js";
+export { Outputs } from "./outputs.js";
+export type { FileDeclaration, DirDeclaration, Declaration } from "./declaration.js";
