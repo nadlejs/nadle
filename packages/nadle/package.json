@@ -2,6 +2,7 @@
 	"name": "nadle",
 	"version": "0.3.7",
 	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm \"/build:/\"",
@@ -15,7 +16,12 @@
 		"nadle.mjs",
 		"CHANGELOG.md"
 	],
-	"main": "lib/index.js",
+	"exports": {
+		".": {
+			"import": "./lib/index.js",
+			"types": "./lib/index.d.ts"
+		}
+	},
 	"bin": "nadle.mjs",
 	"types": "lib/index.d.ts",
 	"dependencies": {
@@ -59,7 +65,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/nam-hle/nadle.git",
+		"url": "git+https://github.com/nam-hle/nadle.git",
 		"directory": "packages/nadle"
 	},
 	"keywords": [
