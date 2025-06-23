@@ -16,7 +16,7 @@ nadle.iml
 __temp__
 .docusaurus
 .vercel
-.nadle
+.nadle*
 
 # misc
 .DS_Store

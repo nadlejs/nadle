@@ -42,8 +42,9 @@ exports[`configure > can override configured options from config file if the cli
   list: false,
   dryRun: false,
   stacktrace: false,
-  minWorkers: 1,
-  projectDir: '/ROOT/test/__fixtures__/main' }
+  cacheDir: '/ROOT/test/__fixtures__/main/.nadle',
+  projectDir: '/ROOT/test/__fixtures__/main',
+  minWorkers: 1 }
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
 [info] Resolved tasks: [  ]
@@ -60,8 +61,9 @@ exports[`configure > can override configured options from config file if the cli
   "list": false,
   "dryRun": false,
   "stacktrace": false,
-  "minWorkers": 1,
-  "projectDir": "/ROOT/test/__fixtures__/main"
+  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
+  "projectDir": "/ROOT/test/__fixtures__/main",
+  "minWorkers": 1
 }
 [info] Execution finished
 [log] 

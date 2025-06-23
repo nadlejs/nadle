@@ -80,6 +80,15 @@ export const CLIOptions = {
 			description: "Disable task caching. All tasks will be executed and their results will not be stored"
 		}
 	},
+	cacheDir: {
+		key: "cache-dir",
+		options: {
+			type: "string",
+			defaultDescription: "<projectDir>/.nadle",
+			description: "Directory to store task cache results"
+		}
+	},
+
 	exclude: {
 		key: "exclude",
 		options: {

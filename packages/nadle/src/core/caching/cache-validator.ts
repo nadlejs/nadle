@@ -17,6 +17,7 @@ type CacheValidationResult =
 
 interface CacheValidatorContext {
 	readonly cache: boolean;
+	readonly cacheDir: string;
 	readonly projectDir: string;
 	readonly workingDir: string;
 }
@@ -29,7 +30,7 @@ export class CacheValidator {
 		private readonly taskConfiguration: TaskConfiguration,
 		private readonly context: CacheValidatorContext
 	) {
-		this.cacheManager = new CacheManager(this.context.projectDir);
+		this.cacheManager = new CacheManager(this.context.projectDir, this.context.cacheDir);
 	}
 
 	async validate(): Promise<CacheValidationResult> {
@@ -72,7 +73,7 @@ export class CacheValidator {
 		return {
 			cacheQuery,
 			result: "restore-from-cache",
-			restore: () => this.cacheManager.restoreOutputs(cacheQuery, this.context.projectDir)
+			restore: () => this.cacheManager.restoreOutputs(cacheQuery)
 		};
 	}
 
@@ -102,7 +103,7 @@ export class CacheValidator {
 				cacheQuery,
 				RunCacheMetadata.create({ inputsFingerprints, outputsFingerprint: hashObject(outputsFingerprints), ...cacheQuery })
 			);
-			await this.cacheManager.saveOutputs(cacheQuery, this.context.projectDir, Object.keys(outputsFingerprints));
+			await this.cacheManager.saveOutputs(cacheQuery, Object.keys(outputsFingerprints));
 
 			return;
 		}

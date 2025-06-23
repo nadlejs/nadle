@@ -17,6 +17,7 @@ export class OptionsResolver {
 	// eslint-disable-next-line no-restricted-properties
 	private readonly cwd = process.cwd();
 	static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
+	private static readonly DEFAULT_CACHE_DIR_NAME = ".nadle";
 
 	private readonly defaultOptions = {
 		cache: true,
@@ -60,12 +61,17 @@ export class OptionsResolver {
 		const allTasks = this.taskRegistry.getAllByName();
 		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? this.taskResolver.resolve(baseOptions.excludedTasks, allTasks) : [];
 
+		const projectDir = this.resolveProjectDir();
+		const cacheDir = Path.resolve(projectDir, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
+
 		return {
 			...baseOptions,
+			cacheDir,
+			projectDir,
+
 			minWorkers,
 			maxWorkers,
 			excludedTasks,
-			projectDir: this.resolveProjectDir(),
 			configPath: this.resolveConfigPath(baseOptions.configPath)
 		};
 	}

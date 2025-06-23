@@ -2,6 +2,8 @@ import { type SupportLogLevel } from "../logger.js";
 
 export interface NadleUserBaseOptions {
 	readonly cache?: boolean;
+	readonly cacheDir?: string;
+
 	readonly parallel?: boolean;
 	readonly showSummary?: boolean;
 	readonly logLevel?: SupportLogLevel;

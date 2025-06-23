@@ -87,6 +87,8 @@ export interface NadleUserBaseOptions {
     // (undocumented)
     readonly cache?: boolean;
     // (undocumented)
+    readonly cacheDir?: string;
+    // (undocumented)
     readonly logLevel?: SupportLogLevel;
     // (undocumented)
     readonly maxWorkers?: number | string;

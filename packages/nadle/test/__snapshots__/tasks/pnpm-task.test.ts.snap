@@ -40,8 +40,9 @@ exports[`pnpm Task > can print command when log level = info > stdout 1`] = `
   list: false,
   dryRun: false,
   stacktrace: false,
-  minWorkers: 1,
+  cacheDir: '/ROOT/test/__fixtures__/pnpm-task/.nadle',
   projectDir: '/ROOT/test/__fixtures__/pnpm-task',
+  minWorkers: 1,
   configPath:
    '/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts' }
 [info] Detected environments: { CI: false, TEST: true }

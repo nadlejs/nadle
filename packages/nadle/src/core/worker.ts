@@ -36,7 +36,7 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 
-	const cacheValidator = new CacheValidator(taskName, taskConfig, { workingDir, cache: nadle.options.cache, projectDir: nadle.options.projectDir });
+	const cacheValidator = new CacheValidator(taskName, taskConfig, { workingDir, ...nadle.options });
 	const validationResult = await cacheValidator.validate();
 
 	const execute = async () => {
