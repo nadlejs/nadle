@@ -2,7 +2,7 @@
 
 exports[`--list > prints all available tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] <Bold>Greetings tasks</BoldDim>
@@ -25,7 +25,7 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 
 exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.empty.ts
 
 [log] No tasks found

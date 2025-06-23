@@ -2,7 +2,7 @@
 
 exports[`--show-config > should show config > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] {
@@ -28,7 +28,7 @@ exports[`--show-config > should show config > stdout 1`] = `
 
 exports[`--show-config > should show config with extra options > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] {

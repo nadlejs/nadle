@@ -2,7 +2,7 @@
 
 exports[`workingDir > should print correct working directory for task current > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
 
 [log] <Yellow>></Yellow> Task <Bold>current</BoldDim> <Yellow>STARTED</Yellow>
@@ -17,7 +17,7 @@ Current working directory: /ROOT/test/__fixtures__/main
 
 exports[`workingDir > should print correct working directory for task oneLevelDown > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
 
 [log] <Yellow>></Yellow> Task <Bold>oneLevelDown</BoldDim> <Yellow>STARTED</Yellow>
@@ -32,7 +32,7 @@ Current working directory: /ROOT/test/__fixtures__/main/subdir1
 
 exports[`workingDir > should print correct working directory for task oneLevelUp > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
 
 [log] <Yellow>></Yellow> Task <Bold>oneLevelUp</BoldDim> <Yellow>STARTED</Yellow>
@@ -47,7 +47,7 @@ Current working directory: /ROOT/test/__fixtures__
 
 exports[`workingDir > should print correct working directory for task twoLevelsDown > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
 
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsDown</BoldDim> <Yellow>STARTED</Yellow>
@@ -62,7 +62,7 @@ Current working directory: /ROOT/test/__fixtures__/main/subdir1/subdir2
 
 exports[`workingDir > should print correct working directory for task twoLevelsUp > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
 
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsUp</BoldDim> <Yellow>STARTED</Yellow>

@@ -2,7 +2,7 @@
 
 exports[`when not given any tasks > show all available tasks > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.

@@ -4,7 +4,7 @@ exports[`detect cycle > should detect 1-task-cycle > stderr 1`] = `[error] Cycle
 
 exports[`detect cycle > should detect 1-task-cycle > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.cycle.ts
 
 [log] 
@@ -19,7 +19,7 @@ exports[`detect cycle > should detect 2-tasks-cycle > stderr 2`] = `[error] Cycl
 
 exports[`detect cycle > should detect 2-tasks-cycle > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.cycle.ts
 
 [log] 
@@ -30,7 +30,7 @@ For more details, re-run the command with the <Yellow>--stacktrace</Yellow> opti
 
 exports[`detect cycle > should detect 2-tasks-cycle > stdout 2`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.cycle.ts
 
 [log] 
@@ -43,7 +43,7 @@ exports[`detect cycle > should detect cycle from a task inside the cycle > stder
 
 exports[`detect cycle > should detect cycle from a task inside the cycle > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.cycle.ts
 
 [log] 
@@ -56,7 +56,7 @@ exports[`detect cycle > should detect cycle from a task outside the cycle > stde
 
 exports[`detect cycle > should detect cycle from a task outside the cycle > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.cycle.ts
 
 [log] 
@@ -69,7 +69,7 @@ exports[`detect cycle > should print the cycle from the first reach task > stder
 
 exports[`detect cycle > should print the cycle from the first reach task > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.cycle.ts
 
 [log] 

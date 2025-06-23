@@ -2,7 +2,7 @@
 
 exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.basic.ts
 
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> <Yellow>STARTED</Yellow>
@@ -32,7 +32,7 @@ exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
 
 exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.basic.ts
 
 [log] <Yellow>></Yellow> Task <Bold>node</BoldDim> <Yellow>STARTED</Yellow>
@@ -54,7 +54,7 @@ exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -73,7 +73,7 @@ exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -92,7 +92,7 @@ exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -111,7 +111,7 @@ exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -126,7 +126,7 @@ exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -149,7 +149,7 @@ exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -172,7 +172,7 @@ exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
@@ -195,7 +195,7 @@ exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
 
 exports[`basic > with --dry-run > should list tasks in order 8 > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /REPO_ROOT/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
