@@ -4,8 +4,9 @@ import { threadId, type MessagePort } from "node:worker_threads";
 import c from "tinyrainbow";
 
 import { Nadle } from "./nadle.js";
+import { bindObject } from "./utils.js";
 import { taskRegistry } from "./task-registry.js";
-import { type Context, type TaskEnv } from "./types.js";
+import { type TaskEnv, type RunnerContext } from "./types.js";
 import { CacheValidator } from "./caching/cache-validator.js";
 import { type NadleResolvedOptions } from "./options/types.js";
 import { CacheMissReason } from "./caching/cache-miss-reason.js";
@@ -22,14 +23,18 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 	await nadle.registerTask();
 
 	const task = taskRegistry.getByName(taskName);
-	const { optionsResolver } = task;
-	const context: Context = { nadle };
+	const { configResolver, optionsResolver } = task;
+
+	const taskConfig = configResolver();
+	const workingDir = Path.resolve(options.projectDir, taskConfig.workingDir ?? "");
+
+	const context: RunnerContext = {
+		workingDir,
+		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug"])
+	};
 	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 
-	const taskConfig = task.configResolver({ context });
-
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
-	const workingDir = Path.resolve(options.projectDir, taskConfig.workingDir ?? "");
 
 	const cacheValidator = new CacheValidator(taskName, taskConfig, { workingDir, cache: nadle.options.cache, projectDir: nadle.options.projectDir });
 	const validationResult = await cacheValidator.validate();
@@ -39,7 +44,7 @@ export default async ({ port, options, taskName, env: originalEnv }: WorkerParam
 
 		environmentInjector.apply();
 
-		await task.run({ options: taskOptions, context: { ...context, workingDir } });
+		await task.run({ context, options: taskOptions });
 
 		environmentInjector.restore();
 	};

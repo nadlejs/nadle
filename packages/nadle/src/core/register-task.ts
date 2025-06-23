@@ -25,8 +25,8 @@ export function registerTask(name: string, task?: TaskFn | Task, optionsResolver
 			name,
 			status: TaskStatus.Registered,
 			result: { duration: null, startTime: null },
-			configResolver: (params) => {
-				return typeof configCollector === "function" ? configCollector(params) : configCollector;
+			configResolver: () => {
+				return typeof configCollector === "function" ? configCollector() : configCollector;
 			},
 			...computeTaskInfo(task, optionsResolver)
 		});

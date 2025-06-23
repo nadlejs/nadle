@@ -14,8 +14,8 @@ export const DeleteTask: Task<DeleteTaskOptions> = {
 		const { workingDir } = context;
 
 		const matchPaths = await glob(paths, { cwd: workingDir });
-		context.nadle.logger.info(`Current working dir: ${workingDir}`);
-		context.nadle.logger.info("Deleting paths:", matchPaths.map(normalizeGlobPath).join(", "));
+		context.logger.info(`Current working dir: ${workingDir}`);
+		context.logger.info("Deleting paths:", matchPaths.map(normalizeGlobPath).join(", "));
 
 		await rimraf(paths, { ...restOptions, glob: { cwd: workingDir, ...restOptions } });
 	}

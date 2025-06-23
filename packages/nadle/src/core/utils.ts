@@ -43,3 +43,17 @@ export async function hashFile(filePath: string): Promise<string> {
 
 	return Crypto.createHash("sha256").update(content).digest("hex");
 }
+
+export function bindObject<T, K extends keyof T>(obj: T, keys: K[]): { [P in K]: T[P] extends (...args: any[]) => any ? T[P] : never } {
+	return Object.fromEntries(
+		keys.map((key) => {
+			const value = obj[key];
+
+			if (typeof value !== "function") {
+				throw new Error(`Property ${String(key)} is not a function`);
+			}
+
+			return [key, value.bind(obj)];
+		})
+	) as any;
+}

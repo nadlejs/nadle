@@ -14,7 +14,7 @@ import { TaskScheduler } from "./task-scheduler.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
 import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/index.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
 	public static readonly version: string = "0.3.7"; // x-release-please-version
@@ -73,7 +73,7 @@ export class Nadle {
 			return;
 		}
 
-		const scheduler = new TaskScheduler({ nadle: this }, tasks);
+		const scheduler = new TaskScheduler(tasks, { nadle: this });
 		await this.onTasksScheduled(scheduler.scheduledTask);
 
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
@@ -86,7 +86,7 @@ export class Nadle {
 			return;
 		}
 
-		const orderedTasks = new TaskScheduler({ nadle: this }, tasks).getOrderedTasks();
+		const orderedTasks = new TaskScheduler(tasks, { nadle: this }).getOrderedTasks();
 
 		this.logger.log(c.bold("Execution plan:"));
 
@@ -135,7 +135,7 @@ export class Nadle {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
 		for (const task of this.registry.getAll()) {
-			const { description, group = UnnamedGroup } = task.configResolver({ context: { nadle: this } });
+			const { description, group = UnnamedGroup } = task.configResolver();
 
 			tasksByGroup[group] ??= [];
 			tasksByGroup[group].push({ ...task, description });

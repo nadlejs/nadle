@@ -1,19 +1,25 @@
 import { type Nadle } from "./nadle.js";
+import { type ILogger } from "./logger.js";
 import { type Declaration } from "./caching/declaration.js";
 
 export type Awaitable<T> = T | PromiseLike<T>;
 
-export interface Context {
+export interface RunnerContext {
+	readonly logger: ILogger;
+	readonly workingDir: string;
+}
+
+export interface InternalContext {
 	readonly nadle: Nadle;
 }
 
-export type Callback<T = unknown, P = { context: Context }> = (params: P) => T;
+export type Callback<T = unknown, P = void> = (params: P) => T;
 export type Resolver<T = unknown> = T | Callback<T>;
 
-export type TaskFn = Callback<Awaitable<void>, { context: Context & { workingDir: string } }>;
+export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
 
 export interface Task<Options = unknown> {
-	run: Callback<Awaitable<void>, { options: Options; context: Context & { workingDir: string } }>;
+	run: Callback<Awaitable<void>, { options: Options; context: RunnerContext }>;
 }
 
 export type TaskEnv = Record<string, string | number | boolean>;

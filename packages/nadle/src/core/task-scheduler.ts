@@ -1,8 +1,8 @@
 import c from "tinyrainbow";
 
-import { type Context } from "./types.js";
 import { EnsureMap } from "./ensure-map.js";
 import { RIGHT_ARROW } from "./constants.js";
+import { type InternalContext } from "./types.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
@@ -24,8 +24,8 @@ export class TaskScheduler {
 	private mainTask: string | undefined = undefined;
 
 	constructor(
-		private readonly context: Context,
-		private readonly taskNames: string[]
+		private readonly taskNames: string[],
+		private readonly context: InternalContext
 	) {
 		taskNames.forEach((taskName) => this.analyze(taskName));
 		taskNames.forEach((taskName) => this.detectCycle(taskName, [taskName]));
@@ -58,9 +58,7 @@ export class TaskScheduler {
 		}
 
 		const task = this.context.nadle.registry.getByName(taskName);
-		const dependencies = new Set(
-			(task.configResolver({ context: this.context }).dependsOn ?? []).filter((task) => !this.context.nadle.options.excludedTasks.includes(task))
-		);
+		const dependencies = new Set((task.configResolver().dependsOn ?? []).filter((task) => !this.context.nadle.options.excludedTasks.includes(task)));
 
 		this.dependencyGraph.set(taskName, dependencies);
 		this.indegree.set(taskName, dependencies.size);
