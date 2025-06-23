@@ -47,19 +47,16 @@ Nadle addresses these challenges with its unique combination of features:
 ## Key Benefits
 
 1. **Increased Productivity**
-
    - Faster build times through parallel execution
    - Fewer errors thanks to type safety
    - Better development experience with modern tooling
 
 2. **Better Maintainability**
-
    - Type-safe codebase
    - Clear task dependencies
    - Modular configuration
 
 3. **Modern Development**
-
    - ESM support
    - Latest Node.js features
    - Contemporary best practices

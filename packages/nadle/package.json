@@ -49,12 +49,12 @@
 		"@types/yargs": "^17.0.33",
 		"@vitest/expect": "^3.2.4",
 		"fixturify": "^3.0.0",
-		"knip": "^5.61.0",
+		"knip": "^5.61.2",
 		"size-limit": "^11.2.0",
 		"strip-ansi": "^7.1.0",
 		"tsup": "^8.5.0",
 		"typescript": "^5.8.2",
-		"vitest": "3.2.3"
+		"vitest": "3.2.4"
 	},
 	"engines": {
 		"node": ">=20"
