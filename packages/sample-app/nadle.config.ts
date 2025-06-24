@@ -8,7 +8,8 @@ import { createTask } from "./create-task.js";
 configure({
 	maxWorkers: 3,
 	logLevel: "info",
-	showSummary: false
+	showSummary: false,
+	cacheDir: "../.nadle-2"
 });
 
 /**

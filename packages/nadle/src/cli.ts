@@ -17,6 +17,7 @@ const argv = yargs(hideBin(process.argv))
 	.option(CLIOptions.exclude.key, CLIOptions.exclude.options)
 	.option(CLIOptions.noCache.key, CLIOptions.noCache.options)
 	.option(CLIOptions.cache.key, CLIOptions.cache.options)
+	.option(CLIOptions.cacheDir.key, CLIOptions.cacheDir.options)
 	.option(CLIOptions.logLevel.key, CLIOptions.logLevel.options)
 	.option(CLIOptions.list.key, CLIOptions.list.options)
 	.option(CLIOptions.dryRun.key, CLIOptions.dryRun.options)
@@ -39,7 +40,11 @@ const argv = yargs(hideBin(process.argv))
 		],
 		"Execution options:"
 	)
-	.group([CLIOptions.configPath.key, CLIOptions.logLevel.key, CLIOptions.minWorkers.key, CLIOptions.maxWorkers.key], "General options:")
+
+	.group(
+		[CLIOptions.configPath.key, CLIOptions.cacheDir.key, CLIOptions.logLevel.key, CLIOptions.minWorkers.key, CLIOptions.maxWorkers.key],
+		"General options:"
+	)
 	.group(["help", "version"], "Miscellaneous options:")
 	.wrap(100)
 	.strict()

@@ -85,22 +85,23 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
-[info] Resolved options: { cache: true,
-  parallel: false,
-  logLevel: 'info',
-  showConfig: false,
-  showSummary: false,
-  excludedTasks: [],
-  isWorkerThread: false,
-  maxWorkers: 1,
-  list: false,
-  dryRun: false,
-  stacktrace: false,
-  minWorkers: 1,
-  projectDir:
-   '/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__',
-  configPath:
-   '/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts' }
+[info] Resolved options: {
+  "cache": true,
+  "parallel": false,
+  "logLevel": "info",
+  "showConfig": false,
+  "showSummary": false,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/.nadle",
+  "projectDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
+  "minWorkers": 1,
+  "configPath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts"
+}
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
 [info] Resolved tasks: [ deleteJsonFiles ]

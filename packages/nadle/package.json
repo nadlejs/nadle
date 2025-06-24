@@ -13,8 +13,7 @@
 	},
 	"files": [
 		"lib",
-		"nadle.mjs",
-		"CHANGELOG.md"
+		"nadle.mjs"
 	],
 	"exports": {
 		".": {

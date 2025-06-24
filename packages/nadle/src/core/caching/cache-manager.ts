@@ -13,7 +13,10 @@ export class CacheManager {
 	private static readonly OUTPUTS_DIR_NAME = "outputs";
 	private static readonly META_FILE_NAME = "metadata.json";
 
-	constructor(private readonly projectDir: string) {}
+	constructor(
+		private readonly projectDir: string,
+		private readonly cacheDir: string
+	) {}
 
 	async hasCache(cacheQuery: CacheQuery): Promise<boolean> {
 		return isPathExists(this.getRunMetadataPath(cacheQuery));
@@ -45,7 +48,7 @@ export class CacheManager {
 		return Path.join(this.getBaseTaskPath(taskName), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.META_FILE_NAME);
 	}
 
-	async restoreOutputs(cacheQuery: CacheQuery, projectDir: string): Promise<void> {
+	async restoreOutputs(cacheQuery: CacheQuery): Promise<void> {
 		const outputsCacheDir = this.getOutputsCacheDirPath(cacheQuery);
 
 		const entries = await Fs.readdir(outputsCacheDir, { recursive: true, withFileTypes: true });
@@ -56,18 +59,18 @@ export class CacheManager {
 			}
 
 			const sourcePath = Path.join(entry.parentPath, entry.name);
-			const targetPath = Path.join(projectDir, Path.relative(outputsCacheDir, sourcePath));
+			const targetPath = Path.join(this.projectDir, Path.relative(outputsCacheDir, sourcePath));
 
 			await Fs.mkdir(Path.dirname(targetPath), { recursive: true });
 			await Fs.copyFile(sourcePath, targetPath);
 		}
 	}
 
-	async saveOutputs(cacheQuery: CacheQuery, projectDir: string, outputPaths: string[]): Promise<void> {
+	async saveOutputs(cacheQuery: CacheQuery, outputPaths: string[]): Promise<void> {
 		const outputsCacheDir = this.getOutputsCacheDirPath(cacheQuery);
 
 		for (const sourcePath of outputPaths) {
-			const relativePath = Path.relative(projectDir, sourcePath);
+			const relativePath = Path.relative(this.projectDir, sourcePath);
 			const targetPath = Path.join(outputsCacheDir, relativePath);
 
 			await Fs.mkdir(Path.dirname(targetPath), { recursive: true });
@@ -107,6 +110,6 @@ export class CacheManager {
 	}
 
 	private getBaseTaskPath(taskName: string) {
-		return Path.join(this.projectDir, CacheManager.CACHE_DIR_NAME, CacheManager.TASKS_DIR_NAME, taskName);
+		return Path.join(this.cacheDir, CacheManager.TASKS_DIR_NAME, taskName);
 	}
 }

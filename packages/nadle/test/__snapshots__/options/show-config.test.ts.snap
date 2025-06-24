@@ -17,8 +17,9 @@ exports[`--show-config > should show config > stdout 1`] = `
   "list": false,
   "dryRun": false,
   "stacktrace": false,
-  "minWorkers": 1,
+  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/main",
+  "minWorkers": 1,
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
 [log] 
@@ -44,6 +45,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
   "list": false,
   "dryRun": false,
   "stacktrace": false,
+  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/main",
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
