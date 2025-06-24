@@ -28,11 +28,11 @@ export const CopyTask: Task<CopyTaskOptions>;
 // @public (undocumented)
 export interface CopyTaskOptions {
     // (undocumented)
-    readonly exclude?: string | string[];
+    readonly exclude?: MaybeArray<string>;
     // (undocumented)
     readonly from: string;
     // (undocumented)
-    readonly include?: string | string[];
+    readonly include?: MaybeArray<string>;
     // (undocumented)
     readonly to: string;
 }
@@ -91,6 +91,15 @@ export namespace Inputs {
     export function dirs(...patterns: string[]): DirDeclaration;
     // (undocumented)
     export function files(...patterns: string[]): FileDeclaration;
+}
+
+// @public (undocumented)
+export type MaybeArray<T> = T | T[];
+
+// @public (undocumented)
+export namespace MaybeArray {
+    // (undocumented)
+    export function toArray<T>(value: MaybeArray<T>): T[];
 }
 
 // @public (undocumented)
