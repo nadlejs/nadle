@@ -8,9 +8,9 @@ exports[`--config > should precedence the js config file over the ts config file
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/mixed-ts-js/nadle.config.js!
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -23,9 +23,9 @@ exports[`--config > should precedence the ts config file over the mts config fil
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/mixed-ts-mts/nadle.config.ts!
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -38,9 +38,9 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/cjs-js/nadle.config.js!
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -53,9 +53,9 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts!
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -68,9 +68,9 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/esm-js/nadle.config.js!
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -83,9 +83,9 @@ exports[`--config > should use the existent config path if not specify --config 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/esm-ts/nadle.config.ts!
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;

@@ -67,7 +67,7 @@ exports[`configure > can override configured options from config file if the cli
   "minWorkers": 1
 }
 [info] Execution finished
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;

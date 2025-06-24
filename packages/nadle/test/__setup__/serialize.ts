@@ -11,8 +11,16 @@ export function serialize(input: string): string {
 		serializeStackTrace,
 		serializeHash,
 		serializeVersion,
-		removeUnstableLines
+		removeUnstableLines,
+		removeTrailingSpaces
 	].reduce((result, serializer) => serializer(result), input);
+}
+
+function removeTrailingSpaces(input: string) {
+	return input
+		.split("\n")
+		.map((line) => line.trimEnd())
+		.join("\n");
 }
 
 const UnstableLines = ["ExperimentalWarning", "--trace-warnings"];

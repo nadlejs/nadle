@@ -8,9 +8,9 @@ exports[`traverse-up > can traverse up to pick the config file from ./a > stdout
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -23,9 +23,9 @@ exports[`traverse-up > can traverse up to pick the config file from ./a/a1 > std
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a/a1
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -38,9 +38,9 @@ exports[`traverse-up > can traverse up to pick the config file from ./a/a1/a11/a
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a/a1/a11/a112
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -53,9 +53,9 @@ exports[`traverse-up > can traverse up to pick the config file from ./a/a1/a12 >
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
 Hello from /ROOT/test/__fixtures__/traverse-up/a/a1/a12
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;

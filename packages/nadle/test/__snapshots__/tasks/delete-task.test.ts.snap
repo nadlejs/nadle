@@ -7,9 +7,9 @@ exports[`deleteTask > given a file path > can delete it > stdout 1`] = `
 
 [log] <Yellow>></Yellow> Task <Bold>deleteFileBaz</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>deleteFileBaz</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -21,9 +21,9 @@ exports[`deleteTask > given a folder name > can delete it > stdout 1`] = `
 
 [log] <Yellow>></Yellow> Task <Bold>deleteFolderA</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>deleteFolderA</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -35,9 +35,9 @@ exports[`deleteTask > given a folder path > can delete it > stdout 1`] = `
 
 [log] <Yellow>></Yellow> Task <Bold>deleteFolderB1</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>deleteFolderB1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -49,9 +49,9 @@ exports[`deleteTask > given a glob > can delete all files match the glob > stdou
 
 [log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -110,10 +110,10 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 
 [info] Current working dir: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Deleting paths: ./package.json, ./a/bas.json, ./b/b1/qux.json
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>deleteJsonFiles</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [info] Execution finished
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -125,9 +125,9 @@ exports[`deleteTask > given multiple file paths > can delete them > stdout 1`] =
 
 [log] <Yellow>></Yellow> Task <Bold>deleteFilesFooBar</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>deleteFilesFooBar</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;

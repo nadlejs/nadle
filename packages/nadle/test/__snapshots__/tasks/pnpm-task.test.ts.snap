@@ -54,10 +54,10 @@ exports[`pnpm Task > can print command when log level = info > stdout 1`] = `
 
 [info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
 [info] pnpm command completed successfully.
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [info] Execution finished
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -69,9 +69,9 @@ exports[`pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -91,14 +91,14 @@ exports[`pnpm Task > throw error when running tsc command with error ts file > s
 </Inverse> </Reset> <BrightRed>             ~~~~~~</Reset>
 
 
-[log] 
+[log]
 Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
 
 
-[log] 
+[log]
 <Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
-[log] 
+[log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
-[log] 
+[log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;

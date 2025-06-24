@@ -9,9 +9,9 @@ exports[`execTask > can run pwd-1 command with configured workingDir > stdout 1`
 
 [log] /ROOT/test/__fixtures__/exec-task
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pwd-1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -25,9 +25,9 @@ exports[`execTask > can run pwd-2 command with configured workingDir > stdout 1`
 
 [log] /ROOT/test/__fixtures__/exec-task
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pwd-2</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -41,9 +41,9 @@ exports[`execTask > can run pwd-3 command with configured workingDir > stdout 1`
 
 [log] /ROOT/test/__fixtures__
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pwd-3</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -57,9 +57,9 @@ exports[`execTask > can run pwd-4 command with configured workingDir > stdout 1`
 
 [log] /ROOT/test
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pwd-4</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -73,9 +73,9 @@ exports[`execTask > can run pwd-5 command with configured workingDir > stdout 1`
 
 [log] /ROOT/test/__fixtures__/main
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pwd-5</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;

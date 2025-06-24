@@ -23,6 +23,21 @@ export interface ConfigBuilder {
 export function configure(options: Partial<NadleConfigFileOptions>): void;
 
 // @public (undocumented)
+export const CopyTask: Task<CopyTaskOptions>;
+
+// @public (undocumented)
+export interface CopyTaskOptions {
+    // (undocumented)
+    readonly exclude?: MaybeArray<string>;
+    // (undocumented)
+    readonly from: string;
+    // (undocumented)
+    readonly include?: MaybeArray<string>;
+    // (undocumented)
+    readonly to: string;
+}
+
+// @public (undocumented)
 export type Declaration = FileDeclaration | DirDeclaration;
 
 // @public (undocumented)
@@ -76,6 +91,15 @@ export namespace Inputs {
     export function dirs(...patterns: string[]): DirDeclaration;
     // (undocumented)
     export function files(...patterns: string[]): FileDeclaration;
+}
+
+// @public (undocumented)
+export type MaybeArray<T> = T | T[];
+
+// @public (undocumented)
+export namespace MaybeArray {
+    // (undocumented)
+    export function toArray<T>(value: MaybeArray<T>): T[];
 }
 
 // @public (undocumented)

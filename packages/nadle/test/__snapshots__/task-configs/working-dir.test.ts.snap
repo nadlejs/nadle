@@ -8,9 +8,9 @@ exports[`workingDir > should print correct working directory for task current > 
 [log] <Yellow>></Yellow> Task <Bold>current</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__/main
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>current</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -23,9 +23,9 @@ exports[`workingDir > should print correct working directory for task oneLevelDo
 [log] <Yellow>></Yellow> Task <Bold>oneLevelDown</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__/main/subdir1
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>oneLevelDown</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -38,9 +38,9 @@ exports[`workingDir > should print correct working directory for task oneLevelUp
 [log] <Yellow>></Yellow> Task <Bold>oneLevelUp</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>oneLevelUp</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -53,9 +53,9 @@ exports[`workingDir > should print correct working directory for task twoLevelsD
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsDown</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test/__fixtures__/main/subdir1/subdir2
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>twoLevelsDown</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -68,9 +68,9 @@ exports[`workingDir > should print correct working directory for task twoLevelsU
 [log] <Yellow>></Yellow> Task <Bold>twoLevelsUp</BoldDim> <Yellow>STARTED</Yellow>
 
 Current working directory: /ROOT/test
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>twoLevelsUp</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;

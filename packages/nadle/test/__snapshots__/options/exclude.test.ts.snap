@@ -6,7 +6,7 @@ exports[`--exclude > should do nothing if it is also the only main specify task 
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;
@@ -18,17 +18,17 @@ exports[`--exclude > should exclude the specified excluded task > stdout 1`] = `
 
 [log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-A.1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-A.2</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-A</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>3</BoldDim> tasks executed
 `;
@@ -40,13 +40,13 @@ exports[`--exclude > should exclude the specified excluded tasks > stdout 1`] = 
 
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-A.2</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-A</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>2</BoldDim> tasks executed
 `;
@@ -58,21 +58,21 @@ exports[`--exclude > should run other tasks if it is also the main task > stdout
 
 [log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-B.0</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-B.1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-B.2</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>task-B</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>4</BoldDim> tasks executed
 `;
@@ -86,7 +86,7 @@ exports[`--exclude > should work with dry run > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;

@@ -22,7 +22,7 @@ exports[`--show-config > should show config > stdout 1`] = `
   "minWorkers": 1,
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;
@@ -49,7 +49,7 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
   "projectDir": "/ROOT/test/__fixtures__/main",
   "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;
