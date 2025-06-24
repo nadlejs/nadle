@@ -23,6 +23,21 @@ export interface ConfigBuilder {
 export function configure(options: Partial<NadleConfigFileOptions>): void;
 
 // @public (undocumented)
+export const CopyTask: Task<CopyTaskOptions>;
+
+// @public (undocumented)
+export interface CopyTaskOptions {
+    // (undocumented)
+    readonly exclude?: string | string[];
+    // (undocumented)
+    readonly from: string;
+    // (undocumented)
+    readonly include?: string | string[];
+    // (undocumented)
+    readonly to: string;
+}
+
+// @public (undocumented)
 export type Declaration = FileDeclaration | DirDeclaration;
 
 // @public (undocumented)

@@ -1,7 +1,7 @@
 import process from "node:process";
 
 import { Inputs } from "nadle";
-import { tasks, Outputs, ExecTask, type Task, configure } from "nadle";
+import { tasks, Outputs, ExecTask, CopyTask, type Task, configure } from "nadle";
 
 import { createTask } from "./create-task.js";
 
@@ -15,7 +15,6 @@ configure({
 /**
  * Basic tasks
  */
-
 tasks
 	.register("hello", async () => {
 		console.log("Hello from Nadle!");
@@ -31,14 +30,6 @@ tasks
 /**
  * Copy task
  */
-
-const CopyTask: Task<{ to: string; from: string }> = {
-	run: ({ options }) => {
-		const { to, from } = options;
-		console.log(`Copying from ${from} to ${to}`);
-	}
-};
-
 tasks.register("copy", CopyTask, { to: "dist/", from: "assets/" }).config({ dependsOn: ["prepare"] });
 
 tasks.register("prepare", async () => {

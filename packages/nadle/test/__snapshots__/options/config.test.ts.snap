@@ -60,6 +60,21 @@ Hello from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts!
 [log] <Bold>1</BoldDim> task executed
 `;
 
+exports[`--config > should use the existent config path if not specify --config in cjs-ts package > stdout 2`] = `
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts
+
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
+
+Hello from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts!
+[log] 
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] 
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
 exports[`--config > should use the existent config path if not specify --config in esm-js package > stdout 1`] = `
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
