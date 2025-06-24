@@ -54,72 +54,10 @@ exports[`pnpm Task > can print command when log level = info > stdout 1`] = `
 
 [info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
 [info] pnpm command completed successfully.
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [info] Execution finished
-[log] 
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>1</BoldDim> task executed
-`;
-
-exports[`pnpm Task > can print command when log level = info > stdout 2`] = `
-[info] Initialized logger with consola options: { types:
-   { silent: { level: -1 },
-     fatal: { level: 0 },
-     error: { level: 0 },
-     warn: { level: 1 },
-     log: { level: 2 },
-     info: { level: 3 },
-     success: { level: 3 },
-     fail: { level: 3 },
-     ready: { level: 3 },
-     start: { level: 3 },
-     box: { level: 3 },
-     debug: { level: 4 },
-     trace: { level: 5 },
-     verbose: { level: Infinity } },
-  throttle: 1000,
-  throttleMin: 5,
-  formatOptions: { date: false, colors: false, compact: true },
-  level: 3,
-  defaults: { level: 1 },
-  prompt: [Function: prompt],
-  reporters: [ BasicReporter {} ] }
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
-
-[info] Using 1 worker for task execution
-[info] Project directory: /ROOT/test/__fixtures__/pnpm-task
-[info] Resolved options: {
-  "cache": true,
-  "parallel": false,
-  "logLevel": "info",
-  "showConfig": false,
-  "showSummary": false,
-  "excludedTasks": [],
-  "isWorkerThread": false,
-  "maxWorkers": 1,
-  "list": false,
-  "dryRun": false,
-  "stacktrace": false,
-  "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/.nadle",
-  "projectDir": "/ROOT/test/__fixtures__/pnpm-task",
-  "minWorkers": 1,
-  "configPath": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts"
-}
-[info] Detected environments: { CI: false, TEST: true }
-[info] Execution started
-[info] Resolved tasks: [ pass ]
-[info] Scheduled tasks: pass
-[log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
-
-[info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
-[info] pnpm command completed successfully.
-[log] 
-<Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[info] Execution finished
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -131,9 +69,9 @@ exports[`pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
 
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] 
+[log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
@@ -153,14 +91,14 @@ exports[`pnpm Task > throw error when running tsc command with error ts file > s
 </Inverse> </Reset> <BrightRed>             ~~~~~~</Reset>
 
 
-[log] 
+[log]
 Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
 
 
-[log] 
+[log]
 <Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
-[log] 
+[log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
-[log] 
+[log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;

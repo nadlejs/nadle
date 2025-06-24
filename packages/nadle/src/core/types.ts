@@ -4,6 +4,13 @@ import { type Declaration } from "./caching/declaration.js";
 
 export type Awaitable<T> = T | PromiseLike<T>;
 
+export type MaybeArray<T> = T | T[];
+export namespace MaybeArray {
+	export function toArray<T>(value: MaybeArray<T>): T[] {
+		return Array.isArray(value) ? value : [value];
+	}
+}
+
 export interface RunnerContext {
 	readonly logger: ILogger;
 	readonly workingDir: string;

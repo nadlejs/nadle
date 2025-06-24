@@ -13,7 +13,7 @@ exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
 [log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>compile</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;
@@ -25,7 +25,7 @@ exports[`--dry-run > should list for one task > stdout 1`] = `
 
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim>
-[log] 
+[log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;

@@ -5,13 +5,14 @@ import fg from "fast-glob";
 import micromatch from "micromatch";
 
 import { type Task } from "../core/index.js";
+import { MaybeArray } from "../core/types.js";
 import { isPathExists } from "../core/fs-utils.js";
 
 export interface CopyTaskOptions {
 	readonly to: string;
 	readonly from: string;
-	readonly include?: string | string[];
-	readonly exclude?: string | string[];
+	readonly exclude?: MaybeArray<string>;
+	readonly include?: MaybeArray<string>;
 }
 
 export const CopyTask: Task<CopyTaskOptions> = {
@@ -22,9 +23,9 @@ export const CopyTask: Task<CopyTaskOptions> = {
 		const srcPath = Path.resolve(workingDir, from);
 		const destPath = Path.resolve(workingDir, to);
 
-		logger.info(`Copying from ${from} to ${to}`);
-		const includePatterns = Array.isArray(include) ? include : [include];
-		const excludePatterns = Array.isArray(exclude) ? exclude : [exclude];
+		logger.info(`Copying from ${from} to ${to} within working directory ${workingDir}`);
+		const includePatterns = MaybeArray.toArray(include);
+		const excludePatterns = MaybeArray.toArray(exclude);
 
 		logger.debug(`Include patterns: ${includePatterns.join(", ")}`);
 
@@ -52,14 +53,14 @@ export const CopyTask: Task<CopyTaskOptions> = {
 				ignore: excludePatterns
 			});
 
-			logger.info(`Found ${files.length} files to copy`);
+			logger.info(`Found ${files.length} file(s) to copy`);
 
 			for (const file of files) {
 				const source = Path.join(srcPath, file);
 				const target = Path.join(destPath, file);
 
 				await Fs.mkdir(Path.dirname(target), { recursive: true });
-				logger.log(`copy ${Path.relative(workingDir, source)} -> ${Path.relative(workingDir, target)}`);
+				logger.log(`Copy ${Path.relative(workingDir, source)} -> ${Path.relative(workingDir, target)}`);
 				await Fs.cp(source, target);
 			}
 
@@ -90,7 +91,7 @@ export const CopyTask: Task<CopyTaskOptions> = {
 		}
 
 		await Fs.mkdir(Path.dirname(targetFile), { recursive: true });
-		logger.log(`copy ${Path.relative(workingDir, srcPath)} -> ${Path.relative(workingDir, targetFile)}`);
+		logger.log(`Copy ${Path.relative(workingDir, srcPath)} -> ${Path.relative(workingDir, targetFile)}`);
 		await Fs.cp(srcPath, targetFile);
 		logger.info(`Copied file ${from} to ${to}`);
 	}
