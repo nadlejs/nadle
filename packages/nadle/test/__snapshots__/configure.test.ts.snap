@@ -29,22 +29,23 @@ exports[`configure > can override configured options from config file if the cli
 
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/main
-[info] Resolved options: { cache: true,
-  parallel: false,
-  logLevel: 'info',
-  showConfig: true,
-  showSummary: false,
-  excludedTasks: [],
-  isWorkerThread: false,
-  maxWorkers: 1,
-  configPath:
-   '/ROOT/test/__fixtures__/main/nadle.configure.ts',
-  list: false,
-  dryRun: false,
-  stacktrace: false,
-  cacheDir: '/ROOT/test/__fixtures__/main/.nadle',
-  projectDir: '/ROOT/test/__fixtures__/main',
-  minWorkers: 1 }
+[info] Resolved options: {
+  "cache": true,
+  "parallel": false,
+  "logLevel": "info",
+  "showConfig": true,
+  "showSummary": false,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "maxWorkers": 1,
+  "configPath": "/ROOT/test/__fixtures__/main/nadle.configure.ts",
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
+  "projectDir": "/ROOT/test/__fixtures__/main",
+  "minWorkers": 1
+}
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
 [info] Resolved tasks: [  ]
