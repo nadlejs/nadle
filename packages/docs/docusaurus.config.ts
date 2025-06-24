@@ -43,6 +43,10 @@ const config: Config = {
 				theme: {
 					customCss: "./src/css/custom.css"
 				},
+				gtag: {
+					anonymizeIP: true,
+					trackingID: "G-GSB7HYN9PC"
+				},
 				docs: {
 					sidebarPath: "./sidebars.ts",
 					// Please change this to your repo.
