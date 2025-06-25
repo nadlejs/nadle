@@ -1,3 +1,4 @@
+import Fs from "node:fs/promises";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
@@ -50,6 +51,8 @@ export class Nadle {
 				this.listTasks();
 			} else if (this.options.dryRun) {
 				this.dryRunTasks(resolvedTasks);
+			} else if (this.options.cleanCache) {
+				await this.cleanCache();
 			} else {
 				await this.runTasks(resolvedTasks);
 			}
@@ -95,7 +98,7 @@ export class Nadle {
 		}
 	}
 
-	listTasks() {
+	private listTasks() {
 		if (taskRegistry.getAll().length === 0) {
 			this.logger.log("No tasks found");
 
@@ -127,11 +130,21 @@ export class Nadle {
 		}
 	}
 
-	showConfig() {
+	private showConfig() {
 		this.logger.log(JSON.stringify(this.options, null, 2));
 	}
 
-	computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
+	private async cleanCache() {
+		try {
+			this.logger.log(`Cleaning cache at ${this.options.cacheDir}...`);
+			await Fs.rm(this.options.cacheDir, { force: true, recursive: true });
+		} catch (error) {
+			this.logger.error(`Failed to clean cache at ${this.options.cacheDir}:`, error);
+			throw error;
+		}
+	}
+
+	private computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
 		for (const task of this.registry.getAll()) {
@@ -158,7 +171,7 @@ export class Nadle {
 			});
 	}
 
-	printNoTasksFound() {
+	private printNoTasksFound() {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 

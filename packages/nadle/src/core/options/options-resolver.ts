@@ -23,6 +23,7 @@ export class OptionsResolver {
 		cache: true,
 		parallel: false,
 		logLevel: "log",
+		cleanCache: false,
 		showConfig: false,
 		showSummary: !isCI,
 		excludedTasks: [] as string[],

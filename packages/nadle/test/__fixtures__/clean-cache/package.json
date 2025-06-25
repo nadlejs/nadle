@@ -1,0 +1,11 @@
+{
+	"name": "@nadle/internal-fixture-clean-cache",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}
