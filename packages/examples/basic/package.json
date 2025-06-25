@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-example-basic",
+	"name": "@nadle/internal-examples-basic",
 	"description": "Sample package to demonstrate Nadle usage",
 	"type": "module",
 	"private": true,

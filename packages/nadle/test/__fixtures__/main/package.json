@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-main",
+	"name": "@nadle/internal-nadle-test-fixtures-main",
 	"type": "module",
 	"private": true,
 	"dependencies": {

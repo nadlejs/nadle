@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-project-dir-with-yarn",
+	"name": "@nadle/internal-nadle-test-fixtures-project-dir-with-yarn",
 	"type": "module",
 	"private": true,
 	"workspaces": [

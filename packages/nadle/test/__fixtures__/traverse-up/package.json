@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-traverse-up",
+	"name": "@nadle/internal-nadle-test-fixtures-traverse-up",
 	"type": "module",
 	"private": true,
 	"dependencies": {

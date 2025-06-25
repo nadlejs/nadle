@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-task-context-working-dir",
+	"name": "@nadle/internal-nadle-test-fixtures-task-context-working-dir",
 	"type": "module",
 	"private": true,
 	"dependencies": {

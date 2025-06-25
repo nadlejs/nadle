@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-copy-task",
+	"name": "@nadle/internal-nadle-test-fixtures-copy-task",
 	"type": "module",
 	"private": true,
 	"dependencies": {

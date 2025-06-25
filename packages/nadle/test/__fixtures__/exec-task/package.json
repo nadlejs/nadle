@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-exec-task",
+	"name": "@nadle/internal-nadle-test-fixtures-exec-task",
 	"type": "module",
 	"private": true,
 	"dependencies": {

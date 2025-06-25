@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-caching-input",
+	"name": "@nadle/internal-nadle-test-fixtures-caching-input",
 	"type": "module",
 	"private": true,
 	"dependencies": {

@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-cache-dir-with-config",
+	"name": "@nadle/internal-nadle-test-fixtures-cache-dir-with-config",
 	"type": "module",
 	"private": true,
 	"dependencies": {

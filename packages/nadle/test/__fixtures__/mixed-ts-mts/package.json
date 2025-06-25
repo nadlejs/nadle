@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-cjs-js",
+	"name": "@nadle/internal-nadle-test-fixtures-mixed-ts-mts",
 	"type": "commonjs",
 	"private": true,
 	"dependencies": {

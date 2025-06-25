@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-delete-task",
+	"name": "@nadle/internal-nadle-test-fixtures-delete-task",
 	"type": "module",
 	"private": true,
 	"dependencies": {
