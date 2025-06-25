@@ -6,7 +6,7 @@ import NadlePackageJson from "../nadle/package.json";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
-const GITHUB_REPO_URL = "https://github.com/nam-hle/nadle";
+const GITHUB_REPO_URL = "https://github.com/nadlejs/nadle";
 
 const config: Config = {
 	title: "Nadle",
