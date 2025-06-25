@@ -20,6 +20,7 @@
 		"task-A-exclude": "nadle task-A -x task-A.1",
 		"task-C": "nadle task-C",
 		"compileTs": "nadle compileTs",
+		"cleanCache": "nadle --clean-cache",
 		"post-throwable": "nadle post-throwable",
 		"unknown": "nadle unknown",
 		"task-cycle-3": "nadle task-cycle-3",

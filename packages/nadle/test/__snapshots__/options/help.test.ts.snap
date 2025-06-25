@@ -11,6 +11,8 @@ Execution options:
   -x, --exclude      Tasks to exclude from execution                                         [array]
       --no-cache     Disable task caching. All tasks will be executed and their results will not be
                      stored                                               [boolean] [default: false]
+      --clean-cache  Deletes all files in the cache directory. Can be used with --cache-dir to
+                     specify a custom location                            [boolean] [default: false]
   -l, --list         List all available tasks                             [boolean] [default: false]
   -m, --dry-run      Run specified tasks in dry run mode                  [boolean] [default: false]
       --show-config  Print the resolved configuration                     [boolean] [default: false]

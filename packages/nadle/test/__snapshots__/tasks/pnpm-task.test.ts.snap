@@ -33,6 +33,7 @@ exports[`pnpm Task > can print command when log level = info > stdout 1`] = `
   "cache": true,
   "parallel": false,
   "logLevel": "info",
+  "cleanCache": false,
   "showConfig": false,
   "showSummary": false,
   "excludedTasks": [],

@@ -88,6 +88,14 @@ export const CLIOptions = {
 			description: "Directory to store task cache results"
 		}
 	},
+	cleanCache: {
+		key: "clean-cache",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Deletes all files in the cache directory. Can be used with --cache-dir to specify a custom location"
+		}
+	},
 
 	exclude: {
 		key: "exclude",

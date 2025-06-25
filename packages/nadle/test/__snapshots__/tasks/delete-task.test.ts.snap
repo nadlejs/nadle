@@ -89,6 +89,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
   "cache": true,
   "parallel": false,
   "logLevel": "info",
+  "cleanCache": false,
   "showConfig": false,
   "showSummary": false,
   "excludedTasks": [],

@@ -6,8 +6,6 @@ import { type CacheQuery } from "./cache-query.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
 
 export class CacheManager {
-	private static readonly CACHE_DIR_NAME = ".nadle";
-
 	private static readonly RUNS_DIR_NAME = "runs";
 	private static readonly TASKS_DIR_NAME = "tasks";
 	private static readonly OUTPUTS_DIR_NAME = "outputs";
