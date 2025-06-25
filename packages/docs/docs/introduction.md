@@ -1,36 +1,36 @@
 # Introduction
 
-Nadle is a **modern**, **type-safe**, **Gradle-inspired** task runner for Node.js.  
+Nadle is a **modern**, **type-safe**, **Gradle-inspired** task runner for Node.js.
 Built from the ground up with TypeScript, Nadle helps developers define and orchestrate project workflows with clarity, safety, and speed.
 
 ## ✨ Why Nadle?
 
-- 🛡️ **Type-Safe by Design**  
+- 🛡️ **Type-Safe by Design**
   Written in TypeScript with full type inference and compile-time validation for every task.
 
-- ⚡ **Smart Parallel Execution**  
+- ⚡ **Smart Parallel Execution**
   Automatically runs independent tasks in parallel while respecting declared dependencies. Supports worker pool configuration.
 
-- 🧠 **Modern Architecture**  
+- 🧠 **Modern Architecture**
   Native ESM support, Node.js 20+ only. Zero legacy baggage.
 
-- 🧩 **Extensible Plugin System**  
+- 🧩 **Extensible Plugin System**
   Easily create typed plugins with hooks, custom task types, and integrations. Core plugin set coming soon.
 
-- 🧘‍♂️ **Intuitive Task Management**  
+- 🧘‍♂️ **Intuitive Task Management**
   Simple and declarative `nadle.config.ts`. Group tasks, add descriptions, and define dependencies clearly.
 
-- 🖥️ **Real-Time Feedback**  
+- 🖥️ **Real-Time Feedback**
   Live progress tracking and performance metrics make task execution transparent and reliable.
 
-- 🧠 **Abbreviation Matching**  
+- 🧠 **Abbreviation Matching**
   Run tasks via short patterns (`b` for `build`) — fast and user-friendly CLI UX.
 
 ---
 
 ## 🧪 Try Nadle Now
 
-👉 Use [StackBlitz](https://stackblitz.com/github/nam-hle/nadle/tree/main/packages/examples/basic?file=package.json) to try Nadle instantly in your browser.  
+👉 Use [StackBlitz](https://stackblitz.com/github/nadlejs/nadle/tree/main/packages/examples/basic?file=package.json) to try Nadle instantly in your browser.
 🚧 A CLI installer for local setup is coming soon.
 
 ---
@@ -77,8 +77,8 @@ Nadle works seamlessly in:
 
 ## 🧑‍💻 Contribute
 
-Have ideas or feedback?  
-📬 [Open an issue on GitHub](https://github.com/nam-hle/nadle/issues) — we welcome your input!
+Have ideas or feedback?
+📬 [Open an issue on GitHub](https://github.com/nadlejs/nadle/issues) — we welcome your input!
 
 ---
 

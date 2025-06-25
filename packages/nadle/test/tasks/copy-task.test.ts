@@ -1,8 +1,9 @@
+import { isWindows } from "std-env";
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
 import { expectPass, withFixture } from "setup";
 
-describe("copyTask", () => {
+describe.skipIf(isWindows)("copyTask", () => {
 	const files: fixturify.DirJSON = {
 		"foo.txt": "foo contents",
 		assets: {

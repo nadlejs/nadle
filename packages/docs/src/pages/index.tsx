@@ -23,13 +23,13 @@ function HomepageHeader() {
 					</Link>
 					<Link
 						className="button button--info button--outline button--lg"
-						to="https://codesandbox.io/p/sandbox/github/nam-hle/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
+						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
 						Try it Online
 					</Link>
 					<span className={styles.indexCtasGitHubButtonWrapper}>
 						<iframe
 							className={styles.indexCtasGitHubButton}
-							src="https://ghbtns.com/github-btn.html?user=nam-hle&amp;repo=nadle&amp;type=star&amp;count=true&amp;size=large"
+							src="https://ghbtns.com/github-btn.html?user=nadlejs&amp;repo=nadle&amp;type=star&amp;count=true&amp;size=large"
 							width={160}
 							height={30}
 							title="GitHub Stars"
@@ -141,7 +141,7 @@ function CodeExample() {
 // Define tasks with dependencies
 tasks.register("build", async () => {
   console.log("Building...");
-}).config({ 
+}).config({
   dependsOn: ["compile", "test"],
   description: "Build the project"
 });

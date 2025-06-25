@@ -62,11 +62,12 @@
 	},
 	"author": {
 		"name": "Nam Hoang Le",
-		"email": "namhoangle.dev@gmail.com"
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nam-hle/nadle.git",
+		"url": "git+https://github.com/nadlejs/nadle.git",
 		"directory": "packages/nadle"
 	},
 	"keywords": [
@@ -83,7 +84,7 @@
 		"lightweight"
 	],
 	"homepage": "https://nadle.dev",
-	"bugs": "https://github.com/nam-hle/nadle/issues",
+	"bugs": "https://github.com/nadlejs/nadle/issues",
 	"size-limit": [
 		{
 			"path": "lib/**",
