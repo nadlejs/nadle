@@ -62,7 +62,8 @@
 	},
 	"author": {
 		"name": "Nam Hoang Le",
-		"email": "namhoangle.dev@gmail.com"
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
 	},
 	"repository": {
 		"type": "git",
