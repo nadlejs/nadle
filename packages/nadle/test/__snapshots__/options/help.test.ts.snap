@@ -27,6 +27,8 @@ General options:
                                                    [string] [default: Os.availableParallelism() - 1]
       --max-workers  Maximum number of workers (integer or percentage)
                                                    [string] [default: Os.availableParallelism() - 1]
+      --footer       Enables the in-progress summary footer during task execution
+                                                                          [boolean] [default: !isCI]
 
 Miscellaneous options:
   -h, --help     Show this help                                                            [boolean]

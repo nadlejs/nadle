@@ -21,11 +21,11 @@ export class OptionsResolver {
 
 	private readonly defaultOptions = {
 		cache: true,
+		footer: !isCI,
 		parallel: false,
 		logLevel: "log",
 		cleanCache: false,
 		showConfig: false,
-		showSummary: !isCI,
 		excludedTasks: [] as string[],
 
 		isWorkerThread: false

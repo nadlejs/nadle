@@ -31,11 +31,11 @@ exports[`configure > can override configured options from config file if the cli
 [info] Project directory: /ROOT/test/__fixtures__/main
 [info] Resolved options: {
   "cache": true,
+  "footer": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": true,
-  "showSummary": false,
   "excludedTasks": [],
   "isWorkerThread": false,
   "maxWorkers": 1,
@@ -52,11 +52,11 @@ exports[`configure > can override configured options from config file if the cli
 [info] Resolved tasks: [  ]
 [log] {
   "cache": true,
+  "footer": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": true,
-  "showSummary": false,
   "excludedTasks": [],
   "isWorkerThread": false,
   "maxWorkers": 1,

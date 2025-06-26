@@ -1,9 +1,9 @@
 import { it, expect, describe } from "vitest";
 import { exec, createExec, serializeANSI } from "setup";
 
-describe("--show-summary", { timeout: 10000 }, () => {
+describe("--footer", { timeout: 10000 }, () => {
 	it("should show in-progress summary when enable explicitly", async () => {
-		const { stdout, exitCode } = await exec`copy --show-summary --max-workers 2`;
+		const { stdout, exitCode } = await exec`copy --footer --max-workers 2`;
 
 		expect(exitCode).toBe(0);
 
@@ -21,7 +21,7 @@ describe("--show-summary", { timeout: 10000 }, () => {
 	});
 
 	it("should not show summary when disabled explicitly", async () => {
-		const { stdout, exitCode } = await exec`copy --no-show-summary`;
+		const { stdout, exitCode } = await exec`copy --no-footer`;
 
 		expect(exitCode).toBe(0);
 		expect(serializeANSI(stdout as string)).not.contain(`<Dim>Tasks      </BoldDim>`);
