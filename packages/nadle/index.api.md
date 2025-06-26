@@ -113,6 +113,8 @@ export interface NadleUserBaseOptions {
     // (undocumented)
     readonly cacheDir?: string;
     // (undocumented)
+    readonly footer?: boolean;
+    // (undocumented)
     readonly logLevel?: SupportLogLevel;
     // (undocumented)
     readonly maxWorkers?: number | string;
@@ -120,8 +122,6 @@ export interface NadleUserBaseOptions {
     readonly minWorkers?: number | string;
     // (undocumented)
     readonly parallel?: boolean;
-    // (undocumented)
-    readonly showSummary?: boolean;
 }
 
 // @public (undocumented)

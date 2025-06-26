@@ -23,7 +23,7 @@ const argv = yargs(hideBin(process.argv))
 	.option(CLIOptions.list.key, CLIOptions.list.options)
 	.option(CLIOptions.dryRun.key, CLIOptions.dryRun.options)
 	.option(CLIOptions.showConfig.key, CLIOptions.showConfig.options)
-	.option(CLIOptions.showSummary.key, CLIOptions.showSummary.options)
+	.option(CLIOptions.footer.key, CLIOptions.footer.options)
 	.option(CLIOptions.stacktrace.key, CLIOptions.stacktrace.options)
 	.version("version", "Show version number", Nadle.version)
 	.alias("v", "version")
@@ -44,7 +44,14 @@ const argv = yargs(hideBin(process.argv))
 	)
 
 	.group(
-		[CLIOptions.configPath.key, CLIOptions.cacheDir.key, CLIOptions.logLevel.key, CLIOptions.minWorkers.key, CLIOptions.maxWorkers.key],
+		[
+			CLIOptions.configPath.key,
+			CLIOptions.cacheDir.key,
+			CLIOptions.logLevel.key,
+			CLIOptions.minWorkers.key,
+			CLIOptions.maxWorkers.key,
+			CLIOptions.footer.key
+		],
 		"General options:"
 	)
 	.group(["help", "version"], "Miscellaneous options:")

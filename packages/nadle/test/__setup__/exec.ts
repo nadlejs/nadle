@@ -29,8 +29,8 @@ export function createExec(options?: ExecOptions): Exec {
 		}
 
 		// Disable summary if not specified
-		if (autoDisabledSummary && !command.includes("--show-summary") && !command.includes("--no-show-summary")) {
-			command = "--no-show-summary " + command;
+		if (autoDisabledSummary && !command.includes("--footer") && !command.includes("--no-footer")) {
+			command = "--no-footer " + command;
 		}
 
 		// Enforce one worker if not specified

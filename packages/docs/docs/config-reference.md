@@ -41,8 +41,8 @@ nadle --config ./configs/nadle.config.ts
 
 Specifies one or more task names to exclude from execution.
 
-This flag allows selectively skipping certain tasks, which is useful when running a broad task group but needing to omit specific ones.  
-Multiple exclusions can be provided either as separate flags (`--exclude lint --exclude test`) or as a comma-separated list (`--exclude lint,test`).  
+This flag allows selectively skipping certain tasks, which is useful when running a broad task group but needing to omit specific ones.
+Multiple exclusions can be provided either as separate flags (`--exclude lint --exclude test`) or as a comma-separated list (`--exclude lint,test`).
 Whitespace around task names is trimmed automatically.
 
 ### `--list`
@@ -124,16 +124,16 @@ Set the logging verbosity level. Higher levels include all lower level logs.
 Executes the specified tasks in parallel regardless of their order,
 while still respecting their configured dependencies—unless a later task is a dependency of an earlier one.
 
-### `showSummary`
+### `footer`
 
 - **Type:** `boolean`
 - **Default:** `!isCI`
-- **CLI:** `--show-summary`
+- **CLI:** `--footer`, `--no-footer`
 
 Displays real-time progress information during task execution.
 Includes the number of scheduled tasks, running tasks, finished tasks, and other execution stats.
 Useful for tracking task flow in complex or long-running builds.
-Defaults to `true` unless running in a CI environment.
+Defaults to `false` unless running in a CI environment.
 
 ### `maxWorkers`
 
@@ -175,7 +175,7 @@ For example, on an 8-core machine, `50%` means at least 4 workers will be used.
 
 Disables the caching mechanism for all tasks in the current run.
 
-When this flag is set, all tasks will be executed unconditionally, regardless of whether their inputs or outputs have changed.  
+When this flag is set, all tasks will be executed unconditionally, regardless of whether their inputs or outputs have changed.
 This is useful in scenarios where the cache might be outdated, or when debugging and ensuring that all logic runs from scratch.
 
 Use this flag to force fresh execution and bypass any cached results.
@@ -192,6 +192,6 @@ configure({
 	logLevel: "info",
 	minWorkers: 2,
 	maxWorkers: 4,
-	showSummary: false
+	footer: false
 });
 ```

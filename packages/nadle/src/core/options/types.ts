@@ -4,8 +4,8 @@ export interface NadleUserBaseOptions {
 	readonly cache?: boolean;
 	readonly cacheDir?: string;
 
+	readonly footer?: boolean;
 	readonly parallel?: boolean;
-	readonly showSummary?: boolean;
 	readonly logLevel?: SupportLogLevel;
 	readonly minWorkers?: number | string;
 	readonly maxWorkers?: number | string;

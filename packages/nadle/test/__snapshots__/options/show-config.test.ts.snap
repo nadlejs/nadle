@@ -7,11 +7,11 @@ exports[`--show-config > should show config > stdout 1`] = `
 
 [log] {
   "cache": true,
+  "footer": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
-  "showSummary": false,
   "excludedTasks": [],
   "isWorkerThread": false,
   "maxWorkers": 1,
@@ -35,11 +35,11 @@ exports[`--show-config > should show config with extra options > stdout 1`] = `
 
 [log] {
   "cache": true,
+  "footer": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
-  "showSummary": false,
   "excludedTasks": [],
   "isWorkerThread": false,
   "minWorkers": 2,

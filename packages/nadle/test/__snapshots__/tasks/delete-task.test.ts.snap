@@ -87,11 +87,11 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 [info] Project directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Resolved options: {
   "cache": true,
+  "footer": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": false,
-  "showSummary": false,
   "excludedTasks": [],
   "isWorkerThread": false,
   "maxWorkers": 1,

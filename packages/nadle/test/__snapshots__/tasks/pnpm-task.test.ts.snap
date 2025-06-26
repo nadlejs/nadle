@@ -31,11 +31,11 @@ exports[`pnpm Task > can print command when log level = info > stdout 1`] = `
 [info] Project directory: /ROOT/test/__fixtures__/pnpm-task
 [info] Resolved options: {
   "cache": true,
+  "footer": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": false,
-  "showSummary": false,
   "excludedTasks": [],
   "isWorkerThread": false,
   "maxWorkers": 1,

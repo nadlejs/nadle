@@ -43,7 +43,7 @@ export class DefaultReporter implements Reporter {
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
 
 	constructor(public readonly nadle: Nadle) {
-		this.renderer = this.nadle.options.showSummary
+		this.renderer = this.nadle.options.footer
 			? new SummaryRenderer({ logger: this.nadle.logger, getWindow: () => this.createSummary() })
 			: new NormalRenderer();
 	}

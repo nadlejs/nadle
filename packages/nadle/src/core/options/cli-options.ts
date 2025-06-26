@@ -57,11 +57,12 @@ export const CLIOptions = {
 			description: "Print the resolved configuration"
 		}
 	},
-	showSummary: {
-		key: "show-summary",
+	footer: {
+		key: "footer",
 		options: {
-			hidden: true,
-			type: "boolean"
+			type: "boolean",
+			defaultDescription: "!isCI",
+			description: "Enables the in-progress summary footer during task execution"
 		}
 	},
 	cache: {

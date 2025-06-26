@@ -1,8 +1,7 @@
 import { tasks, configure } from "nadle";
 
 configure({
-	logLevel: "debug",
-	showSummary: false
+	logLevel: "debug"
 });
 
 tasks
