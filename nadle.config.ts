@@ -1,6 +1,6 @@
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
-const baseEslintArgs = ["-r", "--filter", "!@nadle/internal-fixture-*", "exec", "eslint", ".", "--quiet"];
+const baseEslintArgs = ["-r", "--filter", "!@nadle/internal-nadle-test-fixtures-*", "exec", "eslint", ".", "--quiet"];
 
 tasks
 	.register("clean", DeleteTask, { paths: ["**/lib/**", "**/build/**", "**/__temp__/**"] })

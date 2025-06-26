@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-project-dir-with-npm-sub-package",
+	"name": "@nadle/internal-nadle-test-fixtures-project-dir-with-npm-sub-package",
 	"type": "module",
 	"private": true
 }

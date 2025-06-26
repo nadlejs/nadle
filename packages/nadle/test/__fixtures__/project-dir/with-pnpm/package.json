@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-project-dir-with-pnpm",
+	"name": "@nadle/internal-nadle-test-fixtures-project-dir-with-pnpm",
 	"type": "module",
 	"private": true
 }

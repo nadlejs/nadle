@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-esm-js",
+	"name": "@nadle/internal-nadle-test-fixtures-esm-js",
 	"type": "module",
 	"private": true,
 	"dependencies": {

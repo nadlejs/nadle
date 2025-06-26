@@ -46,11 +46,17 @@ const readmeValidator = async () => {
 	}
 };
 
-const nameValidator: PackageValidator = (context) => {
-	const { name } = context.pkg;
+const nameValidator: PackageValidator = ({ pkg, path }) => {
+	const { name } = pkg;
 
 	if (name === undefined) {
 		throw new Error("Package name is required");
+	}
+
+	const pkgDirPath = Path.dirname(Path.relative(rootDir, path));
+
+	if (!pkgDirPath.startsWith("packages") && name !== "@nadle/root") {
+		throw new Error("Package must be located in the 'packages' directory. Got: " + pkgDirPath);
 	}
 
 	if (name === "nadle") {
@@ -59,6 +65,20 @@ const nameValidator: PackageValidator = (context) => {
 
 	if (!name.startsWith("@nadle")) {
 		throw new Error("Package name must start with @nadle");
+	}
+
+	if (!isPrivate(pkg)) {
+		throw new Error("Unhandled package name validation for public packages");
+	}
+
+	if (name === "@nadle/root") {
+		return;
+	}
+
+	const expectedName = `@nadle/internal-${pkgDirPath.replaceAll("_", "").split(Path.sep).slice(1).join("-")}`;
+
+	if (name !== expectedName) {
+		throw new Error("Private package name must be matched its location. Expected: " + expectedName + ". Got: " + name);
 	}
 };
 
@@ -265,7 +285,7 @@ function createDependenciesOrderValidator(type: "dependencies" | "devDependencie
 
 const fixturesValidator: PackageValidator = ({ pkg, path }) => {
 	if (path.includes(Path.join(Path.dirname(nadlePackagePath), "test", "__fixtures__"))) {
-		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true) && !pkg.name?.startsWith("@nadle/internal-fixture-project-dir")) {
+		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true) && !pkg.name?.startsWith("@nadle/internal-nadle-test-fixtures-project-dir")) {
 			throw new Error(`Test packages must have nadle.root = true field`);
 		}
 	}

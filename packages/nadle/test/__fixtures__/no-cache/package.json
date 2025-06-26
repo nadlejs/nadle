@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-no-cache",
+	"name": "@nadle/internal-nadle-test-fixtures-no-cache",
 	"type": "module",
 	"private": true,
 	"dependencies": {

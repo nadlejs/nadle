@@ -1,5 +1,5 @@
 {
-	"name": "@nadle/internal-fixture-pnpm-task",
+	"name": "@nadle/internal-nadle-test-fixtures-pnpm-task",
 	"type": "module",
 	"private": true,
 	"dependencies": {
