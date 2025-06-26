@@ -19,8 +19,8 @@ export interface WorkerParams {
 }
 
 export default async ({ port, options, taskName, env: originalEnv }: WorkerParams) => {
-	const nadle = new Nadle(options);
-	await nadle.registerTask();
+	const nadle = await new Nadle(options).init();
+	await nadle.configure(options.configPath);
 
 	const task = taskRegistry.getByName(taskName);
 	const { configResolver, optionsResolver } = task;

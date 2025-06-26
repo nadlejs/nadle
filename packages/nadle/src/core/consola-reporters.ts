@@ -1,10 +1,10 @@
 import { isCI, isTest } from "std-env";
 // eslint-disable-next-line no-restricted-imports
-import { LogLevels, type LogType, createConsola, type LogObject, type ConsolaOptions, type ConsolaInstance, type ConsolaReporter } from "consola";
+import { LogLevels, type LogType, createConsola, type LogObject, type ConsolaOptions, type ConsolaReporter } from "consola";
 
-import { type LoggerOptions } from "./logger.js";
+import { type SupportLogLevel } from "./logger.js";
 
-export { LogType, ConsolaInstance, LogLevels };
+export { LogType, LogLevels };
 
 // Workaround to get builtin BasicReporter
 const [BasicReporter] = createConsola({ fancy: false }).options.reporters;
@@ -30,6 +30,6 @@ function createConsolaReporters(): ConsolaReporter[] {
 	return [FancyReporter];
 }
 
-export function createNadleConsola(options: Required<LoggerOptions>) {
-	return createConsola({ formatOptions: { date: false }, level: LogLevels[options.logLevel], reporters: createConsolaReporters() });
+export function createNadleConsola(logLevel: SupportLogLevel = "log") {
+	return createConsola({ level: LogLevels[logLevel], formatOptions: { date: false }, reporters: createConsolaReporters() });
 }

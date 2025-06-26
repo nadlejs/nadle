@@ -6,13 +6,12 @@ import { isCI, isTest } from "std-env";
 import { Nadle } from "./nadle.js";
 import { formatTime } from "./utils.js";
 import { StringBuilder } from "./string-builder.js";
-import { type Renderer } from "./renderers/renderer.js";
-import { NormalRenderer } from "./renderers/normal-renderer.js";
+import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { SummaryRenderer } from "./renderers/summary-renderer.js";
-import { TaskStatus, type Awaitable, type RegisteredTask } from "./types.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "./constants.js";
+import { TaskStatus, type Awaitable, type Initializer, type RegisteredTask } from "./types.js";
 
-export interface Reporter {
+export interface Reporter extends Initializer {
 	onExecutionStart?: () => Awaitable<void>;
 	onExecutionFinish?: () => Awaitable<void>;
 	onExecutionFailed?: (error: any) => Awaitable<void>;
@@ -28,7 +27,7 @@ export interface Reporter {
 const DURATION_UPDATE_INTERVAL_MS = 100;
 
 export class DefaultReporter implements Reporter {
-	private readonly renderer: Renderer;
+	private renderer = new DefaultRenderer();
 	private taskStat = {
 		failed: 0,
 		running: 0,
@@ -42,10 +41,12 @@ export class DefaultReporter implements Reporter {
 	private duration = 0;
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
 
-	constructor(public readonly nadle: Nadle) {
+	constructor(public readonly nadle: Nadle) {}
+
+	init() {
 		this.renderer = this.nadle.options.footer
 			? new SummaryRenderer({ logger: this.nadle.logger, getWindow: () => this.createSummary() })
-			: new NormalRenderer();
+			: new DefaultRenderer();
 	}
 
 	private printLabel(label: string) {
@@ -125,7 +126,7 @@ export class DefaultReporter implements Reporter {
 		this.renderer.schedule();
 	}
 
-	async onExecutionStart() {
+	onExecutionStart() {
 		this.startTimers();
 
 		const { minWorkers, maxWorkers, projectDir, configPath } = this.nadle.options;

@@ -1,28 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`configure > can override configured options from config file if the cli one is provided > stdout 1`] = `
-[info] Initialized logger with consola options: { types:
-   { silent: { level: -1 },
-     fatal: { level: 0 },
-     error: { level: 0 },
-     warn: { level: 1 },
-     log: { level: 2 },
-     info: { level: 3 },
-     success: { level: 3 },
-     fail: { level: 3 },
-     ready: { level: 3 },
-     start: { level: 3 },
-     box: { level: 3 },
-     debug: { level: 4 },
-     trace: { level: 5 },
-     verbose: { level: Infinity } },
-  throttle: 1000,
-  throttleMin: 5,
-  formatOptions: { date: false, colors: false, compact: true },
-  level: 3,
-  defaults: { level: 1 },
-  prompt: [Function: prompt],
-  reporters: [ BasicReporter {} ] }
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.configure.ts

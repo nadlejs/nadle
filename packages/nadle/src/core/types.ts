@@ -96,3 +96,7 @@ export interface RegisteredTask extends Task {
 		startTime: number | null;
 	};
 }
+
+export interface Initializer {
+	init: (...params: any[]) => Awaitable<void>;
+}

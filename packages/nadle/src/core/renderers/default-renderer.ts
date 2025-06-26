@@ -1,7 +1,7 @@
 import { noop } from "../utils.js";
 import { type Renderer } from "./renderer.js";
 
-export class NormalRenderer implements Renderer {
+export class DefaultRenderer implements Renderer {
 	start(): void {
 		noop();
 	}
