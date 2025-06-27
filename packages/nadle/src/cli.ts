@@ -10,7 +10,7 @@ const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
 	.command("$0 [tasks...]", "Execute one or more named tasks")
 
-	.option(CLIOptions.configPath.key, CLIOptions.configPath.options)
+	.option(CLIOptions.configFile.key, CLIOptions.configFile.options)
 	.option(CLIOptions.parallel.key, CLIOptions.parallel.options)
 	.option(CLIOptions.minWorkers.key, CLIOptions.minWorkers.options)
 	.option(CLIOptions.maxWorkers.key, CLIOptions.maxWorkers.options)
@@ -45,7 +45,7 @@ const argv = yargs(hideBin(process.argv))
 
 	.group(
 		[
-			CLIOptions.configPath.key,
+			CLIOptions.configFile.key,
 			CLIOptions.cacheDir.key,
 			CLIOptions.logLevel.key,
 			CLIOptions.minWorkers.key,

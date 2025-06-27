@@ -32,12 +32,12 @@ export class Nadle {
 
 	async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
-		const configPath = optionsResolver.resolveConfigPath(this.cliOptions.configPath);
-		await this.configure(configPath);
+		const configFile = optionsResolver.resolveConfigFile(this.cliOptions.configFile);
+		await this.configure(configFile);
 
 		// Add this point, the options and tasks from configuration file are registered
 		this.#options = new OptionsResolver().resolve({
-			configPath,
+			configFile,
 			cliOptions: this.cliOptions,
 			taskResolver: this.taskResolver,
 			allTasks: this.registry.getAllByName(),

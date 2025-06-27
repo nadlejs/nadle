@@ -8,7 +8,7 @@ import { getStdout, createExec, fixturesDir, createFileModifier } from "setup";
 describe.skipIf(isWindows)("basic caching", { timeout: 8000 }, () => {
 	const cwd = Path.join(fixturesDir, "caching");
 	const exec = createExec({ cwd });
-	const fileModifier = createFileModifier(Path.join(cwd, "resources"));
+	const fileModifier = createFileModifier(Path.join(cwd));
 
 	beforeEach(async () => {
 		await Fs.rm(Path.join(cwd, "dist"), { force: true, recursive: true });
@@ -33,21 +33,21 @@ describe.skipIf(isWindows)("basic caching", { timeout: 8000 }, () => {
 
 	it("should re-execute in the second run if inputs change", async () => {
 		await exec`bundle-resources`;
-		await fileModifier.apply([{ type: "modify", path: "main-input.txt", newContent: "new content" }]);
+		await fileModifier.apply([{ type: "modify", newContent: "new content", path: "resources/main-input.txt" }]);
 
 		await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "done");
 	});
 
 	it("should re-execute in the second run if a input file is deleted", async () => {
 		await exec`bundle-resources`;
-		await fileModifier.apply([{ type: "delete", path: "main-input.txt" }]);
+		await fileModifier.apply([{ type: "delete", path: "resources/main-input.txt" }]);
 
 		await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "done");
 	});
 
 	it("should re-execute in the second run if a new file is added", async () => {
 		await exec`bundle-resources`;
-		await fileModifier.apply([{ type: "add", path: "main-input-2.txt", content: "new file added" }]);
+		await fileModifier.apply([{ type: "add", content: "new file added", path: "resources/main-input-2.txt" }]);
 
 		await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "done");
 	});
@@ -55,10 +55,20 @@ describe.skipIf(isWindows)("basic caching", { timeout: 8000 }, () => {
 	it("should restore from cache in the third run if a file is added before and deleted after the second run", async () => {
 		await exec`bundle-resources`;
 
-		await fileModifier.apply([{ type: "add", path: "main-input-3.txt", content: "new file added" }]);
+		await fileModifier.apply([{ type: "add", content: "new file added", path: "resources/main-input-3.txt" }]);
 		await exec`bundle-resources`;
-		await fileModifier.apply([{ type: "delete", path: "main-input-3.txt" }]);
+		await fileModifier.apply([{ type: "delete", path: "resources/main-input-3.txt" }]);
 
 		await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "from-cache");
+	});
+
+	it("should miss cache when config file changes", async () => {
+		await exec`bundle-resources`;
+
+		await fileModifier.apply([
+			{ type: "modify", path: "nadle.config.ts", newContent: (currentContent) => `${currentContent}\ntasks.register("build");` }
+		]);
+
+		await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "done");
 	});
 });

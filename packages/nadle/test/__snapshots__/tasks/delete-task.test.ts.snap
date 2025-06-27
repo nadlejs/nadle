@@ -98,7 +98,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
   "stacktrace": false,
   "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
-  "configPath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts",
+  "configFile": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }

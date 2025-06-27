@@ -24,7 +24,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
   "stacktrace": false,
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/main",
-  "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts",
+  "configFile": "/ROOT/test/__fixtures__/main/nadle.config.ts",
   "minWorkers": 1
 }
 [log]
@@ -57,7 +57,7 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
   "stacktrace": false,
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/main",
-  "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
+  "configFile": "/ROOT/test/__fixtures__/main/nadle.config.ts"
 }
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>

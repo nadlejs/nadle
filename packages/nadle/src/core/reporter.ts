@@ -129,12 +129,12 @@ export class DefaultReporter implements Reporter {
 	onExecutionStart() {
 		this.startTimers();
 
-		const { minWorkers, maxWorkers, projectDir, configPath } = this.nadle.options;
+		const { minWorkers, maxWorkers, projectDir, configFile } = this.nadle.options;
 
 		if (!this.nadle.options.isWorkerThread) {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
 			this.nadle.logger.log(`Using Nadle from ${fileURLToPath(import.meta.resolve("nadle"))}`);
-			this.nadle.logger.log(`Loaded configuration from ${configPath}\n`);
+			this.nadle.logger.log(`Loaded configuration from ${configFile}\n`);
 			this.nadle.logger.info(
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
 			);

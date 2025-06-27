@@ -18,6 +18,7 @@ type CacheValidationResult =
 interface CacheValidatorContext {
 	readonly cache: boolean;
 	readonly cacheDir: string;
+	readonly configFile: string;
 	readonly projectDir: string;
 	readonly workingDir: string;
 }
@@ -44,7 +45,11 @@ export class CacheValidator {
 
 		const taskName = this.taskName;
 
-		const inputsFingerprints = await Declaration.computeFileFingerprints(this.context.workingDir, this.taskConfiguration.inputs);
+		const inputsFingerprints = await Declaration.computeFileFingerprints({
+			files: [this.context.configFile],
+			workingDir: this.context.workingDir,
+			declarations: this.taskConfiguration.inputs
+		});
 		const cacheKey = await CacheKey.compute({ taskName, inputsFingerprints });
 		const cacheQuery: CacheQuery = { cacheKey, taskName };
 
@@ -64,7 +69,9 @@ export class CacheValidator {
 			throw new Error("Unable to read latest run metadata for task: " + taskName);
 		}
 
-		const outputHashes = hashObject(await Declaration.computeFileFingerprints(this.context.workingDir, this.taskConfiguration.outputs));
+		const outputHashes = hashObject(
+			await Declaration.computeFileFingerprints({ workingDir: this.context.workingDir, declarations: this.taskConfiguration.outputs })
+		);
 
 		if (latestRunMetadata.cacheKey === cacheKey && latestRunMetadata.outputsFingerprint === outputHashes) {
 			return { result: "up-to-date" };
@@ -97,7 +104,10 @@ export class CacheValidator {
 		if (validationResult.result === "cache-miss") {
 			const { cacheQuery, inputsFingerprints } = validationResult;
 
-			const outputsFingerprints = await Declaration.computeFileFingerprints(this.context.workingDir, this.taskConfiguration.outputs ?? []);
+			const outputsFingerprints = await Declaration.computeFileFingerprints({
+				workingDir: this.context.workingDir,
+				declarations: this.taskConfiguration.outputs ?? []
+			});
 
 			await this.cacheManager.writeRunMetadata(
 				cacheQuery,

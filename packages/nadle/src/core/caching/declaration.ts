@@ -19,7 +19,12 @@ export type Declaration = FileDeclaration | DirDeclaration;
 
 /** @internal */
 export namespace Declaration {
-	export async function computeFileFingerprints(workingDir: string, declarations: Declaration[]): Promise<FileFingerprints> {
+	export async function computeFileFingerprints(params: {
+		files?: string[];
+		workingDir: string;
+		declarations: Declaration[];
+	}): Promise<FileFingerprints> {
+		const { files, workingDir, declarations } = params;
 		const fingerprint: FileFingerprints = {};
 
 		for (const declaration of declarations) {
@@ -31,6 +36,8 @@ export namespace Declaration {
 				})
 			);
 		}
+
+		await Promise.all(files?.map(async (path) => (fingerprint[path] = await hashFile(path))) ?? []);
 
 		return fingerprint;
 	}

@@ -6,7 +6,7 @@ import { type NadleCLIOptions } from "./types.js";
 import { OptionsResolver } from "./options-resolver.js";
 
 export const CLIOptions = {
-	configPath: {
+	configFile: {
 		key: "config",
 		options: {
 			alias: "c",
