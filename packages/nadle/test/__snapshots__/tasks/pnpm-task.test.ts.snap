@@ -26,7 +26,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
   "stacktrace": false,
   "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/pnpm-task",
-  "configPath": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts",
+  "configFile": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }

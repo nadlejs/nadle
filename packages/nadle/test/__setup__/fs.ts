@@ -59,7 +59,7 @@ export async function withTemp(params: { preserve?: boolean; testFn: (params: { 
 type FileChange =
 	| { type: "add"; path: string; content: string }
 	| { path: string; type: "delete" }
-	| { path: string; type: "modify"; newContent: string };
+	| { path: string; type: "modify"; newContent: string | ((currentContent: string) => string) };
 
 type RevertFileChange = { path: string; type: "delete" } | { type: "add"; path: string; content: string };
 
@@ -106,9 +106,11 @@ export function createFileModifier(baseDir: string) {
 							throw new Error(`File does not exist at ${path}. Cannot modify.`);
 						}
 
-						backups.push({ path, type: "add", content: await Fs.readFile(path, "utf8") });
+						const currentContent = await Fs.readFile(path, "utf8");
 
-						await Fs.writeFile(path, change.newContent);
+						backups.push({ path, type: "add", content: currentContent });
+
+						await Fs.writeFile(path, typeof change.newContent === "string" ? change.newContent : change.newContent(currentContent));
 						break;
 					}
 				}

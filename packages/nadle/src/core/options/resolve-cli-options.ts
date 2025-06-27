@@ -45,7 +45,7 @@ const transformers = [
 	exclude("$0"),
 	exclude("_"),
 	exclude("tasks"),
-	transform("config", { transformKey: "configPath" }),
+	transform("config", { transformKey: "configFile" }),
 	transform("cache", { transformValue: Boolean }),
 	transform("exclude", { transformKey: "excludedTasks" })
 ];

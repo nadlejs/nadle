@@ -31,13 +31,13 @@ export class OptionsResolver {
 	} as const;
 
 	resolve(params: {
-		configPath: string;
+		configFile: string;
 		allTasks: string[];
 		taskResolver: TaskResolver;
 		cliOptions: NadleCLIOptions;
 		configFileOptions: Partial<NadleConfigFileOptions>;
 	}): NadleResolvedOptions {
-		const { allTasks, cliOptions, configPath, taskResolver, configFileOptions } = params;
+		const { allTasks, cliOptions, configFile, taskResolver, configFileOptions } = params;
 		const baseOptions = { ...this.defaultOptions, ...configFileOptions, ...cliOptions };
 
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
@@ -52,7 +52,7 @@ export class OptionsResolver {
 			...baseOptions,
 			cacheDir,
 			projectDir,
-			configPath,
+			configFile,
 
 			minWorkers,
 			maxWorkers,
@@ -90,7 +90,7 @@ export class OptionsResolver {
 		return root.rootDir;
 	}
 
-	public resolveConfigPath(configPath: string | undefined): string {
+	public resolveConfigFile(configPath: string | undefined): string {
 		if (configPath !== undefined) {
 			const resolvedConfigPath = Path.resolve(this.cwd, configPath);
 
