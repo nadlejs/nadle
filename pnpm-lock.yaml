@@ -16,6 +16,9 @@ importers:
       '@eslint/js':
         specifier: ^9.29.0
         version: 9.29.0
+      '@microsoft/api-documenter':
+        specifier: ^7.26.29
+        version: 7.26.29(@types/node@20.19.1)
       '@microsoft/api-extractor':
         specifier: ^7.52.8
         version: 7.52.8(@types/node@20.19.1)
@@ -2174,6 +2177,10 @@ packages:
     peerDependencies:
       '@types/react': '>=16'
       react: '>=16'
+
+  '@microsoft/api-documenter@7.26.29':
+    resolution: {integrity: sha512-5gqnUCut1BeNmOZIE8hUJbzq3DxFcAyXL12oF6aFVtTDF8WiVs/J1HtlLYbxeIff6qbI1LfLnr16t+WOm9UVJw==}
+    hasBin: true
 
   '@microsoft/api-extractor-model@7.30.6':
     resolution: {integrity: sha512-znmFn69wf/AIrwHya3fxX6uB5etSIn6vg4Q4RB/tb5VDDs1rqREc+AvMC/p19MUN13CZ7+V/8pkYPTj7q8tftg==}
@@ -5149,6 +5156,10 @@ packages:
 
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
+
+  js-yaml@3.13.1:
+    resolution: {integrity: sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==}
+    hasBin: true
 
   js-yaml@3.14.1:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
@@ -10202,6 +10213,18 @@ snapshots:
       '@types/react': 19.1.6
       react: 18.3.1
 
+  '@microsoft/api-documenter@7.26.29(@types/node@20.19.1)':
+    dependencies:
+      '@microsoft/api-extractor-model': 7.30.6(@types/node@20.19.1)
+      '@microsoft/tsdoc': 0.15.1
+      '@rushstack/node-core-library': 5.13.1(@types/node@20.19.1)
+      '@rushstack/terminal': 0.15.3(@types/node@20.19.1)
+      '@rushstack/ts-command-line': 5.0.1(@types/node@20.19.1)
+      js-yaml: 3.13.1
+      resolve: 1.22.10
+    transitivePeerDependencies:
+      - '@types/node'
+
   '@microsoft/api-extractor-model@7.30.6(@types/node@20.19.1)':
     dependencies:
       '@microsoft/tsdoc': 0.15.1
@@ -13573,6 +13596,11 @@ snapshots:
   js-tokens@4.0.0: {}
 
   js-tokens@9.0.1: {}
+
+  js-yaml@3.13.1:
+    dependencies:
+      argparse: 1.0.10
+      esprima: 4.0.1
 
   js-yaml@3.14.1:
     dependencies:
