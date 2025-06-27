@@ -1,6 +1,6 @@
 {
-	"extends": "./tsconfig.json",
-	"include": ["./nadle.config.ts", "./prettier.config.js", "./eslint.config.ts"],
+	"extends": "./tsconfig.base.json",
+	"include": ["./nadle.config.ts", "./cspell.config.js", "./eslint.config.ts"],
 	"compilerOptions": {
 		"noEmit": true,
 		"allowJs": true
