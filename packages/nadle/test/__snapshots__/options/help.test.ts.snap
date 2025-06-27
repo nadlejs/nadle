@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--help > prints help > stdout 1`] = `
+exports[`--help > prints help 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --help
+---------- Stdout ------------
 nadle [tasks...]
 
 Execute one or more named tasks

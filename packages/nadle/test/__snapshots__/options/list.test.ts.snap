@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--list > prints all available tasks > stdout 1`] = `
+exports[`--list > prints all available tasks 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
@@ -23,7 +27,11 @@ exports[`--list > prints all available tasks > stdout 1`] = `
 [log] <Bold>0</BoldDim> task executed
 `;
 
-exports[`--list > prints no task message when no registered tasks > stdout 1`] = `
+exports[`--list > prints no task message when no registered tasks 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.empty.ts --list
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.empty.ts

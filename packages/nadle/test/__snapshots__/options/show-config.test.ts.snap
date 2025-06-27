@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--show-config > should show config > stdout 1`] = `
+exports[`--show-config > should show config 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
@@ -28,7 +32,11 @@ exports[`--show-config > should show config > stdout 1`] = `
 [log] <Bold>0</BoldDim> task executed
 `;
 
-exports[`--show-config > should show config with extra options > stdout 1`] = `
+exports[`--show-config > should show config with extra options 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-workers 3
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts

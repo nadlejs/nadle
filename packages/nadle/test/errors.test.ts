@@ -9,6 +9,6 @@ describe("when register two tasks with the same name", () => {
 
 describe("when a task fails", () => {
 	it("should report correctly", async () => {
-		await expectFail(() => exec`throwable`);
+		await expectFail(exec`throwable`);
 	});
 });

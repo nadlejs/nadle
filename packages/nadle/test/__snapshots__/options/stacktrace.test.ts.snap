@@ -1,11 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--stacktrace > should show stack trace > stderr 1`] = `
-[error] Error: This is an error
-    {stackTrace...}
-`;
-
-exports[`--stacktrace > should show stack trace > stdout 1`] = `
+exports[`--stacktrace > should show stack trace 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer throwable --stacktrace
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
@@ -26,4 +25,7 @@ Hello from nadle!
 <Red>×</Red> Task <Bold>throwable</BoldDim> <Red>FAILED</Red> {duration}
 [log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+---------- Stderr ------------
+[error] Error: This is an error
+    {stackTrace...}
 `;
