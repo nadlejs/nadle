@@ -2,7 +2,7 @@ import Path from "node:path";
 
 import fg from "fast-glob";
 
-import { hashFile } from "../utils.js";
+import { hashFile } from "../utilities/hash.js";
 import type { FileFingerprints } from "./fingerprint.js";
 
 export interface FileDeclaration {

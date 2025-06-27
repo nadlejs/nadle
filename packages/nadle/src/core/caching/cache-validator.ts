@@ -1,8 +1,8 @@
-import { hashObject } from "../utils.js";
 import { CacheKey } from "./cache-key.js";
 import { Declaration } from "./declaration.js";
 import { RunCacheMetadata } from "./metadata.js";
 import { CacheManager } from "./cache-manager.js";
+import { hashObject } from "../utilities/hash.js";
 import type { CacheQuery } from "./cache-query.js";
 import { type TaskConfiguration } from "../types.js";
 import type { FileFingerprints } from "./fingerprint.js";
@@ -26,7 +26,7 @@ interface CacheValidatorContext {
 export class CacheValidator {
 	private readonly cacheManager: CacheManager;
 
-	constructor(
+	public constructor(
 		private readonly taskName: string,
 		private readonly taskConfiguration: TaskConfiguration,
 		private readonly context: CacheValidatorContext
@@ -34,7 +34,7 @@ export class CacheValidator {
 		this.cacheManager = new CacheManager(this.context.projectDir, this.context.cacheDir);
 	}
 
-	async validate(): Promise<CacheValidationResult> {
+	public async validate(): Promise<CacheValidationResult> {
 		if (this.taskConfiguration.inputs === undefined || this.taskConfiguration.outputs === undefined) {
 			return { result: "not-cacheable" };
 		}
@@ -84,7 +84,7 @@ export class CacheValidator {
 		};
 	}
 
-	async update(validationResult: CacheValidationResult) {
+	public async update(validationResult: CacheValidationResult) {
 		if (validationResult.result === "not-cacheable") {
 			// Do nothing, the task is not cacheable
 			return;

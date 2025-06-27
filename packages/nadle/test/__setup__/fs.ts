@@ -5,7 +5,7 @@ import fixturify from "fixturify";
 
 import { randomHash } from "./random.js";
 import { type Exec, createExec } from "./exec.js";
-import { isPathExists } from "../../src/core/fs-utils.js";
+import { isPathExists } from "../../src/core/utilities/fs.js";
 import { tempDir, fixturesDir, defaultConfigFile } from "./constants.js";
 
 const TEMP_DIR = "__temp__";

@@ -4,7 +4,7 @@ import Fs from "node:fs/promises";
 import { exec, getStdout, createExec, fixturesDir } from "setup";
 import { it, expect, describe, afterEach, beforeEach } from "vitest";
 
-import { isPathExists } from "../../src/core/fs-utils.js";
+import { isPathExists } from "../../src/core/utilities/fs.js";
 
 describe("--no-cache", () => {
 	it("should resolve cache = true when not specified the flags", async () => {

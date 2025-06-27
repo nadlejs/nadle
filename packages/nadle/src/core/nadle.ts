@@ -5,17 +5,17 @@ import { pathToFileURL } from "node:url";
 import c from "tinyrainbow";
 import { createJiti } from "jiti";
 
-import { Logger } from "./logger.js";
-import { capitalize } from "./utils.js";
-import { TaskPool } from "./task-pool.js";
-import { UnnamedGroup } from "./constants.js";
-import { TaskResolver } from "./resolve-task.js";
-import { type RegisteredTask } from "./types.js";
-import { taskRegistry } from "./task-registry.js";
-import { TaskScheduler } from "./task-scheduler.js";
-import { type Reporter, DefaultReporter } from "./reporter.js";
-import { optionRegistry, OptionsResolver } from "./options/shared.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
+import { Logger } from "./reporting/logger.js";
+import { TaskPool } from "./engine/task-pool.js";
+import { capitalize } from "./utilities/utils.js";
+import { TaskScheduler } from "./engine/task-scheduler.js";
+import { type RegisteredTask } from "./registration/types.js";
+import { taskRegistry } from "./registration/task-registry.js";
+import { TaskResolver } from "./configuration/task-resolver.js";
+import { optionRegistry } from "./registration/options-registry.js";
+import { OptionsResolver } from "./configuration/options-resolver.js";
+import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./configuration/types.js";
 
 export class Nadle {
 	public static readonly version: string = "0.3.7"; // x-release-please-version
@@ -25,12 +25,15 @@ export class Nadle {
 
 	private readonly reporter: Reporter = new DefaultReporter(this);
 	private readonly taskResolver = new TaskResolver(this.logger, this.registry);
+	private readonly taskScheduler = new TaskScheduler(this);
 
 	#options: NadleResolvedOptions | undefined;
 
-	constructor(private readonly cliOptions: NadleCLIOptions) {}
+	private static readonly UnnamedGroup = "Unnamed";
 
-	async init(): Promise<this> {
+	public constructor(private readonly cliOptions: NadleCLIOptions) {}
+
+	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
 		const configFile = optionsResolver.resolveConfigFile(this.cliOptions.configFile);
 		await this.configure(configFile);
@@ -45,12 +48,12 @@ export class Nadle {
 		});
 
 		this.logger.init(this.#options);
-		await this.reporter.init();
+		await this.reporter.init?.();
 
 		return this;
 	}
 
-	async execute(tasks: string[]) {
+	public async execute(tasks: string[]) {
 		await this.init();
 
 		try {
@@ -77,7 +80,7 @@ export class Nadle {
 		this.reporter.onExecutionFinish?.();
 	}
 
-	get options(): NadleResolvedOptions {
+	public get options(): NadleResolvedOptions {
 		if (this.#options === undefined) {
 			throw new Error("Nadle options are not initialized. Please call init() before accessing options.");
 		}
@@ -92,7 +95,7 @@ export class Nadle {
 			return;
 		}
 
-		const scheduler = new TaskScheduler(tasks, { nadle: this });
+		const scheduler = this.taskScheduler.init(tasks);
 		await this.onTasksScheduled(scheduler.scheduledTask);
 
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
@@ -105,7 +108,7 @@ export class Nadle {
 			return;
 		}
 
-		const orderedTasks = new TaskScheduler(tasks, { nadle: this }).getOrderedTasks();
+		const orderedTasks = new TaskScheduler(this).init(tasks).getOrderedTasks();
 
 		this.logger.log(c.bold("Execution plan:"));
 
@@ -164,7 +167,7 @@ export class Nadle {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
 		for (const task of this.registry.getAll()) {
-			const { description, group = UnnamedGroup } = task.configResolver();
+			const { description, group = Nadle.UnnamedGroup } = task.configResolver();
 
 			tasksByGroup[group] ??= [];
 			tasksByGroup[group].push({ ...task, description });
@@ -172,11 +175,11 @@ export class Nadle {
 
 		return Object.entries(tasksByGroup)
 			.sort(([firstGroupName], [secondGroupName]) => {
-				if (firstGroupName === UnnamedGroup) {
+				if (firstGroupName === Nadle.UnnamedGroup) {
 					return 1;
 				}
 
-				if (secondGroupName === UnnamedGroup) {
+				if (secondGroupName === Nadle.UnnamedGroup) {
 					return -1;
 				}
 
@@ -191,7 +194,7 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	async configure(configPath: string) {
+	public async configure(configPath: string) {
 		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
 
 		await jiti.import(pathToFileURL(configPath).toString());

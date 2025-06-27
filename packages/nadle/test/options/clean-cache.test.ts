@@ -5,7 +5,7 @@ import fg from "fast-glob";
 import { createExec, fixturesDir } from "setup";
 import { it, expect, describe, afterEach } from "vitest";
 
-import { isPathExists } from "../../src/core/fs-utils.js";
+import { isPathExists } from "../../src/core/utilities/fs.js";
 
 const cwd = Path.join(fixturesDir, "clean-cache");
 const DEFAULT_CACHE_DIR = ".nadle";

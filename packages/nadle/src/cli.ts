@@ -4,7 +4,8 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { Nadle } from "./core/nadle.js";
-import { CLIOptions, resolveCLIOptions } from "./core/options/shared.js";
+import { CLIOptions } from "./core/configuration/cli-options.js";
+import { CLIOptionsResolver } from "./core/configuration/cli-options-resolver.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")
@@ -59,4 +60,4 @@ const argv = yargs(hideBin(process.argv))
 	.strict()
 	.parseSync();
 
-new Nadle(resolveCLIOptions(argv)).execute((argv as any).tasks ?? []);
+new Nadle(CLIOptionsResolver.resolve(argv)).execute((argv as any).tasks ?? []);
