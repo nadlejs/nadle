@@ -1,23 +1,11 @@
-import { type Nadle } from "./nadle.js";
-import { type ILogger } from "./logger.js";
+import { type ILogger } from "./reporting/logger.js";
 import { type Declaration } from "./caching/declaration.js";
 
 export type Awaitable<T> = T | PromiseLike<T>;
 
-export type MaybeArray<T> = T | T[];
-export namespace MaybeArray {
-	export function toArray<T>(value: MaybeArray<T>): T[] {
-		return Array.isArray(value) ? value : [value];
-	}
-}
-
 export interface RunnerContext {
 	readonly logger: ILogger;
 	readonly workingDir: string;
-}
-
-export interface InternalContext {
-	readonly nadle: Nadle;
 }
 
 export type Callback<T = unknown, P = void> = (params: P) => T;
@@ -74,29 +62,4 @@ export interface TaskConfiguration {
 
 export interface ConfigBuilder {
 	config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
-}
-
-export enum TaskStatus {
-	Registered = "registered",
-	Scheduled = "scheduled",
-	Running = "running",
-	Finished = "finished",
-	UpToDate = "up-to-date",
-	FromCache = "from-cache",
-	Failed = "failed"
-}
-
-export interface RegisteredTask extends Task {
-	name: string;
-	status: TaskStatus;
-	optionsResolver: Resolver | undefined;
-	configResolver: Callback<TaskConfiguration>;
-	result: {
-		duration: number | null;
-		startTime: number | null;
-	};
-}
-
-export interface Initializer {
-	init: (...params: any[]) => Awaitable<void>;
 }

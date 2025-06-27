@@ -1,5 +1,5 @@
-import { compareObjects } from "../comparators.js";
 import { type FileFingerprints } from "./fingerprint.js";
+import { compareObjects } from "../utilities/comparators.js";
 
 export type CacheMissReason =
 	| { type: "no-previous-cache" }

@@ -1,4 +1,4 @@
-import { hashObject } from "../utils.js";
+import { hashObject } from "../utilities/hash.js";
 import type { FileFingerprints } from "./fingerprint.js";
 
 interface CacheKeyInput {
