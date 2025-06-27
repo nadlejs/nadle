@@ -1,5 +1,40 @@
 # nadle
 
+## [0.4.0](https://github.com/nadlejs/nadle/compare/v0.3.7...v0.4.0) (2025-06-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename showSummary option to footer for clarity ([#278](https://github.com/nadlejs/nadle/issues/278))
+* simplify public APIs ([#259](https://github.com/nadlejs/nadle/issues/259))
+
+### Features
+
+* Add license field and update package.json exports structure ([#258](https://github.com/nadlejs/nadle/issues/258)) ([b11f429](https://github.com/nadlejs/nadle/commit/b11f429d69555a5214295579c79d310ce923d6d8))
+* Add support for cleaning cache directory with --clean-cache option ([#275](https://github.com/nadlejs/nadle/issues/275)) ([1fa301a](https://github.com/nadlejs/nadle/commit/1fa301a09517c317eeac34490b87e1cd0f6da154))
+* Allow specifying custom cache directory ([#263](https://github.com/nadlejs/nadle/issues/263)) ([bcf8b8e](https://github.com/nadlejs/nadle/commit/bcf8b8ee9ed756b364536e5454a571e6ede08756))
+* Implement Copy Task ([#269](https://github.com/nadlejs/nadle/issues/269)) ([784bb70](https://github.com/nadlejs/nadle/commit/784bb7090334c3bd942c6582b9dbc5fd55f1fdef))
+* Include config file into cache input ([#281](https://github.com/nadlejs/nadle/issues/281)) ([3138316](https://github.com/nadlejs/nadle/commit/31383169280bde60199c8b8cd27777b0c6b8d05b))
+
+
+### Internal
+
+* Avoid using process.cwd() everywhere ([#256](https://github.com/nadlejs/nadle/issues/256)) ([360e85f](https://github.com/nadlejs/nadle/commit/360e85fe9d0966b77d0c28d833b5db10c860482b))
+* Fix misc typo ([#270](https://github.com/nadlejs/nadle/issues/270)) ([27ad24f](https://github.com/nadlejs/nadle/commit/27ad24fe6162a20f49881e9120ad6aaf3d04d127))
+* Refactor and improve snapshots ([#280](https://github.com/nadlejs/nadle/issues/280)) ([743684b](https://github.com/nadlejs/nadle/commit/743684b607b2968ed87dd6c7961897f24366c6d8))
+* Rename showSummary option to footer for clarity ([#278](https://github.com/nadlejs/nadle/issues/278)) ([3861503](https://github.com/nadlejs/nadle/commit/3861503c2d864b1e491b172c705509f61f968712))
+* Reorganize structure ([#283](https://github.com/nadlejs/nadle/issues/283)) ([8e86eec](https://github.com/nadlejs/nadle/commit/8e86eecaf167fc27cce561b7e21b5158fefbf05d))
+* Simplify options resolution and enhance component initializations ([#279](https://github.com/nadlejs/nadle/issues/279)) ([806622c](https://github.com/nadlejs/nadle/commit/806622c3301b5397b5f25e89b27f708c6538bfce))
+* Simplify public APIs ([#259](https://github.com/nadlejs/nadle/issues/259)) ([48672c9](https://github.com/nadlejs/nadle/commit/48672c9e8a595bfdd4bbc3f61cb21b2c9b259e2f))
+
+
+### Miscellaneous
+
+* Align package names ([#276](https://github.com/nadlejs/nadle/issues/276)) ([02c63e2](https://github.com/nadlejs/nadle/commit/02c63e28dcb5ec316710943a56a5c167fc101714))
+* **deps-dev:** Bump the minor-updates group with 5 updates ([#260](https://github.com/nadlejs/nadle/issues/260)) ([44ee0d6](https://github.com/nadlejs/nadle/commit/44ee0d61cf740f190bc8a7dd341d19c6bf660e3c))
+* Reorder fields in package.json exports to ensure proper resolution by TypeScript ([#268](https://github.com/nadlejs/nadle/issues/268)) ([e668b60](https://github.com/nadlejs/nadle/commit/e668b60ab63906c00242f91d9cfbff7384b6cad1))
+* Update repository links to use the new organization ([#273](https://github.com/nadlejs/nadle/issues/273)) ([5c2ad6c](https://github.com/nadlejs/nadle/commit/5c2ad6cc1cd94467b43b8c5d51f4bc56d211c211))
+
 ## [0.3.7](https://github.com/nadlejs/nadle/compare/v0.3.6...v0.3.7) (2025-06-22)
 
 
