@@ -2,17 +2,16 @@ import { expect } from "vitest";
 import type { Result, ResultPromise } from "execa";
 
 import { createSnapshotTemplate } from "./exec.js";
-import { blurSnapshot, type BlurOptions } from "./blur-snapshot.js";
 
-export async function expectFail(resultPromise: ResultPromise, options: BlurOptions[] = []) {
+export async function expectFail(resultPromise: ResultPromise) {
 	try {
 		await resultPromise;
+		throw new Error("Expected command to fail, but it succeeded.");
 	} catch (error) {
-		const execaError = error as Result;
+		const { cwd, stdout, stderr, command, exitCode } = error as Result;
 
-		expect(execaError.exitCode).toBe(1);
-		expect(blurSnapshot(execaError.stdout, options)).toMatchSnapshot("stdout");
-		expect(blurSnapshot(execaError.stderr, options)).toMatchSnapshot("stderr");
+		expect(exitCode).toBe(1);
+		expect(createSnapshotTemplate({ cwd, command, stdout: stdout as string, stderr: stderr as string })).toMatchSnapshot();
 	}
 }
 

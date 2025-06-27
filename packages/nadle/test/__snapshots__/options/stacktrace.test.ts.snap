@@ -27,3 +27,33 @@ Hello from nadle!
 [log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 `;
+
+exports[`--stacktrace > should show stack trace 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer throwable --stacktrace
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> <Yellow>STARTED</Yellow>
+
+Preparing...
+[log]
+<Green>✓</Green> Task <Bold>prepare</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
+
+Hello from nadle!
+[log]
+<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> <Yellow>STARTED</Yellow>
+
+[log]
+<Red>×</Red> Task <Bold>throwable</BoldDim> <Red>FAILED</Red> {duration}
+[log]
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+---------- Stderr ------------
+[error] Error: This is an error
+    {stackTrace...}
+`;
