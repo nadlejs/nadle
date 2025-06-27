@@ -18,7 +18,7 @@ import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./configuration/types.js";
 
 export class Nadle {
-	public static readonly version: string = "0.3.7"; // x-release-please-version
+	public static readonly version: string = "0.4.0"; // x-release-please-version
 
 	public readonly logger = new Logger();
 	public readonly registry = taskRegistry;
