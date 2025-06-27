@@ -63,33 +63,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`pnpm Task > throw error when running tsc command with error ts file > stderr 1`] = ``;
-
-exports[`pnpm Task > throw error when running tsc command with error ts file > stdout 1`] = `
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
-
-[log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
-
-[log] <BrightCyan>src/fail.ts</Reset>:<BrightYellow>1</Reset>:<BrightYellow>14</Reset> - <BrightRed>error</Reset><BrightBlack> TS2322: </Reset>Type 'number' is not assignable to type 'string'.
-
-</Inverse>1</Reset> export const number: string = 42;
-</Inverse> </Reset> <BrightRed>             ~~~~~~</Reset>
-
-
-[log]
-Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
-
-
-[log]
-<Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
-`;
-
 exports[`pnpm Task > throw error when running tsc command with error ts file 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-task
