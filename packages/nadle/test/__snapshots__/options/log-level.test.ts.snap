@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--log-level > shows error log only when passing --log-level=error > stdout 1`] = `
---------- Context ---------
+exports[`--log-level > shows error log only when passing --log-level=error 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --log-level=error
---------- Snapshot --------
+---------- Stdout ------------
 Hello from nadle!
 `;

@@ -63,7 +63,7 @@ export const exec = createExec();
 const createHeader = (label: string) => {
 	const dashes = "----------";
 
-	return `${dashes} ${label} `.padEnd(20, "-");
+	return `${dashes} ${label} `.padEnd(30, "-");
 };
 
 export function createSnapshotTemplate(params: { cwd: string; stdout?: string; command: string; stderr?: string }): string {
@@ -73,11 +73,11 @@ Working Directory: ${params.cwd}
 Command: ${params.command}`.trimStart();
 
 	if (params.stdout) {
-		snapshot += `${createHeader("Stdout")}\n${params.stdout}`;
+		snapshot += `\n${createHeader("Stdout")}\n${params.stdout}`;
 	}
 
 	if (params.stderr) {
-		snapshot += `${createHeader("Stderr")}\n${params.stderr}`;
+		snapshot += `\n${createHeader("Stderr")}\n${params.stderr}`;
 	}
 
 	return snapshot;

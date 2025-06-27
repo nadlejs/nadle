@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`abbreviation > should log resolved tasks only > stdout 1`] = `
---------- Context ---------
+exports[`abbreviation > should log resolved tasks only 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell goodbye cop
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
@@ -38,11 +38,11 @@ Copying from assets/ to dist/
 [log] <Bold>4</BoldDim> tasks executed
 `;
 
-exports[`abbreviation > should resolve abbr task properly > stdout 1`] = `
---------- Context ---------
+exports[`abbreviation > should resolve abbr task properly 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts

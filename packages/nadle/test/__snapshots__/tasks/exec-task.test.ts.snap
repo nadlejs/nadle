@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`execTask > can run pwd-1 command with configured workingDir > stdout 1`] = `
---------- Context ---------
+exports[`execTask > can run pwd-1 command with configured workingDir 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/exec-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-1
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
@@ -20,11 +20,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-1
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`execTask > can run pwd-2 command with configured workingDir > stdout 1`] = `
---------- Context ---------
+exports[`execTask > can run pwd-2 command with configured workingDir 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/exec-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-2
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
@@ -40,11 +40,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-2
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`execTask > can run pwd-3 command with configured workingDir > stdout 1`] = `
---------- Context ---------
+exports[`execTask > can run pwd-3 command with configured workingDir 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/exec-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-3
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
@@ -60,11 +60,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-3
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`execTask > can run pwd-4 command with configured workingDir > stdout 1`] = `
---------- Context ---------
+exports[`execTask > can run pwd-4 command with configured workingDir 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/exec-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-4
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts
@@ -80,11 +80,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-4
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`execTask > can run pwd-5 command with configured workingDir > stdout 1`] = `
---------- Context ---------
+exports[`execTask > can run pwd-5 command with configured workingDir 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/exec-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pwd-5
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/exec-task/nadle.config.ts

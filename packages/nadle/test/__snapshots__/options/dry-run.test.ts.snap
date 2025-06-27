@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`--dry-run > should list for dependent tasks > stdout 1`] = `
---------- Context ---------
+exports[`--dry-run > should list for dependent tasks 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.depends-on.ts build --dry-run
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.depends-on.ts
@@ -22,11 +22,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.depends-on.t
 [log] <Bold>0</BoldDim> task executed
 `;
 
-exports[`--dry-run > should list for one task > stdout 1`] = `
---------- Context ---------
+exports[`--dry-run > should list for one task 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --dry-run
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts

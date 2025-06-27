@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`pnpm Task > can print command when log level = info > stdout 1`] = `
---------- Context ---------
+exports[`pnpm Task > can print command when log level = info 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
@@ -45,11 +45,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`pnpm Task > can run tsc command with no error ts file > stdout 1`] = `
---------- Context ---------
+exports[`pnpm Task > can run tsc command with no error ts file 1`] = `
+---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
---------- Snapshot --------
+---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
