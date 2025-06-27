@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`copyTask > given a file path > can copy it > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyFoo
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
@@ -16,6 +20,10 @@ exports[`copyTask > given a file path > can copy it > stdout 1`] = `
 `;
 
 exports[`copyTask > given a folder path > can copy it > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyAssets
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
@@ -32,6 +40,10 @@ exports[`copyTask > given a folder path > can copy it > stdout 1`] = `
 `;
 
 exports[`copyTask > given a nested destination > creates directories automatically > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
@@ -47,6 +59,10 @@ exports[`copyTask > given a nested destination > creates directories automatical
 `;
 
 exports[`copyTask > with include and exclude options > copies only matching files > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyWithFilter
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts

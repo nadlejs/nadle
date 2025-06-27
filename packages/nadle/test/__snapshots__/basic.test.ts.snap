@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.basic.ts compile
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.basic.ts
@@ -13,10 +17,10 @@ exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
 
 [log]
 <Green>✓</Green> Task <Bold>install</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> <Yellow>STARTED</Yellow>
-
 [log]
 <Green>✓</Green> Task <Bold>compileSvg</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>compileSvg</BoldDim> <Yellow>STARTED</Yellow>
+
 [log] <Yellow>></Yellow> Task <Bold>compileTs</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
@@ -31,6 +35,10 @@ exports[`basic > single command > can run a simple command 3 > stdout 1`] = `
 `;
 
 exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.basic.ts test
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.basic.ts
@@ -53,6 +61,10 @@ exports[`basic > single command > can run a simple command 4 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A task-B --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -72,6 +84,10 @@ exports[`basic > with --dry-run > should list tasks in order 1 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B task-A --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -91,6 +107,10 @@ exports[`basic > with --dry-run > should list tasks in order 2 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B task-A.2 task-A --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -110,6 +130,10 @@ exports[`basic > with --dry-run > should list tasks in order 3 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A.1 task-A.0 task-A.2 task-A --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -125,6 +149,10 @@ exports[`basic > with --dry-run > should list tasks in order 4 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-C task-A --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -148,6 +176,10 @@ exports[`basic > with --dry-run > should list tasks in order 5 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B task-C --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -171,6 +203,10 @@ exports[`basic > with --dry-run > should list tasks in order 6 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A.1 task-B task-C --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -194,6 +230,10 @@ exports[`basic > with --dry-run > should list tasks in order 7 > stdout 1`] = `
 `;
 
 exports[`basic > with --dry-run > should list tasks in order 8 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B.2 task-A.1 task-B task-C --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts

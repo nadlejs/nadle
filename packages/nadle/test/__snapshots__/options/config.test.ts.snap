@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`--config > should precedence the js config file over the ts config file > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/mixed-ts-js
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/mixed-ts-js/nadle.config.js
@@ -16,6 +20,10 @@ Hello from /ROOT/test/__fixtures__/mixed-ts-js/nadle.config.js!
 `;
 
 exports[`--config > should precedence the ts config file over the mts config file > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/mixed-ts-mts
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/mixed-ts-mts/nadle.config.ts
@@ -31,6 +39,10 @@ Hello from /ROOT/test/__fixtures__/mixed-ts-mts/nadle.config.ts!
 `;
 
 exports[`--config > should use the existent config path if not specify --config in cjs-js package > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/cjs-js
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/cjs-js/nadle.config.js
@@ -46,6 +58,10 @@ Hello from /ROOT/test/__fixtures__/cjs-js/nadle.config.js!
 `;
 
 exports[`--config > should use the existent config path if not specify --config in cjs-ts package > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/cjs-ts
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts
@@ -61,6 +77,10 @@ Hello from /ROOT/test/__fixtures__/cjs-ts/nadle.config.mts!
 `;
 
 exports[`--config > should use the existent config path if not specify --config in esm-js package > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/esm-js
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/esm-js/nadle.config.js
@@ -76,6 +96,10 @@ Hello from /ROOT/test/__fixtures__/esm-js/nadle.config.js!
 `;
 
 exports[`--config > should use the existent config path if not specify --config in esm-ts package > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/esm-ts
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/esm-ts/nadle.config.ts

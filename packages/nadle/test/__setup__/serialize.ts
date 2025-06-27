@@ -1,10 +1,7 @@
-import Path from "node:path";
-
 export function serialize(input: string): string {
 	return [
 		serializeANSI,
 		serializeDuration,
-		serializeFileLocation,
 		serializePwdGitBashWindows,
 		serializeRelativePath,
 		serializeAbsoluteFilePath,
@@ -49,24 +46,14 @@ function serializeRelativePath(input: string) {
 }
 
 function serializeAbsoluteFilePath(input: string) {
-	const cwd = process.cwd();
-	const rootPath = Path.join(cwd, "..", "..");
-
 	return input
 		.replaceAll("\\\\", "\\")
-		.replaceAll(cwd, "/ROOT")
-		.replaceAll(rootPath, "/REPO_ROOT")
-		.replace(/\/(ROOT|REPO_ROOT)\S+/g, (match) => match.replaceAll(`\\`, "/"));
+		.replaceAll(process.cwd(), "/ROOT")
+		.replace(/\/ROOT\S+/g, (match) => match.replaceAll(`\\`, "/"));
 }
 
 function serializeStackTrace(input: string) {
 	return input.replaceAll(/at .+ .+(\s+at .+ .+)+/g, "{stackTrace...}");
-}
-
-function serializeFileLocation(input: string) {
-	return input.replaceAll(/(\w+(\.\w)?):(\d+):(\d+)/g, (_match, file) => {
-		return `${file}:{line}:{column}`;
-	});
 }
 
 function serializeHash(input: string) {

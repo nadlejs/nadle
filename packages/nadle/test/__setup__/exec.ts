@@ -60,19 +60,42 @@ export function createExec(options?: ExecOptions): Exec {
 
 export const exec = createExec();
 
-export async function getStdout(command: ResultPromise, options?: { stripAnsi?: boolean; serializeAll?: boolean }): Promise<string> {
-	const { stdout, exitCode } = await command;
+const createHeader = (label: string) => {
+	const dashes = "----------";
+
+	return `${dashes} ${label} `.padEnd(20, "-");
+};
+
+export function createSnapshotTemplate(params: { cwd: string; stdout?: string; command: string; stderr?: string }): string {
+	let snapshot = `
+${createHeader("Context")}
+Working Directory: ${params.cwd}
+Command: ${params.command}`.trimStart();
+
+	if (params.stdout) {
+		snapshot += `${createHeader("Stdout")}\n${params.stdout}`;
+	}
+
+	if (params.stderr) {
+		snapshot += `${createHeader("Stderr")}\n${params.stderr}`;
+	}
+
+	return snapshot;
+}
+
+export async function getStdout(resultPromise: ResultPromise, options?: { stripAnsi?: boolean; serializeAll?: boolean }): Promise<string> {
+	const { cwd, stdout, command, exitCode } = await resultPromise;
 
 	expect(exitCode).toBe(0);
 
 	const output = stdout as string;
 
 	if (options?.serializeAll) {
-		return serialize(output);
+		return serialize(createSnapshotTemplate({ cwd, command, stdout: output }));
 	}
 
 	if (options?.stripAnsi ?? true) {
-		return stripAnsi(output);
+		return stripAnsi(createSnapshotTemplate({ cwd, command, stdout: output }));
 	}
 
 	return output;

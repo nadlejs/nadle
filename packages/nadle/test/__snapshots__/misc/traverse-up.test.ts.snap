@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`traverse-up > can traverse up to pick the config file from ./a > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/traverse-up/a
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/traverse-up/nadle.config.ts
@@ -16,6 +20,10 @@ Hello from /ROOT/test/__fixtures__/traverse-up/a
 `;
 
 exports[`traverse-up > can traverse up to pick the config file from ./a/a1 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/traverse-up/a/a1
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/traverse-up/nadle.config.ts
@@ -31,6 +39,10 @@ Hello from /ROOT/test/__fixtures__/traverse-up/a/a1
 `;
 
 exports[`traverse-up > can traverse up to pick the config file from ./a/a1/a11/a112 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/traverse-up/a/a1/a11/a112
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/traverse-up/a/a1/a11/nadle.config.mjs
@@ -46,6 +58,10 @@ Hello from /ROOT/test/__fixtures__/traverse-up/a/a1/a11/a112
 `;
 
 exports[`traverse-up > can traverse up to pick the config file from ./a/a1/a12 > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/traverse-up/a/a1/a12
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/traverse-up/nadle.config.ts

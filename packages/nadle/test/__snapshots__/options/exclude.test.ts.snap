@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`--exclude > should do nothing if it is also the only main specify task > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A --exclude task-A
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -12,6 +16,10 @@ exports[`--exclude > should do nothing if it is also the only main specify task 
 `;
 
 exports[`--exclude > should exclude the specified excluded task > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A --exclude task-A.0
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -34,6 +42,10 @@ exports[`--exclude > should exclude the specified excluded task > stdout 1`] = `
 `;
 
 exports[`--exclude > should exclude the specified excluded tasks > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A --exclude task-A.0,task-A.1
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -52,6 +64,10 @@ exports[`--exclude > should exclude the specified excluded tasks > stdout 1`] = 
 `;
 
 exports[`--exclude > should run other tasks if it is also the main task > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A task-B --exclude task-A
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
@@ -64,10 +80,10 @@ exports[`--exclude > should run other tasks if it is also the main task > stdout
 
 [log]
 <Green>✓</Green> Task <Bold>task-B.1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim> <Yellow>STARTED</Yellow>
-
 [log]
 <Green>✓</Green> Task <Bold>task-B.2</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim> <Yellow>STARTED</Yellow>
+
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
@@ -78,6 +94,10 @@ exports[`--exclude > should run other tasks if it is also the main task > stdout
 `;
 
 exports[`--exclude > should work with dry run > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A --exclude task-A.1 --dry-run
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts

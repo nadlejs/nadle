@@ -1,6 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`workingDir > should print correct working directory for task current > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.working-dir.ts current
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
@@ -16,6 +20,10 @@ Current working directory: /ROOT/test/__fixtures__/main
 `;
 
 exports[`workingDir > should print correct working directory for task oneLevelDown > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.working-dir.ts oneLevelDown
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
@@ -31,6 +39,10 @@ Current working directory: /ROOT/test/__fixtures__/main/subdir1
 `;
 
 exports[`workingDir > should print correct working directory for task oneLevelUp > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.working-dir.ts oneLevelUp
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
@@ -46,6 +58,10 @@ Current working directory: /ROOT/test/__fixtures__
 `;
 
 exports[`workingDir > should print correct working directory for task twoLevelsDown > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.working-dir.ts twoLevelsDown
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
@@ -61,6 +77,10 @@ Current working directory: /ROOT/test/__fixtures__/main/subdir1/subdir2
 `;
 
 exports[`workingDir > should print correct working directory for task twoLevelsUp > stdout 1`] = `
+--------- Context ---------
+Working Directory: /ROOT/test/__fixtures__/main
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.working-dir.ts twoLevelsUp
+--------- Snapshot --------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.working-dir.ts
