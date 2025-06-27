@@ -4,16 +4,17 @@ import c from "tinyrainbow";
 // eslint-disable-next-line no-restricted-imports
 import { type InputLogObject } from "consola";
 
+import { type Initializer } from "./types.js";
 import { FileLogger } from "./file-logger.js";
+import { LogLevels, type LogType, createNadleConsola } from "./consola-reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "./constants.js";
-import { LogLevels, type LogType, createNadleConsola, type ConsolaInstance } from "./consola-reporters.js";
 
 export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 const l = new FileLogger("logger");
 
-export interface LoggerOptions {
+interface LoggerOptions {
 	readonly logLevel?: SupportLogLevel;
 
 	/** @internal */
@@ -28,29 +29,25 @@ export interface ILogger {
 	debug(message: InputLogObject | string, ...args: unknown[]): void;
 }
 
-export class Logger implements ILogger {
+export class Logger implements ILogger, Initializer {
 	private _clearScreenPending: string | undefined;
-	private readonly consola: ConsolaInstance;
-	public readonly options: Required<LoggerOptions>;
+	private readonly consola = createNadleConsola();
 	public readonly outputStream: NodeJS.WriteStream = process.stdout;
 	public readonly errorStream: NodeJS.WriteStream = process.stderr;
 
-	constructor(options: LoggerOptions) {
-		this.options = { logLevel: "log", isWorkerThread: false, ...options };
-		this.consola = createNadleConsola(this.options);
+	init(options: LoggerOptions) {
+		const { logLevel = "log", isWorkerThread = false } = options;
+		this.consola.level = LogLevels[logLevel];
 
 		if (this.outputStream.isTTY) {
 			this.outputStream.write(HIDE_CURSOR);
 		}
 
-		if (!this.options.isWorkerThread) {
-			const { stderr, stdout, ...consoleOptions } = this.consola.options;
-			this.info(`Initialized logger with consola options:`, consoleOptions);
+		if (!isWorkerThread) {
+			this.debug(
+				`Initialized logger with Consola reporters: [${this.consola.options.reporters.map((reporter) => reporter.constructor.name).join(", ")}]`
+			);
 		}
-	}
-
-	updateLogLevel(logLevel: SupportLogLevel): void {
-		this.consola.level = LogLevels[logLevel];
 	}
 
 	log(message: InputLogObject | string, ...args: unknown[]): void {

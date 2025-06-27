@@ -9,7 +9,6 @@ import { findRootSync } from "@manypkg/find-root";
 import { clamp } from "../utils.js";
 import { isPathExistsSync } from "../fs-utils.js";
 import { type TaskResolver } from "../resolve-task.js";
-import { type TaskRegistry } from "../task-registry.js";
 import { DEFAULT_CONFIG_FILE_NAME } from "../constants.js";
 import { type NadleCLIOptions, type NadlePackageJson, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
 
@@ -31,36 +30,20 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	#options: NadleResolvedOptions;
-
-	constructor(
-		private readonly cliOptions: NadleCLIOptions,
-		private readonly taskResolver: TaskResolver,
-		private readonly taskRegistry: TaskRegistry
-	) {
-		this.#options = this.resolve();
-	}
-
-	public get options(): NadleResolvedOptions {
-		return this.#options;
-	}
-
-	public addConfigFileOptions(configFileOptions: Partial<NadleConfigFileOptions>) {
-		this.#options = this.resolve(configFileOptions);
-	}
-
-	private resolve(configFileOptions?: Partial<NadleConfigFileOptions>): NadleResolvedOptions {
-		const baseOptions = {
-			...this.defaultOptions,
-			...configFileOptions,
-			...this.cliOptions
-		};
+	resolve(params: {
+		configPath: string;
+		allTasks: string[];
+		taskResolver: TaskResolver;
+		cliOptions: NadleCLIOptions;
+		configFileOptions: Partial<NadleConfigFileOptions>;
+	}): NadleResolvedOptions {
+		const { allTasks, cliOptions, configPath, taskResolver, configFileOptions } = params;
+		const baseOptions = { ...this.defaultOptions, ...configFileOptions, ...cliOptions };
 
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
 
-		const allTasks = this.taskRegistry.getAllByName();
-		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? this.taskResolver.resolve(baseOptions.excludedTasks, allTasks) : [];
+		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
 
 		const projectDir = this.resolveProjectDir();
 		const cacheDir = Path.resolve(projectDir, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
@@ -69,11 +52,11 @@ export class OptionsResolver {
 			...baseOptions,
 			cacheDir,
 			projectDir,
+			configPath,
 
 			minWorkers,
 			maxWorkers,
-			excludedTasks,
-			configPath: this.resolveConfigPath(baseOptions.configPath)
+			excludedTasks
 		};
 	}
 
@@ -107,7 +90,7 @@ export class OptionsResolver {
 		return root.rootDir;
 	}
 
-	private resolveConfigPath(configPath: string | undefined): string {
+	public resolveConfigPath(configPath: string | undefined): string {
 		if (configPath !== undefined) {
 			const resolvedConfigPath = Path.resolve(this.cwd, configPath);
 

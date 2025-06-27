@@ -9,41 +9,53 @@ import { Logger } from "./logger.js";
 import { capitalize } from "./utils.js";
 import { TaskPool } from "./task-pool.js";
 import { UnnamedGroup } from "./constants.js";
-import { type RegisteredTask } from "./types.js";
 import { TaskResolver } from "./resolve-task.js";
+import { type RegisteredTask } from "./types.js";
+import { taskRegistry } from "./task-registry.js";
 import { TaskScheduler } from "./task-scheduler.js";
 import { type Reporter, DefaultReporter } from "./reporter.js";
-import { taskRegistry, type TaskRegistry } from "./task-registry.js";
 import { optionRegistry, OptionsResolver } from "./options/shared.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
 	public static readonly version: string = "0.3.7"; // x-release-please-version
 
-	public readonly logger: Logger;
-	public readonly reporter: Reporter;
-	public readonly registry: TaskRegistry = taskRegistry;
-	public readonly taskResolver: TaskResolver;
+	public readonly logger = new Logger();
+	public readonly registry = taskRegistry;
 
-	private readonly optionsResolver: OptionsResolver;
+	private readonly reporter: Reporter = new DefaultReporter(this);
+	private readonly taskResolver = new TaskResolver(this.logger, this.registry);
 
-	constructor(options: NadleCLIOptions) {
-		this.logger = new Logger(options);
-		this.taskResolver = new TaskResolver(this.logger);
-		this.optionsResolver = new OptionsResolver(options, this.taskResolver, this.registry);
-		this.reporter = new DefaultReporter(this);
+	#options: NadleResolvedOptions | undefined;
+
+	constructor(private readonly cliOptions: NadleCLIOptions) {}
+
+	async init(): Promise<this> {
+		const optionsResolver = new OptionsResolver();
+		const configPath = optionsResolver.resolveConfigPath(this.cliOptions.configPath);
+		await this.configure(configPath);
+
+		// Add this point, the options and tasks from configuration file are registered
+		this.#options = new OptionsResolver().resolve({
+			configPath,
+			cliOptions: this.cliOptions,
+			taskResolver: this.taskResolver,
+			allTasks: this.registry.getAllByName(),
+			configFileOptions: optionRegistry.get()
+		});
+
+		this.logger.init(this.#options);
+		await this.reporter.init();
+
+		return this;
 	}
 
 	async execute(tasks: string[]) {
-		await this.registerTask();
-		this.optionsResolver.addConfigFileOptions(optionRegistry.get());
-		this.logger.updateLogLevel(this.options.logLevel);
+		await this.init();
 
 		try {
 			this.reporter.onExecutionStart?.();
-			const resolvedTasks = this.taskResolver
-				.resolve(tasks, this.registry.getAllByName())
-				.filter((task) => !this.options.excludedTasks.includes(task));
+			const resolvedTasks = this.taskResolver.resolve(tasks).filter((task) => !this.options.excludedTasks.includes(task));
 
 			if (this.options.showConfig) {
 				this.showConfig();
@@ -66,7 +78,11 @@ export class Nadle {
 	}
 
 	get options(): NadleResolvedOptions {
-		return this.optionsResolver.options;
+		if (this.#options === undefined) {
+			throw new Error("Nadle options are not initialized. Please call init() before accessing options.");
+		}
+
+		return this.#options;
 	}
 
 	private async runTasks(tasks: string[]) {
@@ -175,12 +191,10 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	async registerTask() {
-		const configFile = this.options.configPath;
-
+	async configure(configPath: string) {
 		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
 
-		await jiti.import(pathToFileURL(configFile).toString());
+		await jiti.import(pathToFileURL(configPath).toString());
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {

@@ -20,8 +20,8 @@ exports[`--show-config > should show config > stdout 1`] = `
   "stacktrace": false,
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "projectDir": "/ROOT/test/__fixtures__/main",
-  "minWorkers": 1,
-  "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
+  "configPath": "/ROOT/test/__fixtures__/main/nadle.config.ts",
+  "minWorkers": 1
 }
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
