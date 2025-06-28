@@ -8,6 +8,7 @@ import { createJiti } from "jiti";
 import { Logger } from "./reporting/logger.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
+import { renderTaskSelection } from "./task-selection.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { type RegisteredTask } from "./registration/types.js";
 import { taskRegistry } from "./registration/task-registry.js";
@@ -89,13 +90,19 @@ export class Nadle {
 	}
 
 	private async runTasks(tasks: string[]) {
-		if (tasks.length === 0) {
-			this.printNoTasksFound();
+		let chosenTasks: string[] = tasks;
 
-			return;
+		if (tasks.length === 0) {
+			chosenTasks = await renderTaskSelection(this.registry);
+
+			if (chosenTasks.length === 0) {
+				this.printNoTasksSpecified();
+
+				return;
+			}
 		}
 
-		const scheduler = this.taskScheduler.init(tasks);
+		const scheduler = this.taskScheduler.init(chosenTasks);
 		await this.onTasksScheduled(scheduler.scheduledTask);
 
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
@@ -103,7 +110,7 @@ export class Nadle {
 
 	private dryRunTasks(tasks: string[]) {
 		if (tasks.length === 0) {
-			this.printNoTasksFound();
+			this.printNoTasksSpecified();
 
 			return;
 		}
@@ -190,7 +197,7 @@ export class Nadle {
 			});
 	}
 
-	private printNoTasksFound() {
+	private printNoTasksSpecified() {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
