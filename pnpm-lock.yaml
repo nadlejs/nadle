@@ -310,6 +310,12 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
+  packages/nadle/test/__fixtures__/invalid-task-name:
+    dependencies:
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/nadle/test/__fixtures__/main:
     dependencies:
       nadle:

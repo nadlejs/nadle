@@ -45,9 +45,7 @@ describe("--max-workers", () => {
 
 	describe("when specified an invalid value in CLI", () => {
 		it("should throw error", async () => {
-			await expect(getStderr(() => createExec({ ...baseConfig })`--max-workers abc --show-config`)).resolves.contains(
-				`Invalid value for --max-workers`
-			);
+			await expect(getStderr(createExec({ ...baseConfig })`--max-workers abc --show-config`)).resolves.contains(`Invalid value for --max-workers`);
 		});
 	});
 

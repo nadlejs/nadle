@@ -70,13 +70,13 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
@@ -93,13 +93,13 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
@@ -109,20 +109,20 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 exports[`basic > with --dry-run > should list tasks in order 3 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B task-A.2 task-A --dry-run
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B task-A-2 task-A --dry-run
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
@@ -132,16 +132,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 exports[`basic > with --dry-run > should list tasks in order 4 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A.1 task-A.0 task-A.2 task-A --dry-run
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A-1 task-A-0 task-A-2 task-A --dry-run
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
@@ -158,15 +158,15 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
@@ -185,16 +185,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log]
@@ -205,23 +205,23 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 exports[`basic > with --dry-run > should list tasks in order 7 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A.1 task-B task-C --dry-run
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-A-1 task-B task-C --dry-run
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log]
@@ -232,23 +232,23 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 exports[`basic > with --dry-run > should list tasks in order 8 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B.2 task-A.1 task-B task-C --dry-run
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-B-2 task-A-1 task-B task-C --dry-run
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
 [log] <Bold>Execution plan:</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-B.1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-B-1</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A.2</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.0</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.1</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-C.2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-0</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-1</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>task-C-2</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-C</BoldDim>
 [log]

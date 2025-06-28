@@ -44,9 +44,7 @@ describe("--min-workers", () => {
 
 	describe("when specified an invalid value in CLI", () => {
 		it("should throw error", async () => {
-			await expect(getStderr(() => createExec({ ...baseConfig })`--min-workers abc --show-config`)).resolves.contains(
-				`Invalid value for --min-workers`
-			);
+			await expect(getStderr(createExec({ ...baseConfig })`--min-workers abc --show-config`)).resolves.contains(`Invalid value for --min-workers`);
 		});
 	});
 

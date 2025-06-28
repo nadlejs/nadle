@@ -83,11 +83,11 @@ describe("basic", () => {
 		});
 
 		it("should list tasks in order 3", async () => {
-			await expectPass(exec`task-B task-A.2 task-A --dry-run`);
+			await expectPass(exec`task-B task-A-2 task-A --dry-run`);
 		});
 
 		it("should list tasks in order 4", async () => {
-			await expectPass(exec`task-A.1 task-A.0 task-A.2 task-A --dry-run`);
+			await expectPass(exec`task-A-1 task-A-0 task-A-2 task-A --dry-run`);
 		});
 
 		it("should list tasks in order 5", async () => {
@@ -99,11 +99,11 @@ describe("basic", () => {
 		});
 
 		it("should list tasks in order 7", async () => {
-			await expectPass(exec`task-A.1 task-B task-C --dry-run`);
+			await expectPass(exec`task-A-1 task-B task-C --dry-run`);
 		});
 
 		it("should list tasks in order 8", async () => {
-			await expectPass(exec`task-B.2 task-A.1 task-B task-C --dry-run`);
+			await expectPass(exec`task-B-2 task-A-1 task-B task-C --dry-run`);
 		});
 	});
 });
