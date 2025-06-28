@@ -21,7 +21,9 @@ tasks.register("buildDoc", PnpmTask, { args: ["--filter", "@nadle/internal-docs"
 	outputs: [Outputs.dirs("packages/docs/build")],
 	inputs: [Inputs.dirs("packages/docs/{src,docs,static}"), Inputs.files("packages/docs/docusaurus.config.ts", "packages/docs/sidebars.ts")]
 });
-tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc"] });
+
+tasks.register("buildOthers", PnpmTask, { args: ["--filter", "!@nadle/internal-docs", "--filter", "!nadle", "-r", "build"] });
+tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc", "buildOthers"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["build"] });
 tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({ dependsOn: ["build"], workingDir: "./packages/nadle" });
