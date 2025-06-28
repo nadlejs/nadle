@@ -101,11 +101,11 @@ export async function getStdout(resultPromise: ResultPromise, options?: { stripA
 	return output;
 }
 
-export async function getStderr(command: () => ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
+export async function getStderr(resultPromise: ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
 	let stderr = "";
 
 	try {
-		await command();
+		await resultPromise;
 		throw new Error("Expected command to fail, but it succeeded.");
 	} catch (error) {
 		const execaError = error as Result;

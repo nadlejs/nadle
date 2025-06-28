@@ -1,0 +1,11 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-invalid-task-name",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}
