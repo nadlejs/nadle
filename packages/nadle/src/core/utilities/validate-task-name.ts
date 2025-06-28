@@ -1,5 +1,7 @@
 export function validateTaskName(name: string): void {
-	if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(name)) {
-		throw new Error(`Invalid task name "${name}". Only alphanumeric characters are allowed, and it must start with a letter.`);
+	if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?$/i.test(name)) {
+		throw new Error(
+			`Invalid task name "${name}". Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
+		);
 	}
 }

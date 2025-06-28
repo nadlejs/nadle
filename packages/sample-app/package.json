@@ -17,7 +17,7 @@
 		"test-compile": "nadle test compile",
 		"sequence-test-compile": "pnpm test-compile",
 		"task-A": "nadle task-A",
-		"task-A-exclude": "nadle task-A -x task-A.1",
+		"task-A-exclude": "nadle task-A -x task-A-1",
 		"task-C": "nadle task-C",
 		"compileTs": "nadle compileTs",
 		"cleanCache": "nadle --clean-cache",
