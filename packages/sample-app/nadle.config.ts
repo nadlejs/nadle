@@ -7,8 +7,7 @@ import { createTask } from "./create-task.js";
 
 configure({
 	footer: false,
-	maxWorkers: 3,
-	logLevel: "info"
+	maxWorkers: 3
 });
 
 /**
