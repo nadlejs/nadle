@@ -9,6 +9,7 @@
 	"devDependencies": {
 		"@eslint/js": "^9.29.0",
 		"@microsoft/api-extractor": "^7.52.8",
+		"@nadle/prettier-config": "^0.0.4",
 		"@stylistic/eslint-plugin": "^5.0.0",
 		"@types/node": "^20.19.0",
 		"@vitest/eslint-plugin": "^1.3.3",
@@ -41,6 +42,7 @@
 			"brace-expansion@>=1.0.0 <=1.1.11": ">=2.x"
 		}
 	},
+	"prettier": "@nadle/prettier-config",
 	"lint-staged": {
 		"*": "cspell --no-must-find-files --gitignore",
 		"*.ts": "eslint --fix",

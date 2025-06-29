@@ -235,7 +235,7 @@ const FIELD_ORDER = [
 	"packageManager",
 	"pnpm",
 	"nadle",
-	"stackblitz",
+	"prettier",
 	"lint-staged",
 	"size-limit",
 	// For yarn/npm fixtures

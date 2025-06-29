@@ -19,6 +19,9 @@ importers:
       '@microsoft/api-extractor':
         specifier: ^7.52.8
         version: 7.52.8(@types/node@20.19.1)
+      '@nadle/prettier-config':
+        specifier: ^0.0.4
+        version: 0.0.4(prettier@3.6.2)
       '@stylistic/eslint-plugin':
         specifier: ^5.0.0
         version: 5.0.0(eslint@9.29.0(jiti@2.4.2))
@@ -2206,6 +2209,12 @@ packages:
 
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
+
+  '@nadle/prettier-config@0.0.4':
+    resolution: {integrity: sha512-J1jLJeJkTwKan8xwtcxyZJffNJIsss8K105E2z/ECETCZyhc1kPEOwU3nsHTB028bluy8GYR/p2YSigjGgM64g==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      prettier: ^3.6.2
 
   '@napi-rs/wasm-runtime@0.2.11':
     resolution: {integrity: sha512-9DPkXtvHydrcOsopiYpUgPHpmj0HWZKMUnL2dZqpvC42lsratuBG06V5ipyno0fUek5VlFsNQ+AcFATSrJXgMA==}
@@ -10335,6 +10344,10 @@ snapshots:
       resolve: 1.22.10
 
   '@microsoft/tsdoc@0.15.1': {}
+
+  '@nadle/prettier-config@0.0.4(prettier@3.6.2)':
+    dependencies:
+      prettier: 3.6.2
 
   '@napi-rs/wasm-runtime@0.2.11':
     dependencies:
