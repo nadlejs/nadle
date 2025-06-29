@@ -1,7 +1,7 @@
 {
 	"name": "nadle",
 	"version": "0.4.0",
-	"description": "A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool",
+	"description": "A type-safe, modern, Gradle-inspired task runner.",
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
@@ -74,16 +74,19 @@
 		"directory": "packages/nadle"
 	},
 	"keywords": [
-		"nodejs",
-		"task-runner",
-		"build-tool",
-		"typescript",
+		"task",
+		"runner",
+		"build",
+		"parallel",
+		"pipeline",
 		"cli",
+		"tool",
+		"gradle",
+		"grunt",
+		"make",
+		"typescript",
 		"automation",
-		"gradle-inspired",
-		"task-orchestration",
 		"type-safe",
-		"developer-tools",
 		"lightweight"
 	],
 	"homepage": "https://nadle.dev",
