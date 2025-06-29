@@ -4,8 +4,9 @@ import Fs from "node:fs/promises";
 import fg from "fast-glob";
 import micromatch from "micromatch";
 
+import { MaybeArray } from "../core/index.js";
 import { isPathExists } from "../core/utilities/fs.js";
-import { type Task, MaybeArray } from "../core/index.js";
+import { defineTask } from "../core/registration/define-task.js";
 
 export interface CopyTaskOptions {
 	readonly to: string;
@@ -14,7 +15,7 @@ export interface CopyTaskOptions {
 	readonly include?: MaybeArray<string>;
 }
 
-export const CopyTask: Task<CopyTaskOptions> = {
+export const CopyTask = defineTask<CopyTaskOptions>({
 	run: async ({ options, context }) => {
 		const { to, from, exclude = [], include = "**/*" } = options;
 		const { logger, workingDir } = context;
@@ -94,4 +95,4 @@ export const CopyTask: Task<CopyTaskOptions> = {
 		await Fs.cp(srcPath, targetFile);
 		logger.info(`Copied file ${from} to ${to}`);
 	}
-};
+});
