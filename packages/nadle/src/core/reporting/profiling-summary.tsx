@@ -1,6 +1,8 @@
+import c from "tinyrainbow";
+
 import { formatTime } from "../utilities/utils.js";
 
-interface DoneTask {
+interface Task {
 	readonly name: string;
 	readonly duration: number;
 }
@@ -13,39 +15,72 @@ interface Row {
 
 namespace ProfilingSummary {
 	export interface Props {
-		readonly tasks: DoneTask[];
+		readonly tasks: Task[];
 		readonly totalDuration: number;
 	}
 }
 
+const TASK_LIMIT = 5;
+
 export function renderProfilingSummary({ tasks, totalDuration }: ProfilingSummary.Props) {
-	const rows: Row[] = [{ name: "Task", duration: "Duration", percentage: "Percentage" }];
-
-	for (const task of tasks.sort((task1, task2) => task2.duration - task1.duration).slice(0, 5)) {
-		const duration = formatTime(task.duration);
-		const percentage = ((task.duration / totalDuration) * 100).toFixed(1) + "%";
-
-		rows.push({
-			duration,
-			percentage,
-			name: task.name
-		});
+	if (tasks.length === 0) {
+		return "";
 	}
 
-	const widths: Record<keyof Row, number> = { name: 0, duration: 0, percentage: 0 };
+	const headerRow = { name: "Task", duration: "Duration", percentage: "Percentage" };
+	const bodyRows: Row[] = [];
 
-	for (const row of rows) {
-		widths.name = Math.max(widths.name, row.name.length);
-		widths.duration = Math.max(widths.duration, row.duration.length);
-		widths.percentage = Math.max(widths.percentage, row.percentage.length);
+	for (const task of tasks.sort((task1, task2) => task2.duration - task1.duration).slice(0, TASK_LIMIT)) {
+		bodyRows.push({ name: task.name, duration: formatTime(task.duration), percentage: ((task.duration / totalDuration) * 100).toFixed(1) + "%" });
 	}
 
-	const header = rows[0];
-	const headerLine = `| ${header.name.padEnd(widths.name)} | ${header.duration.padEnd(widths.duration)} | ${header.percentage.padEnd(widths.percentage)} |`;
-	const separator = `| ${"-".repeat(widths.name)} | ${"-".repeat(widths.duration)} | ${"-".repeat(widths.percentage)} |`;
-	const bodyLines = rows
-		.slice(1)
-		.map((row) => `| ${row.name.padEnd(widths.name)} | ${row.duration.padStart(widths.duration)} | ${row.percentage.padStart(widths.percentage)} |`);
+	const columnWidths: Record<keyof Row, number> = { name: 0, duration: 0, percentage: 0 };
 
-	return `${headerLine}\n${separator}\n${bodyLines.join("\n")}`;
+	for (const row of [headerRow, ...bodyRows]) {
+		columnWidths.name = Math.max(columnWidths.name, row.name.length);
+		columnWidths.duration = Math.max(columnWidths.duration, row.duration.length);
+		columnWidths.percentage = Math.max(columnWidths.percentage, row.percentage.length);
+	}
+
+	const widths = Object.values(columnWidths).map((width) => width + 2);
+
+	return [
+		"",
+		c.bold(c.green("Profiling Summary")),
+		renderBorder("top", widths),
+		renderRow([headerRow.name, headerRow.duration, headerRow.percentage], widths, ["left", "right", "right"]),
+		renderBorder("join", widths),
+		...bodyRows.map((row) => renderRow([row.name, row.duration, row.percentage], widths, ["left", "right", "right"])),
+		renderBorder("bottom", widths)
+	].join("\n");
 }
+
+type Alignment = "left" | "right";
+const toPad = (alignment: Alignment) => (alignment === "left" ? "padEnd" : "padStart");
+const renderRow = (cells: string[], lengths: number[], alignments: Alignment[]) =>
+	CHARS.bodyLeft + cells.map((cell, index) => ` ${cell[toPad(alignments[index])](lengths[index] - 2, " ")} `).join(CHARS.bodyJoin) + CHARS.bodyRight;
+
+const renderBorder = (type: "top" | "bottom" | "join", lengths: number[]) =>
+	CHARS[`${type}Left`] + lengths.map((length) => CHARS[`${type}Body`].repeat(length)).join(CHARS[`${type}Join`]) + CHARS[`${type}Right`];
+
+const CHARS = {
+	topBody: "─",
+	topJoin: "┬",
+	topLeft: "┌",
+	topRight: "┐",
+
+	bottomBody: "─",
+	bottomJoin: "┴",
+	bottomLeft: "└",
+	bottomRight: "┘",
+
+	bodyLeft: "│",
+	bodyJoin: "│",
+	bodyRight: "│",
+	headerJoin: "┬",
+
+	joinBody: "─",
+	joinLeft: "├",
+	joinJoin: "┼",
+	joinRight: "┤"
+} as const;
