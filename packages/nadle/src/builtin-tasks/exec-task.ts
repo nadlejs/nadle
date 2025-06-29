@@ -1,8 +1,13 @@
 import { execa, parseCommandString } from "execa";
 
-import { type Task } from "../core/index.js";
+import { defineTask } from "../core/registration/define-task.js";
 
-export const ExecTask: Task<{ command: string; args: string[] | string }> = {
+export interface ExecTaskOptions {
+	readonly command: string;
+	readonly args: string[] | string;
+}
+
+export const ExecTask = defineTask<ExecTaskOptions>({
 	run: async ({ options, context }) => {
 		const { args, command } = options;
 
@@ -19,4 +24,4 @@ export const ExecTask: Task<{ command: string; args: string[] | string }> = {
 		await subprocess;
 		context.logger.info(`Run completed successfully.`);
 	}
-};
+});

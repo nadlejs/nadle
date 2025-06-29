@@ -41,6 +41,13 @@ export interface CopyTaskOptions {
 export type Declaration = FileDeclaration | DirDeclaration;
 
 // @public (undocumented)
+export function defineTask<Options>(params: DefineTaskParams<Options>): Task<Options>;
+
+// @public (undocumented)
+export interface DefineTaskParams<Options> extends Task<Options> {
+}
+
+// @public (undocumented)
 export const DeleteTask: Task<DeleteTaskOptions>;
 
 // @public (undocumented)
@@ -58,10 +65,15 @@ export interface DirDeclaration {
 }
 
 // @public (undocumented)
-export const ExecTask: Task<{
-    command: string;
-    args: string[] | string;
-}>;
+export const ExecTask: Task<ExecTaskOptions>;
+
+// @public (undocumented)
+export interface ExecTaskOptions {
+    // (undocumented)
+    readonly args: string[] | string;
+    // (undocumented)
+    readonly command: string;
+}
 
 // @public (undocumented)
 export interface FileDeclaration {
@@ -133,9 +145,13 @@ export namespace Outputs {
 }
 
 // @public (undocumented)
-export const PnpmTask: Task<{
-    args: string[];
-}>;
+export const PnpmTask: Task<PnpmTaskOptions>;
+
+// @public (undocumented)
+export interface PnpmTaskOptions {
+    // (undocumented)
+    readonly args: string[];
+}
 
 // @public (undocumented)
 export type Resolver<T = unknown> = T | Callback<T>;

@@ -1,8 +1,12 @@
 import { execa } from "execa";
 
-import type { Task } from "../core/index.js";
+import { defineTask } from "../core/registration/define-task.js";
 
-export const PnpmTask: Task<{ args: string[] }> = {
+export interface PnpmTaskOptions {
+	readonly args: string[];
+}
+
+export const PnpmTask = defineTask<PnpmTaskOptions>({
 	run: async ({ options, context }) => {
 		const { args } = options;
 
@@ -18,4 +22,4 @@ export const PnpmTask: Task<{ args: string[] }> = {
 
 		context.logger.info(`pnpm command completed successfully.`);
 	}
-};
+});

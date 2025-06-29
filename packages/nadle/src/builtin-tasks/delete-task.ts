@@ -1,14 +1,14 @@
 import { glob } from "glob";
 import { rimraf, type RimrafAsyncOptions } from "rimraf";
 
-import { type Task } from "../core/index.js";
 import { normalizeGlobPath } from "../core/utilities/utils.js";
+import { defineTask } from "../core/registration/define-task.js";
 
 export interface DeleteTaskOptions extends RimrafAsyncOptions {
 	readonly paths: string | string[];
 }
 
-export const DeleteTask: Task<DeleteTaskOptions> = {
+export const DeleteTask = defineTask<DeleteTaskOptions>({
 	run: async ({ options, context }) => {
 		const { paths, ...restOptions } = options;
 		const { workingDir } = context;
@@ -19,4 +19,4 @@ export const DeleteTask: Task<DeleteTaskOptions> = {
 
 		await rimraf(paths, { ...restOptions, glob: { cwd: workingDir, ...restOptions } });
 	}
-};
+});
