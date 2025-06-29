@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`profiling summary > should not render if there is no tasks 1`] = ``;
+
+exports[`profiling summary > should render all tasks if less then 5 1`] = `
+
+Profiling Summary
+┌─────────┬──────────┬────────────┐
+│ Task    │ Duration │ Percentage │
+├─────────┼──────────┼────────────┤
+│ compile │       {duration} │      28.4% │
+│ test    │       {duration} │       6.2% │
+└─────────┴──────────┴────────────┘
+`;
