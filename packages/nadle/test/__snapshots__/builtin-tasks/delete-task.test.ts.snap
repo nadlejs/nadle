@@ -86,6 +86,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
 [info] Resolved options: {
   "cache": true,
   "footer": false,
+  "summary": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,

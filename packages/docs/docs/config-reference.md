@@ -135,6 +135,16 @@ Includes the number of scheduled tasks, running tasks, finished tasks, and other
 Useful for tracking task flow in complex or long-running builds.
 Defaults to `false` unless running in a CI environment.
 
+### `summary`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **CLI:** `--summary`, `--no-summary`
+
+Prints a summary of the slowest tasks after all tasks have finished.
+Only the top slowest tasks are shown, sorted by duration in descending order.
+Useful for identifying performance bottlenecks and optimizing build times.
+
 ### `maxWorkers`
 
 - **Type:** `number | string`

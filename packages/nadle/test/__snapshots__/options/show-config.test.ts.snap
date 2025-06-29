@@ -12,6 +12,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
 [log] {
   "cache": true,
   "footer": false,
+  "summary": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,
@@ -44,6 +45,7 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
 [log] {
   "cache": true,
   "footer": false,
+  "summary": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,

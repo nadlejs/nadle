@@ -10,12 +10,20 @@ export function capitalize(str: string): string {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function formatTime(time: number): string {
-	if (time > 1000) {
-		return `${Math.round(time / 1000)}s`;
+export function formatTime(ms: number): string {
+	const minutes = Math.floor(ms / 60_000);
+	const seconds = Math.floor((ms % 60_000) / 1000);
+	const milliseconds = Math.floor(ms % 1000);
+
+	if (minutes > 0) {
+		return seconds > 0 ? `${minutes}m${seconds}s` : `${minutes}m`;
 	}
 
-	return `${Math.round(time)}ms`;
+	if (seconds > 0) {
+		return `${seconds}s`;
+	}
+
+	return `${milliseconds}ms`;
 }
 
 export function normalizeGlobPath(path: string) {

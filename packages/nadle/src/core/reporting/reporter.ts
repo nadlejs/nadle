@@ -7,8 +7,9 @@ import { Nadle } from "../nadle.js";
 import { type Awaitable } from "../types.js";
 import { formatTime } from "../utilities/utils.js";
 import { StringBuilder } from "../utilities/string-builder.js";
+import { FooterRenderer } from "./renderers/footer-renderer.js";
+import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
-import { SummaryRenderer } from "./renderers/summary-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../registration/types.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
@@ -48,7 +49,7 @@ export class DefaultReporter implements Reporter {
 
 	public init() {
 		this.renderer = this.nadle.options.footer
-			? new SummaryRenderer({ logger: this.nadle.logger, getWindow: () => this.createSummary() })
+			? new FooterRenderer({ logger: this.nadle.logger, getWindow: () => this.createFooter() })
 			: new DefaultRenderer();
 	}
 
@@ -56,8 +57,8 @@ export class DefaultReporter implements Reporter {
 		return c.dim(label.padEnd(11, " "));
 	}
 
-	private createSummary() {
-		const summary: string[] = [""];
+	private createFooter() {
+		const footer: string[] = [""];
 
 		const doneTask = this.taskStat.finished + this.taskStat.fromCache + this.taskStat.upToDate;
 
@@ -67,14 +68,14 @@ export class DefaultReporter implements Reporter {
 			c.green(`${this.taskStat.finished} done`)
 		].join(` ${c.gray(VERTICAL_BAR)} `);
 
-		summary.push([this.printLabel("Tasks"), stats, c.dim(`(${this.taskStat.scheduled} scheduled)`)].join(" "));
-		summary.push([this.printLabel("Duration"), formatTime(this.duration)].join(" "));
+		footer.push([this.printLabel("Tasks"), stats, c.dim(`(${this.taskStat.scheduled} scheduled)`)].join(" "));
+		footer.push([this.printLabel("Duration"), formatTime(this.duration)].join(" "));
 
-		summary.push(...this.printRunningTasks());
+		footer.push(...this.printRunningTasks());
 
-		summary.push("");
+		footer.push("");
 
-		return summary;
+		return footer;
 	}
 
 	private printRunningTasks() {
@@ -154,6 +155,24 @@ export class DefaultReporter implements Reporter {
 		this.nadle.logger.info("Execution finished");
 		this.renderer.finish();
 		clearInterval(this.durationInterval);
+
+		if (this.nadle.options.summary) {
+			this.nadle.logger.log(
+				renderProfilingSummary({
+					totalDuration: this.duration,
+					tasks: this.nadle.registry.getAll().flatMap((task) => {
+						if (task.status !== TaskStatus.Finished) {
+							return [];
+						}
+
+						return {
+							name: task.name,
+							duration: task.result.duration ?? 0
+						};
+					})
+				})
+			);
+		}
 
 		const print = (count: number) => `${c.bold(count)} task${count > 1 ? "s" : ""}`;
 

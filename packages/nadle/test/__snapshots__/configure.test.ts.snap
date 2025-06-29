@@ -14,6 +14,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
 [info] Resolved options: {
   "cache": true,
   "footer": false,
+  "summary": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
@@ -35,6 +36,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
 [log] {
   "cache": true,
   "footer": false,
+  "summary": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,

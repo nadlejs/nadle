@@ -33,6 +33,8 @@ General options:
                                                    [string] [default: Os.availableParallelism() - 1]
       --footer       Enables the in-progress summary footer during task execution
                                                                           [boolean] [default: !isCI]
+      --summary      Print a summary of executed tasks at the end of the run
+                                                                          [boolean] [default: false]
 
 Miscellaneous options:
   -h, --help     Show this help                                                            [boolean]
