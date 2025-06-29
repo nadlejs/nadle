@@ -22,6 +22,9 @@ importers:
       '@nadle/prettier-config':
         specifier: ^0.0.4
         version: 0.0.4(prettier@3.6.2)
+      '@nadle/ts-config':
+        specifier: ^0.0.2
+        version: 0.0.2
       '@stylistic/eslint-plugin':
         specifier: ^5.0.0
         version: 5.0.0(eslint@9.29.0(jiti@2.4.2))
@@ -2215,6 +2218,9 @@ packages:
     engines: {node: '>=20'}
     peerDependencies:
       prettier: ^3.6.2
+
+  '@nadle/ts-config@0.0.2':
+    resolution: {integrity: sha512-eP6B9Tov+h0B35Zl/Kfy84/5OwilHhRif0cD01hB2B9iyh0dm+SflFoIjd/Einm7FMpHMZvlPoowM8gFPeOiQA==}
 
   '@napi-rs/wasm-runtime@0.2.11':
     resolution: {integrity: sha512-9DPkXtvHydrcOsopiYpUgPHpmj0HWZKMUnL2dZqpvC42lsratuBG06V5ipyno0fUek5VlFsNQ+AcFATSrJXgMA==}
@@ -10348,6 +10354,8 @@ snapshots:
   '@nadle/prettier-config@0.0.4(prettier@3.6.2)':
     dependencies:
       prettier: 3.6.2
+
+  '@nadle/ts-config@0.0.2': {}
 
   '@napi-rs/wasm-runtime@0.2.11':
     dependencies:

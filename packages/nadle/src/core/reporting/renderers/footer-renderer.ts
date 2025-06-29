@@ -17,7 +17,7 @@ interface Renderer {
 	finish(): void;
 	schedule(): void;
 }
-namespace SummaryRenderer {
+namespace FooterRenderer {
 	export interface Options {
 		logger: Logger;
 		interval?: number;
@@ -31,8 +31,8 @@ const l = new FileLogger("WindowRenderer");
  * Renders content of `getWindow` at the bottom of the terminal and
  * forwards all other intercepted `stdout` and `stderr` logs above it.
  */
-export class SummaryRenderer implements Renderer {
-	private readonly options: Required<SummaryRenderer.Options>;
+export class FooterRenderer implements Renderer {
+	private readonly options: Required<FooterRenderer.Options>;
 	private readonly streams!: Record<StreamType, Logger["outputStream" | "errorStream"]["write"]>;
 	private readonly buffer: { message: string; type: StreamType }[] = [];
 	private renderInterval: NodeJS.Timeout | undefined = undefined;
@@ -42,7 +42,7 @@ export class SummaryRenderer implements Renderer {
 	private finished = false;
 	private readonly cleanups: (() => void)[] = [];
 
-	public constructor(options: SummaryRenderer.Options) {
+	public constructor(options: FooterRenderer.Options) {
 		this.options = {
 			interval: DEFAULT_RENDER_INTERVAL_MS,
 			...options

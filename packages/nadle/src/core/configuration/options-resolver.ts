@@ -22,6 +22,7 @@ export class OptionsResolver {
 	private readonly defaultOptions = {
 		cache: true,
 		footer: !isCI,
+		summary: false,
 		parallel: false,
 		logLevel: "log",
 		cleanCache: false,

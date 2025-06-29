@@ -17,6 +17,7 @@ export interface NadleUserBaseOptions {
 export interface NadleCLIOptions extends NadleUserBaseOptions {
 	readonly list: boolean;
 	readonly dryRun: boolean;
+	readonly summary?: boolean;
 	readonly configFile?: string;
 	readonly showConfig: boolean;
 	readonly stacktrace: boolean;

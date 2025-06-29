@@ -26,6 +26,7 @@ const argv = yargs(hideBin(process.argv))
 	.option(CLIOptions.showConfig.key, CLIOptions.showConfig.options)
 	.option(CLIOptions.footer.key, CLIOptions.footer.options)
 	.option(CLIOptions.stacktrace.key, CLIOptions.stacktrace.options)
+	.option(CLIOptions.summary.key, CLIOptions.summary.options)
 	.version("version", "Show version number", Nadle.version)
 	.alias("v", "version")
 	.help("help", "Show this help")
@@ -51,7 +52,8 @@ const argv = yargs(hideBin(process.argv))
 			CLIOptions.logLevel.key,
 			CLIOptions.minWorkers.key,
 			CLIOptions.maxWorkers.key,
-			CLIOptions.footer.key
+			CLIOptions.footer.key,
+			CLIOptions.summary.key
 		],
 		"General options:"
 	)

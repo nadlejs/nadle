@@ -97,6 +97,14 @@ export const CLIOptions = {
 			description: "Deletes all files in the cache directory. Can be used with --cache-dir to specify a custom location"
 		}
 	},
+	summary: {
+		key: "summary",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Print a summary of executed tasks at the end of the run"
+		}
+	},
 
 	exclude: {
 		key: "exclude",
