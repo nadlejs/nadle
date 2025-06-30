@@ -4,8 +4,8 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { Nadle } from "./core/nadle.js";
-import { CLIOptions } from "./core/configuration/cli-options.js";
-import { CLIOptionsResolver } from "./core/configuration/cli-options-resolver.js";
+import { CLIOptions } from "./core/options/cli-options.js";
+import { CLIOptionsResolver } from "./core/options/cli-options-resolver.js";
 
 const argv = yargs(hideBin(process.argv))
 	.scriptName("nadle")

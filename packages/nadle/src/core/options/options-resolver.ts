@@ -9,7 +9,7 @@ import { findRootSync } from "@manypkg/find-root";
 import { clamp } from "../utilities/utils.js";
 import { isPathExistsSync } from "../utilities/fs.js";
 import { type TaskResolver } from "./task-resolver.js";
-import { type NadleCLIOptions, type NadlePackageJson, type NadleResolvedOptions, type NadleConfigFileOptions } from "./types.js";
+import { type NadleCLIOptions, type NadlePackageJson, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
 	public static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
@@ -37,10 +37,10 @@ export class OptionsResolver {
 		allTasks: string[];
 		taskResolver: TaskResolver;
 		cliOptions: NadleCLIOptions;
-		configFileOptions: Partial<NadleConfigFileOptions>;
+		fileOptions: Partial<NadleFileOptions>;
 	}): NadleResolvedOptions {
-		const { allTasks, cliOptions, configFile, taskResolver, configFileOptions } = params;
-		const baseOptions = { ...this.defaultOptions, ...configFileOptions, ...cliOptions };
+		const { allTasks, cliOptions, configFile, fileOptions, taskResolver } = params;
+		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);

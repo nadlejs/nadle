@@ -8,8 +8,8 @@ import { bindObject } from "../utilities/utils.js";
 import { type TaskEnv, type RunnerContext } from "../types.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { taskRegistry } from "../registration/task-registry.js";
+import { type NadleResolvedOptions } from "../options/types.js";
 import { CacheMissReason } from "../caching/cache-miss-reason.js";
-import { type NadleResolvedOptions } from "../configuration/types.js";
 
 export interface WorkerParams {
 	readonly taskName: string;

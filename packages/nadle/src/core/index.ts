@@ -1,6 +1,6 @@
 export * from "./tasks.js";
 export * from "./caching/index.js";
-export * from "./configuration/index.js";
+export * from "./options/index.js";
 
 export { MaybeArray } from "./utilities/maybe-array.js";
 export { defineTask, type DefineTaskParams } from "./registration/define-task.js";
