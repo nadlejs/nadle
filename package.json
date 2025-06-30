@@ -25,7 +25,7 @@
 		"jiti": "^2.4.2",
 		"knip": "^5.61.2",
 		"lint-staged": "^16.1.2",
-		"nadle": "^0.4.0",
+		"nadle": "https://pkg.pr.new/nadle@a9640ee",
 		"prettier": "^3.6.2",
 		"rimraf": "^6.0.1",
 		"tsx": "^4.20.3",
