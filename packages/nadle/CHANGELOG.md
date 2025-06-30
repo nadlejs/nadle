@@ -1,5 +1,31 @@
 # nadle
 
+## [0.5.0](https://github.com/nadlejs/nadle/compare/v0.4.0...v0.5.0) (2025-06-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename configurations to options ([#296](https://github.com/nadlejs/nadle/issues/296))
+
+### Features
+
+* Add --summary to show top slowest tasks after execution ([#291](https://github.com/nadlejs/nadle/issues/291)) ([b646351](https://github.com/nadlejs/nadle/commit/b646351b09d5e303370043230af4175a01f59723))
+* Add task name validation ([#288](https://github.com/nadlejs/nadle/issues/288)) ([f1ef008](https://github.com/nadlejs/nadle/commit/f1ef0083ed97edbf498e35ee77a7df26ef971f2b))
+* Introduce defineTask factory ([#294](https://github.com/nadlejs/nadle/issues/294)) ([a25bd37](https://github.com/nadlejs/nadle/commit/a25bd3731570241d7d6987abfa3c6e36be67e785))
+* Introduce interactive mode ([#286](https://github.com/nadlejs/nadle/issues/286)) ([70898de](https://github.com/nadlejs/nadle/commit/70898de3c61aa42d8bf5fee361123bc6ee51101b))
+
+
+### Internal
+
+* Improve profiling summary rendering ([#292](https://github.com/nadlejs/nadle/issues/292)) ([9735fb9](https://github.com/nadlejs/nadle/commit/9735fb9d9b29cb22d9ba75dce52738730d49c07c))
+* Increase test timeout for Windows ([04cb76c](https://github.com/nadlejs/nadle/commit/04cb76cfeb7aaf3cde6abd3d084b294e6674bff7))
+* Rename configurations to options ([#296](https://github.com/nadlejs/nadle/issues/296)) ([35533f0](https://github.com/nadlejs/nadle/commit/35533f0358a462abdff616bda975c6e5630536f0))
+
+
+### Miscellaneous
+
+* Update package description and keywords for clarity ([a9640ee](https://github.com/nadlejs/nadle/commit/a9640ee52cc5b83970a160c0e9232dfe9d6fefbe))
+
 ## [0.4.0](https://github.com/nadlejs/nadle/compare/v0.3.7...v0.4.0) (2025-06-27)
 
 
