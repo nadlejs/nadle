@@ -19,7 +19,7 @@ import { fileOptionsRegistry } from "./registration/file-options-registry.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
-	public static readonly version: string = "0.4.0"; // x-release-please-version
+	public static readonly version: string = "0.5.0"; // x-release-please-version
 
 	public readonly logger = new Logger();
 	public readonly registry = taskRegistry;
