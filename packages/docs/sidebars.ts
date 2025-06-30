@@ -26,6 +26,11 @@ const sidebars: SidebarsConfig = {
 			label: "Getting Started",
 			items: ["getting-started/installation", "getting-started/playground", "getting-started/features"]
 		},
+		{
+			label: "Guides",
+			type: "category",
+			items: ["guides/defining-task", "guides/registering-task", "guides/configuring-task", "guides/configuring-nadle"]
+		},
 		"config-reference",
 		"api-reference"
 	]
