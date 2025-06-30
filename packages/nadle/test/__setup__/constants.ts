@@ -1,7 +1,7 @@
 import Path from "node:path";
 
 import PackageJson from "../../package.json" with { type: "json" };
-import { OptionsResolver } from "../../src/core/configuration/options-resolver.js";
+import { OptionsResolver } from "../../src/core/options/options-resolver.js";
 
 const rootPackage = Path.resolve(import.meta.dirname, "..", "..");
 export const cliPath = Path.resolve(rootPackage, PackageJson.bin);

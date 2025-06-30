@@ -1,6 +1,6 @@
 import { type SupportLogLevel } from "../reporting/logger.js";
 
-export interface NadleUserBaseOptions {
+export interface NadleBaseOptions {
 	readonly cache?: boolean;
 	readonly cacheDir?: string;
 
@@ -14,7 +14,7 @@ export interface NadleUserBaseOptions {
 	readonly isWorkerThread?: boolean;
 }
 
-export interface NadleCLIOptions extends NadleUserBaseOptions {
+export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly list: boolean;
 	readonly dryRun: boolean;
 	readonly summary?: boolean;
@@ -26,7 +26,7 @@ export interface NadleCLIOptions extends NadleUserBaseOptions {
 	readonly excludedTasks?: string[];
 }
 
-export interface NadleConfigFileOptions extends NadleUserBaseOptions {}
+export interface NadleFileOptions extends NadleBaseOptions {}
 
 export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
 	readonly projectDir: string;

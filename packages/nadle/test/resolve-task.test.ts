@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { resolveTask } from "../src/core/configuration/task-resolver.js";
+import { resolveTask } from "../src/core/options/task-resolver.js";
 
 const allTasks = ["build", "buildDockerImage", "buildDockerContainer", "publish", "push", "compileTs", "compileJs", "compileCss"];
 

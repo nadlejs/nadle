@@ -20,7 +20,7 @@ export interface ConfigBuilder {
 }
 
 // @public (undocumented)
-export function configure(options: Partial<NadleConfigFileOptions>): void;
+export function configure(options: Partial<NadleFileOptions>): void;
 
 // @public (undocumented)
 export const CopyTask: Task<CopyTaskOptions>;
@@ -115,11 +115,7 @@ export namespace MaybeArray {
 }
 
 // @public (undocumented)
-export interface NadleConfigFileOptions extends NadleUserBaseOptions {
-}
-
-// @public (undocumented)
-export interface NadleUserBaseOptions {
+export interface NadleBaseOptions {
     // (undocumented)
     readonly cache?: boolean;
     // (undocumented)
@@ -134,6 +130,10 @@ export interface NadleUserBaseOptions {
     readonly minWorkers?: number | string;
     // (undocumented)
     readonly parallel?: boolean;
+}
+
+// @public (undocumented)
+export interface NadleFileOptions extends NadleBaseOptions {
 }
 
 // @public (undocumented)

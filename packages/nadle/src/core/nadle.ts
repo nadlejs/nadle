@@ -9,14 +9,14 @@ import { Logger } from "./reporting/logger.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
 import { renderTaskSelection } from "./task-selection.js";
+import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { type RegisteredTask } from "./registration/types.js";
 import { taskRegistry } from "./registration/task-registry.js";
-import { TaskResolver } from "./configuration/task-resolver.js";
-import { optionRegistry } from "./registration/options-registry.js";
-import { OptionsResolver } from "./configuration/options-resolver.js";
+import { OptionsResolver } from "./options/options-resolver.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
-import { type NadleCLIOptions, type NadleResolvedOptions } from "./configuration/types.js";
+import { fileOptionsRegistry } from "./registration/file-options-registry.js";
+import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
 	public static readonly version: string = "0.4.0"; // x-release-please-version
@@ -44,8 +44,8 @@ export class Nadle {
 			configFile,
 			cliOptions: this.cliOptions,
 			taskResolver: this.taskResolver,
-			allTasks: this.registry.getAllByName(),
-			configFileOptions: optionRegistry.get()
+			fileOptions: fileOptionsRegistry.get(),
+			allTasks: this.registry.getAllByName()
 		});
 
 		this.logger.init(this.#options);
@@ -201,10 +201,10 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	public async configure(configPath: string) {
+	public async configure(configFilePath: string) {
 		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
 
-		await jiti.import(pathToFileURL(configPath).toString());
+		await jiti.import(pathToFileURL(configFilePath).toString());
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
