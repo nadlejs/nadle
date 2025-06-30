@@ -102,7 +102,7 @@ nadle --help
 
 Display the current version of Nadle.
 
-## Common Configuration Options
+## Common Options
 
 These options can be configured both via CLI flags and in the configuration file.
 When both are specified, CLI flags take precedence, allowing quick overrides without modifying the config file.
