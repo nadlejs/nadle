@@ -2,9 +2,11 @@ import eslint from "@eslint/js";
 import nPlugin from "eslint-plugin-n";
 import tsEslint from "typescript-eslint";
 import vitest from "@vitest/eslint-plugin";
+import reactPlugin from "eslint-plugin-react";
 import stylistic from "@stylistic/eslint-plugin";
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 
 export default tsEslint.config(
 	eslint.configs.recommended,
@@ -25,17 +27,29 @@ export default tsEslint.config(
 		linterOptions: {
 			reportUnusedDisableDirectives: "error"
 		},
-		plugins: {
-			stylistic,
-			perfectionist,
-			unusedImports
-		},
 		languageOptions: {
 			parserOptions: {
 				project: ["**/tsconfig.eslint.json"]
 			}
 		},
+		plugins: {
+			stylistic,
+			perfectionist,
+			unusedImports,
+			...reactPlugin.configs.flat.recommended.plugins,
+			"react-hooks": reactHooksPlugin
+		},
 		rules: {
+			...reactPlugin.configs.flat.recommended.rules,
+			"react/prop-types": "off",
+			"react/display-name": "off",
+			"react/react-in-jsx-scope": "off",
+			"react/jsx-boolean-value": "error",
+			"react/jsx-curly-brace-presence": ["error", "never"],
+
+			...reactHooksPlugin.configs.recommended.rules,
+			"react-hooks/exhaustive-deps": "error",
+
 			curly: "error",
 			"sort-keys": "off",
 			"no-console": "warn",

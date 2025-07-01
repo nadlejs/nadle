@@ -86,15 +86,17 @@ const FeatureList: FeatureItem[] = [
 		title: "Real-Time Progress",
 		description: (
 			<>
-				Watch your build progress with detailed status updates, progress tracking, and performance metrics. Never wonder about what's happening behind
-				the scenes.
+				Watch your build progress with detailed status updates, progress tracking, and performance metrics. Never wonder about what&#39;s happening
+				behind the scenes.
 			</>
 		)
 	},
 	{
 		title: "Extensible Plugin System",
 		description: (
-			<>Extend Nadle's capabilities with plugins. Create custom task types, add build hooks, and integrate with your favorite tools and services.</>
+			<>
+				Extend Nadle&#39;s capabilities with plugins. Create custom task types, add build hooks, and integrate with your favorite tools and services.
+			</>
 		)
 	}
 ];
