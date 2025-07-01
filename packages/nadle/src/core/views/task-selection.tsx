@@ -9,7 +9,7 @@ interface Task {
 	readonly description?: string;
 }
 
-interface RenderableTask extends Task {
+interface DisplayTask extends Task {
 	readonly selected: boolean;
 	readonly pointing: boolean;
 	readonly TaskName: () => React.ReactElement;
@@ -103,7 +103,7 @@ function TaskSelection({ tasks, onSubmit }: { tasks: Task[]; onSubmit: (selected
 		}
 	});
 
-	const renderTask = React.useCallback((task: RenderableTask) => {
+	const renderTask = React.useCallback((task: DisplayTask) => {
 		const { name, selected, pointing, TaskName, description } = task;
 
 		return (
@@ -142,7 +142,7 @@ function useSearching(tasks: Task[], searchText: string, selectedTasks: string[]
 			const visibleTasks = tasks.slice(0, VISIBLE_TASKS_LIMIT);
 			const maxLength = Math.max(...visibleTasks.map((task) => task.name.length));
 
-			return visibleTasks.map<RenderableTask>((task) => {
+			return visibleTasks.map<DisplayTask>((task) => {
 				return {
 					...task,
 					pointing: cursor === tasks.indexOf(task),
@@ -156,7 +156,7 @@ function useSearching(tasks: Task[], searchText: string, selectedTasks: string[]
 
 		const maxLength = Math.max(...filteredTasks.map((task) => task.obj.name.length));
 
-		return filteredTasks.slice(0, VISIBLE_TASKS_LIMIT).map<RenderableTask>((task) => {
+		return filteredTasks.slice(0, VISIBLE_TASKS_LIMIT).map<DisplayTask>((task) => {
 			return {
 				...task.obj,
 				selected: selectedTasks.includes(task.obj.name),
