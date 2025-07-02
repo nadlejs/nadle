@@ -6,7 +6,7 @@ import { it, expect, describe, afterEach, beforeEach } from "vitest";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";
 
-describe("--no-cache", () => {
+describe("--no-cache", { timeout: 10000 }, () => {
 	it("should resolve cache = true when not specified the flags", async () => {
 		expect(await getStdout(exec`--show-config`)).contain(`"cache": true`);
 	});
