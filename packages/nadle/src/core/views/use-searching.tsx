@@ -23,10 +23,10 @@ export function useSearching(tasks: Task[], searchText: string, selectedTasks: s
 			});
 		}
 
-		const filteredTasks: Fuzzysort.KeyResults<Task> = fuzzySort.go<Task>(searchText, tasks, { key: "name" });
+		const filteredTasks = fuzzySort.go<Task>(searchText, tasks, { key: "name", limit: VISIBLE_TASKS_LIMIT });
 		const maxLength = Math.max(...filteredTasks.map((task) => task.obj.name.length));
 
-		return filteredTasks.slice(0, VISIBLE_TASKS_LIMIT).map<VisibleTask>((task) => {
+		return filteredTasks.map<VisibleTask>((task) => {
 			return {
 				...task.obj,
 				selected: selectedTasks.includes(task.obj.name),

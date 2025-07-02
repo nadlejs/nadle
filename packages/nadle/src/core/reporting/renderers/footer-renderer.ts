@@ -4,7 +4,7 @@ import { stripVTControlCharacters } from "node:util";
 import { type Logger } from "../logger.js";
 import { FileLogger } from "../file-logger.js";
 
-const DEFAULT_RENDER_INTERVAL_MS = 200;
+const DEFAULT_RENDER_INTERVAL_MS = 100;
 
 const ESC = "\x1B[";
 const CLEAR_LINE = `${ESC}K`;

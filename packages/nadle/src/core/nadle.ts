@@ -32,6 +32,8 @@ export class Nadle {
 
 	private static readonly UnnamedGroup = "Unnamed";
 
+	public resolvedTasks: string[] = [];
+
 	public constructor(private readonly cliOptions: NadleCLIOptions) {}
 
 	public async init(): Promise<this> {
@@ -59,18 +61,18 @@ export class Nadle {
 
 		try {
 			this.reporter.onExecutionStart?.();
-			const resolvedTasks = this.taskResolver.resolve(tasks).filter((task) => !this.options.excludedTasks.includes(task));
+			this.resolvedTasks = this.taskResolver.resolve(tasks).filter((task) => !this.options.excludedTasks.includes(task));
 
 			if (this.options.showConfig) {
 				this.showConfig();
 			} else if (this.options.list) {
 				this.listTasks();
 			} else if (this.options.dryRun) {
-				this.dryRunTasks(resolvedTasks);
+				this.dryRunTasks();
 			} else if (this.options.cleanCache) {
 				await this.cleanCache();
 			} else {
-				await this.runTasks(resolvedTasks);
+				await this.runTasks();
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.(error);
@@ -89,10 +91,10 @@ export class Nadle {
 		return this.#options;
 	}
 
-	private async runTasks(tasks: string[]) {
-		let chosenTasks: string[] = tasks;
+	private async runTasks() {
+		let chosenTasks: string[] = this.resolvedTasks;
 
-		if (tasks.length === 0) {
+		if (chosenTasks.length === 0) {
 			chosenTasks = await renderTaskSelection(this.registry);
 
 			if (chosenTasks.length === 0) {
@@ -108,14 +110,14 @@ export class Nadle {
 		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
 	}
 
-	private dryRunTasks(tasks: string[]) {
-		if (tasks.length === 0) {
+	private dryRunTasks() {
+		if (this.resolvedTasks.length === 0) {
 			this.printNoTasksSpecified();
 
 			return;
 		}
 
-		const orderedTasks = new TaskScheduler(this).init(tasks).getOrderedTasks();
+		const orderedTasks = new TaskScheduler(this).init(this.resolvedTasks).getOrderedTasks();
 
 		this.logger.log(c.bold("Execution plan:"));
 
