@@ -6,7 +6,7 @@ import { tasks, Outputs, ExecTask, CopyTask, type Task, configure } from "nadle"
 import { createTask } from "./create-task.js";
 
 configure({
-	footer: false,
+	footer: true,
 	maxWorkers: 3
 });
 

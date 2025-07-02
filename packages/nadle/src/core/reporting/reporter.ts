@@ -60,6 +60,10 @@ export class DefaultReporter implements Reporter {
 	private createFooter() {
 		const footer: string[] = [""];
 
+		if (this.nadle.resolvedTasks.length === 0) {
+			return footer;
+		}
+
 		const doneTask = this.taskStat.finished + this.taskStat.fromCache + this.taskStat.upToDate;
 
 		const stats = [
