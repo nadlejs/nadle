@@ -8,12 +8,12 @@
 	},
 	"devDependencies": {
 		"@microsoft/api-extractor": "^7.52.8",
-		"@nadle/eslint-config": "^1.0.0",
+		"@nadle/eslint-config": "^1.0.1",
 		"@nadle/prettier-config": "^0.0.5",
 		"@nadle/ts-config": "^0.0.2",
-		"@vitest/eslint-plugin": "^1.3.3",
+		"@vitest/eslint-plugin": "^1.3.4",
 		"cspell": "^9.1.2",
-		"eslint": "^9.30.0",
+		"eslint": "^9.30.1",
 		"glob": "^11.0.3",
 		"husky": "^9.1.7",
 		"jiti": "^2.4.2",
@@ -24,7 +24,7 @@
 		"rimraf": "^6.0.1",
 		"tsx": "^4.20.3",
 		"typescript": "^5.8.2",
-		"typescript-eslint": "^8.35.0"
+		"typescript-eslint": "^8.35.1"
 	},
 	"engines": {
 		"node": ">=20"
