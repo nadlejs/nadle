@@ -1,6 +1,7 @@
-import { globSync } from "glob";
-import Path from "node:path";
 import Fs from "node:fs";
+import Path from "node:path";
+
+import { globSync } from "glob";
 
 function extractLibraryNames() {
 	const packageNames = new Set();
@@ -9,6 +10,7 @@ function extractLibraryNames() {
 		ignore: "node_modules/**"
 	})) {
 		const packageJson = JSON.parse(Fs.readFileSync(Path.resolve(entry), "utf-8"));
+
 		for (const depType of ["dependencies", "devDependencies", "peerDependencies"]) {
 			if (packageJson[depType]) {
 				for (const depName of Object.keys(packageJson[depType])) {
@@ -29,8 +31,8 @@ function extractLibraryNames() {
 
 const config = {
 	language: "en",
-	words: ["Cancelation", "SCROLLBACK", "Vitest", "indegree", "nodir", "npmjs", "softwareTerms","Sonarqube", ...extractLibraryNames()],
 	ignoreWords: ["Hoang"],
+	words: ["Cancelation", "SCROLLBACK", "Vitest", "indegree", "nodir", "npmjs", "softwareTerms", "Sonarqube", ...extractLibraryNames()],
 	ignorePaths: [
 		"**/lib",
 		"**/*.svg",
