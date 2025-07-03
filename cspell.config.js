@@ -29,7 +29,7 @@ function extractLibraryNames() {
 
 const config = {
 	language: "en",
-	words: ["Cancelation", "SCROLLBACK", "Vitest", "indegree", "nodir", "npmjs", "softwareTerms", ...extractLibraryNames()],
+	words: ["Cancelation", "SCROLLBACK", "Vitest", "indegree", "nodir", "npmjs", "softwareTerms","Sonarqube", ...extractLibraryNames()],
 	ignoreWords: ["Hoang"],
 	ignorePaths: [
 		"**/lib",

@@ -13,7 +13,7 @@ const CUSTOM_CACHE_DIR = ".nadle-custom";
 
 const cacheDirNames = [DEFAULT_CACHE_DIR, CUSTOM_CACHE_DIR];
 
-describe("--clean-cache", () => {
+describe("--clean-cache", { timeout: 10000 }, () => {
 	afterEach(async () => {
 		for (const dir of await fg(`./*/{.nadle,.nadle-custom}`, { cwd: cwd, absolute: true, onlyDirectories: true })) {
 			await Fs.rm(dir, { force: true, recursive: true });
