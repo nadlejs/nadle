@@ -7,7 +7,8 @@ export enum TaskStatus {
 	Finished = "finished",
 	UpToDate = "up-to-date",
 	FromCache = "from-cache",
-	Failed = "failed"
+	Failed = "failed",
+	Canceled = "canceled"
 }
 
 export interface RegisteredTask extends Task {

@@ -10,11 +10,11 @@ import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
 import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
-import { type RegisteredTask } from "./registration/types.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
+import { TaskStatus, type RegisteredTask } from "./registration/types.js";
 import { fileOptionsRegistry } from "./registration/file-options-registry.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
@@ -231,6 +231,13 @@ export class Nadle {
 	public async onTaskFailed(task: RegisteredTask) {
 		this.registry.onTaskFailed(task.name);
 		await this.reporter.onTaskFailed?.(task);
+	}
+
+	public async onTaskCanceled(task: RegisteredTask) {
+		if (task.status === TaskStatus.Running) {
+			this.registry.onTaskCanceled(task.name);
+			await this.reporter.onTaskCanceled?.(task);
+		}
 	}
 
 	public async onTasksScheduled(tasks: string[]) {
