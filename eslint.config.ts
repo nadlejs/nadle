@@ -1,8 +1,8 @@
-import tsEslint from "typescript-eslint";
 import nadle from "@nadle/eslint-config";
 import vitest from "@vitest/eslint-plugin";
+import tsEslint, { type ConfigArray } from "typescript-eslint";
 
-export default tsEslint.config(
+const configs: ConfigArray = tsEslint.config(
 	...nadle.configs.recommended,
 	nadle.configs.react,
 	{
@@ -69,3 +69,5 @@ export default tsEslint.config(
 		}
 	}
 );
+
+export default configs;

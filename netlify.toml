@@ -1,0 +1,3 @@
+[build]
+command = "nadle buildDoc"
+publish = "packages/docs/build/"

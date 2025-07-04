@@ -1,4 +1,8 @@
 {
 	"files": [],
-	"references": [{ "path": "./packages/nadle/tsconfig.json" }, { "path": "./packages/sample-app/tsconfig.json" }]
+	"references": [
+		{ "path": "./packages/nadle/tsconfig.json" },
+		{ "path": "./packages/sample-app/tsconfig.json" },
+		{ "path": "./tsconfig.eslint.json" }
+	]
 }

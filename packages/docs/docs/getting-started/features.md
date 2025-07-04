@@ -227,4 +227,4 @@ tasks.register("deploy", async ({ logger }) => {
 ## Next Steps
 
 1. Dive into [Configuration Reference](../config-reference.md)
-2. Explore [API Documentation](../api-reference.md)
+2. Explore [API Documentation](../api/index/README.md)

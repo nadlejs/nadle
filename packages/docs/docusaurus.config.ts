@@ -4,8 +4,6 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 import NadlePackageJson from "../nadle/package.json";
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const GITHUB_REPO_URL = "https://github.com/nadlejs/nadle";
 
 const config: Config = {
@@ -13,16 +11,10 @@ const config: Config = {
 	favicon: "img/favicon.ico",
 	tagline: "A modern, type-safe task runner for Node.js",
 
-	// Set the /<baseUrl>/ pathname under which your site is served
-	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
-	// Set the production url of your site here
+	projectName: "nadle",
 	url: "https://nadle.dev",
-
-	projectName: "nadle", // Usually your repo name.
-	// GitHub pages deployment config.
-	// If you aren't using GitHub pages, you don't need these.
-	organizationName: "nadle", // Usually your GitHub org/user name.
+	organizationName: "nadlejs",
 
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
@@ -49,8 +41,6 @@ const config: Config = {
 				},
 				docs: {
 					sidebarPath: "./sidebars.ts",
-					// Please change this to your repo.
-					// Remove this to remove the "edit this page" links.
 					editUrl: `${GITHUB_REPO_URL}/tree/main/packages/docs/`
 				}
 			} satisfies Preset.Options
@@ -58,11 +48,19 @@ const config: Config = {
 	],
 
 	themeConfig: {
-		// Replace with your project's social card
 		image: "img/nadle-social-card.jpg",
 		prism: {
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula
+		},
+		algolia: {
+			insights: false,
+			indexName: "nadle",
+			appId: "N3MF5K9FHG",
+			searchParameters: {},
+			contextualSearch: true,
+			searchPagePath: "search",
+			apiKey: "a889ea985571abd223e1ffc5195e1769"
 		},
 		navbar: {
 			title: "Nadle",
@@ -122,33 +120,8 @@ const config: Config = {
 					]
 				}
 			]
-		},
-		algolia: {
-			// The application ID provided by Algolia
-			appId: "N3MF5K9FHG",
-
-			// Public API key: it is safe to commit it
-			apiKey: "a889ea985571abd223e1ffc5195e1769",
-
-			indexName: "nadle",
-
-			// Optional: see doc section below
-			contextualSearch: true,
-
-			// Optional: Algolia search parameters
-			searchParameters: {},
-
-			// Optional: path for search page that enabled by default (`false` to disable it)
-			searchPagePath: "search",
-
-			// Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
-			insights: false
-
-			//... other Algolia params
 		}
-	} satisfies Preset.ThemeConfig,
-
-	plugins: [["vercel-analytics", { debug: true, mode: "auto" }]]
+	} satisfies Preset.ThemeConfig
 };
 
 export default config;

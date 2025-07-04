@@ -1,7 +1,6 @@
 {
-	"include": ["src", "./docusaurus.config.ts", "./sidebars.ts"],
+	"include": ["src", "scripts", "docusaurus.config.ts", "sidebars.ts"],
 	"compilerOptions": {
 		"noEmit": true
-	},
-	"exclude": [".docusaurus"]
+	}
 }

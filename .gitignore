@@ -17,7 +17,7 @@ __temp__
 .docusaurus
 .vercel
 .nadle*
-
+packages/docs/docs/api
 # misc
 .DS_Store
 

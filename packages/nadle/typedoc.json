@@ -1,0 +1,11 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": ["src/index.ts"],
+	"plugin": ["typedoc-plugin-markdown"],
+	"out": "../docs/docs/api",
+	"tsconfig": "tsconfig.build.json",
+	"alwaysCreateEntryPointModule": true,
+	"readme": "none",
+	"router": "member",
+	"name": "Nadle"
+}
