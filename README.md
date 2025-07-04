@@ -1,4 +1,4 @@
-![Demo](./.assets/demo.gif)
+![Demo](https://raw.githubusercontent.com/nadlejs/nadle/main/.assets/demo.gif)
 
 [![npm](https://img.shields.io/npm/v/nadle)](https://www.npmjs.com/package/nadle)
 [![npm](https://img.shields.io/npm/dm/nadle)](https://www.npmjs.com/package/nadle)
