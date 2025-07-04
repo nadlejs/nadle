@@ -10,8 +10,6 @@ updates:
       actions-deps:
         patterns:
           - "*"
-    assignees:
-      - "nam-hle"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -28,5 +26,3 @@ updates:
         update-types:
           - "minor"
           - "patch"
-      assignees:
-        - "nam-hle"
