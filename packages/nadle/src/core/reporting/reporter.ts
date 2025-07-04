@@ -21,6 +21,7 @@ export interface Reporter {
 	onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
 	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
+	onTaskCanceled?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskRestoreFromCache?: (task: RegisteredTask) => Awaitable<void>;
 	onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
@@ -35,6 +36,7 @@ export class DefaultReporter implements Reporter {
 	private taskStat = {
 		failed: 0,
 		running: 0,
+		canceled: 0,
 		upToDate: 0,
 		finished: 0,
 		fromCache: 0,
@@ -125,6 +127,12 @@ export class DefaultReporter implements Reporter {
 	public async onTaskFailed(task: RegisteredTask) {
 		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.name)} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
+		this.renderer.schedule();
+	}
+
+	public async onTaskCanceled(task: RegisteredTask) {
+		this.nadle.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(task.name)} ${c.yellow("CANCELED")}`);
+		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, canceled: ++this.taskStat.canceled };
 		this.renderer.schedule();
 	}
 

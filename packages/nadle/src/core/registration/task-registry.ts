@@ -45,8 +45,12 @@ export class TaskRegistry {
 	public onTaskFinish(name: string) {
 		const task = this.getByName(name);
 
+		if (task.result.startTime === null) {
+			throw new Error(`Task ${c.bold(name)} was not started properly`);
+		}
+
 		task.status = TaskStatus.Finished;
-		task.result.duration = Date.now() - (task.result.startTime ?? 0);
+		task.result.duration = Date.now() - task.result.startTime;
 	}
 
 	public onTaskUpToDate(name: string) {
@@ -64,8 +68,18 @@ export class TaskRegistry {
 	public onTaskFailed(name: string) {
 		const task = this.getByName(name);
 
+		if (task.result.startTime === null) {
+			throw new Error(`Task ${c.bold(name)} was not started properly`);
+		}
+
 		task.status = TaskStatus.Failed;
-		task.result.duration = Date.now() - (task.result.startTime ?? 0);
+		task.result.duration = Date.now() - task.result.startTime;
+	}
+
+	public onTaskCanceled(name: string) {
+		const task = this.getByName(name);
+
+		task.status = TaskStatus.Canceled;
 	}
 
 	public onTasksScheduled(names: string[]) {

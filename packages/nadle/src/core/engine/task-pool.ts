@@ -3,6 +3,10 @@ import TinyPool from "tinypool";
 import { type Nadle } from "../nadle.js";
 import { type WorkerParams } from "./worker.js";
 
+// It seems this is the error message thrown by TinyPool when a worker is terminated
+// See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438
+const TERMINATING_WORKER_ERROR = "Terminating worker thread";
+
 export class TaskPool {
 	private readonly pool: TinyPool;
 
@@ -61,6 +65,12 @@ export class TaskPool {
 				throw new Error(`Unknown execute type: ${executeType}`);
 			}
 		} catch (error) {
+			if (error instanceof Error && error.message === TERMINATING_WORKER_ERROR) {
+				await this.nadle.onTaskCanceled(task);
+
+				return;
+			}
+
 			await this.nadle.onTaskFailed(task);
 			throw error;
 		}

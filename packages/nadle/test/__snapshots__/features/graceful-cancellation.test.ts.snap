@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`graceful cancellation > should report other running tasks as canceled instead of failed 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/graceful-cancellation
+Command: /ROOT/nadle.mjs --no-footer main-task --max-workers 2
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/graceful-cancellation/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>success-task</BoldDim> <Yellow>STARTED</Yellow>
+
+[log] <Yellow>></Yellow> Task <Bold>fail-task</BoldDim> <Yellow>STARTED</Yellow>
+
+[log]
+<Red>×</Red> Task <Bold>fail-task</BoldDim> <Red>FAILED</Red> {duration}
+[log]
+<Yellow>×</Yellow> Task <Bold>success-task</BoldDim> <Yellow>CANCELED</Yellow>
+[log]
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+[log]
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
+`;
