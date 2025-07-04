@@ -19,7 +19,6 @@ tasks.register("buildNadle", PnpmTask, { args: ["--filter", "nadle", "build"] })
 });
 
 tasks.register("generateMarkdown", ExecTask, { command: "npx", args: ["typedoc"] }).config({
-	dependsOn: ["buildNadle"],
 	workingDir: "./packages/nadle"
 });
 
@@ -38,6 +37,7 @@ tasks.register("buildOthers", PnpmTask, { args: ["--filter", "!@nadle/internal-d
 tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc", "buildOthers"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["build"] });
+tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({ dependsOn: ["build"], workingDir: "./packages/nadle" });
 tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
 
 tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });
