@@ -125,6 +125,9 @@ importers:
       '@manypkg/find-root':
         specifier: ^3.0.0
         version: 3.0.0
+      '@manypkg/tools':
+        specifier: ^2.0.0
+        version: 2.0.0
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -351,6 +354,20 @@ importers:
       nadle:
         specifier: workspace:*
         version: link:../../..
+
+  packages/nadle/test/__fixtures__/pnpm-workspaces:
+    dependencies:
+      nadle:
+        specifier: ../../..
+        version: link:../../..
+
+  packages/nadle/test/__fixtures__/pnpm-workspaces/backend: {}
+
+  packages/nadle/test/__fixtures__/pnpm-workspaces/frontend: {}
+
+  packages/nadle/test/__fixtures__/pnpm-workspaces/shared/api: {}
+
+  packages/nadle/test/__fixtures__/pnpm-workspaces/shared/types: {}
 
   packages/nadle/test/__fixtures__/project-dir/with-nadle-config: {}
 

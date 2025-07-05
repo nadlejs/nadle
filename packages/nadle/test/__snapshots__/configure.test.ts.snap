@@ -26,8 +26,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "list": false,
   "dryRun": false,
   "stacktrace": false,
+  "project": {
+    "workspaces": [],
+    "path": "/ROOT/test/__fixtures__/main",
+    "packageManager": "npm"
+  },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
-  "projectDir": "/ROOT/test/__fixtures__/main",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }
@@ -48,8 +52,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "list": false,
   "dryRun": false,
   "stacktrace": false,
+  "project": {
+    "workspaces": [],
+    "path": "/ROOT/test/__fixtures__/main",
+    "packageManager": "npm"
+  },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
-  "projectDir": "/ROOT/test/__fixtures__/main",
   "minWorkers": 1
 }
 [info] Execution finished

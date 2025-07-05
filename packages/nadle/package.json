@@ -25,6 +25,7 @@
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"@manypkg/find-root": "^3.0.0",
+		"@manypkg/tools": "^2.0.0",
 		"consola": "^3.4.2",
 		"execa": "^9.6.0",
 		"fast-glob": "^3.3.3",

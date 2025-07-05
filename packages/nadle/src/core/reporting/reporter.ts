@@ -145,7 +145,7 @@ export class DefaultReporter implements Reporter {
 	public onExecutionStart() {
 		this.startTimers();
 
-		const { minWorkers, maxWorkers, projectDir, configFile } = this.nadle.options;
+		const { project, minWorkers, maxWorkers, configFile } = this.nadle.options;
 
 		if (!this.nadle.options.isWorkerThread) {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
@@ -154,7 +154,7 @@ export class DefaultReporter implements Reporter {
 			this.nadle.logger.info(
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
 			);
-			this.nadle.logger.info(`Project directory: ${projectDir}`);
+			this.nadle.logger.info(`Project directory: ${project.path}`);
 			this.nadle.logger.info("Resolved options:", JSON.stringify(this.nadle.options, null, 2));
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 			this.nadle.logger.info("Execution started");

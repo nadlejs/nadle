@@ -4,12 +4,11 @@ import Path from "node:path";
 
 import { isCI } from "std-env";
 import { findUpSync } from "find-up";
-import { findRootSync } from "@manypkg/find-root";
 
 import { clamp } from "../utilities/utils.js";
-import { isPathExistsSync } from "../utilities/fs.js";
+import { Project } from "./project-resolver.js";
 import { type TaskResolver } from "./task-resolver.js";
-import { type NadleCLIOptions, type NadlePackageJson, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
+import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
 	public static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
@@ -32,13 +31,13 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	public resolve(params: {
+	public async resolve(params: {
 		configFile: string;
 		allTasks: string[];
 		taskResolver: TaskResolver;
 		cliOptions: NadleCLIOptions;
 		fileOptions: Partial<NadleFileOptions>;
-	}): NadleResolvedOptions {
+	}): Promise<NadleResolvedOptions> {
 		const { allTasks, cliOptions, configFile, fileOptions, taskResolver } = params;
 		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
@@ -47,49 +46,19 @@ export class OptionsResolver {
 
 		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
 
-		const projectDir = this.resolveProjectDir();
-		const cacheDir = Path.resolve(projectDir, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
+		const project = await Project.resolve(this.cwd);
+		const cacheDir = Path.resolve(project.path, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
 
 		return {
 			...baseOptions,
+			project,
 			cacheDir,
-			projectDir,
 			configFile,
 
 			minWorkers,
 			maxWorkers,
 			excludedTasks
 		};
-	}
-
-	private resolveProjectDir(): string {
-		const projectDir = findUpSync(
-			(directory) => {
-				const packageJsonPath = Path.join(directory, "package.json");
-				const hasPackageJson = isPathExistsSync(packageJsonPath);
-
-				if (!hasPackageJson) {
-					return undefined;
-				}
-
-				const packageJson = JSON.parse(Fs.readFileSync(packageJsonPath, "utf-8")) as NadlePackageJson;
-
-				if (!packageJson.nadle?.root) {
-					return undefined;
-				}
-
-				return directory;
-			},
-			{ type: "directory" }
-		);
-
-		if (projectDir !== undefined) {
-			return projectDir;
-		}
-
-		const root = findRootSync(this.cwd);
-
-		return root.rootDir;
 	}
 
 	public resolveConfigFile(configPath: string | undefined): string {

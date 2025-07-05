@@ -11,3 +11,5 @@ export const DASH = "-";
 export const CURVE_ARROW = "↩";
 export const RIGHT_ARROW = "→";
 export const VERTICAL_BAR = "|";
+
+export const PACKAGE_JSON = "package.json";
