@@ -10,8 +10,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell goodbye cop
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] Resolved tasks:
-    <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
-    <Yellow><Bold>cop </BoldDim></Yellow>  → <Green><Bold>copy</BoldDim></Green>
+    <Yellow><Bold>root:hell</BoldDim></Yellow>  → <Green><Bold>root:hello</BoldDim></Green>
+    <Yellow><Bold>root:cop </BoldDim></Yellow>  → <Green><Bold>root:copy</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -48,7 +48,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
 
 [log] Resolved tasks:
-    <Yellow><Bold>hell</BoldDim></Yellow>  → <Green><Bold>hello</BoldDim></Green>
+    <Yellow><Bold>root:hell</BoldDim></Yellow>  → <Green><Bold>root:hello</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 

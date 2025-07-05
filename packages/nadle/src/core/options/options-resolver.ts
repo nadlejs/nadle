@@ -48,7 +48,7 @@ export class OptionsResolver {
 		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
 
 		const project = await Project.resolve(this.cwd);
-		const cacheDir = Path.resolve(project.path, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
+		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
 
 		return {
 			...baseOptions,

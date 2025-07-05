@@ -1,41 +1,35 @@
-import Path from "node:path";
-
 import c from "tinyrainbow";
 
-import { COLON } from "../utilities/constants.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
+import { TaskIdentifierResolver } from "./task-identifier-resolver.js";
 
 export class TaskRegistry {
 	private readonly registry = new Map<string, RegisteredTask>();
 	/**
-	 * The relative path to the workspace where tasks are registering.
+	 * The id of the workspace where tasks are registering.
 	 */
-	private workspacePath: string | null = null;
+	private workspaceId: string | null = null;
 
-	public updateWorkspacePath(workspacePath: string) {
-		this.workspacePath = workspacePath;
-	}
-
-	private computeFullTaskName(taskName: string): string {
-		if (this.workspacePath === null) {
-			throw new Error("Working directory is not set. Please call updateWorkingDir() before computing task names.");
-		}
-
-		return this.workspacePath === "." ? taskName : [...this.workspacePath.split(Path.sep), taskName].join(COLON);
+	public updateWorkspaceId(workspaceId: string) {
+		this.workspaceId = workspaceId;
 	}
 
 	public register(task: RegisteredTask) {
-		if (this.workspacePath === null) {
+		if (this.workspaceId === null) {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		const adjustNameTask = { ...task, name: this.computeFullTaskName(task.name) };
+		const adjustNameTask = { ...task, name: TaskIdentifierResolver.create(this.workspaceId, task.name) };
 
 		this.registry.set(adjustNameTask.name, adjustNameTask);
 	}
 
 	public has(name: string) {
-		return this.registry.has(this.computeFullTaskName(name));
+		if (this.workspaceId === null) {
+			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
+		}
+
+		return this.registry.has(TaskIdentifierResolver.create(this.workspaceId, name));
 	}
 
 	public getAll(): RegisteredTask[] {

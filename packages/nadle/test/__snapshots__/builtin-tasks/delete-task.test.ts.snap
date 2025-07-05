@@ -99,8 +99,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
   "stacktrace": false,
   "project": {
     "workspaces": [],
-    "path": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "rootWorkspace": {
+      "relativePath": ".",
+      "id": "root",
+      "absolutePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__"
+    }
   },
   "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/.nadle",
   "configFile": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts",
@@ -108,8 +112,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
 }
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
-[info] Resolved tasks: [ deleteJsonFiles ]
-[info] Scheduled tasks: deleteJsonFiles
+[info] Resolved tasks: [ root:deleteJsonFiles ]
+[info] Scheduled tasks: root:deleteJsonFiles
 [log] <Yellow>></Yellow> Task <Bold>deleteJsonFiles</BoldDim> <Yellow>STARTED</Yellow>
 
 [info] Current working dir: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__

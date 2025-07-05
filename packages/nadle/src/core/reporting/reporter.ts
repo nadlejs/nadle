@@ -11,6 +11,7 @@ import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../registration/types.js";
+import { TaskIdentifierResolver } from "../registration/task-identifier-resolver.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export interface Reporter {
@@ -100,38 +101,42 @@ export class DefaultReporter implements Reporter {
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
-		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.name)} ${c.yellow("STARTED")}\n`);
+		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.yellow("STARTED")}\n`);
 		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
 		this.threadIdPerWorker = { ...this.threadIdPerWorker, [task.name]: threadId };
 		this.renderer.schedule();
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.name)} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`);
+		this.nadle.logger.log(
+			`\n${c.green(CHECK)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`
+		);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
 		this.renderer.schedule();
 	}
 
 	public async onTaskUpToDate(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(DASH)} Task ${c.bold(task.name)} ${c.green("UP-TO-DATE")}`);
+		this.nadle.logger.log(`\n${c.green(DASH)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.green("UP-TO-DATE")}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, upToDate: ++this.taskStat.upToDate };
 		this.renderer.schedule();
 	}
 
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(task.name)} ${c.green("FROM-CACHE")}`);
+		this.nadle.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.green("FROM-CACHE")}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, fromCache: ++this.taskStat.fromCache };
 		this.renderer.schedule();
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.name)} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(
+			`\n${c.red(CROSS)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`
+		);
 		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
 		this.renderer.schedule();
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(task.name)} ${c.yellow("CANCELED")}`);
+		this.nadle.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.yellow("CANCELED")}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, canceled: ++this.taskStat.canceled };
 		this.renderer.schedule();
 	}
@@ -154,7 +159,7 @@ export class DefaultReporter implements Reporter {
 			this.nadle.logger.info(
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
 			);
-			this.nadle.logger.info(`Project directory: ${project.path}`);
+			this.nadle.logger.info(`Project directory: ${project.rootWorkspace.absolutePath}`);
 			this.nadle.logger.info("Resolved options:", JSON.stringify(this.nadle.options, null, 2));
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 			this.nadle.logger.info("Execution started");

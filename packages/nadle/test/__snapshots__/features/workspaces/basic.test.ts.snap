@@ -24,26 +24,34 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "dryRun": false,
   "stacktrace": false,
   "project": {
-    "path": "/ROOT/test/__fixtures__/pnpm-workspaces",
     "packageManager": "pnpm",
     "workspaces": [
       {
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend",
-        "relativePath": "backend"
+        "relativePath": "backend",
+        "id": "backend"
       },
       {
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
-        "relativePath": "frontend"
+        "relativePath": "frontend",
+        "id": "frontend"
       },
       {
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api",
-        "relativePath": "shared/api"
+        "relativePath": "shared/api",
+        "id": "shared:api"
       },
       {
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types",
-        "relativePath": "shared/types"
+        "relativePath": "shared/types",
+        "id": "shared:types"
       }
-    ]
+    ],
+    "rootWorkspace": {
+      "relativePath": ".",
+      "id": "root",
+      "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces"
+    }
   },
   "cacheDir": "/ROOT/test/__fixtures__/pnpm-workspaces/.nadle",
   "configFile": "/ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts",

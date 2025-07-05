@@ -8,6 +8,7 @@ import { createJiti } from "jiti";
 import { Logger } from "./reporting/logger.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
+import { Project } from "./options/project-resolver.js";
 import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
@@ -16,6 +17,7 @@ import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { TaskStatus, type RegisteredTask } from "./registration/types.js";
 import { fileOptionsRegistry } from "./registration/file-options-registry.js";
+import { TaskIdentifierResolver } from "./registration/task-identifier-resolver.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
@@ -129,7 +131,7 @@ export class Nadle {
 		this.logger.log(c.bold("Execution plan:"));
 
 		for (const task of orderedTasks) {
-			this.logger.log(`${c.yellow(">")} Task ${c.bold(task)}`);
+			this.logger.log(`${c.yellow(">")} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task))}`);
 		}
 	}
 
@@ -153,9 +155,9 @@ export class Nadle {
 				const { description, name: taskName } = task;
 
 				if (description) {
-					this.logger.log(c.bold(c.green(taskName)) + c.yellow(` - ${description}`));
+					this.logger.log(c.bold(c.green(TaskIdentifierResolver.getDisplayName(taskName))) + c.yellow(` - ${description}`));
 				} else {
-					this.logger.log(c.green(taskName));
+					this.logger.log(c.green(TaskIdentifierResolver.getDisplayName(taskName)));
 				}
 			}
 
@@ -211,7 +213,7 @@ export class Nadle {
 	}
 
 	public async configureProject(configFilePath: string) {
-		this.registry.updateWorkspacePath(".");
+		this.registry.updateWorkspaceId(Project.ROOT_WORKSPACE_ID);
 
 		await this.jiti.import(pathToFileURL(configFilePath).toString());
 	}
@@ -224,7 +226,7 @@ export class Nadle {
 				continue;
 			}
 
-			this.registry.updateWorkspacePath(workspace.relativePath);
+			this.registry.updateWorkspaceId(workspace.id);
 			await this.jiti.import(pathToFileURL(configPath).toString());
 		}
 	}

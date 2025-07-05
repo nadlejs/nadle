@@ -28,8 +28,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "stacktrace": false,
   "project": {
     "workspaces": [],
-    "path": "/ROOT/test/__fixtures__/main",
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "rootWorkspace": {
+      "relativePath": ".",
+      "id": "root",
+      "absolutePath": "/ROOT/test/__fixtures__/main"
+    }
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "minWorkers": 1
@@ -54,8 +58,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "stacktrace": false,
   "project": {
     "workspaces": [],
-    "path": "/ROOT/test/__fixtures__/main",
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "rootWorkspace": {
+      "relativePath": ".",
+      "id": "root",
+      "absolutePath": "/ROOT/test/__fixtures__/main"
+    }
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "minWorkers": 1
