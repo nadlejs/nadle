@@ -9,14 +9,14 @@ export function registerTask<Options>(name: string, optTask: Task<Options>, opti
 export function registerTask(name: string, task?: TaskFn | Task, optionsResolver?: Resolver): ConfigBuilder {
 	validateTaskName(name);
 
-	if (taskRegistry.has(name)) {
-		throw new Error(`Task "${name}" already registered`);
-	}
+	// if (taskRegistry.has(name)) {
+	// 	throw new Error(`Task "${name}" already registered`);
+	// }
 
 	let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
 
 	const register = () => {
-		taskRegistry.register(name, {
+		taskRegistry.register({
 			name,
 			status: TaskStatus.Registered,
 			result: { duration: null, startTime: null },

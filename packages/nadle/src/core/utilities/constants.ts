@@ -5,6 +5,7 @@ export const CURSOR_TO_START: string = `${ESC}1;1H`;
 export const HIDE_CURSOR: string = `${ESC}?25l`;
 export const CLEAR_SCREEN: string = "\x1Bc";
 
+export const COLON = ":";
 export const CROSS = "×";
 export const CHECK = "✓";
 export const DASH = "-";
