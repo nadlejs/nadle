@@ -3,35 +3,38 @@ import Path from "node:path";
 import { findUp } from "find-up";
 import { sortBy } from "lodash-es";
 import { findRoot } from "@manypkg/find-root";
-import { NpmTool, PnpmTool, YarnTool, type Tool, type Packages, type Package as ManyPkgPackage } from "@manypkg/tools";
+import { NpmTool, PnpmTool, YarnTool, type Tool, type Package, type Packages } from "@manypkg/tools";
 
 import type { NadlePackageJson } from "./types.js";
-import { PACKAGE_JSON } from "../utilities/constants.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
+import { COLON, PACKAGE_JSON } from "../utilities/constants.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
 interface Workspace {
+	readonly id: string;
 	readonly relativePath: string;
 	readonly absolutePath: string;
 }
 export namespace Workspace {
-	export function create(pkg: ManyPkgPackage): Workspace {
-		return { absolutePath: pkg.dir, relativePath: pkg.relativeDir };
+	export function create(pkg: Package): Workspace {
+		return { absolutePath: pkg.dir, relativePath: pkg.relativeDir, id: pkg.relativeDir.replaceAll(Path.sep, COLON) };
 	}
 }
 
 export interface Project {
-	readonly path: string;
 	readonly packageManager: string;
 	readonly workspaces: Workspace[];
+	readonly rootWorkspace: Workspace;
 }
 export namespace Project {
+	export const ROOT_WORKSPACE_ID = "root";
+
 	export function create(packages: Packages): Project {
 		return {
-			path: packages.rootDir,
 			packageManager: packages.tool.type,
-			workspaces: sortBy(packages.packages.map(Workspace.create), ["relativePath"])
+			workspaces: sortBy(packages.packages.map(Workspace.create), ["relativePath"]),
+			rootWorkspace: { relativePath: ".", id: ROOT_WORKSPACE_ID, absolutePath: packages.rootDir }
 		};
 	}
 
@@ -62,7 +65,11 @@ export namespace Project {
 				}
 			}
 
-			return { workspaces: [], path: projectDir, packageManager: "npm" };
+			return {
+				workspaces: [],
+				packageManager: "npm",
+				rootWorkspace: { relativePath: ".", id: ROOT_WORKSPACE_ID, absolutePath: projectDir }
+			};
 		}
 
 		const monorepoRoot = await findRoot(cwd);

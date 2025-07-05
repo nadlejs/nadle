@@ -14,7 +14,7 @@ describe("projectDir", () => {
 				getStdout(createExec({ cwd: Path.join(baseDir, "with-nadle-config", "sub-package", "src") })`--show-config`, {
 					serializeAll: true
 				})
-			).resolves.contain(`"path": "/ROOT/test/__fixtures__/project-dir/with-nadle-config"`);
+			).resolves.contain(`"absolutePath": "/ROOT/test/__fixtures__/project-dir/with-nadle-config"`);
 		});
 	});
 
@@ -24,7 +24,7 @@ describe("projectDir", () => {
 				getStdout(createExec({ cwd: Path.join(baseDir, "with-npm", "sub-package", "src") })`--show-config`, {
 					serializeAll: true
 				})
-			).resolves.contain(`"path": "/ROOT/test/__fixtures__/project-dir/with-npm"`);
+			).resolves.contain(`"absolutePath": "/ROOT/test/__fixtures__/project-dir/with-npm"`);
 		});
 	});
 
@@ -34,7 +34,7 @@ describe("projectDir", () => {
 				getStdout(createExec({ cwd: Path.join(baseDir, "with-pnpm", "sub-package", "src") })`--show-config`, {
 					serializeAll: true
 				})
-			).resolves.contain(`"path": "/ROOT/test/__fixtures__/project-dir/with-pnpm"`);
+			).resolves.contain(`"absolutePath": "/ROOT/test/__fixtures__/project-dir/with-pnpm"`);
 		});
 	});
 
@@ -44,7 +44,7 @@ describe("projectDir", () => {
 				getStdout(createExec({ cwd: Path.join(baseDir, "with-yarn", "sub-package", "src") })`--show-config`, {
 					serializeAll: true
 				})
-			).resolves.contain(`"path": "/ROOT/test/__fixtures__/project-dir/with-yarn"`);
+			).resolves.contain(`"absolutePath": "/ROOT/test/__fixtures__/project-dir/with-yarn"`);
 		});
 	});
 });

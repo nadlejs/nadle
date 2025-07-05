@@ -12,9 +12,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 [log] <Bold>Unnamed tasks</BoldDim>
 [log] <Bold>-------------</BoldDim>
 [log] <Green>backend:build</Green>
-[log] <Green>build</Green>
 [log] <Green>frontend:build</Green>
+[log] <Green>frontend:check</Green>
+[log] <Green>build</Green>
 [log] <Green>shared:api:build</Green>
+[log] <Green>shared:api:check</Green>
 [log] <Green>shared:types:build</Green>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
@@ -35,6 +37,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:build shared:api:bu
 Build backend successfully!
 [log]
 <Green>✓</Green> Task <Bold>backend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:api:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check API successfully!
+[log]
+<Green>✓</Green> Task <Bold>shared:api:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>shared:api:build</BoldDim> <Yellow>STARTED</Yellow>
 
 Build API successfully!
@@ -47,5 +54,5 @@ Build project successfully!
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>3</BoldDim> tasks executed
+[log] <Bold>4</BoldDim> tasks executed
 `;

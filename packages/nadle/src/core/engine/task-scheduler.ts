@@ -3,6 +3,7 @@ import c from "tinyrainbow";
 import { type Nadle } from "../nadle.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
+import { TaskIdentifierResolver } from "../registration/task-identifier-resolver.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
@@ -25,7 +26,11 @@ export class TaskScheduler {
 	// The main task listed in the tasks argument need to be focused on
 	private mainTask: string | undefined = undefined;
 
-	public constructor(private readonly nadle: Nadle) {}
+	private readonly taskIdentifierResolver: TaskIdentifierResolver;
+
+	public constructor(private readonly nadle: Nadle) {
+		this.taskIdentifierResolver = new TaskIdentifierResolver(nadle);
+	}
 
 	public init(taskNames: string[]): this {
 		this.taskNames = taskNames;
@@ -63,7 +68,11 @@ export class TaskScheduler {
 		}
 
 		const task = this.nadle.registry.getByName(taskName);
-		const dependencies = new Set((task.configResolver().dependsOn ?? []).filter((task) => !this.nadle.options.excludedTasks.includes(task)));
+		const dependencies = new Set(
+			this.taskIdentifierResolver
+				.resolveDependentTasks(taskName, task.configResolver().dependsOn ?? [])
+				.filter((task) => !this.nadle.options.excludedTasks.includes(task))
+		);
 
 		this.dependencyGraph.set(taskName, dependencies);
 		this.indegree.set(taskName, dependencies.size);
