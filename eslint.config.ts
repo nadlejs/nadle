@@ -48,10 +48,16 @@ const configs: ConfigArray = tsEslint.config(
 		files: ["packages/sample-app/**", "packages/nadle/test/**", "packages/validators/**", "packages/examples/**"]
 	},
 	{
-		files: ["packages/nadle/test/fixtures/**"],
+		files: ["packages/nadle/test/__fixtures__/**"],
 		rules: {
 			"no-restricted-imports": ["error", { patterns: ["../**/src/*"] }]
 		}
+	},
+	{
+		rules: {
+			"n/no-extraneous-import": "off"
+		},
+		files: ["packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
 	},
 	{
 		plugins: {
