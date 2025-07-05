@@ -5,6 +5,8 @@ describe("when register two tasks with the same name", () => {
 	it("should throw error", async () => {
 		await expect(() => createExec({ config: "duplicate-tasks" })`hello`).rejects.toThrow(`Task "hello" already registered`);
 	});
+
+	it.todo("should throw error within workspace");
 });
 
 describe("when a task fails", () => {

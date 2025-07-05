@@ -217,8 +217,6 @@ export class Nadle {
 	}
 
 	public async configureWorkspaces() {
-		this.logger.log(this.options.project.workspaces.map((e) => e.relativePath).join(","));
-
 		for (const workspace of this.options.project.workspaces) {
 			const configPath = await new OptionsResolver().resolveWorkspaceConfigFile(workspace.absolutePath);
 

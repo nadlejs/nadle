@@ -16,21 +16,26 @@ export class TaskRegistry {
 		this.workspacePath = workspacePath;
 	}
 
+	private computeFullTaskName(taskName: string): string {
+		if (this.workspacePath === null) {
+			throw new Error("Working directory is not set. Please call updateWorkingDir() before computing task names.");
+		}
+
+		return this.workspacePath === "." ? taskName : [...this.workspacePath.split(Path.sep), taskName].join(COLON);
+	}
+
 	public register(task: RegisteredTask) {
 		if (this.workspacePath === null) {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		const adjustNameTask = {
-			...task,
-			name: this.workspacePath === "." ? task.name : [...this.workspacePath.split(Path.sep), task.name].join(COLON)
-		};
+		const adjustNameTask = { ...task, name: this.computeFullTaskName(task.name) };
 
 		this.registry.set(adjustNameTask.name, adjustNameTask);
 	}
 
 	public has(name: string) {
-		return this.registry.has(name);
+		return this.registry.has(this.computeFullTaskName(name));
 	}
 
 	public getAll(): RegisteredTask[] {
