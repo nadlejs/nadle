@@ -16,7 +16,6 @@ export default defineConfig({
 	},
 	test: {
 		retry: isCI ? 5 : 2,
-		fileParallelism: !isCI,
 		testTimeout: isWindows ? 20000 : 10000,
 		setupFiles: "./test/__setup__/vitest.ts",
 		typecheck: {
