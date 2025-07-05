@@ -284,8 +284,10 @@ function createDependenciesOrderValidator(type: "dependencies" | "devDependencie
 }
 
 const fixturesValidator: PackageValidator = ({ pkg, path }) => {
+	const allowedPackages = ["@nadle/internal-nadle-test-fixtures-project-dir-", "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-"];
+
 	if (path.includes(Path.join(Path.dirname(nadlePackagePath), "test", "__fixtures__"))) {
-		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true) && !pkg.name?.startsWith("@nadle/internal-nadle-test-fixtures-project-dir")) {
+		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true) && !allowedPackages.some((allowPkg) => pkg.name?.startsWith(allowPkg))) {
 			throw new Error(`Test packages must have nadle.root = true field`);
 		}
 	}

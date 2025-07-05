@@ -1,0 +1,12 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-pnpm-workspaces",
+	"type": "module",
+	"private": true,
+	"scripts": {},
+	"dependencies": {
+		"nadle": "../../.."
+	},
+	"nadle": {
+		"root": true
+	}
+}

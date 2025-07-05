@@ -42,7 +42,7 @@ export class Nadle {
 		await this.configure(configFile);
 
 		// Add this point, the options and tasks from configuration file are registered
-		this.#options = new OptionsResolver().resolve({
+		this.#options = await new OptionsResolver().resolve({
 			configFile,
 			cliOptions: this.cliOptions,
 			taskResolver: this.taskResolver,

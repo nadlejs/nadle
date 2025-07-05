@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`workspaces basic > should detect workspaces in a basic setup 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+
+[log] {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "log",
+  "cleanCache": false,
+  "showConfig": true,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "project": {
+    "path": "/ROOT/test/__fixtures__/pnpm-workspaces",
+    "packageManager": "pnpm",
+    "workspaces": [
+      {
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend",
+        "relativePath": "backend"
+      },
+      {
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
+        "relativePath": "frontend"
+      },
+      {
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api",
+        "relativePath": "shared/api"
+      },
+      {
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types",
+        "relativePath": "shared/types"
+      }
+    ]
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/pnpm-workspaces/.nadle",
+  "configFile": "/ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts",
+  "minWorkers": 1
+}
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;

@@ -1,3 +1,4 @@
+import { type Project } from "./project-resolver.js";
 import { type SupportLogLevel } from "../reporting/logger.js";
 
 export interface NadleBaseOptions {
@@ -29,7 +30,7 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 export interface NadleFileOptions extends NadleBaseOptions {}
 
 export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
-	readonly projectDir: string;
+	readonly project: Project;
 
 	readonly minWorkers: number;
 	readonly maxWorkers: number;

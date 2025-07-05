@@ -1,6 +1,16 @@
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
-const baseEslintArgs = ["-r", "--filter", "!@nadle/internal-nadle-test-fixtures-*", "exec", "eslint", ".", "--quiet"];
+const baseEslintArgs = [
+	"-r",
+	"-F",
+	"!@nadle/internal-nadle-test-fixtures-*",
+	"-F",
+	"!@nadle/internal-sample-workspaces-*",
+	"exec",
+	"eslint",
+	".",
+	"--quiet"
+];
 
 tasks.register("clean", DeleteTask, {
 	paths: ["**/lib/**", "**/build/**", "**/__temp__/**", "packages/docs/docs/api/**", "packages/docs/.docusaurus/**"]
@@ -13,7 +23,7 @@ tasks.register("knip", ExecTask, { args: [], command: "knip" }).config({ working
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
-tasks.register("buildNadle", PnpmTask, { args: ["--filter", "nadle", "build"] }).config({
+tasks.register("buildNadle", PnpmTask, { args: ["-F", "nadle", "build"] }).config({
 	inputs: [Inputs.dirs("packages/nadle/src")],
 	outputs: [Outputs.dirs("packages/nadle/lib")]
 });
@@ -27,17 +37,19 @@ tasks.register("prepareAPIMarkdown", ExecTask, { command: "tsx", args: ["scripts
 	dependsOn: ["generateMarkdown"]
 });
 
-tasks.register("buildDoc", PnpmTask, { args: ["--filter", "@nadle/internal-docs", "build"] }).config({
+tasks.register("buildDoc", PnpmTask, { args: ["-F", "@nadle/internal-docs", "build"] }).config({
 	dependsOn: ["prepareAPIMarkdown"],
 	outputs: [Outputs.dirs("packages/docs/build")],
 	inputs: [Inputs.dirs("packages/docs/{src,docs,static}"), Inputs.files("packages/docs/docusaurus.config.ts", "packages/docs/sidebars.ts")]
 });
 
-tasks.register("buildOthers", PnpmTask, { args: ["--filter", "!@nadle/internal-docs", "--filter", "!nadle", "-r", "build"] });
+tasks.register("buildOthers", PnpmTask, { args: ["-F", "!@nadle/internal-docs", "-F", "!nadle", "-r", "build"] });
 tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc", "buildOthers"] });
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["build"] });
-tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({ dependsOn: ["build"], workingDir: "./packages/nadle" });
+tasks
+	.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" })
+	.config({ dependsOn: ["buildNadle"], workingDir: "./packages/nadle" });
 tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
 
 tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });

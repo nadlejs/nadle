@@ -1,0 +1,5 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-frontend",
+	"type": "module",
+	"private": true
+}
