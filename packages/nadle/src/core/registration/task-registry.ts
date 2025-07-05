@@ -1,16 +1,41 @@
+import Path from "node:path";
+
 import c from "tinyrainbow";
 
+import { COLON } from "../utilities/constants.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
 export class TaskRegistry {
 	private readonly registry = new Map<string, RegisteredTask>();
+	/**
+	 * The relative path to the workspace where tasks are registering.
+	 */
+	private workspacePath: string | null = null;
 
-	public register(name: string, task: RegisteredTask) {
-		this.registry.set(name, task);
+	public updateWorkspacePath(workspacePath: string) {
+		this.workspacePath = workspacePath;
+	}
+
+	private computeFullTaskName(taskName: string): string {
+		if (this.workspacePath === null) {
+			throw new Error("Working directory is not set. Please call updateWorkingDir() before computing task names.");
+		}
+
+		return this.workspacePath === "." ? taskName : [...this.workspacePath.split(Path.sep), taskName].join(COLON);
+	}
+
+	public register(task: RegisteredTask) {
+		if (this.workspacePath === null) {
+			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
+		}
+
+		const adjustNameTask = { ...task, name: this.computeFullTaskName(task.name) };
+
+		this.registry.set(adjustNameTask.name, adjustNameTask);
 	}
 
 	public has(name: string) {
-		return this.registry.has(name);
+		return this.registry.has(this.computeFullTaskName(name));
 	}
 
 	public getAll(): RegisteredTask[] {

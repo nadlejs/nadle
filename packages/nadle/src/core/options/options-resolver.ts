@@ -1,18 +1,19 @@
-import Fs from "node:fs";
 import Os from "node:os";
 import Path from "node:path";
 
 import { isCI } from "std-env";
-import { findUpSync } from "find-up";
+import { findUp } from "find-up";
 
 import { clamp } from "../utilities/utils.js";
 import { Project } from "./project-resolver.js";
+import { isPathExists } from "../utilities/fs.js";
 import { type TaskResolver } from "./task-resolver.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
 	public static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
 	public static readonly DEFAULT_CONFIG_FILE_NAME = "nadle.config";
+	public static readonly CONFIG_FILE_PATTERN = `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}}`;
 
 	// eslint-disable-next-line no-restricted-properties
 	private readonly cwd = process.cwd();
@@ -61,26 +62,38 @@ export class OptionsResolver {
 		};
 	}
 
-	public resolveConfigFile(configPath: string | undefined): string {
+	public async resolveConfigFile(configPath: string | undefined): Promise<string> {
 		if (configPath !== undefined) {
 			const resolvedConfigPath = Path.resolve(this.cwd, configPath);
 
-			if (!Fs.existsSync(resolvedConfigPath)) {
+			if (!(await isPathExists(resolvedConfigPath))) {
 				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
 			}
 
 			return resolvedConfigPath;
 		}
 
-		const resolveConfigPath = findUpSync(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${ext}`));
+		const resolveConfigPath = await findUp(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${ext}`));
 
 		if (!resolveConfigPath) {
 			throw new Error(
-				`No ${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}} found in ${this.cwd} directory or parent directories. Please use --config to specify a custom path.`
+				`No ${OptionsResolver.CONFIG_FILE_PATTERN}} found in ${this.cwd} directory or parent directories. Please use --config to specify a custom path.`
 			);
 		}
 
 		return resolveConfigPath;
+	}
+
+	public async resolveWorkspaceConfigFile(workspacePath: string): Promise<string | null> {
+		for (const extension of OptionsResolver.SUPPORT_EXTENSIONS) {
+			const configFilePath = Path.resolve(workspacePath, `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${extension}`);
+
+			if (await isPathExists(configFilePath)) {
+				return configFilePath;
+			}
+		}
+
+		return null;
 	}
 
 	private resolveWorkers(configValue: string | number | undefined) {

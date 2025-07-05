@@ -62,11 +62,11 @@ describe("basic", () => {
 			await expect(getStdout(exec`install node`)).resolves.toRunInOrder("node", "install");
 		});
 
-		it("should run in order 7", { timeout: 10000 }, async () => {
+		it("should run in order 7", async () => {
 			await expect(getStdout(exec`slow fast`)).resolves.toRunInOrder("slow", "fast");
 		});
 
-		it("should run in order 8", { timeout: 10000 }, async () => {
+		it("should run in order 8", async () => {
 			await expect(getStdout(exec`fast slow`)).resolves.toRunInOrder("fast", "slow");
 		});
 	});

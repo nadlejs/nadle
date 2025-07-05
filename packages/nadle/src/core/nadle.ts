@@ -27,6 +27,10 @@ export class Nadle {
 	private readonly reporter: Reporter = new DefaultReporter(this);
 	private readonly taskResolver = new TaskResolver(this.logger, this.registry);
 	private readonly taskScheduler = new TaskScheduler(this);
+	private readonly jiti = createJiti(import.meta.url, {
+		interopDefault: true,
+		extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`)
+	});
 
 	#options: NadleResolvedOptions | undefined;
 
@@ -38,8 +42,8 @@ export class Nadle {
 
 	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
-		const configFile = optionsResolver.resolveConfigFile(this.cliOptions.configFile);
-		await this.configure(configFile);
+		const configFile = await optionsResolver.resolveConfigFile(this.cliOptions.configFile);
+		await this.configureProject(configFile);
 
 		// Add this point, the options and tasks from configuration file are registered
 		this.#options = await new OptionsResolver().resolve({
@@ -51,6 +55,9 @@ export class Nadle {
 		});
 
 		this.logger.init(this.#options);
+
+		await this.configureWorkspaces();
+
 		await this.reporter.init?.();
 
 		return this;
@@ -203,10 +210,23 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	public async configure(configFilePath: string) {
-		const jiti = createJiti(import.meta.url, { interopDefault: true, extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`) });
+	public async configureProject(configFilePath: string) {
+		this.registry.updateWorkspacePath(".");
 
-		await jiti.import(pathToFileURL(configFilePath).toString());
+		await this.jiti.import(pathToFileURL(configFilePath).toString());
+	}
+
+	public async configureWorkspaces() {
+		for (const workspace of this.options.project.workspaces) {
+			const configPath = await new OptionsResolver().resolveWorkspaceConfigFile(workspace.absolutePath);
+
+			if (!configPath) {
+				continue;
+			}
+
+			this.registry.updateWorkspacePath(workspace.relativePath);
+			await this.jiti.import(pathToFileURL(configPath).toString());
+		}
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
