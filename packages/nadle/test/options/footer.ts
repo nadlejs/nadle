@@ -1,7 +1,7 @@
 import { it, expect, describe } from "vitest";
 import { exec, createExec, serializeANSI } from "setup";
 
-describe("--footer", { timeout: 10000 }, () => {
+describe("--footer", () => {
 	it("should show in-progress summary when enable explicitly", async () => {
 		const { stdout, exitCode } = await exec`copy --footer --max-workers 2`;
 

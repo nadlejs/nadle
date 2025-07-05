@@ -1,8 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function blurSnapshot(snapshot: any, options: BlurOptions[] = []) {
-	return options.reduce((result, option) => blur(result, option), snapshot);
-}
-
 export interface BlurOptions {
 	pattern: string | RegExp;
 	replacement: string | ((match: string) => string);
