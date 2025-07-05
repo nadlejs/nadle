@@ -13,12 +13,16 @@ const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
 interface Workspace {
 	readonly id: string;
+	readonly label: string;
 	readonly relativePath: string;
 	readonly absolutePath: string;
 }
 export namespace Workspace {
 	export function create(pkg: Package): Workspace {
-		return { absolutePath: pkg.dir, relativePath: pkg.relativeDir, id: pkg.relativeDir.replaceAll(Path.sep, COLON) };
+		const { dir: absolutePath, relativeDir: relativePath } = pkg;
+		const id = pkg.relativeDir.replaceAll(Path.sep, COLON);
+
+		return { id, label: id, absolutePath, relativePath };
 	}
 }
 
@@ -33,9 +37,13 @@ export namespace Project {
 	export function create(packages: Packages): Project {
 		return {
 			packageManager: packages.tool.type,
-			workspaces: sortBy(packages.packages.map(Workspace.create), ["relativePath"]),
-			rootWorkspace: { relativePath: ".", id: ROOT_WORKSPACE_ID, absolutePath: packages.rootDir }
+			rootWorkspace: createRootWorkspace(packages.rootDir),
+			workspaces: sortBy(packages.packages.map(Workspace.create), ["relativePath"])
 		};
+	}
+
+	function createRootWorkspace(rootDir: string): Workspace {
+		return { relativePath: ".", id: ROOT_WORKSPACE_ID, label: "root project", absolutePath: rootDir };
 	}
 
 	export async function resolve(cwd: string): Promise<Project> {
@@ -65,11 +73,7 @@ export namespace Project {
 				}
 			}
 
-			return {
-				workspaces: [],
-				packageManager: "npm",
-				rootWorkspace: { relativePath: ".", id: ROOT_WORKSPACE_ID, absolutePath: projectDir }
-			};
+			return { workspaces: [], packageManager: "npm", rootWorkspace: createRootWorkspace(projectDir) };
 		}
 
 		const monorepoRoot = await findRoot(cwd);

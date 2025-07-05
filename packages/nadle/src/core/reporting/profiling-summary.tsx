@@ -3,12 +3,12 @@ import c from "tinyrainbow";
 import { formatTime } from "../utilities/utils.js";
 
 interface Task {
-	readonly name: string;
+	readonly label: string;
 	readonly duration: number;
 }
 
 interface Row {
-	readonly name: string;
+	readonly label: string;
 	readonly duration: string;
 	readonly percentage: string;
 }
@@ -27,17 +27,17 @@ export function renderProfilingSummary({ tasks, totalDuration }: ProfilingSummar
 		return "";
 	}
 
-	const headerRow = { name: "Task", duration: "Duration", percentage: "Percentage" };
+	const headerRow = { label: "Task", duration: "Duration", percentage: "Percentage" };
 	const bodyRows: Row[] = [];
 
 	for (const task of tasks.sort((task1, task2) => task2.duration - task1.duration).slice(0, TASK_LIMIT)) {
-		bodyRows.push({ name: task.name, duration: formatTime(task.duration), percentage: ((task.duration / totalDuration) * 100).toFixed(1) + "%" });
+		bodyRows.push({ label: task.label, duration: formatTime(task.duration), percentage: ((task.duration / totalDuration) * 100).toFixed(1) + "%" });
 	}
 
-	const columnWidths: Record<keyof Row, number> = { name: 0, duration: 0, percentage: 0 };
+	const columnWidths: Record<keyof Row, number> = { label: 0, duration: 0, percentage: 0 };
 
 	for (const row of [headerRow, ...bodyRows]) {
-		columnWidths.name = Math.max(columnWidths.name, row.name.length);
+		columnWidths.label = Math.max(columnWidths.label, row.label.length);
 		columnWidths.duration = Math.max(columnWidths.duration, row.duration.length);
 		columnWidths.percentage = Math.max(columnWidths.percentage, row.percentage.length);
 	}
@@ -48,9 +48,9 @@ export function renderProfilingSummary({ tasks, totalDuration }: ProfilingSummar
 		"",
 		c.bold(c.green("Profiling Summary")),
 		renderBorder("top", widths),
-		renderRow([headerRow.name, headerRow.duration, headerRow.percentage], widths, ["left", "right", "right"]),
+		renderRow([headerRow.label, headerRow.duration, headerRow.percentage], widths, ["left", "right", "right"]),
 		renderBorder("join", widths),
-		...bodyRows.map((row) => renderRow([row.name, row.duration, row.percentage], widths, ["left", "right", "right"])),
+		...bodyRows.map((row) => renderRow([row.label, row.duration, row.percentage], widths, ["left", "right", "right"])),
 		renderBorder("bottom", widths)
 	].join("\n");
 }

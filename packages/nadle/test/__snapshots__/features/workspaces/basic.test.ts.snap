@@ -25,33 +25,38 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "stacktrace": false,
   "project": {
     "packageManager": "pnpm",
-    "workspaces": [
-      {
-        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend",
-        "relativePath": "backend",
-        "id": "backend"
-      },
-      {
-        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
-        "relativePath": "frontend",
-        "id": "frontend"
-      },
-      {
-        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api",
-        "relativePath": "shared/api",
-        "id": "shared:api"
-      },
-      {
-        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types",
-        "relativePath": "shared/types",
-        "id": "shared:types"
-      }
-    ],
     "rootWorkspace": {
       "relativePath": ".",
       "id": "root",
+      "label": "root project",
       "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces"
-    }
+    },
+    "workspaces": [
+      {
+        "id": "backend",
+        "label": "backend",
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend",
+        "relativePath": "backend"
+      },
+      {
+        "id": "frontend",
+        "label": "frontend",
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
+        "relativePath": "frontend"
+      },
+      {
+        "id": "shared:api",
+        "label": "shared:api",
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api",
+        "relativePath": "shared/api"
+      },
+      {
+        "id": "shared:types",
+        "label": "shared:types",
+        "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types",
+        "relativePath": "shared/types"
+      }
+    ]
   },
   "cacheDir": "/ROOT/test/__fixtures__/pnpm-workspaces/.nadle",
   "configFile": "/ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts",

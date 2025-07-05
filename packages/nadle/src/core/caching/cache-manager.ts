@@ -3,6 +3,7 @@ import Fs from "node:fs/promises";
 
 import { isPathExists } from "../utilities/fs.js";
 import { type CacheQuery } from "./cache-query.js";
+import { type TaskIdentifier } from "../registration/task-identifier.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
 
 export class CacheManager {
@@ -36,14 +37,14 @@ export class CacheManager {
 		const file = this.getRunMetadataPath(cacheQuery);
 		await Fs.mkdir(Path.dirname(file), { recursive: true });
 
-		const { version, taskName, cacheKey, timestamp, ...rest } = metadata;
+		const { taskId, version, cacheKey, timestamp, ...rest } = metadata;
 
-		await Fs.writeFile(file, JSON.stringify({ version, taskName, cacheKey, timestamp, ...rest }, null, 2));
+		await Fs.writeFile(file, JSON.stringify({ taskId, version, cacheKey, timestamp, ...rest }, null, 2));
 		await this.writeLatestRunMetadata(cacheQuery);
 	}
 
-	private getRunMetadataPath({ taskName, cacheKey }: CacheQuery): string {
-		return Path.join(this.getBaseTaskPath(taskName), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.META_FILE_NAME);
+	private getRunMetadataPath({ taskId, cacheKey }: CacheQuery): string {
+		return Path.join(this.getBaseTaskPath(taskId), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.META_FILE_NAME);
 	}
 
 	public async restoreOutputs(cacheQuery: CacheQuery): Promise<void> {
@@ -76,26 +77,26 @@ export class CacheManager {
 		}
 	}
 
-	private getOutputsCacheDirPath({ taskName, cacheKey }: CacheQuery): string {
-		return Path.join(this.getBaseTaskPath(taskName), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.OUTPUTS_DIR_NAME);
+	private getOutputsCacheDirPath({ taskId, cacheKey }: CacheQuery): string {
+		return Path.join(this.getBaseTaskPath(taskId), CacheManager.RUNS_DIR_NAME, cacheKey, CacheManager.OUTPUTS_DIR_NAME);
 	}
 
-	public async readLatestRunMetadata(taskName: string): Promise<RunCacheMetadata | null> {
-		const file = this.getTaskMetadataPath(taskName);
+	public async readLatestRunMetadata(taskId: TaskIdentifier): Promise<RunCacheMetadata | null> {
+		const file = this.getTaskMetadataPath(taskId);
 
 		try {
 			const raw = await Fs.readFile(file, "utf8");
 
 			const { latest } = JSON.parse(raw) as TaskCacheMetadata;
 
-			return this.readRunMetadata({ taskName, cacheKey: latest });
+			return this.readRunMetadata({ taskId, cacheKey: latest });
 		} catch {
 			return null;
 		}
 	}
 
-	public async writeLatestRunMetadata({ taskName, cacheKey }: CacheQuery): Promise<void> {
-		const path = this.getTaskMetadataPath(taskName);
+	public async writeLatestRunMetadata({ taskId, cacheKey }: CacheQuery): Promise<void> {
+		const path = this.getTaskMetadataPath(taskId);
 		await Fs.mkdir(Path.dirname(path), { recursive: true });
 
 		const taskCacheMetadata: TaskCacheMetadata = { latest: cacheKey };
@@ -103,11 +104,11 @@ export class CacheManager {
 		await Fs.writeFile(path, JSON.stringify(taskCacheMetadata, null, 2));
 	}
 
-	private getTaskMetadataPath(taskName: string): string {
-		return Path.join(this.getBaseTaskPath(taskName), CacheManager.META_FILE_NAME);
+	private getTaskMetadataPath(taskId: TaskIdentifier): string {
+		return Path.join(this.getBaseTaskPath(taskId), CacheManager.META_FILE_NAME);
 	}
 
-	private getBaseTaskPath(taskName: string) {
-		return Path.join(this.cacheDir, CacheManager.TASKS_DIR_NAME, taskName);
+	private getBaseTaskPath(taskId: TaskIdentifier) {
+		return Path.join(this.cacheDir, CacheManager.TASKS_DIR_NAME, taskId.replaceAll(":", "_"));
 	}
 }

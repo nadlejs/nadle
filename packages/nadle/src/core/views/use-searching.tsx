@@ -11,33 +11,33 @@ export function useSearching(tasks: Task[], searchText: string, selectedTasks: s
 	return React.useMemo(() => {
 		if (!searchText) {
 			const visibleTasks = tasks.slice(0, VISIBLE_TASKS_LIMIT);
-			const maxLength = Math.max(...visibleTasks.map((task) => task.name.length));
+			const maxLength = Math.max(...visibleTasks.map((task) => task.label.length));
 
 			return visibleTasks.map<VisibleTask>((task) => {
 				return {
 					...task,
 					pointing: cursor === tasks.indexOf(task),
-					selected: selectedTasks.includes(task.name),
-					TaskName: () => task.name.padEnd(maxLength, " ")
+					selected: selectedTasks.includes(task.label),
+					TaskLabel: () => task.label.padEnd(maxLength, " ")
 				};
 			});
 		}
 
-		const filteredTasks = fuzzySort.go<Task>(searchText, tasks, { key: "name", limit: VISIBLE_TASKS_LIMIT });
-		const maxLength = Math.max(...filteredTasks.map((task) => task.obj.name.length));
+		const filteredTasks = fuzzySort.go<Task>(searchText, tasks, { key: "label", limit: VISIBLE_TASKS_LIMIT });
+		const maxLength = Math.max(...filteredTasks.map((task) => task.obj.label.length));
 
 		return filteredTasks.map<VisibleTask>((task) => {
 			return {
 				...task.obj,
-				selected: selectedTasks.includes(task.obj.name),
+				selected: selectedTasks.includes(task.obj.label),
 				pointing: cursor === filteredTasks.indexOf(task),
-				TaskName: () => <HighlightedTaskName task={task} marginRight={maxLength - task.obj.name.length} />
+				TaskLabel: () => <HighlightedTaskLabel task={task} marginRight={maxLength - task.obj.label.length} />
 			};
 		});
 	}, [cursor, searchText, selectedTasks, tasks]);
 }
 
-const HighlightedTaskName: React.FC<{ marginRight: number; task: Fuzzysort.KeyResult<Task> }> = (props) => {
+const HighlightedTaskLabel: React.FC<{ marginRight: number; task: Fuzzysort.KeyResult<Task> }> = (props) => {
 	const { task, marginRight } = props;
 
 	return (

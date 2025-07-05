@@ -1,8 +1,9 @@
 import { hashObject } from "../utilities/hash.js";
 import type { FileFingerprints } from "./fingerprint.js";
+import type { TaskIdentifier } from "../registration/task-identifier.js";
 
 interface CacheKeyInput {
-	readonly taskName: string;
+	readonly taskId: TaskIdentifier;
 	readonly inputsFingerprints: FileFingerprints;
 }
 

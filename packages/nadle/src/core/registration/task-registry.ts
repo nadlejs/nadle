@@ -1,10 +1,10 @@
 import c from "tinyrainbow";
 
+import { TaskIdentifier } from "./task-identifier.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
-import { TaskIdentifierResolver } from "./task-identifier-resolver.js";
 
 export class TaskRegistry {
-	private readonly registry = new Map<string, RegisteredTask>();
+	private readonly registry = new Map<TaskIdentifier, RegisteredTask>();
 	/**
 	 * The id of the workspace where tasks are registering.
 	 */
@@ -14,96 +14,93 @@ export class TaskRegistry {
 		this.workspaceId = workspaceId;
 	}
 
-	public register(task: RegisteredTask) {
+	public register(name: string, task: Omit<RegisteredTask, "id" | "label">) {
 		if (this.workspaceId === null) {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		const adjustNameTask = { ...task, name: TaskIdentifierResolver.create(this.workspaceId, task.name) };
+		const id = TaskIdentifier.create(this.workspaceId, name);
+		const label = TaskIdentifier.getLabel(id);
 
-		this.registry.set(adjustNameTask.name, adjustNameTask);
+		this.registry.set(id, { ...task, id, label });
 	}
 
-	public has(name: string) {
+	public has(taskName: string) {
 		if (this.workspaceId === null) {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		return this.registry.has(TaskIdentifierResolver.create(this.workspaceId, name));
+		return this.registry.has(TaskIdentifier.create(this.workspaceId, taskName));
 	}
 
 	public getAll(): RegisteredTask[] {
 		return [...this.registry.values()];
 	}
 
-	public getAllByName(): string[] {
-		return this.getAll().map(({ name }) => name);
+	public getAllTaskIds(): string[] {
+		return this.getAll().map(({ id }) => id);
 	}
 
-	public findByName(taskName: string): RegisteredTask | undefined {
-		return this.registry.get(taskName);
-	}
-
-	public getByName(taskName: string): RegisteredTask {
-		const task = this.findByName(taskName);
+	public getById(taskId: TaskIdentifier): RegisteredTask {
+		const task = this.findById(taskId);
 
 		if (!task) {
-			throw new Error(`Task ${c.bold(taskName)} not found`);
+			throw new Error(`Task ${c.bold(taskId)} not found`);
 		}
 
 		return task;
 	}
 
-	public onTaskStart(name: string) {
-		const task = this.getByName(name);
+	private findById(taskId: TaskIdentifier): RegisteredTask | undefined {
+		return this.registry.get(taskId);
+	}
+
+	public onTaskStart(id: TaskIdentifier) {
+		const task = this.getById(id);
 
 		task.status = TaskStatus.Running;
 		task.result.startTime = Date.now();
 	}
 
-	public onTaskFinish(name: string) {
-		const task = this.getByName(name);
+	public onTaskFinish(id: TaskIdentifier) {
+		const task = this.getById(id);
 
 		if (task.result.startTime === null) {
-			throw new Error(`Task ${c.bold(name)} was not started properly`);
+			throw new Error(`Task ${c.bold(id)} was not started properly`);
 		}
 
 		task.status = TaskStatus.Finished;
 		task.result.duration = Date.now() - task.result.startTime;
 	}
 
-	public onTaskUpToDate(name: string) {
-		const task = this.getByName(name);
-
-		task.status = TaskStatus.UpToDate;
+	public onTaskUpToDate(id: TaskIdentifier) {
+		this.getById(id).status = TaskStatus.UpToDate;
 	}
 
-	public onTaskRestoreFromCache(name: string) {
-		const task = this.getByName(name);
-
-		task.status = TaskStatus.FromCache;
+	public onTaskRestoreFromCache(id: TaskIdentifier) {
+		this.getById(id).status = TaskStatus.FromCache;
 	}
 
-	public onTaskFailed(name: string) {
-		const task = this.getByName(name);
+	public onTaskFailed(id: TaskIdentifier) {
+		const task = this.getById(id);
 
 		if (task.result.startTime === null) {
-			throw new Error(`Task ${c.bold(name)} was not started properly`);
+			throw new Error(`Task ${c.bold(id)} was not started properly`);
 		}
 
 		task.status = TaskStatus.Failed;
 		task.result.duration = Date.now() - task.result.startTime;
 	}
 
-	public onTaskCanceled(name: string) {
-		const task = this.getByName(name);
+	public onTaskCanceled(id: TaskIdentifier) {
+		const task = this.getById(id);
 
 		task.status = TaskStatus.Canceled;
 	}
 
-	public onTasksScheduled(names: string[]) {
-		for (const name of names) {
-			this.getByName(name).status = TaskStatus.Scheduled;
+	public onTasksScheduled(ids: TaskIdentifier[]) {
+		for (const id of ids) {
+			this.getById(id).status = TaskStatus.Scheduled;
 		}
 	}
 }
