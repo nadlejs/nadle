@@ -1,3 +1,4 @@
+import { type TaskIdentifier } from "./task-identifier.js";
 import { type Task, type Callback, type Resolver, type TaskConfiguration } from "../types.js";
 
 export enum TaskStatus {
@@ -12,12 +13,16 @@ export enum TaskStatus {
 }
 
 export interface RegisteredTask extends Task {
-	name: string;
 	status: TaskStatus;
-	optionsResolver: Resolver | undefined;
-	configResolver: Callback<TaskConfiguration>;
-	result: {
-		duration: number | null;
-		startTime: number | null;
-	};
+
+	readonly label: string;
+	readonly id: TaskIdentifier;
+	readonly result: TaskResult;
+	readonly optionsResolver: Resolver | undefined;
+	readonly configResolver: Callback<TaskConfiguration>;
+}
+
+interface TaskResult {
+	duration: number | null;
+	startTime: number | null;
 }

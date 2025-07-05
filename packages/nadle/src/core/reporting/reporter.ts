@@ -11,7 +11,6 @@ import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../registration/types.js";
-import { TaskIdentifierResolver } from "../registration/task-identifier-resolver.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export interface Reporter {
@@ -91,9 +90,9 @@ export class DefaultReporter implements Reporter {
 		let maxWorkerId = 0;
 
 		for (const runningTask of this.nadle.registry.getAll().filter((task) => task.status === TaskStatus.Running)) {
-			const workerId = this.threadIdPerWorker[runningTask.name];
+			const workerId = this.threadIdPerWorker[runningTask.id];
 
-			lines[workerId - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.name)}`;
+			lines[workerId - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.id)}`;
 			maxWorkerId = Math.max(maxWorkerId, workerId);
 		}
 
@@ -101,42 +100,38 @@ export class DefaultReporter implements Reporter {
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
-		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.yellow("STARTED")}\n`);
+		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.label)} ${c.yellow("STARTED")}\n`);
 		this.taskStat = { ...this.taskStat, running: ++this.taskStat.running };
-		this.threadIdPerWorker = { ...this.threadIdPerWorker, [task.name]: threadId };
+		this.threadIdPerWorker = { ...this.threadIdPerWorker, [task.id]: threadId };
 		this.renderer.schedule();
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(
-			`\n${c.green(CHECK)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`
-		);
+		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
 		this.renderer.schedule();
 	}
 
 	public async onTaskUpToDate(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(DASH)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.green("UP-TO-DATE")}`);
+		this.nadle.logger.log(`\n${c.green(DASH)} Task ${c.bold(task.label)} ${c.green("UP-TO-DATE")}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, upToDate: ++this.taskStat.upToDate };
 		this.renderer.schedule();
 	}
 
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.green("FROM-CACHE")}`);
+		this.nadle.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(task.label)} ${c.green("FROM-CACHE")}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, fromCache: ++this.taskStat.fromCache };
 		this.renderer.schedule();
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.nadle.logger.log(
-			`\n${c.red(CROSS)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`
-		);
+		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
 		this.renderer.schedule();
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task.name))} ${c.yellow("CANCELED")}`);
+		this.nadle.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(task.label)} ${c.yellow("CANCELED")}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, canceled: ++this.taskStat.canceled };
 		this.renderer.schedule();
 	}
@@ -182,10 +177,7 @@ export class DefaultReporter implements Reporter {
 							return [];
 						}
 
-						return {
-							name: task.name,
-							duration: task.result.duration ?? 0
-						};
+						return { label: task.label, duration: task.result.duration ?? 0 };
 					})
 				})
 			);

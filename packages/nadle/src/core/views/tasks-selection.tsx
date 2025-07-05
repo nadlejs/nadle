@@ -7,13 +7,13 @@ import { type Context, inputHandlers } from "./input-handlers.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
 
 export interface Task {
-	readonly name: string;
+	readonly label: string;
 	readonly description?: string;
 }
 
 export function renderTaskSelection(taskRegistry: TaskRegistry): Promise<string[]> {
-	const tasks = taskRegistry.getAll().map(({ name, configResolver }) => {
-		return { name, description: configResolver().description };
+	const tasks = taskRegistry.getAll().map(({ label, configResolver }) => {
+		return { label, description: configResolver().description };
 	});
 
 	return new Promise((resolve) => {
@@ -79,7 +79,7 @@ const TasksSelection: React.FC<TasksSelection.Props> = ({ tasks, onSubmit }) => 
 				{searchText && searchingTasks.length === 0 ? (
 					<Text dimColor>No matched tasks</Text>
 				) : (
-					searchingTasks.map((task) => <VisibleTask key={task.name} task={task} />)
+					searchingTasks.map((task) => <VisibleTask key={task.label} task={task} />)
 				)}
 			</Box>
 

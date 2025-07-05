@@ -8,12 +8,12 @@ describe.skip("profiling summary", () => {
 			renderProfilingSummary({
 				totalDuration: 20000,
 				tasks: [
-					{ name: "test", duration: 1234 },
-					{ duration: 5678, name: "compile" },
-					{ duration: 9111, name: "install" },
-					{ name: "node", duration: 1213 },
-					{ duration: 1415, name: "compileTs" },
-					{ duration: 1617, name: "compileSvg" }
+					{ label: "test", duration: 1234 },
+					{ duration: 5678, label: "compile" },
+					{ duration: 9111, label: "install" },
+					{ label: "node", duration: 1213 },
+					{ duration: 1415, label: "compileTs" },
+					{ duration: 1617, label: "compileSvg" }
 				]
 			})
 		).toMatchSnapshot();
@@ -24,8 +24,8 @@ describe.skip("profiling summary", () => {
 			renderProfilingSummary({
 				totalDuration: 20000,
 				tasks: [
-					{ name: "test", duration: 1234 },
-					{ duration: 5678, name: "compile" }
+					{ label: "test", duration: 1234 },
+					{ duration: 5678, label: "compile" }
 				]
 			})
 		).toMatchSnapshot();

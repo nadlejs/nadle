@@ -14,10 +14,10 @@ import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
+import { TaskIdentifier } from "./registration/task-identifier.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { TaskStatus, type RegisteredTask } from "./registration/types.js";
 import { fileOptionsRegistry } from "./registration/file-options-registry.js";
-import { TaskIdentifierResolver } from "./registration/task-identifier-resolver.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
@@ -53,7 +53,7 @@ export class Nadle {
 			cliOptions: this.cliOptions,
 			taskResolver: this.taskResolver,
 			fileOptions: fileOptionsRegistry.get(),
-			allTasks: this.registry.getAllByName()
+			allTasks: this.registry.getAllTaskIds()
 		});
 
 		this.logger.init(this.#options);
@@ -116,7 +116,7 @@ export class Nadle {
 		const scheduler = this.taskScheduler.init(chosenTasks);
 		await this.onTasksScheduled(scheduler.scheduledTask);
 
-		await new TaskPool(this, (taskName) => scheduler.getReadyTasks(taskName)).run();
+		await new TaskPool(this, (taskId) => scheduler.getReadyTasks(taskId)).run();
 	}
 
 	private dryRunTasks() {
@@ -131,7 +131,7 @@ export class Nadle {
 		this.logger.log(c.bold("Execution plan:"));
 
 		for (const task of orderedTasks) {
-			this.logger.log(`${c.yellow(">")} Task ${c.bold(TaskIdentifierResolver.getDisplayName(task))}`);
+			this.logger.log(`${c.yellow(">")} Task ${c.bold(TaskIdentifier.getLabel(task))}`);
 		}
 	}
 
@@ -152,12 +152,12 @@ export class Nadle {
 			this.logger.log(c.bold("-".repeat(label.length)));
 
 			for (const task of tasks) {
-				const { description, name: taskName } = task;
+				const { label, description } = task;
 
 				if (description) {
-					this.logger.log(c.bold(c.green(TaskIdentifierResolver.getDisplayName(taskName))) + c.yellow(` - ${description}`));
+					this.logger.log(c.bold(c.green(label)) + c.yellow(` - ${description}`));
 				} else {
-					this.logger.log(c.green(TaskIdentifierResolver.getDisplayName(taskName)));
+					this.logger.log(c.green(label));
 				}
 			}
 
@@ -204,7 +204,7 @@ export class Nadle {
 				return firstGroupName.localeCompare(secondGroupName);
 			})
 			.map(([groupName, tasks]) => {
-				return [groupName, tasks.sort((firstTask, secondTask) => firstTask.name.localeCompare(secondTask.name))];
+				return [groupName, tasks.sort((firstTask, secondTask) => firstTask.id.localeCompare(secondTask.id))];
 			});
 	}
 
@@ -232,32 +232,32 @@ export class Nadle {
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
-		this.registry.onTaskStart(task.name);
+		this.registry.onTaskStart(task.id);
 		await this.reporter.onTaskStart?.(task, threadId);
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.registry.onTaskFinish(task.name);
+		this.registry.onTaskFinish(task.id);
 		await this.reporter.onTaskFinish?.(task);
 	}
 	public async onTaskUpToDate(task: RegisteredTask) {
-		this.registry.onTaskUpToDate(task.name);
+		this.registry.onTaskUpToDate(task.id);
 		await this.reporter.onTaskUpToDate?.(task);
 	}
 
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
-		this.registry.onTaskRestoreFromCache(task.name);
+		this.registry.onTaskRestoreFromCache(task.id);
 		await this.reporter.onTaskRestoreFromCache?.(task);
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.registry.onTaskFailed(task.name);
+		this.registry.onTaskFailed(task.id);
 		await this.reporter.onTaskFailed?.(task);
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
 		if (task.status === TaskStatus.Running) {
-			this.registry.onTaskCanceled(task.name);
+			this.registry.onTaskCanceled(task.id);
 			await this.reporter.onTaskCanceled?.(task);
 		}
 	}

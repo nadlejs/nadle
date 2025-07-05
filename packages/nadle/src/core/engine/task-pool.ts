@@ -2,6 +2,7 @@ import TinyPool from "tinypool";
 
 import { type Nadle } from "../nadle.js";
 import { type WorkerParams } from "./worker.js";
+import { type TaskIdentifier } from "../registration/task-identifier.js";
 
 // It seems this is the error message thrown by TinyPool when a worker is terminated
 // See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438
@@ -12,7 +13,7 @@ export class TaskPool {
 
 	public constructor(
 		private readonly nadle: Nadle,
-		private readonly getNextReadyTasks: (taskName?: string) => Set<string>
+		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>
 	) {
 		this.pool = new TinyPool({
 			concurrentTasksPerWorker: 1,
@@ -24,19 +25,20 @@ export class TaskPool {
 
 	public async run() {
 		try {
-			await Promise.all(Array.from(this.getNextReadyTasks()).map((taskName) => this.pushTask(taskName)));
+			await Promise.all(Array.from(this.getNextReadyTasks()).map((taskId) => this.pushTask(taskId)));
 		} finally {
 			await this.pool.destroy();
 		}
 	}
 
-	private async pushTask(taskName: string) {
-		const task = this.nadle.registry.getByName(taskName);
+	private async pushTask(taskId: string) {
+		const task = this.nadle.registry.getById(taskId);
 
 		try {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();
 			let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
-			poolPort.on("message", async (msg) => {
+			// TODO: Add type for the message
+			poolPort.on("message", async (msg: any) => {
 				if (msg.type === "start") {
 					await this.nadle.onTaskStart(task, msg.threadId);
 				} else if (msg.type === "up-to-date") {
@@ -47,9 +49,9 @@ export class TaskPool {
 			});
 
 			const workerParams: WorkerParams = {
+				taskId: task.id,
 				port: workerPort,
 				env: process.env,
-				taskName: task.name,
 				options: { ...this.nadle.options, footer: false, isWorkerThread: true }
 			};
 
@@ -75,6 +77,6 @@ export class TaskPool {
 			throw error;
 		}
 
-		await Promise.all(Array.from(this.getNextReadyTasks(taskName)).map((taskName) => this.pushTask(taskName)));
+		await Promise.all(Array.from(this.getNextReadyTasks(taskId)).map((readyTaskId) => this.pushTask(readyTaskId)));
 	}
 }

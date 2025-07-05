@@ -25,9 +25,9 @@ export interface RunCacheMetadata {
 	version: 1;
 
 	/**
-	 * Name of the task this cache entry belongs to.
+	 * The id of the task this cache entry belongs to.
 	 */
-	taskName: string;
+	taskId: string;
 
 	/**
 	 * Unique hash (cache key) for this task run,
@@ -71,7 +71,7 @@ export interface RunCacheMetadata {
 
 export namespace RunCacheMetadata {
 	export function create(params: {
-		taskName: string;
+		taskId: string;
 		cacheKey: CacheKey;
 		outputsFingerprint: string;
 		inputsFingerprints: FileFingerprints;

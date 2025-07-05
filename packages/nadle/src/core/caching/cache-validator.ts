@@ -27,7 +27,7 @@ export class CacheValidator {
 	private readonly cacheManager: CacheManager;
 
 	public constructor(
-		private readonly taskName: string,
+		private readonly taskId: string,
 		private readonly taskConfiguration: TaskConfiguration,
 		private readonly context: CacheValidatorContext
 	) {
@@ -43,18 +43,18 @@ export class CacheValidator {
 			return { result: "cache-disabled" };
 		}
 
-		const taskName = this.taskName;
+		const taskId = this.taskId;
 
 		const inputsFingerprints = await Declaration.computeFileFingerprints({
 			files: [this.context.configFile],
 			workingDir: this.context.workingDir,
 			declarations: this.taskConfiguration.inputs
 		});
-		const cacheKey = await CacheKey.compute({ taskName, inputsFingerprints });
-		const cacheQuery: CacheQuery = { cacheKey, taskName };
+		const cacheKey = await CacheKey.compute({ taskId, inputsFingerprints });
+		const cacheQuery: CacheQuery = { taskId, cacheKey };
 
 		const hasCache = await this.cacheManager.hasCache(cacheQuery);
-		const latestRunMetadata = await this.cacheManager.readLatestRunMetadata(taskName);
+		const latestRunMetadata = await this.cacheManager.readLatestRunMetadata(taskId);
 
 		if (!hasCache) {
 			return {
@@ -66,7 +66,7 @@ export class CacheValidator {
 		}
 
 		if (latestRunMetadata === null) {
-			throw new Error("Unable to read latest run metadata for task: " + taskName);
+			throw new Error("Unable to read latest run metadata for task: " + taskId);
 		}
 
 		const outputHashes = hashObject(
