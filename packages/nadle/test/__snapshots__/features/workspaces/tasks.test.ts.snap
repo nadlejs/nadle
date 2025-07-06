@@ -136,3 +136,27 @@ Build API successfully!
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>9</BoldDim> tasks executed
 `;
+
+exports[`workspaces tasks > should run the workspace task when using alias 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer api:build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check API successfully!
+[log]
+<Green>✓</Green> Task <Bold>api:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>api:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build API successfully!
+[log]
+<Green>✓</Green> Task <Bold>api:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>2</BoldDim> tasks executed
+`;
