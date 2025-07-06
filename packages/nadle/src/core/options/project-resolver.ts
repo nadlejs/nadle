@@ -8,7 +8,7 @@ import { NpmTool, PnpmTool, YarnTool, type Tool, type Package, type Packages } f
 
 import { readJson, isPathExists } from "../utilities/fs.js";
 import type { AliasOption, NadlePackageJson } from "./types.js";
-import { DOT, COLON, PACKAGE_JSON } from "../utilities/constants.js";
+import { DOT, COLON, SLASH, BACKSLASH, PACKAGE_JSON } from "../utilities/constants.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
@@ -20,8 +20,9 @@ interface Workspace {
 }
 export namespace Workspace {
 	export function create(pkg: Package, aliasResolver: AliasResolver): Workspace {
-		const { dir: absolutePath, relativeDir: relativePath } = pkg;
-		const id = pkg.relativeDir.replaceAll(Path.sep, COLON);
+		const { relativeDir, dir: absolutePath } = pkg;
+		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
+		const id = relativePath.replaceAll(SLASH, COLON);
 
 		return { id, absolutePath, relativePath, label: aliasResolver(relativePath) ?? id };
 	}

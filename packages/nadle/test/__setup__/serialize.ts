@@ -42,9 +42,7 @@ function serializePwdGitBashWindows(input: string) {
 }
 
 function serializeRelativePath(input: string) {
-	return input
-		.replaceAll(/(\s|^)\.[\\/].+/g, (match) => match.replaceAll(`\\`, "/"))
-		.replaceAll(/"relativePath": ".+"/g, (match) => match.replaceAll(`\\\\`, "/"));
+	return input.replaceAll(/(\s|^)\.[\\/].+/g, (match) => match.replaceAll(`\\`, "/"));
 }
 
 function serializeAbsoluteFilePath(input: string) {
