@@ -15,6 +15,7 @@ import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
+import { type TaskIdentifier } from "./registration/task-identifier.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { TaskStatus, type RegisteredTask } from "./registration/types.js";
 import { fileOptionsRegistry } from "./registration/file-options-registry.js";
@@ -38,7 +39,9 @@ export class Nadle {
 
 	private static readonly UnnamedGroup = "Unnamed";
 
-	public resolvedTasks: string[] = [];
+	// TODO: Can we remove this?
+	public resolvedTasks: TaskIdentifier[] = [];
+	public excludedTaskIds: TaskIdentifier[] = [];
 
 	public constructor(private readonly cliOptions: NadleCLIOptions) {}
 
@@ -50,6 +53,7 @@ export class Nadle {
 		// Add this point, the options and tasks from configuration file are registered
 		this.#options = await new OptionsResolver().resolve({ configFile, cliOptions: this.cliOptions, fileOptions: fileOptionsRegistry.get() });
 		this.registry.configureProject(this.options.project);
+		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.registry.parse(excludedTaskInput));
 
 		this.logger.init(this.#options);
 
@@ -65,7 +69,7 @@ export class Nadle {
 
 		try {
 			this.reporter.onExecutionStart?.();
-			this.resolvedTasks = this.taskResolver.resolve(taskInputs).filter((task) => !this.options.excludedTasks.includes(task));
+			this.resolvedTasks = this.taskResolver.resolve(taskInputs).filter((task) => !this.excludedTaskIds.includes(task));
 
 			if (this.options.showConfig) {
 				this.showConfig();

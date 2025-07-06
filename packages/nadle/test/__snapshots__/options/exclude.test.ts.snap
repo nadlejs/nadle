@@ -72,22 +72,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.abc.ts
 
-[log] <Yellow>></Yellow> Task <Bold>task-A-0</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>task-A-0</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A-1</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>task-A-1</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A-2</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>task-A-2</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>task-A</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>task-A</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>task-B-0</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
@@ -106,7 +90,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.abc.ts task-
 <Green>✓</Green> Task <Bold>task-B</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>8</BoldDim> tasks executed
+[log] <Bold>4</BoldDim> tasks executed
 `;
 
 exports[`--exclude > should work with dry run 1`] = `

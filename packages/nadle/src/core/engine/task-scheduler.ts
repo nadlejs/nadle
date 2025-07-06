@@ -24,8 +24,6 @@ export class TaskScheduler {
 
 	private taskIds: TaskIdentifier[] = [];
 
-	private excludedTaskIds: TaskIdentifier[] = [];
-
 	// The main task listed in the tasks argument need to be focused on
 	private mainTaskId: string | undefined = undefined;
 
@@ -33,8 +31,6 @@ export class TaskScheduler {
 
 	public init(taskIds: string[]): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
-
-		this.excludedTaskIds = this.nadle.options.excludedTasks.map((excludedTaskInput) => this.nadle.registry.parse(excludedTaskInput));
 
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
 		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
@@ -94,7 +90,7 @@ export class TaskScheduler {
 		const dependencies = new Set(
 			(configResolver().dependsOn ?? [])
 				.map((dependencyTaskInput) => this.nadle.registry.parse(dependencyTaskInput, workspaceId))
-				.filter((taskId) => !this.excludedTaskIds.includes(taskId))
+				.filter((taskId) => !this.nadle.excludedTaskIds.includes(taskId))
 		);
 
 		this.dependencyGraph.set(taskId, dependencies);
