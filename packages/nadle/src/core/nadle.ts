@@ -6,6 +6,7 @@ import c from "tinyrainbow";
 import { createJiti } from "jiti";
 
 import { Logger } from "./reporting/logger.js";
+import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
 import { Project } from "./options/project-resolver.js";
@@ -14,7 +15,6 @@ import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
-import { TaskIdentifier } from "./registration/task-identifier.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { TaskStatus, type RegisteredTask } from "./registration/types.js";
 import { fileOptionsRegistry } from "./registration/file-options-registry.js";
@@ -48,13 +48,8 @@ export class Nadle {
 		await this.configureProject(configFile);
 
 		// Add this point, the options and tasks from configuration file are registered
-		this.#options = await new OptionsResolver().resolve({
-			configFile,
-			cliOptions: this.cliOptions,
-			taskResolver: this.taskResolver,
-			fileOptions: fileOptionsRegistry.get(),
-			allTasks: this.registry.getAllTaskIds()
-		});
+		this.#options = await new OptionsResolver().resolve({ configFile, cliOptions: this.cliOptions, fileOptions: fileOptionsRegistry.get() });
+		this.registry.configureProject(this.options.project);
 
 		this.logger.init(this.#options);
 
@@ -65,12 +60,12 @@ export class Nadle {
 		return this;
 	}
 
-	public async execute(tasks: string[]) {
+	public async execute(taskInputs: string[]) {
 		await this.init();
 
 		try {
 			this.reporter.onExecutionStart?.();
-			this.resolvedTasks = this.taskResolver.resolve(tasks).filter((task) => !this.options.excludedTasks.includes(task));
+			this.resolvedTasks = this.taskResolver.resolve(taskInputs).filter((task) => !this.options.excludedTasks.includes(task));
 
 			if (this.options.showConfig) {
 				this.showConfig();
@@ -126,12 +121,12 @@ export class Nadle {
 			return;
 		}
 
-		const orderedTasks = new TaskScheduler(this).init(this.resolvedTasks).getOrderedTasks();
+		const taskIds = new TaskScheduler(this).init(this.resolvedTasks).getOrderedTasks();
 
 		this.logger.log(c.bold("Execution plan:"));
 
-		for (const task of orderedTasks) {
-			this.logger.log(`${c.yellow(">")} Task ${c.bold(TaskIdentifier.getLabel(task))}`);
+		for (const taskId of taskIds) {
+			this.logger.log(`${c.yellow(">")} Task ${c.bold(this.registry.getById(taskId).label)}`);
 		}
 	}
 
@@ -149,7 +144,7 @@ export class Nadle {
 
 			const label = `${capitalize(groupName)} tasks`;
 			this.logger.log(c.bold(label));
-			this.logger.log(c.bold("-".repeat(label.length)));
+			this.logger.log(c.bold(DASH.repeat(label.length)));
 
 			for (const task of tasks) {
 				const { label, description } = task;

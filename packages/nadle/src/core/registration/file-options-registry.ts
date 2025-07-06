@@ -1,13 +1,13 @@
 import { type NadleFileOptions } from "../options/types.js";
 
 class FileOptionsRegistry {
-	private options: Partial<NadleFileOptions> = {};
+	private options: NadleFileOptions = {};
 
-	public add(options: Partial<NadleFileOptions>) {
+	public add(options: NadleFileOptions) {
 		this.options = options;
 	}
 
-	public get(): Partial<NadleFileOptions> {
+	public get(): NadleFileOptions {
 		return this.options;
 	}
 }

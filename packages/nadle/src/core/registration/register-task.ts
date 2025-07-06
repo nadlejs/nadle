@@ -16,7 +16,8 @@ export function registerTask(name: string, task?: TaskFn | Task, optionsResolver
 	let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
 
 	const register = () => {
-		taskRegistry.register(name, {
+		taskRegistry.register({
+			name,
 			status: TaskStatus.Registered,
 			result: { duration: null, startTime: null },
 			configResolver: () => {

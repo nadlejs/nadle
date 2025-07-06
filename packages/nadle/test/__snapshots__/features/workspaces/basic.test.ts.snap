@@ -28,33 +28,33 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
     "rootWorkspace": {
       "relativePath": ".",
       "id": "root",
-      "label": "root project",
-      "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces"
+      "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces",
+      "label": ""
     },
     "workspaces": [
       {
         "id": "backend",
-        "label": "backend",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend",
-        "relativePath": "backend"
+        "relativePath": "backend",
+        "label": "backend"
       },
       {
         "id": "frontend",
-        "label": "frontend",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
-        "relativePath": "frontend"
+        "relativePath": "frontend",
+        "label": "frontend"
       },
       {
         "id": "shared:api",
-        "label": "shared:api",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api",
-        "relativePath": "shared/api"
+        "relativePath": "shared/api",
+        "label": "api"
       },
       {
         "id": "shared:types",
-        "label": "shared:types",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types",
-        "relativePath": "shared/types"
+        "relativePath": "shared/types",
+        "label": "shared:types"
       }
     ]
   },

@@ -32,8 +32,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
     "rootWorkspace": {
       "relativePath": ".",
       "id": "root",
-      "label": "root project",
-      "absolutePath": "/ROOT/test/__fixtures__/main"
+      "absolutePath": "/ROOT/test/__fixtures__/main",
+      "label": ""
     }
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
@@ -63,8 +63,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
     "rootWorkspace": {
       "relativePath": ".",
       "id": "root",
-      "label": "root project",
-      "absolutePath": "/ROOT/test/__fixtures__/main"
+      "absolutePath": "/ROOT/test/__fixtures__/main",
+      "label": ""
     }
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",

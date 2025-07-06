@@ -1,52 +1,21 @@
 import { COLON } from "../utilities/constants.js";
-import { Project } from "../options/project-resolver.js";
 
 export type TaskIdentifier = string;
 
 export namespace TaskIdentifier {
 	const SEPARATOR = COLON;
 
-	export function resolveDependentTasks(hostTaskId: TaskIdentifier, dependencyTaskNames: string[]) {
-		const currentWorkspaceId = resolve(hostTaskId).workspaceId;
-
-		return dependencyTaskNames.map((taskName) => {
-			if (taskName.includes(SEPARATOR)) {
-				return taskName;
-			}
-
-			return TaskIdentifier.create(currentWorkspaceId, taskName);
-		});
-	}
-
 	export function create(workspaceId: string, taskName: string): TaskIdentifier {
 		return [...workspaceId.split(SEPARATOR), taskName].join(SEPARATOR);
 	}
 
-	export function resolve(taskIdentifier: TaskIdentifier): { taskName: string; workspaceId: string } {
-		const parts = taskIdentifier.split(SEPARATOR);
-
-		if (parts.length < 2) {
-			throw new Error(`Invalid task identifier: ${taskIdentifier}`);
+	export function parser(taskInput: string): { taskNameInput: string; workspaceInput: string | undefined } {
+		if (!taskInput.includes(SEPARATOR)) {
+			return { taskNameInput: taskInput, workspaceInput: undefined };
 		}
 
-		return { taskName: parts[parts.length - 1], workspaceId: parts.slice(0, -1).join(SEPARATOR) };
-	}
+		const parts = taskInput.split(SEPARATOR);
 
-	export function normalize(taskName: string) {
-		if (taskName.includes(SEPARATOR)) {
-			return taskName;
-		}
-
-		return create(Project.ROOT_WORKSPACE_ID, taskName);
-	}
-
-	export function getLabel(taskIdentifier: TaskIdentifier): string {
-		const { taskName, workspaceId } = resolve(taskIdentifier);
-
-		if (workspaceId === Project.ROOT_WORKSPACE_ID) {
-			return taskName;
-		}
-
-		return taskIdentifier;
+		return { taskNameInput: parts[parts.length - 1], workspaceInput: parts.slice(0, -1).join(SEPARATOR) };
 	}
 }

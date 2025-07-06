@@ -27,7 +27,10 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly excludedTasks?: string[];
 }
 
-export interface NadleFileOptions extends NadleBaseOptions {}
+export interface NadleFileOptions extends Partial<NadleBaseOptions> {
+	readonly alias?: AliasOption;
+}
+export type AliasOption = Record<string, string> | ((workspacePath: string) => string | undefined);
 
 export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers">> {
 	readonly project: Project;

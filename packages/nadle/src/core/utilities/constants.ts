@@ -6,6 +6,8 @@ export const HIDE_CURSOR: string = `${ESC}?25l`;
 export const CLEAR_SCREEN: string = "\x1Bc";
 
 export const COLON = ":";
+export const DOT = ".";
+export const UNDERSCORE = "_";
 export const CROSS = "×";
 export const CHECK = "✓";
 export const DASH = "-";

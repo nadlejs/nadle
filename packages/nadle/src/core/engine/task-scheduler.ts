@@ -4,7 +4,7 @@ import { type Nadle } from "../nadle.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { Project } from "../options/project-resolver.js";
-import { TaskIdentifier } from "../registration/task-identifier.js";
+import { type TaskIdentifier } from "../registration/task-identifier.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
@@ -24,6 +24,8 @@ export class TaskScheduler {
 
 	private taskIds: TaskIdentifier[] = [];
 
+	private excludedTaskIds: TaskIdentifier[] = [];
+
 	// The main task listed in the tasks argument need to be focused on
 	private mainTaskId: string | undefined = undefined;
 
@@ -31,6 +33,8 @@ export class TaskScheduler {
 
 	public init(taskIds: string[]): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
+
+		this.excludedTaskIds = this.nadle.options.excludedTasks.map((excludedTaskInput) => this.nadle.registry.parse(excludedTaskInput));
 
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
 		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
@@ -46,24 +50,24 @@ export class TaskScheduler {
 	}
 
 	private expandWorkspaceTasks(taskIds: string[]): string[] {
-		const expandedTasks: string[] = [];
+		const expandedTaskIds: string[] = [];
 
 		for (const taskId of taskIds) {
-			expandedTasks.push(taskId);
-			const { taskName, workspaceId } = TaskIdentifier.resolve(taskId);
+			expandedTaskIds.push(taskId);
+			const { name, workspaceId } = this.nadle.registry.getById(taskId);
 
-			if (workspaceId !== Project.ROOT_WORKSPACE_ID) {
+			if (!Project.isRootWorkspace(workspaceId)) {
 				continue;
 			}
 
-			for (const sameNameTask of this.nadle.registry.getByName(taskName)) {
+			for (const sameNameTask of this.nadle.registry.getByName(name)) {
 				if (!taskIds.includes(sameNameTask.id)) {
-					expandedTasks.push(sameNameTask.id);
+					expandedTaskIds.push(sameNameTask.id);
 				}
 			}
 		}
 
-		return expandedTasks;
+		return expandedTaskIds;
 	}
 
 	private detectCycle(taskId: string, paths: string[]) {
@@ -85,11 +89,12 @@ export class TaskScheduler {
 			return;
 		}
 
-		const task = this.nadle.registry.getById(taskId);
+		const { workspaceId, configResolver } = this.nadle.registry.getById(taskId);
+
 		const dependencies = new Set(
-			TaskIdentifier.resolveDependentTasks(taskId, task.configResolver().dependsOn ?? []).filter(
-				(task) => !this.nadle.options.excludedTasks.includes(task)
-			)
+			(configResolver().dependsOn ?? [])
+				.map((dependencyTaskInput) => this.nadle.registry.parse(dependencyTaskInput, workspaceId))
+				.filter((taskId) => !this.excludedTaskIds.includes(taskId))
 		);
 
 		this.dependencyGraph.set(taskId, dependencies);
@@ -208,13 +213,13 @@ export class TaskScheduler {
 		return this.mainTaskId;
 	}
 
-	public getOrderedTasks(taskId?: string): string[] {
-		const readyTasks = Array.from(this.getReadyTasks(taskId));
+	public getOrderedTasks(taskId?: TaskIdentifier): TaskIdentifier[] {
+		const readyTaskIds = Array.from(this.getReadyTasks(taskId));
 
-		for (const readyTask of readyTasks) {
-			readyTasks.push(...this.getOrderedTasks(readyTask));
+		for (const readyTaskId of readyTaskIds) {
+			readyTaskIds.push(...this.getOrderedTasks(readyTaskId));
 		}
 
-		return readyTasks;
+		return readyTaskIds;
 	}
 }
