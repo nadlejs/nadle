@@ -1,16 +1,6 @@
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
-const baseEslintArgs = [
-	"-r",
-	"-F",
-	"!@nadle/internal-nadle-test-fixtures-*",
-	"-F",
-	"!@nadle/internal-sample-workspaces-*",
-	"exec",
-	"eslint",
-	".",
-	"--quiet"
-];
+const baseEslintArgs = ["-r", "-F", "!@nadle/internal-nadle-test-fixtures-*", "exec", "eslint", ".", "--quiet"];
 
 tasks.register("clean", DeleteTask, {
 	paths: ["**/lib/**", "**/build/**", "**/__temp__/**", "packages/docs/docs/api/**", "packages/docs/.docusaurus/**"]
