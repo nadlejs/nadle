@@ -1,3 +1,6 @@
+import Path from "node:path";
+import Fs from "node:fs/promises";
+
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
 const baseEslintArgs = ["-r", "-F", "!@nadle/internal-nadle-test-fixtures-*", "exec", "eslint", ".", "--quiet"];
@@ -40,7 +43,17 @@ tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ d
 tasks
 	.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" })
 	.config({ dependsOn: ["buildNadle"], workingDir: "./packages/nadle" });
-tasks.register("test").config({ dependsOn: ["testUnit", "testAPI"] });
+tasks
+	.register("testNoWarningsAPI", async ({ context }) => {
+		const apiFilePath = Path.resolve(context.workingDir, "index.api.md");
+		const apiContent = await Fs.readFile(apiFilePath, "utf-8");
+
+		if (apiContent.includes("Warning:")) {
+			throw new Error(`API documentation contains warnings`);
+		}
+	})
+	.config({ dependsOn: ["testAPI"], workingDir: "./packages/nadle" });
+tasks.register("test").config({ dependsOn: ["testUnit", "testAPI", "testNoWarningsAPI"] });
 
 tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });

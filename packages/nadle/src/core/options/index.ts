@@ -1,2 +1,2 @@
 export { configure } from "./configure.js";
-export type { NadleFileOptions, NadleBaseOptions } from "./types.js";
+export type { NadleFileOptions, NadleBaseOptions, AliasOption } from "./types.js";

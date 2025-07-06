@@ -8,6 +8,9 @@ import { InputLogObject } from 'consola';
 import { RimrafAsyncOptions } from 'rimraf';
 
 // @public (undocumented)
+export type AliasOption = Record<string, string> | ((workspacePath: string) => string | undefined);
+
+// @public (undocumented)
 export type Awaitable<T> = T | PromiseLike<T>;
 
 // @public (undocumented)
@@ -134,8 +137,6 @@ export interface NadleBaseOptions {
 
 // @public (undocumented)
 export interface NadleFileOptions extends Partial<NadleBaseOptions> {
-    // Warning: (ae-forgotten-export) The symbol "AliasOption" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     readonly alias?: AliasOption;
 }
