@@ -11,10 +11,6 @@ describe("workspaces dependsOn", () => {
 	});
 
 	it("should resolve and run dependency tasks first 2", async () => {
-		await expectPass(exec`shared:api:build --stacktrace`);
-	});
-
-	it("should resolve and run dependency tasks first 3", async () => {
-		await expectPass(exec`build --stacktrace`);
+		await expectPass(exec`shared:api:build`);
 	});
 });

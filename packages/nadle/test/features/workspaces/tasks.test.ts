@@ -10,6 +10,11 @@ describe("workspaces tasks", () => {
 	});
 
 	it("should run tasks as usual", async () => {
-		await expectPass(exec`backend:build shared:api:build build`);
+		await expectPass(exec`backend:build shared:api:build`);
+	});
+
+	it("should run the same task name in workspaces after the main one runs", async () => {
+		await expectPass(exec`build --dry-run`);
+		await expectPass(exec`build`);
 	});
 });

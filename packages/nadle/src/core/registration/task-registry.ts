@@ -41,6 +41,10 @@ export class TaskRegistry {
 		return this.getAll().map(({ id }) => id);
 	}
 
+	public getByName(taskName: string): RegisteredTask[] {
+		return this.getAll().filter(({ id }) => TaskIdentifier.resolve(id).taskName === taskName);
+	}
+
 	public getById(taskId: TaskIdentifier): RegisteredTask {
 		const task = this.findById(taskId);
 

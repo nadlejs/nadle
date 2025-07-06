@@ -32,7 +32,7 @@ Build frontend successfully!
 exports[`workspaces dependsOn > should resolve and run dependency tasks first 2 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer shared:api:build --stacktrace
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer shared:api:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -51,23 +51,4 @@ Build API successfully!
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>2</BoldDim> tasks executed
-`;
-
-exports[`workspaces dependsOn > should resolve and run dependency tasks first 3 1`] = `
----------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build --stacktrace
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
-
-[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
-
-Build project successfully!
-[log]
-<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>1</BoldDim> task executed
 `;
