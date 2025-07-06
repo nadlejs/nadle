@@ -22,7 +22,9 @@ Hello from nadle!
 [log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+<Red>×</Red> Task <Bold>throwable</BoldDim> <Red>FAILED</Red> {duration}
+[log]
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 ---------- Stderr ------------
 [error] Error: This is an error
     {stackTrace...}

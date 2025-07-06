@@ -73,8 +73,8 @@ export class TaskPool {
 				return;
 			}
 
-			throw error;
 			await this.nadle.onTaskFailed(task);
+			throw error;
 		}
 
 		await Promise.all(Array.from(this.getNextReadyTasks(taskId)).map((readyTaskId) => this.pushTask(readyTaskId)));

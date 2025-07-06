@@ -95,7 +95,9 @@ Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
 
 
 [log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
+<Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
+[log]
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 `;
