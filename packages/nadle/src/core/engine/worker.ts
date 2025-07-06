@@ -1,5 +1,5 @@
 import Path from "node:path";
-import { threadId, type MessagePort } from "node:worker_threads";
+import WorkerThreads from "node:worker_threads";
 
 import c from "tinyrainbow";
 
@@ -11,11 +11,13 @@ import { taskRegistry } from "../registration/task-registry.js";
 import { type NadleResolvedOptions } from "../options/types.js";
 import { CacheMissReason } from "../caching/cache-miss-reason.js";
 
+const threadId = WorkerThreads.threadId;
+
 export interface WorkerParams {
 	readonly taskId: string;
-	readonly port: MessagePort;
 	readonly env: NodeJS.ProcessEnv;
 	readonly options: NadleResolvedOptions;
+	readonly port: WorkerThreads.MessagePort;
 }
 
 export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {

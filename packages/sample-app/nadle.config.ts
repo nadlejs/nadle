@@ -1,4 +1,4 @@
-import process from "node:process";
+import Process from "node:process";
 
 import { Inputs } from "nadle";
 import { tasks, Outputs, ExecTask, CopyTask, type Task, configure } from "nadle";
@@ -130,7 +130,7 @@ tasks.register("cycle-5").config({ dependsOn: ["cycle-2"] });
 tasks.register("firstTask", () => console.log("firstTask")).config({ env: { FIRST_TASK_ENV: "first task env" } });
 
 const MyTask: Task = {
-	run: () => console.log(process.env.FIRST_TASK_ENV)
+	run: () => console.log(Process.env.FIRST_TASK_ENV)
 };
 
 tasks.register("secondTask", MyTask, {}).config(() => ({ env: { SECOND_TASK_ENV: "second task env" } }));

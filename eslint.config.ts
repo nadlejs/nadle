@@ -24,6 +24,35 @@ const configs: ConfigArray = tsEslint.config(
 		}
 	},
 	{
+		rules: {
+			"no-restricted-imports": [
+				"error",
+				{
+					patterns: ["consola"],
+					paths: [
+						{ name: "node:fs", message: "Use 'node:fs/promises' instead of 'node:fs' for promise-based APIs." },
+						{ name: "consola", message: "Logging should be called via logger" }
+					]
+				}
+			],
+			"no-restricted-syntax": [
+				"error",
+				{
+					message: "Only default imports are allowed from 'node:' modules.",
+					selector: "ImportDeclaration[source.value=/^node:/] ImportSpecifier"
+				},
+				{
+					message: "Only default imports are allowed from 'node:' modules.",
+					selector: "ImportDeclaration[source.value=/^node:/] ImportNamespaceSpecifier"
+				},
+				{
+					message: "Default imports from 'node:' modules must use PascalCase.",
+					selector: "ImportDeclaration[source.value=/^node:/] ImportDefaultSpecifier[local.name=/^[a-z]/]"
+				}
+			]
+		}
+	},
+	{
 		files: ["packages/nadle/src/**"],
 		rules: {
 			"no-restricted-properties": [

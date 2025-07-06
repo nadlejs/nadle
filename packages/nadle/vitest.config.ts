@@ -1,4 +1,4 @@
-import path from "node:path";
+import Path from "node:path";
 
 import { isCI, isWindows } from "std-env";
 import { defineConfig } from "vitest/config";
@@ -11,7 +11,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			setup: path.resolve(import.meta.dirname, "test/__setup__/index.js")
+			setup: Path.resolve(import.meta.dirname, "test/__setup__/index.js")
 		}
 	},
 	test: {
@@ -24,10 +24,10 @@ export default defineConfig({
 			tsconfig: "./test/tsconfig.json"
 		},
 		resolveSnapshotPath(testPath, snapshotExtension) {
-			const testDir = path.join(import.meta.dirname, "test");
-			const relativePath = path.relative(testDir, testPath);
+			const testDir = Path.join(import.meta.dirname, "test");
+			const relativePath = Path.relative(testDir, testPath);
 
-			return path.resolve(testDir, "__snapshots__", `${relativePath}${snapshotExtension}`);
+			return Path.resolve(testDir, "__snapshots__", `${relativePath}${snapshotExtension}`);
 		}
 	}
 });

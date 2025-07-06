@@ -1,4 +1,4 @@
-import * as Path from "node:path";
+import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { glob } from "glob";

@@ -1,4 +1,4 @@
-import * as process from "node:process";
+import Process from "node:process";
 
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
@@ -7,7 +7,7 @@ import { Nadle } from "./core/nadle.js";
 import { CLIOptions } from "./core/options/cli-options.js";
 import { CLIOptionsResolver } from "./core/options/cli-options-resolver.js";
 
-const argv = yargs(hideBin(process.argv))
+const argv = yargs(hideBin(Process.argv))
 	.scriptName("nadle")
 	.command("$0 [tasks...]", "Execute one or more named tasks")
 

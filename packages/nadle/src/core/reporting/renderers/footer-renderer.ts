@@ -1,5 +1,5 @@
-import type { Writable } from "node:stream";
-import { stripVTControlCharacters } from "node:util";
+import Util from "node:util";
+import type Stream from "node:stream";
 
 import { type Logger } from "../logger.js";
 import { FileLogger } from "../file-logger.js";
@@ -209,7 +209,7 @@ export class FooterRenderer implements Renderer {
 	private write(message: string, type: "output" | "error" = "output") {
 		l.log("write", { message });
 
-		(this.streams[type] as Writable["write"])(message);
+		(this.streams[type] as Stream.Writable["write"])(message);
 	}
 }
 
@@ -218,7 +218,7 @@ function getRenderedRowCount(rows: string[], columns: number) {
 	let count = 0;
 
 	for (const row of rows) {
-		const text = stripVTControlCharacters(row);
+		const text = Util.stripVTControlCharacters(row);
 		count += Math.max(1, Math.ceil(text.length / columns));
 	}
 
