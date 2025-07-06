@@ -8,4 +8,4 @@ tasks
 	.register("build", () => {
 		console.log("Build frontend successfully!");
 	})
-	.config({ dependsOn: ["check", "shared:api:check"] });
+	.config({ dependsOn: ["check", "api:check", "shared:types:check"] });

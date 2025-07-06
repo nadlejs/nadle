@@ -17,4 +17,8 @@ describe("workspaces tasks", () => {
 		await expectPass(exec`build --dry-run`);
 		await expectPass(exec`build`);
 	});
+
+	it("should run the workspace task when using alias", async () => {
+		await expectPass(exec`api:build`);
+	});
 });

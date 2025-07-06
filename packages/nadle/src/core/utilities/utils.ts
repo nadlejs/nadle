@@ -1,5 +1,7 @@
 import Path from "node:path";
 
+import { DOT } from "./constants.js";
+
 export function noop() {}
 
 export function capitalize(str: string): string {
@@ -27,7 +29,7 @@ export function formatTime(ms: number): string {
 }
 
 export function normalizeGlobPath(path: string) {
-	if (path.startsWith(".")) {
+	if (path.startsWith(DOT)) {
 		return path;
 	}
 

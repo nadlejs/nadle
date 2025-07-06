@@ -3,6 +3,7 @@ import Fs from "node:fs/promises";
 
 import { isPathExists } from "../utilities/fs.js";
 import { type CacheQuery } from "./cache-query.js";
+import { COLON, UNDERSCORE } from "../utilities/constants.js";
 import { type TaskIdentifier } from "../registration/task-identifier.js";
 import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
 
@@ -109,6 +110,6 @@ export class CacheManager {
 	}
 
 	private getBaseTaskPath(taskId: TaskIdentifier) {
-		return Path.join(this.cacheDir, CacheManager.TASKS_DIR_NAME, taskId.replaceAll(":", "_"));
+		return Path.join(this.cacheDir, CacheManager.TASKS_DIR_NAME, taskId.replaceAll(COLON, UNDERSCORE));
 	}
 }

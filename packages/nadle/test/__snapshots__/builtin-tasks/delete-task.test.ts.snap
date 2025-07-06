@@ -103,8 +103,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
     "rootWorkspace": {
       "relativePath": ".",
       "id": "root",
-      "label": "root project",
-      "absolutePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__"
+      "absolutePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
+      "label": ""
     }
   },
   "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/.nadle",

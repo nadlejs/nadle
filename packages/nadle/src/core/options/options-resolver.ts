@@ -7,7 +7,6 @@ import { findUp } from "find-up";
 import { clamp } from "../utilities/utils.js";
 import { Project } from "./project-resolver.js";
 import { isPathExists } from "../utilities/fs.js";
-import { type TaskResolver } from "./task-resolver.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
@@ -32,22 +31,17 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	public async resolve(params: {
-		configFile: string;
-		allTasks: string[];
-		taskResolver: TaskResolver;
-		cliOptions: NadleCLIOptions;
-		fileOptions: Partial<NadleFileOptions>;
-	}): Promise<NadleResolvedOptions> {
-		const { allTasks, cliOptions, configFile, fileOptions, taskResolver } = params;
+	public async resolve(params: { configFile: string; cliOptions: NadleCLIOptions; fileOptions: NadleFileOptions }): Promise<NadleResolvedOptions> {
+		const { cliOptions, configFile } = params;
+		const { alias, ...fileOptions } = params.fileOptions;
 		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
 
-		const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
+		// const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
 
-		const project = await Project.resolve(this.cwd);
+		const project = await Project.resolve(this.cwd, alias);
 		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
 
 		return {
@@ -57,8 +51,7 @@ export class OptionsResolver {
 			configFile,
 
 			minWorkers,
-			maxWorkers,
-			excludedTasks
+			maxWorkers
 		};
 	}
 

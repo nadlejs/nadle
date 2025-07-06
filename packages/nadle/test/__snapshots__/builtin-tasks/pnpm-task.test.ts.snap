@@ -31,8 +31,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
     "rootWorkspace": {
       "relativePath": ".",
       "id": "root",
-      "label": "root project",
-      "absolutePath": "/ROOT/test/__fixtures__/pnpm-task"
+      "absolutePath": "/ROOT/test/__fixtures__/pnpm-task",
+      "label": ""
     }
   },
   "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/.nadle",

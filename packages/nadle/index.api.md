@@ -20,7 +20,7 @@ export interface ConfigBuilder {
 }
 
 // @public (undocumented)
-export function configure(options: Partial<NadleFileOptions>): void;
+export function configure(options: NadleFileOptions): void;
 
 // @public (undocumented)
 export const CopyTask: Task<CopyTaskOptions>;
@@ -133,7 +133,11 @@ export interface NadleBaseOptions {
 }
 
 // @public (undocumented)
-export interface NadleFileOptions extends NadleBaseOptions {
+export interface NadleFileOptions extends Partial<NadleBaseOptions> {
+    // Warning: (ae-forgotten-export) The symbol "AliasOption" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly alias?: AliasOption;
 }
 
 // @public (undocumented)

@@ -2,6 +2,7 @@ import { type Options } from "yargs";
 
 import { CLIOptions } from "./cli-options.js";
 import { type NadleCLIOptions } from "./types.js";
+import { DASH, UNDERSCORE } from "../utilities/constants.js";
 
 type Arg = { key: string; value: unknown };
 
@@ -41,9 +42,9 @@ const transform =
 
 const transformers = [
 	exclude((key) => aliases.includes(key)),
-	exclude((key) => key.includes("-")),
+	exclude((key) => key.includes(DASH)),
 	exclude("$0"),
-	exclude("_"),
+	exclude(UNDERSCORE),
 	exclude("tasks"),
 	transform("config", { transformKey: "configFile" }),
 	transform("cache", { transformValue: Boolean }),

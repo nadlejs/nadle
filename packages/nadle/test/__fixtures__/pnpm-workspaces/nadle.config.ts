@@ -1,4 +1,12 @@
-import { tasks } from "nadle";
+import { tasks, configure } from "nadle";
+
+configure({
+	alias: (workspacePath) => {
+		if (workspacePath === "shared/api") {
+			return "api";
+		}
+	}
+});
 
 tasks.register("check", () => {
 	console.log("Check project successfully!");

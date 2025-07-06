@@ -13,10 +13,13 @@ export enum TaskStatus {
 }
 
 export interface RegisteredTask extends Task {
-	status: TaskStatus;
-
-	readonly label: string;
 	readonly id: TaskIdentifier;
+	readonly workspaceId: string;
+
+	readonly name: string;
+	readonly label: string;
+
+	status: TaskStatus;
 	readonly result: TaskResult;
 	readonly optionsResolver: Resolver | undefined;
 	readonly configResolver: Callback<TaskConfiguration>;

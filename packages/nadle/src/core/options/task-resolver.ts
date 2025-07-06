@@ -4,7 +4,6 @@ import { distance } from "fastest-levenshtein";
 
 import { type Logger } from "../reporting/logger.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
-import { TaskIdentifier } from "../registration/task-identifier.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
 
 export class TaskResolver {
@@ -13,13 +12,15 @@ export class TaskResolver {
 		private readonly taskRegistry: TaskRegistry
 	) {}
 
-	public resolve(tasks: string[]) {
+	public resolve(taskInputs: string[]) {
 		const resolveTaskPairs: { resolved: string; original: string }[] = [];
 
-		const resolvedTasks = tasks
-			.map((task) => TaskIdentifier.normalize(task))
+		const allTaskIds = this.taskRegistry.getAllTaskIds();
+
+		const resolvedTasks = taskInputs
+			.map((taskInput) => this.taskRegistry.parse(taskInput))
 			.map((task) => {
-				const resolvedTask = resolveTask(task, this.taskRegistry.getAllTaskIds());
+				const resolvedTask = resolveTask(task, allTaskIds);
 
 				if (resolvedTask.result === undefined) {
 					const message = `Task ${c.yellow(c.bold(task))} not found.${formatSuggestions(resolvedTask.suggestions.map((task) => c.yellow(c.bold(task))))}`;
