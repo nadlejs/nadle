@@ -6,6 +6,7 @@
 [![Build](https://github.com/nadlejs/nadle/actions/workflows/ci.yml/badge.svg)](https://github.com/nadlejs/nadle/actions/workflows/ci.yml)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=nam-hle_nadle&metric=alert_status)](https://sonarcloud.io/summary/?id=nam-hle_nadle)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nam-hle_nadle&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nam-hle_nadle)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/nadlejs/nadle)
 
 A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool,
 supporting parallel execution and streamlined build automation.
