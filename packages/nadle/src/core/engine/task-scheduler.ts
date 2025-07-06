@@ -3,6 +3,7 @@ import c from "tinyrainbow";
 import { type Nadle } from "../nadle.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
+import { Project } from "../options/project-resolver.js";
 import { TaskIdentifier } from "../registration/task-identifier.js";
 
 export class TaskScheduler {
@@ -29,19 +30,40 @@ export class TaskScheduler {
 	public constructor(private readonly nadle: Nadle) {}
 
 	public init(taskIds: string[]): this {
-		this.taskIds = taskIds;
+		this.taskIds = this.expandWorkspaceTasks(taskIds);
 
-		taskIds.forEach((taskId) => this.analyze(taskId));
-		taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
+		this.taskIds.forEach((taskId) => this.analyze(taskId));
+		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
 
 		this.nadle.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
 		this.nadle.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
 
 		if (!this.nadle.options.parallel) {
-			this.mainTaskId = taskIds[0];
+			this.mainTaskId = this.taskIds[0];
 		}
 
 		return this;
+	}
+
+	private expandWorkspaceTasks(taskIds: string[]): string[] {
+		const expandedTasks: string[] = [];
+
+		for (const taskId of taskIds) {
+			expandedTasks.push(taskId);
+			const { taskName, workspaceId } = TaskIdentifier.resolve(taskId);
+
+			if (workspaceId !== Project.ROOT_WORKSPACE_ID) {
+				continue;
+			}
+
+			for (const sameNameTask of this.nadle.registry.getByName(taskName)) {
+				if (!taskIds.includes(sameNameTask.id)) {
+					expandedTasks.push(sameNameTask.id);
+				}
+			}
+		}
+
+		return expandedTasks;
 	}
 
 	private detectCycle(taskId: string, paths: string[]) {

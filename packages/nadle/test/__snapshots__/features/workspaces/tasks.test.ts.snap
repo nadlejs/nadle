@@ -15,6 +15,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 [log] <Green>frontend:build</Green>
 [log] <Green>frontend:check</Green>
 [log] <Green>build</Green>
+[log] <Green>check</Green>
 [log] <Green>shared:api:build</Green>
 [log] <Green>shared:api:check</Green>
 [log] <Green>shared:types:build</Green>
@@ -26,7 +27,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 exports[`workspaces tasks > should run tasks as usual 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:build shared:api:build build
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:build shared:api:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -47,12 +48,84 @@ Check API successfully!
 Build API successfully!
 [log]
 <Green>✓</Green> Task <Bold>shared:api:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>3</BoldDim> tasks executed
+`;
+
+exports[`workspaces tasks > should run the same task name in workspaces after the main one runs 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build --dry-run
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+
+[log] <Bold>Execution plan:</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>check</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:types:build</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>backend:build</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:api:check</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>frontend:build</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:api:build</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces tasks > should run the same task name in workspaces after the main one runs 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check project successfully!
+[log]
+<Green>✓</Green> Task <Bold>check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:types:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build types successfully!
+[log]
+<Green>✓</Green> Task <Bold>shared:types:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
 Build project successfully!
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>backend:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build backend successfully!
+[log]
+<Green>✓</Green> Task <Bold>backend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check frontend successfully!
+[log]
+<Green>✓</Green> Task <Bold>frontend:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:api:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check API successfully!
+[log]
+<Green>✓</Green> Task <Bold>shared:api:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>frontend:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build frontend successfully!
+[log]
+<Green>✓</Green> Task <Bold>frontend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:api:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build API successfully!
+[log]
+<Green>✓</Green> Task <Bold>shared:api:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>4</BoldDim> tasks executed
+[log] <Bold>8</BoldDim> tasks executed
 `;

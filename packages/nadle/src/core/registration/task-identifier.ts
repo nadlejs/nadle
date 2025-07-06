@@ -22,7 +22,7 @@ export namespace TaskIdentifier {
 		return [...workspaceId.split(SEPARATOR), taskName].join(SEPARATOR);
 	}
 
-	function resolve(taskIdentifier: TaskIdentifier): { taskName: string; workspaceId: string } {
+	export function resolve(taskIdentifier: TaskIdentifier): { taskName: string; workspaceId: string } {
 		const parts = taskIdentifier.split(SEPARATOR);
 
 		if (parts.length < 2) {
