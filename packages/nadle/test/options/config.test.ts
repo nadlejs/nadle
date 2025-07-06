@@ -1,4 +1,4 @@
-import * as Path from "node:path";
+import Path from "node:path";
 
 import { it, describe } from "vitest";
 import { createExec, expectPass, fixturesDir } from "setup";

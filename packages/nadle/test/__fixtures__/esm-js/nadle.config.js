@@ -1,7 +1,7 @@
-import { fileURLToPath } from "node:url";
+import Url from "node:url";
 
 import { tasks } from "nadle";
 
 tasks.register("hello", () => {
-	console.log(`Hello from ${fileURLToPath(import.meta.url)}!`);
+	console.log(`Hello from ${Url.fileURLToPath(import.meta.url)}!`);
 });

@@ -1,4 +1,4 @@
-import type { Writable } from "node:stream";
+import type Stream from "node:stream";
 
 import c from "tinyrainbow";
 // eslint-disable-next-line no-restricted-imports
@@ -119,7 +119,7 @@ export class Logger implements ILogger {
 		if (message) {
 			this.consola.log(`${CLEAR_SCREEN}${ERASE_SCROLLBACK}${message}`);
 		} else {
-			(this.outputStream as Writable).write(`${CLEAR_SCREEN}${ERASE_SCROLLBACK}`);
+			(this.outputStream as Stream.Writable).write(`${CLEAR_SCREEN}${ERASE_SCROLLBACK}`);
 		}
 	}
 

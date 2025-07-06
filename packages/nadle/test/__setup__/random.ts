@@ -1,9 +1,9 @@
-import { randomBytes } from "node:crypto";
+import Crypto from "node:crypto";
 
 export function randomHash(length = 4, options?: { doubleScores?: boolean }): string {
 	const doubleScores = options?.doubleScores ?? true;
 
-	const hash = randomBytes(length).toString("hex");
+	const hash = Crypto.randomBytes(length).toString("hex");
 
 	if (!doubleScores) {
 		return hash;

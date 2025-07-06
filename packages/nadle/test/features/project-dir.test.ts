@@ -1,4 +1,4 @@
-import * as Path from "node:path";
+import Path from "node:path";
 
 import { getStdout } from "setup";
 import { it, expect, describe } from "vitest";

@@ -1,6 +1,6 @@
+import Url from "node:url";
 import Fs from "node:fs/promises";
-import process from "node:process";
-import { pathToFileURL } from "node:url";
+import Process from "node:process";
 
 import c from "tinyrainbow";
 import { createJiti } from "jiti";
@@ -84,8 +84,8 @@ export class Nadle {
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.(error);
-			// eslint-disable-next-line n/no-process-exit,@typescript-eslint/no-explicit-any
-			process.exit((error as any).errorCode || 1);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			Process.exit((error as any).errorCode || 1);
 		}
 
 		this.reporter.onExecutionFinish?.();
@@ -214,7 +214,7 @@ export class Nadle {
 	public async configureProject(configFilePath: string) {
 		this.registry.updateWorkspaceId(Project.ROOT_WORKSPACE_ID);
 
-		await this.jiti.import(pathToFileURL(configFilePath).toString());
+		await this.jiti.import(Url.pathToFileURL(configFilePath).toString());
 	}
 
 	public async configureWorkspaces() {
@@ -226,7 +226,7 @@ export class Nadle {
 			}
 
 			this.registry.updateWorkspaceId(workspace.id);
-			await this.jiti.import(pathToFileURL(configPath).toString());
+			await this.jiti.import(Url.pathToFileURL(configPath).toString());
 		}
 	}
 

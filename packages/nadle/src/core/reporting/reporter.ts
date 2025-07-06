@@ -1,4 +1,4 @@
-import { fileURLToPath } from "node:url";
+import Url from "node:url";
 
 import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
@@ -149,7 +149,7 @@ export class DefaultReporter implements Reporter {
 
 		if (!this.nadle.options.isWorkerThread) {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
-			this.nadle.logger.log(`Using Nadle from ${fileURLToPath(import.meta.resolve("nadle"))}`);
+			this.nadle.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
 			this.nadle.logger.log(`Loaded configuration from ${configFile}\n`);
 			this.nadle.logger.info(
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
