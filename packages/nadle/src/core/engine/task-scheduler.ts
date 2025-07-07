@@ -50,13 +50,13 @@ export class TaskScheduler {
 
 		for (const taskId of taskIds) {
 			expandedTaskIds.push(taskId);
-			const { name, workspaceId } = this.nadle.registry.getById(taskId);
+			const { name, workspaceId } = this.nadle.taskRegistry.getById(taskId);
 
 			if (!Project.isRootWorkspace(workspaceId)) {
 				continue;
 			}
 
-			for (const sameNameTask of this.nadle.registry.getByName(name)) {
+			for (const sameNameTask of this.nadle.taskRegistry.getByName(name)) {
 				if (!taskIds.includes(sameNameTask.id)) {
 					expandedTaskIds.push(sameNameTask.id);
 				}
@@ -85,11 +85,11 @@ export class TaskScheduler {
 			return;
 		}
 
-		const { workspaceId, configResolver } = this.nadle.registry.getById(taskId);
+		const { workspaceId, configResolver } = this.nadle.taskRegistry.getById(taskId);
 
 		const dependencies = new Set(
 			(configResolver().dependsOn ?? [])
-				.map((dependencyTaskInput) => this.nadle.registry.parse(dependencyTaskInput, workspaceId))
+				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, workspaceId))
 				.filter((taskId) => !this.nadle.excludedTaskIds.includes(taskId))
 		);
 

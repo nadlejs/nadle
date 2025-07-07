@@ -1,10 +1,10 @@
 import { type NadleFileOptions } from "./types.js";
-import { fileOptionsRegistry } from "../registration/file-options-registry.js";
+import { fileOptionRegistry } from "../registration/file-option-registry.js";
 
 export function configure(options: NadleFileOptions) {
 	if (typeof options !== "object" || options === null) {
 		throw new TypeError("Options must be an object");
 	}
 
-	fileOptionsRegistry.register(options);
+	fileOptionRegistry.register(options);
 }

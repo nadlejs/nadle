@@ -89,7 +89,7 @@ export class DefaultReporter implements Reporter {
 
 		let maxWorkerId = 0;
 
-		for (const runningTask of this.nadle.registry.getAll().filter((task) => task.status === TaskStatus.Running)) {
+		for (const runningTask of this.nadle.taskRegistry.getAll().filter((task) => task.status === TaskStatus.Running)) {
 			const workerId = this.threadIdPerWorker[runningTask.id];
 
 			lines[workerId - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.id)}`;
@@ -172,7 +172,7 @@ export class DefaultReporter implements Reporter {
 			this.nadle.logger.log(
 				renderProfilingSummary({
 					totalDuration: this.duration,
-					tasks: this.nadle.registry.getAll().flatMap((task) => {
+					tasks: this.nadle.taskRegistry.getAll().flatMap((task) => {
 						if (task.status !== TaskStatus.Finished) {
 							return [];
 						}
