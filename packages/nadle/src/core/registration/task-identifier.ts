@@ -5,8 +5,12 @@ export type TaskIdentifier = string;
 export namespace TaskIdentifier {
 	const SEPARATOR = COLON;
 
-	export function create(workspaceId: string, taskName: string): TaskIdentifier {
-		return [...workspaceId.split(SEPARATOR), taskName].join(SEPARATOR);
+	export function create(workspaceIdOrLabel: string, taskName: string): TaskIdentifier {
+		if (workspaceIdOrLabel === "") {
+			return taskName;
+		}
+
+		return [...workspaceIdOrLabel.split(SEPARATOR), taskName].join(SEPARATOR);
 	}
 
 	export function parser(taskInput: string): { taskNameInput: string; workspaceInput: string | undefined } {
