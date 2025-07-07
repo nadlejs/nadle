@@ -1,14 +1,32 @@
+import { Project } from "../options/project-resolver.js";
 import { type NadleFileOptions } from "../options/types.js";
 
 class FileOptionsRegistry {
-	private options: NadleFileOptions = {};
+	private workspaceId: string | null = null;
+	private readonly registry = new Map<string, NadleFileOptions>();
 
-	public add(options: NadleFileOptions) {
-		this.options = options;
+	public onInitializeWorkspace(workspaceId: string) {
+		this.workspaceId = workspaceId;
 	}
 
-	public get(): NadleFileOptions {
-		return this.options;
+	public register(options: NadleFileOptions) {
+		if (this.workspaceId === null) {
+			throw new Error("Working directory is not set. Please call updateWorkspace() before registering file options.");
+		}
+
+		if (this.workspaceId !== Project.ROOT_WORKSPACE_ID) {
+			throw new Error("File options can only be registered in the root workspace.");
+		}
+
+		this.registry.set(this.workspaceId, options);
+	}
+
+	public get(workspaceId: string): NadleFileOptions {
+		if (workspaceId !== Project.ROOT_WORKSPACE_ID) {
+			throw new Error("File options can only be retrieved from the root workspace.");
+		}
+
+		return this.registry.get(workspaceId) ?? {};
 	}
 }
 

@@ -24,4 +24,5 @@ describe("workspaces tasks", () => {
 
 	it.todo("test root aliasing");
 	it.todo("test --exclude");
+	it.todo("test configure calling from workspace configure file");
 });
