@@ -21,4 +21,7 @@ describe("workspaces tasks", () => {
 	it("should run the workspace task when using alias", async () => {
 		await expectPass(exec`api:build`);
 	});
+
+	it.todo("test root aliasing");
+	it.todo("test --exclude");
 });

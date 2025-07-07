@@ -48,18 +48,18 @@ export class Nadle {
 	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
 		const configFile = await optionsResolver.resolveConfigFile(this.cliOptions.configFile);
-		await this.configureProject(configFile);
+		await this.initProject(configFile);
 
-		// Add this point, the options and tasks from configuration file are registered
-		this.#options = await new OptionsResolver().resolve({ configFile, cliOptions: this.cliOptions, fileOptions: fileOptionsRegistry.get() });
-		this.registry.configureProject(this.options.project);
-		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.registry.parse(excludedTaskInput));
+		// Add this point, the options and tasks from root workspace's configuration file are registered
+		this.#options = await optionsResolver.resolve({ configFile, cliOptions: this.cliOptions, fileOptions: fileOptionsRegistry.get() });
 
-		this.logger.init(this.#options);
-
-		await this.configureWorkspaces();
-
+		this.logger.init(this.options);
 		await this.reporter.init?.();
+
+		await this.initWorkspaces();
+		this.registry.configure(this.options.project);
+
+		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.registry.parse(excludedTaskInput));
 
 		return this;
 	}
@@ -211,13 +211,13 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	public async configureProject(configFilePath: string) {
+	private async initProject(configFilePath: string) {
 		this.registry.updateWorkspaceId(Project.ROOT_WORKSPACE_ID);
 
 		await this.jiti.import(Url.pathToFileURL(configFilePath).toString());
 	}
 
-	public async configureWorkspaces() {
+	private async initWorkspaces() {
 		for (const workspace of this.options.project.workspaces) {
 			const configPath = await new OptionsResolver().resolveWorkspaceConfigFile(workspace.absolutePath);
 
@@ -226,6 +226,7 @@ export class Nadle {
 			}
 
 			this.registry.updateWorkspaceId(workspace.id);
+			// TODO: Move jiti into another entity
 			await this.jiti.import(Url.pathToFileURL(configPath).toString());
 		}
 	}

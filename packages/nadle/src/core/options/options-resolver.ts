@@ -79,6 +79,7 @@ export class OptionsResolver {
 
 	public async resolveWorkspaceConfigFile(workspacePath: string): Promise<string | null> {
 		for (const extension of OptionsResolver.SUPPORT_EXTENSIONS) {
+			// TODO: Support customized config file path?
 			const configFilePath = Path.resolve(workspacePath, `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${extension}`);
 
 			if (await isPathExists(configFilePath)) {

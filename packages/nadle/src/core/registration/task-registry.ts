@@ -1,5 +1,6 @@
 import c from "tinyrainbow";
 
+import { TaskBuffer } from "./task-buffer.js";
 import { TaskIdentifier } from "./task-identifier.js";
 import { Project } from "../options/project-resolver.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
@@ -10,6 +11,7 @@ export class TaskRegistry {
 	 * The id of the workspace where tasks are registering.
 	 */
 	private workspaceId: string | null = null;
+	private readonly taskBuffer = new TaskBuffer();
 
 	#project: Project | null = null;
 
@@ -17,10 +19,15 @@ export class TaskRegistry {
 		this.workspaceId = workspaceId;
 	}
 
-	public configureProject(project: Project) {
+	public configure(project: Project) {
 		this.#project = project;
 
-		this.updateRootWorkspaceTaskLabels();
+		for (const bufferedTask of this.taskBuffer.flush()) {
+			const { id, name, workspaceId } = bufferedTask;
+			const workspaceLabel = Project.getWorkspaceById(project, workspaceId).label;
+
+			this.registry.set(id, { ...bufferedTask, label: TaskIdentifier.create(workspaceLabel, name) });
+		}
 	}
 
 	private get project(): Project {
@@ -31,35 +38,12 @@ export class TaskRegistry {
 		return this.#project;
 	}
 
-	private updateRootWorkspaceTaskLabels() {
-		if (this.project.rootWorkspace.label === Project.ROOT_WORKSPACE_LABEL) {
-			return;
-		}
-
-		for (const task of this.getAll()) {
-			const { name, workspaceId } = task;
-
-			if (!Project.isRootWorkspace(workspaceId)) {
-				continue;
-			}
-
-			const workspace = Project.getWorkspaceById(this.project, workspaceId);
-
-			this.registry.set(task.id, { ...task, label: TaskIdentifier.create(workspace.label, name) });
-		}
-	}
-
 	public register(task: Omit<RegisteredTask, "id" | "label" | "workspaceId">) {
 		if (this.workspaceId === null) {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		const id = TaskIdentifier.create(this.workspaceId, task.name);
-		const label = Project.isRootWorkspace(this.workspaceId)
-			? task.name
-			: TaskIdentifier.create(Project.getWorkspaceById(this.project, this.workspaceId).label, task.name);
-
-		this.registry.set(id, { ...task, id, label, workspaceId: this.workspaceId });
+		this.taskBuffer.set({ ...task, workspaceId: this.workspaceId, id: TaskIdentifier.create(this.workspaceId, task.name) });
 	}
 
 	public has(taskName: string) {
@@ -67,7 +51,7 @@ export class TaskRegistry {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		return this.registry.has(TaskIdentifier.create(this.workspaceId, taskName));
+		return this.taskBuffer.has(TaskIdentifier.create(this.workspaceId, taskName));
 	}
 
 	public getAll(): RegisteredTask[] {
