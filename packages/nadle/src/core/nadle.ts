@@ -17,21 +17,20 @@ import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type TaskIdentifier } from "./registration/task-identifier.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { TaskStatus, type RegisteredTask } from "./registration/types.js";
-import { fileOptionsRegistry } from "./registration/file-options-registry.js";
+import { fileOptionRegistry } from "./registration/file-option-registry.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
 	public static readonly version: string = "0.4.0"; // x-release-please-version
 
 	public readonly logger = new Logger();
+	public readonly taskRegistry = taskRegistry;
+
 	private readonly fileReader = new FileReader();
-
-	public readonly registry = taskRegistry;
-	private readonly fileOptionsRegistry = fileOptionsRegistry;
-
 	private readonly reporter: Reporter = new DefaultReporter(this);
-	private readonly taskResolver = new TaskResolver(this.logger, this.registry);
 	private readonly taskScheduler = new TaskScheduler(this);
+	private readonly fileOptionRegistry = fileOptionRegistry;
+	private readonly taskResolver = new TaskResolver(this.logger, this.taskRegistry);
 
 	#options: NadleResolvedOptions | undefined;
 
@@ -52,16 +51,16 @@ export class Nadle {
 		this.#options = await optionsResolver.resolve({
 			configFile,
 			cliOptions: this.cliOptions,
-			fileOptions: this.fileOptionsRegistry.get(Project.ROOT_WORKSPACE_ID)
+			fileOptions: this.fileOptionRegistry.get(Project.ROOT_WORKSPACE_ID)
 		});
 
 		this.logger.init(this.options);
 		await this.reporter.init?.();
 
 		await this.initializeWorkspaces();
-		this.registry.configure(this.options.project);
+		this.taskRegistry.configure(this.options.project);
 
-		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.registry.parse(excludedTaskInput));
+		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.taskRegistry.parse(excludedTaskInput));
 
 		return this;
 	}
@@ -105,7 +104,7 @@ export class Nadle {
 		let chosenTasks: string[] = this.resolvedTasks;
 
 		if (chosenTasks.length === 0) {
-			chosenTasks = await renderTaskSelection(this.registry);
+			chosenTasks = await renderTaskSelection(this.taskRegistry);
 
 			if (chosenTasks.length === 0) {
 				this.printNoTasksSpecified();
@@ -132,7 +131,7 @@ export class Nadle {
 		this.logger.log(c.bold("Execution plan:"));
 
 		for (const taskId of taskIds) {
-			this.logger.log(`${c.yellow(">")} Task ${c.bold(this.registry.getById(taskId).label)}`);
+			this.logger.log(`${c.yellow(">")} Task ${c.bold(this.taskRegistry.getById(taskId).label)}`);
 		}
 	}
 
@@ -185,7 +184,7 @@ export class Nadle {
 	private computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
-		for (const task of this.registry.getAll()) {
+		for (const task of this.taskRegistry.getAll()) {
 			const { description, group = Nadle.UnnamedGroup } = task.configResolver();
 
 			tasksByGroup[group] ??= [];
@@ -230,45 +229,45 @@ export class Nadle {
 	}
 
 	private async onInitializeWorkspace(workspaceId: string, configFilePath: string) {
-		this.registry.onInitializeWorkspace(workspaceId);
-		this.fileOptionsRegistry.onInitializeWorkspace(workspaceId);
+		this.taskRegistry.onInitializeWorkspace(workspaceId);
+		this.fileOptionRegistry.onInitializeWorkspace(workspaceId);
 
 		await this.fileReader.read(configFilePath);
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
-		this.registry.onTaskStart(task.id);
+		this.taskRegistry.onTaskStart(task.id);
 		await this.reporter.onTaskStart?.(task, threadId);
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.registry.onTaskFinish(task.id);
+		this.taskRegistry.onTaskFinish(task.id);
 		await this.reporter.onTaskFinish?.(task);
 	}
 	public async onTaskUpToDate(task: RegisteredTask) {
-		this.registry.onTaskUpToDate(task.id);
+		this.taskRegistry.onTaskUpToDate(task.id);
 		await this.reporter.onTaskUpToDate?.(task);
 	}
 
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
-		this.registry.onTaskRestoreFromCache(task.id);
+		this.taskRegistry.onTaskRestoreFromCache(task.id);
 		await this.reporter.onTaskRestoreFromCache?.(task);
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.registry.onTaskFailed(task.id);
+		this.taskRegistry.onTaskFailed(task.id);
 		await this.reporter.onTaskFailed?.(task);
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
 		if (task.status === TaskStatus.Running) {
-			this.registry.onTaskCanceled(task.id);
+			this.taskRegistry.onTaskCanceled(task.id);
 			await this.reporter.onTaskCanceled?.(task);
 		}
 	}
 
 	public async onTasksScheduled(tasks: string[]) {
-		this.registry.onTasksScheduled(tasks);
+		this.taskRegistry.onTasksScheduled(tasks);
 		await this.reporter.onTasksScheduled?.(tasks);
 	}
 }

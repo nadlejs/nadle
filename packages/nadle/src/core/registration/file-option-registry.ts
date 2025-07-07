@@ -1,7 +1,7 @@
 import { Project } from "../options/project-resolver.js";
 import { type NadleFileOptions } from "../options/types.js";
 
-class FileOptionsRegistry {
+class FileOptionRegistry {
 	private workspaceId: string | null = null;
 	private readonly registry = new Map<string, NadleFileOptions>();
 
@@ -30,4 +30,4 @@ class FileOptionsRegistry {
 	}
 }
 
-export const fileOptionsRegistry = new FileOptionsRegistry();
+export const fileOptionRegistry = new FileOptionRegistry();
