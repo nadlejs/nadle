@@ -1,9 +1,10 @@
 import c from "tinyrainbow";
 
-import { TaskBuffer } from "./task-buffer.js";
 import { TaskIdentifier } from "./task-identifier.js";
 import { Project } from "../options/project-resolver.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
+
+interface BufferedTask extends Omit<RegisteredTask, "label"> {}
 
 export class TaskRegistry {
 	private readonly registry = new Map<TaskIdentifier, RegisteredTask>();
@@ -11,23 +12,25 @@ export class TaskRegistry {
 	 * The id of the workspace where tasks are registering.
 	 */
 	private workspaceId: string | null = null;
-	private readonly taskBuffer = new TaskBuffer();
+	private readonly buffer = new Map<TaskIdentifier, BufferedTask>();
 
 	#project: Project | null = null;
 
-	public updateWorkspaceId(workspaceId: string) {
+	public onInitializeWorkspace(workspaceId: string) {
 		this.workspaceId = workspaceId;
 	}
 
 	public configure(project: Project) {
 		this.#project = project;
 
-		for (const bufferedTask of this.taskBuffer.flush()) {
+		for (const bufferedTask of this.buffer.values()) {
 			const { id, name, workspaceId } = bufferedTask;
 			const workspaceLabel = Project.getWorkspaceById(project, workspaceId).label;
 
 			this.registry.set(id, { ...bufferedTask, label: TaskIdentifier.create(workspaceLabel, name) });
 		}
+
+		this.buffer.clear();
 	}
 
 	private get project(): Project {
@@ -43,7 +46,9 @@ export class TaskRegistry {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		this.taskBuffer.set({ ...task, workspaceId: this.workspaceId, id: TaskIdentifier.create(this.workspaceId, task.name) });
+		const id = TaskIdentifier.create(this.workspaceId, task.name);
+
+		this.buffer.set(id, { ...task, id, workspaceId: this.workspaceId });
 	}
 
 	public has(taskName: string) {
@@ -51,7 +56,7 @@ export class TaskRegistry {
 			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
 		}
 
-		return this.taskBuffer.has(TaskIdentifier.create(this.workspaceId, taskName));
+		return this.buffer.has(TaskIdentifier.create(this.workspaceId, taskName));
 	}
 
 	public getAll(): RegisteredTask[] {

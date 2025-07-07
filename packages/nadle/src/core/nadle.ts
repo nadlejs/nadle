@@ -1,14 +1,13 @@
-import Url from "node:url";
 import Fs from "node:fs/promises";
 import Process from "node:process";
 
 import c from "tinyrainbow";
-import { createJiti } from "jiti";
 
 import { Logger } from "./reporting/logger.js";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
+import { FileReader } from "./utilities/file-reader.js";
 import { Project } from "./options/project-resolver.js";
 import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
@@ -25,15 +24,14 @@ export class Nadle {
 	public static readonly version: string = "0.4.0"; // x-release-please-version
 
 	public readonly logger = new Logger();
+	private readonly fileReader = new FileReader();
+
 	public readonly registry = taskRegistry;
+	private readonly fileOptionsRegistry = fileOptionsRegistry;
 
 	private readonly reporter: Reporter = new DefaultReporter(this);
 	private readonly taskResolver = new TaskResolver(this.logger, this.registry);
 	private readonly taskScheduler = new TaskScheduler(this);
-	private readonly jiti = createJiti(import.meta.url, {
-		interopDefault: true,
-		extensions: OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `.${ext}`)
-	});
 
 	#options: NadleResolvedOptions | undefined;
 
@@ -48,15 +46,19 @@ export class Nadle {
 	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
 		const configFile = await optionsResolver.resolveConfigFile(this.cliOptions.configFile);
-		await this.initProject(configFile);
+		await this.initializeProject(configFile);
 
 		// Add this point, the options and tasks from root workspace's configuration file are registered
-		this.#options = await optionsResolver.resolve({ configFile, cliOptions: this.cliOptions, fileOptions: fileOptionsRegistry.get() });
+		this.#options = await optionsResolver.resolve({
+			configFile,
+			cliOptions: this.cliOptions,
+			fileOptions: this.fileOptionsRegistry.get(Project.ROOT_WORKSPACE_ID)
+		});
 
 		this.logger.init(this.options);
 		await this.reporter.init?.();
 
-		await this.initWorkspaces();
+		await this.initializeWorkspaces();
 		this.registry.configure(this.options.project);
 
 		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.registry.parse(excludedTaskInput));
@@ -211,24 +213,27 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	private async initProject(configFilePath: string) {
-		this.registry.updateWorkspaceId(Project.ROOT_WORKSPACE_ID);
-
-		await this.jiti.import(Url.pathToFileURL(configFilePath).toString());
+	private async initializeProject(configFilePath: string) {
+		await this.onInitializeWorkspace(Project.ROOT_WORKSPACE_ID, configFilePath);
 	}
 
-	private async initWorkspaces() {
+	private async initializeWorkspaces() {
 		for (const workspace of this.options.project.workspaces) {
 			const configPath = await new OptionsResolver().resolveWorkspaceConfigFile(workspace.absolutePath);
 
-			if (!configPath) {
+			if (configPath === null) {
 				continue;
 			}
 
-			this.registry.updateWorkspaceId(workspace.id);
-			// TODO: Move jiti into another entity
-			await this.jiti.import(Url.pathToFileURL(configPath).toString());
+			await this.onInitializeWorkspace(workspace.id, configPath);
 		}
+	}
+
+	private async onInitializeWorkspace(workspaceId: string, configFilePath: string) {
+		this.registry.onInitializeWorkspace(workspaceId);
+		this.fileOptionsRegistry.onInitializeWorkspace(workspaceId);
+
+		await this.fileReader.read(configFilePath);
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {

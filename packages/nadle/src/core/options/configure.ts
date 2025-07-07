@@ -6,5 +6,5 @@ export function configure(options: NadleFileOptions) {
 		throw new TypeError("Options must be an object");
 	}
 
-	fileOptionsRegistry.add(options);
+	fileOptionsRegistry.register(options);
 }
