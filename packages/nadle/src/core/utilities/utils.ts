@@ -12,13 +12,30 @@ export function capitalize(str: string): string {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+const MILLISECONDS_PER_SECOND = 1000;
+const MILLISECONDS_PER_MINUTE = 60 * MILLISECONDS_PER_SECOND;
+const MILLISECONDS_PER_HOUR = 60 * MILLISECONDS_PER_MINUTE;
+
 export function formatTime(ms: number): string {
-	const minutes = Math.floor(ms / 60_000);
-	const seconds = Math.floor((ms % 60_000) / 1000);
-	const milliseconds = Math.floor(ms % 1000);
+	const hours = Math.floor(ms / MILLISECONDS_PER_HOUR);
+	const minutes = Math.floor((ms % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE);
+	const seconds = Math.floor((ms % MILLISECONDS_PER_MINUTE) / MILLISECONDS_PER_SECOND);
+	const milliseconds = Math.floor(ms % MILLISECONDS_PER_SECOND);
+
+	if (hours > 0) {
+		if (minutes > 0) {
+			return `${hours}h${minutes}m`;
+		}
+
+		return `${hours}h`;
+	}
 
 	if (minutes > 0) {
-		return seconds > 0 ? `${minutes}m${seconds}s` : `${minutes}m`;
+		if (seconds > 0) {
+			return `${minutes}m${seconds}s`;
+		}
+
+		return `${minutes}m`;
 	}
 
 	if (seconds > 0) {
