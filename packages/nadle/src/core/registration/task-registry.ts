@@ -85,7 +85,7 @@ export class TaskRegistry {
 	}
 
 	public getById(taskId: TaskIdentifier): RegisteredTask {
-		const task = this.findById(taskId);
+		const task = this.registry.get(taskId);
 
 		if (!task) {
 			throw new Error(`Task ${c.bold(taskId)} not found`);
@@ -94,15 +94,8 @@ export class TaskRegistry {
 		return task;
 	}
 
-	private findById(taskId: TaskIdentifier): RegisteredTask | undefined {
-		return this.registry.get(taskId);
-	}
-
 	public onTaskStart(id: TaskIdentifier) {
-		const task = this.getById(id);
-
-		task.status = TaskStatus.Running;
-		task.result.startTime = Date.now();
+		this.updateTask(id, { startTime: Date.now(), status: TaskStatus.Running });
 	}
 
 	public onTaskFinish(id: TaskIdentifier) {
@@ -112,16 +105,15 @@ export class TaskRegistry {
 			throw new Error(`Task ${c.bold(id)} was not started properly`);
 		}
 
-		task.status = TaskStatus.Finished;
-		task.result.duration = Date.now() - task.result.startTime;
+		this.updateTask(id, { status: TaskStatus.Failed, duration: Date.now() - task.result.startTime });
 	}
 
 	public onTaskUpToDate(id: TaskIdentifier) {
-		this.getById(id).status = TaskStatus.UpToDate;
+		this.updateTask(id, { status: TaskStatus.UpToDate });
 	}
 
 	public onTaskRestoreFromCache(id: TaskIdentifier) {
-		this.getById(id).status = TaskStatus.FromCache;
+		this.updateTask(id, { status: TaskStatus.FromCache });
 	}
 
 	public onTaskFailed(id: TaskIdentifier) {
@@ -131,19 +123,32 @@ export class TaskRegistry {
 			throw new Error(`Task ${c.bold(id)} was not started properly`);
 		}
 
-		task.status = TaskStatus.Failed;
-		task.result.duration = Date.now() - task.result.startTime;
+		this.updateTask(id, { status: TaskStatus.Failed, duration: Date.now() - task.result.startTime });
 	}
 
 	public onTaskCanceled(id: TaskIdentifier) {
-		const task = this.getById(id);
-
-		task.status = TaskStatus.Canceled;
+		this.updateTask(id, { status: TaskStatus.Canceled });
 	}
 
 	public onTasksScheduled(ids: TaskIdentifier[]) {
 		for (const id of ids) {
-			this.getById(id).status = TaskStatus.Scheduled;
+			this.updateTask(id, { status: TaskStatus.Scheduled });
+		}
+	}
+
+	private updateTask(taskId: string, payload: Partial<{ status: TaskStatus; duration: number | null; startTime: number | null }>) {
+		const task = this.getById(taskId);
+
+		if (payload.status !== undefined) {
+			task.status = payload.status;
+		}
+
+		if (payload.duration !== undefined) {
+			task.result.duration = payload.duration;
+		}
+
+		if (payload.startTime !== undefined) {
+			task.result.startTime = payload.startTime;
 		}
 	}
 }
