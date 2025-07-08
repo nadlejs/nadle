@@ -8,20 +8,46 @@ const HomepageHeader = () => {
 	const { siteConfig } = useDocusaurusContext();
 
 	return (
-		<header className="py-16 text-center relative overflow-hidden bg-[#2b3137] text-white maxLg:p-8">
-			<div className="container">
-				<Heading as="h1" className="text-[3rem] font-bold">
+		<header className="relative overflow-hidden py-20 px-4 text-center bg-gradient-to-br from-[#23272f] via-[#1e293b] to-[#312e81] dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] text-white">
+			{/* Decorative gradients */}
+			<div
+				aria-hidden
+				className="pointer-events-none absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-gradient-to-br from-[#60a5fa]/30 via-[#818cf8]/10 to-transparent blur-3xl opacity-70"
+			/>
+			<div
+				aria-hidden
+				className="pointer-events-none absolute -bottom-32 -right-32 w-[480px] h-[480px] rounded-full bg-gradient-to-tr from-[#f472b6]/20 via-[#fbbf24]/10 to-transparent blur-3xl opacity-60"
+			/>
+			<div className="relative z-10 container flex flex-col items-center">
+				<Heading as="h1" className="text-[2.8rem] md:text-[3.5rem] font-extrabold tracking-tight drop-shadow-lg">
 					{siteConfig.title}
 				</Heading>
-				<p className="text-[1.5rem] mt-4 mb-8">Modern task runner for Node.js, inspired by Gradle and powered by TypeScript</p>
-				<div className="flex items-center justify-center gap-4">
-					<Link className="button button--primary button--lg" to="/docs/introduction">
-						Get Started
+				<p className="text-[1.3rem] md:text-[1.6rem] mt-5 mb-10 font-medium text-slate-200 dark:text-slate-300 max-w-2xl mx-auto drop-shadow">
+					Modern task runner for Node.js, inspired by Gradle and powered by TypeScript
+				</p>
+				<div className="flex flex-wrap items-center justify-center gap-4">
+					<Link
+						className="button button--primary button--lg shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 focus:ring-4 focus:ring-blue-300 focus:outline-none bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 border-0 text-white"
+						to="/docs/introduction"
+					>
+						<span className="flex items-center gap-2">
+							<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+							</svg>
+							Get Started
+						</span>
 					</Link>
 					<Link
-						className="button button--info button--outline button--lg"
-						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
-						Try it Online
+						className="button button--info button--outline button--lg shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 focus:ring-4 focus:ring-pink-200 focus:outline-none border-pink-400 text-pink-300 hover:bg-pink-500/10"
+						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true"
+					>
+						<span className="flex items-center gap-2">
+							<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+								<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth={2} />
+								<path d="M8 8h8v8H8z" fill="currentColor" className="text-pink-400" />
+							</svg>
+							Try it Online
+						</span>
 					</Link>
 					<span>
 						<iframe
@@ -143,18 +169,23 @@ const FeatureList: FeatureItem[] = [
 
 const Feature: FC<FeatureItem> = ({ icon, title, description }) => (
 	<div className="col col--4 mb-10">
-		<div className="h-full flex flex-col items-start bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8 transition-transform hover:-translate-y-2 hover:shadow-2xl">
-			<div className="mb-4">{icon}</div>
-			<Heading as="h3" className="text-xl font-bold mb-3 text-primary-700 dark:text-primary-300">
+		<div className="h-full flex flex-col items-start bg-gradient-to-br from-white via-blue-50 to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-slate-900 rounded-2xl shadow-xl border border-blue-100 dark:border-gray-700 p-8 transition-transform hover:-translate-y-2 hover:scale-[1.03] hover:shadow-2xl relative overflow-hidden">
+			{/* Decorative blurred accent */}
+			<div
+				aria-hidden
+				className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-transparent blur-2xl opacity-60"
+			/>
+			<div className="mb-4 z-10">{icon}</div>
+			<Heading as="h3" className="text-xl font-bold mb-3 text-blue-700 dark:text-cyan-300 z-10">
 				{title}
 			</Heading>
-			<p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 flex-1">{description}</p>
+			<p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 flex-1 z-10">{description}</p>
 		</div>
 	</div>
 );
 
 const HomepageFeatures = () => (
-	<section className="flex items-center w-full py-16 bg-emphasis-100">
+	<section className="flex items-center w-full py-20 bg-gradient-to-b from-slate-50 via-white to-blue-50 dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] transition-colors">
 		<div className="container">
 			<div className="row">
 				{FeatureList.map((props, idx) => (
