@@ -1,4 +1,4 @@
-import { Project } from "../options/project-resolver.js";
+import { Project } from "../options/project.js";
 import { type NadleFileOptions } from "../options/types.js";
 
 class FileOptionRegistry {

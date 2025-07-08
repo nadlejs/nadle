@@ -4,15 +4,16 @@ import Process from "node:process";
 import c from "tinyrainbow";
 
 import { Logger } from "./reporting/logger.js";
+import { Project } from "./options/project.js";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
 import { FileReader } from "./utilities/file-reader.js";
-import { Project } from "./options/project-resolver.js";
 import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
+import { ProjectResolver } from "./options/project-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type TaskIdentifier } from "./registration/task-identifier.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
@@ -45,7 +46,7 @@ export class Nadle {
 	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
 
-		const project = await this.initializeProject();
+		const project = await new ProjectResolver().resolve(optionsResolver.cwd, this.cliOptions.configFile, this.onInitializeWorkspace.bind(this));
 
 		// Add this point, the options and tasks from root workspace's configuration file are registered
 		this.#options = await optionsResolver.resolve({
@@ -209,29 +210,6 @@ export class Nadle {
 
 	private printNoTasksSpecified() {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
-	}
-
-	private async initializeProject() {
-		const optionsResolver = new OptionsResolver();
-		const project = await Project.resolve(optionsResolver.cwd);
-		const rootConfigFile = await optionsResolver.resolveRootConfigFile(project, this.cliOptions.configFile);
-		const configFileMap: Record<string, string | null> = {};
-
-		await this.onInitializeWorkspace(Project.ROOT_WORKSPACE_ID, rootConfigFile);
-
-		for (const workspace of project.workspaces) {
-			const configPath = await optionsResolver.resolveWorkspaceConfigFile(workspace.absolutePath);
-
-			if (configPath === null) {
-				continue;
-			}
-
-			configFileMap[workspace.id] = configPath;
-
-			await this.onInitializeWorkspace(workspace.id, configPath);
-		}
-
-		return Project.configureConfigFile(project, rootConfigFile, configFileMap);
 	}
 
 	private async onInitializeWorkspace(workspaceId: string, configFilePath: string) {

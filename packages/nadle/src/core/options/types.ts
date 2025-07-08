@@ -1,4 +1,4 @@
-import { type Project } from "./project-resolver.js";
+import { type Project } from "./project.js";
 import { type SupportLogLevel } from "../reporting/logger.js";
 
 /**

@@ -2,8 +2,8 @@
 import { type Options } from "yargs";
 
 import { type NadleCLIOptions } from "./types.js";
-import { OptionsResolver } from "./options-resolver.js";
 import { SupportLogLevels } from "../reporting/logger.js";
+import { CONFIG_FILE_PATTERN } from "../utilities/constants.js";
 
 export const CLIOptions = {
 	configFile: {
@@ -12,7 +12,7 @@ export const CLIOptions = {
 			alias: "c",
 			type: "string",
 			description: "Path to config file",
-			defaultDescription: `<cwd>/build.nadle.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}}`
+			defaultDescription: `<cwd>/${CONFIG_FILE_PATTERN}`
 		}
 	},
 	list: {
