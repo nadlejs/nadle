@@ -1,7 +1,8 @@
-module.exports = function tailwindPlugin(context, options) {
+export default () => {
 	return {
 		name: "tailwind-plugin",
 		configurePostCss(postcssOptions) {
+			// eslint-disable-next-line @typescript-eslint/no-require-imports
 			postcssOptions.plugins = [require("@tailwindcss/postcss")];
 
 			return postcssOptions;
@@ -13,6 +14,9 @@ module.exports = function tailwindPlugin(context, options) {
 				},
 				fontFamily: {
 					mono: "var(--ifm-font-family-monospace)"
+				},
+				screens: {
+					maxLg: { max: "996px" } // Custom max-width media query
 				},
 				colors: {
 					primary: "var(--ifm-color-primary)",

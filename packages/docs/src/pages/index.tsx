@@ -1,23 +1,20 @@
-import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import type { ReactNode } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
-import styles from "./index.module.css";
-
 function HomepageHeader() {
 	const { siteConfig } = useDocusaurusContext();
 
 	return (
-		<header className="py-16 text-center relative overflow-hidden bg-[#2b3137] text-white heroBanner">
+		<header className="py-16 text-center relative overflow-hidden bg-[#2b3137] text-white maxLg:p-8">
 			<div className="container">
 				<Heading as="h1" className="text-[3rem] font-bold">
 					{siteConfig.title}
 				</Heading>
-				<p className="hero__subtitle">Modern task runner for Node.js, inspired by Gradle and powered by TypeScript</p>
-				<div className={styles.buttons}>
+				<p className="text-[1.5rem] mt-4 mb-8">Modern task runner for Node.js, inspired by Gradle and powered by TypeScript</p>
+				<div className="flex items-center justify-center gap-4">
 					<Link className="button button--primary button--lg" to="/docs/introduction">
 						Get Started
 					</Link>
@@ -26,9 +23,9 @@ function HomepageHeader() {
 						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
 						Try it Online
 					</Link>
-					<span className={styles.indexCtasGitHubButtonWrapper}>
+					<span>
 						<iframe
-							className={styles.indexCtasGitHubButton}
+							className="overflow-hidden"
 							src="https://ghbtns.com/github-btn.html?user=nadlejs&amp;repo=nadle&amp;type=star&amp;count=true&amp;size=large"
 							width={160}
 							height={30}
@@ -103,10 +100,12 @@ const FeatureList: FeatureItem[] = [
 
 function Feature({ title, description }: FeatureItem) {
 	return (
-		<div className={clsx("col col--4", styles.feature)}>
+		<div className="col col--4 mb-8">
 			<div className="text--center padding-horiz--md">
-				<Heading as="h3">{title}</Heading>
-				<p>{description}</p>
+				<Heading as="h3" className="text-[1.5rem] font-semibold mb-4">
+					{title}
+				</Heading>
+				<p className="text-base leading-[1.6] text-emphasis-700">{description}</p>
 			</div>
 		</div>
 	);
@@ -114,7 +113,7 @@ function Feature({ title, description }: FeatureItem) {
 
 function HomepageFeatures(): ReactNode {
 	return (
-		<section className={styles.features}>
+		<section className="flex items-center w-full py-16 bg-emphasis-100">
 			<div className="container">
 				<div className="row">
 					{FeatureList.map((props, idx) => (
