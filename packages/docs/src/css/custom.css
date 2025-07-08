@@ -5,8 +5,8 @@
 @custom-variant dark (&:is([data-theme="dark"] *));
 
 svg {
-  display: inline;
-  vertical-align: baseline;
+	display: inline;
+	vertical-align: baseline;
 }
 
 .header-github-link::before {
