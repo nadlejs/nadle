@@ -2,7 +2,7 @@ import Perf from "node:perf_hooks";
 
 import c from "tinyrainbow";
 
-import { Project } from "../options/project.js";
+import { Project } from "../models/project.js";
 import { TaskIdentifier } from "./task-identifier.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
 

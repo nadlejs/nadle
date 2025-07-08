@@ -3,13 +3,11 @@ import Path from "node:path";
 
 import { isCI } from "std-env";
 
-import { Project } from "./project.js";
 import { clamp } from "../utilities/utils.js";
+import { Project } from "../models/project.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
-	// eslint-disable-next-line no-restricted-properties
-	public readonly cwd = process.cwd();
 	private static readonly DEFAULT_CACHE_DIR_NAME = ".nadle";
 
 	private readonly defaultOptions = {

@@ -3,8 +3,8 @@ import Process from "node:process";
 
 import c from "tinyrainbow";
 
+import { Project } from "./models/project.js";
 import { Logger } from "./reporting/logger.js";
-import { Project } from "./options/project.js";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
@@ -46,7 +46,7 @@ export class Nadle {
 	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
 
-		const project = await new ProjectResolver().resolve(optionsResolver.cwd, this.cliOptions.configFile, this.onInitializeWorkspace.bind(this));
+		const project = await new ProjectResolver().resolve(this.cliOptions.configFile, this.onInitializeWorkspace.bind(this));
 
 		// Add this point, the options and tasks from root workspace's configuration file are registered
 		this.#options = await optionsResolver.resolve({

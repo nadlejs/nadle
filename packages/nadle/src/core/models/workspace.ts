@@ -1,7 +1,7 @@
 import c from "tinyrainbow";
 import { type Package } from "@manypkg/tools";
 
-import { type AliasOption } from "./types.js";
+import { type AliasOption } from "../options/types.js";
 import { COLON, SLASH, BACKSLASH } from "../utilities/constants.js";
 
 export type AliasResolver = (workspacePath: string) => string | undefined;

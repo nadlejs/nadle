@@ -1,4 +1,4 @@
-import { type Project } from "./project.js";
+import { type Project } from "../models/project.js";
 import { type SupportLogLevel } from "../reporting/logger.js";
 
 /**

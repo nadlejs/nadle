@@ -2,8 +2,8 @@ import c from "tinyrainbow";
 import { sortBy } from "lodash-es";
 import { type Packages } from "@manypkg/tools";
 
-import { type AliasOption } from "./types.js";
 import { DOT } from "../utilities/constants.js";
+import { type AliasOption } from "../options/types.js";
 import { Workspace, AliasResolver, type RootWorkspace } from "./workspace.js";
 
 export interface Project {

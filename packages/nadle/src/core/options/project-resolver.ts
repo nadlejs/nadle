@@ -1,10 +1,11 @@
 import Path from "node:path";
+import Process from "node:process";
 
 import { findUp } from "find-up";
 import { findRoot } from "@manypkg/find-root";
 import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
 
-import { Project } from "./project.js";
+import { Project } from "../models/project.js";
 import type { NadlePackageJson } from "./types.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
 import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
@@ -23,11 +24,10 @@ export class ProjectResolver {
 	}
 
 	public async resolve(
-		cwd: string,
 		configFileOptions: string | undefined,
 		onInitializeWorkspace: (workspaceId: string, configFilePath: string) => Promise<void>
 	): Promise<Project> {
-		await this.init(cwd);
+		await this.init();
 
 		const rootConfigFile = await this.resolveRootConfigFile(configFileOptions);
 		const configFileMap: Record<string, string | null> = {};
@@ -51,7 +51,7 @@ export class ProjectResolver {
 		return this.project;
 	}
 
-	public async init(cwd: string): Promise<this> {
+	public async init(): Promise<this> {
 		const projectDir = await findUp(
 			async (directory) => {
 				const packageJsonPath = Path.join(directory, PACKAGE_JSON);
@@ -66,7 +66,7 @@ export class ProjectResolver {
 
 				return undefined;
 			},
-			{ cwd, type: "directory" }
+			{ type: "directory" }
 		);
 
 		if (projectDir !== undefined) {
@@ -85,7 +85,8 @@ export class ProjectResolver {
 			return this;
 		}
 
-		const monorepoRoot = await findRoot(cwd);
+		// eslint-disable-next-line no-restricted-properties
+		const monorepoRoot = await findRoot(Process.cwd());
 		const detector = MonorepoDetectors.find(({ type }) => type === monorepoRoot.tool);
 
 		if (!detector) {
