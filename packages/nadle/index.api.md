@@ -50,7 +50,7 @@ export const DeleteTask: Task<DeleteTaskOptions>;
 
 // @public
 export interface DeleteTaskOptions extends RimrafAsyncOptions {
-    readonly paths: string | string[];
+    readonly paths: MaybeArray<string>;
 }
 
 // @public
@@ -64,7 +64,7 @@ export const ExecTask: Task<ExecTaskOptions>;
 
 // @public
 export interface ExecTaskOptions {
-    readonly args: string[] | string;
+    readonly args: MaybeArray<string>;
     readonly command: string;
 }
 
@@ -124,7 +124,7 @@ export const PnpmTask: Task<PnpmTaskOptions>;
 
 // @public
 export interface PnpmTaskOptions {
-    readonly args: string[];
+    readonly args: MaybeArray<string>;
 }
 
 // @public
@@ -152,12 +152,12 @@ export interface Task<Options = unknown> {
 
 // @public
 export interface TaskConfiguration {
-    dependsOn?: string[];
+    dependsOn?: MaybeArray<string>;
     description?: string;
     env?: TaskEnv;
     group?: string;
-    inputs?: Declaration[];
-    outputs?: Declaration[];
+    inputs?: MaybeArray<Declaration>;
+    outputs?: MaybeArray<Declaration>;
     workingDir?: string;
 }
 
