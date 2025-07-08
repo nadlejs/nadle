@@ -4,7 +4,6 @@
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
-
 .header-github-link::before {
 	content: "";
 	width: 24px;

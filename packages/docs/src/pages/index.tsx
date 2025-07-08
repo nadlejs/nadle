@@ -11,7 +11,6 @@ const HomepageHeader = () => {
 
 	return (
 		<header className="relative overflow-hidden py-20 px-4 text-center bg-gradient-to-br from-[#23272f] via-[#1e293b] to-[#312e81] dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] text-white">
-			{/* Decorative gradients */}
 			<div
 				aria-hidden
 				className="pointer-events-none absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-gradient-to-br from-[#60a5fa]/30 via-[#818cf8]/10 to-transparent blur-3xl opacity-70"
@@ -175,10 +174,12 @@ const Feature: FC<FeatureItem> = ({ icon, title, description }) => (
 				aria-hidden
 				className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-transparent blur-2xl opacity-60"
 			/>
-			<div className="mb-4 z-10">{icon}</div>
-			<Heading as="h3" className="text-xl font-bold mb-3 text-blue-700 dark:text-cyan-300 z-10">
-				{title}
-			</Heading>
+			<div className="flex items-center gap-3 mb-4 z-10">
+				<span>{icon}</span>
+				<Heading as="h3" className="text-xl font-bold text-blue-700 dark:text-cyan-300 mb-0">
+					{title}
+				</Heading>
+			</div>
 			<p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 flex-1 z-10">{description}</p>
 		</div>
 	</div>
