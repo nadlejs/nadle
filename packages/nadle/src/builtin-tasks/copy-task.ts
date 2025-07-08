@@ -8,13 +8,25 @@ import { MaybeArray } from "../core/index.js";
 import { isPathExists } from "../core/utilities/fs.js";
 import { defineTask } from "../core/registration/define-task.js";
 
+/**
+ * Options for the CopyTask.
+ */
 export interface CopyTaskOptions {
+	/** Destination path to copy to. */
 	readonly to: string;
+	/** Source path to copy from. */
 	readonly from: string;
+	/** Glob patterns to exclude from copying. */
 	readonly exclude?: MaybeArray<string>;
+	/** Glob patterns to include in copying. */
 	readonly include?: MaybeArray<string>;
 }
 
+/**
+ * Task for copying files and directories.
+ *
+ * Supports include/exclude glob patterns and handles both files and directories.
+ */
 export const CopyTask = defineTask<CopyTaskOptions>({
 	run: async ({ options, context }) => {
 		const { to, from, exclude = [], include = "**/*" } = options;

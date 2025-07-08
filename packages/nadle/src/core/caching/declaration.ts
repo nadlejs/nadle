@@ -5,20 +5,45 @@ import fg from "fast-glob";
 import { hashFile } from "../utilities/hash.js";
 import type { FileFingerprints } from "./fingerprint.js";
 
+/**
+ * Declaration for file input/output patterns.
+ */
 export interface FileDeclaration {
+	/** The declaration type, always "file". */
 	readonly type: "file";
+	/** Glob patterns or paths matching files. */
 	readonly patterns: string[];
 }
 
+/**
+ * Declaration for directory input/output patterns.
+ */
 export interface DirDeclaration {
+	/** The declaration type, always "dir". */
 	readonly type: "dir";
+	/** Glob patterns or paths matching directories. */
 	readonly patterns: string[];
 }
 
+/**
+ * Union type for file or directory declarations.
+ */
 export type Declaration = FileDeclaration | DirDeclaration;
 
-/** @internal */
+/**
+ * @internal
+ * Namespace for declaration utilities.
+ */
 export namespace Declaration {
+	/**
+	 * Compute fingerprints (hashes) for all files matched by the given declarations and additional files.
+	 *
+	 * @param params - Parameters for fingerprint computation.
+	 * @param params.files - Additional file paths to fingerprint.
+	 * @param params.workingDir - The working directory for resolving patterns.
+	 * @param params.declarations - List of file/dir declarations.
+	 * @returns A promise resolving to a map of file paths to their fingerprints.
+	 */
 	export async function computeFileFingerprints(params: {
 		files?: string[];
 		workingDir: string;
@@ -42,6 +67,14 @@ export namespace Declaration {
 		return fingerprint;
 	}
 
+	/**
+	 * Resolve a declaration to a list of absolute file paths.
+	 *
+	 * @param workingDir - The working directory for resolving patterns.
+	 * @param declaration - The file or directory declaration.
+	 * @returns A promise resolving to a list of absolute file paths.
+	 * @internal
+	 */
 	async function resolveDeclaration(workingDir: string, declaration: Declaration): Promise<string[]> {
 		if (declaration.type === "file") {
 			const paths: string[] = [];

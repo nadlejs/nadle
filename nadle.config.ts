@@ -44,16 +44,20 @@ tasks
 	.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" })
 	.config({ dependsOn: ["buildNadle"], workingDir: "./packages/nadle" });
 tasks
-	.register("testNoWarningsAPI", async ({ context }) => {
+	.register("testNoWarningsAndUndocumentedAPI", async ({ context }) => {
 		const apiFilePath = Path.resolve(context.workingDir, "index.api.md");
 		const apiContent = await Fs.readFile(apiFilePath, "utf-8");
 
 		if (apiContent.includes("Warning:")) {
 			throw new Error(`API documentation contains warnings`);
 		}
+
+		if (apiContent.includes("undocumented")) {
+			throw new Error(`API documentation contains undocumented items`);
+		}
 	})
 	.config({ dependsOn: ["testAPI"], workingDir: "./packages/nadle" });
-tasks.register("test").config({ dependsOn: ["testUnit", "testAPI", "testNoWarningsAPI"] });
+tasks.register("test").config({ dependsOn: ["testUnit", "testAPI", "testNoWarningsAndUndocumentedAPI"] });
 
 tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });

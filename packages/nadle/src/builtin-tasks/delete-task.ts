@@ -4,10 +4,20 @@ import { rimraf, type RimrafAsyncOptions } from "rimraf";
 import { normalizeGlobPath } from "../core/utilities/utils.js";
 import { defineTask } from "../core/registration/define-task.js";
 
+/**
+ * Options for the DeleteTask.
+ * Extends RimrafAsyncOptions and adds required paths property.
+ */
 export interface DeleteTaskOptions extends RimrafAsyncOptions {
+	/** File or directory paths (glob or array of globs) to delete. */
 	readonly paths: string | string[];
 }
 
+/**
+ * Task for deleting files and directories using glob patterns.
+ *
+ * Uses rimraf for deletion and supports all rimraf async options.
+ */
 export const DeleteTask = defineTask<DeleteTaskOptions>({
 	run: async ({ options, context }) => {
 		const { paths, ...restOptions } = options;
