@@ -7,184 +7,150 @@
 import { InputLogObject } from 'consola';
 import { RimrafAsyncOptions } from 'rimraf';
 
-// @public (undocumented)
+// @public
 export type AliasOption = Record<string, string> | ((workspacePath: string) => string | undefined);
 
-// @public (undocumented)
+// @public
 export type Awaitable<T> = T | PromiseLike<T>;
 
-// @public (undocumented)
+// @public
 export type Callback<T = unknown, P = void> = (params: P) => T;
 
-// @public (undocumented)
+// @public
 export interface ConfigBuilder {
-    // (undocumented)
     config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
 }
 
-// @public (undocumented)
+// @public
 export function configure(options: NadleFileOptions): void;
 
-// @public (undocumented)
+// @public
 export const CopyTask: Task<CopyTaskOptions>;
 
-// @public (undocumented)
+// @public
 export interface CopyTaskOptions {
-    // (undocumented)
     readonly exclude?: MaybeArray<string>;
-    // (undocumented)
     readonly from: string;
-    // (undocumented)
     readonly include?: MaybeArray<string>;
-    // (undocumented)
     readonly to: string;
 }
 
-// @public (undocumented)
+// @public
 export type Declaration = FileDeclaration | DirDeclaration;
 
-// @public (undocumented)
+// @public
 export function defineTask<Options>(params: DefineTaskParams<Options>): Task<Options>;
 
-// @public (undocumented)
+// @public
 export interface DefineTaskParams<Options> extends Task<Options> {
 }
 
-// @public (undocumented)
+// @public
 export const DeleteTask: Task<DeleteTaskOptions>;
 
-// @public (undocumented)
+// @public
 export interface DeleteTaskOptions extends RimrafAsyncOptions {
-    // (undocumented)
     readonly paths: string | string[];
 }
 
-// @public (undocumented)
+// @public
 export interface DirDeclaration {
-    // (undocumented)
     readonly patterns: string[];
-    // (undocumented)
     readonly type: "dir";
 }
 
-// @public (undocumented)
+// @public
 export const ExecTask: Task<ExecTaskOptions>;
 
-// @public (undocumented)
+// @public
 export interface ExecTaskOptions {
-    // (undocumented)
     readonly args: string[] | string;
-    // (undocumented)
     readonly command: string;
 }
 
-// @public (undocumented)
+// @public
 export interface FileDeclaration {
-    // (undocumented)
     readonly patterns: string[];
-    // (undocumented)
     readonly type: "file";
 }
 
-// @public (undocumented)
+// @public
 export interface ILogger {
-    // (undocumented)
     debug(message: InputLogObject | string, ...args: unknown[]): void;
-    // (undocumented)
     error(message: InputLogObject | string, ...args: unknown[]): void;
-    // (undocumented)
     info(message: InputLogObject | string, ...args: unknown[]): void;
-    // (undocumented)
     log(message: InputLogObject | string, ...args: unknown[]): void;
-    // (undocumented)
     warn(message: InputLogObject | string, ...args: unknown[]): void;
 }
 
-// @public (undocumented)
+// @public
 export namespace Inputs {
-    // (undocumented)
     export function dirs(...patterns: string[]): DirDeclaration;
-    // (undocumented)
     export function files(...patterns: string[]): FileDeclaration;
 }
 
-// @public (undocumented)
+// @public
 export type MaybeArray<T> = T | T[];
 
-// @public (undocumented)
+// @public
 export namespace MaybeArray {
-    // (undocumented)
     export function toArray<T>(value: MaybeArray<T>): T[];
 }
 
-// @public (undocumented)
+// @public
 export interface NadleBaseOptions {
-    // (undocumented)
     readonly cache?: boolean;
-    // (undocumented)
     readonly cacheDir?: string;
-    // (undocumented)
     readonly footer?: boolean;
-    // (undocumented)
     readonly logLevel?: SupportLogLevel;
-    // (undocumented)
     readonly maxWorkers?: number | string;
-    // (undocumented)
     readonly minWorkers?: number | string;
-    // (undocumented)
     readonly parallel?: boolean;
 }
 
-// @public (undocumented)
+// @public
 export interface NadleFileOptions extends Partial<NadleBaseOptions> {
-    // (undocumented)
     readonly alias?: AliasOption;
 }
 
-// @public (undocumented)
+// @public
 export namespace Outputs {
-    const // (undocumented)
-    files: typeof Inputs.files;
-    const // (undocumented)
-    dirs: typeof Inputs.dirs;
+    const files: typeof Inputs.files;
+    const dirs: typeof Inputs.dirs;
 }
 
-// @public (undocumented)
+// @public
 export const PnpmTask: Task<PnpmTaskOptions>;
 
-// @public (undocumented)
+// @public
 export interface PnpmTaskOptions {
-    // (undocumented)
     readonly args: string[];
 }
 
-// @public (undocumented)
+// @public
 export type Resolver<T = unknown> = T | Callback<T>;
 
-// @public (undocumented)
+// @public
 export interface RunnerContext {
-    // (undocumented)
     readonly logger: ILogger;
-    // (undocumented)
     readonly workingDir: string;
 }
 
-// @public (undocumented)
+// @public
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
-// @public (undocumented)
+// @public
 export const SupportLogLevels: ["error", "log", "info", "debug"];
 
-// @public (undocumented)
+// @public
 export interface Task<Options = unknown> {
-    // (undocumented)
     run: Callback<Awaitable<void>, {
         options: Options;
         context: RunnerContext;
     }>;
 }
 
-// @public (undocumented)
+// @public
 export interface TaskConfiguration {
     dependsOn?: string[];
     description?: string;
@@ -195,25 +161,22 @@ export interface TaskConfiguration {
     workingDir?: string;
 }
 
-// @public (undocumented)
+// @public
 export type TaskEnv = Record<string, string | number | boolean>;
 
-// @public (undocumented)
+// @public
 export type TaskFn = Callback<Awaitable<void>, {
     context: RunnerContext;
 }>;
 
-// @public (undocumented)
+// @public
 export interface Tasks {
-    // (undocumented)
     register(name: string): ConfigBuilder;
-    // (undocumented)
     register(name: string, fnTask: TaskFn): ConfigBuilder;
-    // (undocumented)
     register<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): ConfigBuilder;
 }
 
-// @public (undocumented)
+// @public
 export const tasks: Tasks;
 
 // (No @packageDocumentation comment for this package)

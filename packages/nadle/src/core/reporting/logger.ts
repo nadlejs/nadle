@@ -8,32 +8,78 @@ import { FileLogger } from "./file-logger.js";
 import { LogLevels, type LogType, createNadleConsola } from "./consola-reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../utilities/constants.js";
 
+/**
+ * Supported log levels for Nadle.
+ */
 export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
+
+/**
+ * Type representing supported log levels.
+ */
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 const l = new FileLogger("logger");
 
+/**
+ * Options for initializing the Nadle logger.
+ */
 interface LoggerOptions {
+	/** Log level for output. */
 	readonly logLevel?: SupportLogLevel;
 
-	/** @internal */
+	/** @internal True if running in a worker thread. */
 	readonly isWorkerThread?: boolean;
 }
 
+/**
+ * Logger interface for Nadle.
+ */
 export interface ILogger {
+	/**
+	 * Log a standard message.
+	 * @param message - The message or log object.
+	 * @param args - Additional arguments.
+	 */
 	log(message: InputLogObject | string, ...args: unknown[]): void;
+	/**
+	 * Log a warning message.
+	 * @param message - The message or log object.
+	 * @param args - Additional arguments.
+	 */
 	warn(message: InputLogObject | string, ...args: unknown[]): void;
+	/**
+	 * Log an info message.
+	 * @param message - The message or log object.
+	 * @param args - Additional arguments.
+	 */
 	info(message: InputLogObject | string, ...args: unknown[]): void;
+	/**
+	 * Log an error message.
+	 * @param message - The message or log object.
+	 * @param args - Additional arguments.
+	 */
 	error(message: InputLogObject | string, ...args: unknown[]): void;
+	/**
+	 * Log a debug message.
+	 * @param message - The message or log object.
+	 * @param args - Additional arguments.
+	 */
 	debug(message: InputLogObject | string, ...args: unknown[]): void;
 }
 
+/**
+ * Nadle logger implementation.
+ */
 export class Logger implements ILogger {
 	private _clearScreenPending: string | undefined;
 	private readonly consola = createNadleConsola();
 	public readonly outputStream: NodeJS.WriteStream = process.stdout;
 	public readonly errorStream: NodeJS.WriteStream = process.stderr;
 
+	/**
+	 * Initialize the logger with options.
+	 * @param options - Logger options.
+	 */
 	public init(options: LoggerOptions) {
 		const { logLevel = "log", isWorkerThread = false } = options;
 		this.consola.level = LogLevels[logLevel];
@@ -49,12 +95,18 @@ export class Logger implements ILogger {
 		}
 	}
 
+	/**
+	 * Log a standard message.
+	 */
 	public log(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("log", message, ...args);
 		this._clearScreen();
 		this.consola.log(message, ...args);
 	}
 
+	/**
+	 * Log an error message.
+	 */
 	public error(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("error", message, ...args);
 
@@ -62,6 +114,9 @@ export class Logger implements ILogger {
 		this.consola.error(message, ...args);
 	}
 
+	/**
+	 * Log a warning message.
+	 */
 	public warn(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("warn", message, ...args);
 
@@ -69,6 +124,9 @@ export class Logger implements ILogger {
 		this.consola.warn(message, ...args);
 	}
 
+	/**
+	 * Log an info message.
+	 */
 	public info(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("info", message, ...args);
 
@@ -91,6 +149,9 @@ export class Logger implements ILogger {
 		this.consola.info(rest, c.yellow(tag), ...args);
 	}
 
+	/**
+	 * Log a debug message.
+	 */
 	public debug(message: InputLogObject | string, ...args: unknown[]): void {
 		l.log("debug", message, ...args);
 
@@ -113,6 +174,10 @@ export class Logger implements ILogger {
 		this.consola.debug(rest, c.yellow(tag), ...args);
 	}
 
+	/**
+	 * Clear the full screen and optionally print a message.
+	 * @param message - Optional message to print after clearing.
+	 */
 	private clearFullScreen(message = ""): void {
 		l.log("clearFullScreen");
 
@@ -123,6 +188,11 @@ export class Logger implements ILogger {
 		}
 	}
 
+	/**
+	 * Clear the screen and optionally print a message.
+	 * @param message - Message to print after clearing.
+	 * @param force - If true, clear immediately.
+	 */
 	private clearScreen(message: string, force = false): void {
 		l.log("clearScreen", { message });
 
@@ -133,6 +203,9 @@ export class Logger implements ILogger {
 		}
 	}
 
+	/**
+	 * Internal method to clear the screen if pending.
+	 */
 	private _clearScreen() {
 		l.log("_clearScreen");
 
@@ -145,6 +218,10 @@ export class Logger implements ILogger {
 		this.consola.log(`${CURSOR_TO_START}${ERASE_DOWN}${log}`);
 	}
 
+	/**
+	 * Get the number of columns in the output stream.
+	 * @returns Number of columns, or 80 if unavailable.
+	 */
 	public getColumns(): number {
 		return "columns" in this.outputStream ? this.outputStream.columns : 80;
 	}
