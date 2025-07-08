@@ -5,6 +5,7 @@ import { CacheManager } from "./cache-manager.js";
 import { hashObject } from "../utilities/hash.js";
 import type { CacheQuery } from "./cache-query.js";
 import { type TaskConfiguration } from "../types.js";
+import { MaybeArray } from "../utilities/maybe-array.js";
 import type { FileFingerprints } from "./fingerprint.js";
 import { CacheMissReason } from "./cache-miss-reason.js";
 
@@ -48,7 +49,7 @@ export class CacheValidator {
 		const inputsFingerprints = await Declaration.computeFileFingerprints({
 			files: [this.context.configFile],
 			workingDir: this.context.workingDir,
-			declarations: this.taskConfiguration.inputs
+			declarations: MaybeArray.toArray(this.taskConfiguration.inputs)
 		});
 		const cacheKey = await CacheKey.compute({ taskId, inputsFingerprints });
 		const cacheQuery: CacheQuery = { taskId, cacheKey };
@@ -70,7 +71,10 @@ export class CacheValidator {
 		}
 
 		const outputHashes = hashObject(
-			await Declaration.computeFileFingerprints({ workingDir: this.context.workingDir, declarations: this.taskConfiguration.outputs })
+			await Declaration.computeFileFingerprints({
+				workingDir: this.context.workingDir,
+				declarations: MaybeArray.toArray(this.taskConfiguration.outputs)
+			})
 		);
 
 		if (latestRunMetadata.cacheKey === cacheKey && latestRunMetadata.outputsFingerprint === outputHashes) {
@@ -106,7 +110,7 @@ export class CacheValidator {
 
 			const outputsFingerprints = await Declaration.computeFileFingerprints({
 				workingDir: this.context.workingDir,
-				declarations: this.taskConfiguration.outputs ?? []
+				declarations: MaybeArray.toArray(this.taskConfiguration.outputs ?? [])
 			});
 
 			await this.cacheManager.writeRunMetadata(

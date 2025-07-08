@@ -1,5 +1,6 @@
 import { execa } from "execa";
 
+import { MaybeArray } from "../core/index.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -7,7 +8,7 @@ import { defineTask } from "../core/registration/define-task.js";
  */
 export interface PnpmTaskOptions {
 	/** Arguments to pass to the pnpm CLI. */
-	readonly args: string[];
+	readonly args: MaybeArray<string>;
 }
 
 /**
@@ -17,7 +18,7 @@ export interface PnpmTaskOptions {
  */
 export const PnpmTask = defineTask<PnpmTaskOptions>({
 	run: async ({ options, context }) => {
-		const { args } = options;
+		const args = MaybeArray.toArray(options.args);
 
 		context.logger.info(`Running pnpm command: pnpm ${args.join(" ")}`);
 
