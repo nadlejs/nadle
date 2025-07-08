@@ -28,8 +28,7 @@ const HomepageHeader = () => {
 				<div className="flex flex-wrap items-center justify-center gap-4">
 					<Link
 						className="button button--primary button--lg shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 focus:ring-4 focus:ring-blue-300 focus:outline-none bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 border-0 text-white"
-						to="/docs/introduction"
-					>
+						to="/docs/introduction">
 						<span className="flex items-center gap-2">
 							<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
 								<path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
@@ -39,8 +38,7 @@ const HomepageHeader = () => {
 					</Link>
 					<Link
 						className="button button--info button--outline button--lg shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 focus:ring-4 focus:ring-pink-200 focus:outline-none border-pink-400 text-pink-300 hover:bg-pink-500/10"
-						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true"
-					>
+						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
 						<span className="flex items-center gap-2">
 							<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
 								<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth={2} />
@@ -197,24 +195,59 @@ const HomepageFeatures = () => (
 );
 
 const CodeExample: FC = () => (
-	<div className="py-16 bg-background">
-		{" "}
-		<div className="container">
-			<div className="row">
-				<div className="col col--6">
-					<Heading as="h2" className="text-2xl font-bold mb-4">
-						Simple Yet Powerful
+	<section className="relative py-24 bg-gradient-to-b from-blue-50 via-white to-cyan-50 dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] transition-colors overflow-hidden">
+		{/* Decorative blurred accent */}
+		<div
+			aria-hidden
+			className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-transparent blur-3xl opacity-60"
+		/>
+		<div className="container relative z-10">
+			<div className="flex flex-col md:flex-row md:items-center gap-12">
+				<div className="md:w-1/2 text-center md:text-left">
+					<Heading as="h2" className="text-3xl md:text-4xl font-extrabold mb-6 text-blue-900 dark:text-cyan-200 drop-shadow">
+						Simple <span className="bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400 bg-clip-text text-transparent">Yet Powerful</span>
 					</Heading>
-					<p className="text-[1.2rem] leading-[1.6] text-emphasis-700 mb-8">
-						Define tasks with clear dependencies and run them with a single command. Nadle handles the rest.
+					<p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-200 mb-8 max-w-xl mx-auto md:mx-0">
+						Define tasks with <span className="font-semibold text-blue-600 dark:text-cyan-300">clear dependencies</span> and run them with a single
+						command.
+						<br className="hidden md:inline" />
+						<span className="text-pink-600 dark:text-pink-300 font-semibold"> Nadle handles the rest.</span>
 					</p>
+					<ul className="text-left space-y-4 text-base md:text-lg text-gray-700 dark:text-gray-300 max-w-md mx-auto md:mx-0">
+						<li className="flex items-center gap-3">
+							<span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 dark:bg-cyan-900">
+								<svg className="w-5 h-5 text-blue-500 dark:text-cyan-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+								</svg>
+							</span>
+							Type-safe, composable tasks
+						</li>
+						<li className="flex items-center gap-3">
+							<span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-pink-100 dark:bg-pink-900">
+								<svg className="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+									<circle cx="12" cy="12" r="10" />
+									<path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" />
+								</svg>
+							</span>
+							Smart parallel execution
+						</li>
+						<li className="flex items-center gap-3">
+							<span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-yellow-100 dark:bg-yellow-900">
+								<svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+									<rect x="4" y="4" width="16" height="16" rx="4" />
+								</svg>
+							</span>
+							Modern, ESM-first architecture
+						</li>
+					</ul>
 				</div>
-				<div className="col col--6">
-					<pre className="bg-pre-background rounded-code p-6 m-0 overflow-auto text-[0.9rem] leading-[1.5]">
-						<code className="block text-emphasis-900 font-mono">
-							{`import { tasks } from "nadle";
+				<div className="md:w-1/2 flex justify-center">
+					<div className="relative w-full max-w-xl">
+						<div className="absolute -top-4 -left-4 w-full h-full rounded-2xl bg-gradient-to-br from-blue-400/10 via-cyan-400/10 to-transparent blur-lg z-0" />
+						<pre className="relative z-10 bg-gray-900 dark:bg-gray-950 text-white rounded-2xl p-6 md:p-8 shadow-2xl text-[0.98rem] leading-[1.6] font-mono overflow-x-auto border border-blue-200 dark:border-gray-800">
+							<code>
+								{`import { tasks } from "nadle"
 
-// Define tasks with dependencies
 tasks.register("build", async () => {
   console.log("Building...");
 }).config({
@@ -224,12 +257,18 @@ tasks.register("build", async () => {
 
 // Run with parallel execution
 $ nadle build`}
-						</code>
-					</pre>
+							</code>
+						</pre>
+						<div className="absolute top-3 left-6 flex gap-2 z-20">
+							<span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+							<span className="w-3 h-3 rounded-full bg-yellow-400 inline-block" />
+							<span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 );
 
 const HomePage = () => {
