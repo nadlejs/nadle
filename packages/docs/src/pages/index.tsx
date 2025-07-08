@@ -63,11 +63,11 @@ const HomepageHeader = () => {
 	);
 };
 
-type FeatureItem = {
+interface FeatureItem {
 	title: string;
 	icon: ReactNode;
 	description: ReactNode;
-};
+}
 
 const FeatureList: FeatureItem[] = [
 	{
@@ -169,7 +169,6 @@ const FeatureList: FeatureItem[] = [
 const Feature: FC<FeatureItem> = ({ icon, title, description }) => (
 	<div className="col col--4 mb-10">
 		<div className="h-full flex flex-col items-start bg-gradient-to-br from-white via-blue-50 to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-slate-900 rounded-2xl shadow-xl border border-blue-100 dark:border-gray-700 p-8 transition-transform hover:-translate-y-2 hover:scale-[1.03] hover:shadow-2xl relative overflow-hidden">
-			{/* Decorative blurred accent */}
 			<div
 				aria-hidden
 				className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-transparent blur-2xl opacity-60"
@@ -189,8 +188,8 @@ const HomepageFeatures = () => (
 	<section className="flex items-center w-full py-20 bg-gradient-to-b from-slate-50 via-white to-blue-50 dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] transition-colors">
 		<div className="container">
 			<div className="row">
-				{FeatureList.map((props, idx) => (
-					<Feature key={idx} {...props} />
+				{FeatureList.map((props) => (
+					<Feature key={props.title} {...props} />
 				))}
 			</div>
 		</div>
