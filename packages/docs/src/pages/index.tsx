@@ -11,9 +11,9 @@ function HomepageHeader() {
 	const { siteConfig } = useDocusaurusContext();
 
 	return (
-		<header className={clsx("hero hero--primary", styles.heroBanner)}>
+		<header className="py-16 text-center relative overflow-hidden bg-[#2b3137] text-white heroBanner">
 			<div className="container">
-				<Heading as="h1" className="hero__title">
+				<Heading as="h1" className="text-[3rem] font-bold">
 					{siteConfig.title}
 				</Heading>
 				<p className="hero__subtitle">Modern task runner for Node.js, inspired by Gradle and powered by TypeScript</p>
@@ -128,16 +128,21 @@ function HomepageFeatures(): ReactNode {
 
 function CodeExample() {
 	return (
-		<div className={styles.codeExample}>
+		<div className="py-16 bg-background">
+			{" "}
 			<div className="container">
 				<div className="row">
 					<div className="col col--6">
-						<Heading as="h2">Simple Yet Powerful</Heading>
-						<p>Define tasks with clear dependencies and run them with a single command. Nadle handles the rest.</p>
+						<Heading as="h2" className="text-2xl font-bold mb-4">
+							Simple Yet Powerful
+						</Heading>
+						<p className="text-[1.2rem] leading-[1.6] text-emphasis-700 mb-8">
+							Define tasks with clear dependencies and run them with a single command. Nadle handles the rest.
+						</p>
 					</div>
 					<div className="col col--6">
-						<pre className={styles.codeBlock}>
-							<code>
+						<pre className="bg-pre-background rounded-code p-6 m-0 overflow-auto text-[0.9rem] leading-[1.5]">
+							<code className="block text-emphasis-900 font-mono">
 								{`import { tasks } from "nadle";
 
 // Define tasks with dependencies

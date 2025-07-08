@@ -3,20 +3,20 @@
  * and scoped locally.
  */
 
-.heroBanner {
-	padding: 4rem 0;
-	text-align: center;
-	position: relative;
-	overflow: hidden;
-	/*background: linear-gradient(45deg, var(--ifm-color-primary-darker) 30%, var(--ifm-color-primary) 90%);*/
-	background-color: #2b3137;
-	color: white;
-}
+/*.heroBanner {*/
+/*	padding: 4rem 0;*/
+/*	text-align: center;*/
+/*	position: relative;*/
+/*	overflow: hidden;*/
+/*	!*background: linear-gradient(45deg, var(--ifm-color-primary-darker) 30%, var(--ifm-color-primary) 90%);*!*/
+/*	background-color: #2b3137;*/
+/*	color: white;*/
+/*}*/
 
-.heroBanner h1 {
-	font-size: 3rem;
-	font-weight: 700;
-}
+/*.heroBanner h1 {*/
+/*	font-size: 3rem;*/
+/*	font-weight: 700;*/
+/*}*/
 
 .heroBanner p {
 	font-size: 1.5rem;
@@ -68,36 +68,36 @@
 	color: var(--ifm-color-emphasis-700);
 }
 
-.codeExample {
-	padding: 4rem 0;
-	background: var(--ifm-background-color);
-}
+/*.codeExample {*/
+/*	padding: 4rem 0;*/
+/*	background: var(--ifm-background-color);*/
+/*}*/
 
-.codeExample h2 {
-	font-size: 2rem;
-	font-weight: 700;
-	margin-bottom: 1rem;
-}
+/*.codeExample h2 {*/
+/*	font-size: 2rem;*/
+/*	font-weight: 700;*/
+/*	margin-bottom: 1rem;*/
+/*}*/
 
-.codeExample p {
-	font-size: 1.2rem;
-	line-height: 1.6;
-	color: var(--ifm-color-emphasis-700);
-	margin-bottom: 2rem;
-}
+/*.codeExample p {*/
+/*	font-size: 1.2rem;*/
+/*	line-height: 1.6;*/
+/*	color: var(--ifm-color-emphasis-700);*/
+/*	margin-bottom: 2rem;*/
+/*}*/
 
-.codeBlock {
-	background: var(--ifm-pre-background);
-	border-radius: var(--ifm-code-border-radius);
-	padding: 1.5rem;
-	margin: 0;
-	overflow: auto;
-	font-size: 0.9rem;
-	line-height: 1.5;
-}
+/*.codeBlock {*/
+/*	background: var(--ifm-pre-background);*/
+/*	border-radius: var(--ifm-code-border-radius);*/
+/*	padding: 1.5rem;*/
+/*	margin: 0;*/
+/*	overflow: auto;*/
+/*	font-size: 0.9rem;*/
+/*	line-height: 1.5;*/
+/*}*/
 
-.codeBlock code {
-	display: block;
-	color: var(--ifm-color-emphasis-900);
-	font-family: var(--ifm-font-family-monospace);
-}
+/*.codeBlock code {*/
+/*	display: block;*/
+/*	color: var(--ifm-color-emphasis-900);*/
+/*	font-family: var(--ifm-font-family-monospace);*/
+/*}*/
