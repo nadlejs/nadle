@@ -1,3 +1,5 @@
+import Perf from "node:perf_hooks";
+
 import c from "tinyrainbow";
 
 import { TaskIdentifier } from "./task-identifier.js";
@@ -95,17 +97,11 @@ export class TaskRegistry {
 	}
 
 	public onTaskStart(id: TaskIdentifier) {
-		this.updateTask(id, { startTime: Date.now(), status: TaskStatus.Running });
+		this.updateTask(id, { startTime: true, status: TaskStatus.Running });
 	}
 
 	public onTaskFinish(id: TaskIdentifier) {
-		const task = this.getById(id);
-
-		if (task.result.startTime === null) {
-			throw new Error(`Task ${c.bold(id)} was not started properly`);
-		}
-
-		this.updateTask(id, { status: TaskStatus.Failed, duration: Date.now() - task.result.startTime });
+		this.updateTask(id, { duration: true, status: TaskStatus.Failed });
 	}
 
 	public onTaskUpToDate(id: TaskIdentifier) {
@@ -117,13 +113,7 @@ export class TaskRegistry {
 	}
 
 	public onTaskFailed(id: TaskIdentifier) {
-		const task = this.getById(id);
-
-		if (task.result.startTime === null) {
-			throw new Error(`Task ${c.bold(id)} was not started properly`);
-		}
-
-		this.updateTask(id, { status: TaskStatus.Failed, duration: Date.now() - task.result.startTime });
+		this.updateTask(id, { duration: true, status: TaskStatus.Failed });
 	}
 
 	public onTaskCanceled(id: TaskIdentifier) {
@@ -136,19 +126,23 @@ export class TaskRegistry {
 		}
 	}
 
-	private updateTask(taskId: string, payload: Partial<{ status: TaskStatus; duration: number | null; startTime: number | null }>) {
+	private updateTask(taskId: string, payload: Partial<{ duration: true; startTime: true; status: TaskStatus }>) {
 		const task = this.getById(taskId);
 
 		if (payload.status !== undefined) {
 			task.status = payload.status;
 		}
 
-		if (payload.duration !== undefined) {
-			task.result.duration = payload.duration;
+		if (payload.startTime === true) {
+			task.result.startTime = Perf.performance.now();
 		}
 
-		if (payload.startTime !== undefined) {
-			task.result.startTime = payload.startTime;
+		if (payload.duration == true) {
+			if (task.result.startTime === null) {
+				throw new Error(`Task ${c.bold(taskId)} was not started properly`);
+			}
+
+			task.result.duration = Perf.performance.now() - task.result.startTime;
 		}
 	}
 }

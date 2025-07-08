@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { isCI, isWindows } from "std-env";
+import { isCI } from "std-env";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -15,9 +15,9 @@ export default defineConfig({
 		}
 	},
 	test: {
+		testTimeout: 20000,
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
-		testTimeout: isWindows ? 20000 : 10000,
 		setupFiles: "./test/__setup__/vitest.ts",
 		typecheck: {
 			enabled: true,
