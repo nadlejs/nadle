@@ -15,7 +15,7 @@ export class OptionsResolver {
 	public static readonly CONFIG_FILE_PATTERN = `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}}`;
 
 	// eslint-disable-next-line no-restricted-properties
-	private readonly cwd = process.cwd();
+	public readonly cwd = process.cwd();
 	private static readonly DEFAULT_CACHE_DIR_NAME = ".nadle";
 
 	private readonly defaultOptions = {
@@ -31,33 +31,33 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	public async resolve(params: { configFile: string; cliOptions: NadleCLIOptions; fileOptions: NadleFileOptions }): Promise<NadleResolvedOptions> {
-		const { cliOptions, configFile } = params;
+	public async resolve(params: { project: Project; cliOptions: NadleCLIOptions; fileOptions: NadleFileOptions }): Promise<NadleResolvedOptions> {
+		const { cliOptions } = params;
 		const { alias, ...fileOptions } = params.fileOptions;
 		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
+		const project = Project.configureAlias(params.project, alias);
+		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
+
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
-
-		// const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
-
-		const project = await Project.resolve(this.cwd, alias);
-		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
 
 		return {
 			...baseOptions,
 			project,
 			cacheDir,
-			configFile,
+			configFile: project.rootWorkspace.configFilePath,
 
 			minWorkers,
 			maxWorkers
 		};
 	}
 
-	public async resolveConfigFile(configPath: string | undefined): Promise<string> {
+	public async resolveRootConfigFile(project: Project, configPath: string | undefined): Promise<string> {
+		const projectPath = project.rootWorkspace.absolutePath;
+
 		if (configPath !== undefined) {
-			const resolvedConfigPath = Path.resolve(this.cwd, configPath);
+			const resolvedConfigPath = Path.resolve(projectPath, configPath);
 
 			if (!(await isPathExists(resolvedConfigPath))) {
 				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
@@ -66,11 +66,14 @@ export class OptionsResolver {
 			return resolvedConfigPath;
 		}
 
-		const resolveConfigPath = await findUp(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${ext}`));
+		const resolveConfigPath = await findUp(
+			OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${ext}`),
+			{ cwd: projectPath }
+		);
 
 		if (!resolveConfigPath) {
 			throw new Error(
-				`No ${OptionsResolver.CONFIG_FILE_PATTERN}} found in ${this.cwd} directory or parent directories. Please use --config to specify a custom path.`
+				`No ${OptionsResolver.CONFIG_FILE_PATTERN}} found in ${projectPath} directory or parent directories. Please use --config to specify a custom path.`
 			);
 		}
 

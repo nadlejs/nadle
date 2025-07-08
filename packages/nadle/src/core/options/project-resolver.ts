@@ -17,14 +17,18 @@ interface Workspace {
 	readonly label: string;
 	readonly relativePath: string;
 	readonly absolutePath: string;
+	readonly configFilePath: string | null;
+}
+interface RootWorkspace extends Omit<Workspace, "configFilePath"> {
+	readonly configFilePath: string;
 }
 export namespace Workspace {
-	export function create(pkg: Package, aliasResolver: AliasResolver): Workspace {
+	export function create(pkg: Package): Workspace {
 		const { relativeDir, dir: absolutePath } = pkg;
 		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
 		const id = relativePath.replaceAll(SLASH, COLON);
 
-		return { id, absolutePath, relativePath, label: aliasResolver(relativePath) ?? id };
+		return { id, label: id, absolutePath, relativePath, configFilePath: null };
 	}
 
 	export function resolve(workspaceLabelOrId: string, workspaces: Workspace[]) {
@@ -58,7 +62,7 @@ namespace AliasResolver {
 export interface Project {
 	readonly packageManager: string;
 	readonly workspaces: Workspace[];
-	readonly rootWorkspace: Workspace;
+	readonly rootWorkspace: RootWorkspace;
 }
 export namespace Project {
 	export const ROOT_WORKSPACE_ID = "root";
@@ -100,29 +104,57 @@ export namespace Project {
 		return workspace;
 	}
 
-	export function create(packages: Packages, aliasResolver: AliasResolver): Project {
+	function create(packages: Packages): Project {
 		const project = {
 			packageManager: packages.tool.type,
-			rootWorkspace: createRootWorkspace(packages.rootDir, aliasResolver),
+			rootWorkspace: createRootWorkspace(packages.rootDir),
 			workspaces: sortBy(
-				packages.packages.map((workspace) => Workspace.create(workspace, aliasResolver)),
+				packages.packages.map((workspace) => Workspace.create(workspace)),
 				["relativePath"]
 			)
 		};
-		validate(project);
 
 		return project;
 	}
 
-	function createRootWorkspace(rootDir: string, aliasResolver: AliasResolver): Workspace {
+	function createRootWorkspace(rootDir: string): RootWorkspace {
 		const relativePath = DOT;
 
-		return { relativePath, id: ROOT_WORKSPACE_ID, absolutePath: rootDir, label: aliasResolver(relativePath) ?? ROOT_WORKSPACE_LABEL };
+		return {
+			relativePath,
+			configFilePath: "",
+			id: ROOT_WORKSPACE_ID,
+			absolutePath: rootDir,
+			label: ROOT_WORKSPACE_LABEL
+		};
 	}
 
-	export async function resolve(cwd: string, aliasOption: AliasOption | undefined): Promise<Project> {
+	export function configureAlias(project: Project, aliasOption: AliasOption | undefined): Project {
 		const resolveAlias = AliasResolver.create(aliasOption);
 
+		const configuredProject = {
+			...project,
+			rootWorkspace: { ...project.rootWorkspace, label: resolveAlias(project.rootWorkspace.relativePath) ?? project.rootWorkspace.id },
+			workspaces: project.workspaces.map((workspace) => ({ ...workspace, label: resolveAlias(workspace.relativePath) ?? workspace.id }))
+		};
+
+		validate(configuredProject);
+
+		return configuredProject;
+	}
+
+	export function configureConfigFile(project: Project, rootConfigFilePath: string, configFileMap: Record<string, string | null>): Project {
+		return {
+			...project,
+			rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath },
+			workspaces: project.workspaces.map((workspace) => ({
+				...workspace,
+				configFilePath: configFileMap[workspace.id] ?? null
+			}))
+		};
+	}
+
+	export async function resolve(cwd: string): Promise<Project> {
 		const projectDir = await findUp(
 			async (directory) => {
 				const packageJsonPath = Path.join(directory, PACKAGE_JSON);
@@ -145,11 +177,11 @@ export namespace Project {
 				if (await detector.isMonorepoRoot(projectDir)) {
 					const packages = await detector.getPackages(projectDir);
 
-					return Project.create(packages, resolveAlias);
+					return create(packages);
 				}
 			}
 
-			return { workspaces: [], packageManager: "npm", rootWorkspace: createRootWorkspace(projectDir, resolveAlias) };
+			return { workspaces: [], packageManager: "npm", rootWorkspace: createRootWorkspace(projectDir) };
 		}
 
 		const monorepoRoot = await findRoot(cwd);
@@ -161,7 +193,7 @@ export namespace Project {
 			);
 		}
 
-		return Project.create(await detector.getPackages(monorepoRoot.rootDir), resolveAlias);
+		return create(await detector.getPackages(monorepoRoot.rootDir));
 	}
 
 	function validate(project: Project) {

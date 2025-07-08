@@ -44,12 +44,12 @@ export class Nadle {
 
 	public async init(): Promise<this> {
 		const optionsResolver = new OptionsResolver();
-		const configFile = await optionsResolver.resolveConfigFile(this.cliOptions.configFile);
-		await this.initializeProject(configFile);
+
+		const project = await this.initializeProject();
 
 		// Add this point, the options and tasks from root workspace's configuration file are registered
 		this.#options = await optionsResolver.resolve({
-			configFile,
+			project,
 			cliOptions: this.cliOptions,
 			fileOptions: this.fileOptionRegistry.get(Project.ROOT_WORKSPACE_ID)
 		});
@@ -57,7 +57,6 @@ export class Nadle {
 		this.logger.init(this.options);
 		await this.reporter.init?.();
 
-		await this.initializeWorkspaces();
 		this.taskRegistry.configure(this.options.project);
 
 		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.taskRegistry.parse(excludedTaskInput));
@@ -212,20 +211,27 @@ export class Nadle {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
-	private async initializeProject(configFilePath: string) {
-		await this.onInitializeWorkspace(Project.ROOT_WORKSPACE_ID, configFilePath);
-	}
+	private async initializeProject() {
+		const optionsResolver = new OptionsResolver();
+		const project = await Project.resolve(optionsResolver.cwd);
+		const rootConfigFile = await optionsResolver.resolveRootConfigFile(project, this.cliOptions.configFile);
+		const configFileMap: Record<string, string | null> = {};
 
-	private async initializeWorkspaces() {
-		for (const workspace of this.options.project.workspaces) {
-			const configPath = await new OptionsResolver().resolveWorkspaceConfigFile(workspace.absolutePath);
+		await this.onInitializeWorkspace(Project.ROOT_WORKSPACE_ID, rootConfigFile);
+
+		for (const workspace of project.workspaces) {
+			const configPath = await optionsResolver.resolveWorkspaceConfigFile(workspace.absolutePath);
 
 			if (configPath === null) {
 				continue;
 			}
 
+			configFileMap[workspace.id] = configPath;
+
 			await this.onInitializeWorkspace(workspace.id, configPath);
 		}
+
+		return Project.configureConfigFile(project, rootConfigFile, configFileMap);
 	}
 
 	private async onInitializeWorkspace(workspaceId: string, configFilePath: string) {
