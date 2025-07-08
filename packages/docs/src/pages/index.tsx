@@ -3,6 +3,8 @@ import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import type { FC, ReactNode } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { tomorrow as codeTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const HomepageHeader = () => {
 	const { siteConfig } = useDocusaurusContext();
@@ -194,6 +196,18 @@ const HomepageFeatures = () => (
 	</section>
 );
 
+const exampleCode = `import { tasks } from "nadle"
+
+tasks.register("build", async () => {
+  console.log("Building...");
+}).config({
+  dependsOn: ["compile", "test"],
+  description: "Build the project"
+});
+
+// Run with parallel execution
+$ nadle build`;
+
 const CodeExample: FC = () => (
 	<section className="relative py-24 bg-gradient-to-b from-blue-50 via-white to-cyan-50 dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] transition-colors overflow-hidden">
 		{/* Decorative blurred accent */}
@@ -244,25 +258,26 @@ const CodeExample: FC = () => (
 				<div className="md:w-1/2 flex justify-center">
 					<div className="relative w-full max-w-xl">
 						<div className="absolute -top-4 -left-4 w-full h-full rounded-2xl bg-gradient-to-br from-blue-400/10 via-cyan-400/10 to-transparent blur-lg z-0" />
-						<pre className="relative z-10 bg-gray-900 dark:bg-gray-950 text-white rounded-2xl p-6 md:p-8 shadow-2xl text-[0.98rem] leading-[1.6] font-mono overflow-x-auto border border-blue-200 dark:border-gray-800">
-							<code>
-								{`import { tasks } from "nadle"
-
-tasks.register("build", async () => {
-  console.log("Building...");
-}).config({
-  dependsOn: ["compile", "test"],
-  description: "Build the project"
-});
-
-// Run with parallel execution
-$ nadle build`}
-							</code>
-						</pre>
-						<div className="absolute top-3 left-6 flex gap-2 z-20">
-							<span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-							<span className="w-3 h-3 rounded-full bg-yellow-400 inline-block" />
-							<span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+						<div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-blue-200 dark:border-gray-800">
+							<div className="absolute top-3 left-6 flex gap-2 z-20">
+								<span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+								<span className="w-3 h-3 rounded-full bg-yellow-400 inline-block" />
+								<span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+							</div>
+							<SyntaxHighlighter
+								language="typescript"
+								style={codeTheme}
+								customStyle={{
+									margin: 0,
+									lineHeight: "1.6",
+									fontSize: "0.98rem",
+									borderRadius: "1rem",
+									background: "transparent",
+									padding: "2rem 1.5rem 1.5rem 1.5rem"
+								}}
+								showLineNumbers={false}>
+								{exampleCode}
+							</SyntaxHighlighter>
 						</div>
 					</div>
 				</div>
