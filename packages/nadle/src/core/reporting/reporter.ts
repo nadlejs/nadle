@@ -147,10 +147,14 @@ export class DefaultReporter implements Reporter {
 
 		const { project, minWorkers, maxWorkers, configFile } = this.nadle.options;
 
+		const workspaceConfigFileCount = project.workspaces.flatMap((workspace) => workspace.configFilePath ?? []).length;
+
 		if (!this.nadle.options.isWorkerThread) {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
 			this.nadle.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
-			this.nadle.logger.log(`Loaded configuration from ${configFile}\n`);
+			this.nadle.logger.log(
+				`Loaded configuration from ${configFile}${workspaceConfigFileCount > 0 ? ` and ${workspaceConfigFileCount} other(s) files` : ""}\n`
+			);
 			this.nadle.logger.info(
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
 			);
