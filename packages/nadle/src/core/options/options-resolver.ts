@@ -5,11 +5,10 @@ import { isCI } from "std-env";
 
 import { clamp } from "../utilities/utils.js";
 import { Project } from "../models/project.js";
+import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
-	private static readonly DEFAULT_CACHE_DIR_NAME = ".nadle";
-
 	private readonly defaultOptions = {
 		cache: true,
 		footer: !isCI,
@@ -29,7 +28,7 @@ export class OptionsResolver {
 		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
 		const project = Project.configureAlias(params.project, alias);
-		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
+		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? DEFAULT_CACHE_DIR_NAME);
 
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);

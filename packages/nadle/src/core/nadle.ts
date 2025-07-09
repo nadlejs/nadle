@@ -44,12 +44,10 @@ export class Nadle {
 	public constructor(private readonly cliOptions: NadleCLIOptions) {}
 
 	public async init(): Promise<this> {
-		const optionsResolver = new OptionsResolver();
-
-		const project = await new ProjectResolver().resolve(this.cliOptions.configFile, this.onInitializeWorkspace.bind(this));
+		const project = await new ProjectResolver().resolve(this.onInitializeWorkspace.bind(this), this.cliOptions.configFile);
 
 		// Add this point, the options and tasks from root workspace's configuration file are registered
-		this.#options = await optionsResolver.resolve({
+		this.#options = await new OptionsResolver().resolve({
 			project,
 			cliOptions: this.cliOptions,
 			fileOptions: this.fileOptionRegistry.get(Project.ROOT_WORKSPACE_ID)

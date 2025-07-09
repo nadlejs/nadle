@@ -9,6 +9,7 @@ import { Workspace, AliasResolver, type RootWorkspace } from "./workspace.js";
 export interface Project {
 	readonly packageManager: string;
 	readonly workspaces: Workspace[];
+	readonly currentWorkspaceId: string;
 	readonly rootWorkspace: RootWorkspace;
 }
 export namespace Project {
@@ -52,11 +53,14 @@ export namespace Project {
 	}
 
 	export function create(packages: Packages): Project {
+		const rootWorkspace = createRootWorkspace(packages.rootDir);
+
 		return {
+			rootWorkspace,
 			packageManager: packages.tool.type,
-			rootWorkspace: createRootWorkspace(packages.rootDir),
+			currentWorkspaceId: rootWorkspace.id,
 			workspaces: sortBy(
-				packages.packages.map((workspace) => Workspace.create(workspace)),
+				packages.packages.map((pkg) => Workspace.create(pkg)),
 				["relativePath"]
 			)
 		};
@@ -86,17 +90,6 @@ export namespace Project {
 		validate(configuredProject);
 
 		return configuredProject;
-	}
-
-	export function configureConfigFile(project: Project, rootConfigFilePath: string, configFileMap: Record<string, string | null>): Project {
-		return {
-			...project,
-			rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath },
-			workspaces: project.workspaces.map((workspace) => ({
-				...workspace,
-				configFilePath: configFileMap[workspace.id] ?? null
-			}))
-		};
 	}
 
 	function validate(project: Project) {

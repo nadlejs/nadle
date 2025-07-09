@@ -12,6 +12,13 @@ import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "..
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
+interface WorkspaceInitializer {
+	(workspaceId: string, configFilePath: string): Promise<void>;
+}
+
+// eslint-disable-next-line no-restricted-properties
+const cwd = Process.cwd();
+
 export class ProjectResolver {
 	#project: Project | null = null;
 
@@ -23,35 +30,50 @@ export class ProjectResolver {
 		return this.#project;
 	}
 
-	public async resolve(
-		configFileOptions: string | undefined,
-		onInitializeWorkspace: (workspaceId: string, configFilePath: string) => Promise<void>
-	): Promise<Project> {
-		await this.init();
+	private set project(updater: (project: Project) => Project) {
+		this.#project = updater(this.project);
+	}
 
-		const rootConfigFile = await this.resolveRootConfigFile(configFileOptions);
-		const configFileMap: Record<string, string | null> = {};
-
-		await onInitializeWorkspace(Project.ROOT_WORKSPACE_ID, rootConfigFile);
-
-		for (const workspace of this.project.workspaces) {
-			const configPath = await this.resolveWorkspaceConfigFile(workspace.absolutePath);
-
-			if (configPath === null) {
-				continue;
-			}
-
-			configFileMap[workspace.id] = configPath;
-
-			await onInitializeWorkspace(workspace.id, configPath);
-		}
-
-		this.#project = Project.configureConfigFile(this.project, rootConfigFile, configFileMap);
+	public async resolve(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined): Promise<Project> {
+		await this.initProject();
+		await this.initializeRootWorkspace(onInitWorkspace, rootConfigFilePathOption);
+		await this.initializeSubWorkspaces(onInitWorkspace);
+		this.resolveCurrentWorkspaceId();
 
 		return this.project;
 	}
 
-	public async init(): Promise<this> {
+	private async initializeRootWorkspace(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined) {
+		const rootConfigFilePath = await this.resolveRootWorkspaceConfigFile(rootConfigFilePathOption);
+
+		await onInitWorkspace(Project.ROOT_WORKSPACE_ID, rootConfigFilePath);
+
+		this.project = (project) => {
+			return { ...project, rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath } };
+		};
+	}
+
+	private async initializeSubWorkspaces(onInitWorkspace: WorkspaceInitializer) {
+		const configFileMap: Record<string, string | null> = {};
+
+		for (const workspace of this.project.workspaces) {
+			for (const configFileName of DEFAULT_CONFIG_FILE_NAMES) {
+				const configFilePath = Path.resolve(workspace.absolutePath, configFileName);
+
+				if (await isPathExists(configFilePath)) {
+					configFileMap[workspace.id] = configFilePath;
+					await onInitWorkspace(workspace.id, configFilePath);
+				}
+			}
+		}
+
+		this.project = (project) => ({
+			...project,
+			workspaces: project.workspaces.map((workspace) => ({ ...workspace, configFilePath: configFileMap[workspace.id] ?? null }))
+		});
+	}
+
+	private async initProject() {
 		const projectDir = await findUp(
 			async (directory) => {
 				const packageJsonPath = Path.join(directory, PACKAGE_JSON);
@@ -66,7 +88,7 @@ export class ProjectResolver {
 
 				return undefined;
 			},
-			{ type: "directory" }
+			{ cwd, type: "directory" }
 		);
 
 		if (projectDir !== undefined) {
@@ -76,17 +98,17 @@ export class ProjectResolver {
 
 					this.#project = Project.create(packages);
 
-					return this;
+					return;
 				}
 			}
 
-			this.#project = { workspaces: [], packageManager: "npm", rootWorkspace: Project.createRootWorkspace(projectDir) };
+			const rootWorkspace = Project.createRootWorkspace(projectDir);
+			this.#project = { rootWorkspace, workspaces: [], packageManager: "npm", currentWorkspaceId: rootWorkspace.id };
 
-			return this;
+			return;
 		}
 
-		// eslint-disable-next-line no-restricted-properties
-		const monorepoRoot = await findRoot(Process.cwd());
+		const monorepoRoot = await findRoot(cwd);
 		const detector = MonorepoDetectors.find(({ type }) => type === monorepoRoot.tool);
 
 		if (!detector) {
@@ -96,15 +118,13 @@ export class ProjectResolver {
 		}
 
 		this.#project = Project.create(await detector.getPackages(monorepoRoot.rootDir));
-
-		return this;
 	}
 
-	private async resolveRootConfigFile(configPath: string | undefined): Promise<string> {
+	private async resolveRootWorkspaceConfigFile(rootConfigFilePath: string | undefined): Promise<string> {
 		const projectPath = this.project.rootWorkspace.absolutePath;
 
-		if (configPath !== undefined) {
-			const resolvedConfigPath = Path.resolve(projectPath, configPath);
+		if (rootConfigFilePath !== undefined) {
+			const resolvedConfigPath = Path.resolve(projectPath, rootConfigFilePath);
 
 			if (!(await isPathExists(resolvedConfigPath))) {
 				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
@@ -124,16 +144,21 @@ export class ProjectResolver {
 		return resolveConfigPath;
 	}
 
-	private async resolveWorkspaceConfigFile(workspacePath: string): Promise<string | null> {
-		for (const configFileName of DEFAULT_CONFIG_FILE_NAMES) {
-			// TODO: Support customized config file path?
-			const configFilePath = Path.resolve(workspacePath, configFileName);
+	private resolveCurrentWorkspaceId() {
+		let closest: string | undefined;
+		let currentWorkspaceId = this.project.rootWorkspace.id;
 
-			if (await isPathExists(configFilePath)) {
-				return configFilePath;
+		for (const workspace of this.project.workspaces) {
+			const workspacePath = workspace.absolutePath;
+
+			if (cwd.startsWith(workspacePath)) {
+				if (!closest || workspacePath.length > closest.length) {
+					closest = workspacePath;
+					currentWorkspaceId = workspace.id;
+				}
 			}
 		}
 
-		return null;
+		this.project = (project) => ({ ...project, currentWorkspaceId });
 	}
 }
