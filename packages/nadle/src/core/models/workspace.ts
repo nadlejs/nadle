@@ -1,23 +1,7 @@
 import c from "tinyrainbow";
 import { type Package } from "@manypkg/tools";
 
-import { type AliasOption } from "../options/types.js";
 import { COLON, SLASH, BACKSLASH } from "../utilities/constants.js";
-
-export type AliasResolver = (workspacePath: string) => string | undefined;
-export namespace AliasResolver {
-	export function create(aliasOption: AliasOption | undefined): AliasResolver {
-		if (aliasOption === undefined) {
-			return () => undefined;
-		}
-
-		if (typeof aliasOption === "function") {
-			return aliasOption;
-		}
-
-		return (workspacePath) => aliasOption[workspacePath];
-	}
-}
 
 export interface Workspace {
 	readonly id: string;
@@ -31,12 +15,18 @@ export interface RootWorkspace extends Omit<Workspace, "configFilePath"> {
 }
 
 export namespace Workspace {
+	export const ROOT_WORKSPACE_ID = "root";
+
 	export function create(pkg: Package): Workspace {
 		const { relativeDir, dir: absolutePath } = pkg;
 		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
 		const id = relativePath.replaceAll(SLASH, COLON);
 
 		return { id, label: id, absolutePath, relativePath, configFilePath: null };
+	}
+
+	export function isRootWorkspace(workspaceId: string): boolean {
+		return workspaceId === Workspace.ROOT_WORKSPACE_ID;
 	}
 
 	export function resolve(workspaceLabelOrId: string, workspaces: Workspace[]) {

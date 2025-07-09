@@ -3,10 +3,10 @@ import Process from "node:process";
 
 import c from "tinyrainbow";
 
-import { Project } from "./models/project.js";
 import { Logger } from "./reporting/logger.js";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
+import { Workspace } from "./models/workspace.js";
 import { capitalize } from "./utilities/utils.js";
 import { FileReader } from "./utilities/file-reader.js";
 import { TaskResolver } from "./options/task-resolver.js";
@@ -50,7 +50,7 @@ export class Nadle {
 		this.#options = await new OptionsResolver().resolve({
 			project,
 			cliOptions: this.cliOptions,
-			fileOptions: this.fileOptionRegistry.get(Project.ROOT_WORKSPACE_ID)
+			fileOptions: this.fileOptionRegistry.get(Workspace.ROOT_WORKSPACE_ID)
 		});
 
 		this.logger.init(this.options);

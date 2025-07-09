@@ -4,7 +4,7 @@ import { type Packages } from "@manypkg/tools";
 
 import { DOT } from "../utilities/constants.js";
 import { type AliasOption } from "../options/types.js";
-import { Workspace, AliasResolver, type RootWorkspace } from "./workspace.js";
+import { Workspace, type RootWorkspace } from "./workspace.js";
 
 export interface Project {
 	readonly packageManager: string;
@@ -13,13 +13,6 @@ export interface Project {
 	readonly rootWorkspace: RootWorkspace;
 }
 export namespace Project {
-	export const ROOT_WORKSPACE_ID = "root";
-	export const ROOT_WORKSPACE_LABEL = "";
-
-	export function isRootWorkspace(workspaceId: string): boolean {
-		return workspaceId === ROOT_WORKSPACE_ID;
-	}
-
 	export function getAllWorkspaces(project: Project): Workspace[] {
 		return [project.rootWorkspace, ...project.workspaces];
 	}
@@ -67,15 +60,7 @@ export namespace Project {
 	}
 
 	export function createRootWorkspace(rootDir: string): RootWorkspace {
-		const relativePath = DOT;
-
-		return {
-			relativePath,
-			configFilePath: "",
-			id: ROOT_WORKSPACE_ID,
-			absolutePath: rootDir,
-			label: ROOT_WORKSPACE_LABEL
-		};
+		return { label: "", relativePath: DOT, configFilePath: "", absolutePath: rootDir, id: Workspace.ROOT_WORKSPACE_ID };
 	}
 
 	export function configureAlias(project: Project, aliasOption: AliasOption | undefined): Project {
@@ -97,7 +82,7 @@ export namespace Project {
 		const getOtherWorkspaces = (workspaceId: string): Workspace[] => workspaces.filter((workspace) => workspace.id !== workspaceId);
 
 		for (const workspace of workspaces) {
-			if (workspace.label === "" && !isRootWorkspace(workspace.id)) {
+			if (workspace.label === "" && !Workspace.isRootWorkspace(workspace.id)) {
 				throw new Error(`Workspace ${workspace.id} alias can not be empty.`);
 			}
 
@@ -119,5 +104,20 @@ export namespace Project {
 				);
 			}
 		}
+	}
+}
+
+export type AliasResolver = (workspacePath: string) => string | undefined;
+export namespace AliasResolver {
+	export function create(aliasOption: AliasOption | undefined): AliasResolver {
+		if (aliasOption === undefined) {
+			return () => undefined;
+		}
+
+		if (typeof aliasOption === "function") {
+			return aliasOption;
+		}
+
+		return (workspacePath) => aliasOption[workspacePath];
 	}
 }

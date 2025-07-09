@@ -1,6 +1,7 @@
 import c from "tinyrainbow";
 
 import { type Nadle } from "../nadle.js";
+import { Project } from "../models/project.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { Project } from "../options/project-resolver.js";
@@ -53,7 +54,7 @@ export class TaskScheduler {
 			expandedTaskIds.push(taskId);
 			const { name, workspaceId } = this.nadle.taskRegistry.getById(taskId);
 
-			if (!Project.isRootWorkspace(workspaceId)) {
+			if (!Workspace.isRootWorkspace(workspaceId)) {
 				continue;
 			}
 

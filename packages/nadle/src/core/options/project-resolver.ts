@@ -6,6 +6,7 @@ import { findRoot } from "@manypkg/find-root";
 import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
 
 import { Project } from "../models/project.js";
+import { Workspace } from "../models/workspace.js";
 import type { NadlePackageJson } from "./types.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
 import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
@@ -46,7 +47,7 @@ export class ProjectResolver {
 	private async initializeRootWorkspace(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined) {
 		const rootConfigFilePath = await this.resolveRootWorkspaceConfigFile(rootConfigFilePathOption);
 
-		await onInitWorkspace(Project.ROOT_WORKSPACE_ID, rootConfigFilePath);
+		await onInitWorkspace(Workspace.ROOT_WORKSPACE_ID, rootConfigFilePath);
 
 		this.project = (project) => {
 			return { ...project, rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath } };
