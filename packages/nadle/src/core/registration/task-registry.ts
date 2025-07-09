@@ -3,7 +3,6 @@ import Perf from "node:perf_hooks";
 import c from "tinyrainbow";
 
 import { Project } from "../models/project.js";
-import { Workspace } from "../models/workspace.js";
 import { TaskIdentifier } from "./task-identifier.js";
 import { TaskStatus, type RegisteredTask } from "./types.js";
 
@@ -74,7 +73,7 @@ export class TaskRegistry {
 		return this.getAll().filter(({ name }) => name === taskName);
 	}
 
-	public parse(taskInput: string, currentWorkspaceId = Workspace.ROOT_WORKSPACE_ID): TaskIdentifier {
+	public parse(taskInput: string, currentWorkspaceId = this.project.currentWorkspaceId): TaskIdentifier {
 		const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
 		const targetWorkspace =
 			workspaceInput === undefined ? Project.getWorkspaceById(this.project, currentWorkspaceId) : Project.findWorkspace(this.project, workspaceInput);

@@ -68,7 +68,8 @@ export namespace Project {
 
 		const configuredProject = {
 			...project,
-			rootWorkspace: { ...project.rootWorkspace, label: resolveAlias(project.rootWorkspace.relativePath) ?? project.rootWorkspace.id },
+			// Fallback to empty string so its own task names can be displayed without workspace prefix
+			rootWorkspace: { ...project.rootWorkspace, label: resolveAlias(project.rootWorkspace.relativePath) ?? "" },
 			workspaces: project.workspaces.map((workspace) => ({ ...workspace, label: resolveAlias(workspace.relativePath) ?? workspace.id }))
 		};
 
