@@ -52,13 +52,11 @@ const config: Config = {
 			darkTheme: prismThemes.dracula
 		},
 		algolia: {
-			insights: false,
-			indexName: "nadle",
-			appId: "N3MF5K9FHG",
-			searchParameters: {},
+			appId: "AE5FVNEEID",
 			contextualSearch: true,
 			searchPagePath: "search",
-			apiKey: "a889ea985571abd223e1ffc5195e1769"
+			indexName: "Nadle Documentation Website",
+			apiKey: "15c38b0ee7e6e3d2f082f87568cbb4fa"
 		},
 		navbar: {
 			title: "Nadle",
