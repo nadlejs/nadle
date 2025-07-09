@@ -108,7 +108,7 @@ export namespace Project {
 	}
 }
 
-export type AliasResolver = (workspacePath: string) => string | undefined;
+type AliasResolver = (workspacePath: string) => string | undefined;
 export namespace AliasResolver {
 	export function create(aliasOption: AliasOption | undefined): AliasResolver {
 		if (aliasOption === undefined) {
