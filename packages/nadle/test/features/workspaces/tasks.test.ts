@@ -4,7 +4,9 @@ import { it, describe } from "vitest";
 import { createExec, expectPass, fixturesDir } from "setup";
 
 describe("workspaces tasks", () => {
-	const exec = createExec({ cwd: Path.join(fixturesDir, "pnpm-workspaces") });
+	const projectDir = Path.join(fixturesDir, "pnpm-workspaces");
+	const exec = createExec({ cwd: projectDir });
+
 	it("should register all tasks from all config files", async () => {
 		await expectPass(exec`--list`);
 	});
@@ -20,6 +22,13 @@ describe("workspaces tasks", () => {
 
 	it("should run the workspace task when using alias", async () => {
 		await expectPass(exec`api:build`);
+	});
+
+	it("should run the workspace task when executing from that workspace unless specifying workspace explicitly", async () => {
+		await expectPass(createExec({ cwd: Path.join(projectDir, "frontend") })`check`);
+		await expectPass(createExec({ cwd: Path.join(projectDir, "shared", "api") })`build`);
+		await expectPass(createExec({ cwd: Path.join(projectDir, "shared", "types") })`root:check`);
+		await expectPass(createExec({ cwd: Path.join(projectDir, "shared", "types") })`frontend:check`);
 	});
 
 	it.todo("test root aliasing");

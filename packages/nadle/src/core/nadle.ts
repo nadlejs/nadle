@@ -44,10 +44,12 @@ export class Nadle {
 	public constructor(private readonly cliOptions: NadleCLIOptions) {}
 
 	public async init(): Promise<this> {
+		const project = await new ProjectResolver().resolve(this.onInitializeWorkspace.bind(this), this.cliOptions.configFile);
+
 		this.#options = await new OptionsResolver().resolve({
+			project,
 			cliOptions: this.cliOptions,
-			fileOptions: this.fileOptionRegistry.get(Workspace.ROOT_WORKSPACE_ID),
-			project: await new ProjectResolver().resolve(this.onInitializeWorkspace.bind(this), this.cliOptions.configFile)
+			fileOptions: this.fileOptionRegistry.get(Workspace.ROOT_WORKSPACE_ID)
 		});
 
 		this.logger.init(this.options);

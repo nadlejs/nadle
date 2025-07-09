@@ -73,10 +73,10 @@ export class TaskRegistry {
 		return this.getAll().filter(({ name }) => name === taskName);
 	}
 
-	public parse(taskInput: string, currentWorkspaceId = this.project.currentWorkspaceId): TaskIdentifier {
+	public parse(taskInput: string, targetWorkspaceId = this.project.currentWorkspaceId): TaskIdentifier {
 		const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
 		const targetWorkspace =
-			workspaceInput === undefined ? Project.getWorkspaceById(this.project, currentWorkspaceId) : Project.findWorkspace(this.project, workspaceInput);
+			workspaceInput === undefined ? Project.getWorkspaceById(this.project, targetWorkspaceId) : Project.findWorkspace(this.project, workspaceInput);
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
 		if (!this.registry.has(taskId)) {
