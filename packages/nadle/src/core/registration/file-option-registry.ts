@@ -1,4 +1,4 @@
-import { Project } from "../options/project-resolver.js";
+import { Workspace } from "../models/workspace.js";
 import { type NadleFileOptions } from "../options/types.js";
 
 class FileOptionRegistry {
@@ -14,7 +14,7 @@ class FileOptionRegistry {
 			throw new Error("Working directory is not set. Please call updateWorkspace() before registering file options.");
 		}
 
-		if (this.workspaceId !== Project.ROOT_WORKSPACE_ID) {
+		if (!Workspace.isRootWorkspace(this.workspaceId)) {
 			throw new Error("File options can only be registered in the root workspace.");
 		}
 
@@ -22,7 +22,7 @@ class FileOptionRegistry {
 	}
 
 	public get(workspaceId: string): NadleFileOptions {
-		if (workspaceId !== Project.ROOT_WORKSPACE_ID) {
+		if (!Workspace.isRootWorkspace(workspaceId)) {
 			throw new Error("File options can only be retrieved from the root workspace.");
 		}
 

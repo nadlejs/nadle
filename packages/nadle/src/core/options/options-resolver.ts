@@ -2,22 +2,13 @@ import Os from "node:os";
 import Path from "node:path";
 
 import { isCI } from "std-env";
-import { findUp } from "find-up";
 
 import { clamp } from "../utilities/utils.js";
-import { Project } from "./project-resolver.js";
-import { isPathExists } from "../utilities/fs.js";
+import { Project } from "../models/project.js";
+import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
-	public static readonly SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];
-	public static readonly DEFAULT_CONFIG_FILE_NAME = "nadle.config";
-	public static readonly CONFIG_FILE_PATTERN = `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.{${OptionsResolver.SUPPORT_EXTENSIONS.join(",")}}`;
-
-	// eslint-disable-next-line no-restricted-properties
-	private readonly cwd = process.cwd();
-	private static readonly DEFAULT_CACHE_DIR_NAME = ".nadle";
-
 	private readonly defaultOptions = {
 		cache: true,
 		footer: !isCI,
@@ -31,63 +22,26 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	public async resolve(params: { configFile: string; cliOptions: NadleCLIOptions; fileOptions: NadleFileOptions }): Promise<NadleResolvedOptions> {
-		const { cliOptions, configFile } = params;
+	public async resolve(params: { project: Project; cliOptions: NadleCLIOptions; fileOptions: NadleFileOptions }): Promise<NadleResolvedOptions> {
+		const { cliOptions } = params;
 		const { alias, ...fileOptions } = params.fileOptions;
 		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
+		const project = Project.configureAlias(params.project, alias);
+		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? DEFAULT_CACHE_DIR_NAME);
+
 		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
 		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
-
-		// const excludedTasks = baseOptions.excludedTasks.length && allTasks.length ? taskResolver.resolve(baseOptions.excludedTasks) : [];
-
-		const project = await Project.resolve(this.cwd, alias);
-		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? OptionsResolver.DEFAULT_CACHE_DIR_NAME);
 
 		return {
 			...baseOptions,
 			project,
 			cacheDir,
-			configFile,
+			configFile: project.rootWorkspace.configFilePath,
 
 			minWorkers,
 			maxWorkers
 		};
-	}
-
-	public async resolveConfigFile(configPath: string | undefined): Promise<string> {
-		if (configPath !== undefined) {
-			const resolvedConfigPath = Path.resolve(this.cwd, configPath);
-
-			if (!(await isPathExists(resolvedConfigPath))) {
-				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
-			}
-
-			return resolvedConfigPath;
-		}
-
-		const resolveConfigPath = await findUp(OptionsResolver.SUPPORT_EXTENSIONS.map((ext) => `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${ext}`));
-
-		if (!resolveConfigPath) {
-			throw new Error(
-				`No ${OptionsResolver.CONFIG_FILE_PATTERN}} found in ${this.cwd} directory or parent directories. Please use --config to specify a custom path.`
-			);
-		}
-
-		return resolveConfigPath;
-	}
-
-	public async resolveWorkspaceConfigFile(workspacePath: string): Promise<string | null> {
-		for (const extension of OptionsResolver.SUPPORT_EXTENSIONS) {
-			// TODO: Support customized config file path?
-			const configFilePath = Path.resolve(workspacePath, `${OptionsResolver.DEFAULT_CONFIG_FILE_NAME}.${extension}`);
-
-			if (await isPathExists(configFilePath)) {
-				return configFilePath;
-			}
-		}
-
-		return null;
 	}
 
 	private resolveWorkers(configValue: string | number | undefined) {

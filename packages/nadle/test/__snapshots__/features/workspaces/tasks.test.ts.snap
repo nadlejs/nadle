@@ -7,7 +7,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Bold>Unnamed tasks</BoldDim>
 [log] <Bold>-------------</BoldDim>
@@ -32,7 +32,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:build shared:api:bu
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>backend:build</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -61,7 +61,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build --dry-run
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>check</BoldDim>
@@ -85,7 +85,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -137,6 +137,102 @@ Build API successfully!
 [log] <Bold>9</BoldDim> tasks executed
 `;
 
+exports[`workspaces tasks > should run the workspace task when executing from that workspace unless specifying workspace explicitly 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check frontend successfully!
+[log]
+<Green>✓</Green> Task <Bold>frontend:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
+exports[`workspaces tasks > should run the workspace task when executing from that workspace unless specifying workspace explicitly 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/shared/api
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check API successfully!
+[log]
+<Green>✓</Green> Task <Bold>api:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>api:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build API successfully!
+[log]
+<Green>✓</Green> Task <Bold>api:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>2</BoldDim> tasks executed
+`;
+
+exports[`workspaces tasks > should run the workspace task when executing from that workspace unless specifying workspace explicitly 3`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/shared/types
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:check
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check project successfully!
+[log]
+<Green>✓</Green> Task <Bold>check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check frontend successfully!
+[log]
+<Green>✓</Green> Task <Bold>frontend:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check API successfully!
+[log]
+<Green>✓</Green> Task <Bold>api:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>shared:types:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check types successfully!
+[log]
+<Green>✓</Green> Task <Bold>shared:types:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>4</BoldDim> tasks executed
+`;
+
+exports[`workspaces tasks > should run the workspace task when executing from that workspace unless specifying workspace explicitly 4`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/shared/types
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer frontend:check
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check frontend successfully!
+[log]
+<Green>✓</Green> Task <Bold>frontend:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
 exports[`workspaces tasks > should run the workspace task when using alias 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
@@ -144,7 +240,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer api:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
 

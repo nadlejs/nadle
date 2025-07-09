@@ -1,128 +1,80 @@
 import Path from "node:path";
+import Process from "node:process";
 
-import c from "tinyrainbow";
 import { findUp } from "find-up";
-import { sortBy } from "lodash-es";
 import { findRoot } from "@manypkg/find-root";
-import { NpmTool, PnpmTool, YarnTool, type Tool, type Package, type Packages } from "@manypkg/tools";
+import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
 
+import { Project } from "../models/project.js";
+import { Workspace } from "../models/workspace.js";
+import type { NadlePackageJson } from "./types.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
-import type { AliasOption, NadlePackageJson } from "./types.js";
-import { DOT, COLON, SLASH, BACKSLASH, PACKAGE_JSON } from "../utilities/constants.js";
+import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
-interface Workspace {
-	readonly id: string;
-	readonly label: string;
-	readonly relativePath: string;
-	readonly absolutePath: string;
-}
-export namespace Workspace {
-	export function create(pkg: Package, aliasResolver: AliasResolver): Workspace {
-		const { relativeDir, dir: absolutePath } = pkg;
-		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
-		const id = relativePath.replaceAll(SLASH, COLON);
-
-		return { id, absolutePath, relativePath, label: aliasResolver(relativePath) ?? id };
-	}
-
-	export function resolve(workspaceLabelOrId: string, workspaces: Workspace[]) {
-		const workspace = workspaces.find((ws) => ws.id === workspaceLabelOrId || ws.label === workspaceLabelOrId);
-
-		if (!workspace) {
-			throw new Error(
-				`Workspace ${c.bold(workspaceLabelOrId)} not found. Available workspaces (including alias): ${workspaces.flatMap((ws) => [c.bold(ws.id), c.bold(ws.label)]).join(", ")}`
-			);
-		}
-
-		return workspace;
-	}
+interface WorkspaceInitializer {
+	(workspaceId: string, configFilePath: string): Promise<void>;
 }
 
-type AliasResolver = (workspacePath: string) => string | undefined;
-namespace AliasResolver {
-	export function create(aliasOption: AliasOption | undefined): AliasResolver {
-		if (aliasOption === undefined) {
-			return () => undefined;
+// eslint-disable-next-line no-restricted-properties
+const cwd = Process.cwd();
+
+export class ProjectResolver {
+	#project: Project | null = null;
+
+	private get project(): Project {
+		if (this.#project === null) {
+			throw new Error("Project is not initialized. Please call init() first.");
 		}
 
-		if (typeof aliasOption === "function") {
-			return aliasOption;
-		}
-
-		return (workspacePath) => aliasOption[workspacePath];
-	}
-}
-
-export interface Project {
-	readonly packageManager: string;
-	readonly workspaces: Workspace[];
-	readonly rootWorkspace: Workspace;
-}
-export namespace Project {
-	export const ROOT_WORKSPACE_ID = "root";
-	export const ROOT_WORKSPACE_LABEL = "";
-
-	export function isRootWorkspace(workspaceId: string): boolean {
-		return workspaceId === ROOT_WORKSPACE_ID;
+		return this.#project;
 	}
 
-	export function getAllWorkspaces(project: Project): Workspace[] {
-		return [project.rootWorkspace, ...project.workspaces];
+	private set project(updater: (project: Project) => Project) {
+		this.#project = updater(this.project);
 	}
 
-	export function findWorkspace(project: Project, workspaceInput: string): Workspace {
-		const workspace = getAllWorkspaces(project).find(({ id, label }) => id === workspaceInput || label === workspaceInput);
+	public async resolve(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined): Promise<Project> {
+		await this.initProject();
+		await this.initializeRootWorkspace(onInitWorkspace, rootConfigFilePathOption);
+		await this.initializeSubWorkspaces(onInitWorkspace);
+		this.resolveCurrentWorkspaceId();
 
-		if (!workspace) {
-			throw new Error(
-				`Workspace ${c.bold(workspaceInput)} not found. Available workspaces: ${getAllWorkspaces(project)
-					.map((ws) => c.bold(ws.id))
-					.join(", ")}`
-			);
-		}
-
-		return workspace;
+		return this.project;
 	}
 
-	export function getWorkspaceById(project: Project, workspaceId: string): Workspace {
-		const workspace = getAllWorkspaces(project).find(({ id }) => id === workspaceId);
+	private async initializeRootWorkspace(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined) {
+		const rootConfigFilePath = await this.resolveRootWorkspaceConfigFile(rootConfigFilePathOption);
 
-		if (!workspace) {
-			throw new Error(
-				`Workspace with id ${c.bold(workspaceId)} not found. Available workspaces: ${getAllWorkspaces(project)
-					.map((ws) => c.bold(ws.id))
-					.join(", ")}`
-			);
-		}
+		await onInitWorkspace(Workspace.ROOT_WORKSPACE_ID, rootConfigFilePath);
 
-		return workspace;
-	}
-
-	export function create(packages: Packages, aliasResolver: AliasResolver): Project {
-		const project = {
-			packageManager: packages.tool.type,
-			rootWorkspace: createRootWorkspace(packages.rootDir, aliasResolver),
-			workspaces: sortBy(
-				packages.packages.map((workspace) => Workspace.create(workspace, aliasResolver)),
-				["relativePath"]
-			)
+		this.project = (project) => {
+			return { ...project, rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath } };
 		};
-		validate(project);
-
-		return project;
 	}
 
-	function createRootWorkspace(rootDir: string, aliasResolver: AliasResolver): Workspace {
-		const relativePath = DOT;
+	private async initializeSubWorkspaces(onInitWorkspace: WorkspaceInitializer) {
+		const configFileMap: Record<string, string | null> = {};
 
-		return { relativePath, id: ROOT_WORKSPACE_ID, absolutePath: rootDir, label: aliasResolver(relativePath) ?? ROOT_WORKSPACE_LABEL };
+		for (const workspace of this.project.workspaces) {
+			for (const configFileName of DEFAULT_CONFIG_FILE_NAMES) {
+				const configFilePath = Path.resolve(workspace.absolutePath, configFileName);
+
+				if (await isPathExists(configFilePath)) {
+					configFileMap[workspace.id] = configFilePath;
+					await onInitWorkspace(workspace.id, configFilePath);
+				}
+			}
+		}
+
+		this.project = (project) => ({
+			...project,
+			workspaces: project.workspaces.map((workspace) => ({ ...workspace, configFilePath: configFileMap[workspace.id] ?? null }))
+		});
 	}
 
-	export async function resolve(cwd: string, aliasOption: AliasOption | undefined): Promise<Project> {
-		const resolveAlias = AliasResolver.create(aliasOption);
-
+	private async initProject() {
 		const projectDir = await findUp(
 			async (directory) => {
 				const packageJsonPath = Path.join(directory, PACKAGE_JSON);
@@ -145,11 +97,16 @@ export namespace Project {
 				if (await detector.isMonorepoRoot(projectDir)) {
 					const packages = await detector.getPackages(projectDir);
 
-					return Project.create(packages, resolveAlias);
+					this.#project = Project.create(packages);
+
+					return;
 				}
 			}
 
-			return { workspaces: [], packageManager: "npm", rootWorkspace: createRootWorkspace(projectDir, resolveAlias) };
+			const rootWorkspace = Project.createRootWorkspace(projectDir);
+			this.#project = { rootWorkspace, workspaces: [], packageManager: "npm", currentWorkspaceId: rootWorkspace.id };
+
+			return;
 		}
 
 		const monorepoRoot = await findRoot(cwd);
@@ -161,35 +118,48 @@ export namespace Project {
 			);
 		}
 
-		return Project.create(await detector.getPackages(monorepoRoot.rootDir), resolveAlias);
+		this.#project = Project.create(await detector.getPackages(monorepoRoot.rootDir));
 	}
 
-	function validate(project: Project) {
-		const workspaces = Project.getAllWorkspaces(project);
-		const getOtherWorkspaces = (workspaceId: string): Workspace[] => workspaces.filter((workspace) => workspace.id !== workspaceId);
+	private async resolveRootWorkspaceConfigFile(rootConfigFilePath: string | undefined): Promise<string> {
+		const projectPath = this.project.rootWorkspace.absolutePath;
 
-		for (const workspace of workspaces) {
-			if (workspace.label === "" && !isRootWorkspace(workspace.id)) {
-				throw new Error(`Workspace ${workspace.id} alias can not be empty.`);
+		if (rootConfigFilePath !== undefined) {
+			const resolvedConfigPath = Path.resolve(projectPath, rootConfigFilePath);
+
+			if (!(await isPathExists(resolvedConfigPath))) {
+				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
 			}
 
-			const otherWorkspaces = getOtherWorkspaces(workspace.id);
-			const sharedLabelWorkspace = otherWorkspaces.find((otherWorkspace) => otherWorkspace.label === workspace.label);
+			return resolvedConfigPath;
+		}
 
-			if (sharedLabelWorkspace) {
-				throw new Error(
-					`Workspace ${c.yellow(workspace.id)} has a duplicated label ${c.yellow(workspace.label)} with workspace ${c.yellow(sharedLabelWorkspace.id)}. Please check the alias configuration in the configuration file.`
-				);
-			}
+		const resolveConfigPath = await findUp(DEFAULT_CONFIG_FILE_NAMES, { cwd: projectPath });
 
-			// Check if the label is same as other workspace's id
-			const sharedIdWorkspace = otherWorkspaces.find((otherWorkspace) => otherWorkspace.id === workspace.label);
+		if (!resolveConfigPath) {
+			throw new Error(
+				`No ${CONFIG_FILE_PATTERN}} found in ${projectPath} directory or parent directories. Please use --config to specify a custom path.`
+			);
+		}
 
-			if (sharedIdWorkspace) {
-				throw new Error(
-					`Workspace ${c.yellow(workspace.id)} has a label ${c.yellow(workspace.label)} that is the same as workspace ${sharedIdWorkspace.id}'s id. Please check the alias configuration in the configuration file.`
-				);
+		return resolveConfigPath;
+	}
+
+	private resolveCurrentWorkspaceId() {
+		let closest: string | undefined;
+		let currentWorkspaceId = this.project.rootWorkspace.id;
+
+		for (const workspace of this.project.workspaces) {
+			const workspacePath = workspace.absolutePath;
+
+			if (cwd.startsWith(workspacePath)) {
+				if (!closest || workspacePath.length > closest.length) {
+					closest = workspacePath;
+					currentWorkspaceId = workspace.id;
+				}
 			}
 		}
+
+		this.project = (project) => ({ ...project, currentWorkspaceId });
 	}
 }

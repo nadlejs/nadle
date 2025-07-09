@@ -6,13 +6,14 @@ import c from "tinyrainbow";
 import { Logger } from "./reporting/logger.js";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
+import { Workspace } from "./models/workspace.js";
 import { capitalize } from "./utilities/utils.js";
 import { FileReader } from "./utilities/file-reader.js";
-import { Project } from "./options/project-resolver.js";
 import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
+import { ProjectResolver } from "./options/project-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type TaskIdentifier } from "./registration/task-identifier.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
@@ -43,21 +44,17 @@ export class Nadle {
 	public constructor(private readonly cliOptions: NadleCLIOptions) {}
 
 	public async init(): Promise<this> {
-		const optionsResolver = new OptionsResolver();
-		const configFile = await optionsResolver.resolveConfigFile(this.cliOptions.configFile);
-		await this.initializeProject(configFile);
+		const project = await new ProjectResolver().resolve(this.onInitializeWorkspace.bind(this), this.cliOptions.configFile);
 
-		// Add this point, the options and tasks from root workspace's configuration file are registered
-		this.#options = await optionsResolver.resolve({
-			configFile,
+		this.#options = await new OptionsResolver().resolve({
+			project,
 			cliOptions: this.cliOptions,
-			fileOptions: this.fileOptionRegistry.get(Project.ROOT_WORKSPACE_ID)
+			fileOptions: this.fileOptionRegistry.get(Workspace.ROOT_WORKSPACE_ID)
 		});
 
 		this.logger.init(this.options);
 		await this.reporter.init?.();
 
-		await this.initializeWorkspaces();
 		this.taskRegistry.configure(this.options.project);
 
 		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.taskRegistry.parse(excludedTaskInput));
@@ -210,22 +207,6 @@ export class Nadle {
 
 	private printNoTasksSpecified() {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
-	}
-
-	private async initializeProject(configFilePath: string) {
-		await this.onInitializeWorkspace(Project.ROOT_WORKSPACE_ID, configFilePath);
-	}
-
-	private async initializeWorkspaces() {
-		for (const workspace of this.options.project.workspaces) {
-			const configPath = await new OptionsResolver().resolveWorkspaceConfigFile(workspace.absolutePath);
-
-			if (configPath === null) {
-				continue;
-			}
-
-			await this.onInitializeWorkspace(workspace.id, configPath);
-		}
 	}
 
 	private async onInitializeWorkspace(workspaceId: string, configFilePath: string) {
