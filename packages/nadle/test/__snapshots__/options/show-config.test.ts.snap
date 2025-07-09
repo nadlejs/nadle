@@ -24,14 +24,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
   "dryRun": false,
   "stacktrace": false,
   "project": {
+    "rootWorkspace": {
+      "label": "",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/main/nadle.config.ts",
+      "absolutePath": "/ROOT/test/__fixtures__/main",
+      "id": "root"
+    },
     "workspaces": [],
     "packageManager": "npm",
-    "rootWorkspace": {
-      "relativePath": ".",
-      "id": "root",
-      "absolutePath": "/ROOT/test/__fixtures__/main",
-      "label": ""
-    }
+    "currentWorkspaceId": "root"
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "configFile": "/ROOT/test/__fixtures__/main/nadle.config.ts",
@@ -67,14 +69,16 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
   "dryRun": false,
   "stacktrace": false,
   "project": {
+    "rootWorkspace": {
+      "label": "",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/main/nadle.config.ts",
+      "absolutePath": "/ROOT/test/__fixtures__/main",
+      "id": "root"
+    },
     "workspaces": [],
     "packageManager": "npm",
-    "rootWorkspace": {
-      "relativePath": ".",
-      "id": "root",
-      "absolutePath": "/ROOT/test/__fixtures__/main",
-      "label": ""
-    }
+    "currentWorkspaceId": "root"
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "configFile": "/ROOT/test/__fixtures__/main/nadle.config.ts"

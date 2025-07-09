@@ -23,7 +23,7 @@ Execution options:
       --stacktrace   Print stacktrace on error                            [boolean] [default: false]
 
 General options:
-  -c, --config       Path to config file       [string] [default: <cwd>/build.nadle.{js,mjs,ts,mts}]
+  -c, --config       Path to config file      [string] [default: <cwd>/nadle.config.{js,mjs,ts,mts}]
       --cache-dir    Directory to store task cache results   [string] [default: <projectDir>/.nadle]
       --log-level    Set the logging level
                                   [string] [choices: "error", "log", "info", "debug"] [default: log]

@@ -7,7 +7,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] {
   "cache": true,
@@ -24,37 +24,43 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "dryRun": false,
   "stacktrace": false,
   "project": {
-    "packageManager": "pnpm",
     "rootWorkspace": {
+      "label": "",
       "relativePath": ".",
-      "id": "root",
+      "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts",
       "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces",
-      "label": ""
+      "id": "root"
     },
+    "packageManager": "pnpm",
+    "currentWorkspaceId": "root",
     "workspaces": [
       {
         "id": "backend",
+        "label": "backend",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend",
         "relativePath": "backend",
-        "label": "backend"
+        "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/backend/nadle.config.ts"
       },
       {
         "id": "frontend",
+        "label": "frontend",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
         "relativePath": "frontend",
-        "label": "frontend"
+        "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend/nadle.config.ts"
       },
       {
         "id": "shared:api",
+        "label": "api",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api",
         "relativePath": "shared/api",
-        "label": "api"
+        "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/api/nadle.config.ts"
       },
       {
         "id": "shared:types",
+        "label": "shared:types",
         "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types",
         "relativePath": "shared/types",
-        "label": "shared:types"
+        "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/shared/types/nadle.config.ts"
       }
     ]
   },

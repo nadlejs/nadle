@@ -98,14 +98,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
   "dryRun": false,
   "stacktrace": false,
   "project": {
+    "rootWorkspace": {
+      "label": "",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts",
+      "absolutePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
+      "id": "root"
+    },
     "workspaces": [],
     "packageManager": "npm",
-    "rootWorkspace": {
-      "relativePath": ".",
-      "id": "root",
-      "absolutePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
-      "label": ""
-    }
+    "currentWorkspaceId": "root"
   },
   "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/.nadle",
   "configFile": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts",

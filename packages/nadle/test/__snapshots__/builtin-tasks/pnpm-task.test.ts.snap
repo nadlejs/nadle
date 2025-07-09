@@ -26,14 +26,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
   "dryRun": false,
   "stacktrace": false,
   "project": {
+    "rootWorkspace": {
+      "label": "",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts",
+      "absolutePath": "/ROOT/test/__fixtures__/pnpm-task",
+      "id": "root"
+    },
     "workspaces": [],
     "packageManager": "npm",
-    "rootWorkspace": {
-      "relativePath": ".",
-      "id": "root",
-      "absolutePath": "/ROOT/test/__fixtures__/pnpm-task",
-      "label": ""
-    }
+    "currentWorkspaceId": "root"
   },
   "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/.nadle",
   "configFile": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts",

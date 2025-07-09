@@ -7,7 +7,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Bold>Unnamed tasks</BoldDim>
 [log] <Bold>-------------</BoldDim>
@@ -32,7 +32,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:build shared:api:bu
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>backend:build</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -61,7 +61,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build --dry-run
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Bold>Execution plan:</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>check</BoldDim>
@@ -85,7 +85,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -144,7 +144,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -163,7 +163,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -187,7 +187,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:check
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -221,7 +221,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer frontend:check
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -240,7 +240,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer api:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
 
