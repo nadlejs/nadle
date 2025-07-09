@@ -1,10 +1,9 @@
 import c from "tinyrainbow";
 
 import { type Nadle } from "../nadle.js";
-import { Project } from "../models/project.js";
+import { Workspace } from "../models/workspace.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
-import { Project } from "../options/project-resolver.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import { type TaskIdentifier } from "../registration/task-identifier.js";
 
