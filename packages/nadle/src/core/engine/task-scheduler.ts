@@ -4,6 +4,7 @@ import { type Nadle } from "../nadle.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { Project } from "../options/project-resolver.js";
+import { MaybeArray } from "../utilities/maybe-array.js";
 import { type TaskIdentifier } from "../registration/task-identifier.js";
 
 export class TaskScheduler {
@@ -88,7 +89,7 @@ export class TaskScheduler {
 		const { workspaceId, configResolver } = this.nadle.taskRegistry.getById(taskId);
 
 		const dependencies = new Set(
-			(configResolver().dependsOn ?? [])
+			MaybeArray.toArray(configResolver().dependsOn ?? [])
 				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, workspaceId))
 				.filter((taskId) => !this.nadle.excludedTaskIds.includes(taskId))
 		);

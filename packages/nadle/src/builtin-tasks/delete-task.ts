@@ -1,6 +1,7 @@
 import { glob } from "glob";
 import { rimraf, type RimrafAsyncOptions } from "rimraf";
 
+import type { MaybeArray } from "../core/index.js";
 import { normalizeGlobPath } from "../core/utilities/utils.js";
 import { defineTask } from "../core/registration/define-task.js";
 
@@ -10,7 +11,7 @@ import { defineTask } from "../core/registration/define-task.js";
  */
 export interface DeleteTaskOptions extends RimrafAsyncOptions {
 	/** File or directory paths (glob or array of globs) to delete. */
-	readonly paths: string | string[];
+	readonly paths: MaybeArray<string>;
 }
 
 /**

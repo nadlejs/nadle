@@ -1,5 +1,6 @@
 import { execa, parseCommandString } from "execa";
 
+import type { MaybeArray } from "../core/index.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -9,7 +10,7 @@ export interface ExecTaskOptions {
 	/** The command to execute. */
 	readonly command: string;
 	/** Arguments for the command (array or string). */
-	readonly args: string[] | string;
+	readonly args: MaybeArray<string>;
 }
 
 /**

@@ -1,5 +1,6 @@
 import { type ILogger } from "./reporting/logger.js";
 import { type Declaration } from "./caching/declaration.js";
+import { type MaybeArray } from "./utilities/maybe-array.js";
 
 /**
  * A type representing a value or a promise of a value.
@@ -67,9 +68,9 @@ export interface TaskConfiguration {
 	description?: string;
 
 	/**
-	 * A list of tasks that this task depends on.
+	 * A task or a list of tasks that this task depends on.
 	 */
-	dependsOn?: string[];
+	dependsOn?: MaybeArray<string>;
 
 	/**
 	 * Environment variables to set when running the task.
@@ -86,14 +87,14 @@ export interface TaskConfiguration {
 	 * Declare any files, directories or globs that the task reads from.
 	 * These are used for cache key generation.
 	 */
-	inputs?: Declaration[];
+	inputs?: MaybeArray<Declaration>;
 
 	/**
 	 * Output declaration for the task.
 	 * Declare any files or directories that the task produces.
 	 * These are used for caching, restoring, and cleanup.
 	 */
-	outputs?: Declaration[];
+	outputs?: MaybeArray<Declaration>;
 }
 
 /**
