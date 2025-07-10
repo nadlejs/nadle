@@ -25,11 +25,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "stacktrace": false,
   "project": {
     "rootWorkspace": {
+      "id": "root",
       "label": "",
-      "relativePath": ".",
-      "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts",
       "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces",
-      "id": "root"
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts"
     },
     "packageManager": "pnpm",
     "currentWorkspaceId": "root",

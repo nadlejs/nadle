@@ -2,7 +2,7 @@ import { isCI, isTest } from "std-env";
 // eslint-disable-next-line no-restricted-imports
 import { LogLevels, type LogType, createConsola, type LogObject, type ConsolaOptions, type ConsolaReporter } from "consola";
 
-import { type SupportLogLevel } from "./logger.js";
+import { type SupportLogLevel } from "../models/logger.js";
 
 export { LogType, LogLevels };
 

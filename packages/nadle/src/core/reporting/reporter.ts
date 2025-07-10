@@ -4,13 +4,13 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { Nadle } from "../nadle.js";
-import { type Awaitable } from "../types.js";
 import { formatTime } from "../utilities/utils.js";
+import { type Awaitable } from "../utilities/types.js";
 import { StringBuilder } from "../utilities/string-builder.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
-import { TaskStatus, type RegisteredTask } from "../registration/types.js";
+import { TaskStatus, type RegisteredTask } from "../models/registered-task.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export interface Reporter {
@@ -107,7 +107,7 @@ export class DefaultReporter implements Reporter {
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(task.result.duration ?? 0))}`);
+		this.nadle.logger.log(`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(task.timing.duration ?? 0))}`);
 		this.taskStat = { ...this.taskStat, running: --this.taskStat.running, finished: ++this.taskStat.finished };
 		this.renderer.schedule();
 	}
@@ -125,7 +125,7 @@ export class DefaultReporter implements Reporter {
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(task.result.duration ?? 0)}`);
+		this.nadle.logger.log(`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(task.timing.duration ?? 0)}`);
 		this.taskStat = { ...this.taskStat, failed: ++this.taskStat.failed, running: --this.taskStat.running };
 		this.renderer.schedule();
 	}
@@ -181,7 +181,7 @@ export class DefaultReporter implements Reporter {
 							return [];
 						}
 
-						return { label: task.label, duration: task.result.duration ?? 0 };
+						return { label: task.label, duration: task.timing.duration ?? 0 };
 					})
 				})
 			);

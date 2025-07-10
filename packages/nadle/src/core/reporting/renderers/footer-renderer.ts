@@ -1,8 +1,8 @@
 import Util from "node:util";
 import type Stream from "node:stream";
 
-import { type Logger } from "../logger.js";
 import { FileLogger } from "../file-logger.js";
+import { type Logger } from "../../models/index.js";
 
 const DEFAULT_RENDER_INTERVAL_MS = 100;
 
@@ -19,9 +19,9 @@ interface Renderer {
 }
 namespace FooterRenderer {
 	export interface Options {
-		logger: Logger;
-		interval?: number;
-		getWindow: () => string[];
+		readonly logger: Logger;
+		readonly interval?: number;
+		readonly getWindow: () => string[];
 	}
 }
 

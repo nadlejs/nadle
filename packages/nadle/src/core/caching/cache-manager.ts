@@ -2,10 +2,11 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { isPathExists } from "../utilities/fs.js";
-import { type CacheQuery } from "./cache-query.js";
 import { COLON, UNDERSCORE } from "../utilities/constants.js";
-import { type TaskIdentifier } from "../registration/task-identifier.js";
-import { type RunCacheMetadata, type TaskCacheMetadata } from "./metadata.js";
+import { type CacheQuery } from "../models/cache/cache-query.js";
+import { type TaskIdentifier } from "../models/task-identifier.js";
+import { TaskCacheMetadata } from "../models/cache/task-cache-metadata.js";
+import { type RunCacheMetadata } from "../models/cache/run-cache-metadata.js";
 
 export class CacheManager {
 	private static readonly RUNS_DIR_NAME = "runs";
@@ -100,9 +101,7 @@ export class CacheManager {
 		const path = this.getTaskMetadataPath(taskId);
 		await Fs.mkdir(Path.dirname(path), { recursive: true });
 
-		const taskCacheMetadata: TaskCacheMetadata = { latest: cacheKey };
-
-		await Fs.writeFile(path, JSON.stringify(taskCacheMetadata, null, 2));
+		await Fs.writeFile(path, JSON.stringify(TaskCacheMetadata.create(cacheKey), null, 2));
 	}
 
 	private getTaskMetadataPath(taskId: TaskIdentifier): string {

@@ -2,7 +2,7 @@ import Url from "node:url";
 
 import { createJiti } from "jiti";
 
-import { SUPPORT_EXTENSIONS } from "./constants.js";
+import { SUPPORT_EXTENSIONS } from "../utilities/constants.js";
 
 interface IFileReader {
 	read(filePath: string): Promise<void>;

@@ -1,43 +1,37 @@
-import c from "tinyrainbow";
 import { type Package } from "@manypkg/tools";
 
 import { COLON, SLASH, BACKSLASH } from "../utilities/constants.js";
 
+/**
+ * Represents a workspace in a monorepo or project.
+ */
 export interface Workspace {
+	/** Unique workspace ID (derived from relative path). */
 	readonly id: string;
+	/** Human-readable label for the workspace. */
 	readonly label: string;
+	/** Path relative to the root. */
 	readonly relativePath: string;
+	/** Absolute path to the workspace. */
 	readonly absolutePath: string;
+	/** Path to the workspace config file, or null if not present. */
 	readonly configFilePath: string | null;
 }
-export interface RootWorkspace extends Omit<Workspace, "configFilePath"> {
-	readonly configFilePath: string;
-}
 
+/**
+ * Namespace for Workspace utility functions.
+ */
 export namespace Workspace {
-	export const ROOT_WORKSPACE_ID = "root";
-
+	/**
+	 * Create a Workspace object from a Package.
+	 * @param pkg - The package object from @manypkg/tools.
+	 * @returns The Workspace object.
+	 */
 	export function create(pkg: Package): Workspace {
 		const { relativeDir, dir: absolutePath } = pkg;
 		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
 		const id = relativePath.replaceAll(SLASH, COLON);
 
 		return { id, label: id, absolutePath, relativePath, configFilePath: null };
-	}
-
-	export function isRootWorkspace(workspaceId: string): boolean {
-		return workspaceId === Workspace.ROOT_WORKSPACE_ID;
-	}
-
-	export function resolve(workspaceLabelOrId: string, workspaces: Workspace[]) {
-		const workspace = workspaces.find((ws) => ws.id === workspaceLabelOrId || ws.label === workspaceLabelOrId);
-
-		if (!workspace) {
-			throw new Error(
-				`Workspace ${c.bold(workspaceLabelOrId)} not found. Available workspaces (including alias): ${workspaces.flatMap((ws) => [c.bold(ws.id), c.bold(ws.label)]).join(", ")}`
-			);
-		}
-
-		return workspace;
 	}
 }

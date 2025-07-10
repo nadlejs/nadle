@@ -1,5 +1,5 @@
 import { type Project } from "../models/project.js";
-import { type SupportLogLevel } from "../reporting/logger.js";
+import { type SupportLogLevel } from "../models/logger.js";
 
 /**
  * Base options for Nadle configuration.
