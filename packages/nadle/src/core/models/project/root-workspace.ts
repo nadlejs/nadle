@@ -33,4 +33,13 @@ export namespace RootWorkspace {
 	export function isRootWorkspaceId(workspaceId: string): boolean {
 		return workspaceId === ID;
 	}
+
+	/**
+	 * Check if a workspace is an instance of RootWorkspace.
+	 * @param workspace - The workspace to check.
+	 * @returns True if the workspace is a RootWorkspace.
+	 */
+	export function isInstance(workspace: Workspace): workspace is RootWorkspace {
+		return isRootWorkspaceId(workspace.id);
+	}
 }

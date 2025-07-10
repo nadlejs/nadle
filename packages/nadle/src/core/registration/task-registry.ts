@@ -65,21 +65,23 @@ export class TaskRegistry {
 		return [...this.registry.values()];
 	}
 
-	public getAllTaskIds(): string[] {
-		return this.getAll().map(({ id }) => id);
+	public getTaskNameByWorkspace(targetWorkspaceId: string): string[] {
+		return this.getAll().flatMap(({ name, workspaceId }) => (targetWorkspaceId === workspaceId ? [name] : []));
 	}
 
 	public getByName(taskName: string): RegisteredTask[] {
 		return this.getAll().filter(({ name }) => name === taskName);
 	}
 
-	public parse(taskInput: string, targetWorkspaceId = this.project.currentWorkspaceId): TaskIdentifier {
+	public parse(taskInput: string, options: { strict?: boolean; targetWorkspaceId: string }): TaskIdentifier {
 		const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
 		const targetWorkspace =
-			workspaceInput === undefined ? Project.getWorkspaceById(this.project, targetWorkspaceId) : Project.findWorkspace(this.project, workspaceInput);
+			workspaceInput === undefined
+				? Project.getWorkspaceById(this.project, options.targetWorkspaceId)
+				: Project.getWorkspaceByLabelOrId(this.project, workspaceInput);
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
-		if (!this.registry.has(taskId)) {
+		if (!this.registry.has(taskId) && options.strict) {
 			throw new Error(`Task ${c.bold(taskId)} not found`);
 		}
 

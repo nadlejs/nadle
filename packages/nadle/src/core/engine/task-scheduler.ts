@@ -90,7 +90,7 @@ export class TaskScheduler {
 
 		const dependencies = new Set(
 			MaybeArray.toArray(configResolver().dependsOn ?? [])
-				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, workspaceId))
+				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, { strict: true, targetWorkspaceId: workspaceId }))
 				.filter((taskId) => !this.nadle.excludedTaskIds.includes(taskId))
 		);
 

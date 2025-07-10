@@ -43,7 +43,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 }
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
-[info] Resolved tasks: [ root:pass ]
 [info] Scheduled tasks: root:pass
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 

@@ -33,7 +33,7 @@ export namespace Project {
 		return [project.rootWorkspace, ...project.workspaces];
 	}
 
-	export function findWorkspace(project: Project, workspaceInput: string): Workspace {
+	export function getWorkspaceByLabelOrId(project: Project, workspaceInput: string): Workspace {
 		const workspace = getAllWorkspaces(project).find(({ id, label }) => id === workspaceInput || label === workspaceInput);
 
 		if (!workspace) {

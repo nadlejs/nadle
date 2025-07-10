@@ -6,7 +6,6 @@ import c from "tinyrainbow";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
-import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { type FileReader } from "./interfaces/file-reader.js";
 import { taskRegistry } from "./registration/task-registry.js";
@@ -15,6 +14,7 @@ import { ProjectResolver } from "./options/project-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type TaskIdentifier } from "./models/task-identifier.js";
 import { RootWorkspace } from "./models/project/root-workspace.js";
+import { TaskInputResolver } from "./options/task-input-resolver.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { fileOptionRegistry } from "./registration/file-option-registry.js";
@@ -32,7 +32,7 @@ export class Nadle {
 	private readonly reporter: Reporter = new DefaultReporter(this);
 	private readonly taskScheduler = new TaskScheduler(this);
 	private readonly fileOptionRegistry = fileOptionRegistry;
-	private readonly taskResolver = new TaskResolver(this.logger, this.taskRegistry);
+	private readonly taskResolver = new TaskInputResolver(this.logger, this.taskRegistry.getTaskNameByWorkspace.bind(this.taskRegistry));
 
 	#options: NadleResolvedOptions | undefined;
 
@@ -57,8 +57,7 @@ export class Nadle {
 		await this.reporter.init?.();
 
 		this.taskRegistry.configure(this.options.project);
-
-		this.excludedTaskIds = this.options.excludedTasks.map((excludedTaskInput) => this.taskRegistry.parse(excludedTaskInput));
+		this.excludedTaskIds = this.taskResolver.resolve(this.options.excludedTasks, this.options.project);
 
 		return this;
 	}
@@ -68,7 +67,7 @@ export class Nadle {
 
 		try {
 			this.reporter.onExecutionStart?.();
-			this.resolvedTasks = this.taskResolver.resolve(taskInputs).filter((task) => !this.excludedTaskIds.includes(task));
+			this.resolvedTasks = this.taskResolver.resolve(taskInputs, this.options.project).filter((task) => !this.excludedTaskIds.includes(task));
 
 			if (this.options.showConfig) {
 				this.showConfig();

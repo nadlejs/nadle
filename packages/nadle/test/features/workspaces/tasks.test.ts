@@ -1,7 +1,7 @@
 import Path from "node:path";
 
 import { it, describe } from "vitest";
-import { createExec, expectPass, fixturesDir } from "setup";
+import { expectFail, createExec, expectPass, fixturesDir } from "setup";
 
 describe("workspaces tasks", () => {
 	const projectDir = Path.join(fixturesDir, "pnpm-workspaces");
@@ -29,6 +29,17 @@ describe("workspaces tasks", () => {
 		await expectPass(createExec({ cwd: Path.join(projectDir, "shared", "api") })`build`);
 		await expectPass(createExec({ cwd: Path.join(projectDir, "shared", "types") })`root:check`);
 		await expectPass(createExec({ cwd: Path.join(projectDir, "shared", "types") })`frontend:check`);
+	});
+
+	it("task resolvation", async () => {
+		const exec = createExec({ cwd: Path.join(projectDir, "frontend") });
+
+		await expectPass(exec`biuld backend:biuld deplyo`);
+		await expectPass(exec`fronte:build backe:biuld`);
+
+		await expectFail(exec`prepare`);
+		await expectFail(exec`unknown:build`);
+		await expectFail(exec`end:build`);
 	});
 
 	it.todo("test root aliasing");
