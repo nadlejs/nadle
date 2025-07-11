@@ -3,31 +3,32 @@ import Process from "node:process";
 
 import c from "tinyrainbow";
 
-import { Logger } from "./reporting/logger.js";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
-import { Workspace } from "./models/workspace.js";
 import { capitalize } from "./utilities/utils.js";
-import { FileReader } from "./utilities/file-reader.js";
 import { TaskResolver } from "./options/task-resolver.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
+import { type FileReader } from "./interfaces/file-reader.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { ProjectResolver } from "./options/project-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
-import { type TaskIdentifier } from "./registration/task-identifier.js";
+import { type TaskIdentifier } from "./models/task-identifier.js";
+import { RootWorkspace } from "./models/project/root-workspace.js";
+import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
-import { TaskStatus, type RegisteredTask } from "./registration/types.js";
 import { fileOptionRegistry } from "./registration/file-option-registry.js";
+import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js";
+import { TaskStatus, type RegisteredTask } from "./interfaces/registered-task.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
 	public static readonly version: string = "0.4.0"; // x-release-please-version
 
-	public readonly logger = new Logger();
+	public readonly logger = new DefaultLogger();
 	public readonly taskRegistry = taskRegistry;
 
-	private readonly fileReader = new FileReader();
+	private readonly fileReader: FileReader = new DefaultFileReader();
 	private readonly reporter: Reporter = new DefaultReporter(this);
 	private readonly taskScheduler = new TaskScheduler(this);
 	private readonly fileOptionRegistry = fileOptionRegistry;
@@ -49,7 +50,7 @@ export class Nadle {
 		this.#options = await new OptionsResolver().resolve({
 			project,
 			cliOptions: this.cliOptions,
-			fileOptions: this.fileOptionRegistry.get(Workspace.ROOT_WORKSPACE_ID)
+			fileOptions: this.fileOptionRegistry.get(RootWorkspace.ID)
 		});
 
 		this.logger.init(this.options);
@@ -123,7 +124,7 @@ export class Nadle {
 			return;
 		}
 
-		const taskIds = new TaskScheduler(this).init(this.resolvedTasks).getOrderedTasks();
+		const taskIds = this.taskScheduler.init(this.resolvedTasks).getOrderedTasks();
 
 		this.logger.log(c.bold("Execution plan:"));
 

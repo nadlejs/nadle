@@ -1,18 +1,6 @@
 import { type CacheKey } from "./cache-key.js";
 import { type FileFingerprints } from "./fingerprint.js";
 
-export interface TaskCacheMetadata {
-	/**
-	 * The cache key of the latest run of the task.
-	 */
-	readonly latest: string;
-}
-export namespace TaskCacheMetadata {
-	export function create(latestCacheKey: string): TaskCacheMetadata {
-		return { latest: latestCacheKey };
-	}
-}
-
 /**
  * Metadata stored for each cached task output.
  * Used to determine cache hits, restore outputs, and debug changes.

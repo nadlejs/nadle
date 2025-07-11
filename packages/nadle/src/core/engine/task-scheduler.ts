@@ -1,11 +1,11 @@
 import c from "tinyrainbow";
 
 import { type Nadle } from "../nadle.js";
-import { Workspace } from "../models/workspace.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
-import { type TaskIdentifier } from "../registration/task-identifier.js";
+import { type TaskIdentifier } from "../models/task-identifier.js";
+import { RootWorkspace } from "../models/project/root-workspace.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
@@ -53,7 +53,7 @@ export class TaskScheduler {
 			expandedTaskIds.push(taskId);
 			const { name, workspaceId } = this.nadle.taskRegistry.getById(taskId);
 
-			if (!Workspace.isRootWorkspace(workspaceId)) {
+			if (!RootWorkspace.isRootWorkspaceId(workspaceId)) {
 				continue;
 			}
 

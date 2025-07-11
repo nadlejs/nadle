@@ -2,9 +2,6 @@ import Path from "node:path";
 
 import fg from "fast-glob";
 
-import { hashFile } from "../utilities/hash.js";
-import type { FileFingerprints } from "./fingerprint.js";
-
 /**
  * Declaration for file input/output patterns.
  */
@@ -30,52 +27,17 @@ export interface DirDeclaration {
  */
 export type Declaration = FileDeclaration | DirDeclaration;
 
-/**
- * @internal
- * Namespace for declaration utilities.
- */
+/** @internal */
 export namespace Declaration {
-	/**
-	 * Compute fingerprints (hashes) for all files matched by the given declarations and additional files.
-	 *
-	 * @param params - Parameters for fingerprint computation.
-	 * @param params.files - Additional file paths to fingerprint.
-	 * @param params.workingDir - The working directory for resolving patterns.
-	 * @param params.declarations - List of file/dir declarations.
-	 * @returns A promise resolving to a map of file paths to their fingerprints.
-	 */
-	export async function computeFileFingerprints(params: {
-		files?: string[];
-		workingDir: string;
-		declarations: Declaration[];
-	}): Promise<FileFingerprints> {
-		const { files, workingDir, declarations } = params;
-		const fingerprint: FileFingerprints = {};
-
-		for (const declaration of declarations) {
-			const paths = await resolveDeclaration(workingDir, declaration);
-
-			await Promise.all(
-				paths.map(async (path) => {
-					fingerprint[path] = await hashFile(path);
-				})
-			);
-		}
-
-		await Promise.all(files?.map(async (path) => (fingerprint[path] = await hashFile(path))) ?? []);
-
-		return fingerprint;
-	}
-
 	/**
 	 * Resolve a declaration to a list of absolute file paths.
 	 *
-	 * @param workingDir - The working directory for resolving patterns.
 	 * @param declaration - The file or directory declaration.
+	 * @param workingDir - The working directory for resolving patterns.
 	 * @returns A promise resolving to a list of absolute file paths.
 	 * @internal
 	 */
-	async function resolveDeclaration(workingDir: string, declaration: Declaration): Promise<string[]> {
+	export async function resolve(declaration: Declaration, workingDir: string): Promise<string[]> {
 		if (declaration.type === "file") {
 			const paths: string[] = [];
 

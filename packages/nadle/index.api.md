@@ -17,11 +17,6 @@ export type Awaitable<T> = T | PromiseLike<T>;
 export type Callback<T = unknown, P = void> = (params: P) => T;
 
 // @public
-export interface ConfigBuilder {
-    config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
-}
-
-// @public
 export function configure(options: NadleFileOptions): void;
 
 // @public
@@ -75,18 +70,19 @@ export interface FileDeclaration {
 }
 
 // @public
-export interface ILogger {
-    debug(message: InputLogObject | string, ...args: unknown[]): void;
-    error(message: InputLogObject | string, ...args: unknown[]): void;
-    info(message: InputLogObject | string, ...args: unknown[]): void;
-    log(message: InputLogObject | string, ...args: unknown[]): void;
-    warn(message: InputLogObject | string, ...args: unknown[]): void;
-}
-
-// @public
 export namespace Inputs {
     export function dirs(...patterns: string[]): DirDeclaration;
     export function files(...patterns: string[]): FileDeclaration;
+}
+
+// @public
+export interface Logger {
+    debug(message: InputLogObject | string, ...args: unknown[]): void;
+    error(message: InputLogObject | string, ...args: unknown[]): void;
+    getColumns(): number;
+    info(message: InputLogObject | string, ...args: unknown[]): void;
+    log(message: InputLogObject | string, ...args: unknown[]): void;
+    warn(message: InputLogObject | string, ...args: unknown[]): void;
 }
 
 // @public
@@ -132,7 +128,7 @@ export type Resolver<T = unknown> = T | Callback<T>;
 
 // @public
 export interface RunnerContext {
-    readonly logger: ILogger;
+    readonly logger: Logger;
     readonly workingDir: string;
 }
 
@@ -162,6 +158,11 @@ export interface TaskConfiguration {
 }
 
 // @public
+export interface TaskConfigurationBuilder {
+    config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
+}
+
+// @public
 export type TaskEnv = Record<string, string | number | boolean>;
 
 // @public
@@ -170,14 +171,14 @@ export type TaskFn = Callback<Awaitable<void>, {
 }>;
 
 // @public
-export interface Tasks {
-    register(name: string): ConfigBuilder;
-    register(name: string, fnTask: TaskFn): ConfigBuilder;
-    register<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): ConfigBuilder;
-}
+export const tasks: TasksAPI;
 
 // @public
-export const tasks: Tasks;
+export interface TasksAPI {
+    register(name: string): TaskConfigurationBuilder;
+    register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
+    register<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): TaskConfigurationBuilder;
+}
 
 // (No @packageDocumentation comment for this package)
 

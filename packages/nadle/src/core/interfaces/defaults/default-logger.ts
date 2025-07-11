@@ -1,22 +1,11 @@
 import type Stream from "node:stream";
 
 import c from "tinyrainbow";
-// eslint-disable-next-line no-restricted-imports
-import { type InputLogObject } from "consola";
 
-import { FileLogger } from "./file-logger.js";
-import { LogLevels, type LogType, createNadleConsola } from "./consola-reporters.js";
-import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../utilities/constants.js";
-
-/**
- * Supported log levels for Nadle.
- */
-export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
-
-/**
- * Type representing supported log levels.
- */
-export type SupportLogLevel = (typeof SupportLogLevels)[number];
+import { type Logger } from "../logger.js";
+import { FileLogger } from "../../reporting/file-logger.js";
+import { LogLevels, createNadleConsola, type InputLogObject, type SupportLogLevel } from "../../utilities/consola.js";
+import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../../utilities/constants.js";
 
 const l = new FileLogger("logger");
 
@@ -32,45 +21,9 @@ interface LoggerOptions {
 }
 
 /**
- * Logger interface for Nadle.
- */
-export interface ILogger {
-	/**
-	 * Log a standard message.
-	 * @param message - The message or log object.
-	 * @param args - Additional arguments.
-	 */
-	log(message: InputLogObject | string, ...args: unknown[]): void;
-	/**
-	 * Log a warning message.
-	 * @param message - The message or log object.
-	 * @param args - Additional arguments.
-	 */
-	warn(message: InputLogObject | string, ...args: unknown[]): void;
-	/**
-	 * Log an info message.
-	 * @param message - The message or log object.
-	 * @param args - Additional arguments.
-	 */
-	info(message: InputLogObject | string, ...args: unknown[]): void;
-	/**
-	 * Log an error message.
-	 * @param message - The message or log object.
-	 * @param args - Additional arguments.
-	 */
-	error(message: InputLogObject | string, ...args: unknown[]): void;
-	/**
-	 * Log a debug message.
-	 * @param message - The message or log object.
-	 * @param args - Additional arguments.
-	 */
-	debug(message: InputLogObject | string, ...args: unknown[]): void;
-}
-
-/**
  * Nadle logger implementation.
  */
-export class Logger implements ILogger {
+export class DefaultLogger implements Logger {
 	private _clearScreenPending: string | undefined;
 	private readonly consola = createNadleConsola();
 	public readonly outputStream: NodeJS.WriteStream = process.stdout;

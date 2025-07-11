@@ -1,4 +1,4 @@
-import { type Task } from "../types.js";
+import { type Task } from "../interfaces/task.js";
 
 /**
  * Parameters for defining a task.

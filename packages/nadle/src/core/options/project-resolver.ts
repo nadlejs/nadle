@@ -5,17 +5,15 @@ import { findUp } from "find-up";
 import { findRoot } from "@manypkg/find-root";
 import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
 
-import { Project } from "../models/project.js";
-import { Workspace } from "../models/workspace.js";
 import type { NadlePackageJson } from "./types.js";
+import { Project } from "../models/project/project.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
+import { RootWorkspace } from "../models/project/root-workspace.js";
 import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
-interface WorkspaceInitializer {
-	(workspaceId: string, configFilePath: string): Promise<void>;
-}
+type WorkspaceInitializer = (workspaceId: string, configFilePath: string) => Promise<void>;
 
 // eslint-disable-next-line no-restricted-properties
 const cwd = Process.cwd();
@@ -47,7 +45,7 @@ export class ProjectResolver {
 	private async initializeRootWorkspace(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined) {
 		const rootConfigFilePath = await this.resolveRootWorkspaceConfigFile(rootConfigFilePathOption);
 
-		await onInitWorkspace(Workspace.ROOT_WORKSPACE_ID, rootConfigFilePath);
+		await onInitWorkspace(RootWorkspace.ID, rootConfigFilePath);
 
 		this.project = (project) => {
 			return { ...project, rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath } };
@@ -103,7 +101,7 @@ export class ProjectResolver {
 				}
 			}
 
-			const rootWorkspace = Project.createRootWorkspace(projectDir);
+			const rootWorkspace = RootWorkspace.create(projectDir);
 			this.#project = { rootWorkspace, workspaces: [], packageManager: "npm", currentWorkspaceId: rootWorkspace.id };
 
 			return;

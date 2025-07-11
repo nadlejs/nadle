@@ -2,9 +2,10 @@ import c from "tinyrainbow";
 import { sortBy } from "lodash-es";
 import { type Packages } from "@manypkg/tools";
 
-import { DOT } from "../utilities/constants.js";
-import { type AliasOption } from "../options/types.js";
-import { Workspace, type RootWorkspace } from "./workspace.js";
+import { Workspace } from "./workspace.js";
+import { AliasResolver } from "./alias-resolver.js";
+import { RootWorkspace } from "./root-workspace.js";
+import { type AliasOption } from "../../options/types.js";
 
 export interface Project {
 	readonly packageManager: string;
@@ -12,7 +13,22 @@ export interface Project {
 	readonly currentWorkspaceId: string;
 	readonly rootWorkspace: RootWorkspace;
 }
+
 export namespace Project {
+	export function create(packages: Packages): Project {
+		const rootWorkspace = RootWorkspace.create(packages.rootDir);
+
+		return {
+			rootWorkspace,
+			packageManager: packages.tool.type,
+			currentWorkspaceId: rootWorkspace.id,
+			workspaces: sortBy(
+				packages.packages.map((pkg) => Workspace.create(pkg)),
+				["relativePath"]
+			)
+		};
+	}
+
 	export function getAllWorkspaces(project: Project): Workspace[] {
 		return [project.rootWorkspace, ...project.workspaces];
 	}
@@ -45,24 +61,6 @@ export namespace Project {
 		return workspace;
 	}
 
-	export function create(packages: Packages): Project {
-		const rootWorkspace = createRootWorkspace(packages.rootDir);
-
-		return {
-			rootWorkspace,
-			packageManager: packages.tool.type,
-			currentWorkspaceId: rootWorkspace.id,
-			workspaces: sortBy(
-				packages.packages.map((pkg) => Workspace.create(pkg)),
-				["relativePath"]
-			)
-		};
-	}
-
-	export function createRootWorkspace(rootDir: string): RootWorkspace {
-		return { label: "", relativePath: DOT, configFilePath: "", absolutePath: rootDir, id: Workspace.ROOT_WORKSPACE_ID };
-	}
-
 	export function configureAlias(project: Project, aliasOption: AliasOption | undefined): Project {
 		const resolveAlias = AliasResolver.create(aliasOption);
 
@@ -83,7 +81,7 @@ export namespace Project {
 		const getOtherWorkspaces = (workspaceId: string): Workspace[] => workspaces.filter((workspace) => workspace.id !== workspaceId);
 
 		for (const workspace of workspaces) {
-			if (workspace.label === "" && !Workspace.isRootWorkspace(workspace.id)) {
+			if (workspace.label === "" && !RootWorkspace.isRootWorkspaceId(workspace.id)) {
 				throw new Error(`Workspace ${workspace.id} alias can not be empty.`);
 			}
 
@@ -105,20 +103,5 @@ export namespace Project {
 				);
 			}
 		}
-	}
-}
-
-type AliasResolver = (workspacePath: string) => string | undefined;
-export namespace AliasResolver {
-	export function create(aliasOption: AliasOption | undefined): AliasResolver {
-		if (aliasOption === undefined) {
-			return () => undefined;
-		}
-
-		if (typeof aliasOption === "function") {
-			return aliasOption;
-		}
-
-		return (workspacePath) => aliasOption[workspacePath];
 	}
 }

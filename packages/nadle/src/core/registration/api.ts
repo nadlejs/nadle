@@ -1,0 +1,120 @@
+import { taskRegistry } from "./task-registry.js";
+import type { Task, RunnerContext } from "../interfaces/task.js";
+import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
+import type { TaskConfiguration } from "../interfaces/task-configuration.js";
+import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
+
+/**
+ * The main API for registering tasks in Nadle.
+ *
+ * Provides overloaded `register` methods for defining tasks with or without options and custom resolvers.
+ * Each method returns a TaskConfigurationBuilder for further configuration.
+ */
+export interface TasksAPI {
+	/**
+	 * Register a task by name only.
+	 * @param name - The unique name of the task.
+	 * @returns ConfigBuilder for further configuration.
+	 */
+	register(name: string): TaskConfigurationBuilder;
+
+	/**
+	 * Register a task with a task function.
+	 * @param name - The unique name of the task.
+	 * @param fnTask - The function to execute for this task.
+	 * @returns ConfigBuilder for further configuration.
+	 */
+	register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
+
+	/**
+	 * Register a task with options and a resolver.
+	 * @param name - The unique name of the task.
+	 * @param optTask - The task definition with options.
+	 * @param optionsResolver - A resolver for the task's options.
+	 * @returns ConfigBuilder for further configuration.
+	 */
+	register<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): TaskConfigurationBuilder;
+}
+
+/**
+ * Builder interface for configuring a task.
+ */
+export interface TaskConfigurationBuilder {
+	/**
+	 * Configure the task with a configuration object or builder callback.
+	 * @param builder - Task configuration or a callback returning configuration.
+	 */
+	config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
+}
+
+/**
+ * Function signature for a basic task.
+ */
+export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
+
+/**
+ * The main tasks API instance for registering tasks in Nadle.
+ *
+ * Use this object to register new tasks and configure them using the fluent API.
+ *
+ * Example:
+ * ```ts
+ * tasks.register("build", async ({ context }) => { ... }).config({ ... });
+ * ```
+ */
+export const tasks: TasksAPI = {
+	register: (name: string, task?: TaskFn | Task, optionsResolver?: Resolver): TaskConfigurationBuilder => {
+		validateTaskName(name);
+
+		if (taskRegistry.has(name)) {
+			throw new Error(`Task "${name}" already registered`);
+		}
+
+		let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
+
+		const register = () => {
+			taskRegistry.register({
+				name,
+				status: TaskStatus.Registered,
+				timing: { duration: null, startTime: null },
+				configResolver: () => {
+					return typeof configCollector === "function" ? configCollector() : configCollector;
+				},
+				...computeTaskInfo(task, optionsResolver)
+			});
+		};
+
+		register();
+
+		return {
+			config: (collector) => {
+				configCollector = collector;
+				register();
+			}
+		};
+	}
+};
+
+function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver"> {
+	if (task === undefined) {
+		return { run: () => {}, optionsResolver: undefined };
+	}
+
+	if (typeof task === "function") {
+		return { run: task, optionsResolver: undefined };
+	}
+
+	if (optionsResolver === undefined) {
+		throw new Error("Option builder is required for option task");
+	}
+
+	return { ...task, optionsResolver };
+}
+
+function validateTaskName(name: string): void {
+	if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?$/i.test(name)) {
+		throw new Error(
+			`Invalid task name "${name}". Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
+		);
+	}
+}

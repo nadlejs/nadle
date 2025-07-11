@@ -1,15 +1,15 @@
 import { it, describe, expectTypeOf } from "vitest";
-import { tasks, Inputs, Outputs, PnpmTask, type ConfigBuilder } from "nadle";
+import { tasks, Inputs, Outputs, PnpmTask, type TaskConfigurationBuilder } from "nadle";
 
 describe("tasks.register", () => {
 	it("can register tasks with various signatures", () => {
-		expectTypeOf(tasks.register("check")).toEqualTypeOf<ConfigBuilder>();
+		expectTypeOf(tasks.register("check")).toEqualTypeOf<TaskConfigurationBuilder>();
 
-		expectTypeOf(tasks.register("check", () => console.log("Checking..."))).toEqualTypeOf<ConfigBuilder>();
-		expectTypeOf(tasks.register("check", async () => console.log("Checking..."))).toEqualTypeOf<ConfigBuilder>();
+		expectTypeOf(tasks.register("check", () => console.log("Checking..."))).toEqualTypeOf<TaskConfigurationBuilder>();
+		expectTypeOf(tasks.register("check", async () => console.log("Checking..."))).toEqualTypeOf<TaskConfigurationBuilder>();
 
-		expectTypeOf(tasks.register("eslint", PnpmTask, { args: ["eslint"] })).toEqualTypeOf<ConfigBuilder>();
-		expectTypeOf(tasks.register("eslint", PnpmTask, { args: "eslint" })).toEqualTypeOf<ConfigBuilder>();
+		expectTypeOf(tasks.register("eslint", PnpmTask, { args: ["eslint"] })).toEqualTypeOf<TaskConfigurationBuilder>();
+		expectTypeOf(tasks.register("eslint", PnpmTask, { args: "eslint" })).toEqualTypeOf<TaskConfigurationBuilder>();
 	});
 
 	it("can configure task metadata", () => {

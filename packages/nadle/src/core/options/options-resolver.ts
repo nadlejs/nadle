@@ -4,7 +4,7 @@ import Path from "node:path";
 import { isCI } from "std-env";
 
 import { clamp } from "../utilities/utils.js";
-import { Project } from "../models/project.js";
+import { Project } from "../models/project/project.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 

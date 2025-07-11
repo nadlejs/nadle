@@ -2,13 +2,10 @@ import Url from "node:url";
 
 import { createJiti } from "jiti";
 
-import { SUPPORT_EXTENSIONS } from "./constants.js";
+import { type FileReader } from "../file-reader.js";
+import { SUPPORT_EXTENSIONS } from "../../utilities/constants.js";
 
-interface IFileReader {
-	read(filePath: string): Promise<void>;
-}
-
-export class FileReader implements IFileReader {
+export class DefaultFileReader implements FileReader {
 	private readonly reader = createJiti(import.meta.url, {
 		interopDefault: true,
 		extensions: SUPPORT_EXTENSIONS.map((ext) => `.${ext}`)

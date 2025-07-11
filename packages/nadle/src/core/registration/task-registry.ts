@@ -2,9 +2,9 @@ import Perf from "node:perf_hooks";
 
 import c from "tinyrainbow";
 
-import { Project } from "../models/project.js";
-import { TaskIdentifier } from "./task-identifier.js";
-import { TaskStatus, type RegisteredTask } from "./types.js";
+import { Project } from "../models/project/project.js";
+import { TaskIdentifier } from "../models/task-identifier.js";
+import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 
 interface BufferedTask extends Omit<RegisteredTask, "label"> {}
 
@@ -134,15 +134,15 @@ export class TaskRegistry {
 		}
 
 		if (payload.startTime === true) {
-			task.result.startTime = Perf.performance.now();
+			task.timing.startTime = Perf.performance.now();
 		}
 
 		if (payload.duration == true) {
-			if (task.result.startTime === null) {
+			if (task.timing.startTime === null) {
 				throw new Error(`Task ${c.bold(taskId)} was not started properly`);
 			}
 
-			task.result.duration = Perf.performance.now() - task.result.startTime;
+			task.timing.duration = Perf.performance.now() - task.timing.startTime;
 		}
 	}
 }

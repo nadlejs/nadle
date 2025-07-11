@@ -2,7 +2,7 @@
 import { type Options } from "yargs";
 
 import { type NadleCLIOptions } from "./types.js";
-import { SupportLogLevels } from "../reporting/logger.js";
+import { SupportLogLevels } from "../utilities/consola.js";
 import { CONFIG_FILE_PATTERN } from "../utilities/constants.js";
 
 export const CLIOptions = {

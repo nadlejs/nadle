@@ -1,13 +1,12 @@
-import { CacheKey } from "./cache-key.js";
-import { Declaration } from "./declaration.js";
-import { RunCacheMetadata } from "./metadata.js";
 import { CacheManager } from "./cache-manager.js";
 import { hashObject } from "../utilities/hash.js";
-import type { CacheQuery } from "./cache-query.js";
-import { type TaskConfiguration } from "../types.js";
+import { CacheKey } from "../models/cache/cache-key.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
-import type { FileFingerprints } from "./fingerprint.js";
-import { CacheMissReason } from "./cache-miss-reason.js";
+import type { CacheQuery } from "../models/cache/cache-query.js";
+import { FileFingerprints } from "../models/cache/fingerprint.js";
+import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
+import { RunCacheMetadata } from "../models/cache/run-cache-metadata.js";
+import { type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 type CacheValidationResult =
 	| { result: "not-cacheable" }
@@ -46,7 +45,7 @@ export class CacheValidator {
 
 		const taskId = this.taskId;
 
-		const inputsFingerprints = await Declaration.computeFileFingerprints({
+		const inputsFingerprints = await FileFingerprints.compute({
 			files: [this.context.configFile],
 			workingDir: this.context.workingDir,
 			declarations: MaybeArray.toArray(this.taskConfiguration.inputs)
@@ -62,7 +61,7 @@ export class CacheValidator {
 				cacheQuery,
 				inputsFingerprints,
 				result: "cache-miss",
-				reasons: CacheMissReason.fromFingerprint(latestRunMetadata?.inputsFingerprints, inputsFingerprints)
+				reasons: CacheMissReason.compute(latestRunMetadata?.inputsFingerprints, inputsFingerprints)
 			};
 		}
 
@@ -71,7 +70,7 @@ export class CacheValidator {
 		}
 
 		const outputHashes = hashObject(
-			await Declaration.computeFileFingerprints({
+			await FileFingerprints.compute({
 				workingDir: this.context.workingDir,
 				declarations: MaybeArray.toArray(this.taskConfiguration.outputs)
 			})
@@ -108,7 +107,7 @@ export class CacheValidator {
 		if (validationResult.result === "cache-miss") {
 			const { cacheQuery, inputsFingerprints } = validationResult;
 
-			const outputsFingerprints = await Declaration.computeFileFingerprints({
+			const outputsFingerprints = await FileFingerprints.compute({
 				workingDir: this.context.workingDir,
 				declarations: MaybeArray.toArray(this.taskConfiguration.outputs ?? [])
 			});

@@ -2,7 +2,7 @@ import c from "tinyrainbow";
 import { words } from "lodash-es";
 import { distance } from "fastest-levenshtein";
 
-import { type Logger } from "../reporting/logger.js";
+import { type Logger } from "../interfaces/logger.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
 

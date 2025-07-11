@@ -1,5 +1,5 @@
 import { type FileFingerprints } from "./fingerprint.js";
-import { compareObjects } from "../utilities/comparators.js";
+import { compareObjects } from "../../utilities/comparators.js";
 
 export type CacheMissReason =
 	| { type: "no-previous-cache" }
@@ -23,7 +23,7 @@ export namespace CacheMissReason {
 		}
 	}
 
-	export function fromFingerprint(oldFingerprint: FileFingerprints | undefined, currentFingerPrint: FileFingerprints): CacheMissReason[] {
+	export function compute(oldFingerprint: FileFingerprints | undefined, currentFingerPrint: FileFingerprints): CacheMissReason[] {
 		if (oldFingerprint === undefined) {
 			return [{ type: "no-previous-cache" }];
 		}

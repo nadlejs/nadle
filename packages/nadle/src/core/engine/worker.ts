@@ -5,11 +5,12 @@ import c from "tinyrainbow";
 
 import { Nadle } from "../nadle.js";
 import { bindObject } from "../utilities/utils.js";
-import { type TaskEnv, type RunnerContext } from "../types.js";
+import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { taskRegistry } from "../registration/task-registry.js";
 import { type NadleResolvedOptions } from "../options/types.js";
-import { CacheMissReason } from "../caching/cache-miss-reason.js";
+import { type TaskEnv } from "../interfaces/task-configuration.js";
+import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
 
 const threadId = WorkerThreads.threadId;
 
@@ -31,7 +32,7 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 
 	const context: RunnerContext = {
 		workingDir,
-		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug"])
+		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
 	};
 	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 
