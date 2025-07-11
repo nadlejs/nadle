@@ -1,5 +1,5 @@
-import { type Logger } from "../../interfaces/logger.js";
-import { type Callback, type Awaitable } from "../../utilities/index.js";
+import { type Logger } from "./logger.js";
+import { type Callback, type Awaitable } from "../utilities/index.js";
 
 /**
  * Interface for a typed task with options.

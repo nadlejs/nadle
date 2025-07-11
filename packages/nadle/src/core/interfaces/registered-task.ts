@@ -1,7 +1,7 @@
 import { type Task } from "./task.js";
-import { type TaskIdentifier } from "./task-identifier.js";
 import { type TaskConfiguration } from "./task-configuration.js";
-import { type Callback, type Resolver } from "../../utilities/types.js";
+import { type TaskIdentifier } from "../models/task-identifier.js";
+import { type Callback, type Resolver } from "../utilities/types.js";
 
 /**
  * Represents a task registered in the Nadle system.

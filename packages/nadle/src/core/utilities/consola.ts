@@ -3,7 +3,7 @@ import { isCI, isTest } from "std-env";
 import { LogLevels, type LogType, createConsola, type LogObject, type InputLogObject, type ConsolaOptions, type ConsolaReporter } from "consola";
 
 export { LogLevels };
-export type { InputLogObject, LogType };
+export type { InputLogObject };
 
 // Workaround to get builtin BasicReporter
 const [BasicReporter] = createConsola({ fancy: false }).options.reporters;

@@ -6,7 +6,7 @@ import type { CacheQuery } from "../models/cache/cache-query.js";
 import { FileFingerprints } from "../models/cache/fingerprint.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
 import { RunCacheMetadata } from "../models/cache/run-cache-metadata.js";
-import { type TaskConfiguration } from "../models/task/task-configuration.js";
+import { type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 type CacheValidationResult =
 	| { result: "not-cacheable" }

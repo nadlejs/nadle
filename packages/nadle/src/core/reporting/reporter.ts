@@ -10,7 +10,7 @@ import { StringBuilder } from "../utilities/string-builder.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
-import { TaskStatus, type RegisteredTask } from "../models/task/registered-task.js";
+import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export interface Reporter {

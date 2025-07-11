@@ -5,11 +5,11 @@ import c from "tinyrainbow";
 
 import { Nadle } from "../nadle.js";
 import { bindObject } from "../utilities/utils.js";
-import { type RunnerContext } from "../models/task/task.js";
+import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { taskRegistry } from "../registration/task-registry.js";
 import { type NadleResolvedOptions } from "../options/types.js";
-import { type TaskEnv } from "../models/task/task-configuration.js";
+import { type TaskEnv } from "../interfaces/task-configuration.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
 
 const threadId = WorkerThreads.threadId;

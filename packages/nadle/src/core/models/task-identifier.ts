@@ -1,4 +1,4 @@
-import { COLON } from "../../utilities/constants.js";
+import { COLON } from "../utilities/constants.js";
 
 /**
  * A unique identifier for a task, typically in the form 'workspaceId:taskName'.

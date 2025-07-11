@@ -13,13 +13,13 @@ import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { ProjectResolver } from "./options/project-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
+import { type TaskIdentifier } from "./models/task-identifier.js";
 import { RootWorkspace } from "./models/project/root-workspace.js";
-import { type TaskIdentifier } from "./models/task/task-identifier.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { fileOptionRegistry } from "./registration/file-option-registry.js";
 import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js";
-import { TaskStatus, type RegisteredTask } from "./models/task/registered-task.js";
+import { TaskStatus, type RegisteredTask } from "./interfaces/registered-task.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {

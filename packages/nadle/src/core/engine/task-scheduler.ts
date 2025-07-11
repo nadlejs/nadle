@@ -4,8 +4,8 @@ import { type Nadle } from "../nadle.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
+import { type TaskIdentifier } from "../models/task-identifier.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
-import { type TaskIdentifier } from "../models/task/task-identifier.js";
 
 export class TaskScheduler {
 	// Map between a task and the set of tasks that depend on it
