@@ -4,7 +4,7 @@ import Fs from "node:fs/promises";
 import { isPathExists } from "../utilities/fs.js";
 import { COLON, UNDERSCORE } from "../utilities/constants.js";
 import { type CacheQuery } from "../models/cache/cache-query.js";
-import { type TaskIdentifier } from "../models/task-identifier.js";
+import { type TaskIdentifier } from "../models/task/task-identifier.js";
 import { TaskCacheMetadata } from "../models/cache/task-cache-metadata.js";
 import { type RunCacheMetadata } from "../models/cache/run-cache-metadata.js";
 

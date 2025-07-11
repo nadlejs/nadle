@@ -1,4 +1,3 @@
-export * from "./task.js";
-export * from "./logger.js";
+export * from "./task/task.js";
 export * from "./cache/index.js";
-export * from "./task-configuration.js";
+export * from "./task/task-configuration.js";

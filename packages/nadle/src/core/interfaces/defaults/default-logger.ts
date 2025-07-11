@@ -1,13 +1,11 @@
 import type Stream from "node:stream";
 
 import c from "tinyrainbow";
-// eslint-disable-next-line no-restricted-imports
-import { type InputLogObject } from "consola";
 
-import { FileLogger } from "./file-logger.js";
-import { LogLevels, createNadleConsola } from "./consola-reporters.js";
-import { type Logger, type SupportLogLevel } from "../models/logger.js";
-import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../utilities/constants.js";
+import { type Logger } from "../logger.js";
+import { FileLogger } from "../../reporting/file-logger.js";
+import { LogLevels, createNadleConsola, type InputLogObject, type SupportLogLevel } from "../../utilities/consola.js";
+import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../../utilities/constants.js";
 
 const l = new FileLogger("logger");
 

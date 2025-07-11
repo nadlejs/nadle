@@ -5,7 +5,7 @@ import { type Packages } from "@manypkg/tools";
 import { Workspace } from "./workspace.js";
 import { AliasResolver } from "./alias-resolver.js";
 import { RootWorkspace } from "./root-workspace.js";
-import { type AliasOption } from "../options/types.js";
+import { type AliasOption } from "../../options/types.js";
 
 export interface Project {
 	readonly packageManager: string;

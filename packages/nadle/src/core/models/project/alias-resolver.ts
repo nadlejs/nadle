@@ -1,4 +1,4 @@
-import type { AliasOption } from "../options/index.js";
+import type { AliasOption } from "../../options/index.js";
 
 type AliasResolver = (workspacePath: string) => string | undefined;
 

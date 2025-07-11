@@ -6,19 +6,20 @@ import c from "tinyrainbow";
 import { DASH } from "./utilities/constants.js";
 import { TaskPool } from "./engine/task-pool.js";
 import { capitalize } from "./utilities/utils.js";
-import { FileReader } from "./models/file-reader.js";
 import { TaskResolver } from "./options/task-resolver.js";
-import { RootWorkspace } from "./models/root-workspace.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
-import { DefaultLogger } from "./reporting/default-logger.js";
+import { type FileReader } from "./interfaces/file-reader.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { ProjectResolver } from "./options/project-resolver.js";
 import { renderTaskSelection } from "./views/tasks-selection.js";
-import { type TaskIdentifier } from "./models/task-identifier.js";
+import { RootWorkspace } from "./models/project/root-workspace.js";
+import { type TaskIdentifier } from "./models/task/task-identifier.js";
+import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { type Reporter, DefaultReporter } from "./reporting/reporter.js";
 import { fileOptionRegistry } from "./registration/file-option-registry.js";
-import { TaskStatus, type RegisteredTask } from "./models/registered-task.js";
+import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js";
+import { TaskStatus, type RegisteredTask } from "./models/task/registered-task.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle {
@@ -27,7 +28,7 @@ export class Nadle {
 	public readonly logger = new DefaultLogger();
 	public readonly taskRegistry = taskRegistry;
 
-	private readonly fileReader = new FileReader();
+	private readonly fileReader: FileReader = new DefaultFileReader();
 	private readonly reporter: Reporter = new DefaultReporter(this);
 	private readonly taskScheduler = new TaskScheduler(this);
 	private readonly fileOptionRegistry = fileOptionRegistry;

@@ -5,8 +5,8 @@ import { MaybeArray } from "../utilities/maybe-array.js";
 import type { CacheQuery } from "../models/cache/cache-query.js";
 import { FileFingerprints } from "../models/cache/fingerprint.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
-import { type TaskConfiguration } from "../models/task-configuration.js";
 import { RunCacheMetadata } from "../models/cache/run-cache-metadata.js";
+import { type TaskConfiguration } from "../models/task/task-configuration.js";
 
 type CacheValidationResult =
 	| { result: "not-cacheable" }

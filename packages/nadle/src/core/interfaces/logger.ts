@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-restricted-imports
-import { type LogType, type InputLogObject } from "consola";
+import { type InputLogObject } from "../utilities/consola.js";
 
 /**
  * Logger interface for Nadle.
@@ -42,13 +41,3 @@ export interface Logger {
 	 */
 	getColumns(): number;
 }
-
-/**
- * Supported log levels for Nadle.
- */
-export const SupportLogLevels = ["error", "log", "info", "debug"] as const satisfies LogType[];
-
-/**
- * Type representing supported log levels.
- */
-export type SupportLogLevel = (typeof SupportLogLevels)[number];

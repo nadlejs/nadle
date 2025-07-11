@@ -2,9 +2,9 @@ import Perf from "node:perf_hooks";
 
 import c from "tinyrainbow";
 
-import { Project } from "../models/project.js";
-import { TaskIdentifier } from "../models/task-identifier.js";
-import { TaskStatus, type RegisteredTask } from "../models/registered-task.js";
+import { Project } from "../models/project/project.js";
+import { TaskIdentifier } from "../models/task/task-identifier.js";
+import { TaskStatus, type RegisteredTask } from "../models/task/registered-task.js";
 
 interface BufferedTask extends Omit<RegisteredTask, "label"> {}
 

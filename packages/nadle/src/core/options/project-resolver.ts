@@ -5,10 +5,10 @@ import { findUp } from "find-up";
 import { findRoot } from "@manypkg/find-root";
 import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
 
-import { Project } from "../models/project.js";
 import type { NadlePackageJson } from "./types.js";
-import { RootWorkspace } from "../models/root-workspace.js";
+import { Project } from "../models/project/project.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
+import { RootWorkspace } from "../models/project/root-workspace.js";
 import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];

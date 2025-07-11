@@ -1,8 +1,8 @@
 import { taskRegistry } from "./task-registry.js";
-import type { TaskConfiguration } from "../models/index.js";
-import type { Task, RunnerContext } from "../models/task.js";
+import type { Task, RunnerContext } from "../models/task/task.js";
 import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
-import { TaskStatus, type RegisteredTask } from "../models/registered-task.js";
+import type { TaskConfiguration } from "../models/task/task-configuration.js";
+import { TaskStatus, type RegisteredTask } from "../models/task/registered-task.js";
 
 /**
  * The main API for registering tasks in Nadle.

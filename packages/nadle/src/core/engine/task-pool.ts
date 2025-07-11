@@ -2,7 +2,7 @@ import TinyPool from "tinypool";
 
 import { type Nadle } from "../nadle.js";
 import { type WorkerParams } from "./worker.js";
-import { type TaskIdentifier } from "../models/task-identifier.js";
+import { type TaskIdentifier } from "../models/task/task-identifier.js";
 
 // It seems this is the error message thrown by TinyPool when a worker is terminated
 // See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438

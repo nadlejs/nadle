@@ -1,5 +1,5 @@
-import type { Declaration } from "./cache/declaration.js";
-import type { MaybeArray } from "../utilities/maybe-array.js";
+import type { Declaration } from "../cache/declaration.js";
+import type { MaybeArray } from "../../utilities/maybe-array.js";
 
 /**
  * Configuration for a Nadle task.

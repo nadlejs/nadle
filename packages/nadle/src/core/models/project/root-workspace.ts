@@ -1,5 +1,5 @@
 import { type Workspace } from "./workspace.js";
-import { DOT } from "../utilities/constants.js";
+import { DOT } from "../../utilities/constants.js";
 
 /**
  * Represents the root workspace, with a required configFilePath.

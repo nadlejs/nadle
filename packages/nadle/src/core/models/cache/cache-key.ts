@@ -1,6 +1,6 @@
 import { hashObject } from "../../utilities/hash.js";
 import type { FileFingerprints } from "./fingerprint.js";
-import type { TaskIdentifier } from "../task-identifier.js";
+import type { TaskIdentifier } from "../task/task-identifier.js";
 
 export type CacheKey = string;
 export namespace CacheKey {

@@ -1,5 +1,5 @@
-import { RootWorkspace } from "../models/root-workspace.js";
 import { type NadleFileOptions } from "../options/types.js";
+import { RootWorkspace } from "../models/project/root-workspace.js";
 
 class FileOptionRegistry {
 	private workspaceId: string | null = null;

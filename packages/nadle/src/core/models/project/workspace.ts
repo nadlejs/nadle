@@ -1,6 +1,6 @@
 import { type Package } from "@manypkg/tools";
 
-import { COLON, SLASH, BACKSLASH } from "../utilities/constants.js";
+import { COLON, SLASH, BACKSLASH } from "../../utilities/constants.js";
 
 /**
  * Represents a workspace in a monorepo or project.
