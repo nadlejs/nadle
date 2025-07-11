@@ -2,7 +2,7 @@ import Util from "node:util";
 import type Stream from "node:stream";
 
 import { FileLogger } from "../file-logger.js";
-import { type Logger } from "../../models/index.js";
+import { type DefaultLogger } from "../default-logger.js";
 
 const DEFAULT_RENDER_INTERVAL_MS = 100;
 
@@ -19,8 +19,8 @@ interface Renderer {
 }
 namespace FooterRenderer {
 	export interface Options {
-		readonly logger: Logger;
 		readonly interval?: number;
+		readonly logger: DefaultLogger;
 		readonly getWindow: () => string[];
 	}
 }
@@ -33,7 +33,7 @@ const l = new FileLogger("WindowRenderer");
  */
 export class FooterRenderer implements Renderer {
 	private readonly options: Required<FooterRenderer.Options>;
-	private readonly streams!: Record<StreamType, Logger["outputStream" | "errorStream"]["write"]>;
+	private readonly streams: Record<StreamType, DefaultLogger["outputStream" | "errorStream"]["write"]>;
 	private readonly buffer: { message: string; type: StreamType }[] = [];
 	private renderInterval: NodeJS.Timeout | undefined = undefined;
 	private renderScheduled = false;

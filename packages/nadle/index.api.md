@@ -79,11 +79,9 @@ export namespace Inputs {
 export interface Logger {
     debug(message: InputLogObject | string, ...args: unknown[]): void;
     error(message: InputLogObject | string, ...args: unknown[]): void;
-    readonly errorStream: NodeJS.WriteStream;
     getColumns(): number;
     info(message: InputLogObject | string, ...args: unknown[]): void;
     log(message: InputLogObject | string, ...args: unknown[]): void;
-    readonly outputStream: NodeJS.WriteStream;
     warn(message: InputLogObject | string, ...args: unknown[]): void;
 }
 

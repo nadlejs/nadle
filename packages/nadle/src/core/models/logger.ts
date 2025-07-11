@@ -6,15 +6,6 @@ import { type LogType, type InputLogObject } from "consola";
  */
 export interface Logger {
 	/**
-	 * Writable stream for error output (typically stderr).
-	 */
-	readonly errorStream: NodeJS.WriteStream;
-	/**
-	 * Writable stream for standard output (typically stdout).
-	 */
-	readonly outputStream: NodeJS.WriteStream;
-
-	/**
 	 * Log a standard message.
 	 * @param message - The message or log object.
 	 * @param args - Additional arguments.
