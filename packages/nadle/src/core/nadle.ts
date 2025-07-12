@@ -1,17 +1,11 @@
-import Fs from "node:fs/promises";
 import Process from "node:process";
 
-import c from "tinyrainbow";
-
-import { DASH } from "./utilities/constants.js";
-import { TaskPool } from "./engine/task-pool.js";
-import { capitalize } from "./utilities/utils.js";
+import { Handlers } from "./handlers/index.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { type FileReader } from "./interfaces/file-reader.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { ProjectResolver } from "./options/project-resolver.js";
-import { renderTaskSelection } from "./views/tasks-selection.js";
 import { type TaskIdentifier } from "./models/task-identifier.js";
 import { RootWorkspace } from "./models/project/root-workspace.js";
 import { TaskInputResolver } from "./options/task-input-resolver.js";
@@ -30,13 +24,11 @@ export class Nadle {
 
 	private readonly fileReader: FileReader = new DefaultFileReader();
 	private readonly reporter: Reporter = new DefaultReporter(this);
-	private readonly taskScheduler = new TaskScheduler(this);
+	public readonly taskScheduler = new TaskScheduler(this);
 	private readonly fileOptionRegistry = fileOptionRegistry;
 	private readonly taskResolver = new TaskInputResolver(this.logger, this.taskRegistry.getTaskNameByWorkspace.bind(this.taskRegistry));
 
 	#options: NadleResolvedOptions | undefined;
-
-	private static readonly UnnamedGroup = "Unnamed";
 
 	// TODO: Can we remove this?
 	public resolvedTasks: TaskIdentifier[] = [];
@@ -69,16 +61,15 @@ export class Nadle {
 			this.reporter.onExecutionStart?.();
 			this.resolvedTasks = this.taskResolver.resolve(taskInputs, this.options.project).filter((task) => !this.excludedTaskIds.includes(task));
 
-			if (this.options.showConfig) {
-				this.showConfig();
-			} else if (this.options.list) {
-				this.listTasks();
-			} else if (this.options.dryRun) {
-				this.dryRunTasks();
-			} else if (this.options.cleanCache) {
-				await this.cleanCache();
-			} else {
-				await this.runTasks();
+			for (const Handler of Handlers) {
+				const handler = new Handler(this);
+
+				if (handler.canHandle()) {
+					this.logger.debug("Executing handler:", handler.name);
+					await handler.handle();
+
+					break;
+				}
 			}
 		} catch (error) {
 			this.reporter.onExecutionFailed?.(error);
@@ -97,115 +88,7 @@ export class Nadle {
 		return this.#options;
 	}
 
-	private async runTasks() {
-		let chosenTasks: string[] = this.resolvedTasks;
-
-		if (chosenTasks.length === 0) {
-			chosenTasks = await renderTaskSelection(this.taskRegistry);
-
-			if (chosenTasks.length === 0) {
-				this.printNoTasksSpecified();
-
-				return;
-			}
-		}
-
-		const scheduler = this.taskScheduler.init(chosenTasks);
-		await this.onTasksScheduled(scheduler.scheduledTask);
-
-		await new TaskPool(this, (taskId) => scheduler.getReadyTasks(taskId)).run();
-	}
-
-	private dryRunTasks() {
-		if (this.resolvedTasks.length === 0) {
-			this.printNoTasksSpecified();
-
-			return;
-		}
-
-		const taskIds = this.taskScheduler.init(this.resolvedTasks).getOrderedTasks();
-
-		this.logger.log(c.bold("Execution plan:"));
-
-		for (const taskId of taskIds) {
-			this.logger.log(`${c.yellow(">")} Task ${c.bold(this.taskRegistry.getById(taskId).label)}`);
-		}
-	}
-
-	private listTasks() {
-		if (taskRegistry.getAll().length === 0) {
-			this.logger.log("No tasks found");
-
-			return;
-		}
-
-		const groups = this.computeTaskGroups();
-
-		for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-			const [groupName, tasks] = groups[groupIndex];
-
-			const label = `${capitalize(groupName)} tasks`;
-			this.logger.log(c.bold(label));
-			this.logger.log(c.bold(DASH.repeat(label.length)));
-
-			for (const task of tasks) {
-				const { label, description } = task;
-
-				if (description) {
-					this.logger.log(c.bold(c.green(label)) + c.yellow(` - ${description}`));
-				} else {
-					this.logger.log(c.green(label));
-				}
-			}
-
-			if (groupIndex < groups.length - 1) {
-				this.logger.log("");
-			}
-		}
-	}
-
-	private showConfig() {
-		this.logger.log(JSON.stringify(this.options, null, 2));
-	}
-
-	private async cleanCache() {
-		try {
-			this.logger.log(`Cleaning cache at ${this.options.cacheDir}...`);
-			await Fs.rm(this.options.cacheDir, { force: true, recursive: true });
-		} catch (error) {
-			this.logger.error(`Failed to clean cache at ${this.options.cacheDir}:`, error);
-			throw error;
-		}
-	}
-
-	private computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
-		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
-
-		for (const task of this.taskRegistry.getAll()) {
-			const { description, group = Nadle.UnnamedGroup } = task.configResolver();
-
-			tasksByGroup[group] ??= [];
-			tasksByGroup[group].push({ ...task, description });
-		}
-
-		return Object.entries(tasksByGroup)
-			.sort(([firstGroupName], [secondGroupName]) => {
-				if (firstGroupName === Nadle.UnnamedGroup) {
-					return 1;
-				}
-
-				if (secondGroupName === Nadle.UnnamedGroup) {
-					return -1;
-				}
-
-				return firstGroupName.localeCompare(secondGroupName);
-			})
-			.map(([groupName, tasks]) => {
-				return [groupName, tasks.sort((firstTask, secondTask) => firstTask.id.localeCompare(secondTask.id))];
-			});
-	}
-
-	private printNoTasksSpecified() {
+	public printNoTasksSpecified() {
 		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 
