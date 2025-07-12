@@ -3,12 +3,13 @@ import Perf from "node:perf_hooks";
 import c from "tinyrainbow";
 
 import { Project } from "../models/project/project.js";
+import { type Listener } from "../interfaces/listener.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 
 interface BufferedTask extends Omit<RegisteredTask, "label"> {}
 
-export class TaskRegistry {
+export class TaskRegistry implements Listener {
 	private readonly registry = new Map<TaskIdentifier, RegisteredTask>();
 	/**
 	 * The id of the workspace where tasks are registering.
@@ -98,39 +99,37 @@ export class TaskRegistry {
 		return task;
 	}
 
-	public onTaskStart(id: TaskIdentifier) {
-		this.updateTask(id, { startTime: true, status: TaskStatus.Running });
+	public onTaskStart(task: RegisteredTask) {
+		this.updateTask(task, { startTime: true, status: TaskStatus.Running });
 	}
 
-	public onTaskFinish(id: TaskIdentifier) {
-		this.updateTask(id, { duration: true, status: TaskStatus.Failed });
+	public onTaskFinish(task: RegisteredTask) {
+		this.updateTask(task, { duration: true, status: TaskStatus.Failed });
 	}
 
-	public onTaskUpToDate(id: TaskIdentifier) {
-		this.updateTask(id, { status: TaskStatus.UpToDate });
+	public onTaskUpToDate(task: RegisteredTask) {
+		this.updateTask(task, { status: TaskStatus.UpToDate });
 	}
 
-	public onTaskRestoreFromCache(id: TaskIdentifier) {
-		this.updateTask(id, { status: TaskStatus.FromCache });
+	public onTaskRestoreFromCache(task: RegisteredTask) {
+		this.updateTask(task, { status: TaskStatus.FromCache });
 	}
 
-	public onTaskFailed(id: TaskIdentifier) {
-		this.updateTask(id, { duration: true, status: TaskStatus.Failed });
+	public onTaskFailed(task: RegisteredTask) {
+		this.updateTask(task, { duration: true, status: TaskStatus.Failed });
 	}
 
-	public onTaskCanceled(id: TaskIdentifier) {
-		this.updateTask(id, { status: TaskStatus.Canceled });
+	public onTaskCanceled(task: RegisteredTask) {
+		this.updateTask(task, { status: TaskStatus.Canceled });
 	}
 
-	public onTasksScheduled(ids: TaskIdentifier[]) {
-		for (const id of ids) {
-			this.updateTask(id, { status: TaskStatus.Scheduled });
+	public onTasksScheduled(tasks: RegisteredTask[]) {
+		for (const task of tasks) {
+			this.updateTask(task, { status: TaskStatus.Scheduled });
 		}
 	}
 
-	private updateTask(taskId: string, payload: Partial<{ duration: true; startTime: true; status: TaskStatus }>) {
-		const task = this.getById(taskId);
-
+	private updateTask(task: RegisteredTask, payload: Partial<{ duration: true; startTime: true; status: TaskStatus }>) {
 		if (payload.status !== undefined) {
 			task.status = payload.status;
 		}
@@ -141,7 +140,7 @@ export class TaskRegistry {
 
 		if (payload.duration == true) {
 			if (task.timing.startTime === null) {
-				throw new Error(`Task ${c.bold(taskId)} was not started properly`);
+				throw new Error(`Task ${c.bold(task.id)} was not started properly`);
 			}
 
 			task.timing.duration = Perf.performance.now() - task.timing.startTime;

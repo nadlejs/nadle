@@ -2,6 +2,7 @@ import TinyPool from "tinypool";
 
 import { type Nadle } from "../nadle.js";
 import { type WorkerParams } from "./worker.js";
+import { TaskStatus } from "../interfaces/registered-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 
 // It seems this is the error message thrown by TinyPool when a worker is terminated
@@ -40,7 +41,7 @@ export class TaskPool {
 			// TODO: Add type for the message
 			poolPort.on("message", async (msg: any) => {
 				if (msg.type === "start") {
-					await this.nadle.onTaskStart(task, msg.threadId);
+					await this.nadle.eventEmitter.onTaskStart(task, msg.threadId);
 				} else if (msg.type === "up-to-date") {
 					executeType = "up-to-date";
 				} else if (msg.type === "from-cache") {
@@ -58,22 +59,22 @@ export class TaskPool {
 			await this.pool.run(workerParams, { transferList: [workerPort] });
 
 			if (executeType === "execute") {
-				await this.nadle.onTaskFinish(task);
+				await this.nadle.eventEmitter.onTaskFinish(task);
 			} else if (executeType === "up-to-date") {
-				await this.nadle.onTaskUpToDate(task);
+				await this.nadle.eventEmitter.onTaskUpToDate(task);
 			} else if (executeType === "from-cache") {
-				await this.nadle.onTaskRestoreFromCache(task);
+				await this.nadle.eventEmitter.onTaskRestoreFromCache(task);
 			} else {
 				throw new Error(`Unknown execute type: ${executeType}`);
 			}
 		} catch (error) {
-			if (error instanceof Error && error.message === TERMINATING_WORKER_ERROR) {
-				await this.nadle.onTaskCanceled(task);
+			if (error instanceof Error && error.message === TERMINATING_WORKER_ERROR && task.status === TaskStatus.Running) {
+				await this.nadle.eventEmitter.onTaskCanceled(task);
 
 				return;
 			}
 
-			await this.nadle.onTaskFailed(task);
+			await this.nadle.eventEmitter.onTaskFailed(task);
 			throw error;
 		}
 
