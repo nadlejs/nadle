@@ -14,7 +14,7 @@ export class TaskRegistry {
 
 	#project: Project | null = null;
 
-	public onInitializeWorkspace(workspaceId: string) {
+	public onConfigureWorkspace(workspaceId: string) {
 		this.workspaceId = workspaceId;
 	}
 
@@ -31,14 +31,6 @@ export class TaskRegistry {
 		this.buffer.clear();
 	}
 
-	private get project(): Project {
-		if (this.#project === null) {
-			throw new Error("Project is not configured yet.");
-		}
-
-		return this.#project;
-	}
-
 	public register(task: Omit<RegisteredTask, "id" | "label" | "workspaceId">) {
 		if (this.workspaceId === null) {
 			throw new Error("Working directory is not set.");
@@ -49,7 +41,7 @@ export class TaskRegistry {
 		this.buffer.set(id, { ...task, id, workspaceId: this.workspaceId });
 	}
 
-	public has(taskName: string) {
+	public hasTaskName(taskName: string) {
 		if (this.workspaceId === null) {
 			throw new Error("Working directory is not set.");
 		}
@@ -57,34 +49,34 @@ export class TaskRegistry {
 		return this.buffer.has(TaskIdentifier.create(this.workspaceId, taskName));
 	}
 
-	public getAll(): RegisteredTask[] {
+	public get tasks(): RegisteredTask[] {
 		return [...this.registry.values()];
 	}
 
 	public getTaskNameByWorkspace(targetWorkspaceId: string): string[] {
-		return this.getAll().flatMap(({ name, workspaceId }) => (targetWorkspaceId === workspaceId ? [name] : []));
+		return this.tasks.flatMap(({ name, workspaceId }) => (targetWorkspaceId === workspaceId ? [name] : []));
 	}
 
-	public getByName(taskName: string): RegisteredTask[] {
-		return this.getAll().filter(({ name }) => name === taskName);
+	public getTaskByName(taskName: string): RegisteredTask[] {
+		return this.tasks.filter(({ name }) => name === taskName);
 	}
 
-	public parse(taskInput: string, options: { strict?: boolean; targetWorkspaceId: string }): TaskIdentifier {
+	public parse(taskInput: string, targetWorkspaceId: string): TaskIdentifier {
 		const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
 		const targetWorkspace =
 			workspaceInput === undefined
-				? Project.getWorkspaceById(this.project, options.targetWorkspaceId)
+				? Project.getWorkspaceById(this.project, targetWorkspaceId)
 				: Project.getWorkspaceByLabelOrId(this.project, workspaceInput);
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
-		if (!this.registry.has(taskId) && options.strict) {
+		if (!this.registry.has(taskId)) {
 			throw new Error(`Task ${taskId} not found`);
 		}
 
 		return taskId;
 	}
 
-	public getById(taskId: TaskIdentifier): RegisteredTask {
+	public getTaskById(taskId: TaskIdentifier): RegisteredTask {
 		const task = this.registry.get(taskId);
 
 		if (!task) {
@@ -92,6 +84,14 @@ export class TaskRegistry {
 		}
 
 		return task;
+	}
+
+	private get project(): Project {
+		if (this.#project === null) {
+			throw new Error("Project is not configured yet.");
+		}
+
+		return this.#project;
 	}
 }
 

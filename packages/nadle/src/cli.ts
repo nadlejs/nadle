@@ -62,4 +62,7 @@ const argv = yargs(hideBin(Process.argv))
 	.strict()
 	.parseSync();
 
-new Nadle(CLIOptionsResolver.resolve(argv)).execute((argv as any).tasks ?? []);
+new Nadle(CLIOptionsResolver.resolve(argv)).execute().catch((e) => {
+	console.error(e);
+	process.exit(1);
+});

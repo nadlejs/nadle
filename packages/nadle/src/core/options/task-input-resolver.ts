@@ -1,4 +1,3 @@
-import c from "tinyrainbow";
 import { uniq } from "lodash-es";
 
 import { highlight } from "../utilities/utils.js";
@@ -6,7 +5,6 @@ import { Messages } from "../utilities/messages.js";
 import { suggest } from "../utilities/suggestion.js";
 import { type Logger } from "../interfaces/logger.js";
 import { Project } from "../models/project/project.js";
-import { RIGHT_ARROW } from "../utilities/constants.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 
 export class TaskInputResolver {
@@ -46,18 +44,6 @@ export class TaskInputResolver {
 
 			return resolvedTask;
 		});
-
-		if (resolveTaskPairs.length > 0) {
-			const maxOriginTaskLength = Math.max(...resolveTaskPairs.map(({ original }) => original?.length ?? 0));
-			const message = [
-				`Resolved tasks:\n`,
-				...resolveTaskPairs.map(
-					({ resolved, original }) =>
-						`${" ".repeat(4)}${highlight(original?.padEnd(maxOriginTaskLength, " "))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
-				)
-			].join("");
-			this.logger.log(message);
-		}
 
 		this.logger.debug(`Resolved tasks: [ ${resolvedTasks.join(", ")} ]`);
 

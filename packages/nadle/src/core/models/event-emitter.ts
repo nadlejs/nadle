@@ -11,8 +11,8 @@ export class EventEmitter implements Required<Listener> {
 		}
 	}
 
-	public async init(): Promise<this> {
-		await this.emit("init");
+	public async onInitialize(): Promise<this> {
+		await this.emit("onInitialize");
 
 		return this;
 	}

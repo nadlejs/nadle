@@ -30,7 +30,7 @@ export class TaskScheduler {
 
 	public constructor(private readonly nadle: Nadle) {}
 
-	public init(taskIds: string[]): this {
+	public init(taskIds: string[] = this.nadle.options.tasks): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
 
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
@@ -51,13 +51,13 @@ export class TaskScheduler {
 
 		for (const taskId of taskIds) {
 			expandedTaskIds.push(taskId);
-			const { name, workspaceId } = this.nadle.taskRegistry.getById(taskId);
+			const { name, workspaceId } = this.nadle.taskRegistry.getTaskById(taskId);
 
 			if (!RootWorkspace.isRootWorkspaceId(workspaceId)) {
 				continue;
 			}
 
-			for (const sameNameTask of this.nadle.taskRegistry.getByName(name)) {
+			for (const sameNameTask of this.nadle.taskRegistry.getTaskByName(name)) {
 				if (!taskIds.includes(sameNameTask.id)) {
 					expandedTaskIds.push(sameNameTask.id);
 				}
@@ -84,12 +84,12 @@ export class TaskScheduler {
 			return;
 		}
 
-		const { workspaceId, configResolver } = this.nadle.taskRegistry.getById(taskId);
+		const { workspaceId, configResolver } = this.nadle.taskRegistry.getTaskById(taskId);
 
 		const dependencies = new Set(
 			MaybeArray.toArray(configResolver().dependsOn ?? [])
-				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, { strict: true, targetWorkspaceId: workspaceId }))
-				.filter((taskId) => !this.nadle.excludedTaskIds.includes(taskId))
+				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, workspaceId))
+				.filter((taskId) => !this.nadle.options.excludedTasks.includes(taskId))
 		);
 
 		this.dependencyGraph.set(taskId, dependencies);

@@ -12,7 +12,7 @@ export class ExecuteHandler extends BaseHandler {
 	}
 
 	public async handle() {
-		let chosenTasks: string[] = this.nadle.resolvedTasks;
+		let chosenTasks: string[] = this.nadle.options.tasks;
 
 		if (chosenTasks.length === 0) {
 			chosenTasks = await renderTaskSelection(this.nadle.taskRegistry);
@@ -25,7 +25,7 @@ export class ExecuteHandler extends BaseHandler {
 		}
 
 		const scheduler = this.nadle.taskScheduler.init(chosenTasks);
-		await this.nadle.eventEmitter.onTasksScheduled(scheduler.scheduledTask.map((taskId) => this.nadle.taskRegistry.getById(taskId)));
+		await this.nadle.eventEmitter.onTasksScheduled(scheduler.scheduledTask.map((taskId) => this.nadle.taskRegistry.getTaskById(taskId)));
 
 		await new TaskPool(this.nadle, (taskId) => scheduler.getReadyTasks(taskId)).run();
 	}

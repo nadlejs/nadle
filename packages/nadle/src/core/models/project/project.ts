@@ -67,7 +67,7 @@ export namespace Project {
 		return workspace;
 	}
 
-	export function configureAlias(project: Project, aliasOption: AliasOption | undefined): Project {
+	export function configure(project: Project, aliasOption: AliasOption | undefined): Project {
 		const resolveAlias = AliasResolver.create(aliasOption);
 
 		const configuredProject = {

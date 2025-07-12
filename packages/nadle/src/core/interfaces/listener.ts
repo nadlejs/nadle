@@ -68,5 +68,5 @@ export interface Listener {
 	 * Optional initialization method for the listener.
 	 * @returns The initialized listener instance.
 	 */
-	readonly init?: () => Awaitable<this>;
+	readonly onInitialize?: () => Awaitable<this>;
 }

@@ -12,7 +12,7 @@ describe("logger", () => {
 	it.each(environments)(`should use $reporter when CI=$CI and TEST=$TEST`, async ({ CI, TEST, reporter }) => {
 		const { stdout } = await createExec({ env: { CI, TEST } })`hello --log-level debug`;
 
-		expect(stdout).contain(`Initialized logger with Consola reporters: [${reporter}]`);
+		expect(stdout).contain(`Configured logger with Consola reporters: [${reporter}]`);
 	});
 
 	it("should not prepend log level in CI", async () => {

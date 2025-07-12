@@ -45,7 +45,6 @@ const transformers = [
 	exclude((key) => key.includes(DASH)),
 	exclude("$0"),
 	exclude(UNDERSCORE),
-	exclude("tasks"),
 	transform("config", { transformKey: "configFile" }),
 	transform("cache", { transformValue: Boolean }),
 	transform("exclude", { transformKey: "excludedTasks" })
@@ -67,9 +66,10 @@ const transformer: ArgTransformer = (arg) => {
 
 export class CLIOptionsResolver {
 	public static resolve(argv: Record<string, unknown>): NadleCLIOptions {
-		const resolvedOptions = {};
+		const { tasks = [], ...rest } = argv;
+		const resolvedOptions = { tasks };
 
-		for (const [key, value] of Object.entries(argv)) {
+		for (const [key, value] of Object.entries(rest)) {
 			const transformedArg = transformer({ key, value });
 
 			if (transformedArg) {

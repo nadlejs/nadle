@@ -33,7 +33,7 @@ export class DefaultLogger implements Logger {
 	 * Initialize the logger with options.
 	 * @param options - Logger options.
 	 */
-	public init(options: LoggerOptions) {
+	public configure(options: LoggerOptions) {
 		const { logLevel = "log", isWorkerThread = false } = options;
 		this.consola.level = LogLevels[logLevel];
 
@@ -43,7 +43,7 @@ export class DefaultLogger implements Logger {
 
 		if (!isWorkerThread) {
 			this.debug(
-				`Initialized logger with Consola reporters: [${this.consola.options.reporters.map((reporter) => reporter.constructor.name).join(", ")}]`
+				`Configured logger with Consola reporters: [${this.consola.options.reporters.map((reporter) => reporter.constructor.name).join(", ")}]`
 			);
 		}
 	}
@@ -72,7 +72,7 @@ export class DefaultLogger implements Logger {
 	 */
 	public throw(message: string): never {
 		this.error(message);
-		throw message;
+		throw new Error(message);
 	}
 
 	/**

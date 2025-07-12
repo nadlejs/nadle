@@ -44,6 +44,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	/** Clean the cache before running. */
 	readonly cleanCache?: boolean;
 
+	/** List of tasks to execute. */
+	readonly tasks: string[];
 	/** List of tasks to exclude from execution. */
 	readonly excludedTasks?: string[];
 }

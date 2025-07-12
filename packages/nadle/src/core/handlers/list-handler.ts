@@ -16,7 +16,7 @@ export class ListHandler extends BaseHandler {
 	}
 
 	public handle() {
-		if (this.nadle.taskRegistry.getAll().length === 0) {
+		if (this.nadle.taskRegistry.tasks.length === 0) {
 			this.nadle.logger.log("No tasks found");
 
 			return;
@@ -50,7 +50,7 @@ export class ListHandler extends BaseHandler {
 	private computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
-		for (const task of this.nadle.taskRegistry.getAll()) {
+		for (const task of this.nadle.taskRegistry.tasks) {
 			const { description, group = ListHandler.UncategorizedGroup } = task.configResolver();
 
 			tasksByGroup[group] ??= [];

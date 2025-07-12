@@ -4,66 +4,46 @@ exports[`when passing unknown tasks > should throw error with suggestions if fin
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts boot
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.unknown.ts
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
+Error: Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
+    {stackTrace...}
+    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
+    {stackTrace...}
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks 2`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts build
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.unknown.ts
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
+Error: Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
+    {stackTrace...}
+    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
+    {stackTrace...}
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks 3`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts compile
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.unknown.ts
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
+Error: Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
+    {stackTrace...}
+    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
+    {stackTrace...}
 `;
 
 exports[`when passing unknown tasks > should throw error without any suggestions if not find any similar tasks 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts unknown
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.unknown.ts
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
+Error: Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
+    {stackTrace...}
+    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
+    {stackTrace...}
 `;
