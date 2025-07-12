@@ -1,8 +1,8 @@
 import { taskRegistry } from "./task-registry.js";
 import type { Task, RunnerContext } from "../interfaces/task.js";
+import { type RegisteredTask } from "../interfaces/registered-task.js";
 import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
 import type { TaskConfiguration } from "../interfaces/task-configuration.js";
-import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 
 /**
  * The main API for registering tasks in Nadle.
@@ -75,11 +75,7 @@ export const tasks: TasksAPI = {
 		const register = () => {
 			taskRegistry.register({
 				name,
-				status: TaskStatus.Registered,
-				timing: { duration: null, startTime: null },
-				configResolver: () => {
-					return typeof configCollector === "function" ? configCollector() : configCollector;
-				},
+				configResolver: () => (typeof configCollector === "function" ? configCollector() : configCollector),
 				...computeTaskInfo(task, optionsResolver)
 			});
 		};

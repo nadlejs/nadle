@@ -68,7 +68,11 @@ export class TaskPool {
 				throw new Error(`Unknown execute type: ${executeType}`);
 			}
 		} catch (error) {
-			if (error instanceof Error && error.message === TERMINATING_WORKER_ERROR && task.status === TaskStatus.Running) {
+			if (
+				error instanceof Error &&
+				error.message === TERMINATING_WORKER_ERROR &&
+				this.nadle.executionTracker.getTaskStatus(task.id) === TaskStatus.Running
+			) {
 				await this.nadle.eventEmitter.onTaskCanceled(task);
 
 				return;
