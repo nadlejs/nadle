@@ -7,17 +7,20 @@ import { Nadle } from "../nadle.js";
 import { formatTime } from "../utilities/utils.js";
 import { type Listener } from "../interfaces/listener.js";
 import { StringBuilder } from "../utilities/string-builder.js";
-import type { TaskStats } from "../models/execution-tracker.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
+import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export class DefaultReporter implements Listener {
 	private renderer = new DefaultRenderer();
+	private tracker: ExecutionTracker;
 
-	public constructor(private readonly nadle: Nadle) {}
+	public constructor(private readonly nadle: Nadle) {
+		this.tracker = this.nadle.executionTracker;
+	}
 
 	public init() {
 		this.renderer = this.nadle.options.footer
@@ -38,17 +41,15 @@ export class DefaultReporter implements Listener {
 			return footer;
 		}
 
-		const doneTask = this.taskStats[TaskStatus.Finished] + this.taskStats[TaskStatus.FromCache] + this.taskStats[TaskStatus.UpToDate];
+		const doneTask = this.stats[TaskStatus.Finished] + this.stats[TaskStatus.FromCache] + this.stats[TaskStatus.UpToDate];
 
 		const stats = [
-			c.cyanBright(
-				`${this.taskStats[TaskStatus.Scheduled] - this.taskStats[TaskStatus.Running] - this.taskStats[TaskStatus.Failed] - doneTask} pending`
-			),
-			c.yellow(`${this.taskStats[TaskStatus.Running]} running`),
-			c.green(`${this.taskStats[TaskStatus.Finished]} done`)
+			c.cyanBright(`${this.stats[TaskStatus.Scheduled] - this.stats[TaskStatus.Running] - this.stats[TaskStatus.Failed] - doneTask} pending`),
+			c.yellow(`${this.stats[TaskStatus.Running]} running`),
+			c.green(`${this.stats[TaskStatus.Finished]} done`)
 		].join(` ${c.gray(VERTICAL_BAR)} `);
 
-		footer.push([this.printLabel("Tasks"), stats, c.dim(`(${this.taskStats[TaskStatus.Scheduled]} scheduled)`)].join(" "));
+		footer.push([this.printLabel("Tasks"), stats, c.dim(`(${this.stats[TaskStatus.Scheduled]} scheduled)`)].join(" "));
 		footer.push([this.printLabel("Duration"), formatTime(this.duration)].join(" "));
 
 		footer.push(...this.printRunningTasks());
@@ -61,18 +62,18 @@ export class DefaultReporter implements Listener {
 	private printRunningTasks() {
 		const lines = Array.from({ length: this.nadle.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
 
-		let maxWorkerId = 0;
+		let maxThreadId = 0;
 
-		for (const runningTask of this.nadle.taskRegistry
-			.getAll()
-			.filter((task) => this.nadle.executionTracker.getTaskStatus(task.id) === TaskStatus.Running)) {
-			const workerId = this.nadle.executionTracker.threadIdPerWorker[runningTask.id];
+		for (const { label, threadId } of this.tracker.getTaskStateByStatus(TaskStatus.Running)) {
+			if (threadId === null) {
+				throw new Error(`Task ${label} is running but has no worker ID assigned.`);
+			}
 
-			lines[workerId - 1] = ` ${c.yellow(">")} :${c.bold(runningTask.id)}`;
-			maxWorkerId = Math.max(maxWorkerId, workerId);
+			lines[threadId - 1] = ` ${c.yellow(">")} ${c.bold(label)}`;
+			maxThreadId = Math.max(maxThreadId, threadId);
 		}
 
-		return lines.slice(0, maxWorkerId);
+		return lines.slice(0, maxThreadId);
 	}
 
 	public async onTaskStart(task: RegisteredTask) {
@@ -82,7 +83,7 @@ export class DefaultReporter implements Listener {
 
 	public async onTaskFinish(task: RegisteredTask) {
 		this.nadle.logger.log(
-			`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(this.nadle.executionTracker.getTaskState(task.id).duration ?? 0))}`
+			`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(this.tracker.getTaskState(task.id).duration ?? 0))}`
 		);
 		this.renderer.schedule();
 	}
@@ -99,7 +100,7 @@ export class DefaultReporter implements Listener {
 
 	public async onTaskFailed(task: RegisteredTask) {
 		this.nadle.logger.log(
-			`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(this.nadle.executionTracker.getTaskState(task.id).duration ?? 0)}`
+			`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(this.tracker.getTaskState(task.id).duration ?? 0)}`
 		);
 		this.renderer.schedule();
 	}
@@ -146,7 +147,7 @@ export class DefaultReporter implements Listener {
 				renderProfilingSummary({
 					totalDuration: this.duration,
 					tasks: this.nadle.taskRegistry.getAll().flatMap((task) => {
-						const { status, duration } = this.nadle.executionTracker.getTaskState(task.id);
+						const { status, duration } = this.tracker.getTaskState(task.id);
 
 						if (status !== TaskStatus.Finished) {
 							return [];
@@ -163,9 +164,9 @@ export class DefaultReporter implements Listener {
 		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))}`);
 		this.nadle.logger.log(
 			new StringBuilder()
-				.add(`${print(this.taskStats[TaskStatus.Finished])} executed`)
-				.add(this.taskStats[TaskStatus.UpToDate] > 0 && `${print(this.taskStats[TaskStatus.UpToDate])} up-to-date`)
-				.add(this.taskStats[TaskStatus.FromCache] > 0 && `${print(this.taskStats[TaskStatus.FromCache])} restored from cache`)
+				.add(`${print(this.stats[TaskStatus.Finished])} executed`)
+				.add(this.stats[TaskStatus.UpToDate] > 0 && `${print(this.stats[TaskStatus.UpToDate])} up-to-date`)
+				.add(this.stats[TaskStatus.FromCache] > 0 && `${print(this.stats[TaskStatus.FromCache])} restored from cache`)
 				.build()
 		);
 	}
@@ -174,8 +175,8 @@ export class DefaultReporter implements Listener {
 		this.renderer.finish();
 		this.nadle.logger.info("Execution failed");
 
-		const finishedTasks = `${c.bold(this.taskStats[TaskStatus.Finished])} task${this.taskStats[TaskStatus.Finished] > 1 ? "s" : ""}`;
-		const failedTasks = `${c.bold(this.taskStats[TaskStatus.Failed])} task${this.taskStats[TaskStatus.Failed] > 1 ? "s" : ""}`;
+		const finishedTasks = `${c.bold(this.stats[TaskStatus.Finished])} task${this.stats[TaskStatus.Finished] > 1 ? "s" : ""}`;
+		const failedTasks = `${c.bold(this.stats[TaskStatus.Failed])} task${this.stats[TaskStatus.Failed] > 1 ? "s" : ""}`;
 
 		this.nadle.logger.log(
 			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
@@ -190,10 +191,10 @@ export class DefaultReporter implements Listener {
 		}
 	}
 
-	private get taskStats(): TaskStats {
-		return this.nadle.executionTracker.taskStats;
+	private get stats(): TaskStats {
+		return this.tracker.taskStats;
 	}
 	private get duration(): number {
-		return this.nadle.executionTracker.duration;
+		return this.tracker.duration;
 	}
 }
