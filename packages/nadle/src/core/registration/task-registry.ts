@@ -1,15 +1,12 @@
-import Perf from "node:perf_hooks";
-
 import c from "tinyrainbow";
 
 import { Project } from "../models/project/project.js";
-import { type Listener } from "../interfaces/listener.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
-import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
+import { type RegisteredTask } from "../interfaces/registered-task.js";
 
 interface BufferedTask extends Omit<RegisteredTask, "label"> {}
 
-export class TaskRegistry implements Listener {
+export class TaskRegistry {
 	private readonly registry = new Map<TaskIdentifier, RegisteredTask>();
 	/**
 	 * The id of the workspace where tasks are registering.
@@ -97,54 +94,6 @@ export class TaskRegistry implements Listener {
 		}
 
 		return task;
-	}
-
-	public onTaskStart(task: RegisteredTask) {
-		this.updateTask(task, { startTime: true, status: TaskStatus.Running });
-	}
-
-	public onTaskFinish(task: RegisteredTask) {
-		this.updateTask(task, { duration: true, status: TaskStatus.Failed });
-	}
-
-	public onTaskUpToDate(task: RegisteredTask) {
-		this.updateTask(task, { status: TaskStatus.UpToDate });
-	}
-
-	public onTaskRestoreFromCache(task: RegisteredTask) {
-		this.updateTask(task, { status: TaskStatus.FromCache });
-	}
-
-	public onTaskFailed(task: RegisteredTask) {
-		this.updateTask(task, { duration: true, status: TaskStatus.Failed });
-	}
-
-	public onTaskCanceled(task: RegisteredTask) {
-		this.updateTask(task, { status: TaskStatus.Canceled });
-	}
-
-	public onTasksScheduled(tasks: RegisteredTask[]) {
-		for (const task of tasks) {
-			this.updateTask(task, { status: TaskStatus.Scheduled });
-		}
-	}
-
-	private updateTask(task: RegisteredTask, payload: Partial<{ duration: true; startTime: true; status: TaskStatus }>) {
-		if (payload.status !== undefined) {
-			task.status = payload.status;
-		}
-
-		if (payload.startTime === true) {
-			task.timing.startTime = Perf.performance.now();
-		}
-
-		if (payload.duration == true) {
-			if (task.timing.startTime === null) {
-				throw new Error(`Task ${c.bold(task.id)} was not started properly`);
-			}
-
-			task.timing.duration = Perf.performance.now() - task.timing.startTime;
-		}
 	}
 }
 

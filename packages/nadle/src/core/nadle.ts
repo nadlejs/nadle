@@ -9,6 +9,7 @@ import { type FileReader } from "./interfaces/file-reader.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { ProjectResolver } from "./options/project-resolver.js";
+import { ExecutionTracker } from "./models/execution-tracker.js";
 import { type TaskIdentifier } from "./models/task-identifier.js";
 import { RootWorkspace } from "./models/project/root-workspace.js";
 import { TaskInputResolver } from "./options/task-input-resolver.js";
@@ -23,7 +24,8 @@ export class Nadle implements Listener {
 	public readonly logger = new DefaultLogger();
 	public readonly taskRegistry = taskRegistry;
 	public readonly taskScheduler = new TaskScheduler(this);
-	public readonly eventEmitter = new EventEmitter([taskRegistry, new DefaultReporter(this)]);
+	public readonly executionTracker = new ExecutionTracker();
+	public readonly eventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
 
 	private readonly fileReader: FileReader = new DefaultFileReader();
 	private readonly fileOptionRegistry = fileOptionRegistry;
