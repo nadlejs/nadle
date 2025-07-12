@@ -43,7 +43,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
 }
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
-[info] Resolved tasks: [  ]
 [log] {
   "cache": true,
   "footer": false,

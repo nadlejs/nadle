@@ -41,7 +41,9 @@ const config = {
 		"./packages/docs/**",
 		".github/workflows/**",
 		"./packages/**/package.json",
-		"packages/nadle/test/resolve-task.test.ts"
+		"packages/nadle/test/unit/task-input-resolver.test.ts",
+		"packages/nadle/test/features/workspaces/tasks.test.ts",
+		"packages/nadle/test/__snapshots__/features/workspaces/tasks.test.ts.snap"
 	]
 };
 

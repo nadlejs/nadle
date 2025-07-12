@@ -17,3 +17,7 @@ tasks
 		console.log("Build project successfully!");
 	})
 	.config({ dependsOn: ["check", "shared:types:build"] });
+
+tasks.register("deploy", () => {
+	console.log("Deploy project successfully!");
+});
