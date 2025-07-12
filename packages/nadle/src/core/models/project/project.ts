@@ -1,10 +1,10 @@
-import c from "tinyrainbow";
 import { sortBy } from "lodash-es";
 import { type Packages } from "@manypkg/tools";
 
 import { Workspace } from "./workspace.js";
 import { AliasResolver } from "./alias-resolver.js";
 import { RootWorkspace } from "./root-workspace.js";
+import { Messages } from "../../utilities/messages.js";
 import { type AliasOption } from "../../options/types.js";
 
 export interface Project {
@@ -38,9 +38,12 @@ export namespace Project {
 
 		if (!workspace) {
 			throw new Error(
-				`Workspace ${c.bold(workspaceInput)} not found. Available workspaces: ${getAllWorkspaces(project)
-					.map((ws) => c.bold(ws.id))
-					.join(", ")}`
+				Messages.WorkspaceNotFound(
+					workspaceInput,
+					getAllWorkspaces(project)
+						.map(({ label }) => label)
+						.join(", ")
+				)
 			);
 		}
 
@@ -52,9 +55,12 @@ export namespace Project {
 
 		if (!workspace) {
 			throw new Error(
-				`Workspace with id ${c.bold(workspaceId)} not found. Available workspaces: ${getAllWorkspaces(project)
-					.map((ws) => c.bold(ws.id))
-					.join(", ")}`
+				Messages.WorkspaceIdNotFound(
+					workspaceId,
+					getAllWorkspaces(project)
+						.map(({ id }) => id)
+						.join(", ")
+				)
 			);
 		}
 
@@ -82,25 +88,21 @@ export namespace Project {
 
 		for (const workspace of workspaces) {
 			if (workspace.label === "" && !RootWorkspace.isRootWorkspaceId(workspace.id)) {
-				throw new Error(`Workspace ${workspace.id} alias can not be empty.`);
+				throw new Error(Messages.EmptyWorkspaceLabel(workspace.id));
 			}
 
 			const otherWorkspaces = getOtherWorkspaces(workspace.id);
 			const sharedLabelWorkspace = otherWorkspaces.find((otherWorkspace) => otherWorkspace.label === workspace.label);
 
 			if (sharedLabelWorkspace) {
-				throw new Error(
-					`Workspace ${c.yellow(workspace.id)} has a duplicated label ${c.yellow(workspace.label)} with workspace ${c.yellow(sharedLabelWorkspace.id)}. Please check the alias configuration in the configuration file.`
-				);
+				throw new Error(Messages.DuplicatedWorkspaceLabelWithOtherLabel(workspace.id, workspace.label, sharedLabelWorkspace.id));
 			}
 
 			// Check if the label is same as other workspace's id
 			const sharedIdWorkspace = otherWorkspaces.find((otherWorkspace) => otherWorkspace.id === workspace.label);
 
 			if (sharedIdWorkspace) {
-				throw new Error(
-					`Workspace ${c.yellow(workspace.id)} has a label ${c.yellow(workspace.label)} that is the same as workspace ${sharedIdWorkspace.id}'s id. Please check the alias configuration in the configuration file.`
-				);
+				throw new Error(Messages.DuplicatedWorkspaceLabelWithOtherId(workspace.id, workspace.label, sharedIdWorkspace.id));
 			}
 		}
 	}

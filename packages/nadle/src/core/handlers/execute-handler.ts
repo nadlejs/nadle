@@ -1,5 +1,6 @@
 import { BaseHandler } from "./base-handler.js";
 import { TaskPool } from "../engine/task-pool.js";
+import { Messages } from "../utilities/messages.js";
 import { renderTaskSelection } from "../views/tasks-selection.js";
 
 export class ExecuteHandler extends BaseHandler {
@@ -17,7 +18,7 @@ export class ExecuteHandler extends BaseHandler {
 			chosenTasks = await renderTaskSelection(this.nadle.taskRegistry);
 
 			if (chosenTasks.length === 0) {
-				this.nadle.printNoTasksSpecified();
+				this.nadle.logger.log(Messages.NoTasksFound());
 
 				return;
 			}

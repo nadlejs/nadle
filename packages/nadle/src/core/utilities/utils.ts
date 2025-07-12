@@ -1,5 +1,7 @@
 import Path from "node:path";
 
+import c from "tinyrainbow";
+
 import { DOT } from "./constants.js";
 
 export function noop() {}
@@ -69,4 +71,8 @@ export function bindObject<T, K extends keyof T>(obj: T, keys: K[]): { [P in K]:
 			return [key, value.bind(obj)];
 		})
 	) as any;
+}
+
+export function highlight(text: string): string {
+	return c.bold(c.yellow(text));
 }

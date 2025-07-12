@@ -1,5 +1,3 @@
-import c from "tinyrainbow";
-
 import { Project } from "../models/project/project.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
@@ -11,7 +9,7 @@ export class TaskRegistry {
 	/**
 	 * The id of the workspace where tasks are registering.
 	 */
-	private workspaceId: string | null = null;
+	public workspaceId: string | null = null;
 	private readonly buffer = new Map<TaskIdentifier, BufferedTask>();
 
 	#project: Project | null = null;
@@ -35,7 +33,7 @@ export class TaskRegistry {
 
 	private get project(): Project {
 		if (this.#project === null) {
-			throw new Error("Project is not configured. Please call configureProject() before using the registry.");
+			throw new Error("Project is not configured yet.");
 		}
 
 		return this.#project;
@@ -43,7 +41,7 @@ export class TaskRegistry {
 
 	public register(task: Omit<RegisteredTask, "id" | "label" | "workspaceId">) {
 		if (this.workspaceId === null) {
-			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
+			throw new Error("Working directory is not set.");
 		}
 
 		const id = TaskIdentifier.create(this.workspaceId, task.name);
@@ -53,7 +51,7 @@ export class TaskRegistry {
 
 	public has(taskName: string) {
 		if (this.workspaceId === null) {
-			throw new Error("Working directory is not set. Please call updateWorkingDir() before registering tasks.");
+			throw new Error("Working directory is not set.");
 		}
 
 		return this.buffer.has(TaskIdentifier.create(this.workspaceId, taskName));
@@ -80,7 +78,7 @@ export class TaskRegistry {
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
 		if (!this.registry.has(taskId) && options.strict) {
-			throw new Error(`Task ${c.bold(taskId)} not found`);
+			throw new Error(`Task ${taskId} not found`);
 		}
 
 		return taskId;
@@ -90,7 +88,7 @@ export class TaskRegistry {
 		const task = this.registry.get(taskId);
 
 		if (!task) {
-			throw new Error(`Task ${c.bold(taskId)} not found`);
+			throw new Error(`Task ${taskId} not found`);
 		}
 
 		return task;

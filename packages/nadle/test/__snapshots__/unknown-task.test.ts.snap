@@ -14,7 +14,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts b
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Task <Yellow><Bold>boot</BoldDim></Yellow> not found in <Yellow><Bold>root</BoldDim></Yellow> workspace.
+[error] Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks 2`] = `
@@ -31,7 +31,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts b
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Task <Yellow><Bold>build</BoldDim></Yellow> not found in <Yellow><Bold>root</BoldDim></Yellow> workspace. Did you mean <Yellow><Bold>buildDev</BoldDim></Yellow>?
+[error] Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks 3`] = `
@@ -48,7 +48,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts c
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Task <Yellow><Bold>compile</BoldDim></Yellow> not found in <Yellow><Bold>root</BoldDim></Yellow> workspace. Did you mean <Yellow><Bold>compileTs</BoldDim></Yellow>, <Yellow><Bold>compileJs</BoldDim></Yellow>, or <Yellow><Bold>compileCss</BoldDim></Yellow>?
+[error] Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
 `;
 
 exports[`when passing unknown tasks > should throw error without any suggestions if not find any similar tasks 1`] = `
@@ -65,5 +65,5 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts u
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Task <Yellow><Bold>unknown</BoldDim></Yellow> not found in <Yellow><Bold>root</BoldDim></Yellow> workspace.
+[error] Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
 `;

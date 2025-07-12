@@ -10,7 +10,11 @@ const defaultLogger: Logger = {
 	warn: vi.fn(),
 	debug: vi.fn(),
 	error: vi.fn(),
-	getColumns: vi.fn()
+	getColumns: vi.fn(),
+	throw: (message: string) => {
+		vi.fn();
+		throw new Error(message);
+	}
 };
 
 const project: Project = {

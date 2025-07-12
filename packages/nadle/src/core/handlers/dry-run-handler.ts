@@ -1,6 +1,7 @@
 import c from "tinyrainbow";
 
 import { BaseHandler } from "./base-handler.js";
+import { Messages } from "../utilities/messages.js";
 
 export class DryRunHandler extends BaseHandler {
 	public readonly name = "dry-run";
@@ -12,7 +13,7 @@ export class DryRunHandler extends BaseHandler {
 
 	public handle() {
 		if (this.nadle.resolvedTasks.length === 0) {
-			this.nadle.printNoTasksSpecified();
+			this.nadle.logger.log(Messages.NoTasksFound());
 
 			return;
 		}

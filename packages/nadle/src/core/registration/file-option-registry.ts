@@ -1,3 +1,4 @@
+import { Messages } from "../utilities/messages.js";
 import { type NadleFileOptions } from "../options/types.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
 
@@ -11,11 +12,11 @@ class FileOptionRegistry {
 
 	public register(options: NadleFileOptions) {
 		if (this.workspaceId === null) {
-			throw new Error("Working directory is not set. Please call updateWorkspace() before registering file options.");
+			throw new Error("Working directory is not set");
 		}
 
 		if (!RootWorkspace.isRootWorkspaceId(this.workspaceId)) {
-			throw new Error("File options can only be registered in the root workspace.");
+			throw new Error(Messages.InvalidConfigureUsage());
 		}
 
 		this.registry.set(this.workspaceId, options);
@@ -23,7 +24,7 @@ class FileOptionRegistry {
 
 	public get(workspaceId: string): NadleFileOptions {
 		if (!RootWorkspace.isRootWorkspaceId(workspaceId)) {
-			throw new Error("File options can only be retrieved from the root workspace.");
+			throw new Error(Messages.InvalidConfigureUsage());
 		}
 
 		return this.registry.get(workspaceId) ?? {};

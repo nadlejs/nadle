@@ -18,8 +18,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 [log] <Bold>-----------</BoldDim>
 [log] <Green>copy</Green>
 [log]
-[log] <Bold>Unnamed tasks</BoldDim>
-[log] <Bold>-------------</BoldDim>
+[log] <Bold>Uncategorized tasks</BoldDim>
+[log] <Bold>-------------------</BoldDim>
 [log] <Green>prepare</Green>
 [log] <Green>throwable</Green>
 [log]

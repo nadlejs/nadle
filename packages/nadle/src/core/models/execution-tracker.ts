@@ -1,7 +1,5 @@
 import Perf from "node:perf_hooks";
 
-import c from "tinyrainbow";
-
 import { type Listener } from "../interfaces/listener.js";
 import { type TaskIdentifier } from "./task-identifier.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
@@ -137,7 +135,7 @@ export class ExecutionTracker implements Listener {
 
 		if (payload.duration == true) {
 			if (taskState.startTime === null) {
-				throw new Error(`Task ${c.bold(task.label)} was not started properly`);
+				throw new Error(`Task ${task.label} was not started properly`);
 			}
 
 			taskState.duration = Perf.performance.now() - taskState.startTime;

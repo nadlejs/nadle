@@ -87,7 +87,7 @@ export class Nadle implements Listener {
 
 	public get options(): NadleResolvedOptions {
 		if (this.#options === undefined) {
-			throw new Error("Nadle options are not initialized. Please call init() before accessing options.");
+			throw new Error("Nadle options are not initialized yet.");
 		}
 
 		return this.#options;
@@ -98,9 +98,5 @@ export class Nadle implements Listener {
 		this.fileOptionRegistry.onInitializeWorkspace(workspaceId);
 
 		await this.fileReader.read(configFilePath);
-	}
-
-	public printNoTasksSpecified() {
-		this.logger.log("No tasks were specified. Please specify one or more tasks to execute, or use the --list option to view available tasks.");
 	}
 }

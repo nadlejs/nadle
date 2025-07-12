@@ -1,6 +1,6 @@
-import c from "tinyrainbow";
-
 import { type Nadle } from "../nadle.js";
+import { highlight } from "../utilities/utils.js";
+import { Messages } from "../utilities/messages.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
@@ -72,9 +72,7 @@ export class TaskScheduler {
 			const startTaskIndex = paths.indexOf(dependency);
 
 			if (startTaskIndex !== -1) {
-				const cyclePath = [...paths.slice(startTaskIndex), dependency].map(c.bold).join(` ${RIGHT_ARROW} `);
-				this.nadle.logger.error(`Cycle detected: ${cyclePath}`);
-				throw new Error(`Cycle detected: ${cyclePath}`);
+				this.nadle.logger.throw(Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `)));
 			}
 
 			this.detectCycle(dependency, [...paths, dependency]);
@@ -159,9 +157,7 @@ export class TaskScheduler {
 			let indegree = this.indegree.get(dependentTask);
 
 			if (indegree === 0) {
-				const message = `Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${doneTaskId}`;
-				this.nadle.logger.error(message);
-				throw new Error(message);
+				throw new Error(`Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${doneTaskId}`);
 			}
 
 			this.indegree.set(dependentTask, --indegree);

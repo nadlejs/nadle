@@ -36,6 +36,13 @@ export interface Logger {
 	debug(message: InputLogObject | string, ...args: unknown[]): void;
 
 	/**
+	 * Throw an error with a message.
+	 * @param message - The message or log object.
+	 * @param args - Additional arguments.
+	 */
+	throw(message: InputLogObject | string, ...args: unknown[]): never;
+
+	/**
 	 * Get the number of columns in the output stream.
 	 * @returns Number of columns, or 80 if unavailable.
 	 */

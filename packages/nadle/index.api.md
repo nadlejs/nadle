@@ -82,6 +82,7 @@ export interface Logger {
     getColumns(): number;
     info(message: InputLogObject | string, ...args: unknown[]): void;
     log(message: InputLogObject | string, ...args: unknown[]): void;
+    throw(message: InputLogObject | string, ...args: unknown[]): never;
     warn(message: InputLogObject | string, ...args: unknown[]): void;
 }
 
