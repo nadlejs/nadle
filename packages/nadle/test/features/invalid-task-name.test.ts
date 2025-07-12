@@ -19,7 +19,7 @@ const testCases = [
 describe.each(testCases)("when the task name $description", ({ task, config }) => {
 	it("should throw invalid task name error", async () => {
 		await expect(getStderr(createExec({ cwd, config })``)).resolves.toContain(
-			`Invalid task name "${task}". Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
+			`Invalid task name: [${task}]. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
 		);
 	});
 });

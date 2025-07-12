@@ -9,8 +9,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
-[log] <Bold>Unnamed tasks</BoldDim>
-[log] <Bold>-------------</BoldDim>
+[log] <Bold>Uncategorized tasks</BoldDim>
+[log] <Bold>-------------------</BoldDim>
 [log] <Green>backend:build</Green>
 [log] <Green>frontend:build</Green>
 [log] <Green>frontend:check</Green>
@@ -244,7 +244,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer api:build
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] Resolved tasks:
-    <Yellow><Bold>api:build</BoldDim></Yellow>  → <Green><Bold>shared:api:build</BoldDim></Green>
+    <Bold><Yellow>api:build</Yellow></BoldDim>  → <Green><Bold>shared:api:build</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -271,8 +271,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer biuld backend:biuld deplyo
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] Resolved tasks:
-    <Yellow><Bold>backend:biuld</BoldDim></Yellow>  → <Green><Bold>backend:build</BoldDim></Green>
-    <Yellow><Bold>deplyo       </BoldDim></Yellow>  → <Green><Bold>root:deploy</BoldDim></Green>
+    <Bold><Yellow>backend:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+    <Bold><Yellow>deplyo       </Yellow></BoldDim>  → <Green><Bold>root:deploy</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -319,7 +319,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fronte:build backe:biuld
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] Resolved tasks:
-    <Yellow><Bold>backe:biuld</BoldDim></Yellow>  → <Green><Bold>backend:build</BoldDim></Green>
+    <Bold><Yellow>backe:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -365,7 +365,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer prepare
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Task <Yellow><Bold>prepare</BoldDim></Yellow> not found in <Yellow><Bold>frontend</BoldDim></Yellow> nor <Yellow><Bold>root</BoldDim></Yellow> workspace.
+[error] Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
 `;
 
 exports[`workspaces tasks > task resolvation 4`] = `
@@ -382,7 +382,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer unknown:build
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Workspace <Yellow><Bold>unknown</BoldDim></Yellow> not found.
+[error] Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
 `;
 
 exports[`workspaces tasks > task resolvation 5`] = `
@@ -399,5 +399,5 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer end:build
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Workspace <Yellow><Bold>end</BoldDim></Yellow> not found. Did you mean <Yellow><Bold>api</BoldDim></Yellow>?
+[error] Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
 `;

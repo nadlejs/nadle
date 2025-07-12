@@ -1,13 +1,13 @@
 import c from "tinyrainbow";
 import { uniq } from "lodash-es";
 
+import { highlight } from "../utilities/utils.js";
+import { Messages } from "../utilities/messages.js";
 import { suggest } from "../utilities/suggestion.js";
 import { type Logger } from "../interfaces/logger.js";
 import { Project } from "../models/project/project.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
-
-const yellowBold = (text: string) => c.yellow(c.bold(text));
 
 export class TaskInputResolver {
 	public constructor(
@@ -53,7 +53,7 @@ export class TaskInputResolver {
 				`Resolved tasks:\n`,
 				...resolveTaskPairs.map(
 					({ resolved, original }) =>
-						`${" ".repeat(4)}${yellowBold(original?.padEnd(maxOriginTaskLength, " "))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
+						`${" ".repeat(4)}${highlight(original?.padEnd(maxOriginTaskLength, " "))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
 				)
 			].join("");
 			this.logger.log(message);
@@ -81,18 +81,14 @@ export class TaskInputResolver {
 			}
 		}
 
-		const message = `Task ${yellowBold(taskNameInput)} not found in ${yellowBold(targetWorkspaceId)}${fallbackWorkspaceId ? ` nor ${yellowBold(fallbackWorkspaceId)}` : ""} workspace.${formatSuggestions(resolvedTask.suggestions)}`;
-		this.logger.error(message);
-		throw new Error(message);
+		this.logger.throw(Messages.UnresolvedTask(taskNameInput, targetWorkspaceId, fallbackWorkspaceId, formatSuggestions(resolvedTask.suggestions)));
 	}
 
 	private resolveWorkspace(workspaceInput: string, workspaceLabels: string[]): string {
 		const suggestedWorkspace = suggest(workspaceInput, workspaceLabels, this.logger);
 
 		if (suggestedWorkspace.result === undefined) {
-			const message = `Workspace ${c.yellow(c.bold(workspaceInput))} not found.${formatSuggestions(suggestedWorkspace.suggestions)}`;
-			this.logger.error(message);
-			throw new Error(message);
+			this.logger.throw(Messages.UnresolvedWorkspace(workspaceInput, formatSuggestions(suggestedWorkspace.suggestions)));
 		}
 
 		return suggestedWorkspace.result;
@@ -104,7 +100,7 @@ function formatSuggestions(suggestions: string[]): string {
 		return "";
 	}
 
-	const formattedSuggestions = suggestions.map(yellowBold);
+	const formattedSuggestions = suggestions.map(highlight);
 
 	let displayNames;
 
@@ -116,5 +112,5 @@ function formatSuggestions(suggestions: string[]): string {
 		displayNames = `${formattedSuggestions.slice(0, -1).join(", ")}, or ${formattedSuggestions.at(-1)}`;
 	}
 
-	return ` Did you mean ${displayNames}?`;
+	return `Did you mean ${displayNames}?`;
 }

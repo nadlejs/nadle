@@ -32,7 +32,19 @@ function extractLibraryNames() {
 const config = {
 	language: "en",
 	ignoreWords: ["Hoang"],
-	words: ["Cancelation", "SCROLLBACK", "Vitest", "indegree", "nodir", "npmjs", "softwareTerms", "Sonarqube", "Workspaced", ...extractLibraryNames()],
+	words: [
+		"Cancelation",
+		"SCROLLBACK",
+		"Vitest",
+		"indegree",
+		"nodir",
+		"npmjs",
+		"softwareTerms",
+		"Sonarqube",
+		"Workspaced",
+		"Uncategorized",
+		...extractLibraryNames()
+	],
 	ignorePaths: [
 		"**/lib",
 		"**/*.svg",

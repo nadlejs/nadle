@@ -14,7 +14,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.cycle.ts cyc
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Cycle detected: <Bold>root:cycle-8</BoldDim> → <Bold>root:cycle-8</BoldDim>
+[error] Cycle detected in task <Bold><Yellow>root:cycle-8</Yellow></BoldDim> → <Bold><Yellow>root:cycle-8</Yellow></BoldDim>. Please resolve the cycle before executing tasks.
 `;
 
 exports[`detect cycle > should detect 2-tasks-cycle 1`] = `
@@ -31,7 +31,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.cycle.ts cyc
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Cycle detected: <Bold>root:cycle-6</BoldDim> → <Bold>root:cycle-7</BoldDim> → <Bold>root:cycle-6</BoldDim>
+[error] Cycle detected in task <Bold><Yellow>root:cycle-6</Yellow></BoldDim> → <Bold><Yellow>root:cycle-7</Yellow></BoldDim> → <Bold><Yellow>root:cycle-6</Yellow></BoldDim>. Please resolve the cycle before executing tasks.
 `;
 
 exports[`detect cycle > should detect 2-tasks-cycle 2`] = `
@@ -48,7 +48,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.cycle.ts cyc
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Cycle detected: <Bold>root:cycle-7</BoldDim> → <Bold>root:cycle-6</BoldDim> → <Bold>root:cycle-7</BoldDim>
+[error] Cycle detected in task <Bold><Yellow>root:cycle-7</Yellow></BoldDim> → <Bold><Yellow>root:cycle-6</Yellow></BoldDim> → <Bold><Yellow>root:cycle-7</Yellow></BoldDim>. Please resolve the cycle before executing tasks.
 `;
 
 exports[`detect cycle > should detect cycle from a task inside the cycle 1`] = `
@@ -65,7 +65,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.cycle.ts cyc
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Cycle detected: <Bold>root:cycle-2</BoldDim> → <Bold>root:cycle-3</BoldDim> → <Bold>root:cycle-4</BoldDim> → <Bold>root:cycle-5</BoldDim> → <Bold>root:cycle-2</BoldDim>
+[error] Cycle detected in task <Bold><Yellow>root:cycle-2</Yellow></BoldDim> → <Bold><Yellow>root:cycle-3</Yellow></BoldDim> → <Bold><Yellow>root:cycle-4</Yellow></BoldDim> → <Bold><Yellow>root:cycle-5</Yellow></BoldDim> → <Bold><Yellow>root:cycle-2</Yellow></BoldDim>. Please resolve the cycle before executing tasks.
 `;
 
 exports[`detect cycle > should detect cycle from a task outside the cycle 1`] = `
@@ -82,7 +82,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.cycle.ts cyc
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Cycle detected: <Bold>root:cycle-2</BoldDim> → <Bold>root:cycle-3</BoldDim> → <Bold>root:cycle-4</BoldDim> → <Bold>root:cycle-5</BoldDim> → <Bold>root:cycle-2</BoldDim>
+[error] Cycle detected in task <Bold><Yellow>root:cycle-2</Yellow></BoldDim> → <Bold><Yellow>root:cycle-3</Yellow></BoldDim> → <Bold><Yellow>root:cycle-4</Yellow></BoldDim> → <Bold><Yellow>root:cycle-5</Yellow></BoldDim> → <Bold><Yellow>root:cycle-2</Yellow></BoldDim>. Please resolve the cycle before executing tasks.
 `;
 
 exports[`detect cycle > should print the cycle from the first reach task 1`] = `
@@ -99,5 +99,5 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.cycle.ts cyc
 [log]
 For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
-[error] Cycle detected: <Bold>root:cycle-4</BoldDim> → <Bold>root:cycle-5</BoldDim> → <Bold>root:cycle-2</BoldDim> → <Bold>root:cycle-3</BoldDim> → <Bold>root:cycle-4</BoldDim>
+[error] Cycle detected in task <Bold><Yellow>root:cycle-4</Yellow></BoldDim> → <Bold><Yellow>root:cycle-5</Yellow></BoldDim> → <Bold><Yellow>root:cycle-2</Yellow></BoldDim> → <Bold><Yellow>root:cycle-3</Yellow></BoldDim> → <Bold><Yellow>root:cycle-4</Yellow></BoldDim>. Please resolve the cycle before executing tasks.
 `;

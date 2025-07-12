@@ -1,4 +1,5 @@
 import { taskRegistry } from "./task-registry.js";
+import { Messages } from "../utilities/messages.js";
 import type { Task, RunnerContext } from "../interfaces/task.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
 import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
@@ -67,7 +68,7 @@ export const tasks: TasksAPI = {
 		validateTaskName(name);
 
 		if (taskRegistry.has(name)) {
-			throw new Error(`Task "${name}" already registered`);
+			throw new Error(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 
 		let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
@@ -109,8 +110,6 @@ function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Reso
 
 function validateTaskName(name: string): void {
 	if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?$/i.test(name)) {
-		throw new Error(
-			`Invalid task name "${name}". Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
-		);
+		throw new Error(Messages.InvalidTaskName(`[${name}]`));
 	}
 }

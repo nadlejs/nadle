@@ -6,10 +6,11 @@ import { findRoot } from "@manypkg/find-root";
 import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
 
 import type { NadlePackageJson } from "./types.js";
+import { Messages } from "../utilities/messages.js";
 import { Project } from "../models/project/project.js";
 import { readJson, isPathExists } from "../utilities/fs.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
-import { PACKAGE_JSON, CONFIG_FILE_PATTERN, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
+import { PACKAGE_JSON, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
@@ -126,7 +127,7 @@ export class ProjectResolver {
 			const resolvedConfigPath = Path.resolve(projectPath, rootConfigFilePath);
 
 			if (!(await isPathExists(resolvedConfigPath))) {
-				throw new Error(`Config file not found at ${resolvedConfigPath}. Please check the path.`);
+				throw new Error(Messages.SpecifiedConfigFileNotFound(resolvedConfigPath));
 			}
 
 			return resolvedConfigPath;
@@ -135,9 +136,7 @@ export class ProjectResolver {
 		const resolveConfigPath = await findUp(DEFAULT_CONFIG_FILE_NAMES, { cwd: projectPath });
 
 		if (!resolveConfigPath) {
-			throw new Error(
-				`No ${CONFIG_FILE_PATTERN}} found in ${projectPath} directory or parent directories. Please use --config to specify a custom path.`
-			);
+			throw new Error(Messages.ConfigFileNotFound(projectPath));
 		}
 
 		return resolveConfigPath;

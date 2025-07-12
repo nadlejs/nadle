@@ -2,6 +2,7 @@
 import { type Options } from "yargs";
 
 import { type NadleCLIOptions } from "./types.js";
+import { Messages } from "../utilities/messages.js";
 import { SupportLogLevels } from "../utilities/consola.js";
 import { CONFIG_FILE_PATTERN } from "../utilities/constants.js";
 
@@ -160,6 +161,6 @@ function createWorkerCoercer(type: "min" | "max") {
 			return workers;
 		}
 
-		throw new Error(`Invalid value for --${type}-workers. It should be an integer or a percentage (e.g., 50%).`);
+		throw new Error(Messages.InvalidWorkerConfig(type, workers));
 	};
 }

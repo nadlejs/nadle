@@ -32,7 +32,7 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 
 	const context: RunnerContext = {
 		workingDir,
-		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
+		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns", "throw"])
 	};
 	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
 

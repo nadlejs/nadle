@@ -9,7 +9,7 @@ export class ListHandler extends BaseHandler {
 	public readonly name = "list";
 	public readonly description = "Lists all registered tasks with their groups and descriptions.";
 
-	private static readonly UnnamedGroup = "Unnamed";
+	private static readonly UncategorizedGroup = "Uncategorized";
 
 	public canHandle(): boolean {
 		return this.nadle.options.list;
@@ -51,7 +51,7 @@ export class ListHandler extends BaseHandler {
 		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
 
 		for (const task of this.nadle.taskRegistry.getAll()) {
-			const { description, group = ListHandler.UnnamedGroup } = task.configResolver();
+			const { description, group = ListHandler.UncategorizedGroup } = task.configResolver();
 
 			tasksByGroup[group] ??= [];
 			tasksByGroup[group].push({ ...task, description });
@@ -59,11 +59,11 @@ export class ListHandler extends BaseHandler {
 
 		return Object.entries(tasksByGroup)
 			.sort(([firstGroupName], [secondGroupName]) => {
-				if (firstGroupName === ListHandler.UnnamedGroup) {
+				if (firstGroupName === ListHandler.UncategorizedGroup) {
 					return 1;
 				}
 
-				if (secondGroupName === ListHandler.UnnamedGroup) {
+				if (secondGroupName === ListHandler.UncategorizedGroup) {
 					return -1;
 				}
 
