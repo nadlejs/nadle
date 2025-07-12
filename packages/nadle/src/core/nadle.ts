@@ -19,7 +19,7 @@ import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js"
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle implements Listener {
-	public static readonly version: string = "0.4.0"; // x-release-please-version
+	public static readonly version: string = "0.5.0"; // x-release-please-version
 
 	public readonly logger = new DefaultLogger();
 	public readonly taskRegistry = taskRegistry;
