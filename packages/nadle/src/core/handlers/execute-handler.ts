@@ -24,7 +24,7 @@ export class ExecuteHandler extends BaseHandler {
 		}
 
 		const scheduler = this.nadle.taskScheduler.init(chosenTasks);
-		await this.nadle.onTasksScheduled(scheduler.scheduledTask);
+		await this.nadle.eventEmitter.onTasksScheduled(scheduler.scheduledTask.map((taskId) => this.nadle.taskRegistry.getById(taskId)));
 
 		await new TaskPool(this.nadle, (taskId) => scheduler.getReadyTasks(taskId)).run();
 	}

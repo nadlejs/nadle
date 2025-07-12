@@ -5,7 +5,7 @@ import { isCI, isTest } from "std-env";
 
 import { Nadle } from "../nadle.js";
 import { formatTime } from "../utilities/utils.js";
-import { type Awaitable } from "../utilities/types.js";
+import { type Listener } from "../interfaces/listener.js";
 import { StringBuilder } from "../utilities/string-builder.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
@@ -13,25 +13,9 @@ import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
-export interface Reporter {
-	onExecutionStart?: () => Awaitable<void>;
-	onExecutionFinish?: () => Awaitable<void>;
-	onExecutionFailed?: (error: any) => Awaitable<void>;
-
-	onTasksScheduled?: (tasks: string[]) => Awaitable<void>;
-	onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskCanceled?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskRestoreFromCache?: (task: RegisteredTask) => Awaitable<void>;
-	onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
-
-	init?: () => Awaitable<void>;
-}
-
 const DURATION_UPDATE_INTERVAL_MS = 100;
 
-export class DefaultReporter implements Reporter {
+export class DefaultReporter implements Listener {
 	private renderer = new DefaultRenderer();
 	private taskStat = {
 		failed: 0,
@@ -53,6 +37,8 @@ export class DefaultReporter implements Reporter {
 		this.renderer = this.nadle.options.footer
 			? new FooterRenderer({ logger: this.nadle.logger, getWindow: () => this.createFooter() })
 			: new DefaultRenderer();
+
+		return this;
 	}
 
 	private printLabel(label: string) {
@@ -136,8 +122,8 @@ export class DefaultReporter implements Reporter {
 		this.renderer.schedule();
 	}
 
-	public async onTasksScheduled(tasks: string[]) {
-		this.nadle.logger.info(`Scheduled tasks: ${tasks.join(", ")}`);
+	public async onTasksScheduled(tasks: RegisteredTask[]) {
+		this.nadle.logger.info(`Scheduled tasks: ${tasks.map((task) => task.id).join(", ")}`);
 		this.taskStat = { ...this.taskStat, scheduled: tasks.length };
 		this.renderer.schedule();
 	}
