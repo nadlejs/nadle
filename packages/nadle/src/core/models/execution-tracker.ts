@@ -10,14 +10,19 @@ const DURATION_UPDATE_INTERVAL_MS = 100;
 
 export type TaskStats = Record<Exclude<TaskStatus, TaskStatus.Registered>, number>;
 
-interface TaskState {
+interface TaskState extends Pick<RegisteredTask, "id" | "label"> {
 	/** Current status of the task. */
 	status: TaskStatus;
 	/** Duration of the task execution in milliseconds, or null if not finished. */
 	duration: number | null;
 	/** Start time of the task execution (epoch ms), or null if not started. */
 	startTime: number | null;
+
+	/** Thread ID where the task is running, or null if not applicable. */
+	threadId: number | null;
 }
+
+const defaultTaskState: TaskState = { id: "", label: "", duration: null, threadId: null, startTime: null, status: TaskStatus.Registered };
 
 export class ExecutionTracker implements Listener {
 	public taskStats: TaskStats = {
@@ -29,15 +34,17 @@ export class ExecutionTracker implements Listener {
 		[TaskStatus.FromCache]: 0,
 		[TaskStatus.Scheduled]: 0
 	};
-	private taskStates: Record<string, TaskState | undefined> = {};
-
 	public duration = 0;
-	public threadIdPerWorker: Record<string, number> = {};
 
+	private taskStates: Record<string, TaskState | undefined> = {};
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
 
+	public getTaskStateByStatus(status: TaskStatus): TaskState[] {
+		return Object.entries(this.taskStates).flatMap(([_, state]) => (state?.status === status ? state : []));
+	}
+
 	public getTaskState(taskId: TaskIdentifier): TaskState {
-		return this.taskStates[taskId] ?? { duration: null, startTime: null, status: TaskStatus.Registered };
+		return this.taskStates[taskId] ?? defaultTaskState;
 	}
 
 	public getTaskStatus(taskId: TaskIdentifier): TaskStatus {
@@ -61,53 +68,26 @@ export class ExecutionTracker implements Listener {
 	}
 
 	public async onTaskStart(task: RegisteredTask, threadId: number) {
-		this.threadIdPerWorker = { ...this.threadIdPerWorker, [task.id]: threadId };
-		this.taskStats = { ...this.taskStats, [TaskStatus.Running]: ++this.taskStats[TaskStatus.Running] };
-		this.updateTaskState(task, { startTime: true, status: TaskStatus.Running });
+		this.updateTaskState(task, { threadId, startTime: true, status: TaskStatus.Running });
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.taskStats = {
-			...this.taskStats,
-			[TaskStatus.Running]: --this.taskStats[TaskStatus.Running],
-			[TaskStatus.Finished]: ++this.taskStats[TaskStatus.Finished]
-		};
-		this.updateTaskState(task, { duration: true, status: TaskStatus.Failed });
+		this.updateTaskState(task, { duration: true, status: TaskStatus.Finished });
 	}
 
 	public async onTaskUpToDate(task: RegisteredTask) {
-		this.taskStats = {
-			...this.taskStats,
-			[TaskStatus.Running]: --this.taskStats[TaskStatus.Running],
-			[TaskStatus.UpToDate]: ++this.taskStats[TaskStatus.UpToDate]
-		};
 		this.updateTaskState(task, { status: TaskStatus.UpToDate });
 	}
 
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
-		this.taskStats = {
-			...this.taskStats,
-			[TaskStatus.Running]: --this.taskStats[TaskStatus.Running],
-			[TaskStatus.FromCache]: ++this.taskStats[TaskStatus.FromCache]
-		};
 		this.updateTaskState(task, { status: TaskStatus.FromCache });
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.taskStats = {
-			...this.taskStats,
-			[TaskStatus.Failed]: ++this.taskStats[TaskStatus.Failed],
-			[TaskStatus.Running]: --this.taskStats[TaskStatus.Running]
-		};
 		this.updateTaskState(task, { duration: true, status: TaskStatus.Failed });
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
-		this.taskStats = {
-			...this.taskStats,
-			[TaskStatus.Running]: --this.taskStats[TaskStatus.Running],
-			[TaskStatus.Canceled]: ++this.taskStats[TaskStatus.Canceled]
-		};
 		this.updateTaskState(task, { status: TaskStatus.Canceled });
 	}
 
@@ -115,15 +95,40 @@ export class ExecutionTracker implements Listener {
 		this.taskStats = { ...this.taskStats, [TaskStatus.Scheduled]: tasks.length };
 
 		for (const task of tasks) {
-			this.updateTaskState(task, { status: TaskStatus.Scheduled });
+			const { id, label } = task;
+			this.taskStates = { ...this.taskStates, [task.id]: { ...defaultTaskState, id, label, status: TaskStatus.Scheduled } };
 		}
 	}
 
-	private updateTaskState(task: RegisteredTask, payload: Partial<{ duration: true; startTime: true; status: TaskStatus }>) {
-		const taskState = this.taskStates[task.id] ?? { duration: null, startTime: null, status: TaskStatus.Registered };
+	private updateTaskState(
+		task: RegisteredTask,
+		payload: Partial<{ duration: true; startTime: true; threadId?: number; status: Exclude<TaskStatus, TaskStatus.Registered> }>
+	) {
+		const taskState = this.taskStates[task.id];
 
-		if (payload.status !== undefined) {
-			taskState.status = payload.status;
+		if (!taskState) {
+			throw new Error(`Task ${task.label} is not registered in the execution tracker.`);
+		}
+
+		const { status, threadId } = payload;
+
+		if (status !== undefined) {
+			taskState.status = status;
+			this.taskStats = { ...this.taskStats, [status]: ++this.taskStats[status] };
+
+			if (
+				status === TaskStatus.Failed ||
+				status === TaskStatus.Finished ||
+				status === TaskStatus.Canceled ||
+				status === TaskStatus.UpToDate ||
+				status === TaskStatus.FromCache
+			) {
+				this.taskStats = { ...this.taskStats, [TaskStatus.Running]: --this.taskStats[TaskStatus.Running] };
+			}
+		}
+
+		if (threadId !== undefined) {
+			taskState.threadId = threadId;
 		}
 
 		if (payload.startTime === true) {
@@ -132,12 +137,10 @@ export class ExecutionTracker implements Listener {
 
 		if (payload.duration == true) {
 			if (taskState.startTime === null) {
-				throw new Error(`Task ${c.bold(task.id)} was not started properly`);
+				throw new Error(`Task ${c.bold(task.label)} was not started properly`);
 			}
 
 			taskState.duration = Perf.performance.now() - taskState.startTime;
 		}
-
-		this.taskStates = { ...this.taskStates, [task.id]: taskState };
 	}
 }
