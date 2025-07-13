@@ -1,11 +1,6 @@
 # Workspace
 
-A Nadle project and its workspaces are detected using the following resolvation algorithm:
-
-A workspace in Nadle represents a distinct project or package within a monorepo.
-It enables modular organization of code, configuration, and tasks, making large codebases easier to manage and automate.
-
-A workspace is typically a directory in the monorepo that contains its own code, configuration,
+A **workspace** is typically a directory in the monorepo that contains its own code, configuration,
 and optionally a Nadle config file. Each workspace can have its own configuration file (e.g., `nadle.config.js`, `nadle.config.ts`).
 Note that, except for the root config file, all sub-workspace configuration files must be placed directly
 at the first level inside the workspace directory—next to the package.json.
