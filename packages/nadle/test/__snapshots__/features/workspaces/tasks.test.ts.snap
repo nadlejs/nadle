@@ -358,8 +358,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer prepare
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
 {file}:{location}
-        throw new Error(message);
-              ^
+    throw new Error(message);
+          ^
 
 Error: Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
     {stackTrace...}
@@ -374,8 +374,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer unknown:build
 ---------- Stderr ------------
 [error] Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
 {file}:{location}
-        throw new Error(message);
-              ^
+    throw new Error(message);
+          ^
 
 Error: Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
     {stackTrace...}
@@ -390,8 +390,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer end:build
 ---------- Stderr ------------
 [error] Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
 {file}:{location}
-        throw new Error(message);
-              ^
+    throw new Error(message);
+          ^
 
 Error: Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
     {stackTrace...}
