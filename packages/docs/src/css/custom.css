@@ -9,6 +9,14 @@ svg {
 	vertical-align: baseline;
 }
 
+ul {
+	list-style: unset;
+}
+
+ol {
+	list-style: decimal;
+}
+
 .header-github-link::before {
 	content: "";
 	width: 24px;

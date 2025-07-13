@@ -56,12 +56,23 @@ tasks.register("compile").config({
 - **Type:** `string[]`
 
 Specifies one or more task names that must be executed before this task runs. Used to build the task execution graph.
+If a dependency name does not include a [workspace](../concepts/workspace.md) prefix, Nadle will resolve it in the current workspace
+and throw an error if not found.
+To refer to a task in another workspace, use the fully qualified [task identifier](../concepts/task.md#identifier).
+
+**Example:**
 
 ```ts
 tasks.register("build").config({
-	dependsOn: ["compile", "bundle", "test"]
+	dependsOn: ["commmon:build", "compile", "root:setup"]
 });
 ```
+
+In this example:
+
+- `commmon:build` refers to the `build` task in the `commmon` workspace.
+- `compile` is resolved in the current workspace.
+- `root:setup` refers to the `setup` task in the [`root`](../concepts/workspace.md#root-workspace) workspace.
 
 ## env
 
