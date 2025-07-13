@@ -54,7 +54,7 @@ export class OptionsResolver {
 			// TODO: Drop this
 			configFile: project.rootWorkspace.configFilePath,
 			...this.resolveWorkers(baseOptions),
-			...this.resolveTasks(project, cliOptions)
+			...this.resolveTasks(project, baseOptions)
 		};
 	}
 

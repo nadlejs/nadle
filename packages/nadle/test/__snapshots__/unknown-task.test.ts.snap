@@ -6,10 +6,14 @@ Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts boot
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
-    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks 2`] = `
@@ -18,10 +22,14 @@ Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts build
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
-    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`when passing unknown tasks > should throw error with suggestions if find similar tasks 3`] = `
@@ -30,10 +38,14 @@ Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts compile
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
-    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`when passing unknown tasks > should throw error without any suggestions if not find any similar tasks 1`] = `
@@ -42,8 +54,12 @@ Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts unknown
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
-    {stackTrace...}
+
+Node.js {version}
 `;

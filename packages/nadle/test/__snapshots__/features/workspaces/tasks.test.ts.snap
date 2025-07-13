@@ -239,6 +239,9 @@ exports[`workspaces tasks > should run the workspace task when using alias 1`] =
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer api:build
 ---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>api:build</Yellow></BoldDim>  → <Green><Bold>shared:api:build</BoldDim></Green>
+
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
@@ -263,6 +266,10 @@ exports[`workspaces tasks > task resolvation 1`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer biuld backend:biuld deplyo
 ---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>backend:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+    <Bold><Yellow>deplyo       </Yellow></BoldDim>  → <Green><Bold>root:deploy</BoldDim></Green>
+
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
@@ -307,6 +314,9 @@ exports[`workspaces tasks > task resolvation 2`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fronte:build backe:biuld
 ---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>backe:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
@@ -347,10 +357,14 @@ Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer prepare
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:28:37
-    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`workspaces tasks > task resolvation 4`] = `
@@ -359,10 +373,14 @@ Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer unknown:build
 ---------- Stderr ------------
 [error] Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:23:58
-    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`workspaces tasks > task resolvation 5`] = `
@@ -371,8 +389,12 @@ Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer end:build
 ---------- Stderr ------------
 [error] Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
+{file}:{location}
+        throw new Error(message);
+              ^
+
 Error: Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
     {stackTrace...}
-    at file:///ROOT/lib/core/options/task-input-resolver.js:23:58
-    {stackTrace...}
+
+Node.js {version}
 `;

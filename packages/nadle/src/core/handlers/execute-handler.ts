@@ -12,7 +12,7 @@ export class ExecuteHandler extends BaseHandler {
 	}
 
 	public async handle() {
-		let chosenTasks: string[] = this.nadle.options.tasks;
+		let chosenTasks = this.nadle.options.tasks;
 
 		if (chosenTasks.length === 0) {
 			chosenTasks = await renderTaskSelection(this.nadle.taskRegistry);
