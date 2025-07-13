@@ -33,7 +33,7 @@ export class TaskPool {
 	}
 
 	private async pushTask(taskId: string) {
-		const task = this.nadle.taskRegistry.getById(taskId);
+		const task = this.nadle.taskRegistry.getTaskById(taskId);
 
 		try {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();

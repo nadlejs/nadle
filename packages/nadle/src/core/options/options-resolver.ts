@@ -5,7 +5,14 @@ import { isCI } from "std-env";
 
 import { clamp } from "../utilities/utils.js";
 import { Project } from "../models/project/project.js";
+import { ProjectResolver } from "./project-resolver.js";
+import { TaskInputResolver } from "./task-input-resolver.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
+import { RootWorkspace } from "../models/project/root-workspace.js";
+import { type TaskRegistry } from "../registration/task-registry.js";
+import { fileOptionRegistry } from "../registration/file-option-registry.js";
+import { type DefaultLogger } from "../interfaces/defaults/default-logger.js";
+import { DefaultFileReader } from "../interfaces/defaults/default-file-reader.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
 export class OptionsResolver {
@@ -22,29 +29,43 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	public async resolve(params: { project: Project; cliOptions: NadleCLIOptions; fileOptions: NadleFileOptions }): Promise<NadleResolvedOptions> {
-		const { cliOptions } = params;
-		const { alias, ...fileOptions } = params.fileOptions;
+	private readonly fileOptionRegistry = fileOptionRegistry;
+
+	public constructor(
+		private readonly logger: DefaultLogger,
+		private readonly taskRegistry: TaskRegistry
+	) {}
+
+	public async resolve(cliOptions: NadleCLIOptions): Promise<NadleResolvedOptions> {
+		this.logger.configure(cliOptions);
+
+		const { project, fileOptions } = await this.resolveProject(cliOptions.configFile);
 		const baseOptions = { ...this.defaultOptions, ...fileOptions, ...cliOptions };
 
-		const project = Project.configureAlias(params.project, alias);
-		const cacheDir = Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? DEFAULT_CACHE_DIR_NAME);
-
-		const maxWorkers = this.resolveWorkers(baseOptions.maxWorkers);
-		const minWorkers = Math.min(this.resolveWorkers(baseOptions.minWorkers), maxWorkers);
+		this.logger.configure(baseOptions);
+		this.taskRegistry.configure(project);
 
 		return {
 			...baseOptions,
 			project,
-			cacheDir,
-			configFile: project.rootWorkspace.configFilePath,
 
-			minWorkers,
-			maxWorkers
+			cacheDir: Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? DEFAULT_CACHE_DIR_NAME),
+
+			// TODO: Drop this
+			configFile: project.rootWorkspace.configFilePath,
+			...this.resolveWorkers(baseOptions),
+			...this.resolveTasks(project, baseOptions)
 		};
 	}
 
-	private resolveWorkers(configValue: string | number | undefined) {
+	private resolveWorkers(config: Partial<Record<"maxWorkers" | "minWorkers", string | number>>) {
+		const maxWorkers = this.resolveWorker(config.maxWorkers);
+		const minWorkers = Math.min(this.resolveWorker(config.minWorkers), maxWorkers);
+
+		return { maxWorkers, minWorkers };
+	}
+
+	private resolveWorker(configValue: string | number | undefined) {
 		let result: number;
 
 		if (configValue === undefined) {
@@ -66,5 +87,29 @@ export class OptionsResolver {
 		}
 
 		return Os.availableParallelism();
+	}
+
+	private resolveTasks(project: Project, options: { tasks?: string[]; excludedTasks?: string[] }) {
+		const taskInputResolver = new TaskInputResolver(this.logger, this.taskRegistry.getTaskNameByWorkspace.bind(this.taskRegistry));
+
+		const excludedTasks = taskInputResolver.resolve(options.excludedTasks ?? [], project);
+		const tasks = taskInputResolver.resolve(options.tasks ?? [], project).filter((task) => !excludedTasks.includes(task));
+
+		return { tasks, excludedTasks };
+	}
+
+	private async resolveProject(configFileInput: string | undefined): Promise<{ project: Project; fileOptions: NadleFileOptions }> {
+		const fileReader = new DefaultFileReader();
+
+		const project = await new ProjectResolver().resolve(configFileInput, async (workspaceId: string, configFilePath: string) => {
+			this.taskRegistry.onConfigureWorkspace(workspaceId);
+			this.fileOptionRegistry.onConfigureWorkspace(workspaceId);
+
+			await fileReader.read(configFilePath);
+		});
+
+		const { alias, ...fileOptions } = this.fileOptionRegistry.get(RootWorkspace.ID);
+
+		return { fileOptions, project: Project.configure(project, alias) };
 	}
 }

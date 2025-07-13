@@ -6,7 +6,7 @@ class FileOptionRegistry {
 	private workspaceId: string | null = null;
 	private readonly registry = new Map<string, NadleFileOptions>();
 
-	public onInitializeWorkspace(workspaceId: string) {
+	public onConfigureWorkspace(workspaceId: string) {
 		this.workspaceId = workspaceId;
 	}
 

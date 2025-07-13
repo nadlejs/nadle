@@ -67,7 +67,7 @@ export const tasks: TasksAPI = {
 	register: (name: string, task?: TaskFn | Task, optionsResolver?: Resolver): TaskConfigurationBuilder => {
 		validateTaskName(name);
 
-		if (taskRegistry.has(name)) {
+		if (taskRegistry.hasTaskName(name)) {
 			throw new Error(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 

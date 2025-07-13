@@ -22,7 +22,7 @@ export class DefaultReporter implements Listener {
 		this.tracker = this.nadle.executionTracker;
 	}
 
-	public init() {
+	public onInitialize() {
 		this.renderer = this.nadle.options.footer
 			? new FooterRenderer({ logger: this.nadle.logger, getWindow: () => this.createFooter() })
 			: new DefaultRenderer();
@@ -37,7 +37,7 @@ export class DefaultReporter implements Listener {
 	private createFooter() {
 		const footer: string[] = [""];
 
-		if (this.nadle.resolvedTasks.length === 0) {
+		if (this.nadle.options.tasks.length === 0) {
 			return footer;
 		}
 
@@ -146,7 +146,7 @@ export class DefaultReporter implements Listener {
 			this.nadle.logger.log(
 				renderProfilingSummary({
 					totalDuration: this.duration,
-					tasks: this.nadle.taskRegistry.getAll().flatMap((task) => {
+					tasks: this.nadle.taskRegistry.tasks.flatMap((task) => {
 						const { status, duration } = this.tracker.getTaskState(task.id);
 
 						if (status !== TaskStatus.Finished) {

@@ -239,12 +239,12 @@ exports[`workspaces tasks > should run the workspace task when using alias 1`] =
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer api:build
 ---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>api:build</Yellow></BoldDim>  → <Green><Bold>shared:api:build</BoldDim></Green>
+
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
-[log] Resolved tasks:
-    <Bold><Yellow>api:build</Yellow></BoldDim>  → <Green><Bold>shared:api:build</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>api:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -266,13 +266,13 @@ exports[`workspaces tasks > task resolvation 1`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer biuld backend:biuld deplyo
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
 [log] Resolved tasks:
     <Bold><Yellow>backend:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
     <Bold><Yellow>deplyo       </Yellow></BoldDim>  → <Green><Bold>root:deploy</BoldDim></Green>
+
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
 
 [log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -314,12 +314,12 @@ exports[`workspaces tasks > task resolvation 2`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fronte:build backe:biuld
 ---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>backe:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
-[log] Resolved tasks:
-    <Bold><Yellow>backe:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>frontend:check</BoldDim> <Yellow>STARTED</Yellow>
 
@@ -355,49 +355,46 @@ exports[`workspaces tasks > task resolvation 3`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer prepare
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
+{file}:{location}
+    throw new Error(message);
+          ^
+
+Error: Task <Bold><Yellow>prepare</Yellow></BoldDim> not found in <Bold><Yellow>frontend</Yellow></BoldDim> nor <Bold><Yellow>root</Yellow></BoldDim> workspace.
+    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`workspaces tasks > task resolvation 4`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer unknown:build
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
+{file}:{location}
+    throw new Error(message);
+          ^
+
+Error: Workspace <Bold><Yellow>unknown</Yellow></BoldDim> not found.
+    {stackTrace...}
+
+Node.js {version}
 `;
 
 exports[`workspaces tasks > task resolvation 5`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer end:build
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
-[log]
-<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>0</BoldDim><Dim> task failed)</BoldDim>
-[log]
-For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
 ---------- Stderr ------------
 [error] Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
+{file}:{location}
+    throw new Error(message);
+          ^
+
+Error: Workspace <Bold><Yellow>end</Yellow></BoldDim> not found. Did you mean <Bold><Yellow>api</Yellow></BoldDim>?
+    {stackTrace...}
+
+Node.js {version}
 `;

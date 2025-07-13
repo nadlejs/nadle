@@ -2,6 +2,7 @@ export function serialize(input: string): string {
 	return [
 		serializeANSI,
 		serializeDuration,
+		serializeFileLocation,
 		serializePwdGitBashWindows,
 		serializeRelativePath,
 		serializeAbsoluteFilePath,
@@ -53,7 +54,7 @@ function serializeAbsoluteFilePath(input: string) {
 }
 
 function serializeStackTrace(input: string) {
-	return input.replaceAll(/at .+ .+(\s+at .+ .+)+/g, "{stackTrace...}");
+	return input.replaceAll(/at .+( .+)?(\s+at .+( .+)?)+/g, "{stackTrace...}");
 }
 
 function serializeHash(input: string) {
@@ -63,6 +64,11 @@ function serializeHash(input: string) {
 const DurationRegex = /(\d+(\.\d+)?(ms|s))+/g;
 function serializeDuration(input: string) {
 	return input.replace(DurationRegex, "{duration}");
+}
+
+const FileLocationRegex = /file:\/\/\/\S+(:\d+){1,2}/g;
+function serializeFileLocation(input: string) {
+	return input.replace(FileLocationRegex, "{file}:{location}");
 }
 
 // eslint-disable-next-line no-control-regex

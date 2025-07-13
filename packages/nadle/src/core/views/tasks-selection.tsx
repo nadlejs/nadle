@@ -12,7 +12,7 @@ export interface Task {
 }
 
 export function renderTaskSelection(taskRegistry: TaskRegistry): Promise<string[]> {
-	const tasks = taskRegistry.getAll().map(({ label, configResolver }) => {
+	const tasks = taskRegistry.tasks.map(({ label, configResolver }) => {
 		return { label, description: configResolver().description };
 	});
 

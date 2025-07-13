@@ -12,18 +12,18 @@ export class DryRunHandler extends BaseHandler {
 	}
 
 	public handle() {
-		if (this.nadle.resolvedTasks.length === 0) {
+		if (this.nadle.options.tasks.length === 0) {
 			this.nadle.logger.log(Messages.NoTasksFound());
 
 			return;
 		}
 
-		const taskIds = this.nadle.taskScheduler.init(this.nadle.resolvedTasks).getOrderedTasks();
+		const taskIds = this.nadle.taskScheduler.init().getOrderedTasks();
 
 		this.nadle.logger.log(c.bold("Execution plan:"));
 
 		for (const taskId of taskIds) {
-			this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(this.nadle.taskRegistry.getById(taskId).label)}`);
+			this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(this.nadle.taskRegistry.getTaskById(taskId).label)}`);
 		}
 	}
 }

@@ -34,7 +34,7 @@ export class ProjectResolver {
 		this.#project = updater(this.project);
 	}
 
-	public async resolve(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined): Promise<Project> {
+	public async resolve(rootConfigFilePathOption: string | undefined, onInitWorkspace: WorkspaceInitializer): Promise<Project> {
 		await this.initProject();
 		await this.initializeRootWorkspace(onInitWorkspace, rootConfigFilePathOption);
 		await this.initializeSubWorkspaces(onInitWorkspace);
