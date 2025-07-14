@@ -41,7 +41,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
     "currentWorkspaceId": "root"
   },
   "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/.nadle",
-  "configFile": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }

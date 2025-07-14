@@ -42,6 +42,7 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 	const cacheValidator = new CacheValidator(taskId, taskConfig, {
 		workingDir,
 		projectDir: nadle.options.project.rootWorkspace.absolutePath,
+		configFile: nadle.options.project.rootWorkspace.configFilePath,
 		...nadle.options
 	});
 	const validationResult = await cacheValidator.validate();

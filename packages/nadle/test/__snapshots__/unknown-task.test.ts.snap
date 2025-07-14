@@ -7,8 +7,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts b
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
 {file}:{location}
-    throw new Error(message);
-          ^
+{ErrorPointer}
 
 Error: Task <Bold><Yellow>boot</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
     {stackTrace...}
@@ -23,8 +22,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts b
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
 {file}:{location}
-    throw new Error(message);
-          ^
+{ErrorPointer}
 
 Error: Task <Bold><Yellow>build</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>buildDev</Yellow></BoldDim>?
     {stackTrace...}
@@ -39,8 +37,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts c
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
 {file}:{location}
-    throw new Error(message);
-          ^
+{ErrorPointer}
 
 Error: Task <Bold><Yellow>compile</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace. Did you mean <Bold><Yellow>compileTs</Yellow></BoldDim>, <Bold><Yellow>compileJs</Yellow></BoldDim>, or <Bold><Yellow>compileCss</Yellow></BoldDim>?
     {stackTrace...}
@@ -55,8 +52,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.unknown.ts u
 ---------- Stderr ------------
 [error] Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
 {file}:{location}
-    throw new Error(message);
-          ^
+{ErrorPointer}
 
 Error: Task <Bold><Yellow>unknown</Yellow></BoldDim> not found in <Bold><Yellow>root</Yellow></BoldDim> workspace.
     {stackTrace...}
