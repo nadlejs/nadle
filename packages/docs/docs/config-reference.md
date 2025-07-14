@@ -33,21 +33,6 @@ Use this flag to override the default resolution behavior and point to a specifi
 nadle --config ./configs/nadle.config.ts
 ```
 
-### `--parallel`
-
-- **Type:** `boolean`
-- **Default:** `false`
-
-Executes the specified tasks in parallel, allowing multiple tasks to run at the same time as soon as their dependencies are satisfied.
-This is useful for speeding up execution in large monorepos or CI environments.
-Dependencies are always respected, so tasks will only run in parallel if their dependencies are complete.
-
-**Example:**
-
-```bash
-nadle eslint prettier spell-check --parallel
-```
-
 ### `--exclude`
 
 - **Type:** `string[]`

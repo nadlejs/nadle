@@ -27,7 +27,7 @@ nadle check build test
 
 By default, Nadle will run these tasks sequentially, one after another, in the order specified. This ensures that each task completes before the next begins.
 
-To run multiple tasks in parallel, add the [`--parallel`](../config-reference.md#--parallel) flag:
+To run multiple tasks in parallel, add the [`--parallel`](../config-reference.md#parallel) flag:
 
 ```sh
 nadle eslint prettier spell-check --parallel
