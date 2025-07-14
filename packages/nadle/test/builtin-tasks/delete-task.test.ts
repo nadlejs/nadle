@@ -19,7 +19,7 @@ describe("deleteTask", () => {
 		it("can delete it", async () => {
 			await withFixture({
 				files,
-				configName: "delete-task",
+				fixtureDir: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFolderA`);
 
@@ -43,7 +43,7 @@ describe("deleteTask", () => {
 		it("can delete it", async () => {
 			await withFixture({
 				files,
-				configName: "delete-task",
+				fixtureDir: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFolderB1`);
 
@@ -68,7 +68,7 @@ describe("deleteTask", () => {
 		it("can delete it", async () => {
 			await withFixture({
 				files,
-				configName: "delete-task",
+				fixtureDir: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFileBaz`);
 
@@ -95,7 +95,7 @@ describe("deleteTask", () => {
 		it("can delete them", async () => {
 			await withFixture({
 				files,
-				configName: "delete-task",
+				fixtureDir: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteFilesFooBar`);
 
@@ -121,7 +121,7 @@ describe("deleteTask", () => {
 		it("can delete all files match the glob", async () => {
 			await withFixture({
 				files,
-				configName: "delete-task",
+				fixtureDir: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteJsonFiles`);
 
@@ -146,7 +146,7 @@ describe("deleteTask", () => {
 		it("can print will-delete files", async () => {
 			await withFixture({
 				files,
-				configName: "delete-task",
+				fixtureDir: "delete-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`deleteJsonFiles --log-level info`);
 

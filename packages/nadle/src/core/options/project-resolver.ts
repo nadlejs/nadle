@@ -133,13 +133,15 @@ export class ProjectResolver {
 			return resolvedConfigPath;
 		}
 
-		const resolveConfigPath = await findUp(DEFAULT_CONFIG_FILE_NAMES, { cwd: projectPath });
+		for (const configFileName of DEFAULT_CONFIG_FILE_NAMES) {
+			const configFilePath = Path.resolve(projectPath, configFileName);
 
-		if (!resolveConfigPath) {
-			throw new Error(Messages.ConfigFileNotFound(projectPath));
+			if (await isPathExists(configFilePath)) {
+				return configFilePath;
+			}
 		}
 
-		return resolveConfigPath;
+		throw new Error(Messages.ConfigFileNotFound(projectPath));
 	}
 
 	private resolveCurrentWorkspaceId() {

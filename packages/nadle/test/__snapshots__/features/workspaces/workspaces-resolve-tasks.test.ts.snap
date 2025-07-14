@@ -1,0 +1,72 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`workspaces resolve tasks > should correct typo tasks 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:biuld biuld
+---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>backend:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+    <Bold><Yellow>biuld        </Yellow></BoldDim>  → <Green><Bold>root:build</BoldDim></Green>
+
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 4 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>backend:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build backend
+[log]
+<Green>✓</Green> Task <Bold>backend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build root
+[log]
+<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>common:api:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build api
+[log]
+<Green>✓</Green> Task <Bold>common:api:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>common:utils:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build utils
+[log]
+<Green>✓</Green> Task <Bold>common:utils:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>frontend:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build frontend
+[log]
+<Green>✓</Green> Task <Bold>frontend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>5</BoldDim> tasks executed
+`;
+
+exports[`workspaces resolve tasks > should correct typo workspaces 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fronte:build backe:biuld
+---------- Stdout ------------
+[log] Resolved tasks:
+    <Bold><Yellow>fronte:build</Yellow></BoldDim>  → <Green><Bold>frontend:build</BoldDim></Green>
+    <Bold><Yellow>backe:biuld </Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 4 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>frontend:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build frontend
+[log]
+<Green>✓</Green> Task <Bold>frontend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>backend:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build backend
+[log]
+<Green>✓</Green> Task <Bold>backend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>2</BoldDim> tasks executed
+`;

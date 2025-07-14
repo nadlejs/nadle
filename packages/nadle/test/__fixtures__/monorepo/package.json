@@ -1,0 +1,9 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-monorepo",
+	"type": "module",
+	"private": true,
+	"scripts": {},
+	"dependencies": {
+		"nadle": "workspace:*"
+	}
+}

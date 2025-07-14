@@ -40,7 +40,11 @@ export class TaskInputResolver {
 				resolvedTask = this.resolveTask(project, taskNameInput, targetWorkspace, fallbackWorkspace);
 			}
 
-			if (resolvedTask !== task && TaskIdentifier.parser(resolvedTask).workspaceInput !== targetWorkspace) {
+			if (
+				TaskIdentifier.parser(resolvedTask).taskNameInput !== taskNameInput ||
+				(workspaceInput !== undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== workspaceInput) ||
+				(workspaceInput === undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== targetWorkspace)
+			) {
 				resolveTaskPairs.push({ original: task, resolved: resolvedTask });
 			}
 

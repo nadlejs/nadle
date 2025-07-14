@@ -55,7 +55,9 @@ const config = {
 		"./packages/**/package.json",
 		"packages/nadle/test/unit/task-input-resolver.test.ts",
 		"packages/nadle/test/features/workspaces/tasks.test.ts",
-		"packages/nadle/test/__snapshots__/features/workspaces/tasks.test.ts.snap"
+		"packages/nadle/test/__snapshots__/features/workspaces/tasks.test.ts.snap",
+		"packages/nadle/test/__snapshots__/features/workspaces/workspaces-resolve-tasks.test.ts.snap",
+		"packages/nadle/test/features/workspaces/workspaces-resolve-tasks.test.ts"
 	]
 };
 
