@@ -100,7 +100,7 @@ export class ExecutionTracker implements Listener {
 
 	private updateTaskState(
 		task: RegisteredTask,
-		payload: Partial<{ duration: true; startTime: true; threadId?: number; status: Exclude<TaskStatus, TaskStatus.Registered> }>
+		payload: Partial<{ duration: true; startTime: true; threadId: number; status: Exclude<TaskStatus, TaskStatus.Registered> }>
 	) {
 		const taskState = this.taskStates[task.id];
 
@@ -108,7 +108,7 @@ export class ExecutionTracker implements Listener {
 			throw new Error(`Task ${task.label} is not registered in the execution tracker.`);
 		}
 
-		const { status, threadId } = payload;
+		const { status, threadId, duration, startTime } = payload;
 
 		if (status !== undefined) {
 			taskState.status = status;
@@ -129,11 +129,11 @@ export class ExecutionTracker implements Listener {
 			taskState.threadId = threadId;
 		}
 
-		if (payload.startTime === true) {
+		if (startTime) {
 			taskState.startTime = Perf.performance.now();
 		}
 
-		if (payload.duration == true) {
+		if (duration) {
 			if (taskState.startTime === null) {
 				throw new Error(`Task ${task.label} was not started properly`);
 			}

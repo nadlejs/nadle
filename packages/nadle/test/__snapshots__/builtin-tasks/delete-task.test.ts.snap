@@ -113,7 +113,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
     "currentWorkspaceId": "root"
   },
   "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/.nadle",
-  "configFile": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }

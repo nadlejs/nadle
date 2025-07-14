@@ -51,8 +51,6 @@ export class OptionsResolver {
 
 			cacheDir: Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? DEFAULT_CACHE_DIR_NAME),
 
-			// TODO: Drop this
-			configFile: project.rootWorkspace.configFilePath,
 			...this.resolveWorkers(baseOptions),
 			...this.resolveTasks(project, baseOptions)
 		};

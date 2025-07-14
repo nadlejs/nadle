@@ -2,6 +2,7 @@ export function serialize(input: string): string {
 	return [
 		serializeANSI,
 		serializeDuration,
+		serializeErrorPointer,
 		serializeFileLocation,
 		serializePwdGitBashWindows,
 		serializeRelativePath,
@@ -69,6 +70,11 @@ function serializeDuration(input: string) {
 const FileLocationRegex = /file:\/\/\/\S+(:\d+){1,2}/g;
 function serializeFileLocation(input: string) {
 	return input.replace(FileLocationRegex, "{file}:{location}");
+}
+
+const ErrorPointerRegex = /\s+throw new Error\(.+\);\s+\^/g;
+function serializeErrorPointer(input: string) {
+	return input.replaceAll(ErrorPointerRegex, "\n{ErrorPointer}");
 }
 
 // eslint-disable-next-line no-control-regex

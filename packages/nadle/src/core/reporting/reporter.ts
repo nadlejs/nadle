@@ -118,7 +118,7 @@ export class DefaultReporter implements Listener {
 	public onExecutionStart() {
 		this.renderer.start();
 
-		const { project, minWorkers, maxWorkers, configFile } = this.nadle.options;
+		const { project, minWorkers, maxWorkers } = this.nadle.options;
 
 		const workspaceConfigFileCount = project.workspaces.flatMap((workspace) => workspace.configFilePath ?? []).length;
 
@@ -126,7 +126,7 @@ export class DefaultReporter implements Listener {
 			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
 			this.nadle.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
 			this.nadle.logger.log(
-				`Loaded configuration from ${configFile}${workspaceConfigFileCount > 0 ? ` and ${workspaceConfigFileCount} other(s) files` : ""}\n`
+				`Loaded configuration from ${project.rootWorkspace.configFilePath}${workspaceConfigFileCount > 0 ? ` and ${workspaceConfigFileCount} other(s) files` : ""}\n`
 			);
 			this.nadle.logger.info(
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
