@@ -1,3 +1,4 @@
+import { Messages } from "../utilities/messages.js";
 import { Project } from "../models/project/project.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
@@ -70,7 +71,7 @@ export class TaskRegistry {
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
 		if (!this.registry.has(taskId)) {
-			throw new Error(`Task ${taskId} not found`);
+			throw new Error(Messages.UnresolvedTaskWithoutSuggestions(taskNameInput, targetWorkspace.label));
 		}
 
 		return taskId;

@@ -85,7 +85,9 @@ export class TaskInputResolver {
 			}
 		}
 
-		this.logger.throw(Messages.UnresolvedTask(taskNameInput, targetWorkspaceId, fallbackWorkspaceId, formatSuggestions(resolvedTask.suggestions)));
+		this.logger.throw(
+			Messages.UnresolvedTaskWithSuggestions(taskNameInput, targetWorkspaceId, fallbackWorkspaceId, formatSuggestions(resolvedTask.suggestions))
+		);
 	}
 
 	private resolveWorkspace(workspaceInput: string, workspaceLabels: string[]): string {

@@ -41,7 +41,7 @@ export namespace Project {
 				Messages.WorkspaceNotFound(
 					workspaceInput,
 					getAllWorkspaces(project)
-						.map(({ label }) => label)
+						.map(({ id, label }) => label || id)
 						.join(", ")
 				)
 			);
