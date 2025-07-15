@@ -94,7 +94,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
   "excludedTasks": [],
   "isWorkerThread": false,
   "tasks": [
-    "root:deleteJsonFiles"
+    {
+      "corrected": false,
+      "rawInput": "deleteJsonFiles",
+      "taskId": "root:deleteJsonFiles"
+    }
   ],
   "maxWorkers": 1,
   "list": false,

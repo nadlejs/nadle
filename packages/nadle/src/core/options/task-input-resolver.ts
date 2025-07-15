@@ -1,4 +1,3 @@
-import c from "tinyrainbow";
 import { uniq } from "lodash-es";
 
 import { highlight } from "../utilities/utils.js";
@@ -6,8 +5,8 @@ import { Messages } from "../utilities/messages.js";
 import { suggest } from "../utilities/suggestion.js";
 import { type Logger } from "../interfaces/logger.js";
 import { Project } from "../models/project/project.js";
-import { RIGHT_ARROW } from "../utilities/constants.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
+import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
 export class TaskInputResolver {
 	public constructor(
@@ -15,7 +14,7 @@ export class TaskInputResolver {
 		private readonly taskNamesGetter: (workspace: string) => string[]
 	) {}
 
-	public resolve(taskInputs: string[], project: Project) {
+	public resolve(taskInputs: string[], project: Project): ResolvedTask[] {
 		const targetWorkspace = project.currentWorkspaceId;
 		const fallbackWorkspace = project.currentWorkspaceId === project.rootWorkspace.id ? undefined : project.rootWorkspace.id;
 		const workspaces = uniq(
@@ -24,10 +23,8 @@ export class TaskInputResolver {
 				.filter(Boolean)
 		);
 
-		const resolveTaskPairs: { resolved: string; original: string }[] = [];
-
-		const resolvedTasks = taskInputs.map((task) => {
-			const { taskNameInput, workspaceInput } = TaskIdentifier.parser(task);
+		return taskInputs.map((taskInput) => {
+			const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
 
 			let resolvedTask: string;
 
@@ -40,32 +37,13 @@ export class TaskInputResolver {
 				resolvedTask = this.resolveTask(project, taskNameInput, targetWorkspace, fallbackWorkspace);
 			}
 
-			if (
+			const corrected =
 				TaskIdentifier.parser(resolvedTask).taskNameInput !== taskNameInput ||
 				(workspaceInput !== undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== workspaceInput) ||
-				(workspaceInput === undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== targetWorkspace)
-			) {
-				resolveTaskPairs.push({ original: task, resolved: resolvedTask });
-			}
+				(workspaceInput === undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== targetWorkspace);
 
-			return resolvedTask;
+			return { corrected, rawInput: taskInput, taskId: resolvedTask };
 		});
-
-		if (resolveTaskPairs.length > 0) {
-			const maxOriginTaskLength = Math.max(...resolveTaskPairs.map(({ original }) => original?.length ?? 0));
-			const message = [
-				`Resolved tasks:\n`,
-				...resolveTaskPairs.map(
-					({ resolved, original }) =>
-						`${" ".repeat(4)}${highlight(original?.padEnd(maxOriginTaskLength, " "))}  ${RIGHT_ARROW} ${c.green(c.bold(resolved))}\n`
-				)
-			].join("");
-			this.logger.log(message);
-		}
-
-		this.logger.debug(`Resolved tasks: [ ${resolvedTasks.join(", ")} ]`);
-
-		return resolvedTasks;
 	}
 
 	private resolveTask(project: Project, taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined): string {

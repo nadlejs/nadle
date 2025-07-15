@@ -1,6 +1,7 @@
 import { BaseHandler } from "./base-handler.js";
 import { TaskPool } from "../engine/task-pool.js";
 import { Messages } from "../utilities/messages.js";
+import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { renderTaskSelection } from "../views/tasks-selection.js";
 
 export class ExecuteHandler extends BaseHandler {
@@ -12,7 +13,7 @@ export class ExecuteHandler extends BaseHandler {
 	}
 
 	public async handle() {
-		let chosenTasks = this.nadle.options.tasks;
+		let chosenTasks = this.nadle.options.tasks.map(ResolvedTask.getId);
 
 		if (chosenTasks.length === 0) {
 			chosenTasks = await renderTaskSelection(this.nadle.taskRegistry);

@@ -18,7 +18,7 @@ export class DryRunHandler extends BaseHandler {
 			return;
 		}
 
-		const taskIds = this.nadle.taskScheduler.init().getOrderedTasks();
+		const taskIds = this.nadle.taskScheduler.init().getExecutionPlan();
 
 		this.nadle.logger.log(c.bold("Execution plan:"));
 

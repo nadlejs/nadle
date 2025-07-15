@@ -4,15 +4,15 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { Nadle } from "../nadle.js";
-import { formatTime } from "../utilities/utils.js";
 import { type Listener } from "../interfaces/listener.js";
+import { highlight, formatTime } from "../utilities/utils.js";
 import { StringBuilder } from "../utilities/string-builder.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
-import { DASH, CHECK, CROSS, CURVE_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
+import { DASH, CHECK, CROSS, CURVE_ARROW, RIGHT_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export class DefaultReporter implements Listener {
 	private renderer = new DefaultRenderer();
@@ -134,8 +134,32 @@ export class DefaultReporter implements Listener {
 			this.nadle.logger.info(`Project directory: ${project.rootWorkspace.absolutePath}`);
 			this.nadle.logger.info("Resolved options:", JSON.stringify(this.nadle.options, null, 2));
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
+			this.printResolvedTasks();
+
 			this.nadle.logger.info("Execution started");
 		}
+	}
+
+	private printResolvedTasks() {
+		const resolvedTasks = [...this.nadle.options.tasks, ...this.nadle.options.excludedTasks].filter(({ corrected }) => corrected);
+
+		if (resolvedTasks.length === 0) {
+			return;
+		}
+
+		const maxOriginTaskLength = Math.max(...resolvedTasks.map(({ rawInput }) => rawInput.length));
+
+		const message = [
+			`Resolved tasks:`,
+			...resolvedTasks.flatMap(({ taskId, rawInput, corrected }) => {
+				if (!corrected) {
+					return [];
+				}
+
+				return `${" ".repeat(4)}${highlight(rawInput.padEnd(maxOriginTaskLength, " "))}  ${RIGHT_ARROW} ${c.green(c.bold(taskId))}`;
+			})
+		].join("\n");
+		this.nadle.logger.log(message + "\n");
 	}
 
 	public async onExecutionFinish() {
