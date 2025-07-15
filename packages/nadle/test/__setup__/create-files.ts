@@ -35,7 +35,7 @@ export function createNadleConfig(params: { configure?: NadleFileOptions; tasks?
 		let taskRegisterStatement = `tasks.register("${name}", () => {console.log("${log}");})`;
 
 		if (dependsOn) {
-			taskRegisterStatement += `.dependsOn([${dependsOn.map((dep) => `"${dep}"`).join(", ")}])`;
+			taskRegisterStatement += `.config({dependsOn: [${dependsOn.map((dep) => `"${dep}"`).join(", ")}]})`;
 		}
 
 		taskRegisterStatement += ";";

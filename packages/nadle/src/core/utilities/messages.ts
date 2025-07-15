@@ -14,17 +14,19 @@ export const Messages = {
 		`Task ${highlight(taskName)} already registered in workspace ${highlight(workspaceId)}`,
 	NoTasksFound: () =>
 		`No tasks were specified. Please specify one or more tasks to execute, or use the ${highlight("--list")} option to view available tasks.`,
+	UnresolvedTaskWithoutSuggestions: (taskNameInput: string, targetWorkspaceId: string) =>
+		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)} workspace.`,
 	InvalidTaskName: (taskName: string) =>
 		`Invalid task name: ${highlight(taskName)}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`,
-	UnresolvedTask: (taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined, suggestions: string) =>
+	UnresolvedTaskWithSuggestions: (taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined, suggestions: string) =>
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)}${fallbackWorkspaceId ? ` nor ${highlight(fallbackWorkspaceId)}` : ""} workspace. ${suggestions}`,
 
 	EmptyWorkspaceLabel: (workspaceId: string) => `Workspace ${highlight(workspaceId)} alias can not be empty.`,
 	UnresolvedWorkspace: (workspaceInput: string, suggestions: string) => `Workspace ${highlight(workspaceInput)} not found. ${suggestions}`,
 	WorkspaceNotFound: (workspaceInput: string, availableWorkspaces: string) =>
-		`Workspace ${highlight(workspaceInput)} not found. Available workspaces: ${availableWorkspaces}`,
+		`Workspace ${highlight(workspaceInput)} not found. Available workspaces: ${availableWorkspaces}.`,
 	WorkspaceIdNotFound: (workspaceId: string, availableWorkspaces: string) =>
-		`Workspace with id ${highlight(workspaceId)} not found. Available workspaces: ${availableWorkspaces}`,
+		`Workspace with id ${highlight(workspaceId)} not found. Available workspaces: ${availableWorkspaces}.`,
 	DuplicatedWorkspaceLabelWithOtherLabel: (workspaceId: string, workspaceLabel: string, duplicatedWorkspaceId: string) =>
 		`Workspace ${highlight(workspaceId)} has a duplicated label ${highlight(workspaceLabel)} with workspace ${highlight(duplicatedWorkspaceId)}. Please check the alias configuration in the configuration file.`,
 	DuplicatedWorkspaceLabelWithOtherId: (workspaceId: string, workspaceLabel: string, duplicatedWorkspaceId: string) =>
