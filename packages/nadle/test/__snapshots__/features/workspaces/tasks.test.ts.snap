@@ -267,6 +267,7 @@ Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer biuld backend:biuld deplyo
 ---------- Stdout ------------
 [log] Resolved tasks:
+    <Bold><Yellow>biuld        </Yellow></BoldDim>  → <Green><Bold>frontend:build</BoldDim></Green>
     <Bold><Yellow>backend:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
     <Bold><Yellow>deplyo       </Yellow></BoldDim>  → <Green><Bold>root:deploy</BoldDim></Green>
 
@@ -315,7 +316,8 @@ Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces/frontend
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fronte:build backe:biuld
 ---------- Stdout ------------
 [log] Resolved tasks:
-    <Bold><Yellow>backe:biuld</Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
+    <Bold><Yellow>fronte:build</Yellow></BoldDim>  → <Green><Bold>frontend:build</BoldDim></Green>
+    <Bold><Yellow>backe:biuld </Yellow></BoldDim>  → <Green><Bold>backend:build</BoldDim></Green>
 
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

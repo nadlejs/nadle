@@ -1,0 +1,297 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`workspaces detection > multiple packages 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "log",
+  "cleanCache": false,
+  "showConfig": true,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "tasks": [],
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "project": {
+    "rootWorkspace": {
+      "id": "root",
+      "label": "",
+      "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    },
+    "packageManager": "pnpm",
+    "currentWorkspaceId": "root",
+    "workspaces": [
+      {
+        "id": "app",
+        "label": "app",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
+        "relativePath": "app",
+        "configFilePath": null
+      },
+      {
+        "id": "common:api",
+        "label": "common:api",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api",
+        "relativePath": "common/api",
+        "configFilePath": null
+      },
+      {
+        "id": "common:types",
+        "label": "common:types",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/types",
+        "relativePath": "common/types",
+        "configFilePath": null
+      }
+    ]
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/.nadle",
+  "minWorkers": 1
+}
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces detection > multiple packages with config files 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
+
+[log] {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "log",
+  "cleanCache": false,
+  "showConfig": true,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "tasks": [],
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "project": {
+    "rootWorkspace": {
+      "id": "root",
+      "label": "",
+      "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    },
+    "packageManager": "pnpm",
+    "currentWorkspaceId": "root",
+    "workspaces": [
+      {
+        "id": "app",
+        "label": "app",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
+        "relativePath": "app",
+        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app/nadle.config.ts"
+      },
+      {
+        "id": "common:api",
+        "label": "common:api",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api",
+        "relativePath": "common/api",
+        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api/nadle.config.js"
+      },
+      {
+        "id": "common:types",
+        "label": "common:types",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/types",
+        "relativePath": "common/types",
+        "configFilePath": null
+      }
+    ]
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/.nadle",
+  "minWorkers": 1
+}
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces detection > multiple packages with custom config file 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.config.js --show-config
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/config/nadle.config.js and 1 other(s) files
+
+[log] {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "log",
+  "cleanCache": false,
+  "showConfig": true,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "tasks": [],
+  "maxWorkers": 1,
+  "configFile": "config/nadle.config.js",
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "project": {
+    "rootWorkspace": {
+      "id": "root",
+      "label": "",
+      "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/config/nadle.config.js"
+    },
+    "packageManager": "pnpm",
+    "currentWorkspaceId": "root",
+    "workspaces": [
+      {
+        "id": "app",
+        "label": "app",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
+        "relativePath": "app",
+        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app/nadle.config.ts"
+      }
+    ]
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/.nadle",
+  "minWorkers": 1
+}
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces detection > multiple packages with ignore packages 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "log",
+  "cleanCache": false,
+  "showConfig": true,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "tasks": [],
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "project": {
+    "rootWorkspace": {
+      "id": "root",
+      "label": "",
+      "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    },
+    "packageManager": "pnpm",
+    "currentWorkspaceId": "root",
+    "workspaces": [
+      {
+        "id": "app",
+        "label": "app",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
+        "relativePath": "app",
+        "configFilePath": null
+      },
+      {
+        "id": "common:api",
+        "label": "common:api",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api",
+        "relativePath": "common/api",
+        "configFilePath": null
+      }
+    ]
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/.nadle",
+  "minWorkers": 1
+}
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces detection > one package 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "log",
+  "cleanCache": false,
+  "showConfig": true,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "tasks": [],
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "project": {
+    "rootWorkspace": {
+      "id": "root",
+      "label": "",
+      "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    },
+    "packageManager": "pnpm",
+    "currentWorkspaceId": "root",
+    "workspaces": [
+      {
+        "id": "one",
+        "label": "one",
+        "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/one",
+        "relativePath": "one",
+        "configFilePath": null
+      }
+    ]
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/.nadle",
+  "minWorkers": 1
+}
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;

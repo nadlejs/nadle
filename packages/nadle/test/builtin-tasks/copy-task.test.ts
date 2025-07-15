@@ -16,7 +16,7 @@ describe.skipIf(isWindows)("copyTask", () => {
 		it("can copy it", async () => {
 			await withFixture({
 				files,
-				configName: "copy-task",
+				fixtureDir: "copy-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`copyAssets`);
 
@@ -46,7 +46,7 @@ describe.skipIf(isWindows)("copyTask", () => {
 		it("can copy it", async () => {
 			await withFixture({
 				files,
-				configName: "copy-task",
+				fixtureDir: "copy-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`copyFoo`);
 
@@ -71,7 +71,7 @@ describe.skipIf(isWindows)("copyTask", () => {
 		it("creates directories automatically", async () => {
 			await withFixture({
 				files,
-				configName: "copy-task",
+				fixtureDir: "copy-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`copyToNested`);
 
@@ -100,7 +100,7 @@ describe.skipIf(isWindows)("copyTask", () => {
 		it("copies only matching files", async () => {
 			await withFixture({
 				files,
-				configName: "copy-task",
+				fixtureDir: "copy-task",
 				testFn: async ({ exec, getFiles }) => {
 					await expectPass(exec`copyWithFilter`);
 

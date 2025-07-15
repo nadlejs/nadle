@@ -2,30 +2,42 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import fixturify from "fixturify";
+import { type Awaitable } from "src/index.js";
 
 import { randomHash } from "./random.js";
 import { type Exec, createExec } from "./exec.js";
 import { isPathExists } from "../../src/core/utilities/fs.js";
-import { tempDir, fixturesDir, defaultConfigFile } from "./constants.js";
+import { tempDir, fixturesDir, CONFIG_FILE } from "./constants.js";
 
 const TEMP_DIR = "__temp__";
 
 export async function withFixture(params: {
 	preserve?: boolean;
-	configName: string;
+	fixtureDir: string;
+	ignoreFiles?: string[];
 	files: fixturify.DirJSON;
-	testFn: (params: { exec: Exec; cwd: string; getFiles: () => fixturify.DirJSON }) => Promise<void>;
+	testFn: (params: { exec: Exec; cwd: string; getFiles: () => fixturify.DirJSON }) => Awaitable<void>;
 }) {
-	const { files, testFn, configName, preserve = false } = params;
-	const cwd = Path.join(Path.join(fixturesDir, configName, TEMP_DIR, randomHash()));
+	const { files, testFn, fixtureDir, preserve = false, ignoreFiles = [CONFIG_FILE, "package.json"] } = params;
+	const cwd = Path.join(Path.join(fixturesDir, fixtureDir, TEMP_DIR, randomHash()));
 
 	await Fs.mkdir(cwd, { recursive: true });
-	await Fs.copyFile(Path.join(fixturesDir, configName, defaultConfigFile), Path.join(cwd, defaultConfigFile));
-	await Fs.copyFile(Path.join(fixturesDir, configName, "package.json"), Path.join(cwd, "package.json"));
+
+	const configFilePath = Path.join(fixturesDir, fixtureDir, CONFIG_FILE);
+
+	if (await isPathExists(configFilePath)) {
+		await Fs.copyFile(configFilePath, Path.join(cwd, CONFIG_FILE));
+	}
+
+	const packageJsonPath = Path.join(fixturesDir, fixtureDir, "package.json");
+
+	if (await isPathExists(packageJsonPath)) {
+		await Fs.copyFile(packageJsonPath, Path.join(cwd, "package.json"));
+	}
 
 	fixturify.writeSync(cwd, files);
 
-	const getFiles = () => fixturify.readSync(cwd, { ignore: [defaultConfigFile, "package.json"] });
+	const getFiles = () => fixturify.readSync(cwd, { ignore: ignoreFiles });
 
 	try {
 		await testFn({ cwd, getFiles, exec: createExec({ cwd }) });

@@ -284,7 +284,11 @@ function createDependenciesOrderValidator(type: "dependencies" | "devDependencie
 }
 
 const fixturesValidator: PackageValidator = ({ pkg, path }) => {
-	const allowedPackages = ["@nadle/internal-nadle-test-fixtures-project-dir-", "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-"];
+	const allowedPackages = [
+		"@nadle/internal-nadle-test-fixtures-project-dir-",
+		"@nadle/internal-nadle-test-fixtures-pnpm-workspaces-",
+		"@nadle/internal-nadle-test-fixtures-monorepo"
+	];
 
 	if (path.includes(Path.join(Path.dirname(nadlePackagePath), "test", "__fixtures__"))) {
 		if (!("nadle" in pkg && (pkg.nadle as any)?.root === true) && !allowedPackages.some((allowPkg) => pkg.name?.startsWith(allowPkg))) {
