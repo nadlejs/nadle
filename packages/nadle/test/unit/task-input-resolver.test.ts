@@ -1,8 +1,8 @@
 import { type Logger } from "src/core/index.js";
 import { it, vi, expect, describe } from "vitest";
-
-import { type Project } from "../../src/core/models/project/project.js";
-import { TaskInputResolver } from "../../src/core/options/task-input-resolver.js";
+import { type Project } from "src/core/models/project/project.js";
+import { ResolvedTask } from "src/core/interfaces/resolved-task.js";
+import { TaskInputResolver } from "src/core/options/task-input-resolver.js";
 
 const defaultLogger: Logger = {
 	log: vi.fn(),
@@ -38,9 +38,9 @@ describe("TaskInputResolver", () => {
 	const resolver = new TaskInputResolver(defaultLogger, (ws: string) => TasksByWorkspace[ws as "backend" | "root" | "frontend"]);
 
 	it("resolves exact task names in target workspace", () => {
-		expect(resolver.resolve(["build"], project)).toEqual(["frontend:build"]);
-		expect(resolver.resolve(["backend:build"], project)).toEqual(["backend:build"]);
-		expect(resolver.resolve(["root:build"], project)).toEqual(["root:build"]);
+		expect(resolver.resolve(["build"], project).map(ResolvedTask.getId)).toEqual(["frontend:build"]);
+		expect(resolver.resolve(["backend:build"], project).map(ResolvedTask.getId)).toEqual(["backend:build"]);
+		expect(resolver.resolve(["root:build"], project).map(ResolvedTask.getId)).toEqual(["root:build"]);
 	});
 
 	it("throws when task not found in target workspace", () => {
@@ -48,22 +48,22 @@ describe("TaskInputResolver", () => {
 	});
 
 	it("resolves task from fallback workspace if not found in target", () => {
-		expect(resolver.resolve(["deploy"], project)).toEqual(["root:deploy"]);
+		expect(resolver.resolve(["deploy"], project).map(ResolvedTask.getId)).toEqual(["root:deploy"]);
 	});
 
 	it("suggests correct task name for typos in target workspace", () => {
-		expect(resolver.resolve(["biuld"], project)).toEqual(["frontend:build"]);
-		expect(resolver.resolve(["backend:biuld"], project)).toEqual(["backend:build"]);
-		expect(resolver.resolve(["root:biuld"], project)).toEqual(["root:build"]);
+		expect(resolver.resolve(["biuld"], project).map(ResolvedTask.getId)).toEqual(["frontend:build"]);
+		expect(resolver.resolve(["backend:biuld"], project).map(ResolvedTask.getId)).toEqual(["backend:build"]);
+		expect(resolver.resolve(["root:biuld"], project).map(ResolvedTask.getId)).toEqual(["root:build"]);
 	});
 
 	it("suggests correct task name for typos from fallback workspace", () => {
-		expect(resolver.resolve(["deplyo"], project)).toEqual(["root:deploy"]);
+		expect(resolver.resolve(["deplyo"], project).map(ResolvedTask.getId)).toEqual(["root:deploy"]);
 	});
 
 	it("suggests correct workspace name for typos", () => {
-		expect(resolver.resolve(["fronte:build"], project)).toEqual(["frontend:build"]);
-		expect(resolver.resolve(["backe:build"], project)).toEqual(["backend:build"]);
+		expect(resolver.resolve(["fronte:build"], project).map(ResolvedTask.getId)).toEqual(["frontend:build"]);
+		expect(resolver.resolve(["backe:build"], project).map(ResolvedTask.getId)).toEqual(["backend:build"]);
 	});
 
 	it("throws when workspace not found", () => {
@@ -71,6 +71,6 @@ describe("TaskInputResolver", () => {
 	});
 
 	it("suggests correct task and workspace name for typos", () => {
-		expect(resolver.resolve(["backe:biuld"], project)).toEqual(["backend:build"]);
+		expect(resolver.resolve(["backe:biuld"], project).map(ResolvedTask.getId)).toEqual(["backend:build"]);
 	});
 });

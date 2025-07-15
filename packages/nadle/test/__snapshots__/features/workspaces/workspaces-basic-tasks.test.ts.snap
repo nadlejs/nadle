@@ -98,12 +98,12 @@ exports[`workspaces basic tasks > when running a task from a workspace > without
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer test
 ---------- Stdout ------------
-[log] Resolved tasks:
-    <Bold><Yellow>test</Yellow></BoldDim>  → <Green><Bold>root:test</BoldDim></Green>
-
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
+
+[log] Resolved tasks:
+    <Bold><Yellow>test</Yellow></BoldDim>  → <Green><Bold>root:test</BoldDim></Green>
 
 [log] <Yellow>></Yellow> Task <Bold>test</BoldDim> <Yellow>STARTED</Yellow>
 

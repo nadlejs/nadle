@@ -4,6 +4,7 @@ import { Messages } from "../utilities/messages.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
+import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
 
@@ -24,14 +25,16 @@ export class TaskScheduler {
 	private readonly readyTasks = new Set<TaskIdentifier>();
 
 	private taskIds: TaskIdentifier[] = [];
+	private excludedTaskIds = new Set<TaskIdentifier>();
 
 	// The main task listed in the tasks argument need to be focused on
 	private mainTaskId: string | undefined = undefined;
 
 	public constructor(private readonly nadle: Nadle) {}
 
-	public init(taskIds: string[] = this.nadle.options.tasks): this {
+	public init(taskIds: string[] = this.nadle.options.tasks.map(({ taskId }) => taskId)): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
+		this.excludedTaskIds = new Set(this.nadle.options.excludedTasks.map(ResolvedTask.getId));
 
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
 		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
@@ -89,7 +92,7 @@ export class TaskScheduler {
 		const dependencies = new Set(
 			MaybeArray.toArray(configResolver().dependsOn ?? [])
 				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, workspaceId))
-				.filter((taskId) => !this.nadle.options.excludedTasks.includes(taskId))
+				.filter((taskId) => !this.excludedTaskIds.has(taskId))
 		);
 
 		this.dependencyGraph.set(taskId, dependencies);
@@ -206,11 +209,11 @@ export class TaskScheduler {
 		return this.mainTaskId;
 	}
 
-	public getOrderedTasks(taskId?: TaskIdentifier): TaskIdentifier[] {
+	public getExecutionPlan(taskId?: TaskIdentifier): TaskIdentifier[] {
 		const readyTaskIds = Array.from(this.getReadyTasks(taskId));
 
 		for (const readyTaskId of readyTaskIds) {
-			readyTaskIds.push(...this.getOrderedTasks(readyTaskId));
+			readyTaskIds.push(...this.getExecutionPlan(readyTaskId));
 		}
 
 		return readyTaskIds;

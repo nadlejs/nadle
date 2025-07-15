@@ -7,6 +7,7 @@ import { clamp } from "../utilities/utils.js";
 import { Project } from "../models/project/project.js";
 import { ProjectResolver } from "./project-resolver.js";
 import { TaskInputResolver } from "./task-input-resolver.js";
+import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
@@ -91,7 +92,8 @@ export class OptionsResolver {
 		const taskInputResolver = new TaskInputResolver(this.logger, this.taskRegistry.getTaskNameByWorkspace.bind(this.taskRegistry));
 
 		const excludedTasks = taskInputResolver.resolve(options.excludedTasks ?? [], project);
-		const tasks = taskInputResolver.resolve(options.tasks ?? [], project).filter((task) => !excludedTasks.includes(task));
+		const excludedTaskIds = new Set(excludedTasks.map(ResolvedTask.getId));
+		const tasks = taskInputResolver.resolve(options.tasks ?? [], project).filter(({ taskId }) => !excludedTaskIds.has(taskId));
 
 		return { tasks, excludedTasks };
 	}

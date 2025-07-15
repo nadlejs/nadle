@@ -23,7 +23,7 @@ export interface WorkerParams {
 
 export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {
 	// TODO: Skip resolve options process
-	const nadle = await new Nadle(options).init();
+	const nadle = await new Nadle({ ...options, tasks: [], excludedTasks: [] }).init();
 
 	const task = taskRegistry.getTaskById(taskId);
 	const { configResolver, optionsResolver } = task;

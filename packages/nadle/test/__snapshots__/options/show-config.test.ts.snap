@@ -20,7 +20,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
   "excludedTasks": [],
   "isWorkerThread": false,
   "tasks": [
-    "root:hello"
+    {
+      "corrected": false,
+      "rawInput": "hello",
+      "taskId": "root:hello"
+    }
   ],
   "maxWorkers": 1,
   "list": false,
@@ -66,7 +70,11 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
   "excludedTasks": [],
   "isWorkerThread": false,
   "tasks": [
-    "root:hello"
+    {
+      "corrected": false,
+      "rawInput": "hello",
+      "taskId": "root:hello"
+    }
   ],
   "minWorkers": 2,
   "maxWorkers": 3,

@@ -1,5 +1,6 @@
 import { type Project } from "../models/project/project.js";
 import { type SupportLogLevel } from "../utilities/consola.js";
+import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
 /**
  * Base options for Nadle configuration.
@@ -67,7 +68,8 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
 /**
  * Fully resolved Nadle options, including required fields and project reference.
  */
-export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configFile">> {
+export interface NadleResolvedOptions
+	extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configFile" | "tasks" | "excludedTasks">> {
 	/** Project information. */
 	readonly project: Project;
 
@@ -75,6 +77,11 @@ export interface NadleResolvedOptions extends Required<Omit<NadleCLIOptions, "ma
 	readonly minWorkers: number;
 	/** Maximum number of worker threads (resolved as number). */
 	readonly maxWorkers: number;
+
+	/** List of tasks to execute after resolution and auto-correction. */
+	readonly tasks: ResolvedTask[];
+	/** List of tasks to exclude from execution after resolution and auto-correction. */
+	readonly excludedTasks: ResolvedTask[];
 }
 
 /**
