@@ -10,8 +10,15 @@ import { ExecutionTracker } from "./models/execution-tracker.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
+interface State {
+	/** Indicates whether Nadle is currently in the task selection mode */
+	readonly selectingTasks: boolean;
+}
+
 export class Nadle {
 	public static readonly version: string = "0.5.0"; // x-release-please-version
+
+	public state: State = { selectingTasks: false };
 
 	public readonly logger = new DefaultLogger();
 	public readonly taskRegistry = taskRegistry;
@@ -62,5 +69,10 @@ export class Nadle {
 		}
 
 		return this.#options;
+	}
+
+	public updateState(updater: (state: State) => State): void {
+		this.state = updater(this.state);
+		this.logger.debug("Nadle state updated:", this.state);
 	}
 }

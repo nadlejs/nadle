@@ -37,7 +37,7 @@ export class DefaultReporter implements Listener {
 	private createFooter() {
 		const footer: string[] = [""];
 
-		if (this.nadle.options.tasks.length === 0) {
+		if (this.nadle.options.tasks.length === 0 && this.nadle.state.selectingTasks) {
 			return footer;
 		}
 
