@@ -1,33 +1,42 @@
+<h1 align="center">
+Nadle
+</h1>
+<p align="center">
+Gradle-inspired task runner for Node.js.
+<p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/nadle"><img src="https://img.shields.io/npm/v/nadle?color=3B7FC4&label="></a>
+<p>
+
+<p align="center">
+<a href="https://www.nadle.dev/docs/why-nadle">Why</a> |
+<a href="https://www.nadle.dev/docs/getting-started/installation">Installation</a> |
+<a href="https://www.nadle.dev/docs/getting-started/features">Features</a> |
+<a href="https://www.nadle.dev/docs/getting-started/playground">Playground</a> |
+<a href="https://www.nadle.dev/docs/config-reference">Configuration Reference</a>
+</p>
+
+<p align="center">
+<a href="https://pkg.pr.new/~/nadlejs/nadle"><img alt="pkg.new.pr" src="https://pkg.pr.new/badge/nadlejs/nadle?style=flat&color=3B7FC4"></a>
+<a href="https://npmjs.com/package/nadle"><img src="https://img.shields.io/npm/dm/nadle?style=flat&colorA=17334F&colorB=3B7FC4" alt="npm downloads"></a>
+<a href="https://github.com/nadlejs/nadle/actions/workflows/ci.yml"><img alt="ci" src="https://img.shields.io/github/actions/workflow/status/nadlejs/nadle/ci.yml?branch=main&label=CI&labelColor=17334F&color=3B7FC4"></a>
+<a href="https://github.com/nadlejs/nadle/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/nadlejs/nadle?labelColor=17334F&color=3B7FC4"></a>
+</p>
+
 ![Demo](https://raw.githubusercontent.com/nadlejs/nadle/main/.assets/demo.gif)
-
-[![npm](https://img.shields.io/npm/v/nadle)](https://www.npmjs.com/package/nadle)
-[![npm](https://img.shields.io/npm/dm/nadle)](https://www.npmjs.com/package/nadle)
-[![License](https://img.shields.io/github/license/nadlejs/nadle)](LICENSE)
-[![Build](https://github.com/nadlejs/nadle/actions/workflows/ci.yml/badge.svg)](https://github.com/nadlejs/nadle/actions/workflows/ci.yml)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=nam-hle_nadle&metric=alert_status)](https://sonarcloud.io/summary/?id=nam-hle_nadle)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nam-hle_nadle&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nam-hle_nadle)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/nadlejs/nadle)
-
-A modern, type-safe task runner for Node.js inspired by the awesome Gradle build tool,
-supporting parallel execution and streamlined build automation.
 
 ## Features
 
-- First-class TypeScript support with full type inference
-- Modern ESM package
-- Lightweight and efficient
-- Task dependency management
-- Parallel task execution
-- Progress tracking
-- Configurable logging levels
+- ⚡ Fast, parallel task execution for monorepos and multi-package workspaces
+- 🧩 Dependency-aware workflows with automatic task resolution
+- 🛠️ Flexible configuration via TypeScript, JSON, or CLI
+- 🔄 Task aliasing and custom task mapping
+- 🗂️ Built-in caching for efficient incremental runs
+- 📝 Dry run, summary, and detailed logging support
+- 🧪 Easy integration with existing scripts and tools
+- 📦 Works seamlessly with modern JavaScript/TypeScript projects
 
 ## Getting Started
-
-- [Why Nadle?](https://www.nadle.dev/docs/why-nadle)
-- [Installation](https://www.nadle.dev/docs/getting-started/installation)
-- [Features](https://www.nadle.dev/docs/getting-started/features)
-- [Playground](https://www.nadle.dev/docs/getting-started/playground)
-- [Configuration Reference](https://www.nadle.dev/docs/config-reference)
 
 ## Build
 
@@ -44,6 +53,13 @@ Build with Nadle itself:
 ```bash
 nadle build
 ```
+
+## Credits
+
+Thanks to:
+
+- The [Gradle team](https://gradle.org/) and community for inspiring Nadle’s API and dependency model.
+- The [Vitest team](https://vitest.dev/) for their excellent testing framework and for the reporter logic we reuse.
 
 ## Contribution
 
