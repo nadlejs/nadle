@@ -16,7 +16,11 @@ export class ExecuteHandler extends BaseHandler {
 		let chosenTasks = this.nadle.options.tasks.map(ResolvedTask.getId);
 
 		if (chosenTasks.length === 0) {
-			chosenTasks = await renderTaskSelection(this.nadle.taskRegistry);
+			chosenTasks = await renderTaskSelection(
+				this.nadle.taskRegistry.tasks.map(({ id, label, configResolver }) => {
+					return { id, label, description: configResolver().description };
+				})
+			);
 
 			if (chosenTasks.length === 0) {
 				this.nadle.logger.log(Messages.NoTasksFound());

@@ -3,11 +3,11 @@ import { Text } from "ink";
 import fuzzySort from "fuzzysort";
 
 import { type VisibleTask } from "./visible-task.js";
-import { type Task, HIGHLIGHT_COLOR } from "./tasks-selection.js";
+import { HIGHLIGHT_COLOR, type InteractiveTask } from "./tasks-selection.js";
 
 const VISIBLE_TASKS_LIMIT = 5;
 
-export function useSearching(tasks: Task[], searchText: string, selectedTasks: string[], cursor: number): VisibleTask[] {
+export function useSearching(tasks: InteractiveTask[], searchText: string, selectedTasks: string[], cursor: number): VisibleTask[] {
 	return React.useMemo(() => {
 		if (!searchText) {
 			const visibleTasks = tasks.slice(0, VISIBLE_TASKS_LIMIT);
@@ -17,19 +17,19 @@ export function useSearching(tasks: Task[], searchText: string, selectedTasks: s
 				return {
 					...task,
 					pointing: cursor === tasks.indexOf(task),
-					selected: selectedTasks.includes(task.label),
+					selected: selectedTasks.includes(task.id),
 					TaskLabel: () => task.label.padEnd(maxLength, " ")
 				};
 			});
 		}
 
-		const filteredTasks = fuzzySort.go<Task>(searchText, tasks, { key: "label", limit: VISIBLE_TASKS_LIMIT });
+		const filteredTasks = fuzzySort.go<InteractiveTask>(searchText, tasks, { key: "label", limit: VISIBLE_TASKS_LIMIT });
 		const maxLength = Math.max(...filteredTasks.map((task) => task.obj.label.length));
 
 		return filteredTasks.map<VisibleTask>((task) => {
 			return {
 				...task.obj,
-				selected: selectedTasks.includes(task.obj.label),
+				selected: selectedTasks.includes(task.obj.id),
 				pointing: cursor === filteredTasks.indexOf(task),
 				TaskLabel: () => <HighlightedTaskLabel task={task} marginRight={maxLength - task.obj.label.length} />
 			};
@@ -37,7 +37,7 @@ export function useSearching(tasks: Task[], searchText: string, selectedTasks: s
 	}, [cursor, searchText, selectedTasks, tasks]);
 }
 
-const HighlightedTaskLabel: React.FC<{ marginRight: number; task: Fuzzysort.KeyResult<Task> }> = (props) => {
+const HighlightedTaskLabel: React.FC<{ marginRight: number; task: Fuzzysort.KeyResult<InteractiveTask> }> = (props) => {
 	const { task, marginRight } = props;
 
 	return (
