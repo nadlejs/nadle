@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-objects */
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import { themes as prismThemes } from "prism-react-renderer";
@@ -29,7 +30,23 @@ const config: Config = {
 		[
 			"classic",
 			{
-				blog: false,
+				blog: {
+					path: "blog",
+					postsPerPage: 5,
+					blogSidebarCount: "ALL",
+					blogTitle: "Nadle blog",
+					blogSidebarTitle: "All our posts",
+					blogDescription: "Read blog posts about Nadle from the team",
+					feedOptions: {
+						xslt: true,
+						type: "all",
+						copyright: `Copyright © ${new Date().getFullYear()} Nadle team`,
+						description: "Keep up to date with upcoming Docusaurus releases and articles by following our feed!"
+					},
+					editUrl: ({ blogPath, blogDirPath }) => {
+						return `${GITHUB_REPO_URL}/edit/main/packages/docs/${blogDirPath}/${blogPath}`;
+					}
+				},
 				theme: {
 					customCss: "./src/css/custom.css"
 				},
@@ -71,6 +88,7 @@ const config: Config = {
 					type: "docSidebar",
 					sidebarId: "docsSidebar"
 				},
+				{ to: "blog", label: "Blog", position: "left" },
 				{
 					position: "right",
 					label: NadlePackageJson.version,
