@@ -15,6 +15,7 @@ export default defineConfig({
 		}
 	},
 	test: {
+		pool: "threads",
 		testTimeout: 20000,
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
