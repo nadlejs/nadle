@@ -1,5 +1,83 @@
 # nadle
 
+## [0.5.0](https://github.com/nadlejs/nadle/compare/v0.4.0...v0.5.0) (2025-07-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename configurations to options ([#296](https://github.com/nadlejs/nadle/issues/296))
+
+### Features
+
+* Add --summary to show top slowest tasks after execution ([#291](https://github.com/nadlejs/nadle/issues/291)) ([b646351](https://github.com/nadlejs/nadle/commit/b646351b09d5e303370043230af4175a01f59723))
+* Add AliasOption type ([73041a5](https://github.com/nadlejs/nadle/commit/73041a5927ec55873d42178594b0c4b8f67dc8b4))
+* Add cross-workspace task dependency ([#315](https://github.com/nadlejs/nadle/issues/315)) ([2938327](https://github.com/nadlejs/nadle/commit/29383270be732b97d577bf771ebc4add6a3a4515))
+* Add task name validation ([#288](https://github.com/nadlejs/nadle/issues/288)) ([f1ef008](https://github.com/nadlejs/nadle/commit/f1ef0083ed97edbf498e35ee77a7df26ef971f2b))
+* Enhance task timing with performance.now() and improve time formatting ([#330](https://github.com/nadlejs/nadle/issues/330)) ([c70958f](https://github.com/nadlejs/nadle/commit/c70958fb2d0ac4886fde20c71aafc549797eafa9))
+* Implement graceful cancellation of other tasks on failure ([#305](https://github.com/nadlejs/nadle/issues/305)) ([36ea609](https://github.com/nadlejs/nadle/commit/36ea609aef834c5e8c4a90a5c8937855c869d05f))
+* Inject workspace tasks when running tasks from root workspace ([#319](https://github.com/nadlejs/nadle/issues/319)) ([57a3ee4](https://github.com/nadlejs/nadle/commit/57a3ee4a310d4ac832294336cb75c5eebac0cd98))
+* Introduce defineTask factory ([#294](https://github.com/nadlejs/nadle/issues/294)) ([a25bd37](https://github.com/nadlejs/nadle/commit/a25bd3731570241d7d6987abfa3c6e36be67e785))
+* Introduce fuzzy sort for task selection ([#299](https://github.com/nadlejs/nadle/issues/299)) ([27e61c8](https://github.com/nadlejs/nadle/commit/27e61c862dd7be987d23e69803141bbdc4e0543e))
+* Introduce interactive mode ([#286](https://github.com/nadlejs/nadle/issues/286)) ([70898de](https://github.com/nadlejs/nadle/commit/70898de3c61aa42d8bf5fee361123bc6ee51101b))
+* Restrict configure() usage to root config file only ([#327](https://github.com/nadlejs/nadle/issues/327)) ([1c38d44](https://github.com/nadlejs/nadle/commit/1c38d441e15c542a1edae8c8c61e47cd9eef255f))
+* Support aliasing workspace names ([#321](https://github.com/nadlejs/nadle/issues/321)) ([80d5adc](https://github.com/nadlejs/nadle/commit/80d5adc368fc8cb9d7c596f20ce232fa70f7ea49))
+* Support project-scoped task execution based on current working directory ([#336](https://github.com/nadlejs/nadle/issues/336)) ([113e423](https://github.com/nadlejs/nadle/commit/113e423cab24f5929305bf3476a3fcb874bb41c1))
+* Update task options to use MaybeArray for improved flexibility ([#333](https://github.com/nadlejs/nadle/issues/333)) ([a5279dd](https://github.com/nadlejs/nadle/commit/a5279dddd5b9a14fd76d00ffbfc9dc9d85f06165))
+* Update task suggestion/auto-correct logic for workspaces ([#339](https://github.com/nadlejs/nadle/issues/339)) ([b1858ca](https://github.com/nadlejs/nadle/commit/b1858cabe307e7ed37ff24dee4f4f54620d3eacf))
+* Workspaced task detection ([#313](https://github.com/nadlejs/nadle/issues/313)) ([835648f](https://github.com/nadlejs/nadle/commit/835648f8d250be3adbd187aef63e78394c529ca4))
+* Workspaces detection ([#310](https://github.com/nadlejs/nadle/issues/310)) ([ec84a8a](https://github.com/nadlejs/nadle/commit/ec84a8a058943a1078d83426fed2f7ccedccef8f))
+
+
+### Bug Fixes
+
+* Do not traverse up to find the closest config file ([#349](https://github.com/nadlejs/nadle/issues/349)) ([0b9f8e2](https://github.com/nadlejs/nadle/commit/0b9f8e2e880e0eaeae185c2d370ff9d7256199ef))
+* Footer should not show when choosing task ([#302](https://github.com/nadlejs/nadle/issues/302)) ([5394e67](https://github.com/nadlejs/nadle/commit/5394e671f5d10ad2aec77b609f81e329bc536d25))
+* Normalize Workspace's relativePath for Windows compatibility ([#322](https://github.com/nadlejs/nadle/issues/322)) ([442b042](https://github.com/nadlejs/nadle/commit/442b042034fb5b6c03e53337e541c15294869014))
+* Resolved tasks should be printed after welcome line ([#353](https://github.com/nadlejs/nadle/issues/353)) ([c7202cd](https://github.com/nadlejs/nadle/commit/c7202cda592b55b9f5249241517f2f3fe14bb89e))
+
+
+### Documentation
+
+* Add API reference ([#304](https://github.com/nadlejs/nadle/issues/304)) ([21bf680](https://github.com/nadlejs/nadle/commit/21bf680c9cf5c6e55c161d30d71a25275cc28630))
+* Add JSDoc comments for public APIs ([#332](https://github.com/nadlejs/nadle/issues/332)) ([7214137](https://github.com/nadlejs/nadle/commit/721413734a7f50e395033760b6a9deca369fd205))
+
+
+### Internal
+
+* Add buffering mechanism for delayed task registration ([#325](https://github.com/nadlejs/nadle/issues/325)) ([4d80ed5](https://github.com/nadlejs/nadle/commit/4d80ed55e723caa9e68e13f197b3d415cbf6a4da))
+* Add more workspaces tests ([#350](https://github.com/nadlejs/nadle/issues/350)) ([e63b3a5](https://github.com/nadlejs/nadle/commit/e63b3a5bfc42b797d9ec1e321a97366a24b16704))
+* Drop top-level configFile field ([#348](https://github.com/nadlejs/nadle/issues/348)) ([8173ba4](https://github.com/nadlejs/nadle/commit/8173ba425c6e6b56cd7d25db30d697855f452353))
+* Enhance task state management with thread ID and default state ([#343](https://github.com/nadlejs/nadle/issues/343)) ([fcfc1d3](https://github.com/nadlejs/nadle/commit/fcfc1d3a2a132f52e994e4ccd094542a678a2d71))
+* Extract option resolution logic from Nadle class ([#345](https://github.com/nadlejs/nadle/issues/345)) ([c2fa8a9](https://github.com/nadlejs/nadle/commit/c2fa8a949707532867c14dd9a66aebc5be30d85d))
+* Fix Sonarqube issues ([#301](https://github.com/nadlejs/nadle/issues/301)) ([c6c9dc8](https://github.com/nadlejs/nadle/commit/c6c9dc84539d5baad774793f436960869b719999))
+* Improve error handling and logging messages ([#344](https://github.com/nadlejs/nadle/issues/344)) ([616472b](https://github.com/nadlejs/nadle/commit/616472bcc8b6a01a0db178ee69363646397a30f9))
+* Improve profiling summary rendering ([#292](https://github.com/nadlejs/nadle/issues/292)) ([9735fb9](https://github.com/nadlejs/nadle/commit/9735fb9d9b29cb22d9ba75dce52738730d49c07c))
+* Increase test timeout for Windows ([04cb76c](https://github.com/nadlejs/nadle/commit/04cb76cfeb7aaf3cde6abd3d084b294e6674bff7))
+* Increase timeout for --clean-cache tests ([ec3a4d0](https://github.com/nadlejs/nadle/commit/ec3a4d07588156fe052bad9a5d5e0dd77345a213))
+* Introduce event emitter/listener system for internal event handling ([#341](https://github.com/nadlejs/nadle/issues/341)) ([d7ae0bd](https://github.com/nadlejs/nadle/commit/d7ae0bdcac4c45261a50d2b452c0ec8a4c4b8a26))
+* Introduce executionTracker for future public APIs ([#342](https://github.com/nadlejs/nadle/issues/342)) ([2ba6402](https://github.com/nadlejs/nadle/commit/2ba64029a090c97af45cdf77446a64dd28c27a48))
+* Monorepo setup ([0b9f8e2](https://github.com/nadlejs/nadle/commit/0b9f8e2e880e0eaeae185c2d370ff9d7256199ef))
+* Re-organize internal structure ([#338](https://github.com/nadlejs/nadle/issues/338)) ([01c7ce9](https://github.com/nadlejs/nadle/commit/01c7ce9fb2feb006ef3ea7db633689c4c6fd47ce))
+* Rename configurations to options ([#296](https://github.com/nadlejs/nadle/issues/296)) ([35533f0](https://github.com/nadlejs/nadle/commit/35533f0358a462abdff616bda975c6e5630536f0))
+* Rename registry references to taskRegistry for clarity ([#328](https://github.com/nadlejs/nadle/issues/328)) ([72e5a5c](https://github.com/nadlejs/nadle/commit/72e5a5c7bf2611237319e3947478ee66ed19fe66))
+* Stabilize error pointing snapshot ([8173ba4](https://github.com/nadlejs/nadle/commit/8173ba425c6e6b56cd7d25db30d697855f452353))
+* Streamline task status updates with a new updateTask method ([#329](https://github.com/nadlejs/nadle/issues/329)) ([50f4045](https://github.com/nadlejs/nadle/commit/50f4045c0766b7b2c7d0da6061793bcda8e5aec5))
+* Unify task execution logic using handler pattern ([#340](https://github.com/nadlejs/nadle/issues/340)) ([51559d0](https://github.com/nadlejs/nadle/commit/51559d0951e109aeeebc349853ef90403e7dba00))
+
+
+### Miscellaneous
+
+* Add DeepWiki badge to README ([259c584](https://github.com/nadlejs/nadle/commit/259c5841151682085dee8a3d7f0f0be8099de5c2))
+* **deps-dev:** Bump the minor-updates for eslint, typescript-eslint, cspell, @types/node ([#347](https://github.com/nadlejs/nadle/issues/347)) ([f2a03eb](https://github.com/nadlejs/nadle/commit/f2a03ebf7f6ad22792e4d6ad17e750c4e38494ac))
+* **deps-dev:** Bump the minor-updates group with 5 updates ([#303](https://github.com/nadlejs/nadle/issues/303)) ([64c36e8](https://github.com/nadlejs/nadle/commit/64c36e8a2eec6dc9439439b66e341e0343a089fc))
+* **deps-dev:** Bump the minor-updates group with 6 updates ([#297](https://github.com/nadlejs/nadle/issues/297)) ([bcaebe8](https://github.com/nadlejs/nadle/commit/bcaebe8ac601c887f343f3290ecd58a482512f94))
+* Enable thread pool for vitest ([#354](https://github.com/nadlejs/nadle/issues/354)) ([9ffab6c](https://github.com/nadlejs/nadle/commit/9ffab6c69a72d0567cf8c195044dbe98fa0df221))
+* Enforce node builtin module import restrictions ([#324](https://github.com/nadlejs/nadle/issues/324)) ([1017714](https://github.com/nadlejs/nadle/commit/1017714ef6be45651c7ead579b168daf3c358501))
+* Throw error when API documentation contains warnings ([73041a5](https://github.com/nadlejs/nadle/commit/73041a5927ec55873d42178594b0c4b8f67dc8b4))
+* Update package description and keywords for clarity ([a9640ee](https://github.com/nadlejs/nadle/commit/a9640ee52cc5b83970a160c0e9232dfe9d6fefbe))
+* Update README ([ed72c43](https://github.com/nadlejs/nadle/commit/ed72c4383d8a5524b77c8602efc00bc2024febe6))
+* Use task identifier everywhere ([#317](https://github.com/nadlejs/nadle/issues/317)) ([68c002d](https://github.com/nadlejs/nadle/commit/68c002dfe875ad799ecb583d79e0dfbe7c78e93c))
+
 ## [0.4.0](https://github.com/nadlejs/nadle/compare/v0.3.7...v0.4.0) (2025-06-27)
 
 
