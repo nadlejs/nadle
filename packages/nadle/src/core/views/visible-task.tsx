@@ -1,9 +1,9 @@
 import { Text } from "ink";
 import type React from "react";
 
-import { type Task, PRIMARY_COLOR, SECONDARY_COLOR } from "./tasks-selection.js";
+import { PRIMARY_COLOR, SECONDARY_COLOR, type InteractiveTask } from "./tasks-selection.js";
 
-export interface VisibleTask extends Task {
+export interface VisibleTask extends InteractiveTask {
 	readonly selected: boolean;
 	readonly pointing: boolean;
 	readonly TaskLabel: () => React.ReactNode;

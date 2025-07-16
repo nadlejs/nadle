@@ -105,9 +105,9 @@ const deleteHandler: InputHandler = {
 const spaceHandler: InputHandler = {
 	canHandle: ({ input }) => input === " ",
 	handle: ({ context: { cursor, searchingTasks, setSelectedTasks } }) => {
-		const { label } = searchingTasks[cursor];
+		const { id } = searchingTasks[cursor];
 
-		setSelectedTasks((tasks) => (tasks.includes(label) ? tasks.filter((task) => task !== label) : [...tasks, label]));
+		setSelectedTasks((tasks) => (tasks.includes(id) ? tasks.filter((task) => task !== id) : [...tasks, id]));
 	}
 };
 

@@ -4,18 +4,14 @@ import { Box, Text, render, useApp, useInput } from "ink";
 import { VisibleTask } from "./visible-task.js";
 import { useSearching } from "./use-searching.js";
 import { type Context, inputHandlers } from "./input-handlers.js";
-import { type TaskRegistry } from "../registration/task-registry.js";
 
-export interface Task {
+export interface InteractiveTask {
+	readonly id: string;
 	readonly label: string;
 	readonly description?: string;
 }
 
-export function renderTaskSelection(taskRegistry: TaskRegistry): Promise<string[]> {
-	const tasks = taskRegistry.tasks.map(({ label, configResolver }) => {
-		return { label, description: configResolver().description };
-	});
-
+export function renderTaskSelection(tasks: InteractiveTask[]): Promise<string[]> {
 	return new Promise((resolve) => {
 		render(<TasksSelection onSubmit={resolve} tasks={tasks} />);
 	});
@@ -27,7 +23,7 @@ export const HIGHLIGHT_COLOR = "cyanBright";
 
 namespace TasksSelection {
 	export interface Props {
-		readonly tasks: Task[];
+		readonly tasks: InteractiveTask[];
 		readonly onSubmit: (selectedTasks: string[]) => void;
 	}
 }
@@ -84,7 +80,9 @@ const TasksSelection: React.FC<TasksSelection.Props> = ({ tasks, onSubmit }) => 
 			</Box>
 
 			<Box marginTop={1}>
-				<Text color={PRIMARY_COLOR}>Selected tasks: {selectedTasks.join(", ")}</Text>
+				<Text color={PRIMARY_COLOR}>
+					Selected tasks: {selectedTasks.map((selectedTask) => tasks.find((task) => task.id === selectedTask)?.label ?? "").join(", ")}
+				</Text>
 			</Box>
 
 			<Box marginTop={1}>
