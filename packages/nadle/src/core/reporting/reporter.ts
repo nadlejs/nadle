@@ -187,7 +187,7 @@ export class DefaultReporter implements Listener {
 
 		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))}`);
 		this.nadle.logger.log(
-			new StringBuilder()
+			new StringBuilder(", ")
 				.add(`${print(this.stats[TaskStatus.Finished])} executed`)
 				.add(this.stats[TaskStatus.UpToDate] > 0 && `${print(this.stats[TaskStatus.UpToDate])} up-to-date`)
 				.add(this.stats[TaskStatus.FromCache] > 0 && `${print(this.stats[TaskStatus.FromCache])} restored from cache`)

@@ -1,4 +1,6 @@
 export class StringBuilder {
+	public constructor(private readonly separator = " ") {}
+
 	private readonly items: string[] = [];
 
 	public add(item: string | false): this {
@@ -11,11 +13,19 @@ export class StringBuilder {
 		return this;
 	}
 
+	public addIf(condition: boolean, item: string): this {
+		if (condition) {
+			return this.add(item);
+		}
+
+		return this;
+	}
+
 	public build(): string {
 		if (this.items.length === 0) {
 			return "";
 		}
 
-		return this.items.join(", ");
+		return this.items.join(this.separator);
 	}
 }
