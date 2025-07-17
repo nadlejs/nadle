@@ -22,9 +22,9 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "tasks": [],
   "maxWorkers": 1,
   "list": false,
-  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
+  "listWorkspaces": false,
   "project": {
     "rootWorkspace": {
       "id": "root",
@@ -89,9 +89,9 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "tasks": [],
   "maxWorkers": 1,
   "list": false,
-  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
+  "listWorkspaces": false,
   "project": {
     "rootWorkspace": {
       "id": "root",
@@ -157,9 +157,9 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.confi
   "maxWorkers": 1,
   "configFile": "config/nadle.config.js",
   "list": false,
-  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
+  "listWorkspaces": false,
   "project": {
     "rootWorkspace": {
       "id": "root",
@@ -210,9 +210,9 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "tasks": [],
   "maxWorkers": 1,
   "list": false,
-  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
+  "listWorkspaces": false,
   "project": {
     "rootWorkspace": {
       "id": "root",
@@ -270,9 +270,9 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
   "tasks": [],
   "maxWorkers": 1,
   "list": false,
-  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
+  "listWorkspaces": false,
   "project": {
     "rootWorkspace": {
       "id": "root",

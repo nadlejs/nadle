@@ -1,5 +1,6 @@
 import { CacheManager } from "./cache-manager.js";
 import { hashObject } from "../utilities/hash.js";
+import { stringify } from "../utilities/stringify.js";
 import { CacheKey } from "../models/cache/cache-key.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import type { CacheQuery } from "../models/cache/cache-query.js";
@@ -121,6 +122,6 @@ export class CacheValidator {
 			return;
 		}
 
-		throw new Error("Unknown cache validation result: " + JSON.stringify(validationResult));
+		throw new Error("Unknown cache validation result: " + stringify(validationResult));
 	}
 }

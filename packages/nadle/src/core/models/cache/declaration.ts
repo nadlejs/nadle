@@ -2,6 +2,8 @@ import Path from "node:path";
 
 import fg from "fast-glob";
 
+import { stringify } from "../../utilities/stringify.js";
+
 /**
  * Declaration for file input/output patterns.
  */
@@ -72,6 +74,6 @@ export namespace Declaration {
 			return paths;
 		}
 
-		throw new Error(`Unknown input declaration: ${JSON.stringify(declaration)}`);
+		throw new Error(`Unknown input declaration: ${stringify(declaration)}`);
 	}
 }

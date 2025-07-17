@@ -21,6 +21,8 @@ Execution options:
       --list-workspaces  List all available workspaces                    [boolean] [default: false]
   -m, --dry-run          Run specified tasks in dry run mode              [boolean] [default: false]
       --show-config      Print the resolved configuration                 [boolean] [default: false]
+      --config-key       Path to a specific resolved configuration value, using dot/bracket notation
+                                                                       [string] [default: undefined]
       --stacktrace       Print stacktrace on error                        [boolean] [default: false]
 
 General options:

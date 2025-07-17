@@ -2,6 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { isPathExists } from "../utilities/fs.js";
+import { stringify } from "../utilities/stringify.js";
 import { COLON, UNDERSCORE } from "../utilities/constants.js";
 import { type CacheQuery } from "../models/cache/cache-query.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
@@ -41,7 +42,7 @@ export class CacheManager {
 
 		const { taskId, version, cacheKey, timestamp, ...rest } = metadata;
 
-		await Fs.writeFile(file, JSON.stringify({ taskId, version, cacheKey, timestamp, ...rest }, null, 2));
+		await Fs.writeFile(file, stringify({ taskId, version, cacheKey, timestamp, ...rest }));
 		await this.writeLatestRunMetadata(cacheQuery);
 	}
 
@@ -101,7 +102,7 @@ export class CacheManager {
 		const path = this.getTaskMetadataPath(taskId);
 		await Fs.mkdir(Path.dirname(path), { recursive: true });
 
-		await Fs.writeFile(path, JSON.stringify(TaskCacheMetadata.create(cacheKey), null, 2));
+		await Fs.writeFile(path, stringify(TaskCacheMetadata.create(cacheKey)));
 	}
 
 	private getTaskMetadataPath(taskId: TaskIdentifier): string {

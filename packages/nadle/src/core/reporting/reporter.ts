@@ -4,6 +4,7 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { Nadle } from "../nadle.js";
+import { stringify } from "../utilities/stringify.js";
 import { type Listener } from "../interfaces/listener.js";
 import { highlight, formatTime } from "../utilities/utils.js";
 import { StringBuilder } from "../utilities/string-builder.js";
@@ -132,7 +133,7 @@ export class DefaultReporter implements Listener {
 				`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
 			);
 			this.nadle.logger.info(`Project directory: ${project.rootWorkspace.absolutePath}`);
-			this.nadle.logger.info("Resolved options:", JSON.stringify(this.nadle.options, null, 2));
+			this.nadle.logger.info("Resolved options:", stringify(this.nadle.options));
 			this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 			this.printResolvedTasks();
 

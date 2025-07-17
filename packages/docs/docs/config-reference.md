@@ -86,6 +86,15 @@ Displays the full error stack trace when a task fails. Useful for debugging and 
 
 Display the resolved configuration that will be used for task execution. Useful for debugging configuration issues.
 
+### `--config-key`
+
+- **Type:** `string`
+- **Default:** `undefined`
+- **Effective only with**: `--show-config`
+
+Effective only with `--show-config` to specify a single configuration path to display, using dot/bracket notation (e.g., `project.workspaces[1].tasks.build`).
+Useful for inspecting a specific part of the configuration.
+
 ```bash
 nadle --show-config
 ```

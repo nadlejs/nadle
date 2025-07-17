@@ -1,4 +1,5 @@
 import { type FileFingerprints } from "./fingerprint.js";
+import { stringify } from "../../utilities/stringify.js";
 import { compareObjects } from "../../utilities/comparators.js";
 
 export type CacheMissReason =
@@ -19,7 +20,7 @@ export namespace CacheMissReason {
 			case "input-added":
 				return `File ${reason.file} was added`;
 			default:
-				throw new Error(`Unknown cache miss reason: ${JSON.stringify(reason)}`);
+				throw new Error(`Unknown cache miss reason: ${stringify(reason)}`);
 		}
 	}
 
@@ -41,7 +42,7 @@ export namespace CacheMissReason {
 				return { type: "input-changed", file: diff.oldEntry.key };
 			}
 
-			throw new Error(`Unknown diff type: ${JSON.stringify(diff)}`);
+			throw new Error(`Unknown diff type: ${stringify(diff)}`);
 		});
 	}
 }
