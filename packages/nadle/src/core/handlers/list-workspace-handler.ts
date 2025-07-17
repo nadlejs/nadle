@@ -24,6 +24,8 @@ export class ListWorkspacesHandler extends BaseHandler {
 			workspaces.map(({ id }) => [id, workspaces.filter((workspace) => parentWorkspaceMap[workspace.id]?.id === id)])
 		);
 
+		this.nadle.logger.log(c.bold("Available workspaces:\n"));
+
 		const tree = createTree<Workspace>(
 			this.nadle.options.project.rootWorkspace,
 			(workspace) => childrenWorkspaceMap[workspace.id],
@@ -31,11 +33,10 @@ export class ListWorkspacesHandler extends BaseHandler {
 				new StringBuilder()
 					.add(RootWorkspace.isInstance(workspace) ? "Root workspace" : "Workspace")
 					.add(highlight(workspace.id))
-					.addIf(workspace.label !== "" && workspace.label !== workspace.id, c.dim(`(alias: ${workspace.label})`))
+					.addIf(workspace.label !== workspace.id && workspace.label !== "", c.dim(`(alias: ${workspace.label})`))
 					.build()
 		);
 
-		this.nadle.logger.log(c.bold("Available workspaces:\n"));
 		this.nadle.logger.log(tree.join("\n"));
 	}
 
