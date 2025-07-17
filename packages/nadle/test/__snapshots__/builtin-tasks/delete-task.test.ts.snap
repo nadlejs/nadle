@@ -102,6 +102,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
   ],
   "maxWorkers": 1,
   "list": false,
+  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
   "project": {

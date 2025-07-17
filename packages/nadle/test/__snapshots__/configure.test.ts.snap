@@ -25,6 +25,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "maxWorkers": 1,
   "configFile": "nadle.configure.ts",
   "list": false,
+  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
   "project": {
@@ -58,6 +59,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "maxWorkers": 1,
   "configFile": "nadle.configure.ts",
   "list": false,
+  "listWorkspaces": false,
   "dryRun": false,
   "stacktrace": false,
   "project": {

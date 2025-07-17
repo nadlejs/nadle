@@ -17,6 +17,13 @@ export const CURVE_ARROW = "↩";
 export const RIGHT_ARROW = "→";
 export const VERTICAL_BAR = "|";
 
+export const LINES = {
+	UP_RIGHT: "└",
+	VERTICAL: "│",
+	HORIZONTAL: "─",
+	VERTICAL_RIGHT: "├"
+};
+
 export const PACKAGE_JSON = "package.json";
 const BASE_CONFIG_FILE_NAME = "nadle.config";
 export const SUPPORT_EXTENSIONS = ["js", "mjs", "ts", "mts"];

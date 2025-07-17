@@ -25,6 +25,14 @@ export const CLIOptions = {
 			description: "List all available tasks"
 		}
 	},
+	listWorkspaces: {
+		key: "list-workspaces",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "List all available workspaces"
+		}
+	},
 	parallel: {
 		key: "parallel",
 		options: {

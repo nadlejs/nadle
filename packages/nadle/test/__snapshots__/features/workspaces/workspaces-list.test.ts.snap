@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`workspaces > list > should list all nested workspaces 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] <Bold>Available workspaces:
+</BoldDim>
+[log] Root workspace <Bold><Yellow>root</Yellow></BoldDim> <Dim>(alias: projectRoot)</BoldDim>
+├── Workspace <Bold><Yellow>minusOne</Yellow></BoldDim>
+├── Workspace <Bold><Yellow>packages</Yellow></BoldDim>
+│   ├── Workspace <Bold><Yellow>packages:one</Yellow></BoldDim> <Dim>(alias: one)</BoldDim>
+│   └── Workspace <Bold><Yellow>packages:two</Yellow></BoldDim>
+└── Workspace <Bold><Yellow>zero</Yellow></BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces > list > should list all nested workspaces 2 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] <Bold>Available workspaces:
+</BoldDim>
+[log] Root workspace <Bold><Yellow>root</Yellow></BoldDim> <Dim>(alias: projectRoot)</BoldDim>
+├── Workspace <Bold><Yellow>packages</Yellow></BoldDim>
+│   ├── Workspace <Bold><Yellow>packages:one</Yellow></BoldDim> <Dim>(alias: one)</BoldDim>
+│   │   ├── Workspace <Bold><Yellow>packages:one:onAndThird</Yellow></BoldDim>
+│   │   └── Workspace <Bold><Yellow>packages:one:oneAndAHalf</Yellow></BoldDim>
+│   └── Workspace <Bold><Yellow>packages:two</Yellow></BoldDim>
+└── Workspace <Bold><Yellow>zero</Yellow></BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces > list > should list all workspaces 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
+
+[log] <Bold>Available workspaces:
+</BoldDim>
+[log] Root workspace <Bold><Yellow>root</Yellow></BoldDim>
+├── Workspace <Bold><Yellow>packages:one</Yellow></BoldDim> <Dim>(alias: one)</BoldDim>
+└── Workspace <Bold><Yellow>packages:two</Yellow></BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;

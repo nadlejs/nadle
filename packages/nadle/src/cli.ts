@@ -22,6 +22,7 @@ const argv = yargs(hideBin(Process.argv))
 	.option(CLIOptions.cleanCache.key, CLIOptions.cleanCache.options)
 	.option(CLIOptions.logLevel.key, CLIOptions.logLevel.options)
 	.option(CLIOptions.list.key, CLIOptions.list.options)
+	.option(CLIOptions.listWorkspaces.key, CLIOptions.listWorkspaces.options)
 	.option(CLIOptions.dryRun.key, CLIOptions.dryRun.options)
 	.option(CLIOptions.showConfig.key, CLIOptions.showConfig.options)
 	.option(CLIOptions.footer.key, CLIOptions.footer.options)
@@ -38,6 +39,7 @@ const argv = yargs(hideBin(Process.argv))
 			CLIOptions.noCache.key,
 			CLIOptions.cleanCache.key,
 			CLIOptions.list.key,
+			CLIOptions.listWorkspaces.key,
 			CLIOptions.dryRun.key,
 			CLIOptions.showConfig.key,
 			CLIOptions.stacktrace.key

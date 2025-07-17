@@ -10,17 +10,18 @@ nadle [tasks...]
 Execute one or more named tasks
 
 Execution options:
-      --parallel     Run all specified tasks in parallel regardless of their order, while still
-                     respecting task dependencies.                        [boolean] [default: false]
-  -x, --exclude      Tasks to exclude from execution                                         [array]
-      --no-cache     Disable task caching. All tasks will be executed and their results will not be
-                     stored                                               [boolean] [default: false]
-      --clean-cache  Deletes all files in the cache directory. Can be used with --cache-dir to
-                     specify a custom location                            [boolean] [default: false]
-  -l, --list         List all available tasks                             [boolean] [default: false]
-  -m, --dry-run      Run specified tasks in dry run mode                  [boolean] [default: false]
-      --show-config  Print the resolved configuration                     [boolean] [default: false]
-      --stacktrace   Print stacktrace on error                            [boolean] [default: false]
+      --parallel         Run all specified tasks in parallel regardless of their order, while still
+                         respecting task dependencies.                    [boolean] [default: false]
+  -x, --exclude          Tasks to exclude from execution                                     [array]
+      --no-cache         Disable task caching. All tasks will be executed and their results will not
+                         be stored                                        [boolean] [default: false]
+      --clean-cache      Deletes all files in the cache directory. Can be used with --cache-dir to
+                         specify a custom location                        [boolean] [default: false]
+  -l, --list             List all available tasks                         [boolean] [default: false]
+      --list-workspaces  List all available workspaces                    [boolean] [default: false]
+  -m, --dry-run          Run specified tasks in dry run mode              [boolean] [default: false]
+      --show-config      Print the resolved configuration                 [boolean] [default: false]
+      --stacktrace       Print stacktrace on error                        [boolean] [default: false]
 
 General options:
   -c, --config       Path to config file      [string] [default: <cwd>/nadle.config.{js,mjs,ts,mts}]

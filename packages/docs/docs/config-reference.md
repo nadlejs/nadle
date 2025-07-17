@@ -53,6 +53,14 @@ Whitespace around task names is trimmed automatically.
 
 List all available tasks in the current project without executing them. This is useful for seeing what tasks are available to run.
 
+### `--list-workspaces`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+List all available workspaces along with their aliases without executing any tasks.
+Useful for discovering defined workspaces and their paths.
+
 ### `--dry-run`
 
 - **Type:** `boolean`

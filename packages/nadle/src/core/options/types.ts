@@ -30,25 +30,30 @@ export interface NadleBaseOptions {
  * CLI options for Nadle, extending base options.
  */
 export interface NadleCLIOptions extends NadleBaseOptions {
+	/** List of tasks to execute. */
+	readonly tasks: string[];
+	/** List of tasks to exclude from execution. */
+	readonly excludedTasks?: string[];
+
 	/** List all available tasks. */
 	readonly list: boolean;
+	/** List all workspaces. */
+	readonly listWorkspaces: boolean;
+
 	/** Perform a dry run without executing tasks. */
 	readonly dryRun: boolean;
 	/** Show summary after execution. */
 	readonly summary?: boolean;
-	/** Path to configuration file. */
-	readonly configFile?: string;
-	/** Show resolved configuration. */
-	readonly showConfig: boolean;
+
 	/** Show stacktrace on errors. */
 	readonly stacktrace: boolean;
 	/** Clean the cache before running. */
 	readonly cleanCache?: boolean;
 
-	/** List of tasks to execute. */
-	readonly tasks: string[];
-	/** List of tasks to exclude from execution. */
-	readonly excludedTasks?: string[];
+	/** Path to configuration file. */
+	readonly configFile?: string;
+	/** Show resolved configuration. */
+	readonly showConfig: boolean;
 }
 
 /**
