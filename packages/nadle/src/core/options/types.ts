@@ -52,6 +52,9 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 
 	/** Path to configuration file. */
 	readonly configFile?: string;
+
+	/** Path to a specific resolved configuration value, using dot/bracket notation. */
+	readonly configKey?: string;
 	/** Show resolved configuration. */
 	readonly showConfig: boolean;
 }
@@ -74,7 +77,7 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
  * Fully resolved Nadle options, including required fields and project reference.
  */
 export interface NadleResolvedOptions
-	extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configFile" | "tasks" | "excludedTasks">> {
+	extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks">> {
 	/** Project information. */
 	readonly project: Project;
 
@@ -82,6 +85,9 @@ export interface NadleResolvedOptions
 	readonly minWorkers: number;
 	/** Maximum number of worker threads (resolved as number). */
 	readonly maxWorkers: number;
+
+	/** Path to a specific resolved configuration value, using dot/bracket notation. */
+	readonly configKey?: string;
 
 	/** List of tasks to execute after resolution and auto-correction. */
 	readonly tasks: ResolvedTask[];

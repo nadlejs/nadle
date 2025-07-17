@@ -66,6 +66,14 @@ export const CLIOptions = {
 			description: "Print the resolved configuration"
 		}
 	},
+	configKey: {
+		key: "config-key",
+		options: {
+			type: "string",
+			description: "Path to a specific resolved configuration value, using dot/bracket notation",
+			defaultDescription: "undefined"
+		}
+	},
 	footer: {
 		key: "footer",
 		options: {
@@ -122,7 +130,7 @@ export const CLIOptions = {
 			alias: "x",
 			description: "Tasks to exclude from execution",
 			array: true,
-			coerce: (val: string[]) => val.flatMap((v) => v.split(",").map((s) => s.trim())).filter(Boolean)
+			coerce: coerceList
 		}
 	},
 
@@ -154,6 +162,10 @@ export const CLIOptions = {
 		}
 	}
 } satisfies Record<Exclude<keyof NadleCLIOptions, "tasks" | "isWorkerThread">, { key: string; options: Options }>;
+
+function coerceList(val: string[]): string[] {
+	return val.flatMap((v) => v.split(",").map((s) => s.trim())).filter(Boolean);
+}
 
 function createWorkerCoercer(type: "min" | "max") {
 	return (workers: string | undefined) => {

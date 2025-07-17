@@ -11,23 +11,26 @@ const argv = yargs(hideBin(Process.argv))
 	.scriptName("nadle")
 	.command("$0 [tasks...]", "Execute one or more named tasks")
 
-	.option(CLIOptions.configFile.key, CLIOptions.configFile.options)
-	.option(CLIOptions.parallel.key, CLIOptions.parallel.options)
-	.option(CLIOptions.minWorkers.key, CLIOptions.minWorkers.options)
-	.option(CLIOptions.maxWorkers.key, CLIOptions.maxWorkers.options)
-	.option(CLIOptions.exclude.key, CLIOptions.exclude.options)
-	.option(CLIOptions.noCache.key, CLIOptions.noCache.options)
-	.option(CLIOptions.cache.key, CLIOptions.cache.options)
-	.option(CLIOptions.cacheDir.key, CLIOptions.cacheDir.options)
-	.option(CLIOptions.cleanCache.key, CLIOptions.cleanCache.options)
-	.option(CLIOptions.logLevel.key, CLIOptions.logLevel.options)
-	.option(CLIOptions.list.key, CLIOptions.list.options)
-	.option(CLIOptions.listWorkspaces.key, CLIOptions.listWorkspaces.options)
-	.option(CLIOptions.dryRun.key, CLIOptions.dryRun.options)
-	.option(CLIOptions.showConfig.key, CLIOptions.showConfig.options)
-	.option(CLIOptions.footer.key, CLIOptions.footer.options)
-	.option(CLIOptions.stacktrace.key, CLIOptions.stacktrace.options)
-	.option(CLIOptions.summary.key, CLIOptions.summary.options)
+	.options({
+		[CLIOptions.list.key]: CLIOptions.list.options,
+		[CLIOptions.cache.key]: CLIOptions.cache.options,
+		[CLIOptions.dryRun.key]: CLIOptions.dryRun.options,
+		[CLIOptions.footer.key]: CLIOptions.footer.options,
+		[CLIOptions.exclude.key]: CLIOptions.exclude.options,
+		[CLIOptions.noCache.key]: CLIOptions.noCache.options,
+		[CLIOptions.summary.key]: CLIOptions.summary.options,
+		[CLIOptions.parallel.key]: CLIOptions.parallel.options,
+		[CLIOptions.cacheDir.key]: CLIOptions.cacheDir.options,
+		[CLIOptions.logLevel.key]: CLIOptions.logLevel.options,
+		[CLIOptions.configKey.key]: CLIOptions.configKey.options,
+		[CLIOptions.configFile.key]: CLIOptions.configFile.options,
+		[CLIOptions.minWorkers.key]: CLIOptions.minWorkers.options,
+		[CLIOptions.maxWorkers.key]: CLIOptions.maxWorkers.options,
+		[CLIOptions.cleanCache.key]: CLIOptions.cleanCache.options,
+		[CLIOptions.showConfig.key]: CLIOptions.showConfig.options,
+		[CLIOptions.stacktrace.key]: CLIOptions.stacktrace.options,
+		[CLIOptions.listWorkspaces.key]: CLIOptions.listWorkspaces.options
+	})
 	.version("version", "Show version number", Nadle.version)
 	.alias("v", "version")
 	.help("help", "Show this help")
@@ -42,6 +45,7 @@ const argv = yargs(hideBin(Process.argv))
 			CLIOptions.listWorkspaces.key,
 			CLIOptions.dryRun.key,
 			CLIOptions.showConfig.key,
+			CLIOptions.configKey.key,
 			CLIOptions.stacktrace.key
 		],
 		"Execution options:"
