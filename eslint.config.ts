@@ -55,6 +55,11 @@ const configs: ConfigArray = tsEslint.config(
 	{
 		files: ["packages/nadle/src/**"],
 		rules: {
+			complexity: ["error", { max: 10 }],
+			"max-params": ["error", { max: 3 }],
+			"max-lines": ["error", { max: 200, skipComments: true, skipBlankLines: true }],
+			"max-lines-per-function": ["error", { max: 50, skipComments: true, skipBlankLines: true }],
+
 			"no-restricted-properties": [
 				"error",
 				{

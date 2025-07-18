@@ -18,6 +18,7 @@ export const Messages = {
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)} workspace.`,
 	InvalidTaskName: (taskName: string) =>
 		`Invalid task name: ${highlight(taskName)}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`,
+	// eslint-disable-next-line max-params
 	UnresolvedTaskWithSuggestions: (taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined, suggestions: string) =>
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)}${fallbackWorkspaceId ? ` nor ${highlight(fallbackWorkspaceId)}` : ""} workspace. ${suggestions}`,
 

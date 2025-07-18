@@ -46,6 +46,7 @@ export class TaskInputResolver {
 		});
 	}
 
+	// eslint-disable-next-line max-params
 	private resolveTask(project: Project, taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined): string {
 		const resolvedTask = suggest(taskNameInput, this.taskNamesGetter(targetWorkspaceId), this.logger);
 

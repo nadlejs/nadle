@@ -28,6 +28,7 @@ namespace TasksSelection {
 	}
 }
 
+// eslint-disable-next-line max-lines-per-function
 const TasksSelection: React.FC<TasksSelection.Props> = ({ tasks, onSubmit }) => {
 	const [cursor, setCursor] = useState(0);
 	const [selectedTasks, setSelectedTasks] = useState<string[]>([]);

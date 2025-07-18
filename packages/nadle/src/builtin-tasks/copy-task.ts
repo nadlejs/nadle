@@ -28,6 +28,7 @@ export interface CopyTaskOptions {
  * Supports include/exclude glob patterns and handles both files and directories.
  */
 export const CopyTask = defineTask<CopyTaskOptions>({
+	// eslint-disable-next-line max-lines-per-function,complexity
 	run: async ({ options, context }) => {
 		const { to, from, exclude = [], include = "**/*" } = options;
 		const { logger, workingDir } = context;
