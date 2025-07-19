@@ -5,10 +5,6 @@ exports[`--config-key > should have no effect if not specified any value 1`] = `
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
-
 [log] {
   "cache": true,
   "footer": false,
@@ -53,9 +49,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "minWorkers": 1
 }
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should print undefined if config key does not exist 1`] = `
@@ -63,14 +56,7 @@ exports[`--config-key > should print undefined if config key does not exist 1`] 
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key notFound
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
-
 [log] undefined
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should use the specified config key and show correct config 1`] = `
@@ -78,10 +64,6 @@ exports[`--config-key > should use the specified config key and show correct con
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
-
 [log] {
   "rootWorkspace": {
     "id": "root",
@@ -106,9 +88,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
   "packageManager": "npm",
   "currentWorkspaceId": "root"
 }
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should work with nested key 1`] = `
@@ -116,14 +95,7 @@ exports[`--config-key > should work with nested key 1`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.rootWorkspace.absolutePath
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
 [log] "/ROOT/test/__fixtures__/pnpm-workspaces"
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should work with nested key 2`] = `
@@ -131,10 +103,6 @@ exports[`--config-key > should work with nested key 2`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces[1]
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
 [log] {
   "id": "frontend",
   "label": "frontend",
@@ -153,9 +121,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     }
   }
 }
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should work with nested key 3`] = `
@@ -163,14 +128,7 @@ exports[`--config-key > should work with nested key 3`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces[1].id
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
 [log] "frontend"
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should work with nested key 4`] = `
@@ -178,14 +136,7 @@ exports[`--config-key > should work with nested key 4`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces.1.id
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
 [log] "frontend"
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--config-key > should work with nested key 5`] = `
@@ -193,12 +144,5 @@ exports[`--config-key > should work with nested key 5`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build --show-config --config-key tasks[0].taskId
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-workspaces/nadle.config.ts and 4 other(s) files
-
 [log] "root:build"
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;

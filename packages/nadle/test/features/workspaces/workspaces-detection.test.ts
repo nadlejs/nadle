@@ -10,7 +10,7 @@ describe("workspaces detection", () => {
 		await withFixture({
 			fixtureDir: "monorepo",
 			testFn: async ({ exec }) => {
-				await expectPass(exec`--show-config`);
+				await expectPass(exec`--show-config --config-key project`);
 			},
 			files: {
 				[CONFIG_FILE]: "",
@@ -27,7 +27,7 @@ describe("workspaces detection", () => {
 		await withFixture({
 			fixtureDir: "monorepo",
 			testFn: async ({ exec }) => {
-				await expectPass(exec`--show-config`);
+				await expectPass(exec`--show-config --config-key project`);
 			},
 			files: {
 				[CONFIG_FILE]: "",
@@ -46,7 +46,7 @@ describe("workspaces detection", () => {
 		await withFixture({
 			fixtureDir: "monorepo",
 			testFn: async ({ exec }) => {
-				await expectPass(exec`--show-config`);
+				await expectPass(exec`--show-config --config-key project`);
 			},
 			files: {
 				[CONFIG_FILE]: "",
@@ -66,7 +66,7 @@ describe("workspaces detection", () => {
 		await withFixture({
 			fixtureDir: "monorepo",
 			testFn: async ({ exec }) => {
-				await expectPass(exec`--show-config`);
+				await expectPass(exec`--show-config --config-key project`);
 			},
 			files: {
 				[CONFIG_FILE]: "",
@@ -86,7 +86,7 @@ describe("workspaces detection", () => {
 		await withFixture({
 			fixtureDir: "monorepo",
 			testFn: async ({ exec }) => {
-				await expectPass(exec`--config config/nadle.config.js --show-config`);
+				await expectPass(exec`--config config/nadle.config.js --show-config --config-key project`);
 			},
 			files: {
 				[CONFIG_FILE]: "",
