@@ -46,7 +46,7 @@ export async function withFixture(params: {
 			await Fs.rm(cwd, { force: true, recursive: true });
 		}
 	} catch (err) {
-		console.warn(`⚠️  Test failed — fixture preserved at: ${cwd}`);
+		console.warn(`⚠️  Test failed — fixture preserved at: file://${cwd}`);
 		throw err;
 	}
 }

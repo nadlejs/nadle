@@ -11,11 +11,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 
 [log] <Bold>Uncategorized tasks</BoldDim>
 [log] <Bold>-------------------</BoldDim>
+[log] <Green>build</Green>
+[log] <Green>test</Green>
 [log] <Green>packages:one:build</Green>
 [log] <Green>packages:three:build</Green>
 [log] <Green>packages:two:build</Green>
-[log] <Green>build</Green>
-[log] <Green>test</Green>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed

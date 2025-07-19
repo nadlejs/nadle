@@ -1,9 +1,18 @@
 import c from "tinyrainbow";
+import { groupBy } from "lodash-es";
 
 import { BaseHandler } from "./base-handler.js";
 import { DASH } from "../utilities/constants.js";
 import { capitalize } from "../utilities/utils.js";
+import { combineComparators } from "../utilities/comparator.js";
+import { RootWorkspace } from "../models/project/root-workspace.js";
 import type { RegisteredTask } from "../interfaces/registered-task.js";
+
+interface DescribedTask extends RegisteredTask {
+	readonly description?: string;
+}
+
+type Group = [string, DescribedTask[]];
 
 export class ListHandler extends BaseHandler {
 	public readonly name = "list";
@@ -22,7 +31,7 @@ export class ListHandler extends BaseHandler {
 			return;
 		}
 
-		const groups = this.computeTaskGroups();
+		const groups = this.computeGroups();
 
 		for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
 			const [groupName, tasks] = groups[groupIndex];
@@ -47,30 +56,25 @@ export class ListHandler extends BaseHandler {
 		}
 	}
 
-	private computeTaskGroups(): [string, (RegisteredTask & { description?: string })[]][] {
-		const tasksByGroup: Record<string, (RegisteredTask & { description?: string })[]> = {};
-
-		for (const task of this.nadle.taskRegistry.tasks) {
+	private computeGroups(): Group[] {
+		const tasks = this.nadle.taskRegistry.tasks.map((task) => {
 			const { description, group = ListHandler.UncategorizedGroup } = task.configResolver();
 
-			tasksByGroup[group] ??= [];
-			tasksByGroup[group].push({ ...task, description });
-		}
+			return { ...task, group, description };
+		});
 
-		return Object.entries(tasksByGroup)
-			.sort(([firstGroupName], [secondGroupName]) => {
-				if (firstGroupName === ListHandler.UncategorizedGroup) {
-					return 1;
-				}
+		const groupComparator = combineComparators<Group>([
+			([a], [b]) => Number(a === ListHandler.UncategorizedGroup) - Number(b === ListHandler.UncategorizedGroup),
+			([a], [b]) => a.localeCompare(b)
+		]);
 
-				if (secondGroupName === ListHandler.UncategorizedGroup) {
-					return -1;
-				}
+		const taskComparator = combineComparators<DescribedTask>([
+			(a, b) => Number(RootWorkspace.isRootWorkspaceId(b.workspaceId)) - Number(RootWorkspace.isRootWorkspaceId(a.workspaceId)),
+			(a, b) => a.label.localeCompare(b.label)
+		]);
 
-				return firstGroupName.localeCompare(secondGroupName);
-			})
-			.map(([groupName, tasks]) => {
-				return [groupName, tasks.sort((firstTask, secondTask) => firstTask.id.localeCompare(secondTask.id))];
-			});
+		return Object.entries(groupBy(tasks, "group"))
+			.sort(groupComparator)
+			.map(([groupName, tasks]) => [groupName, tasks.sort(taskComparator)]);
 	}
 }
