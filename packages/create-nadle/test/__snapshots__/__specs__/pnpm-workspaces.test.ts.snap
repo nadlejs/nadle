@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`given a pnpm monorepo project > should should initialize nadle properly 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: pnpm nadle build --no-footer --max-workers 1
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/node_modules/.pnpm/nadle{version}/node_modules/nadle/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
+
+Building project...
+[log]
+<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
