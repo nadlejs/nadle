@@ -35,7 +35,7 @@ describe("workspaces > depends on tasks", () => {
 							one: {
 								[PACKAGE_JSON]: createPackageJson("one"),
 								[CONFIG_FILE]: createNadleConfig({
-									tasks: [{ name: "check", log: "Check one", dependsOn: ["build"] }]
+									tasks: [{ name: "check", log: "Check one", config: { dependsOn: ["build"] } }]
 								})
 							}
 						}
@@ -64,7 +64,7 @@ describe("workspaces > depends on tasks", () => {
 								[CONFIG_FILE]: createNadleConfig({
 									tasks: [
 										{ name: "build", log: "Build one" },
-										{ name: "check", log: "Check one", dependsOn: ["buidl"] }
+										{ name: "check", log: "Check one", config: { dependsOn: ["buidl"] } }
 									]
 								})
 							}
@@ -94,7 +94,7 @@ describe("workspaces > depends on tasks", () => {
 								[CONFIG_FILE]: createNadleConfig({
 									tasks: [
 										{ name: "build", log: "Build one" },
-										{ name: "check", log: "Check one", dependsOn: ["build"] }
+										{ name: "check", log: "Check one", config: { dependsOn: ["build"] } }
 									]
 								})
 							}
@@ -144,7 +144,7 @@ describe("workspaces > depends on tasks", () => {
 										{
 											name: "build",
 											log: "Build one",
-											dependsOn: ["packages:two:build", "two:check", "check", "root:build"]
+											config: { dependsOn: ["packages:two:build", "two:check", "check", "root:build"] }
 										}
 									]
 								})
@@ -191,7 +191,7 @@ describe("workspaces > depends on tasks", () => {
 								one: {
 									[PACKAGE_JSON]: createPackageJson("one"),
 									[CONFIG_FILE]: createNadleConfig({
-										tasks: [{ name: "build", log: "Build one", dependsOn: dependency }]
+										tasks: [{ name: "build", log: "Build one", config: { dependsOn: dependency } }]
 									})
 								}
 							}

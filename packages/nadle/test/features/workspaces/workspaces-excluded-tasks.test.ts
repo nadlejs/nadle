@@ -26,7 +26,7 @@ describe("workspaces > excluded tasks", () => {
 						[CONFIG_FILE]: createNadleConfig({
 							tasks: [
 								{ name: "build", log: "Build one" },
-								{ name: "check", log: "Check one", dependsOn: ["build"] }
+								{ name: "check", log: "Check one", config: { dependsOn: ["build"] } }
 							]
 						})
 					},
@@ -35,7 +35,7 @@ describe("workspaces > excluded tasks", () => {
 						[CONFIG_FILE]: createNadleConfig({
 							tasks: [
 								{ name: "build", log: "Build one" },
-								{ name: "check", log: "Check one", dependsOn: ["build", "two:build", "root:build"] }
+								{ name: "check", log: "Check one", config: { dependsOn: ["build", "two:build", "root:build"] } }
 							]
 						})
 					}

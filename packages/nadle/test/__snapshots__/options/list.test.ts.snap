@@ -27,6 +27,28 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 [log] <Bold>0</BoldDim> task executed
 `;
 
+exports[`--list > prints all tasks in workspace order 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
+
+[log] <Bold>Build tasks</BoldDim>
+[log] <Bold>-----------</BoldDim>
+[log] <Bold><Green>assemble</Green></BoldDim><Yellow> - Main assemble task</Yellow>
+[log] <Bold><Green>build</Green></BoldDim><Yellow> - Main build task</Yellow>
+[log] <Bold><Green>packages:one:build</Green></BoldDim><Yellow> - One build task</Yellow>
+[log] <Bold><Green>packages:one:compile</Green></BoldDim><Yellow> - One combine task</Yellow>
+[log] <Bold><Green>packages:zero:assemble</Green></BoldDim><Yellow> - One assemble task</Yellow>
+[log] <Bold><Green>packages:zero:build</Green></BoldDim><Yellow> - Zero build task</Yellow>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
 exports[`--list > prints no task message when no registered tasks 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main

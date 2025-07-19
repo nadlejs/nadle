@@ -1,7 +1,9 @@
 import yaml from "yaml";
-import stringify from "serialize-javascript";
+import serializeJson from "serialize-javascript";
 import { type NadleFileOptions } from "src/index.js";
+import type { TaskConfiguration } from "src/index.js";
 import { Project, QuoteKind, ScriptTarget } from "ts-morph";
+import { stringify } from "src/core/utilities/stringify.js";
 import { type PackageJson } from "src/core/models/project/package.js";
 
 export function createPackageJson(name: string = "root", otherFields?: Partial<Omit<PackageJson & { workspaces: string[] }, "name">>): string {
@@ -12,7 +14,10 @@ export function createPnpmWorkspace(packages: string[] = ["./**"]) {
 	return yaml.stringify({ packages });
 }
 
-export function createNadleConfig(params?: { configure?: NadleFileOptions; tasks?: { log: string; name: string; dependsOn?: string[] }[] }): string {
+export function createNadleConfig(params?: {
+	configure?: NadleFileOptions;
+	tasks?: { log?: string; name: string; config?: TaskConfiguration }[];
+}): string {
 	const project = new Project({
 		useInMemoryFileSystem: true,
 		compilerOptions: { target: ScriptTarget.ESNext },
@@ -27,16 +32,16 @@ export function createNadleConfig(params?: { configure?: NadleFileOptions; tasks
 	});
 
 	if (params?.configure) {
-		sourceFile.addStatements(`configure(${stringify(params?.configure)});`);
+		sourceFile.addStatements(`configure( ${serializeJson(params?.configure, 2)} );`);
 	}
 
 	for (const task of params?.tasks ?? []) {
-		const { log, name, dependsOn } = task;
+		const { log, name, config } = task;
 
-		let taskRegisterStatement = `tasks.register("${name}", () => {console.log("${log}");})`;
+		let taskRegisterStatement = log ? `tasks.register("${name}", () => {console.log("${log}");})` : `tasks.register("${name}")`;
 
-		if (dependsOn) {
-			taskRegisterStatement += `.config({dependsOn: [${dependsOn.map((dep) => `"${dep}"`).join(", ")}]})`;
+		if (config) {
+			taskRegisterStatement += `\n.config(${serializeJson(config, 2)})`;
 		}
 
 		taskRegisterStatement += ";";
