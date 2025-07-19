@@ -30,7 +30,19 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "@nadle/internal-nadle-test-fixtures-main",
+        "type": "module",
+        "private": true,
+        "dependencies": {
+          "nadle": "workspace:*"
+        },
+        "nadle": {
+          "root": true
+        }
+      },
       "absolutePath": "/ROOT/test/__fixtures__/main",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
     },
@@ -74,7 +86,19 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
   "rootWorkspace": {
     "id": "root",
     "label": "",
+    "packageJson": {
+      "name": "@nadle/internal-nadle-test-fixtures-main",
+      "type": "module",
+      "private": true,
+      "dependencies": {
+        "nadle": "workspace:*"
+      },
+      "nadle": {
+        "root": true
+      }
+    },
     "absolutePath": "/ROOT/test/__fixtures__/main",
+    "dependencies": [],
     "relativePath": ".",
     "configFilePath": "/ROOT/test/__fixtures__/main/nadle.config.ts"
   },
@@ -116,7 +140,18 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
   "label": "frontend",
   "absolutePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend",
   "relativePath": "frontend",
-  "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend/nadle.config.ts"
+  "dependencies": [
+    "shared:api",
+    "shared:types"
+  ],
+  "configFilePath": "/ROOT/test/__fixtures__/pnpm-workspaces/frontend/nadle.config.ts",
+  "packageJson": {
+    "name": "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-frontend",
+    "dependencies": {
+      "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-shared-api": "workspace:*",
+      "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-shared-types": "workspace:*"
+    }
+  }
 }
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>

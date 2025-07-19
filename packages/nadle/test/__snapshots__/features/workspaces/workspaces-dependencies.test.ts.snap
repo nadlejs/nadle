@@ -1,0 +1,217 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`workspaces > dependencies > given a pnpm workspaces project > should resolve dependencies correctly 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] [
+  {
+    "id": "packages:one",
+    "label": "packages:one",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one",
+    "relativePath": "packages/one",
+    "dependencies": [
+      "packages:zero"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "one",
+      "version": "1.0.0",
+      "dependencies": {
+        "zero": "workspace:~"
+      }
+    }
+  },
+  {
+    "id": "packages:two",
+    "label": "packages:two",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/two",
+    "relativePath": "packages/two",
+    "dependencies": [
+      "packages:one",
+      "packages:zero"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "two",
+      "version": "SNAPSHOT",
+      "dependencies": {
+        "one": "workspace:^"
+      },
+      "devDependencies": {
+        "zero": "workspace:*"
+      }
+    }
+  },
+  {
+    "id": "packages:zero",
+    "label": "packages:zero",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/zero",
+    "relativePath": "packages/zero",
+    "dependencies": [],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "zero",
+      "version": "2.3.0-SNAPSHOT"
+    }
+  }
+]
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces > dependencies > given a yarn workspaces project > should resolve dependencies correctly 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] [
+  {
+    "id": "packages:one",
+    "label": "packages:one",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one",
+    "relativePath": "packages/one",
+    "dependencies": [
+      "packages:zero"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "one",
+      "version": "1.0.0",
+      "dependencies": {
+        "zero": "workspace:~"
+      }
+    }
+  },
+  {
+    "id": "packages:two",
+    "label": "packages:two",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/two",
+    "relativePath": "packages/two",
+    "dependencies": [
+      "packages:one",
+      "packages:zero"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "two",
+      "version": "SNAPSHOT",
+      "dependencies": {
+        "one": "workspace:^"
+      },
+      "devDependencies": {
+        "zero": "workspace:*"
+      }
+    }
+  },
+  {
+    "id": "packages:zero",
+    "label": "packages:zero",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/zero",
+    "relativePath": "packages/zero",
+    "dependencies": [],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "zero",
+      "version": "2.3.0-SNAPSHOT"
+    }
+  }
+]
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;
+
+exports[`workspaces > dependencies > given an npm workspaces project > should resolve dependencies correctly 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
+
+[log] [
+  {
+    "id": "packages:one",
+    "label": "packages:one",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one",
+    "relativePath": "packages/one",
+    "dependencies": [
+      "packages:zero"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "one",
+      "version": "1.0.0",
+      "dependencies": {
+        "zero": "2.3.0-SNAPSHOT"
+      }
+    }
+  },
+  {
+    "id": "packages:three",
+    "label": "packages:three",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/three",
+    "relativePath": "packages/three",
+    "dependencies": [
+      "packages:one",
+      "packages:two"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "three",
+      "dependencies": {
+        "one": "^1.0.0",
+        "two": "SNAPSHOT"
+      }
+    }
+  },
+  {
+    "id": "packages:two",
+    "label": "packages:two",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/two",
+    "relativePath": "packages/two",
+    "dependencies": [
+      "packages:one",
+      "packages:zero"
+    ],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "two",
+      "version": "SNAPSHOT",
+      "dependencies": {
+        "one": "~1.0.0"
+      },
+      "devDependencies": {
+        "zero": "*"
+      }
+    }
+  },
+  {
+    "id": "packages:zero",
+    "label": "packages:zero",
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/zero",
+    "relativePath": "packages/zero",
+    "dependencies": [],
+    "configFilePath": null,
+    "packageJson": {
+      "name": "zero",
+      "version": "2.3.0-SNAPSHOT"
+    }
+  }
+]
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>0</BoldDim> task executed
+`;

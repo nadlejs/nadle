@@ -96,13 +96,13 @@ export class ProjectResolver {
 				if (await detector.isMonorepoRoot(projectDir)) {
 					const packages = await detector.getPackages(projectDir);
 
-					this.#project = Project.create(packages);
+					this.#project = await Project.create(packages);
 
 					return;
 				}
 			}
 
-			const rootWorkspace = RootWorkspace.create(projectDir);
+			const rootWorkspace = await RootWorkspace.create(projectDir);
 			this.#project = { rootWorkspace, workspaces: [], packageManager: "npm", currentWorkspaceId: rootWorkspace.id };
 
 			return;
@@ -117,7 +117,7 @@ export class ProjectResolver {
 			);
 		}
 
-		this.#project = Project.create(await detector.getPackages(monorepoRoot.rootDir));
+		this.#project = await Project.create(await detector.getPackages(monorepoRoot.rootDir));
 	}
 
 	private async resolveRootWorkspaceConfigFile(rootConfigFilePath: string | undefined): Promise<string> {

@@ -1,5 +1,6 @@
 import { type Package } from "@manypkg/tools";
 
+import { PackageJson } from "./package.js";
 import { COLON, SLASH, BACKSLASH } from "../../utilities/constants.js";
 
 /**
@@ -14,6 +15,10 @@ export interface Workspace {
 	readonly relativePath: string;
 	/** Absolute path to the workspace. */
 	readonly absolutePath: string;
+	/** List of workspace IDs that the workspace depends on */
+	readonly dependencies: string[];
+	/** Package JSON object for the workspace. */
+	readonly packageJson: PackageJson;
 	/** Path to the workspace config file, or null if not present. */
 	readonly configFilePath: string | null;
 }
@@ -28,10 +33,10 @@ export namespace Workspace {
 	 * @returns The Workspace object.
 	 */
 	export function create(pkg: Package): Workspace {
-		const { relativeDir, dir: absolutePath } = pkg;
+		const { relativeDir, packageJson, dir: absolutePath } = pkg;
 		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
 		const id = relativePath.replaceAll(SLASH, COLON);
 
-		return { id, label: id, absolutePath, relativePath, configFilePath: null };
+		return { id, label: id, absolutePath, relativePath, dependencies: [], configFilePath: null, packageJson: PackageJson.create(packageJson) };
 	}
 }

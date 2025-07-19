@@ -29,7 +29,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "root",
+        "type": "module"
+      },
       "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
     },
@@ -41,21 +46,33 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
         "label": "app",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
         "relativePath": "app",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "app"
+        }
       },
       {
         "id": "common:api",
         "label": "common:api",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api",
         "relativePath": "common/api",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "api"
+        }
       },
       {
         "id": "common:types",
         "label": "common:types",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/types",
         "relativePath": "common/types",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "types"
+        }
       }
     ]
   },
@@ -96,7 +113,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "root",
+        "type": "module"
+      },
       "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
     },
@@ -108,21 +130,33 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
         "label": "app",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
         "relativePath": "app",
-        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app/nadle.config.ts"
+        "dependencies": [],
+        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app/nadle.config.ts",
+        "packageJson": {
+          "name": "app"
+        }
       },
       {
         "id": "common:api",
         "label": "common:api",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api",
         "relativePath": "common/api",
-        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api/nadle.config.js"
+        "dependencies": [],
+        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api/nadle.config.js",
+        "packageJson": {
+          "name": "api"
+        }
       },
       {
         "id": "common:types",
         "label": "common:types",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/types",
         "relativePath": "common/types",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "types"
+        }
       }
     ]
   },
@@ -164,7 +198,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.confi
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "root",
+        "type": "module"
+      },
       "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/config/nadle.config.js"
     },
@@ -176,7 +215,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.confi
         "label": "app",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
         "relativePath": "app",
-        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app/nadle.config.ts"
+        "dependencies": [],
+        "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app/nadle.config.ts",
+        "packageJson": {
+          "name": "app"
+        }
       }
     ]
   },
@@ -217,7 +260,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "root",
+        "type": "module"
+      },
       "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
     },
@@ -229,14 +277,22 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
         "label": "app",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/app",
         "relativePath": "app",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "app"
+        }
       },
       {
         "id": "common:api",
         "label": "common:api",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/common/api",
         "relativePath": "common/api",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "api"
+        }
       }
     ]
   },
@@ -277,7 +333,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "root",
+        "type": "module"
+      },
       "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
     },
@@ -289,7 +350,11 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config
         "label": "one",
         "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/one",
         "relativePath": "one",
-        "configFilePath": null
+        "dependencies": [],
+        "configFilePath": null,
+        "packageJson": {
+          "name": "one"
+        }
       }
     ]
   },

@@ -1,5 +1,8 @@
 {
 	"name": "@nadle/internal-nadle-test-fixtures-pnpm-workspaces-shared-api",
 	"type": "module",
-	"private": true
+	"private": true,
+	"dependencies": {
+		"@nadle/internal-nadle-test-fixtures-pnpm-workspaces-shared-types": "workspace:*"
+	}
 }

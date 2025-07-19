@@ -1,17 +1,8 @@
 import Path from "node:path";
 
 import { it, describe } from "vitest";
-import {
-	createExec,
-	expectPass,
-	CONFIG_FILE,
-	withFixture,
-	PACKAGE_JSON,
-	PNPM_WORKSPACE,
-	createNadleConfig,
-	createPackageJson,
-	createPnpmWorkspace
-} from "setup";
+import { PACKAGE_JSON } from "src/core/utilities/constants.js";
+import { createExec, expectPass, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("workspaces > excluded tasks", () => {
 	it("should not run excluded tasks", async () => {
