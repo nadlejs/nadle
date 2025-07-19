@@ -53,7 +53,7 @@ export class TaskPool {
 				taskId: task.id,
 				port: workerPort,
 				env: process.env,
-				options: { ...this.nadle.options, footer: false, isWorkerThread: true }
+				options: { ...this.nadle.options, footer: false }
 			};
 
 			await this.pool.run(workerParams, { transferList: [workerPort] });

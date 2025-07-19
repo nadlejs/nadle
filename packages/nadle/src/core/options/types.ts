@@ -21,9 +21,6 @@ export interface NadleBaseOptions {
 	readonly minWorkers?: number | string;
 	/** Maximum number of worker threads (number or string, e.g., "100%"). */
 	readonly maxWorkers?: number | string;
-
-	/** @internal True if running in a worker thread. */
-	readonly isWorkerThread?: boolean;
 }
 
 /**
