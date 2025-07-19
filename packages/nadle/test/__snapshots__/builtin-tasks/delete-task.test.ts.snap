@@ -109,7 +109,19 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
     "rootWorkspace": {
       "id": "root",
       "label": "",
+      "packageJson": {
+        "name": "@nadle/internal-nadle-test-fixtures-delete-task",
+        "type": "module",
+        "private": true,
+        "dependencies": {
+          "nadle": "workspace:*"
+        },
+        "nadle": {
+          "root": true
+        }
+      },
       "absolutePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__",
+      "dependencies": [],
       "relativePath": ".",
       "configFilePath": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts"
     },

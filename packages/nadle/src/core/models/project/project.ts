@@ -6,6 +6,7 @@ import { AliasResolver } from "./alias-resolver.js";
 import { RootWorkspace } from "./root-workspace.js";
 import { Messages } from "../../utilities/messages.js";
 import { type AliasOption } from "../../options/types.js";
+import { DependencyResolver } from "./dependency-resolver/index.js";
 
 export interface Project {
 	readonly packageManager: string;
@@ -15,10 +16,10 @@ export interface Project {
 }
 
 export namespace Project {
-	export function create(packages: Packages): Project {
-		const rootWorkspace = RootWorkspace.create(packages.rootDir);
+	export async function create(packages: Packages): Promise<Project> {
+		const rootWorkspace = await RootWorkspace.create(packages.rootDir);
 
-		return {
+		const project = {
 			rootWorkspace,
 			packageManager: packages.tool.type,
 			currentWorkspaceId: rootWorkspace.id,
@@ -27,6 +28,8 @@ export namespace Project {
 				["relativePath"]
 			)
 		};
+
+		return new DependencyResolver().resolve(project);
 	}
 
 	export function getAllWorkspaces(project: Project): Workspace[] {

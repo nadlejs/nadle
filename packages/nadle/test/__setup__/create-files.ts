@@ -2,16 +2,17 @@ import yaml from "yaml";
 import stringify from "serialize-javascript";
 import { type NadleFileOptions } from "src/index.js";
 import { Project, QuoteKind, ScriptTarget } from "ts-morph";
+import { type PackageJson } from "src/core/models/project/package.js";
 
-export function createPackageJson(name: string = "root") {
-	return stringify({ name, type: "module" });
+export function createPackageJson(name: string = "root", otherFields?: Partial<Omit<PackageJson & { workspaces: string[] }, "name">>): string {
+	return stringify({ name, type: "module", ...(otherFields ?? {}) });
 }
 
 export function createPnpmWorkspace(packages: string[] = ["./**"]) {
 	return yaml.stringify({ packages });
 }
 
-export function createNadleConfig(params: { configure?: NadleFileOptions; tasks?: { log: string; name: string; dependsOn?: string[] }[] }): string {
+export function createNadleConfig(params?: { configure?: NadleFileOptions; tasks?: { log: string; name: string; dependsOn?: string[] }[] }): string {
 	const project = new Project({
 		useInMemoryFileSystem: true,
 		compilerOptions: { target: ScriptTarget.ESNext },
@@ -25,11 +26,11 @@ export function createNadleConfig(params: { configure?: NadleFileOptions; tasks?
 		namedImports: ["tasks", "configure"]
 	});
 
-	if (params.configure) {
-		sourceFile.addStatements(`configure(${stringify(params.configure)});`);
+	if (params?.configure) {
+		sourceFile.addStatements(`configure(${stringify(params?.configure)});`);
 	}
 
-	for (const task of params.tasks ?? []) {
+	for (const task of params?.tasks ?? []) {
 		const { log, name, dependsOn } = task;
 
 		let taskRegisterStatement = `tasks.register("${name}", () => {console.log("${log}");})`;

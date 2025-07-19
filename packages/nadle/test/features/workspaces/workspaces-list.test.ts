@@ -1,5 +1,6 @@
 import { it, describe } from "vitest";
-import { expectPass, withFixture, CONFIG_FILE, PACKAGE_JSON, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
+import { PACKAGE_JSON } from "src/core/utilities/constants.js";
+import { expectPass, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
 
 describe("workspaces > list", () => {
 	it("should list all workspaces", async () => {

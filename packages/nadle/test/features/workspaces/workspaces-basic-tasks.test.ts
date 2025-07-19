@@ -2,13 +2,13 @@ import Path from "node:path";
 
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
+import { PACKAGE_JSON } from "src/core/utilities/constants.js";
 import {
 	getStderr,
 	createExec,
 	expectPass,
 	CONFIG_FILE,
 	withFixture,
-	PACKAGE_JSON,
 	PNPM_WORKSPACE,
 	createNadleConfig,
 	createPackageJson,
