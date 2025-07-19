@@ -1,4 +1,4 @@
-export type Comparator<T> = (a: T, b: T) => number;
+type Comparator<T> = (a: T, b: T) => number;
 
 export function combineComparators<T>(comparators: Comparator<T>[]): Comparator<T> {
 	return (a, b) => {
