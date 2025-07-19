@@ -16,7 +16,7 @@ interface State {
 }
 
 export class Nadle {
-	public static readonly version: string = "0.5.0"; // x-release-please-version
+	public static readonly version: string = "0.5.1"; // x-release-please-version
 
 	public state: State = { selectingTasks: false };
 
