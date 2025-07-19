@@ -59,7 +59,7 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 		throw new Error("Package must be located in the 'packages' directory. Got: " + pkgDirPath);
 	}
 
-	if (name === "nadle") {
+	if (name === "nadle" || name === "create-nadle") {
 		return;
 	}
 
@@ -337,5 +337,5 @@ function isPublic(pkg: PackageJson) {
 }
 
 function isCLIPackage(pkg: PackageJson) {
-	return !!pkg.bin && pkg.name?.includes("cli");
+	return !!pkg.bin;
 }
