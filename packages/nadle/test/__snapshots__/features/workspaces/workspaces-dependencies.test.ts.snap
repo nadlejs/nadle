@@ -5,10 +5,6 @@ exports[`workspaces > dependencies > given a pnpm workspaces project > should re
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
-
 [log] [
   {
     "id": "packages:one",
@@ -61,9 +57,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     }
   }
 ]
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`workspaces > dependencies > given a yarn workspaces project > should resolve dependencies correctly 1`] = `
@@ -71,10 +64,6 @@ exports[`workspaces > dependencies > given a yarn workspaces project > should re
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
-
 [log] [
   {
     "id": "packages:one",
@@ -127,9 +116,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     }
   }
 ]
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`workspaces > dependencies > given an npm workspaces project > should resolve dependencies correctly 1`] = `
@@ -137,10 +123,6 @@ exports[`workspaces > dependencies > given an npm workspaces project > should re
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts
-
 [log] [
   {
     "id": "packages:one",
@@ -211,7 +193,4 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     }
   }
 ]
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;

@@ -3,12 +3,8 @@
 exports[`configure > can override configured options from config file if the cli one is provided 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts --log-level info --show-config
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts --log-level info --show-config --config-key logLevel
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.configure.ts
-
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/main
 [info] Resolved options: {
@@ -24,6 +20,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
   "tasks": [],
   "maxWorkers": 1,
   "configFile": "nadle.configure.ts",
+  "configKey": "logLevel",
   "list": false,
   "dryRun": false,
   "stacktrace": false,
@@ -57,58 +54,12 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts
 }
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
-[log] {
-  "cache": true,
-  "footer": false,
-  "summary": false,
-  "parallel": false,
-  "logLevel": "info",
-  "cleanCache": false,
-  "showConfig": true,
-  "excludedTasks": [],
-  "isWorkerThread": false,
-  "tasks": [],
-  "maxWorkers": 1,
-  "configFile": "nadle.configure.ts",
-  "list": false,
-  "dryRun": false,
-  "stacktrace": false,
-  "listWorkspaces": false,
-  "project": {
-    "rootWorkspace": {
-      "id": "root",
-      "label": "",
-      "packageJson": {
-        "name": "@nadle/internal-nadle-test-fixtures-main",
-        "type": "module",
-        "private": true,
-        "dependencies": {
-          "nadle": "workspace:*"
-        },
-        "nadle": {
-          "root": true
-        }
-      },
-      "absolutePath": "/ROOT/test/__fixtures__/main",
-      "dependencies": [],
-      "relativePath": ".",
-      "configFilePath": "/ROOT/test/__fixtures__/main/nadle.configure.ts"
-    },
-    "workspaces": [],
-    "packageManager": "npm",
-    "currentWorkspaceId": "root"
-  },
-  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
-  "minWorkers": 1
-}
+[log] "info"
 [info] Execution finished
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`configure > can use configured options from config file 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts --show-config
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.configure.ts --show-config --config-key logLevel
 `;

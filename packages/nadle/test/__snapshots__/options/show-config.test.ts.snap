@@ -5,10 +5,6 @@ exports[`--show-config > should show config 1`] = `
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
-
 [log] {
   "cache": true,
   "footer": false,
@@ -58,9 +54,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
   "minWorkers": 1
 }
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
 
 exports[`--show-config > should show config with extra options 1`] = `
@@ -68,10 +61,6 @@ exports[`--show-config > should show config with extra options 1`] = `
 Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-workers 3
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.config.ts
-
 [log] {
   "cache": true,
   "footer": false,
@@ -121,7 +110,4 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/.nadle"
 }
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
 `;
