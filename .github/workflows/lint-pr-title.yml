@@ -24,11 +24,9 @@ jobs:
             feat
             test
             perf
-            deps
             docs
             chore
             refactor
-            security
           requireScope: false
           subjectPattern: ^[a-z].+$
           subjectPatternError: |

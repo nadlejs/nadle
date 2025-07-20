@@ -16,9 +16,7 @@
 		{ "type": "perf", "section": "Performance" },
 		{ "type": "refactor", "section": "Internal" },
 		{ "type": "test", "section": "Internal" },
-		{ "type": "chore", "section": "Miscellaneous" },
-		{ "type": "build", "section": "Miscellaneous" },
-		{ "type": "ci", "section": "Miscellaneous" }
+		{ "type": "chore", "section": "Internal" }
 	],
 
 	"packages": {
