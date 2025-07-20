@@ -12,6 +12,11 @@ permissions:
 jobs:
   size-limit:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - packages/nadle
+          - packages/create-nadle
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Setup pnpm
@@ -33,5 +38,5 @@ jobs:
         uses: andresz1/size-limit-action@v1.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          directory: packages/nadle
+          directory: ${{ matrix.package }}
           package_manager: pnpm
