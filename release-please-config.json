@@ -26,6 +26,9 @@
 			],
 			"release-type": "node",
 			"release-as": "0.5.1"
+		},
+		"packages/create-nadle": {
+			"release-type": "node"
 		}
 	},
 	"plugins": [{ "type": "sentence-case" }]

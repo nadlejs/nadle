@@ -1,3 +1,4 @@
 {
-	"packages/nadle": "0.5.0"
+	"packages/nadle": "0.5.0",
+	"packages/create-nadle": "0.0.1"
 }
