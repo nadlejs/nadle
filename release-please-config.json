@@ -2,8 +2,19 @@
 	"$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
 	"bump-minor-pre-major": true,
 	"bump-patch-for-minor-pre-major": true,
-	"pull-request-title-pattern": "chore: release v${version}",
-	"include-component-in-tag": false,
+	"include-component-in-tag": true,
+	"pull-request-title-pattern": "chore: release ${component} v${version}",
+	"changelog-sections": [
+		{ "type": "feat", "section": "Features" },
+		{ "type": "fix", "section": "Bug Fixes" },
+		{ "type": "docs", "section": "Documentation" },
+		{ "type": "perf", "section": "Performance" },
+		{ "type": "refactor", "section": "Internal" },
+		{ "type": "test", "section": "Internal" },
+		{ "type": "chore", "section": "Miscellaneous" },
+		{ "type": "build", "section": "Miscellaneous" },
+		{ "type": "ci", "section": "Miscellaneous" }
+	],
 
 	"packages": {
 		"packages/nadle": {
@@ -13,18 +24,7 @@
 					"path": "src/core/nadle.ts"
 				}
 			],
-			"release-type": "node",
-			"changelog-sections": [
-				{ "type": "feat", "section": "Features" },
-				{ "type": "fix", "section": "Bug Fixes" },
-				{ "type": "docs", "section": "Documentation" },
-				{ "type": "perf", "section": "Performance" },
-				{ "type": "refactor", "section": "Internal" },
-				{ "type": "test", "section": "Internal" },
-				{ "type": "chore", "section": "Miscellaneous" },
-				{ "type": "build", "section": "Miscellaneous" },
-				{ "type": "ci", "section": "Miscellaneous" }
-			]
+			"release-type": "node"
 		}
 	},
 	"plugins": [{ "type": "sentence-case" }]
