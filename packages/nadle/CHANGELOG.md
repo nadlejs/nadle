@@ -1,5 +1,32 @@
 # nadle
 
+## [0.5.1](https://github.com/nadlejs/nadle/compare/v0.5.0...v0.5.1) (2025-07-20)
+
+
+### Features
+
+* Add --list-workspaces option to list all available workspaces ([#361](https://github.com/nadlejs/nadle/issues/361)) ([a66d665](https://github.com/nadlejs/nadle/commit/a66d665c7e33d8bf3bd7be59f7ff8da635d230e3))
+* Add optional --config-key to specify which config should be shown when using --show-config ([#364](https://github.com/nadlejs/nadle/issues/364)) ([145a2b5](https://github.com/nadlejs/nadle/commit/145a2b57c27b47bc38bccd64d6cffbf9618b2485))
+* Compute workspace dependencies ([#365](https://github.com/nadlejs/nadle/issues/365)) ([f55cb0e](https://github.com/nadlejs/nadle/commit/f55cb0efb4e13fae6789f8fd48b2975ef11e8195))
+* Order tasks by workspaces when listing tasks ([#371](https://github.com/nadlejs/nadle/issues/371)) ([2ad717b](https://github.com/nadlejs/nadle/commit/2ad717b1f2665f5331679df8579c3c3eb3d761e0))
+* Print configuration only when using --show-config option ([#372](https://github.com/nadlejs/nadle/issues/372)) ([6a65ec9](https://github.com/nadlejs/nadle/commit/6a65ec929a17655059190ff3619d6d3436068ca5))
+
+
+### Bug Fixes
+
+* Footer is hidden after choosing task in interaction mode ([#359](https://github.com/nadlejs/nadle/issues/359)) ([3388989](https://github.com/nadlejs/nadle/commit/33889898d96bd6b2012fa54ef5223b173b68a76e))
+* Update task selection to use task IDs in interaction mode ([#358](https://github.com/nadlejs/nadle/issues/358)) ([40b822e](https://github.com/nadlejs/nadle/commit/40b822e4e6072390057b63b43fe33316e03ffe70))
+
+
+### Internal
+
+* Drop internal isWorkerThread option ([#369](https://github.com/nadlejs/nadle/issues/369)) ([cd2255a](https://github.com/nadlejs/nadle/commit/cd2255ad0932aa4d419a9784bb72f59080a129b2))
+
+
+### Miscellaneous
+
+* Add ESLint rules for complexity and line limits ([5b54afe](https://github.com/nadlejs/nadle/commit/5b54afeb15896a64e45d04ac71e7bdb5635a30eb))
+
 ## [0.5.0](https://github.com/nadlejs/nadle/compare/v0.4.0...v0.5.0) (2025-07-16)
 
 
