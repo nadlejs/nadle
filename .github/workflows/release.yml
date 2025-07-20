@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   release:
+    name: Release ${{ github.ref_name }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

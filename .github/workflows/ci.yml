@@ -16,7 +16,7 @@ concurrency:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
-    name: Test Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
