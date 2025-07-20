@@ -24,7 +24,8 @@
 					"path": "src/core/nadle.ts"
 				}
 			],
-			"release-type": "node"
+			"release-type": "node",
+			"release-as": "0.5.1"
 		}
 	},
 	"plugins": [{ "type": "sentence-case" }]
