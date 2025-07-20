@@ -4,7 +4,7 @@
 	"bump-patch-for-minor-pre-major": true,
 
 	"separate-pull-requests": true,
-	"pull-request-title-pattern": "chore: release ${component} v${version}",
+	"pull-request-title-pattern": "chore: release${component} v${version}",
 
 	"include-component-in-tag": true,
 	"tag-separator": "/",
@@ -16,9 +16,7 @@
 		{ "type": "perf", "section": "Performance" },
 		{ "type": "refactor", "section": "Internal" },
 		{ "type": "test", "section": "Internal" },
-		{ "type": "chore", "section": "Miscellaneous" },
-		{ "type": "build", "section": "Miscellaneous" },
-		{ "type": "ci", "section": "Miscellaneous" }
+		{ "type": "chore", "section": "Internal" }
 	],
 
 	"packages": {
