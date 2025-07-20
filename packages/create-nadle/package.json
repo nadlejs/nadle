@@ -1,0 +1,74 @@
+{
+	"name": "create-nadle",
+	"version": "0.0.1",
+	"description": "Initialize Nadle into an existing project with zero hassle.",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "pnpm \"/build:/\"",
+		"build:tsup": "tsup",
+		"build:ts": "tsc -p tsconfig.build.json",
+		"start": "pnpm run build:ts --watch --noEmit false",
+		"test": "vitest"
+	},
+	"files": [
+		"lib",
+		"create-nadle.mjs"
+	],
+	"bin": "create-nadle.mjs",
+	"dependencies": {
+		"execa": "^9.6.0",
+		"preferred-pm": "^4.1.1"
+	},
+	"devDependencies": {
+		"@manypkg/tools": "^2.0.0",
+		"@types/node": "^20.19.7",
+		"@types/serialize-javascript": "^5.0.4",
+		"fixturify": "^3.0.0",
+		"serialize-javascript": "^6.0.2",
+		"std-env": "^3.9.0",
+		"tsup": "^8.5.0",
+		"typescript": "^5.8.2",
+		"vitest": "3.2.4",
+		"yaml": "^2.8.0"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nadlejs/nadle.git",
+		"directory": "packages/create-nadle"
+	},
+	"keywords": [
+		"task",
+		"runner",
+		"build",
+		"parallel",
+		"pipeline",
+		"cli",
+		"tool",
+		"gradle",
+		"grunt",
+		"make",
+		"typescript",
+		"automation",
+		"type-safe",
+		"lightweight"
+	],
+	"homepage": "https://nadle.dev",
+	"bugs": "https://github.com/nadlejs/nadle/issues",
+	"size-limit": [
+		{
+			"path": "lib/**",
+			"limit": "20 KB",
+			"name": "bundled",
+			"brotli": false
+		}
+	]
+}
