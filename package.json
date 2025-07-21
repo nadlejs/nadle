@@ -12,19 +12,19 @@
 		"@nadle/prettier-config": "^0.0.5",
 		"@nadle/ts-config": "^0.0.2",
 		"@vitest/eslint-plugin": "^1.3.4",
-		"cspell": "^9.1.5",
+		"cspell": "^9.2.0",
 		"eslint": "^9.31.0",
 		"glob": "^11.0.3",
 		"husky": "^9.1.7",
 		"jiti": "^2.4.2",
-		"knip": "^5.61.3",
+		"knip": "^5.62.0",
 		"lint-staged": "^16.1.2",
 		"nadle": "https://pkg.pr.new/nadle@a9640ee",
 		"prettier": "^3.6.2",
 		"rimraf": "^6.0.1",
 		"tsx": "^4.20.3",
 		"typescript": "^5.8.2",
-		"typescript-eslint": "^8.36.0"
+		"typescript-eslint": "^8.37.0"
 	},
 	"engines": {
 		"node": ">=20"
