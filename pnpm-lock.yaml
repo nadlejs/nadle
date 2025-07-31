@@ -80,6 +80,9 @@ importers:
       '@manypkg/tools':
         specifier: ^2.1.0
         version: 2.1.0
+      '@size-limit/file':
+        specifier: ^11.2.0
+        version: 11.2.0(size-limit@11.2.0)
       '@types/node':
         specifier: ^20.19.9
         version: 20.19.9
@@ -92,6 +95,9 @@ importers:
       serialize-javascript:
         specifier: ^6.0.2
         version: 6.0.2
+      size-limit:
+        specifier: ^11.2.0
+        version: 11.2.0
       std-env:
         specifier: ^3.9.0
         version: 3.9.0
