@@ -21,11 +21,13 @@
 		"preferred-pm": "^4.1.1"
 	},
 	"devDependencies": {
-		"@manypkg/tools": "^2.0.0",
-		"@types/node": "^20.19.7",
+		"@manypkg/tools": "^2.1.0",
+		"@size-limit/file": "^11.2.0",
+		"@types/node": "^20.19.9",
 		"@types/serialize-javascript": "^5.0.4",
 		"fixturify": "^3.0.0",
 		"serialize-javascript": "^6.0.2",
+		"size-limit": "^11.2.0",
 		"std-env": "^3.9.0",
 		"tsup": "^8.5.0",
 		"typescript": "^5.8.2",
