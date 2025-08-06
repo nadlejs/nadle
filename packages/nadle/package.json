@@ -62,9 +62,9 @@
 		"strip-ansi": "^7.1.0",
 		"ts-morph": "^26.0.0",
 		"tsup": "^8.5.0",
-		"typedoc": "^0.28.8",
-		"typedoc-plugin-markdown": "^4.7.1",
-		"typescript": "^5.8.2",
+		"typedoc": "^0.28.9",
+		"typedoc-plugin-markdown": "^4.8.0",
+		"typescript": "^5.9.2",
 		"vitest": "3.2.4",
 		"yaml": "^2.8.0"
 	},
