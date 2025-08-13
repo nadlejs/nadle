@@ -23,7 +23,7 @@
 	"devDependencies": {
 		"@manypkg/tools": "^2.1.0",
 		"@size-limit/file": "^11.2.0",
-		"@types/node": "^20.19.9",
+		"@types/node": "^20.19.10",
 		"@types/serialize-javascript": "^5.0.4",
 		"fixturify": "^3.0.0",
 		"serialize-javascript": "^6.0.2",
@@ -32,7 +32,7 @@
 		"tsup": "^8.5.0",
 		"typescript": "^5.9.2",
 		"vitest": "3.2.4",
-		"yaml": "^2.8.0"
+		"yaml": "^2.8.1"
 	},
 	"engines": {
 		"node": ">=20"
