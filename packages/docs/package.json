@@ -18,7 +18,7 @@
 		"prism-react-renderer": "^2.3.0",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
-		"react-syntax-highlighter": "^15.6.1",
+		"react-syntax-highlighter": "^15.6.3",
 		"tailwindcss": "^4.1.12"
 	},
 	"devDependencies": {
