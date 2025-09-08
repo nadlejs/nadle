@@ -23,7 +23,7 @@
 	"devDependencies": {
 		"@manypkg/tools": "^2.1.0",
 		"@size-limit/file": "^11.2.0",
-		"@types/node": "^20.19.11",
+		"@types/node": "^20.19.13",
 		"@types/serialize-javascript": "^5.0.4",
 		"fixturify": "^3.0.0",
 		"serialize-javascript": "^6.0.2",
