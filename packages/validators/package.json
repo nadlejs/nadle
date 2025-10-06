@@ -3,10 +3,10 @@
 	"type": "module",
 	"private": true,
 	"devDependencies": {
-		"@types/node": "^20.19.11",
+		"@types/node": "^20.19.19",
 		"glob": "^11.0.3",
 		"tinyrainbow": "^2.0.0",
 		"type-fest": "^4.41.0",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.3"
 	}
 }
