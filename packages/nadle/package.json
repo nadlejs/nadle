@@ -60,7 +60,7 @@
 		"serialize-javascript": "^6.0.2",
 		"size-limit": "^11.2.0",
 		"strip-ansi": "^7.1.2",
-		"ts-morph": "^26.0.0",
+		"ts-morph": "^27.0.2",
 		"tsup": "^8.5.0",
 		"typedoc": "^0.28.13",
 		"typedoc-plugin-markdown": "^4.9.0",
