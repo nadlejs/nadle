@@ -235,8 +235,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       tinyrainbow:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.0.3
+        version: 3.0.3
       yargs:
         specifier: ^18.0.0
         version: 18.0.0
@@ -504,8 +504,8 @@ importers:
         version: link:../nadle
     devDependencies:
       tinyrainbow:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.0.3
+        version: 3.0.3
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -519,8 +519,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       tinyrainbow:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.0.3
+        version: 3.0.3
       type-fest:
         specifier: ^4.41.0
         version: 4.41.0
@@ -7771,6 +7771,10 @@ packages:
 
   tinyrainbow@2.0.0:
     resolution: {integrity: sha512-op4nsTR47R6p0vMUUoYl/a+ljLFVtlfaXkLQmqfLR1qHma1h/ysYk4hEXZ880bf2CYgTskvTa/e196Vd5dDQXw==}
+    engines: {node: '>=14.0.0'}
+
+  tinyrainbow@3.0.3:
+    resolution: {integrity: sha512-PSkbLUoxOFRzJYjjxHJt9xro7D+iilgMX/C9lawzVuYiIdcihh9DXmVibBe8lmcFrRi/VzlPjBxbN7rH24q8/Q==}
     engines: {node: '>=14.0.0'}
 
   tinyspy@4.0.3:
@@ -17451,6 +17455,8 @@ snapshots:
   tinypool@2.0.0: {}
 
   tinyrainbow@2.0.0: {}
+
+  tinyrainbow@3.0.3: {}
 
   tinyspy@4.0.3: {}
 

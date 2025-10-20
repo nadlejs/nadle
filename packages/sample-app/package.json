@@ -33,7 +33,7 @@
 		"nadle": "workspace:*"
 	},
 	"devDependencies": {
-		"tinyrainbow": "^2.0.0",
+		"tinyrainbow": "^3.0.3",
 		"typescript": "^5.9.3"
 	},
 	"nadle": {

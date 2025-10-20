@@ -43,7 +43,7 @@
 		"rimraf": "^6.0.1",
 		"std-env": "^3.9.0",
 		"tinypool": "^2.0.0",
-		"tinyrainbow": "^2.0.0",
+		"tinyrainbow": "^3.0.3",
 		"yargs": "^18.0.0"
 	},
 	"devDependencies": {
