@@ -35,12 +35,15 @@ const config = {
 	words: [
 		"Cancelation",
 		"SCROLLBACK",
+		"Turborepo",
 		"Vitest",
+		"Wireit",
 		"indegree",
 		"nodir",
 		"npmjs",
 		"softwareTerms",
 		"Sonarqube",
+		"transpiles",
 		"Workspaced",
 		"Uncategorized",
 		...extractLibraryNames()
