@@ -42,6 +42,7 @@ describe("--cache-dir", () => {
 
 			for (const cacheDirName of cacheDirNames) {
 				if (cacheDirName !== expectedCacheDir) {
+					// eslint-disable-next-line vitest/no-conditional-expect
 					await expect(isPathExists(Path.join(cwd, cacheDirName))).resolves.toBe(false);
 				}
 			}
