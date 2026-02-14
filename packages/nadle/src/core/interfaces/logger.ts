@@ -36,7 +36,8 @@ export interface Logger {
 	debug(message: InputLogObject | string, ...args: unknown[]): void;
 
 	/**
-	 * Throw an error with a message.
+	 * Log and throw a user-facing error (e.g. invalid config, missing task, cycle detected).
+	 * For internal invariants / programmer errors, use `throw new Error()` directly instead.
 	 * @param message - The message or log object.
 	 * @param args - Additional arguments.
 	 */

@@ -74,7 +74,7 @@ export class OptionsResolver {
 		} else if (typeof configValue === "string") {
 			result = Math.round((Number.parseInt(configValue) / 100) * this.availableWorkers);
 		} else {
-			throw new Error(`Invalid worker value: ${configValue}`);
+			this.logger.throw(`Invalid worker value: ${configValue}`);
 		}
 
 		return clamp(result, 1, this.availableWorkers);

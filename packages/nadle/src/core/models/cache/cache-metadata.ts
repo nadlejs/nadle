@@ -43,18 +43,6 @@ export interface RunCacheMetadata {
 	 * The SHA-256 hash of the outputs produced by this task run.
 	 */
 	outputsFingerprint: string;
-
-	/**
-	 * Task-specific config or options (e.g., { minify: true }).
-	 * Used in hash calculation to reflect changes in behavior.
-	 */
-	// config?: Record<string, any>;
-
-	/**
-	 * Cache keys of tasks this one depends on.
-	 * Used to invalidate downstream tasks if dependencies change.
-	 */
-	// dependencies?: Record<string, string>;
 }
 
 export namespace RunCacheMetadata {
@@ -65,5 +53,18 @@ export namespace RunCacheMetadata {
 		inputsFingerprints: FileFingerprints;
 	}): RunCacheMetadata {
 		return { version: 1, timestamp: new Date().toISOString(), ...params };
+	}
+}
+
+export interface TaskCacheMetadata {
+	/**
+	 * The cache key of the latest run of the task.
+	 */
+	readonly latest: string;
+}
+
+export namespace TaskCacheMetadata {
+	export function create(latestCacheKey: string): TaskCacheMetadata {
+		return { latest: latestCacheKey };
 	}
 }

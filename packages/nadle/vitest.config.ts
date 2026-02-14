@@ -20,6 +20,9 @@ export default defineConfig({
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
 		setupFiles: "./test/__setup__/vitest.ts",
+		benchmark: {
+			include: ["bench/**/*.bench.ts"]
+		},
 		typecheck: {
 			enabled: true,
 			tsconfig: "./test/tsconfig.json"
