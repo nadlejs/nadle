@@ -1,12 +1,11 @@
 import { CacheManager } from "./cache-manager.js";
 import { hashObject } from "../utilities/hash.js";
 import { stringify } from "../utilities/stringify.js";
-import { CacheKey } from "../models/cache/cache-key.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
-import type { CacheQuery } from "../models/cache/cache-query.js";
 import { FileFingerprints } from "../models/cache/fingerprint.js";
+import { RunCacheMetadata } from "../models/cache/cache-metadata.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
-import { RunCacheMetadata } from "../models/cache/run-cache-metadata.js";
+import { CacheKey, type CacheQuery } from "../models/cache/cache-key.js";
 import { type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 type CacheValidationResult =

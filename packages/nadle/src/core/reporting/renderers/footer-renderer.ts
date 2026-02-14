@@ -55,12 +55,6 @@ export class FooterRenderer implements Renderer {
 
 		this.cleanups.push(this.interceptStream(process.stdout, "output"), this.interceptStream(process.stderr, "error"));
 
-		// Write buffered content on unexpected exits, e.g. direct `process.exit()` calls
-		// this.options.logger.onTerminalCleanup(() => {
-		// 	this.flushBuffer();
-		// 	this.stop();
-		// });
-
 		this.start();
 	}
 

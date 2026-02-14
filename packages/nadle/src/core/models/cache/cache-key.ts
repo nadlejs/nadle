@@ -13,3 +13,8 @@ export namespace CacheKey {
 		return hashObject(input);
 	}
 }
+
+export interface CacheQuery {
+	readonly cacheKey: CacheKey;
+	readonly taskId: TaskIdentifier;
+}
