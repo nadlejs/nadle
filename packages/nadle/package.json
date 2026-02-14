@@ -57,7 +57,7 @@
 		"@vitest/expect": "^3.2.4",
 		"fixturify": "^3.0.0",
 		"knip": "^5.64.1",
-		"serialize-javascript": "^6.0.2",
+		"serialize-javascript": "^7.0.0",
 		"size-limit": "^11.2.0",
 		"strip-ansi": "^7.1.2",
 		"ts-morph": "^27.0.2",
