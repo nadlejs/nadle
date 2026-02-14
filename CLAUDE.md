@@ -48,7 +48,7 @@ pnpm -F nadle build:tsup              # Build core package
 
 ## Code Conventions
 
-- **ESM only**, target `node20`
+- **ESM only**, target `node22`
 - **TypeScript strict mode**
 - Node built-in imports use **PascalCase default** only: `import Path from "node:path"`
   (no named/namespace imports from `node:` modules — enforced by eslint)
@@ -66,7 +66,7 @@ pnpm -F nadle build:tsup              # Build core package
 - **Bundle size limit**: 140 KB (tracked by `size-limit`)
 - **API surface**: Tracked by `@microsoft/api-extractor` → `index.api.md`
 - **Release**: `release-please` for automated changelog + version bumps
-- **CI**: Ubuntu + macOS + Windows, Node 20/22/24
+- **CI**: Ubuntu + macOS + Windows, Node 22/24
 
 ## Testing
 

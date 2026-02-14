@@ -28,7 +28,7 @@ Use code blocks (```) for logs to improve readability.
 Please complete the following information:
 
 - OS: [e.g. macOS 14.4, Windows 11, Ubuntu 22.04]
-- Node.js version: [e.g. 20.12.0]
+- Node.js version: [e.g. 22.12.0]
 - Package manager: [npm | pnpm | yarn]
 - Package manager version: [e.g. pnpm 8.6.1]
 - Nadle version: [e.g. 0.4.2]
