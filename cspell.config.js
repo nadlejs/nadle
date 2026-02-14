@@ -56,6 +56,7 @@ const config = {
 		"**/*.svg",
 		"pnpm-lock.yaml",
 		"*.vitest-temp.json",
+		".claude/**",
 		".specify/scripts/**",
 		".specify/templates/**",
 		"./packages/docs/**",
