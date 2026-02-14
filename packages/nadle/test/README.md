@@ -74,7 +74,9 @@ expect(stdout).toSettle("compile", "up-to-date");
 Asserts a function throws an error containing the expected text (ANSI codes stripped).
 
 ```typescript
-expect(() => { throw new Error("task not found"); }).toThrowPlainMessage("not found");
+expect(() => {
+	throw new Error("task not found");
+}).toThrowPlainMessage("not found");
 ```
 
 ## CLI Execution Helpers
@@ -90,6 +92,7 @@ const result = exec`install test --dry-run`;
 ```
 
 Options:
+
 - `config` — Config file name (auto-prefixed: `"basic"` → `nadle.basic.ts`)
 - `cwd` — Working directory
 - `env` — Environment variables (defaults: `CI=false`, `TEST=true`)
@@ -139,12 +142,12 @@ On failure, the temp directory is preserved and its path is logged.
 
 ```typescript
 await withFixture({
-  fixtureDir: "caching",
-  files: { "src/index.ts": "export const x = 1;" },
-  async testFn({ exec, cwd, getFiles }) {
-    const stdout = await getStdout(exec`build`);
-    expect(stdout).toRun("build");
-  }
+	fixtureDir: "caching",
+	files: { "src/index.ts": "export const x = 1;" },
+	async testFn({ exec, cwd, getFiles }) {
+		const stdout = await getStdout(exec`build`);
+		expect(stdout).toRun("build");
+	}
 });
 ```
 
@@ -154,11 +157,11 @@ Generates a `nadle.config.ts` string with task registrations and optional config
 
 ```typescript
 createNadleConfig({
-  configure: { cacheDir: ".custom-cache" },
-  tasks: [
-    { name: "build", log: "Building..." },
-    { name: "test", log: "Testing...", config: { dependsOn: ["build"] } }
-  ]
+	configure: { cacheDir: ".custom-cache" },
+	tasks: [
+		{ name: "build", log: "Building..." },
+		{ name: "test", log: "Testing...", config: { dependsOn: ["build"] } }
+	]
 });
 ```
 
@@ -199,11 +202,11 @@ expectTypeOf(tasks.register("check").config({ inputs: Inputs.files("*.ts") })).t
 
 ## When to Write Which Test Type
 
-| Type | When | Example |
-|------|------|---------|
-| **Integration** (default) | Any user-visible behavior — task execution, CLI options, error messages | `test/basic.test.ts` |
-| **Unit** | Pure functions with no CLI interaction | `test/unit/format-time.test.ts` |
-| **Type-level** | Public API type signatures | `test/register.test-d.ts` |
+| Type                      | When                                                                    | Example                         |
+| ------------------------- | ----------------------------------------------------------------------- | ------------------------------- |
+| **Integration** (default) | Any user-visible behavior — task execution, CLI options, error messages | `test/basic.test.ts`            |
+| **Unit**                  | Pure functions with no CLI interaction                                  | `test/unit/format-time.test.ts` |
+| **Type-level**            | Public API type signatures                                              | `test/register.test-d.ts`       |
 
 Prefer integration tests. The CLI is the contract — if it works end-to-end, internals can
 be refactored freely.
