@@ -28,12 +28,12 @@ enterprise bloat.
 
 ## Target Users
 
-| Persona                              | Pain                                                       | Nadle's answer                                     |
-| ------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------- |
-| **Team outgrowing npm scripts**      | `"scripts"` section is 40 lines of unmaintainable shell    | Type-safe tasks with dependencies and caching      |
-| **Gradle refugee**                   | Moved from JVM to Node, misses task DAG model              | Same mental model, TypeScript instead of Groovy    |
-| **Anti-complexity developer**        | Tried Nx, felt like fighting the tool                      | Minimal API, transparent behavior, no magic        |
-| **Monorepo pragmatist**              | Wants smart builds but not a "platform"                    | Workspace support without lock-in                  |
+| Persona                         | Pain                                                    | Nadle's answer                                  |
+| ------------------------------- | ------------------------------------------------------- | ----------------------------------------------- |
+| **Team outgrowing npm scripts** | `"scripts"` section is 40 lines of unmaintainable shell | Type-safe tasks with dependencies and caching   |
+| **Gradle refugee**              | Moved from JVM to Node, misses task DAG model           | Same mental model, TypeScript instead of Groovy |
+| **Anti-complexity developer**   | Tried Nx, felt like fighting the tool                   | Minimal API, transparent behavior, no magic     |
+| **Monorepo pragmatist**         | Wants smart builds but not a "platform"                 | Workspace support without lock-in               |
 
 ## Milestones
 

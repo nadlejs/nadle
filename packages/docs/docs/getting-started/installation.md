@@ -6,7 +6,7 @@ Getting started with Nadle is straightforward. Follow these steps to add Nadle t
 
 Before installing Nadle, make sure you have:
 
-- Node.js 20.x or later
+- Node.js 22.x or later
 - npm 10.x or later (or yarn/pnpm)
 - TypeScript 5.8+ (recommended)
 
