@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports -- readFileSync requires node:fs
 import Fs from "node:fs";
 import Path from "node:path";
 

@@ -29,6 +29,7 @@ Monorepo managed with **pnpm workspaces**. Nadle builds itself (`nadle.config.ts
 - **Public API**: Exported from `src/index.ts`, tracked by `api-extractor` in `index.api.md`
 
 Key source directories under `packages/nadle/src/`:
+
 - `core/registration/` — `tasks` API, `TaskRegistry`, `defineTask()`
 - `core/engine/` — `TaskScheduler` (DAG), `TaskPool` (workers), `worker.ts`
 - `core/caching/` — `CacheValidator`, `CacheManager`
