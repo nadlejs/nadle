@@ -73,8 +73,9 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
 /**
  * Fully resolved Nadle options, including required fields and project reference.
  */
-export interface NadleResolvedOptions
-	extends Required<Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks">> {
+export interface NadleResolvedOptions extends Required<
+	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks">
+> {
 	/** Project information. */
 	readonly project: Project;
 
