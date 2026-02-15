@@ -98,7 +98,6 @@ export class ExecutionTracker implements Listener {
 		}
 	}
 
-	// eslint-disable-next-line complexity
 	private updateTaskState(
 		task: RegisteredTask,
 		payload: Partial<{ duration: true; startTime: true; threadId: number; status: Exclude<TaskStatus, TaskStatus.Registered> }>
