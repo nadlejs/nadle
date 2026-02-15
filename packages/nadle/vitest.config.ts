@@ -11,6 +11,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
+			src: Path.resolve(import.meta.dirname, "src"),
 			setup: Path.resolve(import.meta.dirname, "test/__setup__/index.js")
 		}
 	},
