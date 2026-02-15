@@ -18,9 +18,9 @@ type CacheValidationResult =
 interface CacheValidatorContext {
 	readonly cache: boolean;
 	readonly cacheDir: string;
-	readonly configFile: string;
 	readonly projectDir: string;
 	readonly workingDir: string;
+	readonly configFiles: string[];
 }
 
 export class CacheValidator {
@@ -46,7 +46,7 @@ export class CacheValidator {
 		const taskId = this.taskId;
 
 		const inputsFingerprints = await FileFingerprints.compute({
-			files: [this.context.configFile],
+			files: this.context.configFiles,
 			workingDir: this.context.workingDir,
 			declarations: MaybeArray.toArray(this.taskConfiguration.inputs)
 		});
