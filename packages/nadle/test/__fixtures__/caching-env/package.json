@@ -1,0 +1,12 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-caching-env",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"glob": "^11.1.0",
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}

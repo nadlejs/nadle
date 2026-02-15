@@ -50,7 +50,7 @@ export class CacheValidator {
 			workingDir: this.context.workingDir,
 			declarations: MaybeArray.toArray(this.taskConfiguration.inputs)
 		});
-		const cacheKey = await CacheKey.compute({ taskId, inputsFingerprints });
+		const cacheKey = await CacheKey.compute({ taskId, inputsFingerprints, env: this.taskConfiguration.env });
 		const cacheQuery: CacheQuery = { taskId, cacheKey };
 
 		const hasCache = await this.cacheManager.hasCache(cacheQuery);
