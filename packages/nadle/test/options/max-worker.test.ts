@@ -3,7 +3,7 @@ import Path from "node:path";
 import { it, expect, describe } from "vitest";
 import { getStderr, getStdout, createExec, fixturesDir } from "setup";
 
-describe("--max-workers", () => {
+describe.concurrent("--max-workers", () => {
 	const baseConfig = { autoInjectMaxWorkers: false, env: { NADLE_MAX_WORKERS: "64" }, cwd: Path.join(fixturesDir, "workers") };
 
 	describe("when not specified", () => {

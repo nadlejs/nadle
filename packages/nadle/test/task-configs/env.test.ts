@@ -1,7 +1,7 @@
 import { getStdout, createExec } from "setup";
 import { it, expect, describe } from "vitest";
 
-describe("env", () => {
+describe.concurrent("env", () => {
 	const exec = createExec({ config: "env" });
 
 	it("can inject env to process.env from object config", async () => {

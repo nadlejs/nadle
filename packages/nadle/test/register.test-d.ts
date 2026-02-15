@@ -1,7 +1,7 @@
 import { it, describe, expectTypeOf } from "vitest";
 import { tasks, Inputs, Outputs, PnpmTask, type TaskConfigurationBuilder } from "nadle";
 
-describe("tasks.register", () => {
+describe.concurrent("tasks.register", () => {
 	it("can register tasks with various signatures", () => {
 		expectTypeOf(tasks.register("check")).toEqualTypeOf<TaskConfigurationBuilder>();
 

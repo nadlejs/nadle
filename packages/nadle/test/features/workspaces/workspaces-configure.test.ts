@@ -2,7 +2,7 @@ import { it, expect, describe } from "vitest";
 import { PACKAGE_JSON } from "src/core/utilities/constants.js";
 import { getStderr, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
 
-describe("workspaces configure", () => {
+describe.concurrent("workspaces configure", () => {
 	describe("when calling configure from sub-workspace configure file", () => {
 		it("should throw an error", async () => {
 			await withFixture({
