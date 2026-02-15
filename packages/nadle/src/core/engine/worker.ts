@@ -14,6 +14,11 @@ import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
 
 const threadId = WorkerThreads.threadId;
 
+export type WorkerMessage =
+	| { readonly type: "start"; readonly threadId: number }
+	| { readonly threadId: number; readonly type: "up-to-date"; }
+	| { readonly threadId: number; readonly type: "from-cache"; };
+
 export interface WorkerParams {
 	readonly taskId: string;
 	readonly env: NodeJS.ProcessEnv;
@@ -48,7 +53,7 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 	const validationResult = await cacheValidator.validate();
 
 	const execute = async () => {
-		port.postMessage({ threadId, type: "start" });
+		port.postMessage({ threadId, type: "start" } satisfies WorkerMessage);
 
 		environmentInjector.apply();
 
@@ -62,13 +67,13 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 	if (validationResult.result === "not-cacheable" || validationResult.result === "cache-disabled") {
 		await execute();
 	} else if (validationResult.result === "up-to-date") {
-		port.postMessage({ threadId, type: "up-to-date" });
+		port.postMessage({ threadId, type: "up-to-date" } satisfies WorkerMessage);
 		// Do nothing, the task is up-to-date
 	} else if (validationResult.result === "restore-from-cache") {
 		await validationResult.restore();
 
 		await cacheValidator.update(validationResult);
-		port.postMessage({ threadId, type: "from-cache" });
+		port.postMessage({ threadId, type: "from-cache" } satisfies WorkerMessage);
 	} else if (validationResult.result === "cache-miss") {
 		nadle.logger.info("Reasons:");
 
