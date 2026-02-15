@@ -2,17 +2,12 @@ import { type Nadle } from "../nadle.js";
 import { type Awaitable } from "../utilities/types.js";
 import { type Handler } from "../interfaces/handler.js";
 
-export class BaseHandler implements Handler {
+export abstract class BaseHandler implements Handler {
 	public constructor(protected readonly nadle: Nadle) {}
 
-	public name = "base-handler";
-	public description = "Base handler for Nadle commands.";
+	public abstract readonly name: string;
+	public abstract readonly description: string;
 
-	public canHandle(): boolean {
-		throw new Error("Method canHandle not implemented.");
-	}
-
-	public handle(): Awaitable<void> {
-		throw new Error("Method handle not implemented.");
-	}
+	public abstract canHandle(): boolean;
+	public abstract handle(...args: unknown[]): Awaitable<void>;
 }
