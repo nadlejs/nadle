@@ -1,9 +1,9 @@
 import TinyPool from "tinypool";
 
 import { type Nadle } from "../nadle.js";
-import { type WorkerParams } from "./worker.js";
 import { TaskStatus } from "../interfaces/registered-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
+import { type WorkerParams, type WorkerMessage } from "./worker.js";
 
 // It seems this is the error message thrown by TinyPool when a worker is terminated
 // See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438
@@ -38,8 +38,7 @@ export class TaskPool {
 		try {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();
 			let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
-			// TODO: Add type for the message
-			poolPort.on("message", async (msg: any) => {
+			poolPort.on("message", async (msg: WorkerMessage) => {
 				if (msg.type === "start") {
 					await this.nadle.eventEmitter.onTaskStart(task, msg.threadId);
 				} else if (msg.type === "up-to-date") {
