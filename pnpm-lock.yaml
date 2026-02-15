@@ -326,6 +326,15 @@ importers:
         specifier: workspace:*
         version: link:../../..
 
+  packages/nadle/test/__fixtures__/caching-env:
+    dependencies:
+      glob:
+        specifier: ^11.1.0
+        version: 11.1.0
+      nadle:
+        specifier: workspace:*
+        version: link:../../..
+
   packages/nadle/test/__fixtures__/caching-input:
     dependencies:
       glob:
