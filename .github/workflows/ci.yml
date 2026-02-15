@@ -45,5 +45,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Check
+        run: npx nadle check
+
       - name: Build
-        run: npx nadle check build test --summary
+        run: npx nadle build
+
+      - name: Test
+        run: npx nadle test --summary
