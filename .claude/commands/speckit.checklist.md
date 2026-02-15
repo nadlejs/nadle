@@ -79,6 +79,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - spec.md: Feature requirements and scope
    - plan.md (if exists): Technical details, dependencies
    - tasks.md (if exists): Implementation tasks
+   - Also read relevant files from `spec/` at the project root — these are the language-agnostic specification and single source of truth for Nadle's behavior, concepts, and contracts. Use them to validate requirements against existing architecture and terminology. If the checklist reveals gaps in `spec/`, include a checklist item to update the relevant `spec/` files (including `spec/CHANGELOG.md` and version bump in `spec/README.md`).
 
    **Context Loading Strategy**:
    - Load only necessary portions relevant to active focus areas (avoid full-file dumping)

@@ -26,6 +26,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 2. **Load design documents**: Read from FEATURE_DIR:
    - **Required**: plan.md (tech stack, libraries, structure), spec.md (user stories with priorities)
    - **Optional**: data-model.md (entities), contracts/ (API endpoints), research.md (decisions), quickstart.md (test scenarios)
+   - **Project spec**: Also read relevant files from `spec/` at the project root — these are the language-agnostic specification and single source of truth for Nadle's behavior, concepts, and contracts. Use them to ensure tasks align with existing architecture and use correct terminology. If any tasks introduce behavior, concepts, or contracts not yet covered in `spec/`, add a task to update the relevant `spec/` files (including `spec/CHANGELOG.md` and version bump in `spec/README.md`).
    - Note: Not all projects have all documents. Generate tasks based on what's available.
 
 3. **Execute task generation workflow**:

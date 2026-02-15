@@ -48,6 +48,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 3. Load and analyze the implementation context:
    - **REQUIRED**: Read tasks.md for the complete task list and execution plan
    - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
+   - **REQUIRED**: Read relevant files from `spec/` at the project root — these are the language-agnostic specification and single source of truth for Nadle's behavior, concepts, and contracts. Use them to ensure the implementation aligns with existing architecture, naming, and behavioral rules. If the implementation introduces behavior, concepts, or contracts not yet covered in `spec/`, update the relevant `spec/` files before completing the task. When updating, also add an entry to `spec/CHANGELOG.md` and bump the version in `spec/README.md` following semver.
    - **IF EXISTS**: Read data-model.md for entities and relationships
    - **IF EXISTS**: Read contracts/ for API specifications and test requirements
    - **IF EXISTS**: Read research.md for technical decisions and constraints

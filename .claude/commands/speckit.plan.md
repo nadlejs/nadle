@@ -22,7 +22,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 1. **Setup**: Run `.specify/scripts/bash/setup-plan.sh --json` from repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
-2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template (already copied).
+2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template (already copied). Also read relevant files from `spec/` at the project root — these are the language-agnostic specification and single source of truth for Nadle's behavior, concepts, and contracts. Use them to inform architecture decisions and ensure alignment with existing design. If the plan introduces behavior, concepts, or contracts not yet covered in `spec/`, include updating the relevant `spec/` files (including `spec/CHANGELOG.md` and version bump in `spec/README.md`) as a task in the plan.
 
 3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
    - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")

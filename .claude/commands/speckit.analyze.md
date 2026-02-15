@@ -35,7 +35,7 @@ For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot
 
 ### 2. Load Artifacts (Progressive Disclosure)
 
-Load only the minimal necessary context from each artifact:
+Load only the minimal necessary context from each artifact. Also read relevant files from `spec/` at the project root — these are the language-agnostic specification and single source of truth for Nadle's behavior, concepts, and contracts. Use them as the authoritative reference when checking consistency of terminology, architecture, and behavioral assertions. If the analysis reveals behavior, concepts, or contracts not yet covered in `spec/`, flag them in the report and recommend updating the relevant `spec/` files (including `spec/CHANGELOG.md` and version bump in `spec/README.md`).
 
 **From spec.md:**
 

@@ -15,12 +15,20 @@ packages/
   examples/basic/  # Basic example project
   sample-app/      # Richer example with task graphs and caching
   validators/      # Internal package validator
+spec/              # Language-agnostic specification (single source of truth)
 ```
 
 Monorepo managed with **pnpm workspaces**. Nadle builds itself (`nadle.config.ts` at root).
 
 ## Architecture
 
+- **Specification**: `spec/` contains the language-agnostic specification — the single source of
+  truth for all Nadle behavior, concepts, and contracts. Always consult these files first when
+  understanding or modifying Nadle's behavior. If you discover behavior, concepts, or contracts
+  that are missing or outdated in the spec, update the relevant `spec/` files to keep them
+  accurate. When updating spec files, also add an entry to `spec/CHANGELOG.md` and bump the
+  version in `spec/README.md` following semver (major for breaking behavioral changes, minor
+  for new concepts/sections, patch for clarifications).
 - **Entry**: `src/cli.ts` (yargs) → `Nadle` class → handler chain
 - **Task lifecycle**: Registration (`tasks.register`) → Scheduling (topological sort, DAG) →
   Execution (tinypool worker threads) → Reporting
