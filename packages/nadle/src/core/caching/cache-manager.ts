@@ -30,8 +30,12 @@ export class CacheManager {
 			const raw = await Fs.readFile(path, "utf8");
 
 			return JSON.parse(raw);
-		} catch {
-			return null;
+		} catch (error) {
+			if (isFileNotFoundError(error)) {
+				return null;
+			}
+
+			throw error;
 		}
 	}
 
@@ -93,8 +97,12 @@ export class CacheManager {
 			const { latest } = JSON.parse(raw) as TaskCacheMetadata;
 
 			return this.readRunMetadata({ taskId, cacheKey: latest });
-		} catch {
-			return null;
+		} catch (error) {
+			if (isFileNotFoundError(error)) {
+				return null;
+			}
+
+			throw error;
 		}
 	}
 
@@ -118,4 +126,8 @@ async function ensureDirectories(dirs: string[]): Promise<void> {
 	const unique = [...new Set(dirs)];
 
 	await Promise.all(unique.map((dir) => Fs.mkdir(dir, { recursive: true })));
+}
+
+function isFileNotFoundError(error: unknown): boolean {
+	return error instanceof Error && "code" in error && error.code === "ENOENT";
 }
