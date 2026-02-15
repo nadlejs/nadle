@@ -106,6 +106,12 @@ export interface NadleBaseOptions {
 }
 
 // @public
+export class NadleError extends Error {
+    constructor(message: string, errorCode?: number);
+    readonly errorCode: number;
+}
+
+// @public
 export interface NadleFileOptions extends Partial<NadleBaseOptions> {
     readonly alias?: AliasOption;
 }

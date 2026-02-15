@@ -1,6 +1,7 @@
 import Process from "node:process";
 
 import { Handlers } from "./handlers/index.js";
+import { NadleError } from "./utilities/nadle-error.js";
 import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
@@ -58,8 +59,7 @@ export class Nadle {
 		} catch (error) {
 			await this.eventEmitter.onExecutionFailed(error);
 
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			Process.exit((error as any).errorCode || 1);
+			Process.exit(error instanceof NadleError ? error.errorCode : 1);
 		}
 	}
 
