@@ -10,8 +10,11 @@ tasks.register("clean", DeleteTask, {
 });
 
 tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] });
-tasks.register("eslint", PnpmTask, { args: baseEslintArgs });
-tasks.register("prettier", ExecTask, { command: "prettier", args: ["--check", "."] });
+tasks.register("eslint", PnpmTask, { args: [...baseEslintArgs, "--cache", "--cache-location", "node_modules/.cache/eslint/"] });
+tasks.register("prettier", ExecTask, {
+	command: "prettier",
+	args: ["--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
+});
 tasks.register("knip", PnpmTask, { args: ["-r", "-F", "nadle", "-F", "create-nadle", "exec", "knip"] });
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
