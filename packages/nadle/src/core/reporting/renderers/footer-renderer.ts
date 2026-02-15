@@ -1,7 +1,7 @@
 import Util from "node:util";
 import type Stream from "node:stream";
 
-import { FileLogger } from "../file-logger.js";
+import { FileLogger } from "../../utilities/file-logger.js";
 import { type DefaultLogger } from "../../interfaces/defaults/default-logger.js";
 
 const DEFAULT_RENDER_INTERVAL_MS = 100;
