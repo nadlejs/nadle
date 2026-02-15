@@ -54,29 +54,30 @@ export class CacheManager {
 
 		const entries = await Fs.readdir(outputsCacheDir, { recursive: true, withFileTypes: true });
 
-		for (const entry of entries) {
-			if (!entry.isFile()) {
-				continue;
-			}
+		const filePairs = entries
+			.filter((entry) => entry.isFile())
+			.map((entry) => {
+				const sourcePath = Path.join(entry.parentPath, entry.name);
+				const targetPath = Path.join(this.projectDir, Path.relative(outputsCacheDir, sourcePath));
 
-			const sourcePath = Path.join(entry.parentPath, entry.name);
-			const targetPath = Path.join(this.projectDir, Path.relative(outputsCacheDir, sourcePath));
+				return { sourcePath, targetPath };
+			});
 
-			await Fs.mkdir(Path.dirname(targetPath), { recursive: true });
-			await Fs.copyFile(sourcePath, targetPath);
-		}
+		await ensureDirectories(filePairs.map(({ targetPath }) => Path.dirname(targetPath)));
+		await Promise.all(filePairs.map(({ sourcePath, targetPath }) => Fs.copyFile(sourcePath, targetPath)));
 	}
 
 	public async saveOutputs(cacheQuery: CacheQuery, outputPaths: string[]): Promise<void> {
 		const outputsCacheDir = this.getOutputsCacheDirPath(cacheQuery);
 
-		for (const sourcePath of outputPaths) {
-			const relativePath = Path.relative(this.projectDir, sourcePath);
-			const targetPath = Path.join(outputsCacheDir, relativePath);
+		const filePairs = outputPaths.map((sourcePath) => {
+			const targetPath = Path.join(outputsCacheDir, Path.relative(this.projectDir, sourcePath));
 
-			await Fs.mkdir(Path.dirname(targetPath), { recursive: true });
-			await Fs.copyFile(sourcePath, targetPath);
-		}
+			return { sourcePath, targetPath };
+		});
+
+		await ensureDirectories(filePairs.map(({ targetPath }) => Path.dirname(targetPath)));
+		await Promise.all(filePairs.map(({ sourcePath, targetPath }) => Fs.copyFile(sourcePath, targetPath)));
 	}
 
 	private getOutputsCacheDirPath({ taskId, cacheKey }: CacheQuery): string {
@@ -111,4 +112,10 @@ export class CacheManager {
 	private getBaseTaskPath(taskId: TaskIdentifier) {
 		return Path.join(this.cacheDir, CacheManager.TASKS_DIR_NAME, taskId.replaceAll(COLON, UNDERSCORE));
 	}
+}
+
+async function ensureDirectories(dirs: string[]): Promise<void> {
+	const unique = [...new Set(dirs)];
+
+	await Promise.all(unique.map((dir) => Fs.mkdir(dir, { recursive: true })));
 }
