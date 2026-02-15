@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - "*.md"
+      - "packages/docs/**"
+      - "LICENSE"
 
 permissions:
   contents: read
@@ -17,6 +21,7 @@ jobs:
   size-limit:
     name: Size Limit
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
         package:
@@ -33,14 +38,13 @@ jobs:
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version: 22
-          cache: "pnpm"
-          check-latest: true
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Run Size Limit
-        uses: andresz1/size-limit-action@v1.8.0
+        uses: andresz1/size-limit-action@94bc357df29c36c8f8d50ea497c3e225c3c95d1d # v1.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           directory: ${{ matrix.package }}
