@@ -3,7 +3,7 @@ import type Stream from "node:stream";
 import c from "tinyrainbow";
 
 import { type Logger } from "../logger.js";
-import { FileLogger } from "../../reporting/file-logger.js";
+import { FileLogger } from "../../utilities/file-logger.js";
 import { LogLevels, createNadleConsola, type InputLogObject, type SupportLogLevel } from "../../utilities/consola.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../../utilities/constants.js";
 
