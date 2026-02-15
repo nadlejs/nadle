@@ -18,7 +18,7 @@ export interface SchedulerTask {
  */
 export interface SchedulerLogger {
 	debug(message: unknown, ...args: unknown[]): void;
-	throw(message: unknown, ...args: unknown[]): never;
+	error(message: unknown, ...args: unknown[]): void;
 }
 
 /**

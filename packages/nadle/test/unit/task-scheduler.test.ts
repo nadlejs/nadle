@@ -53,15 +53,13 @@ function createMockDeps(tasks: TaskDef[], options?: MockOptions): SchedulerDepen
 			});
 
 	return {
+		logger: {
+			debug: vi.fn(),
+			error: vi.fn()
+		},
 		isRootWorkspace: (workspaceId: string) => workspaceId === "root",
 		getWorkspaceDependencies: (wsId: string) => workspaceDeps[wsId] ?? [],
 		getTasksByName: (taskName: string) => [...taskMap.values()].filter((t) => t.name === taskName),
-		logger: {
-			debug: vi.fn(),
-			throw: (message: string) => {
-				throw new Error(message);
-			}
-		},
 		parseTaskRef: (input: string, workspaceId: string) => {
 			if (input.includes(":")) {
 				return input;

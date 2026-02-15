@@ -5,6 +5,7 @@ import { highlight } from "../utilities/utils.js";
 import { Messages } from "../utilities/messages.js";
 import { suggest } from "../utilities/suggestion.js";
 import { type Logger } from "../interfaces/logger.js";
+import { NadleError } from "../utilities/nadle-error.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
@@ -79,21 +80,23 @@ export class TaskInputResolver {
 			}
 		}
 
-		this.logger.throw(
-			Messages.UnresolvedTaskWithSuggestions({
-				taskNameInput,
-				targetWorkspaceId,
-				fallbackWorkspaceId,
-				suggestions: formatSuggestions(resolvedTask.suggestions)
-			})
-		);
+		const message = Messages.UnresolvedTaskWithSuggestions({
+			taskNameInput,
+			targetWorkspaceId,
+			fallbackWorkspaceId,
+			suggestions: formatSuggestions(resolvedTask.suggestions)
+		});
+		this.logger.error(message);
+		throw new NadleError(message);
 	}
 
 	private resolveWorkspace(workspaceInput: string, workspaceLabels: string[]): string {
 		const suggestedWorkspace = suggest(workspaceInput, workspaceLabels, this.logger);
 
 		if (suggestedWorkspace.result === undefined) {
-			this.logger.throw(Messages.UnresolvedWorkspace(workspaceInput, formatSuggestions(suggestedWorkspace.suggestions)));
+			const message = Messages.UnresolvedWorkspace(workspaceInput, formatSuggestions(suggestedWorkspace.suggestions));
+			this.logger.error(message);
+			throw new NadleError(message);
 		}
 
 		return suggestedWorkspace.result;
