@@ -16,8 +16,8 @@ const threadId = WorkerThreads.threadId;
 
 export type WorkerMessage =
 	| { readonly type: "start"; readonly threadId: number }
-	| { readonly threadId: number; readonly type: "up-to-date"; }
-	| { readonly threadId: number; readonly type: "from-cache"; };
+	| { readonly threadId: number; readonly type: "up-to-date" }
+	| { readonly threadId: number; readonly type: "from-cache" };
 
 export interface WorkerParams {
 	readonly taskId: string;
