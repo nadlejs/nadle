@@ -18,7 +18,6 @@
 		"husky": "^9.1.7",
 		"jiti": "^2.6.1",
 		"knip": "^5.70.2",
-		"lint-staged": "^16.2.7",
 		"nadle": "https://pkg.pr.new/nadle@a9640ee",
 		"prettier": "^3.7.3",
 		"rimraf": "^6.1.2",
@@ -40,10 +39,5 @@
 			"esbuild"
 		]
 	},
-	"prettier": "@nadle/prettier-config",
-	"lint-staged": {
-		"*": "cspell --no-must-find-files --gitignore",
-		"*.ts": "eslint --fix",
-		"*.{ts,yml,json}": "prettier --write"
-	}
+	"prettier": "@nadle/prettier-config"
 }

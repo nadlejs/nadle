@@ -2,7 +2,7 @@ import { it, expect, describe } from "vitest";
 
 import { formatTime } from "../../src/core/utilities/utils.js";
 
-describe("formatTime", () => {
+describe.concurrent("formatTime", () => {
 	it("formats short durations with ms", () => {
 		expect(formatTime(7)).toBe("7ms");
 		expect(formatTime(349)).toBe("349ms");

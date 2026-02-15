@@ -5,7 +5,7 @@ import { it, expect, describe } from "vitest";
 import { createExec, fixturesDir } from "setup";
 
 // TODO: Use --config-paths to extract project path value
-describe("projectDir", () => {
+describe.concurrent("projectDir", () => {
 	const baseDir = Path.join(fixturesDir, "project-dir");
 
 	describe("given a package.json contains nadle.root = true", () => {

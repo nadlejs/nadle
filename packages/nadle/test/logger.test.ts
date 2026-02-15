@@ -1,7 +1,7 @@
 import { createExec } from "setup";
 import { it, expect, describe } from "vitest";
 
-describe("logger", () => {
+describe.concurrent("logger", () => {
 	const environments = [
 		{ CI: "true", TEST: "true", reporter: "BasicReporter" },
 		{ CI: "true", TEST: "false", reporter: "CIReporter" },

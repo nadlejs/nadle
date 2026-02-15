@@ -14,7 +14,7 @@ import {
 	createPnpmWorkspace
 } from "setup";
 
-describe("workspaces > depends on tasks", () => {
+describe.concurrent("workspaces > depends on tasks", () => {
 	describe("when declare a task without workspace", () => {
 		describe("when the declared task is not defined in the workspace", () => {
 			it("should throw an error even if having a same task in root workspace", async () => {

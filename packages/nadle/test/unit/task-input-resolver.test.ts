@@ -34,7 +34,7 @@ const TasksByWorkspace = {
 	frontend: ["build", "clean", "prepare", "dev", "test"]
 };
 
-describe("TaskInputResolver", () => {
+describe.concurrent("TaskInputResolver", () => {
 	const resolver = new TaskInputResolver(defaultLogger, (ws: string) => TasksByWorkspace[ws as "backend" | "root" | "frontend"]);
 
 	it("resolves exact task names in target workspace", () => {

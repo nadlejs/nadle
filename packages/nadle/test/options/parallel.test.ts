@@ -1,7 +1,7 @@
 import { it, expect, describe } from "vitest";
 import { getStdout, createExec } from "setup";
 
-describe("--parallel", () => {
+describe.concurrent("--parallel", () => {
 	const exec = createExec({ config: "basic" });
 
 	it("should done in order 1", async () => {
