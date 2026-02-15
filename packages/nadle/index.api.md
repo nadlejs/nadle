@@ -105,10 +105,9 @@ export interface NadleBaseOptions {
     readonly parallel?: boolean;
 }
 
-// @public (undocumented)
+// @public
 export class NadleError extends Error {
     constructor(message: string, errorCode?: number);
-    // (undocumented)
     readonly errorCode: number;
 }
 
