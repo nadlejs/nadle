@@ -5,6 +5,7 @@ import c from "tinyrainbow";
 
 import { Nadle } from "../nadle.js";
 import { bindObject } from "../utilities/utils.js";
+import { Project } from "../models/project/project.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { taskRegistry } from "../registration/task-registry.js";
@@ -39,10 +40,14 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 
+	const rootConfigFile = nadle.options.project.rootWorkspace.configFilePath;
+	const workspace = Project.getWorkspaceById(nadle.options.project, task.workspaceId);
+	const configFiles = workspace.configFilePath ? [rootConfigFile, workspace.configFilePath] : [rootConfigFile];
+
 	const cacheValidator = new CacheValidator(taskId, taskConfig, {
 		workingDir,
+		configFiles,
 		projectDir: nadle.options.project.rootWorkspace.absolutePath,
-		configFile: nadle.options.project.rootWorkspace.configFilePath,
 		...nadle.options
 	});
 	const validationResult = await cacheValidator.validate();
