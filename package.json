@@ -11,7 +11,7 @@
 		"@nadle/eslint-config": "^1.0.2",
 		"@nadle/prettier-config": "^0.0.5",
 		"@nadle/ts-config": "^0.0.2",
-		"@vitest/eslint-plugin": "^1.5.1",
+		"@vitest/eslint-plugin": "^1.6.9",
 		"cspell": "^9.3.2",
 		"eslint": "^9.39.1",
 		"glob": "^11.1.0",
