@@ -37,9 +37,7 @@ function createMockNadle(tasks: TaskDef[], options?: { parallel?: boolean; mainT
 	return {
 		logger: {
 			debug: vi.fn(),
-			throw: (message: string) => {
-				throw new Error(message);
-			}
+			error: vi.fn()
 		},
 		options: {
 			parallel: options?.parallel ?? false,
