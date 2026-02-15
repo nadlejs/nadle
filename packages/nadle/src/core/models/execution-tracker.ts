@@ -98,7 +98,6 @@ export class ExecutionTracker implements Listener {
 		}
 	}
 
-	// eslint-disable-next-line complexity
 	private updateTaskState(
 		task: RegisteredTask,
 		payload: Partial<{ duration: true; startTime: true; threadId: number; status: Exclude<TaskStatus, TaskStatus.Registered> }>
@@ -115,13 +114,9 @@ export class ExecutionTracker implements Listener {
 			taskState.status = status;
 			this.taskStats = { ...this.taskStats, [status]: ++this.taskStats[status] };
 
-			if (
-				status === TaskStatus.Failed ||
-				status === TaskStatus.Finished ||
-				status === TaskStatus.Canceled ||
-				status === TaskStatus.UpToDate ||
-				status === TaskStatus.FromCache
-			) {
+			// Only decrement Running for tasks that were actually running
+			// (UpToDate and FromCache never emit start events, so they never increment Running)
+			if (status === TaskStatus.Failed || status === TaskStatus.Finished || status === TaskStatus.Canceled) {
 				this.taskStats = { ...this.taskStats, [TaskStatus.Running]: --this.taskStats[TaskStatus.Running] };
 			}
 		}
