@@ -6,6 +6,7 @@ import { isCI } from "std-env";
 import { clamp } from "../utilities/utils.js";
 import { Project } from "../models/project/project.js";
 import { ProjectResolver } from "./project-resolver.js";
+import { NadleError } from "../utilities/nadle-error.js";
 import { TaskInputResolver } from "./task-input-resolver.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
@@ -74,7 +75,9 @@ export class OptionsResolver {
 		} else if (typeof configValue === "string") {
 			result = Math.round((Number.parseInt(configValue) / 100) * this.availableWorkers);
 		} else {
-			this.logger.throw(`Invalid worker value: ${configValue}`);
+			const message = `Invalid worker value: ${configValue}`;
+			this.logger.error(message);
+			throw new NadleError(message);
 		}
 
 		return clamp(result, 1, this.availableWorkers);

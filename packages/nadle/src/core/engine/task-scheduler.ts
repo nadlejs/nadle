@@ -3,6 +3,7 @@ import { highlight } from "../utilities/utils.js";
 import { Messages } from "../utilities/messages.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
+import { NadleError } from "../utilities/nadle-error.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
@@ -75,7 +76,9 @@ export class TaskScheduler {
 			const startTaskIndex = paths.indexOf(dependency);
 
 			if (startTaskIndex !== -1) {
-				this.nadle.logger.throw(Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `)));
+				const message = Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `));
+				this.nadle.logger.error(message);
+				throw new NadleError(message);
 			}
 
 			this.detectCycle(dependency, [...paths, dependency]);
