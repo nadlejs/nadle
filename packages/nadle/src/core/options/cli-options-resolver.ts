@@ -27,7 +27,7 @@ const exclude =
 	};
 
 const transform =
-	(targetKey: string, options: { transformKey?: string; transformValue?: (value: any) => any }): ArgTransformer =>
+	(targetKey: string, options: { transformKey?: string; transformValue?: (value: unknown) => unknown }): ArgTransformer =>
 	(arg) => {
 		if (arg.key !== targetKey) {
 			return arg;

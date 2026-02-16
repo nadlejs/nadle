@@ -201,7 +201,7 @@ export class DefaultReporter implements Listener {
 		);
 	}
 
-	public async onExecutionFailed(error: any) {
+	public async onExecutionFailed(error: unknown) {
 		this.renderer.finish();
 		this.nadle.logger.info("Execution failed");
 
@@ -217,7 +217,7 @@ export class DefaultReporter implements Listener {
 				`\nFor more details, re-run the command with the ${c.yellow("--stacktrace")} option to display the full error and help identify the root cause.`
 			);
 		} else {
-			this.nadle.logger.error(error instanceof Error ? error.stack : error);
+			this.nadle.logger.error(error instanceof Error ? (error.stack ?? error.message) : String(error));
 		}
 	}
 
