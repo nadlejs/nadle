@@ -27,38 +27,57 @@ Gradle-inspired task runner for Node.js.
 
 ## Features
 
-- ⚡ Fast, parallel task execution for monorepos and multi-package workspaces
-- 🧩 Dependency-aware workflows with automatic task resolution
-- 🛠️ Flexible configuration via TypeScript, JSON, or CLI
-- 🔄 Task aliasing and custom task mapping
-- 🗂️ Built-in caching for efficient incremental runs
-- 📝 Dry run, summary, and detailed logging support
-- 🧪 Easy integration with existing scripts and tools
-- 📦 Works seamlessly with modern JavaScript/TypeScript projects
+- **Type-safe task definitions** — full TypeScript inference and compile-time checks
+- **Parallel execution** — DAG-based scheduling with worker threads
+- **Built-in caching** — input fingerprinting and output snapshots for incremental builds
+- **Monorepo-native** — first-class support for multi-package workspaces
+- **Built-in tasks** — ExecTask, PnpmTask, CopyTask, DeleteTask ready to use
+- **Smart CLI** — abbreviation matching, auto-correction, dry run, summary mode
+- **Zero legacy** — ESM-only, Node.js 22+, no backwards-compatibility baggage
 
-## Getting Started
+## Quick Start
 
-## Build
-
-This repository uses **Nadle to build itself** — showcasing how it can serve as a fast, type-safe, and flexible build system for modern JavaScript/TypeScript projects.
-
-Install dependencies:
+Install Nadle:
 
 ```bash
-pnpm install
+npm install -D nadle
 ```
 
-Build with Nadle itself:
+Create a `nadle.config.ts`:
+
+```ts
+import { tasks } from "nadle";
+
+tasks.register("hello", async () => {
+	console.log("Hello from Nadle!");
+});
+
+tasks.register("goodbye", async () => {
+	console.log("Goodbye!");
+});
+
+tasks.register("greet").config({
+	group: "Greeting",
+	description: "Run all greeting tasks",
+	dependsOn: ["hello", "goodbye"]
+});
+```
+
+Run it:
 
 ```bash
-nadle build
+npx nadle greet
 ```
+
+## Nadle Builds Itself
+
+This repository uses Nadle as its own build system — see [`nadle.config.ts`](./nadle.config.ts) for a real-world example with caching, parallel execution, and monorepo task orchestration.
 
 ## Credits
 
 Thanks to:
 
-- The [Gradle team](https://gradle.org/) and community for inspiring Nadle’s API and dependency model.
+- The [Gradle team](https://gradle.org/) and community for inspiring Nadle's API and dependency model.
 - The [Vitest team](https://vitest.dev/) for their excellent testing framework and for the reporter logic we reuse.
 
 ## Contribution
