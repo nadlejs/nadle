@@ -1,300 +1,508 @@
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
-import type { FC, ReactNode } from "react";
+import { type FC, useState, type ReactNode } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tomorrow as codeTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const HomepageHeader = () => {
+/* ─── Shared Inline Components ────────────────────────────────────────────── */
+
+const BlurOrb: FC<{ className: string }> = ({ className }) => (
+	<div aria-hidden className={`pointer-events-none absolute rounded-full blur-3xl ${className}`} />
+);
+
+const CodeWindow: FC<{ code: string; title: string }> = ({ code, title }) => (
+	<div className="relative rounded-xl overflow-hidden border border-slate-700/60 shadow-2xl">
+		<div className="flex items-center gap-2 px-4 py-3 bg-slate-800/80 border-b border-slate-700/40">
+			<span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+			<span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+			<span className="w-3 h-3 rounded-full bg-[#28c840]" />
+			<span className="ml-2 text-xs text-slate-400 font-mono">{title}</span>
+		</div>
+		<SyntaxHighlighter
+			language="typescript"
+			style={codeTheme}
+			customStyle={{
+				margin: 0,
+				borderRadius: 0,
+				lineHeight: "1.7",
+				fontSize: "0.88rem",
+				padding: "1.25rem 1.5rem",
+				background: "transparent"
+			}}
+			showLineNumbers={false}>
+			{code}
+		</SyntaxHighlighter>
+	</div>
+);
+
+const InstallCommand: FC = () => {
+	const [copied, setCopied] = useState(false);
+	const command = "npm install -D nadle";
+
+	const handleCopy = () => {
+		void navigator.clipboard.writeText(command);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 2000);
+	};
+
+	return (
+		<button
+			type="button"
+			onClick={handleCopy}
+			className="group inline-flex items-center gap-3 bg-slate-800/80 hover:bg-slate-700/80 backdrop-blur border border-slate-600/50 rounded-lg px-5 py-3 font-mono text-sm transition-colors duration-200 cursor-pointer"
+			aria-label={`Copy install command: ${command}`}>
+			<span className="text-green-400">$</span>
+			<span className="text-slate-200">{command}</span>
+			<span className="ml-1 text-slate-500 group-hover:text-slate-300 transition-colors duration-200">
+				{copied ? (
+					<svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+						<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+					</svg>
+				) : (
+					<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+						<rect x="9" y="9" width="13" height="13" rx="2" />
+						<path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+					</svg>
+				)}
+			</span>
+		</button>
+	);
+};
+
+/* ─── Section 1: Hero ─────────────────────────────────────────────────────── */
+
+const Hero: FC = () => {
 	const { siteConfig } = useDocusaurusContext();
 
 	return (
-		<header className="relative overflow-hidden py-20 px-4 text-center bg-gradient-to-br from-[#23272f] via-[#1e293b] to-[#312e81] dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] text-white">
-			<div
-				aria-hidden
-				className="pointer-events-none absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-gradient-to-br from-[#60a5fa]/30 via-[#818cf8]/10 to-transparent blur-3xl opacity-70"
-			/>
-			<div
-				aria-hidden
-				className="pointer-events-none absolute -bottom-32 -right-32 w-[480px] h-[480px] rounded-full bg-gradient-to-tr from-[#f472b6]/20 via-[#fbbf24]/10 to-transparent blur-3xl opacity-60"
-			/>
-			<div className="relative z-10 container flex flex-col items-center">
-				<Heading as="h1" className="text-[2.8rem] md:text-[3.5rem] font-extrabold tracking-tight drop-shadow-lg">
+		<header className="relative overflow-hidden bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white py-24 md:py-32 px-4">
+			<BlurOrb className="w-[500px] h-[500px] -top-40 -left-40 bg-blue-500/20" />
+			<BlurOrb className="w-[400px] h-[400px] -bottom-32 -right-32 bg-pink-500/15" />
+			<div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
+				<Heading as="h1" className="text-5xl md:text-7xl font-extrabold tracking-tight text-white !mb-0">
 					{siteConfig.title}
 				</Heading>
-				<p className="text-[1.3rem] md:text-[1.6rem] mt-5 mb-10 font-medium text-slate-200 dark:text-slate-300 max-w-2xl mx-auto drop-shadow">
-					Modern task runner for Node.js, inspired by Gradle and powered by TypeScript
-				</p>
-				<div className="flex flex-wrap items-center justify-center gap-4">
+				<p className="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed">Gradle-inspired. TypeScript-first. Built for speed.</p>
+				<InstallCommand />
+				<div className="flex flex-wrap items-center justify-center gap-4 mt-2">
 					<Link
-						className="button button--primary button--lg shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 focus:ring-4 focus:ring-blue-300 focus:outline-none bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 border-0 text-white"
+						className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-400 hover:to-cyan-300 text-white font-semibold rounded-lg px-6 py-3 text-sm transition-all duration-200 cursor-pointer shadow-lg shadow-blue-500/25 no-underline hover:no-underline hover:text-white"
 						to="/docs/introduction">
-						<span className="flex items-center gap-2">
-							<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-								<path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-							</svg>
-							Get Started
-						</span>
+						Get Started
+						<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+						</svg>
 					</Link>
 					<Link
-						className="button button--info button--outline button--lg shadow-lg transition-transform transform hover:-translate-y-1 hover:scale-105 focus:ring-4 focus:ring-pink-200 focus:outline-none border-pink-400 text-pink-300 hover:bg-pink-500/10"
+						className="inline-flex items-center gap-2 bg-transparent hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-600 hover:border-slate-500 font-medium rounded-lg px-6 py-3 text-sm transition-colors duration-200 cursor-pointer no-underline hover:no-underline"
 						to="https://codesandbox.io/p/sandbox/github/nadlejs/nadle/tree/main/packages/examples/basic?embed=1&file=%2Fnadle.config.ts&showConsole=true">
-						<span className="flex items-center gap-2">
-							<svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-								<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth={2} />
-								<path d="M8 8h8v8H8z" fill="currentColor" className="text-pink-400" />
-							</svg>
-							Try it Online
-						</span>
+						<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+							<polygon points="5 3 19 12 5 21 5 3" />
+						</svg>
+						Try Online
 					</Link>
-					<span>
-						<iframe
-							className="overflow-hidden"
-							src="https://ghbtns.com/github-btn.html?user=nadlejs&amp;repo=nadle&amp;type=star&amp;count=true&amp;size=large"
-							width={160}
-							height={30}
-							title="GitHub Stars"
-						/>
-					</span>
+					<iframe
+						className="overflow-hidden"
+						src="https://ghbtns.com/github-btn.html?user=nadlejs&amp;repo=nadle&amp;type=star&amp;count=true&amp;size=large"
+						width={140}
+						height={30}
+						title="GitHub Stars"
+					/>
 				</div>
 			</div>
 		</header>
 	);
 };
 
-interface FeatureItem {
-	title: string;
-	icon: ReactNode;
-	description: ReactNode;
+/* ─── Section 2: Code Showcase ────────────────────────────────────────────── */
+
+const showcaseCode = `import { tasks, ExecTask, Inputs, Outputs } from "nadle";
+
+tasks.register("compile", ExecTask, {
+  command: "tsc",
+  args: ["--build"]
+}).config({
+  inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
+  outputs: [Outputs.dirs("lib")],
+  description: "Compile TypeScript sources"
+});
+
+tasks.register("test", ExecTask, {
+  command: "vitest",
+  args: ["run"]
+}).config({
+  dependsOn: ["compile"],
+  description: "Run test suite"
+});
+
+tasks.register("build").config({
+  dependsOn: ["compile", "test"]
+});`;
+
+const CodeShowcase: FC = () => (
+	<section className="relative bg-gradient-to-b from-[#0f172a] via-[#111827] to-[#0d1117] py-20 md:py-28 px-4 overflow-hidden">
+		<BlurOrb className="w-[600px] h-[300px] -top-20 left-1/2 -translate-x-1/2 bg-blue-500/10" />
+		<div className="relative z-10 max-w-6xl mx-auto">
+			<div className="grid md:grid-cols-[2fr_3fr] gap-12 md:gap-16 items-center">
+				<div>
+					<Heading as="h2" className="text-3xl md:text-4xl font-bold text-white !mb-4">
+						Simple yet <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">powerful</span>
+					</Heading>
+					<p className="text-slate-400 text-lg leading-relaxed mb-8">
+						Define tasks with clear dependencies and let Nadle handle scheduling, parallelism, and caching.
+					</p>
+					<ul className="space-y-4">
+						{[
+							{ color: "text-blue-400 bg-blue-400/10", text: "Type-safe tasks with full IntelliSense" },
+							{ text: "DAG-based parallel scheduling", color: "text-amber-400 bg-amber-400/10" },
+							{ color: "text-emerald-400 bg-emerald-400/10", text: "Built-in caching for incremental builds" }
+						].map(({ text, color }) => (
+							<li key={text} className="flex items-center gap-3 text-slate-300">
+								<span className={`inline-flex items-center justify-center w-6 h-6 rounded-md ${color}`}>
+									<svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+									</svg>
+								</span>
+								{text}
+							</li>
+						))}
+					</ul>
+				</div>
+				<CodeWindow title="nadle.config.ts" code={showcaseCode} />
+			</div>
+		</div>
+	</section>
+);
+
+/* ─── Section 3: Feature Highlights ───────────────────────────────────────── */
+
+const typeSafetyCode = `import { tasks, defineTask } from "nadle";
+
+interface DeployOptions {
+  target: "staging" | "production";
+  dryRun: boolean;
 }
 
-const FeatureList: FeatureItem[] = [
+const DeployTask = defineTask<DeployOptions>({
+  run: async ({ options, context }) => {
+    context.logger.info(\`Deploying to \${options.target}...\`);
+  }
+});
+
+tasks.register("deploy", DeployTask, {
+  target: "staging",
+  dryRun: true
+});`;
+
+const cachingCode = `import { tasks, ExecTask, Inputs, Outputs } from "nadle";
+
+tasks.register("compile", ExecTask, {
+  command: "tsc",
+  args: ["--build"]
+}).config({
+  inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
+  outputs: [Outputs.dirs("lib")]
+});
+// Unchanged inputs? Task is skipped automatically.`;
+
+const parallelTerminal = `$ nadle build
+
+  ● lint        running
+  ● compile     running
+  ○ test        waiting → compile
+  ○ bundle      waiting → compile
+
+  ✓ lint        done  1.2s
+  ✓ compile     done  3.4s
+  ● test        running
+  ● bundle      running`;
+
+interface HighlightProps {
+	badge: string;
+	title: string;
+	glowClass: string;
+	reverse?: boolean;
+	badgeClass: string;
+	accentClass: string;
+	description: string;
+	children: ReactNode;
+}
+
+const FeatureHighlight: FC<HighlightProps> = ({ badge, title, reverse, children, glowClass, badgeClass, accentClass, description }) => (
+	<div className={`grid md:grid-cols-2 gap-12 md:gap-16 items-center ${reverse ? "md:[direction:rtl]" : ""}`}>
+		<div className={reverse ? "md:[direction:ltr]" : ""}>
+			<span className={`inline-block text-xs font-semibold tracking-wider uppercase px-3 py-1 rounded-full mb-5 ${badgeClass}`}>{badge}</span>
+			<h3 className={`text-2xl md:text-3xl font-bold mb-4 ${accentClass}`}>{title}</h3>
+			<p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">{description}</p>
+		</div>
+		<div className={`relative ${reverse ? "md:[direction:ltr]" : ""}`}>
+			<BlurOrb className={`w-72 h-72 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${glowClass}`} />
+			<div className="relative z-10">{children}</div>
+		</div>
+	</div>
+);
+
+const TerminalBlock: FC<{ content: string }> = ({ content }) => (
+	<div className="relative rounded-xl overflow-hidden border border-slate-700/60 shadow-2xl">
+		<div className="flex items-center gap-2 px-4 py-3 bg-slate-800/80 border-b border-slate-700/40">
+			<span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+			<span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+			<span className="w-3 h-3 rounded-full bg-[#28c840]" />
+			<span className="ml-2 text-xs text-slate-400 font-mono">Terminal</span>
+		</div>
+		<pre className="p-5 text-sm leading-relaxed font-mono overflow-x-auto !bg-[#1d2433] !m-0 !rounded-none text-slate-300">{content}</pre>
+	</div>
+);
+
+const FeatureHighlights: FC = () => (
+	<section className="relative bg-white dark:bg-[#0a0f1a] py-24 md:py-32 px-4 transition-colors overflow-hidden">
+		<div className="max-w-6xl mx-auto">
+			<div className="text-center mb-20">
+				<Heading as="h2" className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white !mb-3">
+					Built for{" "}
+					<span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">developer experience</span>
+				</Heading>
+				<p className="text-slate-500 dark:text-slate-400 text-lg max-w-2xl mx-auto">
+					Three pillars that make Nadle different from every other task runner.
+				</p>
+			</div>
+			<div className="space-y-28 md:space-y-36">
+				<FeatureHighlight
+					badge="Type Safety"
+					badgeClass="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400"
+					title="Catch errors before they happen"
+					accentClass="text-slate-900 dark:text-white"
+					glowClass="bg-blue-500/10 dark:bg-blue-500/15"
+					description="Define custom task types with generics. Get full IntelliSense for task options and catch configuration errors at compile time. TypeScript isn't bolted on — it's the foundation.">
+					<CodeWindow title="deploy.ts" code={typeSafetyCode} />
+				</FeatureHighlight>
+
+				<FeatureHighlight
+					badge="Parallelism"
+					badgeClass="bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
+					title="Maximum throughput, zero wasted time"
+					accentClass="text-slate-900 dark:text-white"
+					glowClass="bg-amber-500/10 dark:bg-amber-500/15"
+					description="Nadle builds a dependency graph and runs independent tasks in parallel using worker threads. Watch your build pipeline light up."
+					reverse>
+					<TerminalBlock content={parallelTerminal} />
+				</FeatureHighlight>
+
+				<FeatureHighlight
+					badge="Caching"
+					badgeClass="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
+					title="Only rebuild what changed"
+					accentClass="text-slate-900 dark:text-white"
+					glowClass="bg-emerald-500/10 dark:bg-emerald-500/15"
+					description="Declare inputs and outputs for any task. Nadle fingerprints them and skips tasks when nothing has changed. Fast incremental builds out of the box.">
+					<CodeWindow title="nadle.config.ts" code={cachingCode} />
+				</FeatureHighlight>
+			</div>
+		</div>
+	</section>
+);
+
+/* ─── Section 4: Feature Grid ─────────────────────────────────────────────── */
+
+interface FeatureCardProps {
+	title: string;
+	iconBg: string;
+	icon: ReactNode;
+	iconColor: string;
+	glowColor: string;
+	description: string;
+}
+
+const FeatureCard: FC<FeatureCardProps> = ({ icon, title, iconBg, iconColor, glowColor, description }) => (
+	<div className="group relative bg-white/80 dark:bg-white/[0.03] backdrop-blur border border-slate-200/60 dark:border-slate-700/50 rounded-2xl p-7 transition-all duration-300 hover:border-transparent hover:shadow-xl dark:hover:shadow-none cursor-default overflow-hidden">
+		{/* Hover glow */}
+		<div
+			aria-hidden
+			className={`pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${glowColor}`}
+		/>
+		{/* Hover border gradient via ring */}
+		<div
+			aria-hidden
+			className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-transparent group-hover:ring-blue-400/30 dark:group-hover:ring-cyan-400/20 transition-all duration-300"
+		/>
+		<div className="relative z-10">
+			<div className={`w-11 h-11 mb-5 rounded-xl flex items-center justify-center ${iconBg}`}>
+				<div className={`w-5 h-5 ${iconColor}`}>{icon}</div>
+			</div>
+			<h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">{title}</h3>
+			<p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{description}</p>
+		</div>
+	</div>
+);
+
+const featureCards: FeatureCardProps[] = [
 	{
-		title: "Type-Safe by Design",
-		description: (
-			<>
-				Built from the ground up with TypeScript, providing complete type inference and compile-time checks for your build tasks. Catch errors before
-				they happen.
-			</>
-		),
+		title: "Smart CLI",
+		iconBg: "bg-violet-100 dark:bg-violet-500/10",
+		iconColor: "text-violet-600 dark:text-violet-400",
+		glowColor: "bg-gradient-to-br from-violet-500/5 to-transparent dark:from-violet-500/10",
+		description: "Abbreviation matching, autocorrection, dry run, and summary mode. Run tasks with minimal typing.",
 		icon: (
-			<svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-				<circle cx="20" cy="20" r="20" fill="#3178C6" />
-				<path d="M13 27L27 13" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-				<circle cx="16" cy="16" r="2.5" fill="#fff" />
-				<circle cx="24" cy="24" r="2.5" fill="#fff" />
-			</svg>
-		)
-	},
-	{
-		title: "Smart Parallel Execution",
-		description: (
-			<>
-				Automatically runs independent tasks in parallel while respecting dependencies. Configurable worker pools ensure optimal resource utilization.
-			</>
-		),
-		icon: (
-			<svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-				<rect x="4" y="10" width="32" height="8" rx="4" fill="#34D399" />
-				<rect x="4" y="22" width="32" height="8" rx="4" fill="#FBBF24" />
-				<rect x="10" y="16" width="20" height="8" rx="4" fill="#60A5FA" />
-			</svg>
-		)
-	},
-	{
-		title: "Modern Architecture",
-		description: (
-			<>
-				Pure ESM package designed for modern Node.js environments. Zero legacy compatibility compromises, optimized for contemporary development
-				workflows.
-			</>
-		),
-		icon: (
-			<svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-				<rect x="8" y="8" width="24" height="24" rx="6" fill="#6366F1" />
-				<rect x="14" y="14" width="12" height="12" rx="3" fill="#fff" />
-			</svg>
-		)
-	},
-	{
-		title: "Intuitive Task Management",
-		description: (
-			<>
-				Clear and concise task definitions with explicit dependencies. Group related tasks, add descriptions, and organize your build pipeline
-				effectively.
-			</>
-		),
-		icon: (
-			<svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-				<rect x="7" y="11" width="26" height="18" rx="4" fill="#F472B6" />
-				<rect x="13" y="17" width="14" height="6" rx="2" fill="#fff" />
-				<circle cx="13" cy="20" r="2" fill="#FBBF24" />
-				<circle cx="27" cy="20" r="2" fill="#34D399" />
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+				<rect x="3" y="4" width="18" height="16" rx="2" />
+				<path d="M7 12l3 3-3 3" strokeLinecap="round" strokeLinejoin="round" />
+				<path d="M13 18h4" strokeLinecap="round" />
 			</svg>
 		)
 	},
 	{
 		title: "Real-Time Progress",
-		description: (
-			<>
-				Watch your build progress with detailed status updates, progress tracking, and performance metrics. Never wonder about what&#39;s happening
-				behind the scenes.
-			</>
-		),
+		iconBg: "bg-amber-100 dark:bg-amber-500/10",
+		iconColor: "text-amber-600 dark:text-amber-400",
+		glowColor: "bg-gradient-to-br from-amber-500/5 to-transparent dark:from-amber-500/10",
+		description: "Interactive footer shows scheduled, running, and completed tasks as they execute.",
 		icon: (
-			<svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-				<circle cx="20" cy="20" r="16" fill="#FBBF24" />
-				<path d="M20 8v12l8 8" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+				<circle cx="12" cy="12" r="9" />
+				<path d="M12 7v5l3 3" strokeLinecap="round" strokeLinejoin="round" />
 			</svg>
 		)
 	},
 	{
-		title: "Extensible Plugin System",
-		description: (
-			<>
-				Extend Nadle&#39;s capabilities with plugins. Create custom task types, add build hooks, and integrate with your favorite tools and services.
-			</>
-		),
+		title: "Monorepo-Native",
+		iconBg: "bg-sky-100 dark:bg-sky-500/10",
+		iconColor: "text-sky-600 dark:text-sky-400",
+		glowColor: "bg-gradient-to-br from-sky-500/5 to-transparent dark:from-sky-500/10",
+		description: "First-class workspace support. Run tasks across packages with dependency awareness.",
 		icon: (
-			<svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-				<rect x="8" y="8" width="24" height="24" rx="6" fill="#34D399" />
-				<path d="M20 14v12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-				<path d="M14 20h12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+				<rect x="3" y="3" width="7" height="7" rx="1.5" />
+				<rect x="14" y="3" width="7" height="7" rx="1.5" />
+				<rect x="8.5" y="14" width="7" height="7" rx="1.5" />
+				<path d="M6.5 10v2.5a1 1 0 001 1H12m5.5-3.5v2.5a1 1 0 01-1 1H12m0 0v1.5" strokeLinecap="round" />
+			</svg>
+		)
+	},
+	{
+		title: "Built-in Tasks",
+		iconBg: "bg-pink-100 dark:bg-pink-500/10",
+		iconColor: "text-pink-600 dark:text-pink-400",
+		glowColor: "bg-gradient-to-br from-pink-500/5 to-transparent dark:from-pink-500/10",
+		description: "ExecTask, PnpmTask, CopyTask, DeleteTask. Common operations ready out of the box.",
+		icon: (
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+				<path
+					d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</svg>
+		)
+	},
+	{
+		title: "Modern Architecture",
+		iconBg: "bg-cyan-100 dark:bg-cyan-500/10",
+		iconColor: "text-cyan-600 dark:text-cyan-400",
+		glowColor: "bg-gradient-to-br from-cyan-500/5 to-transparent dark:from-cyan-500/10",
+		description: "Pure ESM, Node.js 22+, worker thread isolation. Zero legacy compromises.",
+		icon: (
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+				<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round" />
+			</svg>
+		)
+	},
+	{
+		title: "Zero Config",
+		iconBg: "bg-emerald-100 dark:bg-emerald-500/10",
+		iconColor: "text-emerald-600 dark:text-emerald-400",
+		glowColor: "bg-gradient-to-br from-emerald-500/5 to-transparent dark:from-emerald-500/10",
+		description: "Works immediately with sensible defaults. A single nadle.config.ts is all you need.",
+		icon: (
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+				<path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+				<circle cx="12" cy="12" r="9" />
 			</svg>
 		)
 	}
 ];
 
-const Feature: FC<FeatureItem> = ({ icon, title, description }) => (
-	<div className="col col--4 mb-10">
-		<div className="h-full flex flex-col items-start bg-gradient-to-br from-white via-blue-50 to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-slate-900 rounded-2xl shadow-xl border border-blue-100 dark:border-gray-700 p-8 transition-transform hover:-translate-y-2 hover:scale-[1.03] hover:shadow-2xl relative overflow-hidden">
-			<div
-				aria-hidden
-				className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-transparent blur-2xl opacity-60"
-			/>
-			<div className="flex items-center gap-3 mb-4 z-10">
-				<span>{icon}</span>
-				<Heading as="h3" className="text-xl font-bold text-blue-700 dark:text-cyan-300 mb-0">
-					{title}
+const FeatureGrid: FC = () => (
+	<section className="relative bg-slate-50/80 dark:bg-[#0d1117] py-24 md:py-32 px-4 transition-colors overflow-hidden">
+		<BlurOrb className="w-[500px] h-[500px] top-0 left-1/2 -translate-x-1/2 bg-blue-500/5 dark:bg-blue-500/8" />
+		<div className="relative z-10 max-w-6xl mx-auto">
+			<div className="text-center mb-16">
+				<Heading as="h2" className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white !mb-3">
+					Everything you need
 				</Heading>
+				<p className="text-slate-500 dark:text-slate-400 text-lg max-w-lg mx-auto">Batteries included, no bloat. Every feature earns its place.</p>
 			</div>
-			<p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 flex-1 z-10">{description}</p>
-		</div>
-	</div>
-);
-
-const HomepageFeatures = () => (
-	<section className="flex items-center w-full py-20 bg-gradient-to-b from-slate-50 via-white to-blue-50 dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] transition-colors">
-		<div className="container">
-			<div className="row">
-				{FeatureList.map((props) => (
-					<Feature key={props.title} {...props} />
+			<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+				{featureCards.map((props) => (
+					<FeatureCard key={props.title} {...props} />
 				))}
 			</div>
 		</div>
 	</section>
 );
 
-const exampleCode = `import { tasks } from "nadle"
+/* ─── Section 5: Credibility ──────────────────────────────────────────────── */
 
-tasks.register("build", async () => {
-  console.log("Building...");
-}).config({
-  dependsOn: ["compile", "test"],
-  description: "Build the project"
-});
-
-// Run with parallel execution
-$ nadle build`;
-
-const CodeExample: FC = () => (
-	<section className="relative py-24 bg-gradient-to-b from-blue-50 via-white to-cyan-50 dark:from-[#181a20] dark:via-[#23272f] dark:to-[#0f172a] transition-colors overflow-hidden">
-		{/* Decorative blurred accent */}
-		<div
-			aria-hidden
-			className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-transparent blur-3xl opacity-60"
-		/>
-		<div className="container relative z-10">
-			<div className="flex flex-col md:flex-row md:items-center gap-12">
-				<div className="md:w-1/2 text-center md:text-left">
-					<Heading as="h2" className="text-3xl md:text-4xl font-extrabold mb-6 text-blue-900 dark:text-cyan-200 drop-shadow">
-						Simple <span className="bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400 bg-clip-text text-transparent">Yet Powerful</span>
-					</Heading>
-					<p className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-200 mb-8 max-w-xl mx-auto md:mx-0">
-						Define tasks with <span className="font-semibold text-blue-600 dark:text-cyan-300">clear dependencies</span> and run them with a single
-						command.
-						<br className="hidden md:inline" />
-						<span className="text-pink-600 dark:text-pink-300 font-semibold"> Nadle handles the rest.</span>
-					</p>
-					<ul className="text-left space-y-4 text-base md:text-lg text-gray-700 dark:text-gray-300 max-w-md mx-auto md:mx-0">
-						<li className="flex items-center gap-3">
-							<span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 dark:bg-cyan-900">
-								<svg className="w-5 h-5 text-blue-500 dark:text-cyan-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-									<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-								</svg>
-							</span>
-							Type-safe, composable tasks
-						</li>
-						<li className="flex items-center gap-3">
-							<span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-pink-100 dark:bg-pink-900">
-								<svg className="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-									<circle cx="12" cy="12" r="10" />
-									<path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" />
-								</svg>
-							</span>
-							Smart parallel execution
-						</li>
-						<li className="flex items-center gap-3">
-							<span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-yellow-100 dark:bg-yellow-900">
-								<svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-									<rect x="4" y="4" width="16" height="16" rx="4" />
-								</svg>
-							</span>
-							Modern, ESM-first architecture
-						</li>
-					</ul>
-				</div>
-				<div className="md:w-1/2 flex justify-center">
-					<div className="relative w-full max-w-xl">
-						<div className="absolute -top-4 -left-4 w-full h-full rounded-2xl bg-gradient-to-br from-blue-400/10 via-cyan-400/10 to-transparent blur-lg z-0" />
-						<div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-blue-200 dark:border-gray-800">
-							<div className="absolute top-3 left-6 flex gap-2 z-20">
-								<span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-								<span className="w-3 h-3 rounded-full bg-yellow-400 inline-block" />
-								<span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
-							</div>
-							<SyntaxHighlighter
-								language="typescript"
-								style={codeTheme}
-								customStyle={{
-									margin: 0,
-									lineHeight: "1.6",
-									fontSize: "0.98rem",
-									borderRadius: "1rem",
-									background: "transparent",
-									padding: "2rem 1.5rem 1.5rem 1.5rem"
-								}}
-								showLineNumbers={false}>
-								{exampleCode}
-							</SyntaxHighlighter>
-						</div>
-					</div>
-				</div>
+const Credibility: FC = () => (
+	<section className="bg-white dark:bg-[#0a0f1a] py-16 md:py-20 px-4 transition-colors">
+		<div className="max-w-3xl mx-auto">
+			<div className="border-l-4 border-cyan-500 pl-6 md:pl-8">
+				<h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3">Nadle Builds Itself</h3>
+				<p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed mb-4">
+					We use Nadle to build, test, and release Nadle. A real-world task graph with caching, parallel execution, and monorepo orchestration.
+				</p>
+				<Link
+					className="inline-flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-300 font-medium text-sm transition-colors duration-200 cursor-pointer no-underline hover:no-underline"
+					to="https://github.com/nadlejs/nadle/blob/main/nadle.config.ts">
+					View nadle.config.ts
+					<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+						<path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+					</svg>
+				</Link>
 			</div>
 		</div>
 	</section>
 );
 
-const HomePage = () => {
+/* ─── Section 6: Final CTA ────────────────────────────────────────────────── */
+
+const FinalCTA: FC = () => (
+	<section className="relative overflow-hidden bg-gradient-to-b from-[#0d1117] via-[#1e293b] to-[#0f172a] text-white py-20 md:py-28 px-4">
+		<BlurOrb className="w-[400px] h-[400px] -top-32 -right-32 bg-pink-500/15" />
+		<BlurOrb className="w-[300px] h-[300px] -bottom-20 -left-20 bg-blue-500/15" />
+		<div className="relative z-10 max-w-2xl mx-auto text-center flex flex-col items-center gap-6">
+			<Heading as="h2" className="text-3xl md:text-4xl font-bold text-white !mb-0">
+				Ready to get started?
+			</Heading>
+			<p className="text-slate-400 text-lg">Install Nadle and run your first task in under 2 minutes.</p>
+			<InstallCommand />
+			<Link
+				className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-400 hover:to-cyan-300 text-white font-semibold rounded-lg px-8 py-3.5 text-sm transition-all duration-200 cursor-pointer shadow-lg shadow-blue-500/25 no-underline hover:no-underline hover:text-white"
+				to="/docs/introduction">
+				Get Started
+				<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+				</svg>
+			</Link>
+		</div>
+	</section>
+);
+
+/* ─── Page Layout ─────────────────────────────────────────────────────────── */
+
+const HomePage: FC = () => {
 	const { siteConfig } = useDocusaurusContext();
 
 	return (
-		<Layout title={`${siteConfig.title} - ${siteConfig.tagline}`} description="A modern, type-safe task runner for Node.js inspired by Gradle">
-			<HomepageHeader />
+		<Layout title={`${siteConfig.title} — ${siteConfig.tagline}`} description="A modern, type-safe task runner for Node.js inspired by Gradle">
 			<main>
-				<HomepageFeatures />
-				<CodeExample />
+				<Hero />
+				<CodeShowcase />
+				<FeatureHighlights />
+				<FeatureGrid />
+				<Credibility />
+				<FinalCTA />
 			</main>
 		</Layout>
 	);

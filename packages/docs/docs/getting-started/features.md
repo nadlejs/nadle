@@ -1,6 +1,6 @@
 # Features
 
-Nadle comes packed with powerful features to make your build automation and task management more efficient. Here's a comprehensive overview of what Nadle offers.
+Nadle comes packed with powerful features to make your build automation and task management more efficient.
 
 ## Type Safety
 
@@ -14,30 +14,30 @@ Nadle comes packed with powerful features to make your build automation and task
 ### Type-Safe Task Options
 
 ```typescript
+import { tasks, defineTask } from "nadle";
+
 interface BuildOptions {
 	target: "web" | "mobile";
 	optimize: boolean;
 }
 
-tasks
-	.register("build", async ({ options }) => {
+const BuildTask = defineTask<BuildOptions>({
+	run: async ({ options }) => {
 		const { target, optimize } = options;
 		// Type-safe access to options
-	})
-	.config<BuildOptions>({
-		defaultOptions: {
-			target: "web",
-			optimize: false
-		}
-	});
+	}
+});
+
+tasks.register("build", BuildTask, {
+	target: "web",
+	optimize: false
+});
 ```
 
-## Task Management
+## Parallel Execution
 
-### Parallel Execution
-
-- Automatic parallel task execution
-- Smart dependency resolution
+- Automatic parallel task execution via worker threads
+- DAG-based dependency resolution
 - Configurable concurrency limits
 - Progress tracking for parallel tasks
 
@@ -51,12 +51,11 @@ tasks
 	});
 ```
 
-### Dependency Management
+## Dependency Management
 
 - Clear dependency declaration
 - Circular dependency detection
-- Optional dependencies
-- Dynamic dependency resolution
+- Topological sort scheduling
 
 ```typescript
 tasks
@@ -64,8 +63,7 @@ tasks
 		// Deploy implementation
 	})
 	.config({
-		dependsOn: ["build", "test"],
-		optionalDependsOn: ["lint"]
+		dependsOn: ["build", "test"]
 	});
 ```
 
@@ -73,8 +71,8 @@ tasks
 
 ### Real-Time Progress
 
-- Task execution status
-- Progress bars for long-running tasks
+- Task execution status with interactive footer
+- Scheduled, running, and completed task indicators
 - Time tracking
 - Detailed error reporting
 
@@ -83,83 +81,25 @@ tasks
 - Multiple log levels
 - Structured logging
 - Color-coded output
-- Custom log formatters
 
 ```typescript
-tasks.register("build", async ({ logger }) => {
-	logger.info("Starting build...");
-	logger.progress(0.5, "Compiling...");
+tasks.register("build", async ({ context }) => {
+	context.logger.info("Starting build...");
+	context.logger.debug("Debug details...");
 	// ... build steps
-	logger.success("Build completed");
+	context.logger.warn("Something to watch out for");
 });
 ```
 
-## Watch Mode
-
-### File Watching
-
-- Efficient file system watching
-- Pattern matching
-- Debounced rebuilds
-- Custom watch patterns
-
-```typescript
-tasks.register("watch", async () => {
-	return {
-		paths: ["src/**/*.ts"],
-		ignore: ["**/*.test.ts"],
-		onChange: async (changes) => {
-			await tasks.run("build");
-		}
-	};
-});
-```
-
-## Plugin System
-
-### Extensible Architecture
-
-- Custom task types
-- Build hooks
-- Configuration extensions
-- Third-party integrations
-
-```typescript
-import { TypeScriptPlugin } from "@nadle/typescript";
-
-configure({
-	plugins: [
-		new TypeScriptPlugin({
-			tsconfig: "tsconfig.json"
-		})
-	]
-});
-```
-
-## Environment Management
-
-### Environment Variables
-
-- `.env` file support
-- Environment-specific configs
-- Runtime environment detection
-- Secure secrets handling
-
-### Multiple Environments
-
-- Development/Staging/Production configs
-- Environment-specific tasks
-- Local overrides
-- CI/CD integration
+Available logger methods: `log`, `info`, `warn`, `error`, `debug`, `throw`.
 
 ## Task Organization
 
 ### Grouping and Naming
 
 - Logical task groups
-- Namespace support
 - Consistent naming conventions
-- Task discovery
+- Task discovery via `nadle --list`
 
 ```typescript
 tasks
@@ -178,51 +118,121 @@ tasks
 
 - Detailed error messages
 - Stack trace preservation
-- Error recovery options
-- Custom error handlers
 
 ```typescript
-tasks.register("deploy", async ({ logger }) => {
+tasks.register("deploy", async ({ context }) => {
 	try {
 		// Deployment steps
 	} catch (error) {
-		logger.error("Deployment failed", { error });
+		context.logger.error("Deployment failed", { error });
 		// Cleanup or rollback steps
 	}
 });
 ```
 
-## Performance
+## Caching
 
-### Build Optimization
+### Input Fingerprinting
 
-- Caching support
-- Incremental builds
-- Resource management
-- Performance profiling
+Nadle caches task results based on declared inputs and outputs. When inputs haven't changed since the last run, the task is skipped and outputs are restored from cache.
 
-### Memory Management
+- Declare file and directory inputs/outputs
+- Cache stored in `.nadle/` directory
+- Skip with `--no-cache` flag
 
-- Efficient resource utilization
-- Memory leak prevention
-- Garbage collection optimization
-- Resource cleanup
+```typescript
+import { tasks, ExecTask, Inputs, Outputs } from "nadle";
 
-## Integration
+tasks
+	.register("compile", ExecTask, {
+		command: "tsc",
+		args: ["--build"]
+	})
+	.config({
+		inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
+		outputs: [Outputs.dirs("lib")],
+		description: "Compile TypeScript sources"
+	});
+```
 
-### Tool Integration
+### Cache Declarations
 
-- Popular build tool integration
-- Version control system hooks
-- CI/CD pipeline support
-- Container orchestration
+- `Inputs.files(...patterns)` — declare file input patterns
+- `Inputs.dirs(...patterns)` — declare directory input patterns
+- `Outputs.files(...patterns)` — declare file output patterns
+- `Outputs.dirs(...patterns)` — declare directory output patterns
 
-### Ecosystem Compatibility
+## Environment Variables
 
-- npm scripts integration
-- Package manager support
-- Framework compatibility
-- Cloud platform support
+Tasks can set environment variables via the `env` config field:
+
+```typescript
+tasks
+	.register("build:prod", async () => {
+		// Build with production env
+	})
+	.config({
+		env: {
+			NODE_ENV: "production",
+			MINIFY: true
+		}
+	});
+```
+
+## Built-in Tasks
+
+Nadle ships with reusable task types for common operations.
+
+### ExecTask
+
+Run arbitrary shell commands:
+
+```typescript
+import { tasks, ExecTask } from "nadle";
+
+tasks.register("lint", ExecTask, {
+	command: "eslint",
+	args: [".", "--cache"]
+});
+```
+
+### PnpmTask
+
+Run pnpm commands:
+
+```typescript
+import { tasks, PnpmTask } from "nadle";
+
+tasks.register("install", PnpmTask, {
+	args: ["install", "--frozen-lockfile"]
+});
+```
+
+### CopyTask
+
+Copy files with glob patterns:
+
+```typescript
+import { tasks, CopyTask } from "nadle";
+
+tasks.register("copy:assets", CopyTask, {
+	from: "src/assets",
+	to: "dist/assets",
+	include: ["**/*.png", "**/*.svg"]
+});
+```
+
+### DeleteTask
+
+Delete files and directories:
+
+```typescript
+import { tasks, DeleteTask } from "nadle";
+
+tasks.register("clean", DeleteTask, {
+	paths: ["**/lib/**", "**/build/**"]
+});
+```
 
 ## Next Steps
 
