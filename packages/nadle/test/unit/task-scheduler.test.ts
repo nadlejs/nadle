@@ -1,6 +1,6 @@
 import { it, vi, expect, describe } from "vitest";
 
-import { type Nadle } from "../../src/core/nadle.js";
+import { type ProjectContext } from "../../src/core/context.js";
 import { TaskScheduler } from "../../src/core/engine/task-scheduler.js";
 import { type RegisteredTask } from "../../src/core/interfaces/registered-task.js";
 import { type TaskConfiguration } from "../../src/core/interfaces/task-configuration.js";
@@ -69,7 +69,7 @@ function createMockNadle(tasks: TaskDef[], options?: { parallel?: boolean; mainT
 				return workspaceId === "root" ? `root:${input}` : `${workspaceId}:${input}`;
 			}
 		}
-	} as unknown as Nadle;
+	} as unknown as ProjectContext;
 }
 
 describe.concurrent("TaskScheduler", () => {
