@@ -54,3 +54,7 @@ jobs:
 
       - name: Test
         run: npx nadle test --summary
+
+      - name: Coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22'
+        run: pnpm -F nadle test -- --coverage

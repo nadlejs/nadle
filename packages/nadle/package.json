@@ -55,6 +55,7 @@
 		"@types/react": "^19.1.8",
 		"@types/serialize-javascript": "^5.0.4",
 		"@types/yargs": "^17.0.35",
+		"@vitest/coverage-v8": "^4.0.18",
 		"@vitest/expect": "^4.0.18",
 		"fixturify": "^3.0.0",
 		"knip": "^5.70.2",

@@ -7,7 +7,7 @@ nadle.iml
 **/node_modules
 
 # testing
-/coverage
+**/coverage
 
 # build output
 **/build

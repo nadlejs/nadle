@@ -33,6 +33,19 @@ export default defineConfig({
 			const relativePath = Path.relative(testDir, testPath);
 
 			return Path.resolve(testDir, "__snapshots__", `${relativePath}${snapshotExtension}`);
+		},
+		coverage: {
+			provider: "v8",
+			include: ["src/**/*.ts"],
+			reportsDirectory: "./coverage",
+			reporter: ["text", "json-summary"],
+			exclude: ["src/index.ts", "src/cli.ts", "src/core/engine/worker.ts"],
+			thresholds: {
+				lines: 25,
+				branches: 25,
+				functions: 25,
+				statements: 25
+			}
 		}
 	}
 });
