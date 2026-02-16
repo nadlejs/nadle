@@ -58,6 +58,25 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
 [log] <Bold>1</BoldDim> task executed
 `;
 
+exports[`copyTask > given a nested destination > creates directories automatically 3`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>copyToNested</BoldDim> <Yellow>STARTED</Yellow>
+
+[log] Copy foo.txt -> dist/sub/nested
+[log]
+<Green>✓</Green> Task <Bold>copyToNested</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
 exports[`copyTask > with include and exclude options > copies only matching files 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__

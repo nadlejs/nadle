@@ -56,6 +56,13 @@ During execution, each task event produces a status message:
 | Task failed     | `✗ Task {label} FAILED {duration}` |
 | Task canceled   | `✗ Task {label} CANCELED`          |
 
+### Empty (Lifecycle-Only) Tasks
+
+Tasks registered with no function body (lifecycle-only tasks) only produce the DONE
+message. The STARTED message is suppressed because these tasks perform no work — they
+exist solely as dependency aggregation points. This matches the single-message pattern
+used by UP-TO-DATE and FROM-CACHE tasks.
+
 ## Execution Result
 
 ### Successful Run

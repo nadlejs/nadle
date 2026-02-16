@@ -86,6 +86,13 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - 08-configuration-loading: Config files are loaded within an AsyncLocalStorage
   context bound to the active Nadle instance, enabling instance-scoped registration.
 
+## 1.0.1 — 2026-02-16
+
+### Changed
+
+- 01-task: Note that empty (lifecycle-only) tasks suppress the STARTED reporter message
+- 13-reporting: Document single-message behavior for empty tasks
+
 ## 1.0.0 — 2026-02-15
 
 Initial release of the Nadle specification.
