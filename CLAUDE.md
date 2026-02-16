@@ -29,6 +29,10 @@ Monorepo managed with **pnpm workspaces**. Nadle builds itself (`nadle.config.ts
   accurate. When updating spec files, also add an entry to `spec/CHANGELOG.md` and bump the
   version in `spec/README.md` following semver (major for breaking behavioral changes, minor
   for new concepts/sections, patch for clarifications).
+- **User-facing docs**: `packages/docs/` is the Docusaurus site (nadle.dev). When a change is
+  significant to users (new feature, changed behavior, new CLI flag, new API, breaking change),
+  update the relevant docs pages. Key areas: `docs/concepts/` for core concepts, `docs/guides/`
+  for how-to guides, `docs/api/` for API reference, `docs/config-reference.md` for configuration.
 - **Entry**: `src/cli.ts` (yargs) → `Nadle` class → handler chain
 - **Task lifecycle**: Registration (`tasks.register`) → Scheduling (topological sort, DAG) →
   Execution (tinypool worker threads) → Reporting

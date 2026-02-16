@@ -65,6 +65,13 @@ This spec follows [Semantic Versioning](https://semver.org/):
 
 All changes are recorded in [CHANGELOG.md](CHANGELOG.md).
 
+## Relationship to User-Facing Docs
+
+This spec defines the internal behavioral contract. The user-facing documentation lives in
+`packages/docs/` (the Docusaurus site at nadle.dev). When a spec change is significant to
+users — new feature, changed behavior, new CLI flag, breaking change — the corresponding
+user-facing docs should also be updated.
+
 ## Glossary
 
 | Term               | Definition                                                                                                |
