@@ -1,6 +1,6 @@
 {
 	"extends": "../../../tsconfig.base.json",
-	"include": ["./**/register.test-d.ts"],
+	"include": ["./**/*.test-d.ts"],
 	"compilerOptions": {
 		"noEmit": true,
 		"rootDir": "."
