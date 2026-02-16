@@ -79,13 +79,17 @@ export class DefaultReporter implements Listener {
 	}
 
 	public async onTaskStart(task: RegisteredTask) {
-		this.context.logger.log(`${c.yellow(">")} Task ${c.bold(task.label)} ${c.yellow("STARTED")}\n`);
+		if (!task.empty) {
+			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(task.label)} ${c.yellow("STARTED")}\n`);
+		}
+
 		this.renderer.schedule();
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
+		const prefix = task.empty ? "" : "\n";
 		this.context.logger.log(
-			`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(this.tracker.getTaskState(task.id).duration ?? 0))}`
+			`${prefix}${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(this.tracker.getTaskState(task.id).duration ?? 0))}`
 		);
 		this.renderer.schedule();
 	}

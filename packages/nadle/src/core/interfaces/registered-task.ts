@@ -11,6 +11,8 @@ export interface RegisteredTask extends Task {
 	readonly name: string;
 	/** Human-readable label for the task. */
 	readonly label: string;
+	/** Whether this is an empty (lifecycle-only) task with no function body. */
+	readonly empty: boolean;
 	/** Unique identifier for the task. */
 	readonly id: TaskIdentifier;
 	/** Workspace ID this task belongs to. */

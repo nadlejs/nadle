@@ -73,3 +73,27 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>2</BoldDim> tasks executed
 `;
+
+exports[`workspaces alias > root alias 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 1 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>my-root:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build root
+[log]
+<Green>✓</Green> Task <Bold>my-root:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+Build one
+[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
+
+[log]
+<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>2</BoldDim> tasks executed
+`;

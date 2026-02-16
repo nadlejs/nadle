@@ -168,6 +168,40 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 [log] <Bold>4</BoldDim> tasks executed
 `;
 
+exports[`workspaces basic tasks > when specifying root task > should run that task first then all sub-workspace task with the same name 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build root
+[log]
+<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build one
+[log]
+<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build three
+[log]
+<Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build two
+[log]
+<Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>4</BoldDim> tasks executed
+`;
+
 exports[`workspaces basic tasks > when specifying sub-workspace tasks > should run those tasks only 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
