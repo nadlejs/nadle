@@ -13,21 +13,21 @@ export class ListWorkspacesHandler extends BaseHandler {
 	public readonly description = "Lists all available workspaces.";
 
 	public canHandle(): boolean {
-		return this.nadle.options.listWorkspaces;
+		return this.context.options.listWorkspaces;
 	}
 
 	public handle() {
-		const workspaces = Project.getAllWorkspaces(this.nadle.options.project);
+		const workspaces = Project.getAllWorkspaces(this.context.options.project);
 
 		const parentWorkspaceMap = this.computeParentWorkspaceMap(workspaces);
 		const childrenWorkspaceMap = Object.fromEntries(
 			workspaces.map(({ id }) => [id, workspaces.filter((workspace) => parentWorkspaceMap[workspace.id]?.id === id)])
 		);
 
-		this.nadle.logger.log(c.bold("Available workspaces:\n"));
+		this.context.logger.log(c.bold("Available workspaces:\n"));
 
 		const tree = createTree<Workspace>(
-			this.nadle.options.project.rootWorkspace,
+			this.context.options.project.rootWorkspace,
 			(workspace) => childrenWorkspaceMap[workspace.id],
 			(workspace) =>
 				new StringBuilder()
@@ -37,7 +37,7 @@ export class ListWorkspacesHandler extends BaseHandler {
 					.build()
 		);
 
-		this.nadle.logger.log(tree.join("\n"));
+		this.context.logger.log(tree.join("\n"));
 	}
 
 	private computeParentWorkspaceMap(workspaces: Workspace[]): Record<string, Workspace | null> {

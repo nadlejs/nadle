@@ -21,7 +21,7 @@ export class Nadle implements ExecutionContext {
 	public readonly taskRegistry = taskRegistry;
 	public readonly taskScheduler = new TaskScheduler(this);
 	public readonly executionTracker = new ExecutionTracker();
-	public readonly eventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
+	public readonly eventEmitter: EventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
 
 	#options: NadleResolvedOptions | undefined;
 

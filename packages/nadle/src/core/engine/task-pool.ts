@@ -9,13 +9,11 @@ import { type WorkerParams, type WorkerMessage } from "./worker.js";
 // See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438
 const TERMINATING_WORKER_ERROR = "Terminating worker thread";
 
-type TaskPoolContext = Pick<ExecutionContext, "options" | "taskRegistry" | "eventEmitter" | "executionTracker">;
-
 export class TaskPool {
 	private readonly pool: TinyPool;
 
 	public constructor(
-		private readonly context: TaskPoolContext,
+		private readonly context: ExecutionContext,
 		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>
 	) {
 		this.pool = new TinyPool({

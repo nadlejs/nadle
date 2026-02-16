@@ -16,13 +16,11 @@ import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.j
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, RIGHT_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
-type ReporterContext = Pick<ExecutionContext, "options" | "logger" | "taskRegistry" | "executionTracker" | "state">;
-
 export class DefaultReporter implements Listener {
 	private renderer = new DefaultRenderer();
 	private tracker: ExecutionTracker;
 
-	public constructor(private readonly context: ReporterContext) {
+	public constructor(private readonly context: ExecutionContext) {
 		this.tracker = this.context.executionTracker;
 	}
 
