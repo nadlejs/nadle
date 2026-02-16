@@ -107,6 +107,9 @@ Registered -> Scheduled -> Running -+-> Failed
 - Only tasks in Running can transition to Finished, Failed, or Canceled.
 - The Running counter is only decremented for Finished, Failed, and Canceled transitions
   (not for UpToDate or FromCache).
+- **Empty (lifecycle-only) tasks** still transition through Running and emit start/finish
+  events, but the reporter suppresses the STARTED message — only DONE is printed.
+  See [13-reporting.md](13-reporting.md) for details.
 
 ## Reusable Task Types
 
