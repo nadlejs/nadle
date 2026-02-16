@@ -1,5 +1,5 @@
-import { type Nadle } from "../nadle.js";
 import { highlight } from "../utilities/utils.js";
+import { type ProjectContext } from "../context.js";
 import { Messages } from "../utilities/messages.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
@@ -30,19 +30,19 @@ export class TaskScheduler {
 	// The main task listed in the tasks argument need to be focused on
 	private mainTaskId: string | undefined = undefined;
 
-	public constructor(private readonly nadle: Nadle) {}
+	public constructor(private readonly context: ProjectContext) {}
 
-	public init(taskIds: string[] = this.nadle.options.tasks.map(({ taskId }) => taskId)): this {
+	public init(taskIds: string[] = this.context.options.tasks.map(({ taskId }) => taskId)): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
-		this.excludedTaskIds = new Set(this.nadle.options.excludedTasks.map(ResolvedTask.getId));
+		this.excludedTaskIds = new Set(this.context.options.excludedTasks.map(ResolvedTask.getId));
 
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
 		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
 
-		this.nadle.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
-		this.nadle.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
+		this.context.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
+		this.context.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
 
-		if (!this.nadle.options.parallel) {
+		if (!this.context.options.parallel) {
 			this.mainTaskId = this.taskIds[0];
 		}
 
@@ -54,13 +54,13 @@ export class TaskScheduler {
 
 		for (const taskId of taskIds) {
 			expandedTaskIds.push(taskId);
-			const { name, workspaceId } = this.nadle.taskRegistry.getTaskById(taskId);
+			const { name, workspaceId } = this.context.taskRegistry.getTaskById(taskId);
 
 			if (!RootWorkspace.isRootWorkspaceId(workspaceId)) {
 				continue;
 			}
 
-			for (const sameNameTask of this.nadle.taskRegistry.getTaskByName(name)) {
+			for (const sameNameTask of this.context.taskRegistry.getTaskByName(name)) {
 				if (!taskIds.includes(sameNameTask.id)) {
 					expandedTaskIds.push(sameNameTask.id);
 				}
@@ -75,7 +75,7 @@ export class TaskScheduler {
 			const startTaskIndex = paths.indexOf(dependency);
 
 			if (startTaskIndex !== -1) {
-				this.nadle.logger.throw(Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `)));
+				this.context.logger.throw(Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `)));
 			}
 
 			this.detectCycle(dependency, [...paths, dependency]);
@@ -87,11 +87,11 @@ export class TaskScheduler {
 			return;
 		}
 
-		const { workspaceId, configResolver } = this.nadle.taskRegistry.getTaskById(taskId);
+		const { workspaceId, configResolver } = this.context.taskRegistry.getTaskById(taskId);
 
 		const dependencies = new Set(
 			MaybeArray.toArray(configResolver().dependsOn ?? [])
-				.map((dependencyTaskInput) => this.nadle.taskRegistry.parse(dependencyTaskInput, workspaceId))
+				.map((dependencyTaskInput) => this.context.taskRegistry.parse(dependencyTaskInput, workspaceId))
 				.filter((taskId) => !this.excludedTaskIds.has(taskId))
 		);
 
@@ -144,7 +144,7 @@ export class TaskScheduler {
 	}
 
 	public getReadyTasks(doneTaskId?: string): Set<string> {
-		this.nadle.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
+		this.context.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
 
 		if (doneTaskId === undefined) {
 			return this.getInitialReadyTasks();
@@ -181,7 +181,7 @@ export class TaskScheduler {
 			return this.getReadyTasks();
 		}
 
-		this.nadle.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+		this.context.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 		return nextReadyTasks;
 	}
@@ -190,7 +190,7 @@ export class TaskScheduler {
 		const nextReadyTasks = new Set<string>();
 
 		for (const [taskId, indegree] of this.getIndegreeEntries()) {
-			this.nadle.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
+			this.context.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
 
 			if (indegree === 0 && !this.readyTasks.has(taskId)) {
 				nextReadyTasks.add(taskId);
@@ -198,7 +198,7 @@ export class TaskScheduler {
 			}
 		}
 
-		this.nadle.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+		this.context.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 		return nextReadyTasks;
 	}

@@ -8,18 +8,18 @@ export class ShowConfigHandler extends BaseHandler {
 	public readonly description = "Shows the current Nadle configuration.";
 
 	public canHandle(): boolean {
-		return this.nadle.options.showConfig;
+		return this.context.options.showConfig;
 	}
 
 	public handle() {
-		const { configKey } = this.nadle.options;
+		const { configKey } = this.context.options;
 
 		if (!configKey) {
-			this.nadle.logger.log(stringify(this.nadle.options));
+			this.context.logger.log(stringify(this.context.options));
 
 			return;
 		}
 
-		this.nadle.logger.log(stringify(get(this.nadle.options, configKey)));
+		this.context.logger.log(stringify(get(this.context.options, configKey)));
 	}
 }

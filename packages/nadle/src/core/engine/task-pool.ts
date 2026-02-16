@@ -1,6 +1,6 @@
 import TinyPool from "tinypool";
 
-import { type Nadle } from "../nadle.js";
+import { type ExecutionContext } from "../context.js";
 import { TaskStatus } from "../interfaces/registered-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { type WorkerParams, type WorkerMessage } from "./worker.js";
@@ -13,13 +13,13 @@ export class TaskPool {
 	private readonly pool: TinyPool;
 
 	public constructor(
-		private readonly nadle: Nadle,
+		private readonly context: ExecutionContext,
 		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>
 	) {
 		this.pool = new TinyPool({
 			concurrentTasksPerWorker: 1,
-			minThreads: this.nadle.options.minWorkers,
-			maxThreads: this.nadle.options.maxWorkers,
+			minThreads: this.context.options.minWorkers,
+			maxThreads: this.context.options.maxWorkers,
 			filename: new URL("./worker.js", import.meta.url).href
 		});
 	}
@@ -33,14 +33,14 @@ export class TaskPool {
 	}
 
 	private async pushTask(taskId: string) {
-		const task = this.nadle.taskRegistry.getTaskById(taskId);
+		const task = this.context.taskRegistry.getTaskById(taskId);
 
 		try {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();
 			let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
 			poolPort.on("message", async (msg: WorkerMessage) => {
 				if (msg.type === "start") {
-					await this.nadle.eventEmitter.onTaskStart(task, msg.threadId);
+					await this.context.eventEmitter.onTaskStart(task, msg.threadId);
 				} else if (msg.type === "up-to-date") {
 					executeType = "up-to-date";
 				} else if (msg.type === "from-cache") {
@@ -52,17 +52,17 @@ export class TaskPool {
 				taskId: task.id,
 				port: workerPort,
 				env: process.env,
-				options: { ...this.nadle.options, footer: false }
+				options: { ...this.context.options, footer: false }
 			};
 
 			await this.pool.run(workerParams, { transferList: [workerPort] });
 
 			if (executeType === "execute") {
-				await this.nadle.eventEmitter.onTaskFinish(task);
+				await this.context.eventEmitter.onTaskFinish(task);
 			} else if (executeType === "up-to-date") {
-				await this.nadle.eventEmitter.onTaskUpToDate(task);
+				await this.context.eventEmitter.onTaskUpToDate(task);
 			} else if (executeType === "from-cache") {
-				await this.nadle.eventEmitter.onTaskRestoreFromCache(task);
+				await this.context.eventEmitter.onTaskRestoreFromCache(task);
 			} else {
 				throw new Error(`Unknown execute type: ${executeType}`);
 			}
@@ -70,14 +70,14 @@ export class TaskPool {
 			if (
 				error instanceof Error &&
 				error.message === TERMINATING_WORKER_ERROR &&
-				this.nadle.executionTracker.getTaskStatus(task.id) === TaskStatus.Running
+				this.context.executionTracker.getTaskStatus(task.id) === TaskStatus.Running
 			) {
-				await this.nadle.eventEmitter.onTaskCanceled(task);
+				await this.context.eventEmitter.onTaskCanceled(task);
 
 				return;
 			}
 
-			await this.nadle.eventEmitter.onTaskFailed(task);
+			await this.context.eventEmitter.onTaskFailed(task);
 			throw error;
 		}
 

@@ -1,7 +1,7 @@
-import { type Nadle } from "../nadle.js";
+import { type ExecutionContext } from "../context.js";
 import { type Awaitable } from "../utilities/types.js";
 
-export type HandlerConstructor = new (nadle: Nadle) => Handler;
+export type HandlerConstructor = new (context: ExecutionContext) => Handler;
 
 export interface Handler {
 	/**

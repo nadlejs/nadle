@@ -7,15 +7,15 @@ export class CleanCacheHandler extends BaseHandler {
 	public readonly description = "Cleans the cache directory.";
 
 	public canHandle(): boolean {
-		return this.nadle.options.cleanCache;
+		return this.context.options.cleanCache;
 	}
 
 	public async handle() {
 		try {
-			this.nadle.logger.log(`Cleaning cache at ${this.nadle.options.cacheDir}...`);
-			await Fs.rm(this.nadle.options.cacheDir, { force: true, recursive: true });
+			this.context.logger.log(`Cleaning cache at ${this.context.options.cacheDir}...`);
+			await Fs.rm(this.context.options.cacheDir, { force: true, recursive: true });
 		} catch (error) {
-			this.nadle.logger.error(`Failed to clean cache at ${this.nadle.options.cacheDir}:`, error);
+			this.context.logger.error(`Failed to clean cache at ${this.context.options.cacheDir}:`, error);
 			throw error;
 		}
 	}

@@ -4,6 +4,7 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { Nadle } from "../nadle.js";
+import { type ExecutionContext } from "../context.js";
 import { stringify } from "../utilities/stringify.js";
 import { type Listener } from "../interfaces/listener.js";
 import { highlight, formatTime } from "../utilities/utils.js";
@@ -19,13 +20,13 @@ export class DefaultReporter implements Listener {
 	private renderer = new DefaultRenderer();
 	private tracker: ExecutionTracker;
 
-	public constructor(private readonly nadle: Nadle) {
-		this.tracker = this.nadle.executionTracker;
+	public constructor(private readonly context: ExecutionContext) {
+		this.tracker = this.context.executionTracker;
 	}
 
 	public onInitialize() {
-		this.renderer = this.nadle.options.footer
-			? new FooterRenderer({ logger: this.nadle.logger, getWindow: () => this.createFooter() })
+		this.renderer = this.context.options.footer
+			? new FooterRenderer({ logger: this.context.logger, getWindow: () => this.createFooter() })
 			: new DefaultRenderer();
 
 		return this;
@@ -38,7 +39,7 @@ export class DefaultReporter implements Listener {
 	private createFooter() {
 		const footer: string[] = [""];
 
-		if (this.nadle.options.tasks.length === 0 && this.nadle.state.selectingTasks) {
+		if (this.context.options.tasks.length === 0 && this.context.state.selectingTasks) {
 			return footer;
 		}
 
@@ -61,7 +62,7 @@ export class DefaultReporter implements Listener {
 	}
 
 	private printRunningTasks() {
-		const lines = Array.from({ length: this.nadle.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
+		const lines = Array.from({ length: this.context.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
 
 		let maxThreadId = 0;
 
@@ -78,72 +79,72 @@ export class DefaultReporter implements Listener {
 	}
 
 	public async onTaskStart(task: RegisteredTask) {
-		this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(task.label)} ${c.yellow("STARTED")}\n`);
+		this.context.logger.log(`${c.yellow(">")} Task ${c.bold(task.label)} ${c.yellow("STARTED")}\n`);
 		this.renderer.schedule();
 	}
 
 	public async onTaskFinish(task: RegisteredTask) {
-		this.nadle.logger.log(
+		this.context.logger.log(
 			`\n${c.green(CHECK)} Task ${c.bold(task.label)} ${c.green("DONE")} ${c.dim(formatTime(this.tracker.getTaskState(task.id).duration ?? 0))}`
 		);
 		this.renderer.schedule();
 	}
 
 	public async onTaskUpToDate(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(DASH)} Task ${c.bold(task.label)} ${c.green("UP-TO-DATE")}`);
+		this.context.logger.log(`\n${c.green(DASH)} Task ${c.bold(task.label)} ${c.green("UP-TO-DATE")}`);
 		this.renderer.schedule();
 	}
 
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(task.label)} ${c.green("FROM-CACHE")}`);
+		this.context.logger.log(`\n${c.green(CURVE_ARROW)} Task ${c.bold(task.label)} ${c.green("FROM-CACHE")}`);
 		this.renderer.schedule();
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
-		this.nadle.logger.log(
+		this.context.logger.log(
 			`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(this.tracker.getTaskState(task.id).duration ?? 0)}`
 		);
 		this.renderer.schedule();
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
-		this.nadle.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(task.label)} ${c.yellow("CANCELED")}`);
+		this.context.logger.log(`\n${c.yellow(CROSS)} Task ${c.bold(task.label)} ${c.yellow("CANCELED")}`);
 		this.renderer.schedule();
 	}
 
 	public async onTasksScheduled(tasks: RegisteredTask[]) {
-		this.nadle.logger.info(`Scheduled tasks: ${tasks.map((task) => task.id).join(", ")}`);
+		this.context.logger.info(`Scheduled tasks: ${tasks.map((task) => task.id).join(", ")}`);
 		this.renderer.schedule();
 	}
 
 	public onExecutionStart() {
 		this.renderer.start();
 
-		const { project, minWorkers, maxWorkers } = this.nadle.options;
+		const { project, minWorkers, maxWorkers } = this.context.options;
 
 		const workspaceConfigFileCount = project.workspaces.flatMap((workspace) => workspace.configFilePath ?? []).length;
 
-		if (!this.nadle.options.showConfig) {
-			this.nadle.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
-			this.nadle.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
-			this.nadle.logger.log(
+		if (!this.context.options.showConfig) {
+			this.context.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
+			this.context.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
+			this.context.logger.log(
 				`Loaded configuration from ${project.rootWorkspace.configFilePath}${workspaceConfigFileCount > 0 ? ` and ${workspaceConfigFileCount} other(s) files` : ""}\n`
 			);
 		}
 
-		this.nadle.logger.info(
+		this.context.logger.info(
 			`Using ${minWorkers === maxWorkers ? minWorkers : `${minWorkers}–${maxWorkers}`} worker${maxWorkers > 1 ? "s" : ""} for task execution`
 		);
-		this.nadle.logger.info(`Project directory: ${project.rootWorkspace.absolutePath}`);
-		this.nadle.logger.info("Resolved options:", stringify(this.nadle.options));
-		this.nadle.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
+		this.context.logger.info(`Project directory: ${project.rootWorkspace.absolutePath}`);
+		this.context.logger.info("Resolved options:", stringify(this.context.options));
+		this.context.logger.info("Detected environments:", { CI: isCI, TEST: isTest });
 		this.printResolvedTasks();
 
-		this.nadle.logger.info("Execution started");
+		this.context.logger.info("Execution started");
 	}
 
 	private printResolvedTasks() {
-		const resolvedTasks = [...this.nadle.options.tasks, ...this.nadle.options.excludedTasks].filter(({ corrected }) => corrected);
+		const resolvedTasks = [...this.context.options.tasks, ...this.context.options.excludedTasks].filter(({ corrected }) => corrected);
 
 		if (resolvedTasks.length === 0) {
 			return;
@@ -161,22 +162,22 @@ export class DefaultReporter implements Listener {
 				return `${" ".repeat(4)}${highlight(rawInput.padEnd(maxOriginTaskLength, " "))}  ${RIGHT_ARROW} ${c.green(c.bold(taskId))}`;
 			})
 		].join("\n");
-		this.nadle.logger.log(message + "\n");
+		this.context.logger.log(message + "\n");
 	}
 
 	public async onExecutionFinish() {
 		this.renderer.finish();
-		this.nadle.logger.info("Execution finished");
+		this.context.logger.info("Execution finished");
 
-		if (this.nadle.options.showConfig) {
+		if (this.context.options.showConfig) {
 			return;
 		}
 
-		if (this.nadle.options.summary) {
-			this.nadle.logger.log(
+		if (this.context.options.summary) {
+			this.context.logger.log(
 				renderProfilingSummary({
 					totalDuration: this.duration,
-					tasks: this.nadle.taskRegistry.tasks.flatMap((task) => {
+					tasks: this.context.taskRegistry.tasks.flatMap((task) => {
 						const { status, duration } = this.tracker.getTaskState(task.id);
 
 						if (status !== TaskStatus.Finished) {
@@ -191,8 +192,8 @@ export class DefaultReporter implements Listener {
 
 		const print = (count: number) => `${c.bold(count)} task${count > 1 ? "s" : ""}`;
 
-		this.nadle.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))}`);
-		this.nadle.logger.log(
+		this.context.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))}`);
+		this.context.logger.log(
 			new StringBuilder(", ")
 				.add(`${print(this.stats[TaskStatus.Finished])} executed`)
 				.add(this.stats[TaskStatus.UpToDate] > 0 && `${print(this.stats[TaskStatus.UpToDate])} up-to-date`)
@@ -203,21 +204,21 @@ export class DefaultReporter implements Listener {
 
 	public async onExecutionFailed(error: unknown) {
 		this.renderer.finish();
-		this.nadle.logger.info("Execution failed");
+		this.context.logger.info("Execution failed");
 
 		const finishedTasks = `${c.bold(this.stats[TaskStatus.Finished])} task${this.stats[TaskStatus.Finished] > 1 ? "s" : ""}`;
 		const failedTasks = `${c.bold(this.stats[TaskStatus.Failed])} task${this.stats[TaskStatus.Failed] > 1 ? "s" : ""}`;
 
-		this.nadle.logger.log(
+		this.context.logger.log(
 			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
 		);
 
-		if (!this.nadle.options.stacktrace) {
-			this.nadle.logger.log(
+		if (!this.context.options.stacktrace) {
+			this.context.logger.log(
 				`\nFor more details, re-run the command with the ${c.yellow("--stacktrace")} option to display the full error and help identify the root cause.`
 			);
 		} else {
-			this.nadle.logger.error(error instanceof Error ? (error.stack ?? error.message) : String(error));
+			this.context.logger.error(error instanceof Error ? (error.stack ?? error.message) : String(error));
 		}
 	}
 

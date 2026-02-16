@@ -8,22 +8,22 @@ export class DryRunHandler extends BaseHandler {
 	public readonly description = "Prints the execution plan without running tasks.";
 
 	public canHandle(): boolean {
-		return this.nadle.options.dryRun;
+		return this.context.options.dryRun;
 	}
 
 	public handle() {
-		if (this.nadle.options.tasks.length === 0) {
-			this.nadle.logger.log(Messages.NoTasksFound());
+		if (this.context.options.tasks.length === 0) {
+			this.context.logger.log(Messages.NoTasksFound());
 
 			return;
 		}
 
-		const taskIds = this.nadle.taskScheduler.init().getExecutionPlan();
+		const taskIds = this.context.taskScheduler.init().getExecutionPlan();
 
-		this.nadle.logger.log(c.bold("Execution plan:"));
+		this.context.logger.log(c.bold("Execution plan:"));
 
 		for (const taskId of taskIds) {
-			this.nadle.logger.log(`${c.yellow(">")} Task ${c.bold(this.nadle.taskRegistry.getTaskById(taskId).label)}`);
+			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(this.context.taskRegistry.getTaskById(taskId).label)}`);
 		}
 	}
 }

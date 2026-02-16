@@ -7,16 +7,12 @@ import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { taskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
+import { type State, type ExecutionContext } from "./context.js";
 import { ExecutionTracker } from "./models/execution-tracker.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
-interface State {
-	/** Indicates whether Nadle is currently in the task selection mode */
-	readonly selectingTasks: boolean;
-}
-
-export class Nadle {
+export class Nadle implements ExecutionContext {
 	public static readonly version: string = "0.5.1"; // x-release-please-version
 
 	public state: State = { selectingTasks: false };
@@ -25,7 +21,7 @@ export class Nadle {
 	public readonly taskRegistry = taskRegistry;
 	public readonly taskScheduler = new TaskScheduler(this);
 	public readonly executionTracker = new ExecutionTracker();
-	public readonly eventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
+	public readonly eventEmitter: EventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
 
 	#options: NadleResolvedOptions | undefined;
 

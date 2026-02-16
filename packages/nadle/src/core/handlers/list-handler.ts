@@ -21,12 +21,12 @@ export class ListHandler extends BaseHandler {
 	private static readonly UncategorizedGroup = "Uncategorized";
 
 	public canHandle(): boolean {
-		return this.nadle.options.list;
+		return this.context.options.list;
 	}
 
 	public handle() {
-		if (this.nadle.taskRegistry.tasks.length === 0) {
-			this.nadle.logger.log("No tasks found");
+		if (this.context.taskRegistry.tasks.length === 0) {
+			this.context.logger.log("No tasks found");
 
 			return;
 		}
@@ -37,27 +37,27 @@ export class ListHandler extends BaseHandler {
 			const [groupName, tasks] = groups[groupIndex];
 
 			const label = `${capitalize(groupName)} tasks`;
-			this.nadle.logger.log(c.bold(label));
-			this.nadle.logger.log(c.bold(DASH.repeat(label.length)));
+			this.context.logger.log(c.bold(label));
+			this.context.logger.log(c.bold(DASH.repeat(label.length)));
 
 			for (const task of tasks) {
 				const { label, description } = task;
 
 				if (description) {
-					this.nadle.logger.log(c.bold(c.green(label)) + c.yellow(` - ${description}`));
+					this.context.logger.log(c.bold(c.green(label)) + c.yellow(` - ${description}`));
 				} else {
-					this.nadle.logger.log(c.green(label));
+					this.context.logger.log(c.green(label));
 				}
 			}
 
 			if (groupIndex < groups.length - 1) {
-				this.nadle.logger.log("");
+				this.context.logger.log("");
 			}
 		}
 	}
 
 	private computeGroups(): Group[] {
-		const tasks = this.nadle.taskRegistry.tasks.map((task) => {
+		const tasks = this.context.taskRegistry.tasks.map((task) => {
 			const { description, group = ListHandler.UncategorizedGroup } = task.configResolver();
 
 			return { ...task, group, description };
