@@ -18,9 +18,13 @@ export const Messages = {
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)} workspace.`,
 	InvalidTaskName: (taskName: string) =>
 		`Invalid task name: ${highlight(taskName)}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`,
-	// eslint-disable-next-line max-params
-	UnresolvedTaskWithSuggestions: (taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined, suggestions: string) =>
-		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)}${fallbackWorkspaceId ? ` nor ${highlight(fallbackWorkspaceId)}` : ""} workspace. ${suggestions}`,
+	UnresolvedTaskWithSuggestions: (options: {
+		suggestions: string;
+		taskNameInput: string;
+		targetWorkspaceId: string;
+		fallbackWorkspaceId: string | undefined;
+	}) =>
+		`Task ${highlight(options.taskNameInput)} not found in ${highlight(options.targetWorkspaceId)}${options.fallbackWorkspaceId ? ` nor ${highlight(options.fallbackWorkspaceId)}` : ""} workspace. ${options.suggestions}`,
 
 	EmptyWorkspaceLabel: (workspaceId: string) => `Workspace ${highlight(workspaceId)} alias can not be empty.`,
 	UnresolvedWorkspace: (workspaceInput: string, suggestions: string) => `Workspace ${highlight(workspaceInput)} not found. ${suggestions}`,

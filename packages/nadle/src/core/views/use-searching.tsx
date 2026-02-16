@@ -7,8 +7,16 @@ import { HIGHLIGHT_COLOR, type InteractiveTask } from "./tasks-selection.js";
 
 const VISIBLE_TASKS_LIMIT = 5;
 
-// eslint-disable-next-line max-params
-export function useSearching(tasks: InteractiveTask[], searchText: string, selectedTasks: string[], cursor: number): VisibleTask[] {
+interface UseSearchingOptions {
+	readonly cursor: number;
+	readonly searchText: string;
+	readonly selectedTasks: string[];
+	readonly tasks: InteractiveTask[];
+}
+
+export function useSearching(options: UseSearchingOptions): VisibleTask[] {
+	const { tasks, cursor, searchText, selectedTasks } = options;
+
 	return React.useMemo(() => {
 		if (!searchText) {
 			const visibleTasks = tasks.slice(0, VISIBLE_TASKS_LIMIT);

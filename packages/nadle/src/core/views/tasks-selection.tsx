@@ -28,7 +28,6 @@ namespace TasksSelection {
 	}
 }
 
-// eslint-disable-next-line max-lines-per-function
 const TasksSelection: React.FC<TasksSelection.Props> = ({ tasks, onSubmit }) => {
 	const [cursor, setCursor] = useState(0);
 	const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
@@ -36,7 +35,7 @@ const TasksSelection: React.FC<TasksSelection.Props> = ({ tasks, onSubmit }) => 
 	const [isCommandMode, setIsCommandMode] = useState(false);
 	const [commandBuffer, setCommandBuffer] = useState("");
 
-	const searchingTasks = useSearching(tasks, searchText, selectedTasks, cursor);
+	const searchingTasks = useSearching({ tasks, cursor, searchText, selectedTasks });
 
 	const { exit } = useApp();
 
@@ -68,6 +67,32 @@ const TasksSelection: React.FC<TasksSelection.Props> = ({ tasks, onSubmit }) => 
 			}
 		}
 	});
+
+	return (
+		<TasksSelectionView
+			commandBuffer={commandBuffer}
+			isCommandMode={isCommandMode}
+			searchText={searchText}
+			searchingTasks={searchingTasks}
+			selectedTasks={selectedTasks}
+			tasks={tasks}
+		/>
+	);
+};
+
+namespace TasksSelectionView {
+	export interface Props {
+		readonly searchText: string;
+		readonly commandBuffer: string;
+		readonly isCommandMode: boolean;
+		readonly selectedTasks: string[];
+		readonly tasks: InteractiveTask[];
+		readonly searchingTasks: VisibleTask[];
+	}
+}
+
+const TasksSelectionView: React.FC<TasksSelectionView.Props> = (props) => {
+	const { tasks, searchText, selectedTasks, isCommandMode, commandBuffer, searchingTasks } = props;
 
 	return (
 		<Box flexDirection="column" padding={1} borderStyle="round" borderColor={PRIMARY_COLOR}>
