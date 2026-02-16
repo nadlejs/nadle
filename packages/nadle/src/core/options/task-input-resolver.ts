@@ -32,9 +32,19 @@ export class TaskInputResolver {
 				const suggestedWorkspaceLabelOrId = this.resolveWorkspace(workspaceInput, workspaces);
 
 				const workspace = Project.getWorkspaceByLabelOrId(project, suggestedWorkspaceLabelOrId);
-				resolvedTask = this.resolveTask(project, taskNameInput, workspace.id, undefined);
+				resolvedTask = this.resolveTask({
+					project,
+					taskNameInput,
+					fallbackWorkspaceId: undefined,
+					targetWorkspaceId: workspace.id
+				});
 			} else {
-				resolvedTask = this.resolveTask(project, taskNameInput, targetWorkspace, fallbackWorkspace);
+				resolvedTask = this.resolveTask({
+					project,
+					taskNameInput,
+					targetWorkspaceId: targetWorkspace,
+					fallbackWorkspaceId: fallbackWorkspace
+				});
 			}
 
 			const corrected =
@@ -46,8 +56,13 @@ export class TaskInputResolver {
 		});
 	}
 
-	// eslint-disable-next-line max-params
-	private resolveTask(project: Project, taskNameInput: string, targetWorkspaceId: string, fallbackWorkspaceId: string | undefined): string {
+	private resolveTask(options: {
+		project: Project;
+		taskNameInput: string;
+		targetWorkspaceId: string;
+		fallbackWorkspaceId: string | undefined;
+	}): string {
+		const { project, taskNameInput, targetWorkspaceId, fallbackWorkspaceId } = options;
 		const resolvedTask = suggest(taskNameInput, this.taskNamesGetter(targetWorkspaceId), this.logger);
 
 		if (resolvedTask.result !== undefined) {
@@ -65,7 +80,12 @@ export class TaskInputResolver {
 		}
 
 		this.logger.throw(
-			Messages.UnresolvedTaskWithSuggestions(taskNameInput, targetWorkspaceId, fallbackWorkspaceId, formatSuggestions(resolvedTask.suggestions))
+			Messages.UnresolvedTaskWithSuggestions({
+				taskNameInput,
+				targetWorkspaceId,
+				fallbackWorkspaceId,
+				suggestions: formatSuggestions(resolvedTask.suggestions)
+			})
 		);
 	}
 

@@ -6,6 +6,7 @@ import micromatch from "micromatch";
 
 import { MaybeArray } from "../core/index.js";
 import { isPathExists } from "../core/utilities/fs.js";
+import { type Logger } from "../core/interfaces/logger.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -22,13 +23,21 @@ export interface CopyTaskOptions {
 	readonly include?: MaybeArray<string>;
 }
 
+interface CopyContext {
+	readonly logger: Logger;
+	readonly srcPath: string;
+	readonly destPath: string;
+	readonly workingDir: string;
+	readonly includePatterns: string[];
+	readonly excludePatterns: string[];
+}
+
 /**
  * Task for copying files and directories.
  *
  * Supports include/exclude glob patterns and handles both files and directories.
  */
 export const CopyTask = defineTask<CopyTaskOptions>({
-	// eslint-disable-next-line max-lines-per-function,complexity
 	run: async ({ options, context }) => {
 		const { to, from, exclude = [], include = "**/*" } = options;
 		const { logger, workingDir } = context;
@@ -54,58 +63,77 @@ export const CopyTask = defineTask<CopyTaskOptions>({
 			return;
 		}
 
+		const copyCtx: CopyContext = {
+			logger,
+			srcPath,
+			destPath,
+			workingDir,
+			includePatterns,
+			excludePatterns
+		};
 		const srcStat = await Fs.stat(srcPath);
 
 		if (srcStat.isDirectory()) {
-			await Fs.mkdir(destPath, { recursive: true });
-
-			const files = await fg(includePatterns, {
-				dot: true,
-				cwd: srcPath,
-				onlyFiles: true,
-				ignore: excludePatterns
-			});
-
-			logger.info(`Found ${files.length} file(s) to copy`);
-
-			for (const file of files) {
-				const source = Path.join(srcPath, file);
-				const target = Path.join(destPath, file);
-
-				await Fs.mkdir(Path.dirname(target), { recursive: true });
-				logger.log(`Copy ${Path.relative(workingDir, source)} -> ${Path.relative(workingDir, target)}`);
-				await Fs.cp(source, target);
-			}
-
+			await copyDirectory(copyCtx);
 			logger.info(`Copied directory ${from} to ${to}`);
 
 			return;
 		}
 
-		let targetFile = destPath;
-
-		try {
-			const destStat = await Fs.stat(destPath);
-
-			if (destStat.isDirectory()) {
-				targetFile = Path.join(destPath, Path.basename(srcPath));
-			}
-		} catch {
-			if (to.endsWith(Path.sep)) {
-				targetFile = Path.join(destPath, Path.basename(srcPath));
-			}
-		}
-
-		if (
-			!micromatch.isMatch(Path.basename(srcPath), includePatterns) ||
-			(excludePatterns.length > 0 && micromatch.isMatch(Path.basename(srcPath), excludePatterns))
-		) {
-			return;
-		}
-
-		await Fs.mkdir(Path.dirname(targetFile), { recursive: true });
-		logger.log(`Copy ${Path.relative(workingDir, srcPath)} -> ${Path.relative(workingDir, targetFile)}`);
-		await Fs.cp(srcPath, targetFile);
+		await copySingleFile(copyCtx);
 		logger.info(`Copied file ${from} to ${to}`);
 	}
 });
+
+async function copyDirectory(ctx: CopyContext): Promise<void> {
+	const { logger, srcPath, destPath, workingDir, includePatterns, excludePatterns } = ctx;
+
+	await Fs.mkdir(destPath, { recursive: true });
+
+	const files = await fg(includePatterns, {
+		dot: true,
+		cwd: srcPath,
+		onlyFiles: true,
+		ignore: excludePatterns
+	});
+
+	logger.info(`Found ${files.length} file(s) to copy`);
+
+	for (const file of files) {
+		const source = Path.join(srcPath, file);
+		const target = Path.join(destPath, file);
+
+		await Fs.mkdir(Path.dirname(target), { recursive: true });
+		logger.log(`Copy ${Path.relative(workingDir, source)} -> ${Path.relative(workingDir, target)}`);
+		await Fs.cp(source, target);
+	}
+}
+
+async function copySingleFile(ctx: CopyContext): Promise<void> {
+	const { logger, srcPath, destPath, workingDir, includePatterns, excludePatterns } = ctx;
+
+	let targetFile = destPath;
+
+	try {
+		const destStat = await Fs.stat(destPath);
+
+		if (destStat.isDirectory()) {
+			targetFile = Path.join(destPath, Path.basename(srcPath));
+		}
+	} catch {
+		if (destPath.endsWith(Path.sep)) {
+			targetFile = Path.join(destPath, Path.basename(srcPath));
+		}
+	}
+
+	if (
+		!micromatch.isMatch(Path.basename(srcPath), includePatterns) ||
+		(excludePatterns.length > 0 && micromatch.isMatch(Path.basename(srcPath), excludePatterns))
+	) {
+		return;
+	}
+
+	await Fs.mkdir(Path.dirname(targetFile), { recursive: true });
+	logger.log(`Copy ${Path.relative(workingDir, srcPath)} -> ${Path.relative(workingDir, targetFile)}`);
+	await Fs.cp(srcPath, targetFile);
+}
