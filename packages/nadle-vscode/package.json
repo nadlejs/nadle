@@ -1,13 +1,16 @@
 {
-	"name": "@nadle/internal-nadle-vscode",
+	"name": "nadle-vscode",
+	"displayName": "Nadle",
 	"version": "0.0.1",
+	"publisher": "nadlejs",
 	"description": "VS Code extension for nadle.config.ts language support",
 	"license": "MIT",
 	"type": "commonjs",
-	"private": true,
 	"scripts": {
 		"build": "pnpm run copy-server && tsup",
-		"copy-server": "node scripts/copy-server.mjs"
+		"copy-server": "node scripts/copy-server.mjs",
+		"package": "vsce package",
+		"publish": "vsce publish"
 	},
 	"main": "./lib/extension.js",
 	"dependencies": {
@@ -15,6 +18,7 @@
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.85.0",
+		"@vscode/vsce": "^3.7.1",
 		"tsup": "^8.5.1",
 		"typescript": "^5.9.3"
 	},
@@ -22,6 +26,10 @@
 		"vscode": "^1.85.0",
 		"node": ">=22"
 	},
+	"categories": [
+		"Programming Languages",
+		"Linters"
+	],
 	"activationEvents": [
 		"workspaceContains:**/nadle.config.*"
 	],
@@ -35,6 +43,13 @@
 		"url": "git+https://github.com/nadlejs/nadle.git",
 		"directory": "packages/nadle-vscode"
 	},
+	"keywords": [
+		"nadle",
+		"task-runner",
+		"lsp",
+		"language-server",
+		"typescript"
+	],
 	"homepage": "https://nadle.dev",
 	"bugs": "https://github.com/nadlejs/nadle/issues"
 }

@@ -64,7 +64,7 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 		throw new Error("Package must be located in the 'packages' directory. Got: " + pkgDirPath);
 	}
 
-	if (name === "nadle" || name === "create-nadle") {
+	if (name === "nadle" || name === "create-nadle" || name === "nadle-vscode") {
 		return;
 	}
 
@@ -89,7 +89,7 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 
 const versionValidator: PackageValidator = ({ pkg }) => {
 	if (isPrivate(pkg)) {
-		if (pkg.version && !isVSCodeExtension(pkg)) {
+		if (pkg.version) {
 			throw new Error(`Private packages should not have "version" field`);
 		}
 
@@ -110,7 +110,7 @@ const typeValidator: PackageValidator = ({ pkg }) => {
 		throw new Error(`"type" field is required"`);
 	}
 
-	if (isPublic(pkg) && pkg.type !== "module") {
+	if (isPublic(pkg) && pkg.type !== "module" && !isVSCodeExtension(pkg)) {
 		throw new Error("Public package type must be module");
 	}
 };
@@ -132,7 +132,7 @@ function createSimpleValidator(field: string): PackageValidator {
 		[`${field}Validator`]: function (context: { pkg: PackageJson }) {
 			const { pkg } = context;
 
-			if (isPrivate(pkg)) {
+			if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
 				return;
 			}
 
@@ -150,13 +150,13 @@ function createSimpleValidator(field: string): PackageValidator {
 }
 
 const filesValidator: PackageValidator = ({ pkg }) => {
-	if (isPublic(pkg) && !pkg.files?.length) {
+	if (isPublic(pkg) && !isVSCodeExtension(pkg) && !pkg.files?.length) {
 		throw new Error("Public packages must have 'files' field");
 	}
 };
 
 const exportsValidator: PackageValidator = ({ pkg }) => {
-	if (isPrivate(pkg)) {
+	if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
 		return;
 	}
 
@@ -170,7 +170,7 @@ const exportsValidator: PackageValidator = ({ pkg }) => {
 };
 
 const typesValidator: PackageValidator = ({ pkg }) => {
-	if (isPrivate(pkg)) {
+	if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
 		return;
 	}
 
@@ -218,7 +218,9 @@ const privateValidator: PackageValidator = ({ pkg }) => {
 
 const FIELD_ORDER = [
 	"name",
+	"displayName",
 	"version",
+	"publisher",
 	"description",
 	"license",
 	"type",
@@ -232,6 +234,7 @@ const FIELD_ORDER = [
 	"dependencies",
 	"devDependencies",
 	"engines",
+	"categories",
 	"activationEvents",
 	"contributes",
 	"browserslist",
