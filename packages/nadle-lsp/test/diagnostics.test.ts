@@ -1,17 +1,17 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
-import { describe, expect, it } from "vitest";
-import { DiagnosticSeverity } from "vscode-languageserver";
-
+import { it, expect, describe } from "vitest";
 import { analyzeDocument } from "src/analyzer.js";
 import { computeDiagnostics } from "src/diagnostics.js";
+import { DiagnosticSeverity } from "vscode-languageserver";
 
 const fixturesDir = Path.resolve(import.meta.dirname, "__fixtures__");
 
 async function diagnosticsFor(fixture: string) {
 	const content = await Fs.readFile(Path.resolve(fixturesDir, fixture), "utf-8");
 	const analysis = analyzeDocument(content, fixture);
+
 	return computeDiagnostics(analysis);
 }
 
@@ -32,10 +32,10 @@ describe("computeDiagnostics", () => {
 
 		it("uses Error severity for invalid names", async () => {
 			const diagnostics = await diagnosticsFor("invalid-names.ts");
-			for (const diag of diagnostics) {
-				if (diag.code === "nadle/invalid-task-name") {
-					expect(diag.severity).toBe(DiagnosticSeverity.Error);
-				}
+			const nameErrors = diagnostics.filter((d) => d.code === "nadle/invalid-task-name");
+
+			for (const diag of nameErrors) {
+				expect(diag.severity).toBe(DiagnosticSeverity.Error);
 			}
 		});
 
@@ -85,6 +85,7 @@ describe("computeDiagnostics", () => {
 		it("uses Warning severity for unresolved deps", async () => {
 			const diagnostics = await diagnosticsFor("unresolved-deps.ts");
 			const unresolved = diagnostics.filter((d) => d.code === "nadle/unresolved-dependency");
+
 			for (const diag of unresolved) {
 				expect(diag.severity).toBe(DiagnosticSeverity.Warning);
 			}

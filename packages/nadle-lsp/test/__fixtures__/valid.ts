@@ -1,14 +1,15 @@
-import { tasks, ExecTask, PnpmTask, DeleteTask, Inputs, Outputs } from "nadle";
+// eslint-disable-next-line n/no-extraneous-import
+import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
 // No-op form (1 arg)
 tasks.register("clean-cache");
 
 // Typed form (3 args) with full config
 tasks.register("compile", ExecTask, { command: "tsc", args: ["--build"] }).config({
-	description: "Compile TypeScript",
 	group: "build",
-	inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
-	outputs: [Outputs.dirs("lib")]
+	outputs: [Outputs.dirs("lib")],
+	description: "Compile TypeScript",
+	inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")]
 });
 
 // Function form (2 args)
@@ -21,14 +22,14 @@ tasks.register("lint", PnpmTask, { args: ["-r", "exec", "eslint", "."] });
 
 // No-op with dependsOn chain
 tasks.register("build").config({
-	dependsOn: ["compile", "lint"],
-	description: "Run full build"
+	description: "Run full build",
+	dependsOn: ["compile", "lint"]
 });
 
 // Typed form with single dependsOn string
 tasks.register("release", ExecTask, { command: "npm", args: ["publish"] }).config({
-	dependsOn: "build",
-	group: "publish"
+	group: "publish",
+	dependsOn: "build"
 });
 
 // Delete task

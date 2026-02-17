@@ -7,9 +7,9 @@ export default defineConfig({
 	target: "node22",
 	dts: { entry: "src/index.ts" },
 	tsconfig: "tsconfig.build.json",
-	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument"],
 	entry: {
 		index: "src/index.ts",
 		server: "src/server.ts"
-	}
+	},
+	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument"]
 });

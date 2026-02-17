@@ -1,7 +1,7 @@
 import ts from "typescript";
-
 import type { Location, Position } from "vscode-languageserver";
 import type { TextDocument } from "vscode-languageserver-textdocument";
+
 import type { DocumentAnalysis } from "./analyzer.js";
 
 function findDependsOnNameAtPosition(content: string, offset: number): { name: string; isWorkspaceQualified: boolean } | null {
@@ -9,10 +9,14 @@ function findDependsOnNameAtPosition(content: string, offset: number): { name: s
 	let result: { name: string; isWorkspaceQualified: boolean } | null = null;
 
 	function walk(node: ts.Node): void {
-		if (result) return;
+		if (result) {
+			return;
+		}
+
 		if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === "dependsOn") {
 			checkInitializer(node.initializer);
 		}
+
 		ts.forEachChild(node, walk);
 	}
 
@@ -23,6 +27,7 @@ function findDependsOnNameAtPosition(content: string, offset: number): { name: s
 			for (const el of node.elements) {
 				if (ts.isStringLiteral(el) && offset > el.getStart(file) && offset < el.getEnd()) {
 					result = { name: el.text, isWorkspaceQualified: el.text.includes(":") };
+
 					return;
 				}
 			}
@@ -30,19 +35,26 @@ function findDependsOnNameAtPosition(content: string, offset: number): { name: s
 	}
 
 	walk(file);
+
 	return result;
 }
 
 export function getDefinition(analysis: DocumentAnalysis, position: Position, document: TextDocument): Location | null {
 	const offset = document.offsetAt(position);
 	const ref = findDependsOnNameAtPosition(document.getText(), offset);
-	if (!ref || ref.isWorkspaceQualified) return null;
 
-	const regs = analysis.taskNames.get(ref.name);
-	if (!regs || regs.length === 0) return null;
+	if (!ref || ref.isWorkspaceQualified) {
+		return null;
+	}
+
+	const entries = analysis.taskNames.get(ref.name);
+
+	if (!entries || entries.length === 0) {
+		return null;
+	}
 
 	return {
 		uri: analysis.uri,
-		range: regs[0].registrationRange
+		range: entries[0].registrationRange
 	};
 }

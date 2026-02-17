@@ -46,7 +46,7 @@ A developer registers two tasks with the same name in the same config file. The 
 
 ### User Story 3 - Dependency Reference Validation (Priority: P2)
 
-A developer sets `dependsOn: ["complie"]` (typo) in a task configuration. The editor shows a warning that `"complie"` does not match any registered task in the same file, helping catch typos before running the build.
+A developer sets `dependsOn: ["complie"]` (typo) in a task configuration. The editor shows a warning that `"complie"` does not match any registered task in the same file, helping catch typos before running the build. <!-- cspell:ignore complie -->
 
 **Why this priority**: Invalid dependency references cause runtime failures that are hard to debug in complex task graphs. Since dependencies are plain strings, TypeScript provides no validation. This is the second most common config error after naming issues.
 
@@ -54,7 +54,7 @@ A developer sets `dependsOn: ["complie"]` (typo) in a task configuration. The ed
 
 **Acceptance Scenarios**:
 
-1. **Given** a config with tasks `"build"` and `"test"`, and `"test"` has `dependsOn: ["buld"]`, **When** the dependency string is typed, **Then** a warning appears on `"buld"` stating no task with that name is registered.
+1. **Given** a config with tasks `"build"` and `"test"`, and `"test"` has `dependsOn: ["buld"]`, **When** the dependency string is typed, **Then** a warning appears on `"buld"` stating no task with that name is registered. <!-- cspell:ignore buld -->
 2. **Given** a config where the referenced task exists, **When** the file is edited, **Then** no warning appears for that dependency.
 3. **Given** a config with a workspace-qualified dependency like `"packages:foo:build"`, **When** the file is edited, **Then** no warning is shown (cross-file references cannot be validated within a single file).
 

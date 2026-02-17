@@ -8,20 +8,20 @@ export interface DependencyRef {
 }
 
 export interface TaskConfigInfo {
+	readonly hasInputs: boolean;
+	readonly configRange: Range;
+	readonly hasOutputs: boolean;
+	readonly group: string | null;
 	readonly dependsOn: DependencyRef[];
 	readonly description: string | null;
-	readonly group: string | null;
-	readonly hasInputs: boolean;
-	readonly hasOutputs: boolean;
-	readonly configRange: Range;
 }
 
 export interface TaskRegistration {
-	readonly name: string | null;
 	readonly nameRange: Range;
+	readonly name: string | null;
 	readonly registrationRange: Range;
-	readonly form: "function" | "no-op" | "typed";
 	readonly taskObjectName: string | null;
+	readonly form: "function" | "no-op" | "typed";
 	readonly configuration: TaskConfigInfo | null;
 }
 
@@ -35,14 +35,16 @@ export interface DocumentAnalysis {
 function toRange(node: ts.Node, file: ts.SourceFile): Range {
 	const start = file.getLineAndCharacterOfPosition(node.getStart(file));
 	const end = file.getLineAndCharacterOfPosition(node.getEnd());
+
 	return {
-		start: { line: start.line, character: start.character },
-		end: { line: end.line, character: end.character }
+		end: { line: end.line, character: end.character },
+		start: { line: start.line, character: start.character }
 	};
 }
 
 function isTasksRegister(node: ts.CallExpression): boolean {
 	const { expression } = node;
+
 	return (
 		ts.isPropertyAccessExpression(expression) &&
 		ts.isIdentifier(expression.expression) &&
@@ -53,14 +55,17 @@ function isTasksRegister(node: ts.CallExpression): boolean {
 
 function findConfigCall(registerCall: ts.CallExpression): ts.CallExpression | null {
 	const { parent } = registerCall;
+
 	if (!ts.isPropertyAccessExpression(parent) || parent.name.text !== "config") {
 		return null;
 	}
+
 	return ts.isCallExpression(parent.parent) ? parent.parent : null;
 }
 
 function extractDependsOn(node: ts.Expression, file: ts.SourceFile): DependencyRef[] {
 	const refs: DependencyRef[] = [];
+
 	if (ts.isStringLiteral(node)) {
 		refs.push({
 			name: node.text,
@@ -78,12 +83,16 @@ function extractDependsOn(node: ts.Expression, file: ts.SourceFile): DependencyR
 			}
 		}
 	}
+
 	return refs;
 }
 
 function extractConfig(configCall: ts.CallExpression, file: ts.SourceFile): TaskConfigInfo | null {
 	const arg = configCall.arguments[0];
-	if (!arg || !ts.isObjectLiteralExpression(arg)) return null;
+
+	if (!arg || !ts.isObjectLiteralExpression(arg)) {
+		return null;
+	}
 
 	let dependsOn: DependencyRef[] = [];
 	let description: string | null = null;
@@ -92,16 +101,25 @@ function extractConfig(configCall: ts.CallExpression, file: ts.SourceFile): Task
 	let hasOutputs = false;
 
 	for (const prop of arg.properties) {
-		if (!ts.isPropertyAssignment(prop) || !ts.isIdentifier(prop.name)) continue;
+		if (!ts.isPropertyAssignment(prop) || !ts.isIdentifier(prop.name)) {
+			continue;
+		}
+
 		switch (prop.name.text) {
 			case "dependsOn":
 				dependsOn = extractDependsOn(prop.initializer, file);
 				break;
 			case "description":
-				if (ts.isStringLiteral(prop.initializer)) description = prop.initializer.text;
+				if (ts.isStringLiteral(prop.initializer)) {
+					description = prop.initializer.text;
+				}
+
 				break;
 			case "group":
-				if (ts.isStringLiteral(prop.initializer)) group = prop.initializer.text;
+				if (ts.isStringLiteral(prop.initializer)) {
+					group = prop.initializer.text;
+				}
+
 				break;
 			case "inputs":
 				hasInputs = true;
@@ -112,21 +130,23 @@ function extractConfig(configCall: ts.CallExpression, file: ts.SourceFile): Task
 		}
 	}
 
-	return { dependsOn, description, group, hasInputs, hasOutputs, configRange: toRange(arg, file) };
+	return { group, dependsOn, hasInputs, hasOutputs, description, configRange: toRange(arg, file) };
 }
 
 function determineForm(args: ts.NodeArray<ts.Expression>): {
-	form: TaskRegistration["form"];
 	taskObjectName: string | null;
+	form: TaskRegistration["form"];
 } {
 	if (args.length >= 3) {
 		const taskArg = args[1];
+
 		return {
 			form: "typed",
 			taskObjectName: ts.isIdentifier(taskArg) ? taskArg.text : null
 		};
 	}
-	return { form: args.length === 2 ? "function" : "no-op", taskObjectName: null };
+
+	return { taskObjectName: null, form: args.length === 2 ? "function" : "no-op" };
 }
 
 function extractRegistration(registerCall: ts.CallExpression, configCall: ts.CallExpression | null, file: ts.SourceFile): TaskRegistration {
@@ -138,11 +158,11 @@ function extractRegistration(registerCall: ts.CallExpression, configCall: ts.Cal
 
 	return {
 		name,
-		nameRange,
-		registrationRange: toRange(registerCall, file),
 		form,
+		nameRange,
+		configuration,
 		taskObjectName,
-		configuration
+		registrationRange: toRange(registerCall, file)
 	};
 }
 
@@ -156,12 +176,14 @@ export function analyzeDocument(content: string, fileName: string): DocumentAnal
 			processed.add(node);
 			registrations.push(extractRegistration(node, findConfigCall(node), file));
 		}
+
 		ts.forEachChild(node, walk);
 	}
 
 	walk(file);
 
 	const taskNames = new Map<string, TaskRegistration[]>();
+
 	for (const reg of registrations) {
 		if (reg.name !== null) {
 			const list = taskNames.get(reg.name) ?? [];
@@ -170,5 +192,5 @@ export function analyzeDocument(content: string, fileName: string): DocumentAnal
 		}
 	}
 
-	return { uri: "", version: 0, registrations, taskNames };
+	return { uri: "", taskNames, version: 0, registrations };
 }

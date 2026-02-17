@@ -1,3 +1,5 @@
+<!-- cspell:ignore nvim lspconfig fname fnamemodify -->
+
 # Quickstart: Nadle LSP Development
 
 ## Prerequisites

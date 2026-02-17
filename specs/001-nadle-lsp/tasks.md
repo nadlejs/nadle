@@ -136,7 +136,7 @@
 
 **Purpose**: CI integration, documentation, and dogfooding validation
 
-- [x] T037 [P] Dogfood: run the LSP server against the repo root `nadle.config.ts` and verify zero false-positive diagnostics
+- [x] T037 [P] Manual test: run the LSP server against the repo root `nadle.config.ts` and verify zero false-positive diagnostics
 - [x] T038 [P] Verify all 4 config file formats work: create minimal `.js`, `.mjs`, `.mts` fixtures, add analyzer tests confirming they parse correctly
 - [x] T039 Verify build and tests pass on all platforms: `pnpm -F nadle-lsp build:tsup && pnpm -F nadle-lsp test`
 - [x] T040 [P] Checked — LSP introduces no new behavioral concepts. All underlying rules (task naming, duplicate detection, dependency resolution) already covered in spec/01-task.md and spec/02-task-configuration.md. No spec update needed.

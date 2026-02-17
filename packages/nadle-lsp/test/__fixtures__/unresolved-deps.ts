@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-extraneous-import
 import { tasks, ExecTask } from "nadle";
 
 tasks.register("compile", ExecTask, { command: "tsc" });

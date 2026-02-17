@@ -1,8 +1,7 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
-import { describe, expect, it } from "vitest";
-
+import { it, expect, describe } from "vitest";
 import { analyzeDocument } from "src/analyzer.js";
 
 const fixturesDir = Path.resolve(import.meta.dirname, "__fixtures__");
@@ -10,6 +9,7 @@ const fixturesDir = Path.resolve(import.meta.dirname, "__fixtures__");
 async function analyzeFixture(name: string) {
 	const filePath = Path.resolve(fixturesDir, name);
 	const content = await Fs.readFile(filePath, "utf-8");
+
 	return analyzeDocument(content, name);
 }
 
@@ -132,8 +132,8 @@ describe("analyzeDocument", () => {
 	describe("dynamic-names.ts fixture", () => {
 		it("returns null for non-literal task names", async () => {
 			const analysis = await analyzeFixture("dynamic-names.ts");
-			const dynamicRegs = analysis.registrations.filter((r) => r.name === null);
-			expect(dynamicRegs).toHaveLength(3);
+			const dynamicEntries = analysis.registrations.filter((r) => r.name === null);
+			expect(dynamicEntries).toHaveLength(3);
 		});
 
 		it("still extracts the literal registration", async () => {
