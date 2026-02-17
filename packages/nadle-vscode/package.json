@@ -1,0 +1,57 @@
+{
+	"name": "@nadle/internal-nadle-vscode",
+	"description": "VS Code extension for nadle.config.ts language support",
+	"license": "MIT",
+	"type": "commonjs",
+	"private": true,
+	"scripts": {
+		"build": "pnpm run copy-server && tsup",
+		"copy-server": "node scripts/copy-server.mjs"
+	},
+	"main": "./lib/extension.js",
+	"dependencies": {
+		"vscode-languageclient": "^9.0.1"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.85.0",
+		"tsup": "^8.5.1",
+		"typescript": "^5.9.3"
+	},
+	"engines": {
+		"vscode": "^1.85.0",
+		"node": ">=22"
+	},
+	"activationEvents": [
+		"onLanguage:nadle-config"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "nadle-config",
+				"filenames": [
+					"nadle.config.ts",
+					"nadle.config.js",
+					"nadle.config.mts",
+					"nadle.config.mjs",
+					"nadle.config.cts",
+					"nadle.config.cjs"
+				],
+				"aliases": [
+					"Nadle Config"
+				]
+			}
+		]
+	},
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nadlejs/nadle.git",
+		"directory": "packages/nadle-vscode"
+	},
+	"homepage": "https://nadle.dev",
+	"bugs": "https://github.com/nadlejs/nadle/issues"
+}

@@ -16,6 +16,11 @@ export async function validatePackages() {
 	})) {
 		const path = Path.join(rootDir, entry);
 		const pkg = JSON.parse(await Fs.readFile(path, "utf-8"));
+
+		if (!pkg.name) {
+			continue;
+		}
+
 		console.log(c.cyan(`Validating package.json at ${entry}`));
 
 		for (const validator of validators) {
@@ -223,9 +228,12 @@ const FIELD_ORDER = [
 	"exports",
 	"bin",
 	"types",
+	"main",
 	"dependencies",
 	"devDependencies",
 	"engines",
+	"activationEvents",
+	"contributes",
 	"browserslist",
 	"author",
 	"repository",
