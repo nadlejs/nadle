@@ -100,6 +100,23 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+## Documentation Impact *(optional — include for user-facing features)*
+
+<!--
+  Consider whether this feature requires updates to the documentation site (packages/docs).
+  Include this section when the feature introduces:
+  - New user-facing functionality or CLI flags
+  - Changed behavior or breaking changes
+  - New APIs or configuration options
+  - New concepts that users need to understand
+
+  If no documentation updates are needed, remove this section entirely.
+-->
+
+- **Docs pages to create**: [e.g., new guide in docs/guides/, new feature page in docs/getting-started/features/]
+- **Docs pages to update**: [e.g., config-reference.md, existing guides that reference changed behavior]
+- **Sidebar update needed**: [Yes/No — if adding new pages, sidebars.ts must be updated]
+
 ## Success Criteria *(mandatory)*
 
 <!--

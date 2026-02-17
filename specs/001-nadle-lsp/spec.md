@@ -148,8 +148,13 @@ A developer Ctrl+clicks (or Cmd+clicks) a task name inside a `dependsOn` array a
 ### Assumptions
 
 - TypeScript's built-in language service already handles type-checking, import resolution, and general autocompletion for the config file. The Nadle LSP focuses exclusively on Nadle-specific semantic analysis that TypeScript cannot provide (task name validation, dependency resolution, task-aware completions).
-- The LSP is distributed as a separate package (`nadle-lsp` or similar) and does not increase the core `nadle` package bundle size.
-- Editor extensions (e.g., VS Code extension) are out of scope for this specification. They will be specified separately and will wrap the LSP as a thin client.
+- The LSP is distributed as a separate package (`nadle-lsp`) and does not increase the core `nadle` package bundle size.
+- A minimal VS Code extension (`nadle-vscode`) wraps the LSP as a thin client using stdio transport. It preserves TypeScript's built-in syntax highlighting by using pattern-based document selectors rather than registering a custom language ID.
+
+### Documentation Impact
+
+- **Created**: `packages/docs/docs/getting-started/features/editor-support.md` — documents LSP capabilities and editor setup.
+- **Updated**: `packages/docs/sidebars.ts` — added the new page to the Features category.
 
 ## Success Criteria _(mandatory)_
 
