@@ -39,8 +39,29 @@ tasks.register("buildDoc", PnpmTask, { args: ["-F", "@nadle/internal-docs", "bui
 	inputs: [Inputs.dirs("packages/docs/{src,docs,static}"), Inputs.files("packages/docs/docusaurus.config.ts", "packages/docs/sidebars.ts")]
 });
 
-tasks.register("buildOthers", PnpmTask, { args: ["-F", "!@nadle/internal-docs", "-F", "!nadle", "-r", "build"] });
-tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc", "buildOthers"] });
+tasks.register("buildLsp", PnpmTask, { args: ["-F", "@nadle/internal-nadle-lsp", "build:tsup"] }).config({
+	inputs: [Inputs.dirs("packages/nadle-lsp/src")],
+	outputs: [Outputs.dirs("packages/nadle-lsp/lib")]
+});
+
+tasks.register("buildVscode", PnpmTask, { args: ["-F", "nadle-vscode", "build"] }).config({
+	dependsOn: ["buildLsp"],
+	outputs: [Outputs.dirs("packages/nadle-vscode/lib")],
+	inputs: [Inputs.dirs("packages/nadle-vscode/src"), Inputs.files("packages/nadle-vscode/scripts/copy-server.mjs")]
+});
+
+tasks.register("packageVscode", PnpmTask, { args: ["-F", "nadle-vscode", "package"] }).config({
+	dependsOn: ["buildVscode"]
+});
+
+tasks.register("buildOthers", PnpmTask, {
+	args: ["-F", "!@nadle/internal-docs", "-F", "!nadle", "-F", "!@nadle/internal-nadle-lsp", "-F", "!nadle-vscode", "-r", "build"]
+});
+tasks.register("build").config({ dependsOn: ["buildNadle", "buildDoc", "buildLsp", "buildVscode", "buildOthers"] });
+
+tasks.register("testLsp", PnpmTask, { args: ["-F", "@nadle/internal-nadle-lsp", "test", "--", "--run"] }).config({
+	dependsOn: ["buildLsp"]
+});
 
 tasks.register("testUnit", PnpmTask, { args: ["run", "-r", "test"] }).config({ dependsOn: ["build"] });
 tasks
@@ -60,7 +81,7 @@ tasks
 		}
 	})
 	.config({ dependsOn: ["testAPI"], workingDir: "./packages/nadle" });
-tasks.register("test").config({ dependsOn: ["testUnit", "testAPI", "testNoWarningsAndUndocumentedAPI"] });
+tasks.register("test").config({ dependsOn: ["testUnit", "testLsp", "testAPI", "testNoWarningsAndUndocumentedAPI"] });
 
 tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
