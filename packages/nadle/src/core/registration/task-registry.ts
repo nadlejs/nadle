@@ -95,5 +95,3 @@ export class TaskRegistry {
 		return this.#project;
 	}
 }
-
-export const taskRegistry = new TaskRegistry();

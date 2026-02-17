@@ -129,11 +129,7 @@ export class ExecutionTracker implements Listener {
 			taskState.startTime = Perf.performance.now();
 		}
 
-		if (duration) {
-			if (taskState.startTime === null) {
-				throw new Error(`Task ${task.label} was not started properly`);
-			}
-
+		if (duration && taskState.startTime !== null) {
 			taskState.duration = Perf.performance.now() - taskState.startTime;
 		}
 	}

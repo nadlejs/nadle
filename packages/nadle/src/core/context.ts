@@ -5,6 +5,7 @@ import { type TaskScheduler } from "./engine/task-scheduler.js";
 import { type TaskRegistry } from "./registration/task-registry.js";
 import { type ExecutionTracker } from "./models/execution-tracker.js";
 import { type DefaultLogger } from "./interfaces/defaults/default-logger.js";
+import { type FileOptionRegistry } from "./registration/file-option-registry.js";
 
 /**
  * Represents the internal state of a Nadle execution session.
@@ -22,6 +23,7 @@ export interface State {
 export interface ProjectContext {
 	readonly logger: Logger;
 	readonly taskRegistry: TaskRegistry;
+	readonly fileOptionRegistry: FileOptionRegistry;
 	readonly options: NadleResolvedOptions;
 }
 

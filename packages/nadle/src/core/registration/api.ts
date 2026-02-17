@@ -1,5 +1,5 @@
-import { taskRegistry } from "./task-registry.js";
 import { Messages } from "../utilities/messages.js";
+import { getCurrentInstance } from "../nadle-context.js";
 import type { Task, RunnerContext } from "../interfaces/task.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
 import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
@@ -65,6 +65,8 @@ export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
  */
 export const tasks: TasksAPI = {
 	register: (name: string, task?: TaskFn | Task, optionsResolver?: Resolver): TaskConfigurationBuilder => {
+		const { taskRegistry } = getCurrentInstance();
+
 		validateTaskName(name);
 
 		if (taskRegistry.hasTaskName(name)) {

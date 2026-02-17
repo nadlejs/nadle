@@ -8,7 +8,6 @@ import { bindObject } from "../utilities/utils.js";
 import { Project } from "../models/project/project.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
-import { taskRegistry } from "../registration/task-registry.js";
 import { type NadleResolvedOptions } from "../options/types.js";
 import { type TaskEnv } from "../interfaces/task-configuration.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
@@ -27,11 +26,16 @@ export interface WorkerParams {
 	readonly port: WorkerThreads.MessagePort;
 }
 
-export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {
-	// TODO: Skip resolve options process
-	const nadle = await new Nadle({ ...options, tasks: [], excludedTasks: [] }).init();
+let workerNadle: Nadle | null = null;
 
-	const task = taskRegistry.getTaskById(taskId);
+export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {
+	if (!workerNadle) {
+		workerNadle = await new Nadle({ ...options, tasks: [], excludedTasks: [] }).init();
+	}
+
+	const nadle = workerNadle;
+
+	const task = nadle.taskRegistry.getTaskById(taskId);
 	const { configResolver, optionsResolver } = task;
 
 	const taskConfig = configResolver();

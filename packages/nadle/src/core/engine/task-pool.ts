@@ -38,6 +38,10 @@ export class TaskPool {
 		try {
 			const { port2: poolPort, port1: workerPort } = new MessageChannel();
 			let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
+			let resolveMessageReceived: () => void;
+			const messageReceived = new Promise<void>((r) => {
+				resolveMessageReceived = r;
+			});
 			poolPort.on("message", async (msg: WorkerMessage) => {
 				if (msg.type === "start") {
 					await this.context.eventEmitter.onTaskStart(task, msg.threadId);
@@ -46,6 +50,7 @@ export class TaskPool {
 				} else if (msg.type === "from-cache") {
 					executeType = "from-cache";
 				}
+				resolveMessageReceived();
 			});
 
 			const workerParams: WorkerParams = {
@@ -56,6 +61,7 @@ export class TaskPool {
 			};
 
 			await this.pool.run(workerParams, { transferList: [workerPort] });
+			await messageReceived;
 
 			if (executeType === "execute") {
 				await this.context.eventEmitter.onTaskFinish(task);

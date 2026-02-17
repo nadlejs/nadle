@@ -2,7 +2,7 @@ import { Messages } from "../utilities/messages.js";
 import { type NadleFileOptions } from "../options/types.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
 
-class FileOptionRegistry {
+export class FileOptionRegistry {
 	private workspaceId: string | null = null;
 	private readonly registry = new Map<string, NadleFileOptions>();
 
@@ -30,5 +30,3 @@ class FileOptionRegistry {
 		return this.registry.get(workspaceId) ?? {};
 	}
 }
-
-export const fileOptionRegistry = new FileOptionRegistry();
