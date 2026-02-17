@@ -61,6 +61,10 @@ pnpm -F nadle build:tsup              # Build core package
 
 ## Code Conventions
 
+- **Cross-platform**: CI runs on Ubuntu, macOS, and Windows. All scripts, shell commands, and
+  `package.json` scripts must work on all three platforms. Avoid bash-only syntax like `&&` in
+  npm scripts — use `run-s`/`run-p` (npm-run-all2) or Node scripts instead. Prefer `node:path`
+  and `node:fs` over shell commands for file operations.
 - **ESM only**, target `node22`
 - **TypeScript strict mode**
 - Node built-in imports use **PascalCase default** only: `import Path from "node:path"`

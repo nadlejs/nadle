@@ -52,6 +52,7 @@ const config = {
 		...extractLibraryNames()
 	],
 	ignorePaths: [
+		"Central_Europe_Itinerary_*.md",
 		"**/lib",
 		"**/*.svg",
 		"pnpm-lock.yaml",

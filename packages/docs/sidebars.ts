@@ -13,7 +13,7 @@ const sidebars: SidebarsConfig = {
 				{
 					type: "category",
 					label: "Features",
-					items: ["getting-started/features/monorepo", "getting-started/features/auto-correction"]
+					items: ["getting-started/features/monorepo", "getting-started/features/auto-correction", "getting-started/features/editor-support"]
 				}
 			]
 		},

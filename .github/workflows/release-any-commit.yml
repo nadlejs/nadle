@@ -37,4 +37,4 @@ jobs:
       - name: Build
         run: npx nadle build
 
-      - run: pnpm dlx pkg-pr-new publish --bin --comment=update --compact './packages/*'
+      - run: pnpm dlx pkg-pr-new publish --bin --comment=update --compact --exclude nadle-vscode './packages/*'

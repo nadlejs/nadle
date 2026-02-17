@@ -1,0 +1,59 @@
+{
+	"name": "@nadle/internal-nadle-lsp",
+	"description": "Language Server Protocol support for nadle.config.ts files",
+	"license": "MIT",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "pnpm \"/build:/\"",
+		"build:tsup": "tsup",
+		"build:ts": "tsc -p tsconfig.build.json",
+		"start": "pnpm run build:ts --watch --noEmit false",
+		"test": "vitest"
+	},
+	"files": [
+		"lib"
+	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js"
+		}
+	},
+	"types": "lib/index.d.ts",
+	"dependencies": {
+		"typescript": "^5.9.3",
+		"vscode-languageserver": "^9.0.1",
+		"vscode-languageserver-textdocument": "^1.0.12"
+	},
+	"devDependencies": {
+		"@size-limit/file": "^11.2.0",
+		"@types/node": "^20.19.25",
+		"size-limit": "^11.2.0",
+		"std-env": "^3.10.0",
+		"tsup": "^8.5.1",
+		"vitest": "4.0.18"
+	},
+	"engines": {
+		"node": ">=22"
+	},
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nadlejs/nadle.git",
+		"directory": "packages/nadle-lsp"
+	},
+	"keywords": [
+		"nadle",
+		"lsp",
+		"language-server",
+		"task-runner",
+		"typescript"
+	],
+	"homepage": "https://nadle.dev",
+	"bugs": "https://github.com/nadlejs/nadle/issues"
+}

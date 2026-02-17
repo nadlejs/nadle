@@ -1,0 +1,13 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch Nadle Extension",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": ["--extensionDevelopmentPath=${workspaceFolder}/packages/nadle-vscode"],
+			"outFiles": ["${workspaceFolder}/packages/nadle-vscode/lib/**/*.js"],
+			"preLaunchTask": "build-nadle-vscode"
+		}
+	]
+}

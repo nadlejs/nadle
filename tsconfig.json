@@ -2,6 +2,7 @@
 	"files": [],
 	"references": [
 		{ "path": "./packages/nadle/tsconfig.json" },
+		{ "path": "./packages/nadle-lsp/tsconfig.json" },
 		{ "path": "./packages/sample-app/tsconfig.json" },
 		{ "path": "./tsconfig.eslint.json" }
 	]
