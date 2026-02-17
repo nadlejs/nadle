@@ -11,5 +11,8 @@ export default defineConfig({
 		index: "src/index.ts",
 		server: "src/server.ts"
 	},
-	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument"]
+	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument"],
+	banner: {
+		js: "import { createRequire } from 'module'; const require = createRequire(import.meta.url);"
+	}
 });

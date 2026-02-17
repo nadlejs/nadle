@@ -89,7 +89,7 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 
 const versionValidator: PackageValidator = ({ pkg }) => {
 	if (isPrivate(pkg)) {
-		if (pkg.version) {
+		if (pkg.version && !isVSCodeExtension(pkg)) {
 			throw new Error(`Private packages should not have "version" field`);
 		}
 
@@ -346,4 +346,8 @@ function isPublic(pkg: PackageJson) {
 
 function isCLIPackage(pkg: PackageJson) {
 	return !!pkg.bin;
+}
+
+function isVSCodeExtension(pkg: PackageJson) {
+	return !!(pkg.engines as Record<string, string> | undefined)?.vscode;
 }

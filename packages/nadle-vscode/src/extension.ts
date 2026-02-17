@@ -14,7 +14,10 @@ export function activate(context: ExtensionContext): void {
 	};
 
 	const clientOptions = {
-		documentSelector: [{ language: "nadle-config" }]
+		documentSelector: [
+			{ scheme: "file", language: "typescript", pattern: "**/nadle.config.{ts,mts,cts}" },
+			{ scheme: "file", language: "javascript", pattern: "**/nadle.config.{js,mjs,cjs}" }
+		]
 	};
 
 	client = new LanguageClient("nadle", "Nadle Language Server", serverOptions, clientOptions);

@@ -1,5 +1,6 @@
 {
 	"name": "@nadle/internal-nadle-vscode",
+	"version": "0.0.1",
 	"description": "VS Code extension for nadle.config.ts language support",
 	"license": "MIT",
 	"type": "commonjs",
@@ -22,26 +23,8 @@
 		"node": ">=22"
 	},
 	"activationEvents": [
-		"onLanguage:nadle-config"
+		"workspaceContains:**/nadle.config.*"
 	],
-	"contributes": {
-		"languages": [
-			{
-				"id": "nadle-config",
-				"filenames": [
-					"nadle.config.ts",
-					"nadle.config.js",
-					"nadle.config.mts",
-					"nadle.config.mjs",
-					"nadle.config.cts",
-					"nadle.config.cjs"
-				],
-				"aliases": [
-					"Nadle Config"
-				]
-			}
-		]
-	},
 	"author": {
 		"name": "Nam Hoang Le",
 		"email": "namhoangle.dev@gmail.com",
