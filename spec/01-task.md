@@ -5,8 +5,10 @@ workspace, and may carry a function to execute and typed options.
 
 ## Registration
 
-Tasks are registered via the `tasks` API, which is a singleton available from the public
-API. There are three registration forms:
+Tasks are registered via the `tasks` API, which is available from the public API. During
+config file loading, calls to `tasks.register()` delegate to the active Nadle instance
+via an `AsyncLocalStorage` context. Each Nadle instance owns its own task registry,
+ensuring full isolation between instances. There are three registration forms:
 
 | Form       | Parameters                              | Description                                                                                             |
 | ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------- |

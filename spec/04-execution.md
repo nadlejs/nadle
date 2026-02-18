@@ -47,7 +47,9 @@ There is **no explicit "done" message**. Completion is inferred:
 
 ## Worker Execution Flow
 
-1. Re-initialize Nadle in the worker thread (for config access).
+1. Initialize Nadle in the worker thread on the first task dispatch. The instance is
+   cached at module scope and reused for subsequent dispatches within the same thread,
+   so config files are loaded at most once per worker thread lifetime.
 2. Look up the task by ID in the registry.
 3. Resolve the task's configuration and options.
 4. Resolve the working directory (relative to project root).

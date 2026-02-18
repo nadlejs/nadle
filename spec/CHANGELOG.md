@@ -8,6 +8,17 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.1.0 — 2026-02-18
+
+### Changed
+
+- 01-task: Task registration now delegates to the active Nadle instance via
+  AsyncLocalStorage context instead of a global singleton registry.
+- 04-execution: Worker threads cache their Nadle instance per thread lifetime,
+  loading config files at most once per worker rather than on every task dispatch.
+- 08-configuration-loading: Config files are loaded within an AsyncLocalStorage
+  context bound to the active Nadle instance, enabling instance-scoped registration.
+
 ## 1.0.0 — 2026-02-15
 
 Initial release of the Nadle specification.
