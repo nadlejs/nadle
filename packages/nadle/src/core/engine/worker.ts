@@ -9,8 +9,8 @@ import { Project } from "../models/project/project.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { type NadleResolvedOptions } from "../options/types.js";
-import { type TaskEnv } from "../interfaces/task-configuration.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
+import { type TaskEnv, type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 const threadId = WorkerThreads.threadId;
 
@@ -28,75 +28,98 @@ export interface WorkerParams {
 
 let workerNadle: Nadle | null = null;
 
-export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {
+async function getOrCreateNadle(options: NadleResolvedOptions): Promise<Nadle> {
 	if (!workerNadle) {
 		workerNadle = await new Nadle({ ...options, tasks: [], excludedTasks: [] }).init();
 	}
 
-	const nadle = workerNadle;
+	return workerNadle;
+}
 
+export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {
+	const nadle = await getOrCreateNadle(options);
 	const task = nadle.taskRegistry.getTaskById(taskId);
-	const { configResolver, optionsResolver } = task;
-
-	const taskConfig = configResolver();
+	const taskConfig = task.configResolver();
 	const workingDir = Path.resolve(options.project.rootWorkspace.absolutePath, taskConfig.workingDir ?? "");
 
 	const context: RunnerContext = {
 		workingDir,
 		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns", "throw"])
 	};
-	const taskOptions = typeof optionsResolver === "function" ? optionsResolver(context) : optionsResolver;
-
+	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 
-	const rootConfigFile = nadle.options.project.rootWorkspace.configFilePath;
-	const workspace = Project.getWorkspaceById(nadle.options.project, task.workspaceId);
-	const configFiles = workspace.configFilePath ? [rootConfigFile, workspace.configFilePath] : [rootConfigFile];
-
-	const cacheValidator = new CacheValidator(taskId, taskConfig, {
-		workingDir,
-		configFiles,
-		projectDir: nadle.options.project.rootWorkspace.absolutePath,
-		...nadle.options
-	});
+	const cacheValidator = createCacheValidator(nadle, { taskId, taskConfig, workingDir, workspaceId: task.workspaceId });
 	const validationResult = await cacheValidator.validate();
-
-	const execute = async () => {
-		port.postMessage({ threadId, type: "start" } satisfies WorkerMessage);
-
-		environmentInjector.apply();
-
-		await task.run({ context, options: taskOptions });
-
-		environmentInjector.restore();
-	};
 
 	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskId), validationResult.result);
 
+	const ctx: DispatchContext = { port, task, context, taskOptions, environmentInjector };
+	await dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
+};
+
+interface CacheValidatorParams {
+	taskId: string;
+	workingDir: string;
+	workspaceId: string;
+	taskConfig: TaskConfiguration;
+}
+
+function createCacheValidator(nadle: Nadle, params: CacheValidatorParams) {
+	const rootConfigFile = nadle.options.project.rootWorkspace.configFilePath;
+	const workspace = Project.getWorkspaceById(nadle.options.project, params.workspaceId);
+	const configFiles = workspace.configFilePath ? [rootConfigFile, workspace.configFilePath] : [rootConfigFile];
+
+	return new CacheValidator(params.taskId, params.taskConfig, {
+		configFiles,
+		workingDir: params.workingDir,
+		projectDir: nadle.options.project.rootWorkspace.absolutePath,
+		...nadle.options
+	});
+}
+
+interface DispatchContext {
+	taskOptions: unknown;
+	context: RunnerContext;
+	port: WorkerThreads.MessagePort;
+	environmentInjector: Injector<void>;
+	task: ReturnType<Nadle["taskRegistry"]["getTaskById"]>;
+}
+
+interface DispatchParams {
+	nadle: Nadle;
+	ctx: DispatchContext;
+	cacheValidator: CacheValidator;
+	validationResult: Awaited<ReturnType<CacheValidator["validate"]>>;
+}
+
+async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult }: DispatchParams) {
 	if (validationResult.result === "not-cacheable" || validationResult.result === "cache-disabled") {
-		await execute();
+		await executeTask(ctx);
 	} else if (validationResult.result === "up-to-date") {
-		port.postMessage({ threadId, type: "up-to-date" } satisfies WorkerMessage);
-		// Do nothing, the task is up-to-date
+		ctx.port.postMessage({ threadId, type: "up-to-date" } satisfies WorkerMessage);
 	} else if (validationResult.result === "restore-from-cache") {
 		await validationResult.restore();
-
 		await cacheValidator.update(validationResult);
-		port.postMessage({ threadId, type: "from-cache" } satisfies WorkerMessage);
+		ctx.port.postMessage({ threadId, type: "from-cache" } satisfies WorkerMessage);
 	} else if (validationResult.result === "cache-miss") {
-		nadle.logger.info("Reasons:");
-
 		for (const reason of validationResult.reasons) {
 			nadle.logger.info(`  - ${CacheMissReason.toString(reason)}`);
 		}
 
-		await execute();
-
+		await executeTask(ctx);
 		await cacheValidator.update(validationResult);
 	} else {
 		throw new Error(`Unexpected cache validation result: ${validationResult}`);
 	}
-};
+}
+
+async function executeTask(ctx: DispatchContext) {
+	ctx.port.postMessage({ threadId, type: "start" } satisfies WorkerMessage);
+	ctx.environmentInjector.apply();
+	await ctx.task.run({ context: ctx.context, options: ctx.taskOptions });
+	ctx.environmentInjector.restore();
+}
 
 interface Injector<T> {
 	apply: () => T;

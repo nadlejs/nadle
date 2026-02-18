@@ -38,12 +38,16 @@ Config files are loaded using `jiti`, which provides:
 
 ## Loading Flow
 
+Config files are loaded within an `AsyncLocalStorage` context bound to the active Nadle
+instance. This enables `tasks.register()` and `configure()` to route registrations to the
+correct instance without requiring explicit parameters.
+
 1. **CLI parse**: yargs parses command-line arguments.
 2. **Config file resolution**: find and load the root config file.
-3. **Root config execution**: the config file runs, calling `tasks.register()` and
-   optionally `configure()`.
+3. **Root config execution**: the config file runs within the instance context, calling
+   `tasks.register()` and optionally `configure()`.
 4. **Workspace config loading**: for each workspace with a config file, set the
-   workspace context and load the file.
+   workspace context and load the file (still within the same instance context).
 5. **Project resolution**: resolve project structure, workspaces, and dependencies.
 6. **Task finalization**: flush the task registry buffer into the final registry.
 7. **Options merge**: combine defaults, file options, and CLI options.
