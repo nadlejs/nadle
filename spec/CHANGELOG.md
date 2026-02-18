@@ -8,6 +8,14 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.2.0 — 2026-02-18
+
+### Changed
+
+- 04-execution: Worker threads now use a lightweight initialization path that reuses
+  resolved options from the main thread and only loads config files, skipping project
+  resolution, option merging, and task input resolution.
+
 ## 1.1.0 — 2026-02-18
 
 ### Changed
