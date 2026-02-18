@@ -42,6 +42,7 @@ const config = {
 		"Wireit",
 		"indegree",
 		"nodir",
+		"reinit",
 		"npmjs",
 		"softwareTerms",
 		"Sonarqube",
