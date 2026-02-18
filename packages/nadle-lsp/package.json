@@ -27,7 +27,7 @@
 		"vscode-languageserver-textdocument": "^1.0.12"
 	},
 	"devDependencies": {
-		"@size-limit/file": "^11.2.0",
+		"@size-limit/file": "^12.0.0",
 		"@types/node": "^20.19.25",
 		"size-limit": "^11.2.0",
 		"std-env": "^3.10.0",
