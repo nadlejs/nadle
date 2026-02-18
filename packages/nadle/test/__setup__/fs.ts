@@ -12,30 +12,41 @@ import { tempDir, fixturesDir, CONFIG_FILE } from "./constants.js";
 const TEMP_DIR = "__temp__";
 
 export async function withFixture(params: {
+	copyAll?: boolean;
 	preserve?: boolean;
 	fixtureDir: string;
 	ignoreFiles?: string[];
-	files: fixturify.DirJSON;
+	files?: fixturify.DirJSON;
 	testFn: (params: { exec: Exec; cwd: string; getFiles: () => fixturify.DirJSON }) => Awaitable<void>;
 }) {
-	const { files, testFn, fixtureDir, preserve = false, ignoreFiles = [CONFIG_FILE, "package.json"] } = params;
-	const cwd = Path.join(Path.join(fixturesDir, fixtureDir, TEMP_DIR, randomHash()));
+	const { files, testFn, fixtureDir, copyAll = false, preserve = false, ignoreFiles = [CONFIG_FILE, "package.json"] } = params;
+	const sourceDir = Path.join(fixturesDir, fixtureDir);
+	const cwd = copyAll ? Path.join(tempDir, randomHash()) : Path.join(sourceDir, TEMP_DIR, randomHash());
 
 	await Fs.mkdir(cwd, { recursive: true });
 
-	const configFilePath = Path.join(fixturesDir, fixtureDir, CONFIG_FILE);
+	if (copyAll) {
+		await Fs.cp(sourceDir, cwd, {
+			recursive: true,
+			filter: (source) => !source.includes(TEMP_DIR)
+		});
+	} else {
+		const configFilePath = Path.join(sourceDir, CONFIG_FILE);
 
-	if (await isPathExists(configFilePath)) {
-		await Fs.copyFile(configFilePath, Path.join(cwd, CONFIG_FILE));
+		if (await isPathExists(configFilePath)) {
+			await Fs.copyFile(configFilePath, Path.join(cwd, CONFIG_FILE));
+		}
+
+		const packageJsonPath = Path.join(sourceDir, "package.json");
+
+		if (await isPathExists(packageJsonPath)) {
+			await Fs.copyFile(packageJsonPath, Path.join(cwd, "package.json"));
+		}
 	}
 
-	const packageJsonPath = Path.join(fixturesDir, fixtureDir, "package.json");
-
-	if (await isPathExists(packageJsonPath)) {
-		await Fs.copyFile(packageJsonPath, Path.join(cwd, "package.json"));
+	if (files) {
+		fixturify.writeSync(cwd, files);
 	}
-
-	fixturify.writeSync(cwd, files);
 
 	const getFiles = () => fixturify.readSync(cwd, { ignore: ignoreFiles });
 
