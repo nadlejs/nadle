@@ -30,7 +30,7 @@ let workerNadle: Nadle | null = null;
 
 async function getOrCreateNadle(options: NadleResolvedOptions): Promise<Nadle> {
 	if (!workerNadle) {
-		workerNadle = await new Nadle({ ...options, tasks: [], excludedTasks: [] }).init();
+		workerNadle = await new Nadle({ ...options, tasks: [], excludedTasks: [] }).initForWorker(options);
 	}
 
 	return workerNadle;
