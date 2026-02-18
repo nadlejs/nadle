@@ -1,15 +1,17 @@
 import Process from "node:process";
 
 import { Handlers } from "./handlers/index.js";
+import { runWithInstance } from "./nadle-context.js";
 import { NadleError } from "./utilities/nadle-error.js";
 import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
-import { taskRegistry } from "./registration/task-registry.js";
+import { TaskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { type State, type ExecutionContext } from "./context.js";
 import { ExecutionTracker } from "./models/execution-tracker.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
+import { FileOptionRegistry } from "./registration/file-option-registry.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
 
 export class Nadle implements ExecutionContext {
@@ -18,7 +20,8 @@ export class Nadle implements ExecutionContext {
 	public state: State = { selectingTasks: false };
 
 	public readonly logger = new DefaultLogger();
-	public readonly taskRegistry = taskRegistry;
+	public readonly taskRegistry = new TaskRegistry();
+	public readonly fileOptionRegistry = new FileOptionRegistry();
 	public readonly taskScheduler = new TaskScheduler(this);
 	public readonly executionTracker = new ExecutionTracker();
 	public readonly eventEmitter: EventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
@@ -28,7 +31,9 @@ export class Nadle implements ExecutionContext {
 	public constructor(private readonly cliOptions: NadleCLIOptions) {}
 
 	public async init(): Promise<this> {
-		this.#options = await new OptionsResolver(this.logger, this.taskRegistry).resolve(this.cliOptions);
+		this.#options = await runWithInstance(this, () =>
+			new OptionsResolver(this.logger, this.taskRegistry, this.fileOptionRegistry).resolve(this.cliOptions)
+		);
 		await this.eventEmitter.onInitialize();
 
 		return this;

@@ -11,8 +11,8 @@ import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
 import { RootWorkspace } from "../models/project/root-workspace.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
-import { fileOptionRegistry } from "../registration/file-option-registry.js";
 import { type DefaultLogger } from "../interfaces/defaults/default-logger.js";
+import { type FileOptionRegistry } from "../registration/file-option-registry.js";
 import { DefaultFileReader } from "../interfaces/defaults/default-file-reader.js";
 import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions } from "./types.js";
 
@@ -30,11 +30,10 @@ export class OptionsResolver {
 		isWorkerThread: false
 	} as const;
 
-	private readonly fileOptionRegistry = fileOptionRegistry;
-
 	public constructor(
 		private readonly logger: DefaultLogger,
-		private readonly taskRegistry: TaskRegistry
+		private readonly taskRegistry: TaskRegistry,
+		private readonly fileOptionRegistry: FileOptionRegistry
 	) {}
 
 	public async resolve(cliOptions: NadleCLIOptions): Promise<NadleResolvedOptions> {
