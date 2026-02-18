@@ -1,37 +1,32 @@
-import Path from "node:path";
-import Fs from "node:fs/promises";
-
 import { isWindows } from "std-env";
-import { getStdout, createExec, fixturesDir } from "setup";
-import { it, expect, describe, afterEach, beforeEach } from "vitest";
+import { it, expect, describe } from "vitest";
+import { getStdout, createExec, withFixture } from "setup";
 
-describe.skipIf(isWindows)("caching-env", () => {
-	const cwd = Path.join(fixturesDir, "caching-env");
+describe.concurrent.skipIf(isWindows)("caching-env", () => {
+	it("should be up-to-date when env does not change", () =>
+		withFixture({
+			copyAll: true,
+			fixtureDir: "caching-env",
+			testFn: async ({ cwd }) => {
+				const exec = createExec({ cwd, env: { BUILD_MODE: "production" } });
 
-	beforeEach(async () => {
-		await Fs.rm(Path.join(cwd, "dist"), { force: true, recursive: true });
-		await Fs.rm(Path.join(cwd, ".nadle"), { force: true, recursive: true });
-	});
+				await exec`bundle-resources`;
 
-	afterEach(async () => {
-		await Fs.rm(Path.join(cwd, "dist"), { force: true, recursive: true });
-		await Fs.rm(Path.join(cwd, ".nadle"), { force: true, recursive: true });
-	});
+				await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "up-to-date");
+			}
+		}));
 
-	it("should be up-to-date when env does not change", async () => {
-		const exec = createExec({ cwd, env: { BUILD_MODE: "production" } });
+	it("should miss cache when env changes", () =>
+		withFixture({
+			copyAll: true,
+			fixtureDir: "caching-env",
+			testFn: async ({ cwd }) => {
+				const execProd = createExec({ cwd, env: { BUILD_MODE: "production" } });
+				const execDev = createExec({ cwd, env: { BUILD_MODE: "development" } });
 
-		await exec`bundle-resources`;
+				await execProd`bundle-resources`;
 
-		await expect(getStdout(exec`bundle-resources`)).resolves.toSettle("bundle-resources", "up-to-date");
-	});
-
-	it("should miss cache when env changes", async () => {
-		const execProd = createExec({ cwd, env: { BUILD_MODE: "production" } });
-		const execDev = createExec({ cwd, env: { BUILD_MODE: "development" } });
-
-		await execProd`bundle-resources`;
-
-		await expect(getStdout(execDev`bundle-resources`)).resolves.toSettle("bundle-resources", "done");
-	});
+				await expect(getStdout(execDev`bundle-resources`)).resolves.toSettle("bundle-resources", "done");
+			}
+		}));
 });

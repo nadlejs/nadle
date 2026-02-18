@@ -1,12 +1,11 @@
 import Path from "node:path";
-import Fs from "node:fs/promises";
 
-import { exec, getStdout, createExec, fixturesDir } from "setup";
-import { it, expect, describe, afterEach, beforeEach } from "vitest";
+import { it, expect, describe } from "vitest";
+import { exec, getStdout, withFixture } from "setup";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";
 
-describe("--no-cache", () => {
+describe.concurrent("--no-cache", () => {
 	it("should resolve cache = true when not specified the flags", async () => {
 		expect(await getStdout(exec`--show-config`)).contain(`"cache": true`);
 	});
@@ -19,33 +18,25 @@ describe("--no-cache", () => {
 		expect(await getStdout(exec`--cache --show-config`)).contain(`"cache": true`);
 	});
 
-	describe("given a setup workspace", () => {
-		const cwd = Path.join(fixturesDir, "no-cache");
+	it("should create the .nadle directory by default", () =>
+		withFixture({
+			copyAll: true,
+			fixtureDir: "no-cache",
+			testFn: async ({ cwd, exec }) => {
+				await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "done");
+				await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "up-to-date");
+				await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(true);
+			}
+		}));
 
-		beforeEach(async () => {
-			await Fs.rm(Path.join(cwd, "dist"), { force: true, recursive: true });
-			await Fs.rm(Path.join(cwd, ".nadle"), { force: true, recursive: true });
-		});
-
-		afterEach(async () => {
-			await Fs.rm(Path.join(cwd, "dist"), { force: true, recursive: true });
-			await Fs.rm(Path.join(cwd, ".nadle"), { force: true, recursive: true });
-		});
-
-		it("should create create the .nadle directory by default", async () => {
-			const exec = createExec({ cwd });
-
-			await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "done");
-			await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "up-to-date");
-			await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(true);
-		});
-
-		it("should not create the .nadle directory when specifying --no-cache", async () => {
-			const exec = createExec({ cwd });
-
-			await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
-			await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
-			await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(false);
-		});
-	});
+	it("should not create the .nadle directory when specifying --no-cache", () =>
+		withFixture({
+			copyAll: true,
+			fixtureDir: "no-cache",
+			testFn: async ({ cwd, exec }) => {
+				await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
+				await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
+				await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(false);
+			}
+		}));
 });
