@@ -1,9 +1,15 @@
 import Path from "node:path";
 
 import { it, expect, describe } from "vitest";
-import { exec, getStdout, withFixture } from "setup";
+import { exec, fixture, getStdout, readConfig, withGeneratedFixture } from "setup";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";
+
+const noCacheFiles = fixture()
+	.packageJson("no-cache")
+	.configRaw(await readConfig("no-cache.ts"))
+	.file("input.txt", "input")
+	.build();
 
 describe.concurrent("--no-cache", () => {
 	it("should resolve cache = true when not specified the flags", async () => {
@@ -19,9 +25,8 @@ describe.concurrent("--no-cache", () => {
 	});
 
 	it("should create the .nadle directory by default", () =>
-		withFixture({
-			copyAll: true,
-			fixtureDir: "no-cache",
+		withGeneratedFixture({
+			files: noCacheFiles,
 			testFn: async ({ cwd, exec }) => {
 				await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "done");
 				await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "up-to-date");
@@ -30,9 +35,8 @@ describe.concurrent("--no-cache", () => {
 		}));
 
 	it("should not create the .nadle directory when specifying --no-cache", () =>
-		withFixture({
-			copyAll: true,
-			fixtureDir: "no-cache",
+		withGeneratedFixture({
+			files: noCacheFiles,
 			testFn: async ({ cwd, exec }) => {
 				await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
 				await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");

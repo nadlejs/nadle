@@ -48,18 +48,3 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>0</BoldDim> task executed
 `;
-
-exports[`--list > prints no task message when no registered tasks 1`] = `
----------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config nadle.empty.ts --list
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/main/nadle.empty.ts
-
-[log] No tasks found
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>0</BoldDim> task executed
-`;

@@ -86,6 +86,33 @@ type FileChange =
 
 type RevertFileChange = { path: string; type: "delete" } | { type: "add"; path: string; content: string };
 
+export async function withGeneratedFixture(params: {
+	preserve?: boolean;
+	files: fixturify.DirJSON;
+	testFn: (params: { exec: Exec; cwd: string }) => Awaitable<void>;
+}) {
+	const { files, testFn, preserve = false } = params;
+	const cwd = Path.join(tempDir, randomHash());
+
+	await Fs.mkdir(cwd, { recursive: true });
+	fixturify.writeSync(cwd, files);
+
+	const nodeModulesDir = Path.join(cwd, "node_modules");
+	await Fs.mkdir(nodeModulesDir, { recursive: true });
+	await Fs.symlink(Path.resolve(import.meta.dirname, "..", ".."), Path.join(nodeModulesDir, "nadle"), "junction");
+
+	try {
+		await testFn({ cwd, exec: createExec({ cwd }) });
+
+		if (!preserve) {
+			await Fs.rm(cwd, { force: true, recursive: true });
+		}
+	} catch (err) {
+		console.warn(`⚠️  Test failed — fixture preserved at: file://${cwd}`);
+		throw err;
+	}
+}
+
 export function createFileModifier(baseDir: string) {
 	let backups: RevertFileChange[] = [];
 

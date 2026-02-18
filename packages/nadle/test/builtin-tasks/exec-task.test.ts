@@ -1,12 +1,21 @@
-import Path from "node:path";
+import { it, expect, describe } from "vitest";
+import { fixture, getStdout, readConfig, withGeneratedFixture } from "setup";
 
-import { it, describe } from "vitest";
-import { createExec, expectPass, fixturesDir } from "setup";
+const files = fixture()
+	.packageJson("exec-task")
+	.configRaw(await readConfig("exec-task.ts"))
+	.dir("main")
+	.build();
 
-describe("execTask", () => {
-	const exec = createExec({ cwd: Path.join(fixturesDir, "exec-task") });
+describe.concurrent("execTask", () => {
+	it.each(["pwd-1", "pwd-2", "pwd-3", "pwd-4", "pwd-5"])("can run %s command with configured workingDir", (command) =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`${command}`);
 
-	it.each(["pwd-1", "pwd-2", "pwd-3", "pwd-4", "pwd-5"])("can run %s command with configured workingDir", async (command) => {
-		await expectPass(exec`${command}`);
-	});
+				expect(stdout).toContain("RUN SUCCESSFUL");
+			}
+		})
+	);
 });

@@ -1,13 +1,21 @@
-import { it, describe } from "vitest";
-import { createExec, expectPass } from "setup";
+import { it, expect, describe } from "vitest";
+import { fixture, getStdout, readConfig, withGeneratedFixture } from "setup";
 
-describe("workingDir", () => {
-	const exec = createExec({ config: "working-dir" });
+const files = fixture()
+	.packageJson("working-dir")
+	.configRaw(await readConfig("working-dir.ts"))
+	.build();
 
-	it.each(["current", "oneLevelDown", "twoLevelsDown", "oneLevelUp", "twoLevelsUp"])(
-		"should print correct working directory for task %s",
-		async (task) => {
-			await expectPass(exec`${task}`);
-		}
+describe.concurrent("workingDir", () => {
+	it.each(["current", "oneLevelDown", "twoLevelsDown", "oneLevelUp", "twoLevelsUp"])("should print correct working directory for task %s", (task) =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`${task}`);
+
+				expect(stdout).toContain("RUN SUCCESSFUL");
+				expect(stdout).toContain("Current working directory:");
+			}
+		})
 	);
 });

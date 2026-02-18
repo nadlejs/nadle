@@ -1,25 +1,23 @@
-import Path from "node:path";
-
-import { getStderr } from "setup";
-import { createExec } from "setup";
-import { fixturesDir } from "setup";
 import { it, expect, describe } from "vitest";
-
-const cwd = Path.join(fixturesDir, "invalid-task-name");
+import { config, fixture, getStderr, withGeneratedFixture } from "setup";
 
 const testCases = [
-	{ task: "build_docker", config: "underscore", description: "contains underscore character" },
-	{ config: "colon", task: "build:docker", description: "contains colon character" },
-	{ task: "build-docker-", config: "end-with-dash", description: "ends with dash character" },
-	{ task: "-build-docker", config: "start-with-dash", description: "starts with dash character" },
-	{ task: "", config: "empty", description: "is empty" },
-	{ task: "1build", config: "start-with-number", description: "starts with a number" }
+	{ task: "build_docker", description: "contains underscore character" },
+	{ task: "build:docker", description: "contains colon character" },
+	{ task: "build-docker-", description: "ends with dash character" },
+	{ task: "-build-docker", description: "starts with dash character" },
+	{ task: "", description: "is empty" },
+	{ task: "1build", description: "starts with a number" }
 ] as const;
 
-describe.each(testCases)("when the task name $description", ({ task, config }) => {
-	it("should throw invalid task name error", async () => {
-		await expect(getStderr(createExec({ cwd, config })``)).resolves.toContain(
-			`Invalid task name: [${task}]. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
-		);
-	});
+describe.each(testCases)("when the task name $description", ({ task }) => {
+	it("should throw invalid task name error", () =>
+		withGeneratedFixture({
+			files: fixture().packageJson("invalid-task-name").config(config().task(task)).build(),
+			testFn: async ({ exec }) => {
+				await expect(getStderr(exec``)).resolves.toContain(
+					`Invalid task name: [${task}]. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`
+				);
+			}
+		}));
 });
