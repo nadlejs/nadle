@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: GitHub Issue #435 — "Global singleton registries limit testability and composability"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Run Multiple Nadle Instances in One Process (Priority: P1)
 
@@ -100,7 +100,7 @@ change, verifying that workers no longer re-load config files.
   Nadle instance)? An error is thrown indicating that tasks must be registered during config
   loading.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -134,7 +134,7 @@ change, verifying that workers no longer re-load config files.
 - **Worker Context**: The data passed from a parent Nadle instance to a worker thread,
   containing the resolved task and configuration needed for execution.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

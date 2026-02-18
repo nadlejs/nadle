@@ -11,6 +11,7 @@ config code calls `tasks.register()` — a module-level export. AsyncLocalStorag
 signature or the user's import pattern (`import { tasks } from "nadle"`).
 
 **Alternatives considered**:
+
 - **Global variable swap** (set `_currentInstance = this` before load, unset after):
   Not safe for concurrent instances (two async loads could interleave).
 - **Proxy with thread-local storage**: Equivalent to AsyncLocalStorage but non-standard.
@@ -33,6 +34,7 @@ This is a fundamental language constraint, not a design choice.
 
 **Implication for SC-004**: Workers cannot entirely avoid loading config files. However,
 they CAN:
+
 1. **Cache per worker thread**: Load configs once on the first task dispatch; reuse the
    populated registry for subsequent tasks on the same thread (tinypool reuses workers).
 2. **Skip project discovery**: Pass pre-resolved `Project` data from the main thread so
@@ -56,6 +58,7 @@ per task, but the module context persists. A module-level cache means the first 
 on a worker thread pays the config-loading cost; all subsequent tasks skip it entirely.
 
 **Alternatives considered**:
+
 - **Worker-per-task (no caching)**: Current behavior. Unacceptable — re-loads ALL
   configs per task dispatch.
 - **Pre-warm all workers at pool creation**: Would block pool startup. Tasks may never
@@ -71,6 +74,7 @@ on a worker thread pays the config-loading cost; all subsequent tasks skip it en
 
 **Rationale**: The change is internal. `tasks` becomes a thin proxy that delegates to
 `getCurrentInstance().taskRegistry`. The user's config file code is unchanged:
+
 ```ts
 import { tasks, configure } from "nadle";
 tasks.register("build", async ({ context }) => { ... });
@@ -86,10 +90,10 @@ configure({ parallel: true });
 
 **Decision**: Three spec files need updating after implementation.
 
-| File | Change | Severity |
-|------|--------|----------|
-| `spec/01-task.md` line 8 | Remove "singleton" language — describe instance-bound behavior | Minor (wording) |
-| `spec/04-execution.md` line 50 | Update worker flow — describe per-thread caching | Minor (clarification) |
-| `spec/08-configuration-loading.md` | Add note about AsyncLocalStorage context during config load | Minor (new detail) |
-| `spec/CHANGELOG.md` | Add entry for this change | Required |
-| `spec/README.md` | Patch version bump (1.0.0 → 1.0.1) | Required |
+| File                               | Change                                                         | Severity              |
+| ---------------------------------- | -------------------------------------------------------------- | --------------------- |
+| `spec/01-task.md` line 8           | Remove "singleton" language — describe instance-bound behavior | Minor (wording)       |
+| `spec/04-execution.md` line 50     | Update worker flow — describe per-thread caching               | Minor (clarification) |
+| `spec/08-configuration-loading.md` | Add note about AsyncLocalStorage context during config load    | Minor (new detail)    |
+| `spec/CHANGELOG.md`                | Add entry for this change                                      | Required              |
+| `spec/README.md`                   | Patch version bump (1.0.0 → 1.0.1)                             | Required              |

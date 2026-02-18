@@ -26,17 +26,17 @@ on subsequent task dispatches.
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Code Over Configuration | Pass | No config format changes |
-| II. Type Safety First | Pass | All types preserved; TaskRegistry/FileOptionRegistry types unchanged |
-| III. Lightweight and Focused | Pass | AsyncLocalStorage is a Node built-in (zero bundle cost) |
-| IV. Integration-First Testing | Pass | All existing integration tests must pass; new isolation test added |
-| V. Self-Hosting (Dogfooding) | Pass | `npx nadle build` must still work (self-hosting) |
-| VI. Modern ESM and Strict Conventions | Pass | `node:async_hooks` follows PascalCase import convention |
-| VII. Cross-Platform Correctness | Pass | AsyncLocalStorage is cross-platform; no path changes |
+| Principle                             | Status | Notes                                                                |
+| ------------------------------------- | ------ | -------------------------------------------------------------------- |
+| I. Code Over Configuration            | Pass   | No config format changes                                             |
+| II. Type Safety First                 | Pass   | All types preserved; TaskRegistry/FileOptionRegistry types unchanged |
+| III. Lightweight and Focused          | Pass   | AsyncLocalStorage is a Node built-in (zero bundle cost)              |
+| IV. Integration-First Testing         | Pass   | All existing integration tests must pass; new isolation test added   |
+| V. Self-Hosting (Dogfooding)          | Pass   | `npx nadle build` must still work (self-hosting)                     |
+| VI. Modern ESM and Strict Conventions | Pass   | `node:async_hooks` follows PascalCase import convention              |
+| VII. Cross-Platform Correctness       | Pass   | AsyncLocalStorage is cross-platform; no path changes                 |
 
 ## Project Structure
 
@@ -89,6 +89,7 @@ The refactor has three layers, each building on the previous:
 ### Layer 1: AsyncLocalStorage Context Binding
 
 Create a new module `nadle-context.ts` that provides:
+
 - `runWithInstance(instance, fn)` — runs `fn` with `instance` bound in AsyncLocalStorage
 - `getCurrentInstance()` — retrieves the bound instance or throws (FR-009)
 
@@ -98,6 +99,7 @@ the correct Nadle instance without changing their call signatures.
 ### Layer 2: Instance-Owned Registries
 
 Move registry ownership from module-level singletons to Nadle instance properties:
+
 - `Nadle.taskRegistry = new TaskRegistry()` (fresh per instance)
 - `Nadle.fileOptionRegistry = new FileOptionRegistry()` (fresh per instance)
 
@@ -112,6 +114,7 @@ Remove the singleton exports from `task-registry.ts` and `file-option-registry.t
 ### Layer 3: Worker Thread Optimization
 
 Restructure `worker.ts` to cache its Nadle instance at module level:
+
 - First task dispatch: create + initialize Nadle (loads configs once)
 - Subsequent dispatches: reuse the cached instance (no config re-load)
 

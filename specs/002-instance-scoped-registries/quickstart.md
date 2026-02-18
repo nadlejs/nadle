@@ -10,7 +10,7 @@ import { tasks, configure } from "nadle";
 configure({ parallel: true });
 
 tasks.register("build", async ({ context }) => {
-  // ...
+	// ...
 });
 ```
 
@@ -43,16 +43,16 @@ await runWithInstance(nadle1, async () => {
 
 ## Key Files to Understand
 
-| File | Role | What changes |
-|------|------|-------------|
-| `nadle-context.ts` | **New** — AsyncLocalStorage binding | Created |
-| `nadle.ts` | Nadle class | Owns registries, wraps init in context |
-| `api.ts` | `tasks` DSL object | Delegates to `getCurrentInstance()` |
-| `configure.ts` | `configure()` function | Delegates to `getCurrentInstance()` |
-| `task-registry.ts` | TaskRegistry class | Remove singleton export |
-| `file-option-registry.ts` | FileOptionRegistry class | Remove singleton export, export class |
-| `options-resolver.ts` | Config loading | Receives both registries from Nadle |
-| `worker.ts` | Worker thread | Caches Nadle instance per thread |
+| File                      | Role                                | What changes                           |
+| ------------------------- | ----------------------------------- | -------------------------------------- |
+| `nadle-context.ts`        | **New** — AsyncLocalStorage binding | Created                                |
+| `nadle.ts`                | Nadle class                         | Owns registries, wraps init in context |
+| `api.ts`                  | `tasks` DSL object                  | Delegates to `getCurrentInstance()`    |
+| `configure.ts`            | `configure()` function              | Delegates to `getCurrentInstance()`    |
+| `task-registry.ts`        | TaskRegistry class                  | Remove singleton export                |
+| `file-option-registry.ts` | FileOptionRegistry class            | Remove singleton export, export class  |
+| `options-resolver.ts`     | Config loading                      | Receives both registries from Nadle    |
+| `worker.ts`               | Worker thread                       | Caches Nadle instance per thread       |
 
 ## How to Verify
 

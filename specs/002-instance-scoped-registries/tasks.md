@@ -109,13 +109,16 @@ T014 ──┘
 ### Parallel Opportunities
 
 Within Phase 1:
+
 - T001 and T002 can run in parallel (different files)
 
 Within Phase 2:
+
 - T003 and T004 can run in parallel (different files)
 - T005 and T006 can run in parallel (different files, both depend on T001)
 
 Within Phase 4:
+
 - T012, T013, T014 can run in parallel (different spec files)
 
 ---

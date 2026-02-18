@@ -7,48 +7,48 @@
 Previously: Referenced global `taskRegistry` singleton.
 After: Owns its own `TaskRegistry` and `FileOptionRegistry` instances.
 
-| Field | Type | Change | Notes |
-|-------|------|--------|-------|
-| `taskRegistry` | `TaskRegistry` | Modified | Was `= taskRegistry` (global), becomes `= new TaskRegistry()` |
-| `fileOptionRegistry` | `FileOptionRegistry` | **New** | Previously not on Nadle; was global-only |
+| Field                | Type                 | Change   | Notes                                                         |
+| -------------------- | -------------------- | -------- | ------------------------------------------------------------- |
+| `taskRegistry`       | `TaskRegistry`       | Modified | Was `= taskRegistry` (global), becomes `= new TaskRegistry()` |
+| `fileOptionRegistry` | `FileOptionRegistry` | **New**  | Previously not on Nadle; was global-only                      |
 
 ### TaskRegistry (unchanged internally)
 
 No changes to class internals. Only the instantiation pattern changes (from
 module-level singleton to per-Nadle-instance).
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `registry` | `Map<TaskIdentifier, RegisteredTask>` | Finalized tasks |
-| `buffer` | `Map<TaskIdentifier, BufferedTask>` | Tasks during config loading |
-| `workspaceId` | `string \| null` | Current workspace context |
-| `#project` | `Project \| null` | Set on `configure()` |
+| Field         | Type                                  | Description                 |
+| ------------- | ------------------------------------- | --------------------------- |
+| `registry`    | `Map<TaskIdentifier, RegisteredTask>` | Finalized tasks             |
+| `buffer`      | `Map<TaskIdentifier, BufferedTask>`   | Tasks during config loading |
+| `workspaceId` | `string \| null`                      | Current workspace context   |
+| `#project`    | `Project \| null`                     | Set on `configure()`        |
 
 ### FileOptionRegistry (unchanged internally)
 
 No changes to class internals. Only instantiation changes.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `registry` | `Map<string, NadleFileOptions>` | Options per workspace |
-| `workspaceId` | `string \| null` | Current workspace context |
+| Field         | Type                            | Description               |
+| ------------- | ------------------------------- | ------------------------- |
+| `registry`    | `Map<string, NadleFileOptions>` | Options per workspace     |
+| `workspaceId` | `string \| null`                | Current workspace context |
 
 ### NadleContext (new)
 
 AsyncLocalStorage store type. Binds the active Nadle instance during config loading.
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field      | Type    | Description               |
+| ---------- | ------- | ------------------------- |
 | `instance` | `Nadle` | The active Nadle instance |
 
 ### WorkerParams (modified)
 
-| Field | Type | Change | Notes |
-|-------|------|--------|-------|
-| `taskId` | `string` | Unchanged | |
-| `env` | `NodeJS.ProcessEnv` | Unchanged | |
+| Field     | Type                   | Change    | Notes                           |
+| --------- | ---------------------- | --------- | ------------------------------- |
+| `taskId`  | `string`               | Unchanged |                                 |
+| `env`     | `NodeJS.ProcessEnv`    | Unchanged |                                 |
 | `options` | `NadleResolvedOptions` | Unchanged | Contains pre-resolved `project` |
-| `port` | `MessagePort` | Unchanged | |
+| `port`    | `MessagePort`          | Unchanged |                                 |
 
 ## Relationship Diagram
 
@@ -84,7 +84,7 @@ No instance → tasks.register() → ERROR: "No active Nadle instance"
 
 ## Removed Entities
 
-| Entity | Location | Reason |
-|--------|----------|--------|
-| `taskRegistry` (singleton) | `task-registry.ts:99` | Replaced by per-instance |
+| Entity                           | Location                     | Reason                   |
+| -------------------------------- | ---------------------------- | ------------------------ |
+| `taskRegistry` (singleton)       | `task-registry.ts:99`        | Replaced by per-instance |
 | `fileOptionRegistry` (singleton) | `file-option-registry.ts:34` | Replaced by per-instance |
