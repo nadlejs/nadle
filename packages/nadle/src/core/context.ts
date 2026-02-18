@@ -23,8 +23,8 @@ export interface State {
 export interface ProjectContext {
 	readonly logger: Logger;
 	readonly taskRegistry: TaskRegistry;
-	readonly fileOptionRegistry: FileOptionRegistry;
 	readonly options: NadleResolvedOptions;
+	readonly fileOptionRegistry: FileOptionRegistry;
 }
 
 /**

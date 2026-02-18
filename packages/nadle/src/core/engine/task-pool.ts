@@ -50,6 +50,7 @@ export class TaskPool {
 				} else if (msg.type === "from-cache") {
 					executeType = "from-cache";
 				}
+
 				resolveMessageReceived();
 			});
 
