@@ -1,16 +1,11 @@
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
+import { themes, Highlight } from "prism-react-renderer";
 import { type FC, useState, type ReactNode } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow as codeTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 /* ─── Shared Inline Components ────────────────────────────────────────────── */
-
-const BlurOrb: FC<{ className: string }> = ({ className }) => (
-	<div aria-hidden className={`pointer-events-none absolute rounded-full blur-3xl ${className}`} />
-);
 
 const CodeWindow: FC<{ code: string; title: string }> = ({ code, title }) => (
 	<div className="relative rounded-xl overflow-hidden border border-slate-700/60 shadow-2xl">
@@ -20,20 +15,19 @@ const CodeWindow: FC<{ code: string; title: string }> = ({ code, title }) => (
 			<span className="w-3 h-3 rounded-full bg-[#28c840]" />
 			<span className="ml-2 text-xs text-slate-400 font-mono">{title}</span>
 		</div>
-		<SyntaxHighlighter
-			language="typescript"
-			style={codeTheme}
-			customStyle={{
-				margin: 0,
-				borderRadius: 0,
-				lineHeight: "1.7",
-				fontSize: "0.88rem",
-				padding: "1.25rem 1.5rem",
-				background: "transparent"
-			}}
-			showLineNumbers={false}>
-			{code}
-		</SyntaxHighlighter>
+		<Highlight theme={themes.vsDark} code={code} language="typescript">
+			{({ tokens, getLineProps, getTokenProps }) => (
+				<pre className="!m-0 !rounded-none !bg-transparent" style={{ lineHeight: "1.7", fontSize: "0.88rem", padding: "1.25rem 1.5rem" }}>
+					{tokens.map((line, i) => (
+						<div key={i} {...getLineProps({ line })}>
+							{line.map((token, key) => (
+								<span key={key} {...getTokenProps({ token })} />
+							))}
+						</div>
+					))}
+				</pre>
+			)}
+		</Highlight>
 	</div>
 );
 
@@ -78,8 +72,14 @@ const Hero: FC = () => {
 
 	return (
 		<header className="relative overflow-hidden bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white py-24 md:py-32 px-4">
-			<BlurOrb className="w-[500px] h-[500px] -top-40 -left-40 bg-blue-500/20" />
-			<BlurOrb className="w-[400px] h-[400px] -bottom-32 -right-32 bg-pink-500/15" />
+			<div
+				aria-hidden
+				className="pointer-events-none absolute w-[500px] h-[500px] -top-40 -left-40 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.2)_0%,_transparent_70%)]"
+			/>
+			<div
+				aria-hidden
+				className="pointer-events-none absolute w-[400px] h-[400px] -bottom-32 -right-32 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(236,72,153,0.15)_0%,_transparent_70%)]"
+			/>
 			<div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
 				<Heading as="h1" className="text-5xl md:text-7xl font-extrabold tracking-tight text-white !mb-0">
 					{siteConfig.title}
@@ -109,6 +109,7 @@ const Hero: FC = () => {
 						width={140}
 						height={30}
 						title="GitHub Stars"
+						loading="lazy"
 					/>
 				</div>
 			</div>
@@ -143,7 +144,10 @@ tasks.register("build").config({
 
 const CodeShowcase: FC = () => (
 	<section className="relative bg-gradient-to-b from-[#0f172a] via-[#111827] to-[#0d1117] py-20 md:py-28 px-4 overflow-hidden">
-		<BlurOrb className="w-[600px] h-[300px] -top-20 left-1/2 -translate-x-1/2 bg-blue-500/10" />
+		<div
+			aria-hidden
+			className="pointer-events-none absolute w-[600px] h-[300px] -top-20 left-1/2 -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.1)_0%,_transparent_70%)]"
+		/>
 		<div className="relative z-10 max-w-6xl mx-auto">
 			<div className="grid md:grid-cols-[2fr_3fr] gap-12 md:gap-16 items-center">
 				<div>
@@ -238,7 +242,10 @@ const FeatureHighlight: FC<HighlightProps> = ({ badge, title, reverse, children,
 			<p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">{description}</p>
 		</div>
 		<div className={`relative ${reverse ? "md:[direction:ltr]" : ""}`}>
-			<BlurOrb className={`w-72 h-72 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${glowClass}`} />
+			<div
+				aria-hidden
+				className={`pointer-events-none absolute w-72 h-72 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${glowClass}`}
+			/>
 			<div className="relative z-10">{children}</div>
 		</div>
 	</div>
@@ -274,7 +281,7 @@ const FeatureHighlights: FC = () => (
 					badgeClass="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400"
 					title="Catch errors before they happen"
 					accentClass="text-slate-900 dark:text-white"
-					glowClass="bg-blue-500/10 dark:bg-blue-500/15"
+					glowClass="bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.1)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.15)_0%,_transparent_70%)]"
 					description="Define custom task types with generics. Get full IntelliSense for task options and catch configuration errors at compile time. TypeScript isn't bolted on — it's the foundation.">
 					<CodeWindow title="deploy.ts" code={typeSafetyCode} />
 				</FeatureHighlight>
@@ -284,7 +291,7 @@ const FeatureHighlights: FC = () => (
 					badgeClass="bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
 					title="Maximum throughput, zero wasted time"
 					accentClass="text-slate-900 dark:text-white"
-					glowClass="bg-amber-500/10 dark:bg-amber-500/15"
+					glowClass="bg-[radial-gradient(ellipse_at_center,_rgba(245,158,11,0.1)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(245,158,11,0.15)_0%,_transparent_70%)]"
 					description="Nadle builds a dependency graph and runs independent tasks in parallel using worker threads. Watch your build pipeline light up."
 					reverse>
 					<TerminalBlock content={parallelTerminal} />
@@ -295,7 +302,7 @@ const FeatureHighlights: FC = () => (
 					badgeClass="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
 					title="Only rebuild what changed"
 					accentClass="text-slate-900 dark:text-white"
-					glowClass="bg-emerald-500/10 dark:bg-emerald-500/15"
+					glowClass="bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.1)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.15)_0%,_transparent_70%)]"
 					description="Declare inputs and outputs for any task. Nadle fingerprints them and skips tasks when nothing has changed. Fast incremental builds out of the box.">
 					<CodeWindow title="nadle.config.ts" code={cachingCode} />
 				</FeatureHighlight>
@@ -425,7 +432,10 @@ const featureCards: FeatureCardProps[] = [
 
 const FeatureGrid: FC = () => (
 	<section className="relative bg-slate-50/80 dark:bg-[#0d1117] py-24 md:py-32 px-4 transition-colors overflow-hidden">
-		<BlurOrb className="w-[500px] h-[500px] top-0 left-1/2 -translate-x-1/2 bg-blue-500/5 dark:bg-blue-500/8" />
+		<div
+			aria-hidden
+			className="pointer-events-none absolute w-[500px] h-[500px] top-0 left-1/2 -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.05)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.08)_0%,_transparent_70%)]"
+		/>
 		<div className="relative z-10 max-w-6xl mx-auto">
 			<div className="text-center mb-16">
 				<Heading as="h2" className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white !mb-3">
@@ -469,8 +479,14 @@ const Credibility: FC = () => (
 
 const FinalCTA: FC = () => (
 	<section className="relative overflow-hidden bg-gradient-to-b from-[#0d1117] via-[#1e293b] to-[#0f172a] text-white py-20 md:py-28 px-4">
-		<BlurOrb className="w-[400px] h-[400px] -top-32 -right-32 bg-pink-500/15" />
-		<BlurOrb className="w-[300px] h-[300px] -bottom-20 -left-20 bg-blue-500/15" />
+		<div
+			aria-hidden
+			className="pointer-events-none absolute w-[400px] h-[400px] -top-32 -right-32 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(236,72,153,0.15)_0%,_transparent_70%)]"
+		/>
+		<div
+			aria-hidden
+			className="pointer-events-none absolute w-[300px] h-[300px] -bottom-20 -left-20 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.15)_0%,_transparent_70%)]"
+		/>
 		<div className="relative z-10 max-w-2xl mx-auto text-center flex flex-col items-center gap-6">
 			<Heading as="h2" className="text-3xl md:text-4xl font-bold text-white !mb-0">
 				Ready to get started?
