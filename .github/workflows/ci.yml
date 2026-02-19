@@ -2,6 +2,10 @@ name: CI
 
 on:
   pull_request:
+    paths-ignore:
+      - "*.md"
+      - "packages/docs/**"
+      - "LICENSE"
   merge_group:
   push:
     branches:
@@ -19,26 +23,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
-    outputs:
-      src: ${{ steps.filter.outputs.src }}
-    steps:
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
-        id: filter
-        with:
-          filters: |
-            src:
-              - '**'
-              - '!*.md'
-              - '!packages/docs/**'
-              - '!LICENSE'
-
   ci:
-    needs: changes
-    if: needs.changes.outputs.src == 'true' || github.event_name != 'pull_request'
     runs-on: ${{ matrix.os }}
     name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
     timeout-minutes: 15
