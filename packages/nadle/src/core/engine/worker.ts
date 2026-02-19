@@ -40,7 +40,8 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 	const nadle = await getOrCreateNadle(options);
 	const task = nadle.taskRegistry.getTaskById(taskId);
 	const taskConfig = task.configResolver();
-	const workingDir = Path.resolve(options.project.rootWorkspace.absolutePath, taskConfig.workingDir ?? "");
+	const workspace = Project.getWorkspaceById(options.project, task.workspaceId);
+	const workingDir = Path.resolve(workspace.absolutePath, taskConfig.workingDir ?? "");
 
 	const context: RunnerContext = {
 		workingDir,
