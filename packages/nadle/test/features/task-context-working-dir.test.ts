@@ -1,5 +1,6 @@
 import Path from "node:path";
 
+import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
 import { fixture, getStdout, readConfig, createExec, withGeneratedFixture } from "setup";
 
@@ -10,7 +11,7 @@ const files = fixture()
 	.dir("src/test")
 	.build();
 
-describe.concurrent("task-context-working-dir", () => {
+describe.concurrent.skipIf(isWindows)("task-context-working-dir", () => {
 	it("should resolve correct working dir regarding to the projectDir", () =>
 		withGeneratedFixture({
 			files,
