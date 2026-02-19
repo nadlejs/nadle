@@ -6,7 +6,7 @@ import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 const baseEslintArgs = ["-r", "-F", "!@nadle/internal-nadle-test-fixtures-*", "exec", "eslint", ".", "--quiet"];
 
 tasks.register("clean", DeleteTask, {
-	paths: ["**/lib/**", "**/build/**", "**/__temp__/**", "packages/docs/docs/api/**", "packages/docs/.docusaurus/**"]
+	paths: ["**/lib/**", "**/build/**", "**/__temp__/**", "packages/docs/docs/api/**", "packages/docs/.docusaurus/**", "packages/docs/static/spec/**"]
 });
 
 tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] });
@@ -33,8 +33,14 @@ tasks.register("prepareAPIMarkdown", ExecTask, { command: "tsx", args: ["scripts
 	dependsOn: ["generateMarkdown"]
 });
 
+tasks.register("buildSpec", ExecTask, { command: "tsx", args: ["scripts/build-spec.ts"] }).config({
+	workingDir: "./packages/docs",
+	outputs: [Outputs.dirs("static/spec")],
+	inputs: [Inputs.files("../../spec/*.md"), Inputs.files("scripts/build-spec.ts")]
+});
+
 tasks.register("buildDoc", PnpmTask, { args: ["-F", "@nadle/internal-docs", "build"] }).config({
-	dependsOn: ["prepareAPIMarkdown"],
+	dependsOn: ["prepareAPIMarkdown", "buildSpec"],
 	outputs: [Outputs.dirs("packages/docs/build")],
 	inputs: [Inputs.dirs("packages/docs/{src,docs,static}"), Inputs.files("packages/docs/docusaurus.config.ts", "packages/docs/sidebars.ts")]
 });
