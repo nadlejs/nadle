@@ -1,3 +1,8 @@
+---
+description: Run Nadle tasks from the CLI — single tasks, multiple tasks, workspace-scoped execution, dry run, and summary mode.
+keywords: [nadle, execute task, CLI, run, dry run, summary]
+---
+
 # Executing Task
 
 When executing tasks, Nadle ensures the following rules are enforced:

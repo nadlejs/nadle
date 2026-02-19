@@ -1,3 +1,8 @@
+---
+description: Nadle is a modern, type-safe, Gradle-inspired task runner for Node.js with parallel execution, caching, and monorepo support.
+keywords: [nadle, task runner, Node.js, TypeScript, Gradle, build tool]
+---
+
 # Introduction
 
 Nadle is a **modern**, **type-safe**, **Gradle-inspired** task runner for Node.js.

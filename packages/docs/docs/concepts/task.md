@@ -1,3 +1,8 @@
+---
+description: Understand the Nadle task model — naming rules, scopes, identifiers, and how tasks form the core unit of work in your build pipeline.
+keywords: [nadle, task, task model, naming, scope, build pipeline]
+---
+
 # Task
 
 A **task** in Nadle is a named unit of work for automation, scripting, or orchestration.

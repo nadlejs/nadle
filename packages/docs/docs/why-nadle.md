@@ -1,3 +1,8 @@
+---
+description: Compare Nadle with Gradle, npm scripts, nx, and turborepo. Learn why Nadle is the best task runner for modern JavaScript and TypeScript projects.
+keywords: [nadle, Gradle, npm scripts, nx, turborepo, comparison, task runner]
+---
+
 # Why Nadle?
 
 Nadle is a modern build and task automation tool designed specifically for JavaScript and TypeScript projects. It brings the best of Gradle's smart execution model into the Node.js ecosystem — without needing to install Java or write in Kotlin.

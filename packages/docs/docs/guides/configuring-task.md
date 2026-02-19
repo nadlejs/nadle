@@ -1,3 +1,8 @@
+---
+description: Configure Nadle tasks with dependsOn, inputs, outputs, environment variables, and caching using the .config() method.
+keywords: [nadle, task configuration, dependsOn, inputs, outputs, caching, env]
+---
+
 # Configuring Task
 
 After registering a task, configuration can be applied using `.config(...)`.

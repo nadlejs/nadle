@@ -1,3 +1,8 @@
+---
+description: Explore Nadle features including type-safe tasks, DAG-based parallel execution, input/output caching, monorepo support, and smart CLI.
+keywords: [nadle, features, type safety, caching, parallel execution, monorepo]
+---
+
 # Features
 
 Nadle comes packed with powerful features to make your build automation and task management more efficient.
@@ -237,4 +242,4 @@ tasks.register("clean", DeleteTask, {
 ## Next Steps
 
 1. Dive into [Configuration Reference](../config-reference.md)
-2. Explore [API Documentation](../api/index/README.md)
+2. Explore the API Documentation
