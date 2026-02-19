@@ -11,6 +11,8 @@ const outputDir = Path.join(__dirname, "..", "static", "spec");
 const tempFile = Path.join(outputDir, "_combined.md");
 const GITHUB_SPEC_URL = "https://github.com/nadlejs/nadle/blob/main/spec";
 
+const README_EXCLUDED_SECTIONS = new Set(["How to Read", "Files", "Versioning", "Relationship to User-Facing Docs"]);
+
 const SPEC_FILES = [
 	"01-task.md",
 	"02-task-configuration.md",
@@ -65,6 +67,30 @@ function shiftSubheadings(content: string): string {
 		.join("\n");
 }
 
+function filterReadmeSections(content: string): string {
+	const lines = content.split("\n");
+	const result: string[] = [];
+	let skipping = false;
+
+	for (const line of lines) {
+		const headingMatch = line.match(/^(##)\s+(.+)/);
+
+		if (headingMatch) {
+			skipping = README_EXCLUDED_SECTIONS.has(headingMatch[2]);
+		}
+
+		if (!skipping) {
+			result.push(line);
+		}
+	}
+
+	return result.join("\n");
+}
+
+function stripNumberPrefix(content: string): string {
+	return content.replace(/^(#+\s+)\d{2}\s+—\s+/m, "$1");
+}
+
 function convertCrossReferences(content: string): string {
 	return content.replace(/\]\((\d{2}-[\w-]+)\.md\)/g, "](#$1)").replace(/\]\(CHANGELOG\.md\)/g, `](${GITHUB_SPEC_URL}/CHANGELOG.md)`);
 }
@@ -73,14 +99,16 @@ async function main() {
 	await Fs.mkdir(outputDir, { recursive: true });
 
 	const readmeSrc = await Fs.readFile(Path.join(specDir, "README.md"), "utf-8");
-	const readmeConverted = convertCrossReferences(shiftSubheadings(readmeSrc));
+	const readmeFiltered = filterReadmeSections(readmeSrc);
+	const readmeConverted = convertCrossReferences(shiftSubheadings(readmeFiltered));
 
 	const sections: string[] = [readmeConverted];
 
 	for (const file of SPEC_FILES) {
 		const slug = file.replace(/\.md$/, "");
 		const raw = await Fs.readFile(Path.join(specDir, file), "utf-8");
-		const shifted = shiftHeadings(raw);
+		const stripped = stripNumberPrefix(raw);
+		const shifted = shiftHeadings(stripped);
 		const converted = convertCrossReferences(shifted);
 
 		sections.push(`<a id="${slug}"></a>\n\n${converted}`);
