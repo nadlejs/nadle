@@ -2,8 +2,8 @@ import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import { themes, Highlight } from "prism-react-renderer";
-import { type FC, useState, type ReactNode } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { useRef, type FC, useCallback, type ReactNode } from "react";
 
 /* ─── Shared Inline Components ────────────────────────────────────────────── */
 
@@ -31,35 +31,44 @@ const CodeWindow: FC<{ code: string; title: string }> = ({ code, title }) => (
 	</div>
 );
 
-const InstallCommand: FC = () => {
-	const [copied, setCopied] = useState(false);
-	const command = "npm install -D nadle";
+const INSTALL_COMMAND = "npm install -D nadle";
 
-	const handleCopy = () => {
-		void navigator.clipboard.writeText(command);
-		setCopied(true);
-		setTimeout(() => setCopied(false), 2000);
-	};
+const InstallCommand: FC = () => {
+	const btnRef = useRef<HTMLButtonElement>(null);
+	const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+	const handleCopy = useCallback(() => {
+		void navigator.clipboard.writeText(INSTALL_COMMAND);
+		const el = btnRef.current;
+
+		if (!el) {
+			return;
+		}
+
+		el.dataset["copied"] = "";
+		clearTimeout(timerRef.current!);
+		timerRef.current = setTimeout(() => delete el.dataset["copied"], 2000);
+	}, []);
 
 	return (
 		<button
+			ref={btnRef}
 			type="button"
 			onClick={handleCopy}
-			className="group inline-flex items-center gap-3 bg-slate-800/80 hover:bg-slate-700/80 backdrop-blur border border-slate-600/50 rounded-lg px-5 py-3 font-mono text-sm transition-colors duration-200 cursor-pointer"
-			aria-label={`Copy install command: ${command}`}>
+			className="group inline-flex items-center gap-3 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 rounded-lg px-5 py-3 font-mono text-sm transition-colors duration-200 cursor-pointer"
+			aria-label={`Copy install command: ${INSTALL_COMMAND}`}>
 			<span className="text-green-400">$</span>
-			<span className="text-slate-200">{command}</span>
-			<span className="ml-1 text-slate-500 group-hover:text-slate-300 transition-colors duration-200">
-				{copied ? (
-					<svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-						<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-					</svg>
-				) : (
-					<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-						<rect x="9" y="9" width="13" height="13" rx="2" />
-						<path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-					</svg>
-				)}
+			<span className="text-slate-200">{INSTALL_COMMAND}</span>
+			<span className="ml-1 text-slate-500 group-hover:text-slate-300 transition-colors duration-200 group-data-[copied]:hidden">
+				<svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+					<rect x="9" y="9" width="13" height="13" rx="2" />
+					<path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+				</svg>
+			</span>
+			<span className="ml-1 hidden group-data-[copied]:inline">
+				<svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+				</svg>
 			</span>
 		</button>
 	);
@@ -323,7 +332,7 @@ interface FeatureCardProps {
 }
 
 const FeatureCard: FC<FeatureCardProps> = ({ icon, title, iconBg, iconColor, glowColor, description }) => (
-	<div className="group relative bg-white/80 dark:bg-white/[0.03] backdrop-blur border border-slate-200/60 dark:border-slate-700/50 rounded-2xl p-7 transition-all duration-300 hover:border-transparent hover:shadow-xl dark:hover:shadow-none cursor-default overflow-hidden">
+	<div className="group relative bg-white/80 dark:bg-white/[0.03] border border-slate-200/60 dark:border-slate-700/50 rounded-2xl p-7 transition-all duration-300 hover:border-transparent hover:shadow-xl dark:hover:shadow-none cursor-default overflow-hidden">
 		{/* Hover glow */}
 		<div
 			aria-hidden
