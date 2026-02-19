@@ -8,5 +8,8 @@
 		{ "path": "./packages/docs" },
 		{ "path": "./packages/sample-app" },
 		{ "path": "./tsconfig.eslint.json" }
-	]
+	],
+	"compilerOptions": {
+		"noEmit": true
+	}
 }

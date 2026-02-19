@@ -19,6 +19,7 @@ __temp__
 .nadle*
 packages/docs/docs/api
 packages/docs/static/spec
+packages/nadle-vscode/server
 # misc
 .DS_Store
 

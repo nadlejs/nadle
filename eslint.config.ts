@@ -13,6 +13,7 @@ const configs: ConfigArray = tsEslint.config(
 			"**/__temp__",
 			"**/node_modules/",
 			"**/.docusaurus",
+			"packages/nadle-vscode/server/",
 			"packages/nadle/test/__fixtures__/mixed-ts-js/nadle.config.js",
 			"packages/nadle-lsp/test/__fixtures__/config.js",
 			"packages/nadle-lsp/test/__fixtures__/config.mjs"

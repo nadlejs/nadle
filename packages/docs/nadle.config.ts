@@ -9,7 +9,7 @@ tasks.register("buildSpec", ExecTask, { command: "npx", args: ["tsx", "scripts/b
 
 tasks.register("prepareAPIMarkdown", ExecTask, { command: "npx", args: ["tsx", "scripts/adjust-api-markdown.ts"] }).config({
 	group: "Building",
-	dependsOn: ["root:generateMarkdown"],
+	dependsOn: ["packages:nadle:generateMarkdown"],
 	description: "Prepare API markdown for docusaurus"
 });
 
