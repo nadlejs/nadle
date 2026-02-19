@@ -96,7 +96,7 @@ const configs: ConfigArray = tsEslint.config(
 		rules: {
 			"n/no-extraneous-import": "off"
 		},
-		files: ["packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
+		files: ["packages/*/nadle.config.ts", "packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
 	},
 	{
 		files: ["packages/nadle-lsp/test/__fixtures__/**"],
