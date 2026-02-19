@@ -170,6 +170,9 @@ importers:
       glob:
         specifier: ^11.1.0
         version: 11.1.0
+      spec-md:
+        specifier: ^3.1.0
+        version: 3.1.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -8055,6 +8058,11 @@ packages:
   spdy@4.0.2:
     resolution: {integrity: sha512-r46gZQZQV+Kl9oItvl1JZZqJKGr+oEkB08A6BzkiR7593/7IbtuncXHd2YoYeTsG4157ZssMu9KYvUHLcjcDoA==}
     engines: {node: '>=6.0.0'}
+
+  spec-md@3.1.0:
+    resolution: {integrity: sha512-h4/Pc+ICB+q8cXKTyy8f5JJHSQRNy1oh05P/vTrq+qIV2fLmEaalwpZMRYMzlq/g+qxnIp/hywGGYA3rpefYmA==}
+    engines: {node: '>=16'}
+    hasBin: true
 
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
@@ -18426,6 +18434,10 @@ snapshots:
       spdy-transport: 3.0.0
     transitivePeerDependencies:
       - supports-color
+
+  spec-md@3.1.0:
+    dependencies:
+      prismjs: 1.30.0
 
   sprintf-js@1.0.3: {}
 

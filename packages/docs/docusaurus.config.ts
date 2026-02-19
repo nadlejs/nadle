@@ -6,6 +6,7 @@ import { themes as prismThemes } from "prism-react-renderer";
 import NadlePackageJson from "../nadle/package.json";
 
 const GITHUB_REPO_URL = "https://github.com/nadlejs/nadle";
+const SPEC_BASE_URL = process.env["DEPLOY_PRIME_URL"] || "https://nadle.dev";
 
 const config: Config = {
 	title: "Nadle",
@@ -135,6 +136,7 @@ const config: Config = {
 					sidebarId: "docsSidebar"
 				},
 				{ to: "blog", label: "Blog", position: "left" },
+				{ href: `${SPEC_BASE_URL}/spec/`, label: "Spec", position: "left" },
 				{
 					position: "right",
 					label: NadlePackageJson.version,
@@ -167,6 +169,10 @@ const config: Config = {
 						{
 							label: "Features",
 							to: "/docs/getting-started/features"
+						},
+						{
+							label: "Specification",
+							href: `${SPEC_BASE_URL}/spec/`
 						}
 					]
 				},
