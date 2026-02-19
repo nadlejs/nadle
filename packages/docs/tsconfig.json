@@ -1,4 +1,11 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"references": [{ "path": "./tsconfig.docusaurus.json" }, { "path": "./tsconfig.eslint.json" }]
+	"include": ["src", "scripts", "docusaurus.config.ts", "sidebars.ts"],
+	"compilerOptions": {
+		"strict": false,
+		"jsx": "react-jsx",
+		"lib": ["ESNext", "DOM"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler"
+	}
 }

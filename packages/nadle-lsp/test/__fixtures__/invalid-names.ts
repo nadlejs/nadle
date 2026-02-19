@@ -1,4 +1,4 @@
-// eslint-disable-next-line n/no-extraneous-import
+// @ts-nocheck -- intentional type errors for LSP analyzer testing
 import { tasks, ExecTask } from "nadle";
 
 // Starts with number

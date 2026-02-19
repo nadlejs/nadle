@@ -17,13 +17,39 @@ const defaultLogger: Logger = {
 	}
 };
 
+const emptyPackageJson = { name: "", version: "" };
+
 const project: Project = {
 	packageManager: "",
 	currentWorkspaceId: "frontend",
-	rootWorkspace: { label: "", id: "root", relativePath: "", configFilePath: "", absolutePath: "/path/to/root" },
+	rootWorkspace: {
+		label: "",
+		id: "root",
+		relativePath: "",
+		dependencies: [],
+		configFilePath: "",
+		absolutePath: "/path/to/root",
+		packageJson: emptyPackageJson
+	},
 	workspaces: [
-		{ id: "frontend", relativePath: "", label: "frontend", configFilePath: null, absolutePath: "/path/to/frontend" },
-		{ id: "backend", label: "backend", relativePath: "", configFilePath: null, absolutePath: "/path/to/backend" }
+		{
+			id: "frontend",
+			relativePath: "",
+			dependencies: [],
+			label: "frontend",
+			configFilePath: null,
+			packageJson: emptyPackageJson,
+			absolutePath: "/path/to/frontend"
+		},
+		{
+			id: "backend",
+			label: "backend",
+			relativePath: "",
+			dependencies: [],
+			configFilePath: null,
+			packageJson: emptyPackageJson,
+			absolutePath: "/path/to/backend"
+		}
 	]
 };
 

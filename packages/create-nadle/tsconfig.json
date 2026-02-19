@@ -1,10 +1,11 @@
 {
-	"references": [
-		{
-			"path": "./tsconfig.eslint.json"
-		},
-		{
-			"path": "./tsconfig.build.json"
+	"extends": "../../tsconfig.base.json",
+	"include": ["src", "test", "vitest.config.ts", "tsup.config.ts", "create-nadle.mjs"],
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"setup": ["test/__setup__/index.js"]
 		}
-	]
+	}
 }

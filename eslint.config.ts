@@ -21,7 +21,10 @@ const configs: ConfigArray = tsEslint.config(
 	{
 		languageOptions: {
 			parserOptions: {
-				project: ["**/tsconfig.eslint.json"]
+				tsconfigRootDir: import.meta.dirname,
+				projectService: {
+					allowDefaultProject: ["packages/nadle/nadle.mjs"]
+				}
 			}
 		}
 	},
@@ -94,6 +97,13 @@ const configs: ConfigArray = tsEslint.config(
 			"n/no-extraneous-import": "off"
 		},
 		files: ["packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
+	},
+	{
+		files: ["packages/nadle-lsp/test/__fixtures__/**"],
+		rules: {
+			"n/no-extraneous-import": "off",
+			"@typescript-eslint/ban-ts-comment": "off"
+		}
 	},
 	{
 		plugins: {

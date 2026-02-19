@@ -25,6 +25,7 @@ function createMockNadle(tasks: TaskDef[], options?: { parallel?: boolean; mainT
 		taskMap.set(id, {
 			id,
 			workspaceId,
+			run: vi.fn(),
 			name: task.name,
 			label: task.name,
 			optionsResolver: undefined,

@@ -1,6 +1,0 @@
-{
-	"include": ["src", "scripts", "docusaurus.config.ts", "sidebars.ts"],
-	"compilerOptions": {
-		"noEmit": true
-	}
-}

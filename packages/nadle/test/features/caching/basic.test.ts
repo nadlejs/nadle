@@ -2,7 +2,7 @@ import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
 import { getStdout, withFixture, createFileModifier } from "setup";
 
-describe.concurrent.skipIf(isWindows)("basic caching", () => {
+describe.skipIf(isWindows).concurrent("basic caching", () => {
 	it("should execute in the first run", () =>
 		withFixture({
 			copyAll: true,
