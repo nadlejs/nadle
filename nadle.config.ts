@@ -43,7 +43,7 @@ tasks.register("check").config({
 
 // --- Building (nadle-specific, kept here due to workspace self-reference limitation) ---
 
-tasks.register("typecheck", ExecTask, { args: ["-b"], command: "tsc" }).config({
+tasks.register("typecheck", ExecTask, { command: "tsc", args: ["-b", "--noEmit"] }).config({
 	group: "Building",
 	dependsOn: ["packages:nadle:build"],
 	description: "Type-check all project references"
