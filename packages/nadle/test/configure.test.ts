@@ -1,14 +1,29 @@
-import { it, describe } from "vitest";
-import { createExec, expectPass } from "setup";
+import { it, expect, describe } from "vitest";
+import { config, fixture, getStdout, withGeneratedFixture } from "setup";
 
-describe("configure", () => {
-	const exec = createExec({ config: "configure" });
+const files = fixture()
+	.packageJson("configure")
+	.config(config().configure({ logLevel: "error" }))
+	.build();
 
-	it("can use configured options from config file", async () => {
-		await expectPass(exec`--show-config --config-key logLevel`);
-	});
+describe.concurrent("configure", () => {
+	it("can use configured options from config file", () =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`--show-config --config-key logLevel`);
 
-	it("can override configured options from config file if the cli one is provided", async () => {
-		await expectPass(exec`--log-level info --show-config --config-key logLevel`);
-	});
+				expect(stdout).not.toContain("[info]");
+			}
+		}));
+
+	it("can override configured options from config file if the cli one is provided", () =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`--log-level info --show-config --config-key logLevel`);
+
+				expect(stdout).toContain(`"logLevel": "info"`);
+			}
+		}));
 });

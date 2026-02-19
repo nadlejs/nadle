@@ -1,15 +1,36 @@
-import { it, describe } from "vitest";
+import { it, expect, describe } from "vitest";
 import { PACKAGE_JSON } from "src/core/utilities/constants.js";
-import { createExec, expectPass, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
+import {
+	fixture,
+	getStdout,
+	createExec,
+	expectPass,
+	CONFIG_FILE,
+	withFixture,
+	PNPM_WORKSPACE,
+	createNadleConfig,
+	createPackageJson,
+	createPnpmWorkspace,
+	withGeneratedFixture
+} from "setup";
+
+const emptyFiles = fixture().packageJson("empty").configRaw("// Nothing here\n").build();
 
 describe("--list", () => {
 	it("prints all available tasks", async () => {
 		await expectPass(createExec()`--list`);
 	});
 
-	it("prints no task message when no registered tasks", async () => {
-		await expectPass(createExec({ config: "empty" })`--list`);
-	});
+	it("prints no task message when no registered tasks", () =>
+		withGeneratedFixture({
+			files: emptyFiles,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`--list`);
+
+				expect(stdout).toContain("No tasks found");
+				expect(stdout).toContain("RUN SUCCESSFUL");
+			}
+		}));
 
 	it("prints all tasks in workspace order", async () => {
 		await withFixture({

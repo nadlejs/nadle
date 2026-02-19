@@ -1,1 +1,0 @@
-This is the input file for the no-cache test.
