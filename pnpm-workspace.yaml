@@ -1,3 +1,6 @@
 packages:
   - ./packages/**
   - "!**/__temp__/**"
+  - "!**/__fixtures__/**"
+  - "!./packages/sample-app"
+  - "!./packages/examples/**"
