@@ -23,3 +23,7 @@ runs:
     - name: Install dependencies
       run: pnpm install
       shell: bash
+
+    - name: Bootstrap nadle CLI
+      run: pnpm -F nadle build:tsup
+      shell: bash
