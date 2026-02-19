@@ -20,10 +20,6 @@ export default defineConfig({
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
 		setupFiles: "./test/__setup__/vitest.ts",
-		typecheck: {
-			enabled: true,
-			tsconfig: "./test/tsconfig.json"
-		},
 		resolveSnapshotPath(testPath, snapshotExtension) {
 			const testDir = Path.join(import.meta.dirname, "test");
 			const relativePath = Path.relative(testDir, testPath);

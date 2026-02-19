@@ -1,4 +1,4 @@
-// eslint-disable-next-line n/no-extraneous-import
+// @ts-nocheck -- LSP fixture; analyzed as AST, not compiled
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
 // No-op form (1 arg)

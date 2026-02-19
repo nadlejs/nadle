@@ -3,20 +3,22 @@ import Fs from "node:fs/promises";
 
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask, DeleteTask } from "nadle";
 
-const baseEslintArgs = ["-r", "-F", "!@nadle/internal-nadle-test-fixtures-*", "exec", "eslint", ".", "--quiet"];
-
 tasks.register("clean", DeleteTask, {
 	paths: ["**/lib/**", "**/build/**", "**/__temp__/**", "packages/docs/docs/api/**", "packages/docs/.docusaurus/**", "packages/docs/static/spec/**"]
 });
 
 tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] });
-tasks.register("eslint", PnpmTask, { args: [...baseEslintArgs, "--cache", "--cache-location", "node_modules/.cache/eslint/"] });
+tasks.register("eslint", ExecTask, {
+	command: "eslint",
+	args: [".", "--quiet", "--cache", "--cache-location", "node_modules/.cache/eslint/"]
+});
 tasks.register("prettier", ExecTask, {
 	command: "prettier",
 	args: ["--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
 });
 tasks.register("knip", PnpmTask, { args: ["-r", "-F", "nadle", "-F", "create-nadle", "exec", "knip"] });
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
+tasks.register("typecheck", ExecTask, { command: "tsc", args: ["-b", "--noEmit"] }).config({ dependsOn: ["buildNadle"] });
 tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
 tasks.register("buildNadle", PnpmTask, { args: ["-F", "nadle", "build"] }).config({
@@ -87,9 +89,9 @@ tasks
 		}
 	})
 	.config({ dependsOn: ["testAPI"], workingDir: "./packages/nadle" });
-tasks.register("test").config({ dependsOn: ["testUnit", "testLsp", "testAPI", "testNoWarningsAndUndocumentedAPI"] });
+tasks.register("test").config({ dependsOn: ["testUnit", "testLsp", "testAPI", "testNoWarningsAndUndocumentedAPI", "typecheck"] });
 
-tasks.register("fixEslint", PnpmTask, { args: [...baseEslintArgs, "--fix"] });
+tasks.register("fixEslint", ExecTask, { command: "eslint", args: [".", "--quiet", "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });
 tasks.register("format").config({ dependsOn: ["fixEslint", "fixPrettier"] });
 tasks

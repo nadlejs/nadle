@@ -1,10 +1,12 @@
 {
-	"references": [
-		{
-			"path": "./tsconfig.eslint.json"
-		},
-		{
-			"path": "./tsconfig.build.json"
+	"extends": "../../tsconfig.base.json",
+	"include": ["src", "test", "bench", "vitest.config.ts", "tsup.config.ts"],
+	"exclude": ["test/__fixtures__/pnpm-task/src/fail.ts"],
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"setup": ["test/__setup__/index.js"]
 		}
-	]
+	}
 }

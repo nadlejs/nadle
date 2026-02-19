@@ -2,7 +2,7 @@ import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
 import { getStdout, createExec, withFixture } from "setup";
 
-describe.concurrent.skipIf(isWindows)("caching-env", () => {
+describe.skipIf(isWindows).concurrent("caching-env", () => {
 	it("should be up-to-date when env does not change", () =>
 		withFixture({
 			copyAll: true,

@@ -1,9 +1,12 @@
 {
 	"files": [],
 	"references": [
-		{ "path": "./packages/nadle/tsconfig.json" },
-		{ "path": "./packages/nadle-lsp/tsconfig.json" },
-		{ "path": "./packages/sample-app/tsconfig.json" },
+		{ "path": "./packages/nadle" },
+		{ "path": "./packages/create-nadle" },
+		{ "path": "./packages/nadle-lsp" },
+		{ "path": "./packages/nadle-vscode" },
+		{ "path": "./packages/docs" },
+		{ "path": "./packages/sample-app" },
 		{ "path": "./tsconfig.eslint.json" }
 	]
 }

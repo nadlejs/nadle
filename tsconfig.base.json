@@ -2,8 +2,8 @@
 	"extends": "./node_modules/@nadle/ts-config/tsconfig.json",
 	"compilerOptions": {
 		"allowJs": true,
+		"composite": true,
 		"skipLibCheck": true,
-		"noEmit": true,
 		"tsBuildInfoFile": "${configDir}/build/tsconfig.tsbuildinfo.json"
 	}
 }
