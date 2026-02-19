@@ -69,6 +69,9 @@ const config: Config = {
 	],
 
 	headTags: [
+		{ tagName: "link", attributes: { rel: "preconnect", href: "https://www.googletagmanager.com" } },
+		{ tagName: "link", attributes: { rel: "preconnect", href: "https://AE5FVNEEID-dsn.algolia.net", crossorigin: "anonymous" } },
+		{ tagName: "link", attributes: { rel: "dns-prefetch", href: "https://ghbtns.com" } },
 		{
 			tagName: "script",
 			attributes: { type: "application/ld+json" },
