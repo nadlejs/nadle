@@ -11,7 +11,7 @@ const files = fixture()
 	.dir("src/test")
 	.build();
 
-describe.skipIf(isWindows).concurrent("task-context-working-dir", () => {
+(isWindows ? describe.skip : describe).concurrent("task-context-working-dir", () => {
 	it("should resolve correct working dir regarding to the projectDir", () =>
 		withGeneratedFixture({
 			files,

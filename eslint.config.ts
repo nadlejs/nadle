@@ -23,7 +23,7 @@ const configs: ConfigArray = tsEslint.config(
 			parserOptions: {
 				tsconfigRootDir: import.meta.dirname,
 				projectService: {
-					allowDefaultProject: ["packages/nadle/nadle.mjs"]
+					allowDefaultProject: ["packages/nadle/nadle.mjs", "packages/create-nadle/create-nadle.mjs"]
 				}
 			}
 		}

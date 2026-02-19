@@ -18,8 +18,8 @@ tasks.register("prettier", ExecTask, {
 });
 tasks.register("knip", PnpmTask, { args: ["-r", "-F", "nadle", "-F", "create-nadle", "exec", "knip"] });
 tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({ workingDir: "./packages/validators" });
-tasks.register("typecheck", ExecTask, { command: "tsc", args: ["-b", "--noEmit"] });
-tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate", "typecheck"] });
+tasks.register("typecheck", ExecTask, { command: "tsc", args: ["-b", "--noEmit"] }).config({ dependsOn: ["buildNadle"] });
+tasks.register("check").config({ dependsOn: ["spell", "eslint", "prettier", "knip", "validate"] });
 
 tasks.register("buildNadle", PnpmTask, { args: ["-F", "nadle", "build"] }).config({
 	inputs: [Inputs.dirs("packages/nadle/src")],
@@ -89,7 +89,7 @@ tasks
 		}
 	})
 	.config({ dependsOn: ["testAPI"], workingDir: "./packages/nadle" });
-tasks.register("test").config({ dependsOn: ["testUnit", "testLsp", "testAPI", "testNoWarningsAndUndocumentedAPI"] });
+tasks.register("test").config({ dependsOn: ["testUnit", "testLsp", "testAPI", "testNoWarningsAndUndocumentedAPI", "typecheck"] });
 
 tasks.register("fixEslint", ExecTask, { command: "eslint", args: [".", "--quiet", "--fix"] });
 tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] });

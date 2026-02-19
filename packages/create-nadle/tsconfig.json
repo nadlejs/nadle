@@ -1,6 +1,6 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"include": ["src", "test", "vitest.config.ts", "tsup.config.ts", "create-nadle.mjs"],
+	"include": ["src", "test", "vitest.config.ts", "tsup.config.ts"],
 	"compilerOptions": {
 		"allowJs": true,
 		"baseUrl": ".",
