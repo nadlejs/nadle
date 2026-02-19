@@ -1,3 +1,8 @@
+---
+description: Learn how Nadle detects and manages monorepo workspaces, resolves cross-package tasks, and orchestrates builds across packages.
+keywords: [nadle, monorepo, workspaces, pnpm, task orchestration]
+---
+
 # Monorepo Support
 
 Nadle is designed for seamless monorepo management, making it easy to automate tasks across multiple packages and workspaces in a single repository.

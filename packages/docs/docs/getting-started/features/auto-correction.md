@@ -1,3 +1,8 @@
+---
+description: Nadle automatically corrects typos and partial task names using fuzzy matching, so misspelled commands still run the right task.
+keywords: [nadle, autocorrection, fuzzy matching, typo, CLI]
+---
+
 # Autocorrection
 
 Nadle helps prevent common mistakes by intelligently handling typos, partial names, and aliases when running tasks.

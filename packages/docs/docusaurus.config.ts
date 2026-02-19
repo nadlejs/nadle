@@ -41,7 +41,7 @@ const config: Config = {
 						xslt: true,
 						type: "all",
 						copyright: `Copyright © ${new Date().getFullYear()} Nadle team`,
-						description: "Keep up to date with upcoming Docusaurus releases and articles by following our feed!"
+						description: "Keep up to date with Nadle releases, features, and tips."
 					},
 					editUrl: ({ blogPath, blogDirPath }) => {
 						return `${GITHUB_REPO_URL}/edit/main/packages/docs/${blogDirPath}/${blogPath}`;
@@ -57,13 +57,59 @@ const config: Config = {
 				docs: {
 					sidebarPath: "./sidebars.ts",
 					editUrl: `${GITHUB_REPO_URL}/tree/main/packages/docs/`
+				},
+				sitemap: {
+					lastmod: "date",
+					changefreq: "weekly",
+					priority: 0.5
 				}
 			} satisfies Preset.Options
 		]
 	],
 
+	headTags: [
+		{
+			tagName: "script",
+			attributes: { type: "application/ld+json" },
+			innerHTML: JSON.stringify({
+				"@context": "https://schema.org",
+				"@graph": [
+					{
+						"@type": "WebSite",
+						name: "Nadle",
+						url: "https://nadle.dev"
+					},
+					{
+						"@type": "Organization",
+						name: "Nadle",
+						url: "https://nadle.dev",
+						logo: "https://nadle.dev/img/logo.svg",
+						sameAs: ["https://github.com/nadlejs/nadle"]
+					},
+					{
+						"@type": "SoftwareApplication",
+						name: "Nadle",
+						applicationCategory: "DeveloperApplication",
+						operatingSystem: "Cross-platform",
+						url: "https://nadle.dev",
+						offers: { "@type": "Offer", price: "0" },
+						description: "A modern, type-safe task runner for Node.js inspired by Gradle."
+					}
+				]
+			})
+		}
+	],
+
 	themeConfig: {
 		image: "img/nadle-social-card.jpg",
+		metadata: [
+			{ name: "twitter:card", content: "summary_large_image" },
+			{
+				name: "keywords",
+				content: "task runner, Node.js, TypeScript, build tool, monorepo, Gradle, nadle"
+			},
+			{ name: "author", content: "Nadle team" }
+		],
 		prism: {
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula

@@ -1,3 +1,8 @@
+---
+description: Complete reference for Nadle CLI options, configuration file settings, and nadle.config.ts schema for task runner customization.
+keywords: [nadle, configuration, CLI, nadle.config.ts, options, reference]
+---
+
 # Configuration Reference
 
 Nadle provides flexible configuration options through both CLI flags and the build configuration file.

@@ -1,3 +1,8 @@
+---
+description: Learn how Nadle discovers workspaces, resolves workspace identifiers, and manages per-workspace configuration in monorepo projects.
+keywords: [nadle, workspace, monorepo, detection, configuration]
+---
+
 # Workspace
 
 A **workspace** is typically a directory in the monorepo that contains its own code, configuration,
@@ -69,7 +74,7 @@ The reverse is not true—running a task in a sub-workspace does not automatical
 ## Labels and Aliases
 
 You can assign labels (or aliases) to workspaces in your Nadle config to simplify how they’re displayed or referenced (e.g., using `app` instead of `package:app`).
-To define these aliases, use the [`alias`](../api/index/interfaces/NadleFileOptions.md#alias) option in the configure function.
+To define these aliases, use the `alias` option in the configure function.
 
 **Example:**
 

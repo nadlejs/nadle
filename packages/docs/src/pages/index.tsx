@@ -491,21 +491,17 @@ const FinalCTA: FC = () => (
 
 /* ─── Page Layout ─────────────────────────────────────────────────────────── */
 
-const HomePage: FC = () => {
-	const { siteConfig } = useDocusaurusContext();
-
-	return (
-		<Layout title={`${siteConfig.title} — ${siteConfig.tagline}`} description="A modern, type-safe task runner for Node.js inspired by Gradle">
-			<main>
-				<Hero />
-				<CodeShowcase />
-				<FeatureHighlights />
-				<FeatureGrid />
-				<Credibility />
-				<FinalCTA />
-			</main>
-		</Layout>
-	);
-};
+const HomePage: FC = () => (
+	<Layout title="Modern, type-safe task runner for Node.js" description="A modern, type-safe task runner for Node.js inspired by Gradle">
+		<main>
+			<Hero />
+			<CodeShowcase />
+			<FeatureHighlights />
+			<FeatureGrid />
+			<Credibility />
+			<FinalCTA />
+		</main>
+	</Layout>
+);
 
 export default HomePage;

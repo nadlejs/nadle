@@ -1,3 +1,8 @@
+---
+description: Use the configure() function in nadle.config.ts to set global runtime options like log level, parallelism, and cache behavior.
+keywords: [nadle, configure, global settings, runtime, nadle.config.ts]
+---
+
 # Configuring Nadle
 
 In addition to CLI flags, Nadle can be configured programmatically within the `nadle.config.ts` file using the `configure()` function.

@@ -1,3 +1,8 @@
+---
+description: Get real-time diagnostics, autocompletion, and hover info for nadle.config.ts with the Nadle Language Server and VS Code extension.
+keywords: [nadle, editor, LSP, VS Code, language server, IntelliSense]
+---
+
 # Editor Support
 
 Nadle provides a Language Server (LSP) that brings intelligent editing features to `nadle.config.ts` files directly in your editor. Instead of running the CLI to discover errors, you get instant feedback as you type.

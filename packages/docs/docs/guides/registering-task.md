@@ -1,3 +1,8 @@
+---
+description: Register tasks in Nadle using tasks.register — as empty aggregation tasks, inline actions, or reusable defineTask classes.
+keywords: [nadle, register task, tasks.register, task registration]
+---
+
 # Registering Task
 
 Nadle supports three ways to register tasks using `tasks.register(...)`.

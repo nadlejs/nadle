@@ -1,3 +1,8 @@
+---
+description: Use the defineTask API to create reusable, type-safe task classes with custom options that integrate with Nadle's runtime.
+keywords: [nadle, defineTask, custom task, TypeScript, API, reusable]
+---
+
 # Defining Task
 
 To create reusable and configurable task logic, use the `defineTask` API. This allows you to encapsulate behavior in a type-safe, shareable way that can be used across multiple task registrations.

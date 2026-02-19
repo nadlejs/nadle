@@ -1,3 +1,8 @@
+---
+description: Install Nadle with npm, yarn, or pnpm and set up your first nadle.config.ts in minutes. Requires Node.js 22 or later.
+keywords: [nadle, install, npm, yarn, pnpm, setup, getting started]
+---
+
 # Installation
 
 Getting started with Nadle is straightforward. Follow these steps to add Nadle to your project.
