@@ -11,7 +11,7 @@ const SPEC_BASE_URL = process.env["DEPLOY_PRIME_URL"] || "https://nadle.dev";
 const config: Config = {
 	title: "Nadle",
 	favicon: "img/favicon.ico",
-	tagline: "A modern, type-safe task runner for Node.js",
+	tagline: "Sharp tasks. Fast builds.",
 
 	baseUrl: "/",
 	projectName: "nadle",
@@ -97,7 +97,7 @@ const config: Config = {
 						operatingSystem: "Cross-platform",
 						url: "https://nadle.dev",
 						offers: { "@type": "Offer", price: "0" },
-						description: "A modern, type-safe task runner for Node.js inspired by Gradle."
+						description: "A type-safe, Gradle-inspired task runner for Node.js. Sharp tasks. Fast builds."
 					}
 				]
 			})
