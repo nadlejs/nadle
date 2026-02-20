@@ -105,7 +105,7 @@ const config: Config = {
 	],
 
 	themeConfig: {
-		image: "img/nadle-social-card.jpg",
+		image: "img/nadle-social-card.png",
 		metadata: [
 			{ name: "twitter:card", content: "summary_large_image" },
 			{

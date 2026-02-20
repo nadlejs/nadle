@@ -37,3 +37,10 @@ jobs:
         run: |
           npm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}" # pnpm config set is broken
           pnpm publish -r --no-git-checks --provenance
+
+      - name: Publish VS Code Extension
+        if: startsWith(github.ref_name, 'nadle-vscode/')
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        working-directory: packages/nadle-vscode
+        run: npx @vscode/vsce publish
