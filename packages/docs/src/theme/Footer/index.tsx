@@ -59,7 +59,7 @@ const Footer: FC = () => (
 
 		<div className="max-w-6xl mx-auto px-6 pt-12 pb-8">
 			{/* Main grid */}
-			<div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-10 md:gap-8">
+			<div className="footer-grid">
 				{/* Brand column */}
 				<div>
 					<h3 className="text-white text-lg font-bold mb-2">Nadle</h3>

@@ -141,3 +141,18 @@ ol {
 	box-shadow: none;
 	color: #64748b;
 }
+
+/* ── Footer grid ── */
+/* Plain CSS to avoid Tailwind @layer !important conflicts */
+.footer-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+	.footer-grid {
+		grid-template-columns: 2fr 1fr 1fr 1fr;
+		gap: 2rem;
+	}
+}
