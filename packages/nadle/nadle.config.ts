@@ -1,3 +1,4 @@
+import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { tasks, Inputs, Outputs, ExecTask, PnpmTask } from "../../node_modules/nadle/lib/index.js";
@@ -31,7 +32,7 @@ tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" })
 });
 tasks
 	.register("testNoWarningsAndUndocumentedAPI", async () => {
-		const apiContent = await Fs.readFile("index.api.md", "utf-8");
+		const apiContent = await Fs.readFile(Path.join(import.meta.dirname, "index.api.md"), "utf-8");
 
 		if (apiContent.includes("Warning:")) {
 			throw new Error(`API documentation contains warnings`);
