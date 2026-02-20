@@ -1,7 +1,7 @@
 {
 	"name": "nadle-vscode",
 	"displayName": "Nadle",
-	"version": "0.0.1",
+	"version": "0.0.4",
 	"publisher": "nadlejs",
 	"icon": "icon.png",
 	"description": "VS Code extension for nadle.config.ts language support",
