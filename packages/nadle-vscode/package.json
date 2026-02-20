@@ -14,14 +14,12 @@
 		"publish": "vsce publish"
 	},
 	"main": "./lib/extension.js",
-	"dependencies": {
-		"vscode-languageclient": "^9.0.1"
-	},
 	"devDependencies": {
 		"@types/vscode": "^1.85.0",
 		"@vscode/vsce": "^3.7.1",
 		"tsup": "^8.5.1",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"vscode-languageclient": "^9.0.1"
 	},
 	"engines": {
 		"vscode": "^1.85.0",

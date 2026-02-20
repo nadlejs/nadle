@@ -7,5 +7,6 @@ export default defineConfig({
 	target: "node22",
 	external: ["vscode"],
 	tsconfig: "tsconfig.build.json",
-	entry: { extension: "src/extension.ts" }
+	entry: { extension: "src/extension.ts" },
+	noExternal: ["vscode-languageclient", "vscode-languageserver-protocol", "vscode-jsonrpc", "vscode-languageserver-types"]
 });

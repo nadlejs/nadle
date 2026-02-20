@@ -336,10 +336,6 @@ importers:
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/nadle-vscode:
-    dependencies:
-      vscode-languageclient:
-        specifier: ^9.0.1
-        version: 9.0.1
     devDependencies:
       '@types/vscode':
         specifier: ^1.85.0
@@ -353,6 +349,9 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      vscode-languageclient:
+        specifier: ^9.0.1
+        version: 9.0.1
 
   packages/validators:
     devDependencies:
