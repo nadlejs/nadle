@@ -1,5 +1,12 @@
 # create-nadle
 
+## [0.0.4](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.3...create-nadle/v0.0.4) (2026-02-20)
+
+
+### Internal
+
+* Move workspace tasks to workspace nadle configs ([#495](https://github.com/nadlejs/nadle/issues/495)) ([28b440e](https://github.com/nadlejs/nadle/commit/28b440ee247e3d87b1b1e848d2ea2f1c5c2afe5a))
+
 ## [0.0.3](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.2...create-nadle/v0.0.3) (2026-02-20)
 
 
