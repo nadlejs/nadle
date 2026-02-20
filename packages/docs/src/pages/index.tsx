@@ -93,7 +93,10 @@ const Hero: FC = () => {
 				<Heading as="h1" className="text-5xl md:text-7xl font-extrabold tracking-tight text-white !mb-0">
 					{siteConfig.title}
 				</Heading>
-				<p className="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed">Gradle-inspired. TypeScript-first. Built for speed.</p>
+				<p className="text-xl md:text-2xl font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+					{siteConfig.tagline}
+				</p>
+				<p className="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed !mt-0">A type-safe, Gradle-inspired task runner for Node.js.</p>
 				<InstallCommand />
 				<div className="flex flex-wrap items-center justify-center gap-4 mt-2">
 					<Link
@@ -515,7 +518,7 @@ const FinalCTA: FC = () => (
 /* ─── Page Layout ─────────────────────────────────────────────────────────── */
 
 const HomePage: FC = () => (
-	<Layout title="Modern, type-safe task runner for Node.js" description="A modern, type-safe task runner for Node.js inspired by Gradle">
+	<Layout title="Sharp tasks. Fast builds." description="A type-safe, Gradle-inspired task runner for Node.js. Sharp tasks. Fast builds.">
 		<main>
 			<Hero />
 			<CodeShowcase />
