@@ -31,7 +31,8 @@ jobs:
       - name: Build
         run: nadle build
 
-      - name: Release
+      - name: Publish to npm
+        if: ${{ !startsWith(github.ref_name, 'nadle-vscode/') }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
