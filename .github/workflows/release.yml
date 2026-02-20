@@ -33,11 +33,7 @@ jobs:
 
       - name: Publish to npm
         if: ${{ !startsWith(github.ref_name, 'nadle-vscode/') }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}" # pnpm config set is broken
-          pnpm publish -r --no-git-checks --provenance
+        run: pnpm publish -r --no-git-checks --provenance
 
       - name: Publish VS Code Extension
         if: startsWith(github.ref_name, 'nadle-vscode/')
