@@ -126,6 +126,7 @@ const config: Config = {
 			apiKey: "15c38b0ee7e6e3d2f082f87568cbb4fa"
 		},
 		navbar: {
+			style: "dark",
 			title: "Nadle",
 			logo: {
 				alt: "Nadle Logo",
@@ -151,42 +152,6 @@ const config: Config = {
 					href: GITHUB_REPO_URL,
 					className: "header-github-link",
 					"aria-label": "GitHub repository"
-				}
-			]
-		},
-		footer: {
-			style: "dark",
-			copyright: `Copyright © ${new Date().getFullYear()} Nadle. Built with Docusaurus.`,
-			links: [
-				{
-					title: "Documentation",
-					items: [
-						{
-							label: "Introduction",
-							to: "/docs/introduction"
-						},
-						{
-							label: "Installation",
-							to: "/docs/getting-started/installation"
-						},
-						{
-							label: "Features",
-							to: "/docs/getting-started/features"
-						},
-						{
-							label: "Specification",
-							href: `${SPEC_BASE_URL}/spec/`
-						}
-					]
-				},
-				{
-					title: "More",
-					items: [
-						{
-							label: "GitHub",
-							href: GITHUB_REPO_URL
-						}
-					]
 				}
 			]
 		}

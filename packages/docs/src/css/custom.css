@@ -30,3 +30,90 @@ ol {
 .header-github-link:hover::before {
 	background-color: var(--ifm-navbar-link-hover-color);
 }
+
+/* ── Navbar dark redesign ── */
+.navbar--dark {
+	--ifm-navbar-background-color: #0f172a;
+	--ifm-navbar-shadow: none;
+	--ifm-navbar-link-color: #94a3b8;
+	--ifm-navbar-link-hover-color: #ffffff;
+
+	border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.navbar--dark .navbar__title {
+	color: #ffffff;
+	font-weight: 700;
+}
+
+.navbar--dark .navbar__link--active {
+	color: #22d3ee;
+}
+
+/* Version badge */
+.navbar-version-label {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.75rem;
+	line-height: 1;
+	padding: 0.25rem 0.5rem;
+	border-radius: 9999px;
+	color: #22d3ee;
+	background: rgba(34, 211, 238, 0.1);
+	border: 1px solid rgba(34, 211, 238, 0.2);
+	transition: color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+}
+
+.navbar-version-label:hover {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+/* Mobile sidebar */
+.navbar-sidebar {
+	background: #0f172a;
+}
+
+.navbar-sidebar .navbar__brand {
+	background: #0f172a;
+	border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.navbar-sidebar .navbar__link {
+	color: #94a3b8;
+}
+
+.navbar-sidebar .navbar__link:hover {
+	color: #ffffff;
+}
+
+.navbar-sidebar .navbar__link--active {
+	color: #22d3ee;
+}
+
+/* DocSearch button */
+.navbar--dark .DocSearch-Button {
+	background: rgba(148, 163, 184, 0.1);
+	border: 1px solid rgba(148, 163, 184, 0.1);
+	border-radius: 8px;
+	color: #94a3b8;
+}
+
+.navbar--dark .DocSearch-Button:hover {
+	background: rgba(148, 163, 184, 0.15);
+	box-shadow: none;
+}
+
+.navbar--dark .DocSearch-Button .DocSearch-Search-Icon {
+	color: #94a3b8;
+}
+
+.navbar--dark .DocSearch-Button-Placeholder {
+	color: #64748b;
+}
+
+.navbar--dark .DocSearch-Button-Keys .DocSearch-Button-Key {
+	background: rgba(148, 163, 184, 0.1);
+	border: 1px solid rgba(148, 163, 184, 0.15);
+	box-shadow: none;
+	color: #64748b;
+}
