@@ -221,6 +221,7 @@ const FIELD_ORDER = [
 	"displayName",
 	"version",
 	"publisher",
+	"icon",
 	"description",
 	"license",
 	"type",

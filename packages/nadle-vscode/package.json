@@ -3,6 +3,7 @@
 	"displayName": "Nadle",
 	"version": "0.0.1",
 	"publisher": "nadlejs",
+	"icon": "icon.png",
 	"description": "VS Code extension for nadle.config.ts language support",
 	"license": "MIT",
 	"type": "commonjs",
