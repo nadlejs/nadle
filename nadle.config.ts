@@ -1,4 +1,4 @@
-import { tasks, ExecTask, PnpmTask, DeleteTask } from "nadle";
+import { tasks, ExecTask, PnpmTask, DeleteTask } from "./node_modules/nadle/lib/index.js";
 
 // --- Maintenance ---
 

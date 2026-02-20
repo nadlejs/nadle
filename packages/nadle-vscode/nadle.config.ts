@@ -1,4 +1,4 @@
-import { tasks, Inputs, Outputs, ExecTask } from "nadle";
+import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
 tasks.register("copyServer", ExecTask, { command: "node", args: ["scripts/copy-server.mjs"] }).config({
 	group: "Building",

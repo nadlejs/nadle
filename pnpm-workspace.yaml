@@ -4,3 +4,4 @@ packages:
   - "!**/__fixtures__/**"
   - "!./packages/sample-app"
   - "!./packages/examples/**"
+  - "!./packages/nadle-vscode/server"

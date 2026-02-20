@@ -1,4 +1,4 @@
-import { tasks, Inputs, Outputs, ExecTask } from "nadle";
+import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
 tasks.register("buildSpec", ExecTask, { command: "npx", args: ["tsx", "scripts/build-spec.ts"] }).config({
 	group: "Building",
