@@ -27,8 +27,7 @@
 					"path": "src/core/nadle.ts"
 				}
 			],
-			"release-type": "node",
-			"release-as": "0.5.1"
+			"release-type": "node"
 		},
 		"packages/create-nadle": {
 			"release-type": "node"
