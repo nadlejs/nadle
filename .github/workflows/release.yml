@@ -28,12 +28,16 @@ jobs:
 
       - uses: ./.github/actions/setup
 
+      - name: Parse tag
+        id: parse-tag
+        run: echo "package=${GITHUB_REF_NAME%%/*}" >> "$GITHUB_OUTPUT"
+
       - name: Build
         run: nadle build
 
       - name: Publish to npm
         if: ${{ !startsWith(github.ref_name, 'nadle-vscode/') }}
-        run: pnpm publish -r --no-git-checks --provenance
+        run: pnpm --filter "./packages/${{ steps.parse-tag.outputs.package }}" publish --no-git-checks --provenance
 
       - name: Publish VS Code Extension
         if: startsWith(github.ref_name, 'nadle-vscode/')
