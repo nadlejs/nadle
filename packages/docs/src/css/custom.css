@@ -4,6 +4,29 @@
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
+/* ── Documentation theme colors ── */
+:root {
+	--ifm-color-primary: #0891b2;
+	--ifm-color-primary-dark: #0e7490;
+	--ifm-color-primary-darker: #155e75;
+	--ifm-color-primary-darkest: #164e63;
+	--ifm-color-primary-light: #06b6d4;
+	--ifm-color-primary-lighter: #22d3ee;
+	--ifm-color-primary-lightest: #67e8f9;
+	--ifm-link-color: var(--ifm-color-primary);
+}
+
+[data-theme="dark"] {
+	--ifm-color-primary: #22d3ee;
+	--ifm-color-primary-dark: #06b6d4;
+	--ifm-color-primary-darker: #0891b2;
+	--ifm-color-primary-darkest: #0e7490;
+	--ifm-color-primary-light: #67e8f9;
+	--ifm-color-primary-lighter: #a5f3fc;
+	--ifm-color-primary-lightest: #cffafe;
+	--ifm-link-color: var(--ifm-color-primary);
+}
+
 svg {
 	display: inline;
 	vertical-align: baseline;
