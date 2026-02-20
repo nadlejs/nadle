@@ -6,7 +6,6 @@
 		{ "path": "./packages/nadle-lsp" },
 		{ "path": "./packages/nadle-vscode" },
 		{ "path": "./packages/docs" },
-		{ "path": "./packages/sample-app" },
 		{ "path": "./tsconfig.eslint.json" }
 	]
 }

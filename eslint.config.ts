@@ -13,6 +13,7 @@ const configs: ConfigArray = tsEslint.config(
 			"**/__temp__",
 			"**/node_modules/",
 			"**/.docusaurus",
+			"packages/nadle-vscode/server/",
 			"packages/nadle/test/__fixtures__/mixed-ts-js/nadle.config.js",
 			"packages/nadle-lsp/test/__fixtures__/config.js",
 			"packages/nadle-lsp/test/__fixtures__/config.mjs"
@@ -96,7 +97,7 @@ const configs: ConfigArray = tsEslint.config(
 		rules: {
 			"n/no-extraneous-import": "off"
 		},
-		files: ["packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
+		files: ["packages/*/nadle.config.ts", "packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
 	},
 	{
 		files: ["packages/nadle-lsp/test/__fixtures__/**"],
