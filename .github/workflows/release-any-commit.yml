@@ -35,6 +35,6 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Build
-        run: npx nadle build
+        run: nadle build
 
       - run: pnpm dlx pkg-pr-new publish --bin --comment=update --exclude nadle-vscode './packages/*'
