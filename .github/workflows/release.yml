@@ -29,7 +29,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Build
-        run: npx nadle build
+        run: nadle build
 
       - name: Release
         env:

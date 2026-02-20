@@ -47,13 +47,13 @@ jobs:
 
       - name: Check
         if: runner.os == 'Linux'
-        run: npx nadle check
+        run: nadle check
 
       - name: Build
-        run: npx nadle build
+        run: nadle build
 
       - name: Test
-        run: npx nadle test --summary
+        run: nadle test --summary
 
       - name: Coverage
         if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22'
