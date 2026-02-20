@@ -18,7 +18,7 @@ tasks.register("build").config({
 	description: "Build nadle-lsp package"
 });
 
-tasks.register("test", ExecTask, { args: ["run"], command: "vitest" }).config({
+tasks.register("test", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Run LSP unit tests"
