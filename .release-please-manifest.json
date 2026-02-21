@@ -2,5 +2,5 @@
 	"packages/nadle": "0.5.1",
 	"packages/create-nadle": "0.0.4",
 	"packages/nadle-vscode": "0.0.5",
-	"packages/nadle-lsp": "0.0.1"
+	"packages/language-server": "0.0.1"
 }

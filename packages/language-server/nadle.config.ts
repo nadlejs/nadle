@@ -2,7 +2,7 @@ import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/i
 
 tasks.register("buildJs", ExecTask, { command: "npx", args: ["tsup"] }).config({
 	group: "Building",
-	description: "Bundle nadle-lsp with tsup"
+	description: "Bundle language-server with tsup"
 });
 
 tasks.register("buildDts", ExecTask, { command: "npx", args: ["tsc", "-p", "tsconfig.build.json"] }).config({
@@ -15,7 +15,7 @@ tasks.register("build").config({
 	inputs: [Inputs.dirs("src")],
 	outputs: [Outputs.dirs("lib")],
 	dependsOn: ["buildJs", "buildDts"],
-	description: "Build nadle-lsp package"
+	description: "Build language-server package"
 });
 
 tasks.register("test", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({

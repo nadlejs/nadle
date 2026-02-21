@@ -75,7 +75,13 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 	}
 
 	if (!isPrivate(pkg)) {
-		throw new Error("Unhandled package name validation for public packages");
+		const expectedName = `@nadle/${dirName}`;
+
+		if (name !== expectedName) {
+			throw new Error("Public scoped package name must match its directory. Expected: " + expectedName + ". Got: " + name);
+		}
+
+		return;
 	}
 
 	if (name === "@nadle/root") {

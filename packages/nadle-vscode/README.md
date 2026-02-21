@@ -21,7 +21,7 @@ The extension activates on all Nadle config file formats:
 1. Build the LSP server:
 
    ```sh
-   pnpm -F nadle-lsp build:tsup
+   pnpm -F @nadle/language-server build:tsup
    ```
 
 2. Build the VS Code extension:

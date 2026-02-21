@@ -63,14 +63,14 @@ Install the [Nadle extension](https://marketplace.visualstudio.com/items?itemNam
 Install the language server:
 
 ```sh
-npm install -g nadle-lsp
+npm install -g @nadle/language-server
 ```
 
 Neovim 0.11+ has built-in LSP support via `vim.lsp.config`. Add the following to your Neovim configuration:
 
 ```lua
 vim.lsp.config["nadle"] = {
-  cmd = { "nadle-lsp" },
+  cmd = { "language-server" },
   filetypes = { "typescript", "javascript" },
   root_markers = { "nadle.config.ts", "nadle.config.js" },
 }
@@ -82,7 +82,7 @@ vim.lsp.enable("nadle")
 Install the language server:
 
 ```sh
-npm install -g nadle-lsp
+npm install -g @nadle/language-server
 ```
 
 Add a `nadle` entry under `lsp` in your Zed `settings.json`:
@@ -92,7 +92,7 @@ Add a `nadle` entry under `lsp` in your Zed `settings.json`:
 	"lsp": {
 		"nadle": {
 			"binary": {
-				"path": "nadle-lsp"
+				"path": "language-server"
 			}
 		}
 	}
@@ -104,14 +104,14 @@ Add a `nadle` entry under `lsp` in your Zed `settings.json`:
 Install the language server:
 
 ```sh
-npm install -g nadle-lsp
+npm install -g @nadle/language-server
 ```
 
 Add the following to your `languages.toml`:
 
 ```toml
 [language-server.nadle]
-command = "nadle-lsp"
+command = "language-server"
 
 [[language]]
 name = "typescript"
@@ -119,5 +119,5 @@ language-servers = ["typescript-language-server", "nadle"]
 ```
 
 :::tip
-Any LSP-capable editor works — point it to `nadle-lsp` as the server command. The server communicates over stdio, so no port configuration is needed.
+Any LSP-capable editor works — point it to `language-server` as the server command. The server communicates over stdio, so no port configuration is needed.
 :::
