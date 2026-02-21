@@ -19,7 +19,11 @@ tasks
 		command: "eslint",
 		args: [".", "--quiet", "--cache", "--cache-location", "node_modules/.cache/eslint/"]
 	})
-	.config({ group: "Checking", description: "Lint all files with ESLint" });
+	.config({
+		group: "Checking",
+		description: "Lint all files with ESLint",
+		dependsOn: ["packages:eslint-plugin:build"]
+	});
 tasks
 	.register("prettier", ExecTask, {
 		command: "prettier",

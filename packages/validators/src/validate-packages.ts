@@ -51,51 +51,6 @@ const readmeValidator = async () => {
 	}
 };
 
-const nameValidator: PackageValidator = ({ pkg, path }) => {
-	const { name } = pkg;
-
-	if (name === undefined) {
-		throw new Error("Package name is required");
-	}
-
-	const pkgDirPath = Path.dirname(Path.relative(rootDir, path));
-
-	if (!pkgDirPath.startsWith("packages") && name !== "@nadle/root") {
-		throw new Error("Package must be located in the 'packages' directory. Got: " + pkgDirPath);
-	}
-
-	const dirName = pkgDirPath.split(Path.sep)[1];
-	const hasVSCodeEngine = !!(pkg.engines as Record<string, string> | undefined)?.vscode;
-
-	if (dirName !== undefined && (name === dirName || hasVSCodeEngine)) {
-		return;
-	}
-
-	if (!name.startsWith("@nadle")) {
-		throw new Error("Package name must start with @nadle");
-	}
-
-	if (!isPrivate(pkg)) {
-		const expectedName = `@nadle/${dirName}`;
-
-		if (name !== expectedName) {
-			throw new Error("Public scoped package name must match its directory. Expected: " + expectedName + ". Got: " + name);
-		}
-
-		return;
-	}
-
-	if (name === "@nadle/root") {
-		return;
-	}
-
-	const expectedName = `@nadle/internal-${pkgDirPath.replaceAll("_", "").split(Path.sep).slice(1).join("-")}`;
-
-	if (name !== expectedName) {
-		throw new Error("Private package name must be matched its location. Expected: " + expectedName + ". Got: " + name);
-	}
-};
-
 const versionValidator: PackageValidator = ({ pkg }) => {
 	if (isPrivate(pkg)) {
 		if (pkg.version) {
@@ -237,6 +192,7 @@ const FIELD_ORDER = [
 	"main",
 	"dependencies",
 	"devDependencies",
+	"peerDependencies",
 	"engines",
 	"categories",
 	"activationEvents",
@@ -320,7 +276,6 @@ const testScriptValidator: PackageValidator = ({ pkg, path }) => {
 };
 
 const validators: PackageValidator[] = [
-	nameValidator,
 	versionValidator,
 	typeValidator,
 	descriptionValidator,

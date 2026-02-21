@@ -1,0 +1,58 @@
+{
+	"name": "eslint-plugin-nadle",
+	"version": "0.0.1",
+	"description": "The official ESLint plugin for Nadle",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "nadle build",
+		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
+		"test": "nadle test"
+	},
+	"files": [
+		"lib"
+	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js"
+		}
+	},
+	"types": "lib/index.d.ts",
+	"devDependencies": {
+		"@types/node": "^20.19.25",
+		"@typescript-eslint/rule-tester": "~8.56.0",
+		"@typescript-eslint/utils": "~8.56.0",
+		"typescript": "^5.9.3",
+		"vitest": "4.0.18"
+	},
+	"peerDependencies": {
+		"eslint": "^9.0.0"
+	},
+	"engines": {
+		"node": ">=22"
+	},
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nadlejs/nadle.git",
+		"directory": "packages/eslint-plugin"
+	},
+	"keywords": [
+		"eslint",
+		"eslintplugin",
+		"eslint-plugin",
+		"nadle",
+		"task-runner",
+		"typescript"
+	],
+	"homepage": "https://nadle.dev",
+	"bugs": "https://github.com/nadlejs/nadle/issues",
+	"publishConfig": {
+		"access": "public"
+	}
+}

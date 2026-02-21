@@ -34,6 +34,9 @@
 		},
 		"packages/language-server": {
 			"release-type": "node"
+		},
+		"packages/eslint-plugin": {
+			"release-type": "node"
 		}
 	},
 	"plugins": [{ "type": "sentence-case" }]

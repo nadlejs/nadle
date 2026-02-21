@@ -1,10 +1,12 @@
 import nadle from "@nadle/eslint-config";
 import vitest from "@vitest/eslint-plugin";
+import nadlePlugin from "eslint-plugin-nadle";
 import tsEslint, { type ConfigArray } from "typescript-eslint";
 
 const configs: ConfigArray = tsEslint.config(
 	...nadle.configs.recommended,
 	nadle.configs.react,
+	nadlePlugin.configs.recommended,
 	{
 		ignores: [
 			"**/lib",
@@ -98,6 +100,22 @@ const configs: ConfigArray = tsEslint.config(
 			"n/no-extraneous-import": "off"
 		},
 		files: ["packages/*/nadle.config.ts", "packages/nadle/test/__fixtures__/pnpm-workspaces/**/nadle.config.ts"]
+	},
+	{
+		files: ["packages/nadle/test/__fixtures__/**/nadle.config.*", "packages/sample-app/nadle.config.*"],
+		rules: {
+			"nadle/no-process-cwd": "off",
+			"nadle/valid-task-name": "off",
+			"nadle/valid-depends-on": "off",
+			"nadle/no-anonymous-tasks": "off",
+			"nadle/require-task-inputs": "off",
+			"nadle/prefer-builtin-task": "off",
+			"nadle/padding-between-tasks": "off",
+			"nadle/no-sync-in-task-action": "off",
+			"nadle/no-duplicate-task-names": "off",
+			"nadle/no-circular-dependencies": "off",
+			"nadle/require-task-description": "off"
+		}
 	},
 	{
 		files: ["packages/language-server/test/__fixtures__/**"],
