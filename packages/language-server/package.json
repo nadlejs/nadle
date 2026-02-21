@@ -13,7 +13,7 @@
 	},
 	"files": [
 		"lib",
-		"language-server.mjs",
+		"server.mjs",
 		"LICENSE"
 	],
 	"exports": {
@@ -22,7 +22,7 @@
 			"import": "./lib/index.js"
 		}
 	},
-	"bin": "language-server.mjs",
+	"bin": "server.mjs",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"typescript": "^5.9.3",
