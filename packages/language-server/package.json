@@ -1,6 +1,6 @@
 {
 	"name": "@nadle/language-server",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Language Server Protocol support for nadle.config.ts files",
 	"license": "MIT",
 	"type": "module",
