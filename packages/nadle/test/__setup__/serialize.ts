@@ -11,8 +11,13 @@ export function serialize(input: string): string {
 		serializeHash,
 		serializeVersion,
 		removeUnstableLines,
+		collapseBlankLines,
 		removeTrailingSpaces
 	].reduce((result, serializer) => serializer(result), input);
+}
+
+function collapseBlankLines(input: string) {
+	return input.replace(/\n{3,}/g, "\n\n");
 }
 
 function removeTrailingSpaces(input: string) {
@@ -22,7 +27,7 @@ function removeTrailingSpaces(input: string) {
 		.join("\n");
 }
 
-const UnstableLines = ["ExperimentalWarning", "--trace-warnings", "npm warn"];
+const UnstableLines = ["ExperimentalWarning", "--trace-warnings", "npm warn", "npm notice"];
 
 function removeUnstableLines(input: string) {
 	return input
