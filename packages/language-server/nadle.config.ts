@@ -1,21 +1,10 @@
 import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("buildJs", ExecTask, { command: "npx", args: ["tsup"] }).config({
-	group: "Building",
-	description: "Bundle language-server with tsup"
-});
-
-tasks.register("buildDts", ExecTask, { command: "npx", args: ["tsc", "-p", "tsconfig.build.json"] }).config({
-	group: "Building",
-	description: "Type-check and emit declarations"
-});
-
-tasks.register("build").config({
+tasks.register("build", ExecTask, { command: "npx", args: ["tsup"] }).config({
 	group: "Building",
 	inputs: [Inputs.dirs("src")],
 	outputs: [Outputs.dirs("lib")],
-	dependsOn: ["buildJs", "buildDts"],
-	description: "Build language-server package"
+	description: "Bundle language-server with tsup"
 });
 
 tasks.register("test", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
