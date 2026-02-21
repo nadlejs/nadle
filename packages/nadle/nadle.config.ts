@@ -1,7 +1,7 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { tasks, Inputs, Outputs, ExecTask, PnpmTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
 tasks.register("buildJs", ExecTask, { command: "npx", args: ["tsup"] }).config({
 	group: "Building",
@@ -47,7 +47,7 @@ tasks
 		dependsOn: ["testAPI"],
 		description: "Ensure no API warnings or undocumented items"
 	});
-tasks.register("testUnit", PnpmTask, { args: ["test"] }).config({
+tasks.register("testUnit", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Run unit tests"
