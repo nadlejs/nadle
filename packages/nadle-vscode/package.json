@@ -12,6 +12,12 @@
 		"package": "vsce package",
 		"publish": "vsce publish"
 	},
+	"files": [
+		"lib",
+		"server",
+		"icon.png",
+		"LICENSE"
+	],
 	"main": "./lib/extension.js",
 	"devDependencies": {
 		"@types/vscode": "^1.85.0",
