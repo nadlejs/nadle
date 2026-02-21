@@ -18,7 +18,8 @@ const configs: ConfigArray = tsEslint.config(
 			"packages/vscode-extension/server/",
 			"packages/nadle/test/__fixtures__/mixed-ts-js/nadle.config.js",
 			"packages/language-server/test/__fixtures__/config.js",
-			"packages/language-server/test/__fixtures__/config.mjs"
+			"packages/language-server/test/__fixtures__/config.mjs",
+			"packages/nadle/test/__fixtures__/node-task/src/*.mjs"
 		]
 	},
 	{

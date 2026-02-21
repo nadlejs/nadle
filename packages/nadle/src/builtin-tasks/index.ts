@@ -1,5 +1,6 @@
 export * from "./npm-task.js";
 export * from "./npx-task.js";
+export * from "./node-task.js";
 export * from "./pnpm-task.js";
 export * from "./pnpx-task.js";
 export * from "./exec-task.js";

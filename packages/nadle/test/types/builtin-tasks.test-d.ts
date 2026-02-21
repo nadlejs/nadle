@@ -3,6 +3,7 @@ import { it, describe, expectTypeOf } from "vitest";
 import {
 	NpmTask,
 	NpxTask,
+	NodeTask,
 	CopyTask,
 	ExecTask,
 	PnpmTask,
@@ -12,6 +13,7 @@ import {
 	type MaybeArray,
 	type NpmTaskOptions,
 	type NpxTaskOptions,
+	type NodeTaskOptions,
 	type CopyTaskOptions,
 	type ExecTaskOptions,
 	type PnpmTaskOptions,
@@ -27,6 +29,17 @@ describe.concurrent("ExecTask", () => {
 	it("ExecTaskOptions has command and optional args", () => {
 		expectTypeOf<ExecTaskOptions["command"]>().toEqualTypeOf<string>();
 		expectTypeOf<ExecTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
+	});
+});
+
+describe.concurrent("NodeTask", () => {
+	it("satisfies Task<NodeTaskOptions>", () => {
+		expectTypeOf(NodeTask).toEqualTypeOf<Task<NodeTaskOptions>>();
+	});
+
+	it("NodeTaskOptions has script and optional args", () => {
+		expectTypeOf<NodeTaskOptions["script"]>().toEqualTypeOf<string>();
+		expectTypeOf<NodeTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
 	});
 });
 

@@ -1,6 +1,6 @@
 # 10 — Built-in Task Types
 
-Nadle provides seven built-in reusable task types, all created via `defineTask()`.
+Nadle provides eight built-in reusable task types, all created via `defineTask()`.
 
 ## ExecTask
 
@@ -36,6 +36,26 @@ Executes a pnpm command. Specialized variant of ExecTask with `pnpm` as the comm
 
 1. Normalize arguments to an array.
 2. Spawn `pnpm` with the arguments.
+3. Set working directory to the task's `workingDir`.
+4. Force color output (`FORCE_COLOR=1`).
+5. Stream combined output to the task logger.
+6. Await subprocess completion.
+
+## NodeTask
+
+Executes a Node.js script. Specialized variant of ExecTask with `node` as the command.
+
+### Options
+
+| Field    | Type                       | Required | Description                     |
+| -------- | -------------------------- | -------- | ------------------------------- |
+| `script` | string                     | Yes      | The script to execute via node. |
+| `args`   | string or array of strings | No       | Arguments for the script.       |
+
+### Behavior
+
+1. Normalize arguments to an array.
+2. Spawn `node <script> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
 5. Stream combined output to the task logger.
@@ -154,7 +174,7 @@ Deletes files and directories using glob patterns.
 All built-in tasks share these characteristics:
 
 - They all respect the `workingDir` from the runner context.
-- ExecTask, NpmTask, NpxTask, PnpmTask, and PnpxTask force color output via `FORCE_COLOR=1` environment variable.
+- ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, and PnpxTask force color output via `FORCE_COLOR=1` environment variable.
 - All tasks stream output through the task logger.
 
 ## Custom Task Types

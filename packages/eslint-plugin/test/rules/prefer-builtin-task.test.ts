@@ -81,6 +81,11 @@ ruleTester.run("prefer-builtin-task", rule, {
 			errors: [{ messageId: "preferNpx", data: { name: "execa" } }],
 			code: 'tasks.register("build", async () => { await execa("npx", ["tsc"]); });'
 		},
+		// NodeTask: execa("node", ...)
+		{
+			errors: [{ messageId: "preferNode", data: { name: "execa" } }],
+			code: 'tasks.register("run", async () => { await execa("node", ["script.js"]); });'
+		},
 		// NpmTask: execa("npm", ...)
 		{
 			errors: [{ messageId: "preferNpm", data: { name: "execa" } }],

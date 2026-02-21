@@ -7,7 +7,7 @@ keywords: [nadle, defineTask, custom task, TypeScript, API, reusable]
 
 To create reusable and configurable task logic, use the `defineTask` API. This allows you to encapsulate behavior in a type-safe, shareable way that can be used across multiple task registrations.
 
-This is particularly useful for implementing tasks like `CopyTask`, `ExecTask`, `PnpxTask`, or any custom logic that accepts parameters and integrates cleanly with Nadle’s runtime.
+This is particularly useful for implementing tasks like `CopyTask`, `ExecTask`, `NodeTask`, `PnpxTask`, or any custom logic that accepts parameters and integrates cleanly with Nadle’s runtime.
 
 ---
 
