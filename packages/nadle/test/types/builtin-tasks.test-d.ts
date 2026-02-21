@@ -24,9 +24,9 @@ describe.concurrent("ExecTask", () => {
 		expectTypeOf(ExecTask).toEqualTypeOf<Task<ExecTaskOptions>>();
 	});
 
-	it("ExecTaskOptions has command and args", () => {
+	it("ExecTaskOptions has command and optional args", () => {
 		expectTypeOf<ExecTaskOptions["command"]>().toEqualTypeOf<string>();
-		expectTypeOf<ExecTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string>>();
+		expectTypeOf<ExecTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
 	});
 });
 
@@ -55,9 +55,9 @@ describe.concurrent("PnpxTask", () => {
 		expectTypeOf(PnpxTask).toEqualTypeOf<Task<PnpxTaskOptions>>();
 	});
 
-	it("PnpxTaskOptions has command and args", () => {
+	it("PnpxTaskOptions has command and optional args", () => {
 		expectTypeOf<PnpxTaskOptions["command"]>().toEqualTypeOf<string>();
-		expectTypeOf<PnpxTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string>>();
+		expectTypeOf<PnpxTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
 	});
 });
 
@@ -66,9 +66,9 @@ describe.concurrent("NpxTask", () => {
 		expectTypeOf(NpxTask).toEqualTypeOf<Task<NpxTaskOptions>>();
 	});
 
-	it("NpxTaskOptions has command and args", () => {
+	it("NpxTaskOptions has command and optional args", () => {
 		expectTypeOf<NpxTaskOptions["command"]>().toEqualTypeOf<string>();
-		expectTypeOf<NpxTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string>>();
+		expectTypeOf<NpxTaskOptions["args"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
 	});
 });
 

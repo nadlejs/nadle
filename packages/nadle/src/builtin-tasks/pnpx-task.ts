@@ -9,8 +9,8 @@ import { defineTask } from "../core/registration/define-task.js";
 export interface PnpxTaskOptions {
 	/** The command to execute via pnpm exec. */
 	readonly command: string;
-	/** Arguments for the command. */
-	readonly args: MaybeArray<string>;
+	/** Arguments for the command. Defaults to none. */
+	readonly args?: MaybeArray<string>;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface PnpxTaskOptions {
  */
 export const PnpxTask = defineTask<PnpxTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = MaybeArray.toArray(options.args);
+		const args = options.args == null ? [] : MaybeArray.toArray(options.args);
 
 		context.logger.info(`Running pnpm exec command: pnpm exec ${options.command} ${args.join(" ")}`);
 

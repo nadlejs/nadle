@@ -11,7 +11,7 @@ Executes an arbitrary external command.
 | Field     | Type                       | Required | Description                                                                                 |
 | --------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------- |
 | `command` | string                     | Yes      | The command to execute.                                                                     |
-| `args`    | string or array of strings | Yes      | Arguments for the command. If a string, it is parsed into arguments by splitting on spaces. |
+| `args`    | string or array of strings | No       | Arguments for the command. If a string, it is parsed into arguments by splitting on spaces. |
 
 ### Behavior
 
@@ -70,7 +70,7 @@ for running binaries from `node_modules/.bin` through pnpm.
 | Field     | Type                       | Required | Description                             |
 | --------- | -------------------------- | -------- | --------------------------------------- |
 | `command` | string                     | Yes      | The command to execute via `pnpm exec`. |
-| `args`    | string or array of strings | Yes      | Arguments for the command.              |
+| `args`    | string or array of strings | No       | Arguments for the command.              |
 
 ### Behavior
 
@@ -91,7 +91,7 @@ for running binaries from `node_modules/.bin` through npx.
 | Field     | Type                       | Required | Description                       |
 | --------- | -------------------------- | -------- | --------------------------------- |
 | `command` | string                     | Yes      | The command to execute via `npx`. |
-| `args`    | string or array of strings | Yes      | Arguments for the command.        |
+| `args`    | string or array of strings | No       | Arguments for the command.        |
 
 ### Behavior
 

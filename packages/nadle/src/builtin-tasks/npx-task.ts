@@ -9,8 +9,8 @@ import { defineTask } from "../core/registration/define-task.js";
 export interface NpxTaskOptions {
 	/** The command to execute via npx. */
 	readonly command: string;
-	/** Arguments for the command. */
-	readonly args: MaybeArray<string>;
+	/** Arguments for the command. Defaults to none. */
+	readonly args?: MaybeArray<string>;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface NpxTaskOptions {
  */
 export const NpxTask = defineTask<NpxTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = MaybeArray.toArray(options.args);
+		const args = options.args == null ? [] : MaybeArray.toArray(options.args);
 
 		context.logger.info(`Running npx command: npx ${options.command} ${args.join(" ")}`);
 

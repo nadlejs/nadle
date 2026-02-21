@@ -59,7 +59,7 @@ export const ExecTask: Task<ExecTaskOptions>;
 
 // @public
 export interface ExecTaskOptions {
-    readonly args: MaybeArray<string>;
+    readonly args?: MaybeArray<string>;
     readonly command: string;
 }
 
@@ -129,7 +129,7 @@ export const NpxTask: Task<NpxTaskOptions>;
 
 // @public
 export interface NpxTaskOptions {
-    readonly args: MaybeArray<string>;
+    readonly args?: MaybeArray<string>;
     readonly command: string;
 }
 
@@ -152,7 +152,7 @@ export const PnpxTask: Task<PnpxTaskOptions>;
 
 // @public
 export interface PnpxTaskOptions {
-    readonly args: MaybeArray<string>;
+    readonly args?: MaybeArray<string>;
     readonly command: string;
 }
 

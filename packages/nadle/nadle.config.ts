@@ -14,7 +14,7 @@ tasks.register("build", ExecTask, { args: ["tsup"], command: "npx" }).config({
 	description: "Bundle nadle with tsup"
 });
 
-tasks.register("generateMarkdown", ExecTask, { args: ["typedoc"], command: "npx" }).config({
+tasks.register("generateMarkdown", ExecTask, { command: "npx", args: ["typedoc"] }).config({
 	group: "Building",
 	description: "Generate API markdown with typedoc"
 });
@@ -45,7 +45,7 @@ tasks
 		description: "Ensure no API warnings or undocumented items"
 	});
 
-tasks.register("testUnit", ExecTask, { args: ["vitest", "run"], command: "npx" }).config({
+tasks.register("testUnit", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Run unit tests"
