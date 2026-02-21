@@ -5,7 +5,7 @@ import { isInTaskAction } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
-type MessageId = "preferExec" | "preferPnpm" | "preferCopy" | "preferDelete";
+type MessageId = "preferExec" | "preferNpm" | "preferNpx" | "preferPnpm" | "preferPnpx" | "preferCopy" | "preferDelete";
 
 const EXEC_APIS = new Set(["execa", "exec", "execFile", "spawn"]);
 
@@ -39,11 +39,24 @@ function getDisplayName(callee: TSESTree.CallExpression["callee"]): string {
 	return "unknown";
 }
 
-/** Check if the first argument is the string literal "pnpm". */
-function hasPnpmFirstArg(node: TSESTree.CallExpression): boolean {
+/** Check if the first argument is a specific string literal. */
+function hasFirstArg(node: TSESTree.CallExpression, value: string): boolean {
 	const firstArg = node.arguments[0];
 
-	return firstArg?.type === "Literal" && typeof firstArg.value === "string" && firstArg.value === "pnpm";
+	return firstArg?.type === "Literal" && firstArg.value === value;
+}
+
+/** Check if the second argument array starts with "exec" (e.g. execa("pnpm", ["exec", ...])). */
+function hasExecInSecondArg(node: TSESTree.CallExpression): boolean {
+	const secondArg = node.arguments[1];
+
+	if (secondArg?.type !== "ArrayExpression" || secondArg.elements.length === 0) {
+		return false;
+	}
+
+	const firstElement = secondArg.elements[0];
+
+	return firstElement?.type === "Literal" && firstElement.value === "exec";
 }
 
 /** Check if callee is a child_process member call (e.g. child_process.exec). */
@@ -67,9 +80,24 @@ function detectPattern(node: TSESTree.CallExpression): MessageId | undefined {
 
 	const { name, isMember } = info;
 
-	// PnpmTask: execa("pnpm", ...) — check first (more specific)
-	if (name === "execa" && !isMember && hasPnpmFirstArg(node)) {
+	// PnpxTask: execa("pnpm", ["exec", ...]) — most specific, check first
+	if (name === "execa" && !isMember && hasFirstArg(node, "pnpm") && hasExecInSecondArg(node)) {
+		return "preferPnpx";
+	}
+
+	// PnpmTask: execa("pnpm", ...) — check before generic exec
+	if (name === "execa" && !isMember && hasFirstArg(node, "pnpm")) {
 		return "preferPnpm";
+	}
+
+	// NpxTask: execa("npx", ...)
+	if (name === "execa" && !isMember && hasFirstArg(node, "npx")) {
+		return "preferNpx";
+	}
+
+	// NpmTask: execa("npm", ...)
+	if (name === "execa" && !isMember && hasFirstArg(node, "npm")) {
+		return "preferNpm";
 	}
 
 	// CopyTask: fs.cp, fs.copyFile, fsPromises.cp, fsPromises.copyFile
@@ -127,8 +155,11 @@ export default createRule({
 			description: "Suggest built-in task types when applicable"
 		},
 		messages: {
+			preferNpm: "Consider using NpmTask instead of calling npm via '{{name}}'.",
+			preferNpx: "Consider using NpxTask instead of calling npx via '{{name}}'.",
 			preferPnpm: "Consider using PnpmTask instead of calling pnpm via '{{name}}'.",
 			preferCopy: "Consider using CopyTask instead of '{{name}}' for file copying.",
+			preferPnpx: "Consider using PnpxTask instead of calling pnpm exec via '{{name}}'.",
 			preferDelete: "Consider using DeleteTask instead of '{{name}}' for file deletion.",
 			preferExec: "Consider using ExecTask instead of '{{name}}' for better nadle integration."
 		}

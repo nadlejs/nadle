@@ -1,0 +1,11 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-pnpx-task",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}

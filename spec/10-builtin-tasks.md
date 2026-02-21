@@ -1,6 +1,6 @@
 # 10 — Built-in Task Types
 
-Nadle provides four built-in reusable task types, all created via `defineTask()`.
+Nadle provides seven built-in reusable task types, all created via `defineTask()`.
 
 ## ExecTask
 
@@ -11,7 +11,7 @@ Executes an arbitrary external command.
 | Field     | Type                       | Required | Description                                                                                 |
 | --------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------- |
 | `command` | string                     | Yes      | The command to execute.                                                                     |
-| `args`    | string or array of strings | Yes      | Arguments for the command. If a string, it is parsed into arguments by splitting on spaces. |
+| `args`    | string or array of strings | No       | Arguments for the command. If a string, it is parsed into arguments by splitting on spaces. |
 
 ### Behavior
 
@@ -36,6 +36,67 @@ Executes a pnpm command. Specialized variant of ExecTask with `pnpm` as the comm
 
 1. Normalize arguments to an array.
 2. Spawn `pnpm` with the arguments.
+3. Set working directory to the task's `workingDir`.
+4. Force color output (`FORCE_COLOR=1`).
+5. Stream combined output to the task logger.
+6. Await subprocess completion.
+
+## NpmTask
+
+Executes an npm command. Specialized variant of ExecTask with `npm` as the command.
+
+### Options
+
+| Field  | Type                       | Required | Description                 |
+| ------ | -------------------------- | -------- | --------------------------- |
+| `args` | string or array of strings | Yes      | Arguments to pass to `npm`. |
+
+### Behavior
+
+1. Normalize arguments to an array.
+2. Spawn `npm` with the arguments.
+3. Set working directory to the task's `workingDir`.
+4. Force color output (`FORCE_COLOR=1`).
+5. Stream combined output to the task logger.
+6. Await subprocess completion.
+
+## PnpxTask
+
+Executes a locally-installed package binary via `pnpm exec`. Specialized variant of ExecTask
+for running binaries from `node_modules/.bin` through pnpm.
+
+### Options
+
+| Field     | Type                       | Required | Description                             |
+| --------- | -------------------------- | -------- | --------------------------------------- |
+| `command` | string                     | Yes      | The command to execute via `pnpm exec`. |
+| `args`    | string or array of strings | No       | Arguments for the command.              |
+
+### Behavior
+
+1. Normalize arguments to an array.
+2. Spawn `pnpm exec <command> <args>`.
+3. Set working directory to the task's `workingDir`.
+4. Force color output (`FORCE_COLOR=1`).
+5. Stream combined output to the task logger.
+6. Await subprocess completion.
+
+## NpxTask
+
+Executes a locally-installed package binary via `npx`. Specialized variant of ExecTask
+for running binaries from `node_modules/.bin` through npx.
+
+### Options
+
+| Field     | Type                       | Required | Description                       |
+| --------- | -------------------------- | -------- | --------------------------------- |
+| `command` | string                     | Yes      | The command to execute via `npx`. |
+| `args`    | string or array of strings | No       | Arguments for the command.        |
+
+### Behavior
+
+1. Normalize arguments to an array.
+2. Spawn `npx <command> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
 5. Stream combined output to the task logger.
@@ -93,7 +154,7 @@ Deletes files and directories using glob patterns.
 All built-in tasks share these characteristics:
 
 - They all respect the `workingDir` from the runner context.
-- ExecTask and PnpmTask force color output via `FORCE_COLOR=1` environment variable.
+- ExecTask, NpmTask, NpxTask, PnpmTask, and PnpxTask force color output via `FORCE_COLOR=1` environment variable.
 - All tasks stream output through the task logger.
 
 ## Custom Task Types

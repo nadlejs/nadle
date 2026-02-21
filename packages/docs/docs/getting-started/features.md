@@ -201,6 +201,31 @@ tasks.register("lint", ExecTask, {
 });
 ```
 
+### NpmTask
+
+Run npm commands:
+
+```typescript
+import { tasks, NpmTask } from "nadle";
+
+tasks.register("install", NpmTask, {
+	args: ["install", "--frozen-lockfile"]
+});
+```
+
+### NpxTask
+
+Run locally-installed binaries via npx:
+
+```typescript
+import { tasks, NpxTask } from "nadle";
+
+tasks.register("lint", NpxTask, {
+	command: "eslint",
+	args: [".", "--cache"]
+});
+```
+
 ### PnpmTask
 
 Run pnpm commands:
@@ -210,6 +235,19 @@ import { tasks, PnpmTask } from "nadle";
 
 tasks.register("install", PnpmTask, {
 	args: ["install", "--frozen-lockfile"]
+});
+```
+
+### PnpxTask
+
+Run locally-installed binaries via pnpm exec:
+
+```typescript
+import { tasks, PnpxTask } from "nadle";
+
+tasks.register("build", PnpxTask, {
+	command: "tsup",
+	args: []
 });
 ```
 

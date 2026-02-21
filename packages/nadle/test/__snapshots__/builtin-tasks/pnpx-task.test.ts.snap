@@ -1,0 +1,123 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`pnpx Task > can print command when log level = info 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpx-task
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpx-task/nadle.config.ts
+
+[info] Using 1 worker for task execution
+[info] Project directory: /ROOT/test/__fixtures__/pnpx-task
+[info] Resolved options: {
+  "cache": true,
+  "footer": false,
+  "summary": false,
+  "parallel": false,
+  "logLevel": "info",
+  "cleanCache": false,
+  "showConfig": false,
+  "excludedTasks": [],
+  "isWorkerThread": false,
+  "tasks": [
+    {
+      "corrected": false,
+      "rawInput": "pass",
+      "taskId": "root:pass"
+    }
+  ],
+  "maxWorkers": 1,
+  "list": false,
+  "dryRun": false,
+  "stacktrace": false,
+  "listWorkspaces": false,
+  "project": {
+    "rootWorkspace": {
+      "id": "root",
+      "label": "",
+      "packageJson": {
+        "name": "@nadle/internal-nadle-test-fixtures-pnpx-task",
+        "type": "module",
+        "private": true,
+        "dependencies": {
+          "nadle": "workspace:*"
+        },
+        "nadle": {
+          "root": true
+        }
+      },
+      "absolutePath": "/ROOT/test/__fixtures__/pnpx-task",
+      "dependencies": [],
+      "relativePath": ".",
+      "configFilePath": "/ROOT/test/__fixtures__/pnpx-task/nadle.config.ts"
+    },
+    "workspaces": [],
+    "packageManager": "npm",
+    "currentWorkspaceId": "root"
+  },
+  "cacheDir": "/ROOT/test/__fixtures__/pnpx-task/.nadle",
+  "minWorkers": 1
+}
+[info] Detected environments: { CI: false, TEST: true }
+[info] Execution started
+[info] Scheduled tasks: root:pass
+[log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
+
+[info] Running pnpm exec command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
+[info] pnpm exec command completed successfully.
+[log]
+<Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[info] Execution finished
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
+exports[`pnpx Task > can run tsc command with no error ts file 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpx-task
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpx-task/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
+
+[log]
+<Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
+exports[`pnpx Task > throw error when running tsc command with error ts file 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpx-task
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/pnpx-task/nadle.config.ts
+
+[log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
+
+[log] <BrightCyan>src/fail.ts</Reset>:<BrightYellow>1</Reset>:<BrightYellow>14</Reset> - <BrightRed>error</Reset><BrightBlack> TS2322: </Reset>Type 'number' is not assignable to type 'string'.
+
+</Inverse>1</Reset> export const number: string = 42;
+</Inverse> </Reset> <BrightRed>             ~~~~~~</Reset>
+
+
+[log]
+Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
+
+
+[log]
+<Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
+[log]
+<Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
+[log]
+For more details, re-run the command with the <Yellow>--stacktrace</Yellow> option to display the full error and help identify the root cause.
+`;

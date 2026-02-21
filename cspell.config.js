@@ -51,6 +51,7 @@ const config = {
 		"Workspaced",
 		"TSES",
 		"nadlejs",
+		"pnpx",
 		"Uncategorized",
 		...extractLibraryNames()
 	],

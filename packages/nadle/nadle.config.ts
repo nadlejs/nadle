@@ -3,12 +3,17 @@ import Fs from "node:fs/promises";
 
 import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("build", ExecTask, { command: "npx", args: ["tsup"] }).config({
+// NOTE: This config imports from the *published* nadle version (self-build).
+// Only use APIs available in the published version here. Once PnpxTask ships,
+// these can be migrated from ExecTask to PnpxTask.
+
+tasks.register("build", ExecTask, { args: ["tsup"], command: "npx" }).config({
 	group: "Building",
 	inputs: [Inputs.dirs("src")],
 	outputs: [Outputs.dirs("lib")],
 	description: "Bundle nadle with tsup"
 });
+
 tasks.register("generateMarkdown", ExecTask, { command: "npx", args: ["typedoc"] }).config({
 	group: "Building",
 	description: "Generate API markdown with typedoc"
@@ -21,6 +26,7 @@ tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" })
 	dependsOn: ["build"],
 	description: "Verify API surface with api-extractor"
 });
+
 tasks
 	.register("testNoWarningsAndUndocumentedAPI", async () => {
 		const apiContent = await Fs.readFile(Path.join(import.meta.dirname, "index.api.md"), "utf-8");
@@ -38,11 +44,13 @@ tasks
 		dependsOn: ["testAPI"],
 		description: "Ensure no API warnings or undocumented items"
 	});
+
 tasks.register("testUnit", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Run unit tests"
 });
+
 tasks.register("test").config({
 	group: "Testing",
 	description: "Run all tests and checks",
@@ -51,7 +59,7 @@ tasks.register("test").config({
 
 // --- Maintenance (nadle-specific) ---
 
-tasks.register("updateAPI", ExecTask, { command: "api-extractor", args: ["run", "--local"] }).config({
+tasks.register("updateAPI", ExecTask, { args: ["run", "--local"], command: "api-extractor" }).config({
 	group: "Maintenance",
 	dependsOn: ["build"],
 	description: "Update API report locally"
