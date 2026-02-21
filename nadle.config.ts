@@ -1,4 +1,4 @@
-import { tasks, ExecTask, PnpmTask, DeleteTask } from "./node_modules/nadle/lib/index.js";
+import { tasks, PnpmTask, PnpxTask, DeleteTask } from "./node_modules/nadle/lib/index.js";
 
 // --- Maintenance ---
 
@@ -10,12 +10,13 @@ tasks
 
 // --- Checking ---
 
-tasks.register("spell", ExecTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] }).config({
+tasks.register("spell", PnpxTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] }).config({
 	group: "Checking",
 	description: "Check spelling across all files"
 });
+
 tasks
-	.register("eslint", ExecTask, {
+	.register("eslint", PnpxTask, {
 		command: "eslint",
 		args: [".", "--quiet", "--cache", "--cache-location", "node_modules/.cache/eslint/"]
 	})
@@ -24,21 +25,25 @@ tasks
 		description: "Lint all files with ESLint",
 		dependsOn: ["packages:eslint-plugin:build"]
 	});
+
 tasks
-	.register("prettier", ExecTask, {
+	.register("prettier", PnpxTask, {
 		command: "prettier",
 		args: ["--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
 	})
 	.config({ group: "Checking", description: "Check formatting with Prettier" });
+
 tasks.register("knip", PnpmTask, { args: ["-r", "-F", "nadle", "-F", "create-nadle", "exec", "knip"] }).config({
 	group: "Checking",
 	description: "Find unused dependencies and exports"
 });
-tasks.register("validate", ExecTask, { command: "tsx", args: ["./src/index.ts"] }).config({
+
+tasks.register("validate", PnpxTask, { command: "tsx", args: "./src/index.ts" }).config({
 	group: "Checking",
 	workingDir: "./packages/validators",
 	description: "Run package validators"
 });
+
 tasks.register("check").config({
 	group: "Checking",
 	dependsOn: ["spell", "eslint", "prettier", "knip", "validate"],
@@ -47,11 +52,12 @@ tasks.register("check").config({
 
 // --- Building (nadle-specific, kept here due to workspace self-reference limitation) ---
 
-tasks.register("typecheck", ExecTask, { command: "tsc", args: ["-b", "--noEmit"] }).config({
+tasks.register("typecheck", PnpxTask, { command: "tsc", args: ["-b", "--noEmit"] }).config({
 	group: "Building",
 	dependsOn: ["packages:nadle:build"],
 	description: "Type-check all project references"
 });
+
 tasks.register("build").config({
 	group: "Building",
 	description: "Build all packages"
@@ -67,14 +73,16 @@ tasks.register("test").config({
 
 // --- Formatting ---
 
-tasks.register("fixEslint", ExecTask, { command: "eslint", args: [".", "--quiet", "--fix"] }).config({
+tasks.register("fixEslint", PnpxTask, { command: "eslint", args: [".", "--quiet", "--fix"] }).config({
 	group: "Formatting",
 	description: "Fix lint issues with ESLint"
 });
-tasks.register("fixPrettier", ExecTask, { command: "prettier", args: ["--write", "."] }).config({
+
+tasks.register("fixPrettier", PnpxTask, { command: "prettier", args: ["--write", "."] }).config({
 	group: "Formatting",
 	description: "Format all files with Prettier"
 });
+
 tasks.register("format").config({
 	group: "Formatting",
 	dependsOn: ["fixEslint", "fixPrettier"],

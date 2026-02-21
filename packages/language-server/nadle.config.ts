@@ -1,13 +1,13 @@
-import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("build", ExecTask, { command: "npx", args: ["tsup"] }).config({
+tasks.register("build", PnpxTask, { command: "tsup" }).config({
 	group: "Building",
 	inputs: [Inputs.dirs("src")],
 	outputs: [Outputs.dirs("lib")],
 	description: "Bundle language-server with tsup"
 });
 
-tasks.register("test", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
+tasks.register("test", PnpxTask, { args: "run", command: "vitest" }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Run LSP unit tests"
