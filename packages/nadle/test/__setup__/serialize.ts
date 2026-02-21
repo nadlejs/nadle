@@ -1,5 +1,6 @@
 export function serialize(input: string): string {
 	return [
+		normalizeLineEndings,
 		serializeANSI,
 		serializeDuration,
 		serializeErrorPointer,
@@ -14,6 +15,10 @@ export function serialize(input: string): string {
 		collapseBlankLines,
 		removeTrailingSpaces
 	].reduce((result, serializer) => serializer(result), input);
+}
+
+function normalizeLineEndings(input: string) {
+	return input.replaceAll("\r", "");
 }
 
 function collapseBlankLines(input: string) {
