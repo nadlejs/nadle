@@ -30,10 +30,25 @@ function removeTrailingSpaces(input: string) {
 const UnstableLines = ["ExperimentalWarning", "--trace-warnings", "npm warn", "npm notice"];
 
 function removeUnstableLines(input: string) {
-	return input
-		.split("\n")
-		.filter((line) => !UnstableLines.some((unstableLine) => line.includes(unstableLine)))
-		.join("\n");
+	const lines = input.split("\n");
+	const result: string[] = [];
+	let previousWasRemoved = false;
+
+	for (const line of lines) {
+		if (UnstableLines.some((unstableLine) => line.includes(unstableLine))) {
+			previousWasRemoved = true;
+			continue;
+		}
+
+		if (previousWasRemoved && line.trim() === "") {
+			continue;
+		}
+
+		previousWasRemoved = false;
+		result.push(line);
+	}
+
+	return result.join("\n");
 }
 
 function serializeVersion(input: string) {
