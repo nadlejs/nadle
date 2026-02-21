@@ -5,9 +5,9 @@
 			"name": "Launch Nadle Extension",
 			"type": "extensionHost",
 			"request": "launch",
-			"args": ["--extensionDevelopmentPath=${workspaceFolder}/packages/nadle-vscode"],
-			"outFiles": ["${workspaceFolder}/packages/nadle-vscode/lib/**/*.js"],
-			"preLaunchTask": "build-nadle-vscode"
+			"args": ["--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-extension"],
+			"outFiles": ["${workspaceFolder}/packages/vscode-extension/lib/**/*.js"],
+			"preLaunchTask": "build-vscode-extension"
 		}
 	]
 }

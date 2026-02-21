@@ -36,12 +36,12 @@ jobs:
         run: nadle build
 
       - name: Publish to npm
-        if: ${{ !startsWith(github.ref_name, 'nadle-vscode/') }}
+        if: ${{ !startsWith(github.ref_name, 'vscode-extension/') }}
         run: pnpm --filter "./packages/${{ steps.parse-tag.outputs.package }}" publish --no-git-checks --provenance
 
       - name: Publish VS Code Extension
-        if: startsWith(github.ref_name, 'nadle-vscode/')
+        if: startsWith(github.ref_name, 'vscode-extension/')
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        working-directory: packages/nadle-vscode
+        working-directory: packages/vscode-extension
         run: npx @vscode/vsce publish

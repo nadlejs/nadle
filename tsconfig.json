@@ -4,7 +4,7 @@
 		{ "path": "./packages/nadle" },
 		{ "path": "./packages/create-nadle" },
 		{ "path": "./packages/language-server" },
-		{ "path": "./packages/nadle-vscode" },
+		{ "path": "./packages/vscode-extension" },
 		{ "path": "./packages/docs" },
 		{ "path": "./tsconfig.eslint.json" }
 	]

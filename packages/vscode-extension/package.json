@@ -1,5 +1,5 @@
 {
-	"name": "nadle-vscode",
+	"name": "vscode-extension",
 	"displayName": "Nadle",
 	"version": "0.0.5",
 	"publisher": "nadlejs",
@@ -45,7 +45,7 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/nadlejs/nadle.git",
-		"directory": "packages/nadle-vscode"
+		"directory": "packages/vscode-extension"
 	},
 	"keywords": [
 		"nadle",
