@@ -1,23 +1,27 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("build", PnpxTask, { args: [], command: "tsup" }).config({
+// NOTE: This config imports from the *published* nadle version (self-build).
+// Only use APIs available in the published version here. Once PnpxTask ships,
+// these can be migrated from ExecTask to PnpxTask.
+
+tasks.register("build", ExecTask, { args: ["tsup"], command: "npx" }).config({
 	group: "Building",
 	inputs: [Inputs.dirs("src")],
 	outputs: [Outputs.dirs("lib")],
 	description: "Bundle nadle with tsup"
 });
 
-tasks.register("generateMarkdown", PnpxTask, { args: [], command: "typedoc" }).config({
+tasks.register("generateMarkdown", ExecTask, { args: ["typedoc"], command: "npx" }).config({
 	group: "Building",
 	description: "Generate API markdown with typedoc"
 });
 
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
 
-tasks.register("testAPI", PnpxTask, { args: ["run"], command: "api-extractor" }).config({
+tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Verify API surface with api-extractor"
@@ -41,7 +45,7 @@ tasks
 		description: "Ensure no API warnings or undocumented items"
 	});
 
-tasks.register("testUnit", PnpxTask, { args: ["run"], command: "vitest" }).config({
+tasks.register("testUnit", ExecTask, { args: ["vitest", "run"], command: "npx" }).config({
 	group: "Testing",
 	dependsOn: ["build"],
 	description: "Run unit tests"
@@ -55,7 +59,7 @@ tasks.register("test").config({
 
 // --- Maintenance (nadle-specific) ---
 
-tasks.register("updateAPI", PnpxTask, { command: "api-extractor", args: ["run", "--local"] }).config({
+tasks.register("updateAPI", ExecTask, { args: ["run", "--local"], command: "api-extractor" }).config({
 	group: "Maintenance",
 	dependsOn: ["build"],
 	description: "Update API report locally"
