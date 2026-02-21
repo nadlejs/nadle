@@ -1,0 +1,42 @@
+import { ESLintUtils } from "@typescript-eslint/utils";
+
+import { getTaskName, isTasksRegisterCall } from "../utils/ast-helpers.js";
+
+const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
+
+const VALID_TASK_NAME_PATTERN = /^[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*$/;
+
+export default createRule({
+	defaultOptions: [],
+	name: "valid-task-name",
+	meta: {
+		schema: [],
+		type: "problem",
+		docs: {
+			description: "Enforce valid task naming pattern"
+		},
+		messages: {
+			invalidName:
+				"Task name '{{name}}' does not match the required pattern. Names must start with a lowercase letter and contain only alphanumeric characters and hyphens (e.g., 'my-task' or 'myTask')."
+		}
+	},
+	create(context) {
+		return {
+			CallExpression(node) {
+				if (!isTasksRegisterCall(node)) {
+					return;
+				}
+
+				const name = getTaskName(node);
+
+				if (name === undefined) {
+					return;
+				}
+
+				if (!VALID_TASK_NAME_PATTERN.test(name)) {
+					context.report({ node, data: { name }, messageId: "invalidName" });
+				}
+			}
+		};
+	}
+});

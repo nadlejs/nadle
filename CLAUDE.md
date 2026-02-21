@@ -96,3 +96,11 @@ pnpm -F nadle test basic              # Single test file
 - Retries: 5 on CI, 2 locally
 - Custom matchers in `test/__setup__/matchers/`
 - Type-level tests in `*.test-d.ts` files
+
+## Active Technologies
+
+- TypeScript 5.9.3, target node22 + `@typescript-eslint/utils` (rule creation), `@typescript-eslint/rule-tester` (testing), `eslint ^9.0.0` (peer) (005-eslint-plugin)
+
+## Recent Changes
+
+- 005-eslint-plugin: Added TypeScript 5.9.3, target node22 + `@typescript-eslint/utils` (rule creation), `@typescript-eslint/rule-tester` (testing), `eslint ^9.0.0` (peer)

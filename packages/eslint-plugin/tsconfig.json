@@ -1,0 +1,9 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"include": ["src", "test", "nadle.config.ts"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"module": "ESNext",
+		"moduleResolution": "Bundler"
+	}
+}

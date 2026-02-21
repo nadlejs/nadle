@@ -6,6 +6,7 @@
 		{ "path": "./packages/language-server" },
 		{ "path": "./packages/vscode-extension" },
 		{ "path": "./packages/docs" },
+		{ "path": "./packages/eslint-plugin" },
 		{ "path": "./tsconfig.eslint.json" }
 	]
 }
