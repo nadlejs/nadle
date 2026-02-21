@@ -104,14 +104,13 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
 
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] <BrightCyan>src/fail.ts</Reset>:<BrightYellow>1</Reset>:<BrightYellow>14</Reset> - <BrightRed>error</Reset><BrightBlack> TS2322: </Reset>Type 'number' is not assignable to type 'string'.
-
-</Inverse>1</Reset> export const number: string = 42;
-</Inverse> </Reset> <BrightRed>             ~~~~~~</Reset>
+[log] <BrightRed>error</Reset><BrightBlack> TS6053: </Reset>File 'src/nonexistent.ts' not found.
+  The file is in the program because:
+    Root file specified for compilation
 
 
 [log]
-Found 1 error in src/fail.ts<BrightBlack>:1</Reset>
+Found 1 error.
 
 
 [log]

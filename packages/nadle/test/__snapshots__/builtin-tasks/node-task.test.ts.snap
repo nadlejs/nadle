@@ -65,7 +65,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [info] Scheduled tasks: root:pass
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
-[info] Running node script: node ./src/pass.mjs
+[info] Running node script: node ./src/pass.js
 [log] pass
 
 [info] Node script completed successfully.
@@ -107,6 +107,25 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
 [log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
+
+[log] node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/ROOT/test/__fixtures__/node-task/src/nonexistent.js'
+<BrightBlack>    at Function._resolveFilename (node:internal/modules/cjs/loader:1365:15)</Yellow>
+<BrightBlack>    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)</Yellow>
+<BrightBlack>    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)</Yellow>
+<BrightBlack>    at Function._load (node:internal/modules/cjs/loader:1175:37)</Yellow>
+<BrightBlack>    at TracingChannel.traceSync (node:diagnostics_channel:322:14)</Yellow>
+<BrightBlack>    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)</Yellow>
+<BrightBlack>    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)</Yellow>
+<BrightBlack>    at node:internal/main/run_main_module:36:49</Yellow> {
+  code: <Green>'MODULE_NOT_FOUND'</Green>,
+  requireStack: []
+}
+
+Node.js {version}
 
 [log]
 <Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
