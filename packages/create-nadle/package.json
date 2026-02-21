@@ -63,6 +63,9 @@
 	],
 	"homepage": "https://nadle.dev",
 	"bugs": "https://github.com/nadlejs/nadle/issues",
+	"publishConfig": {
+		"access": "public"
+	},
 	"size-limit": [
 		{
 			"path": "lib/**",

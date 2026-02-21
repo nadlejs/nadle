@@ -56,5 +56,8 @@
 		"typescript"
 	],
 	"homepage": "https://nadle.dev",
-	"bugs": "https://github.com/nadlejs/nadle/issues"
+	"bugs": "https://github.com/nadlejs/nadle/issues",
+	"publishConfig": {
+		"access": "public"
+	}
 }

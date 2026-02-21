@@ -247,6 +247,7 @@ const FIELD_ORDER = [
 	"keywords",
 	"homepage",
 	"bugs",
+	"publishConfig",
 	"packageManager",
 	"pnpm",
 	"nadle",
