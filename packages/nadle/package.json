@@ -5,11 +5,9 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"build": "pnpm \"/build:/\"",
-		"build:tsup": "tsup",
-		"build:ts": "tsc -p tsconfig.build.json",
-		"start": "pnpm run build:ts --watch --noEmit false",
-		"test": "vitest",
+		"build": "nadle build",
+		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
+		"test": "nadle test",
 		"bench": "vitest bench"
 	},
 	"files": [

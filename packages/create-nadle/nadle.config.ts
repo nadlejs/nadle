@@ -15,3 +15,9 @@ tasks.register("build").config({
 	dependsOn: ["buildTsup", "buildTs"],
 	description: "Build create-nadle package"
 });
+
+tasks.register("test", ExecTask, { command: "npx", args: ["vitest", "run"] }).config({
+	group: "Testing",
+	dependsOn: ["build"],
+	description: "Run unit tests"
+});
