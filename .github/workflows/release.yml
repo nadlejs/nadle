@@ -37,7 +37,8 @@ jobs:
 
       - name: Publish to npm
         if: ${{ !startsWith(github.ref_name, 'vscode-extension/') }}
-        run: pnpm --filter "./packages/${{ steps.parse-tag.outputs.package }}" publish --no-git-checks --provenance
+        run: npm publish --provenance --access public
+        working-directory: packages/${{ steps.parse-tag.outputs.package }}
 
       - name: Publish VS Code Extension
         if: startsWith(github.ref_name, 'vscode-extension/')
