@@ -27,7 +27,7 @@ The extension activates on all Nadle config file formats:
 2. Build the VS Code extension:
 
    ```sh
-   pnpm -F vscode-extension build
+   pnpm -F nadle-vscode build
    ```
 
 3. Press **F5** in VS Code (from the repo root) to launch the Extension Development Host.

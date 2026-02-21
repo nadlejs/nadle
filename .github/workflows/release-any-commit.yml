@@ -37,4 +37,4 @@ jobs:
       - name: Build
         run: nadle build
 
-      - run: pnpm dlx pkg-pr-new publish --bin --comment=update --exclude vscode-extension './packages/*'
+      - run: pnpm dlx pkg-pr-new publish --bin --comment=update --exclude nadle-vscode './packages/*'

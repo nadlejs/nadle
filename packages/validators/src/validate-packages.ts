@@ -65,8 +65,9 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 	}
 
 	const dirName = pkgDirPath.split(Path.sep)[1];
+	const hasVSCodeEngine = !!(pkg.engines as Record<string, string> | undefined)?.vscode;
 
-	if (dirName !== undefined && name === dirName) {
+	if (dirName !== undefined && (name === dirName || hasVSCodeEngine)) {
 		return;
 	}
 
