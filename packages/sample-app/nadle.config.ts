@@ -1,7 +1,7 @@
 import Process from "node:process";
 
 import { Inputs } from "nadle";
-import { tasks, Outputs, ExecTask, CopyTask, type Task, configure } from "nadle";
+import { tasks, Outputs, PnpxTask, CopyTask, type Task, configure } from "nadle";
 
 import { createTask } from "./create-task.js";
 
@@ -64,7 +64,7 @@ tasks
 	.config({ dependsOn: ["node"] });
 
 tasks
-	.register("compileTs", ExecTask, {
+	.register("compileTs", PnpxTask, {
 		command: "tsc",
 		args: ["--project", "tsconfig.src.json"]
 	})

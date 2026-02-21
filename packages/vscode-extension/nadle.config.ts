@@ -1,11 +1,11 @@
-import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, ExecTask, PnpxTask } from "../../node_modules/nadle/lib/index.js";
 
 tasks.register("copy-server", ExecTask, { command: "node", args: ["scripts/copy-server.mjs"] }).config({
 	group: "Building",
 	description: "Copy LSP server into extension"
 });
 
-tasks.register("build-tsup", ExecTask, { command: "npx", args: ["tsup"] }).config({
+tasks.register("build-tsup", PnpxTask, { command: "tsup" }).config({
 	group: "Building",
 	dependsOn: ["copy-server"],
 	description: "Bundle vscode extension with tsup"
@@ -19,7 +19,7 @@ tasks.register("build").config({
 	inputs: [Inputs.dirs("src"), Inputs.files("scripts/copy-server.mjs")]
 });
 
-tasks.register("package", ExecTask, { command: "npx", args: ["vsce", "package"] }).config({
+tasks.register("package", PnpxTask, { command: "vsce", args: "package" }).config({
 	group: "Building",
 	dependsOn: ["build"],
 	description: "Package vscode extension (.vsix)"
