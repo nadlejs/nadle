@@ -66,10 +66,25 @@ ruleTester.run("prefer-builtin-task", rule, {
 			code: 'tasks.register("run", () => { child_process.execFile("./run.sh"); });',
 			errors: [{ messageId: "preferExec", data: { name: "child_process.execFile" } }]
 		},
+		// PnpxTask: execa("pnpm", ["exec", ...])
+		{
+			errors: [{ messageId: "preferPnpx", data: { name: "execa" } }],
+			code: 'tasks.register("build", async () => { await execa("pnpm", ["exec", "tsc"]); });'
+		},
 		// PnpmTask: execa("pnpm", ...)
 		{
 			errors: [{ messageId: "preferPnpm", data: { name: "execa" } }],
 			code: 'tasks.register("install", async () => { await execa("pnpm", ["install"]); });'
+		},
+		// NpxTask: execa("npx", ...)
+		{
+			errors: [{ messageId: "preferNpx", data: { name: "execa" } }],
+			code: 'tasks.register("build", async () => { await execa("npx", ["tsc"]); });'
+		},
+		// NpmTask: execa("npm", ...)
+		{
+			errors: [{ messageId: "preferNpm", data: { name: "execa" } }],
+			code: 'tasks.register("install", async () => { await execa("npm", ["install"]); });'
 		},
 		// CopyTask: fs.cp
 		{

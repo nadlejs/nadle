@@ -8,6 +8,14 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.3.0 — 2026-02-21
+
+### Added
+
+- 10-builtin-tasks: Added NpmTask, PnpxTask, and NpxTask. NpmTask runs npm commands
+  (mirroring PnpmTask). PnpxTask and NpxTask run locally-installed package binaries
+  via `pnpm exec` and `npx` respectively.
+
 ## 1.2.0 — 2026-02-18
 
 ### Changed

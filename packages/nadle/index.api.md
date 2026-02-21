@@ -117,6 +117,23 @@ export interface NadleFileOptions extends Partial<NadleBaseOptions> {
 }
 
 // @public
+export const NpmTask: Task<NpmTaskOptions>;
+
+// @public
+export interface NpmTaskOptions {
+    readonly args: MaybeArray<string>;
+}
+
+// @public
+export const NpxTask: Task<NpxTaskOptions>;
+
+// @public
+export interface NpxTaskOptions {
+    readonly args: MaybeArray<string>;
+    readonly command: string;
+}
+
+// @public
 export namespace Outputs {
     const files: typeof Inputs.files;
     const dirs: typeof Inputs.dirs;
@@ -128,6 +145,15 @@ export const PnpmTask: Task<PnpmTaskOptions>;
 // @public
 export interface PnpmTaskOptions {
     readonly args: MaybeArray<string>;
+}
+
+// @public
+export const PnpxTask: Task<PnpxTaskOptions>;
+
+// @public
+export interface PnpxTaskOptions {
+    readonly args: MaybeArray<string>;
+    readonly command: string;
 }
 
 // @public
