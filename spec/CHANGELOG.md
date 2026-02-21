@@ -8,6 +8,13 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.4.0 — 2026-02-21
+
+### Added
+
+- 10-builtin-tasks: Added NodeTask for running Node.js scripts directly via
+  `node <script> <args>`.
+
 ## 1.3.0 — 2026-02-21
 
 ### Added

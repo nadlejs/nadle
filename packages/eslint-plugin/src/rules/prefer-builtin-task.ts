@@ -5,7 +5,7 @@ import { isInTaskAction } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
-type MessageId = "preferExec" | "preferNpm" | "preferNpx" | "preferPnpm" | "preferPnpx" | "preferCopy" | "preferDelete";
+type MessageId = "preferExec" | "preferNode" | "preferNpm" | "preferNpx" | "preferPnpm" | "preferPnpx" | "preferCopy" | "preferDelete";
 
 const EXEC_APIS = new Set(["execa", "exec", "execFile", "spawn"]);
 
@@ -95,6 +95,11 @@ function detectPattern(node: TSESTree.CallExpression): MessageId | undefined {
 		return "preferNpx";
 	}
 
+	// NodeTask: execa("node", ...)
+	if (name === "execa" && !isMember && hasFirstArg(node, "node")) {
+		return "preferNode";
+	}
+
 	// NpmTask: execa("npm", ...)
 	if (name === "execa" && !isMember && hasFirstArg(node, "npm")) {
 		return "preferNpm";
@@ -157,6 +162,7 @@ export default createRule({
 		messages: {
 			preferNpm: "Consider using NpmTask instead of calling npm via '{{name}}'.",
 			preferNpx: "Consider using NpxTask instead of calling npx via '{{name}}'.",
+			preferNode: "Consider using NodeTask instead of calling node via '{{name}}'.",
 			preferPnpm: "Consider using PnpmTask instead of calling pnpm via '{{name}}'.",
 			preferCopy: "Consider using CopyTask instead of '{{name}}' for file copying.",
 			preferPnpx: "Consider using PnpxTask instead of calling pnpm exec via '{{name}}'.",

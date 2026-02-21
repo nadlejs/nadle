@@ -117,6 +117,15 @@ export interface NadleFileOptions extends Partial<NadleBaseOptions> {
 }
 
 // @public
+export const NodeTask: Task<NodeTaskOptions>;
+
+// @public
+export interface NodeTaskOptions {
+    readonly args?: MaybeArray<string>;
+    readonly script: string;
+}
+
+// @public
 export const NpmTask: Task<NpmTaskOptions>;
 
 // @public

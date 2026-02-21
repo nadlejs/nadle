@@ -1,16 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`pnpm Task > can print command when log level = info 1`] = `
+exports[`node Task > can print command when log level = info 1`] = `
 ---------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/pnpm-task
+Working Directory: /ROOT/test/__fixtures__/node-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 
 [info] Using 1 worker for task execution
-[info] Project directory: /ROOT/test/__fixtures__/pnpm-task
+[info] Project directory: /ROOT/test/__fixtures__/node-task
 [info] Resolved options: {
   "cache": true,
   "footer": false,
@@ -38,7 +38,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
       "id": "root",
       "label": "",
       "packageJson": {
-        "name": "@nadle/internal-nadle-test-fixtures-pnpm-task",
+        "name": "@nadle/internal-nadle-test-fixtures-node-task",
         "type": "module",
         "private": true,
         "dependencies": {
@@ -48,16 +48,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
           "root": true
         }
       },
-      "absolutePath": "/ROOT/test/__fixtures__/pnpm-task",
+      "absolutePath": "/ROOT/test/__fixtures__/node-task",
       "dependencies": [],
       "relativePath": ".",
-      "configFilePath": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts"
+      "configFilePath": "/ROOT/test/__fixtures__/node-task/nadle.config.ts"
     },
     "workspaces": [],
     "packageManager": "npm",
     "currentWorkspaceId": "root"
   },
-  "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/.nadle",
+  "cacheDir": "/ROOT/test/__fixtures__/node-task/.nadle",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }
@@ -65,8 +65,10 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [info] Scheduled tasks: root:pass
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
-[info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
-[info] pnpm command completed successfully.
+[info] Running node script: node ./src/pass.js
+[log] pass
+
+[info] Node script completed successfully.
 [log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [info] Execution finished
@@ -75,16 +77,18 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`pnpm Task > can run tsc command with no error ts file 1`] = `
+exports[`node Task > can run node script with no error 1`] = `
 ---------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/pnpm-task
+Working Directory: /ROOT/test/__fixtures__/node-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
+
+[log] pass
 
 [log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
@@ -93,25 +97,16 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
 [log] <Bold>1</BoldDim> task executed
 `;
 
-exports[`pnpm Task > throw error when running tsc command with error ts file 1`] = `
+exports[`node Task > throw error when running node script that exits with error 1`] = `
 ---------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/pnpm-task
+Working Directory: /ROOT/test/__fixtures__/node-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/pnpm-task/nadle.config.ts
+[log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
-
-[log] <BrightRed>error</Reset><BrightBlack> TS6053: </Reset>File 'src/nonexistent.ts' not found.
-  The file is in the program because:
-    Root file specified for compilation
-
-
-[log]
-Found 1 error.
-
 
 [log]
 <Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}

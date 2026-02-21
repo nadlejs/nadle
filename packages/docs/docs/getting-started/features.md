@@ -201,6 +201,18 @@ tasks.register("lint", ExecTask, {
 });
 ```
 
+### NodeTask
+
+Run Node.js scripts:
+
+```typescript
+import { tasks, NodeTask } from "nadle";
+
+tasks.register("seed", NodeTask, {
+	script: "scripts/seed-db.mjs"
+});
+```
+
 ### NpmTask
 
 Run npm commands:

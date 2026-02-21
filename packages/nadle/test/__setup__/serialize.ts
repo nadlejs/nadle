@@ -22,7 +22,7 @@ function removeTrailingSpaces(input: string) {
 		.join("\n");
 }
 
-const UnstableLines = ["ExperimentalWarning", "--trace-warnings"];
+const UnstableLines = ["ExperimentalWarning", "--trace-warnings", "npm warn"];
 
 function removeUnstableLines(input: string) {
 	return input
