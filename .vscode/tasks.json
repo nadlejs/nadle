@@ -4,7 +4,7 @@
 		{
 			"label": "build-vscode-extension",
 			"type": "shell",
-			"command": "pnpm -F @nadle/language-server build:tsup && pnpm -F nadle-vscode build",
+			"command": "pnpm -F @nadle/language-server build:tsup && pnpm -F nadle-vscode-extension build",
 			"group": "build",
 			"problemMatcher": []
 		}

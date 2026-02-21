@@ -56,7 +56,7 @@ TypeScript syntax highlighting and type-checking continue to work as normal — 
 
 ## VS Code
 
-Install the [Nadle extension](https://marketplace.visualstudio.com/items?itemName=nadlejs.nadle-vscode) from the VS Code Marketplace. The extension bundles the language server — no additional setup is needed.
+Install the [Nadle extension](https://marketplace.visualstudio.com/items?itemName=nadlejs.nadle-vscode-extension) from the VS Code Marketplace. The extension bundles the language server — no additional setup is needed.
 
 ## Neovim
 
