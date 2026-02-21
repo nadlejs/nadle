@@ -3,8 +3,8 @@
 	"references": [
 		{ "path": "./packages/nadle" },
 		{ "path": "./packages/create-nadle" },
-		{ "path": "./packages/nadle-lsp" },
-		{ "path": "./packages/nadle-vscode" },
+		{ "path": "./packages/language-server" },
+		{ "path": "./packages/vscode-extension" },
 		{ "path": "./packages/docs" },
 		{ "path": "./tsconfig.eslint.json" }
 	]

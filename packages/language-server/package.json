@@ -1,18 +1,18 @@
 {
-	"name": "@nadle/internal-nadle-lsp",
+	"name": "@nadle/language-server",
+	"version": "0.0.1",
 	"description": "Language Server Protocol support for nadle.config.ts files",
 	"license": "MIT",
 	"type": "module",
-	"private": true,
 	"scripts": {
-		"build": "pnpm \"/build:/\"",
-		"build:tsup": "tsup",
-		"build:ts": "tsc -p tsconfig.build.json",
-		"start": "pnpm run build:ts --watch --noEmit false",
-		"test": "vitest"
+		"build": "nadle build",
+		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
+		"test": "nadle test"
 	},
 	"files": [
-		"lib"
+		"lib",
+		"server.mjs",
+		"LICENSE"
 	],
 	"exports": {
 		".": {
@@ -20,6 +20,7 @@
 			"import": "./lib/index.js"
 		}
 	},
+	"bin": "server.mjs",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"typescript": "^5.9.3",
@@ -45,7 +46,7 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/nadlejs/nadle.git",
-		"directory": "packages/nadle-lsp"
+		"directory": "packages/language-server"
 	},
 	"keywords": [
 		"nadle",

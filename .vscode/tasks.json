@@ -2,9 +2,9 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "build-nadle-vscode",
+			"label": "build-vscode-extension",
 			"type": "shell",
-			"command": "pnpm -F @nadle/internal-nadle-lsp build:tsup && pnpm -F @nadle/internal-nadle-vscode build",
+			"command": "pnpm -F @nadle/language-server build && pnpm -F nadle-vscode-extension build",
 			"group": "build",
 			"problemMatcher": []
 		}

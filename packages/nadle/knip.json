@@ -1,4 +1,5 @@
 {
 	"$schema": "https://unpkg.com/knip@latest/schema.json",
-	"ignore": ["src/core/worker.ts", "src/core/file-logger.ts", "test/**", "nadle.config.ts"]
+	"ignore": ["src/core/worker.ts", "src/core/file-logger.ts", "test/**", "nadle.config.ts"],
+	"ignoreBinaries": ["nadle"]
 }

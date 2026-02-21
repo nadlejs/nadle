@@ -56,7 +56,7 @@ Key source directories under `packages/nadle/src/`:
 pnpm install                          # Install dependencies
 npx nadle check build test --summary  # Full CI pipeline (nadle runs itself)
 pnpm -F nadle test                    # Run tests only
-pnpm -F nadle build:tsup              # Build core package
+pnpm -F nadle build                   # Build core package
 ```
 
 ## Code Conventions

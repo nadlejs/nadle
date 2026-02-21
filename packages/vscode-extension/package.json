@@ -1,5 +1,5 @@
 {
-	"name": "nadle-vscode",
+	"name": "nadle-vscode-extension",
 	"displayName": "Nadle",
 	"version": "0.0.5",
 	"publisher": "nadlejs",
@@ -8,11 +8,16 @@
 	"license": "MIT",
 	"type": "commonjs",
 	"scripts": {
-		"build": "pnpm run copy-server && tsup",
-		"copy-server": "node scripts/copy-server.mjs",
+		"build": "nadle build",
 		"package": "vsce package",
 		"publish": "vsce publish"
 	},
+	"files": [
+		"lib",
+		"server",
+		"icon.png",
+		"LICENSE"
+	],
 	"main": "./lib/extension.js",
 	"devDependencies": {
 		"@types/vscode": "^1.85.0",
@@ -40,7 +45,7 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/nadlejs/nadle.git",
-		"directory": "packages/nadle-vscode"
+		"directory": "packages/vscode-extension"
 	},
 	"keywords": [
 		"nadle",

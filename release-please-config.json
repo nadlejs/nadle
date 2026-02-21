@@ -32,7 +32,7 @@
 		"packages/create-nadle": {
 			"release-type": "node"
 		},
-		"packages/nadle-vscode": {
+		"packages/language-server": {
 			"release-type": "node"
 		}
 	},

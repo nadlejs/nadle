@@ -4,7 +4,7 @@ import Fs from "node:fs/promises";
 
 const __dirname = Path.dirname(Url.fileURLToPath(import.meta.url));
 const serverDir = Path.resolve(__dirname, "..", "server");
-const lspLib = Path.resolve(__dirname, "..", "..", "nadle-lsp", "lib");
+const lspLib = Path.resolve(__dirname, "..", "..", "language-server", "lib");
 
 await Fs.mkdir(serverDir, { recursive: true });
 

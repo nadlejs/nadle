@@ -64,7 +64,10 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 		throw new Error("Package must be located in the 'packages' directory. Got: " + pkgDirPath);
 	}
 
-	if (name === "nadle" || name === "create-nadle" || name === "nadle-vscode") {
+	const dirName = pkgDirPath.split(Path.sep)[1];
+	const hasVSCodeEngine = !!(pkg.engines as Record<string, string> | undefined)?.vscode;
+
+	if (dirName !== undefined && (name === dirName || hasVSCodeEngine)) {
 		return;
 	}
 
@@ -73,7 +76,13 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 	}
 
 	if (!isPrivate(pkg)) {
-		throw new Error("Unhandled package name validation for public packages");
+		const expectedName = `@nadle/${dirName}`;
+
+		if (name !== expectedName) {
+			throw new Error("Public scoped package name must match its directory. Expected: " + expectedName + ". Got: " + name);
+		}
+
+		return;
 	}
 
 	if (name === "@nadle/root") {
@@ -110,7 +119,9 @@ const typeValidator: PackageValidator = ({ pkg }) => {
 		throw new Error(`"type" field is required"`);
 	}
 
-	if (isPublic(pkg) && pkg.type !== "module" && !isVSCodeExtension(pkg)) {
+	const hasVSCodeEngine = !!(pkg.engines as Record<string, string> | undefined)?.vscode;
+
+	if (isPublic(pkg) && pkg.type !== "module" && !hasVSCodeEngine) {
 		throw new Error("Public package type must be module");
 	}
 };
@@ -127,12 +138,12 @@ const licenseValidator: PackageValidator = ({ pkg }) => {
 	}
 };
 
-function createSimpleValidator(field: string): PackageValidator {
+function createSimpleValidator(field: string, { mustMatch }: { mustMatch: boolean }): PackageValidator {
 	const obj = {
 		[`${field}Validator`]: function (context: { pkg: PackageJson }) {
 			const { pkg } = context;
 
-			if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
+			if (isPrivate(pkg)) {
 				return;
 			}
 
@@ -140,7 +151,7 @@ function createSimpleValidator(field: string): PackageValidator {
 				throw new Error(`Public packages must have ${field} field`);
 			}
 
-			if (!isEqual(nadlePackage[field], pkg[field])) {
+			if (mustMatch && !isEqual(nadlePackage[field], pkg[field])) {
 				throw new Error(`Public packages must have the same ${field} as nadle package`);
 			}
 		}
@@ -150,17 +161,13 @@ function createSimpleValidator(field: string): PackageValidator {
 }
 
 const filesValidator: PackageValidator = ({ pkg }) => {
-	if (isPublic(pkg) && !isVSCodeExtension(pkg) && !pkg.files?.length) {
+	if (isPublic(pkg) && !pkg.files?.length) {
 		throw new Error("Public packages must have 'files' field");
 	}
 };
 
 const exportsValidator: PackageValidator = ({ pkg }) => {
-	if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
-		return;
-	}
-
-	if (isCLIPackage(pkg)) {
+	if (isPrivate(pkg) || pkg.bin || pkg.main) {
 		return;
 	}
 
@@ -170,16 +177,12 @@ const exportsValidator: PackageValidator = ({ pkg }) => {
 };
 
 const typesValidator: PackageValidator = ({ pkg }) => {
-	if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
-		return;
-	}
-
-	if (isCLIPackage(pkg)) {
+	if (!pkg.exports) {
 		return;
 	}
 
 	if (!pkg.types) {
-		throw new Error("Public packages must have 'types' field");
+		throw new Error("Packages with exports must have 'types' field");
 	}
 };
 
@@ -321,9 +324,9 @@ const validators: PackageValidator[] = [
 	typeValidator,
 	descriptionValidator,
 	licenseValidator,
-	createSimpleValidator("keywords"),
-	createSimpleValidator("homepage"),
-	createSimpleValidator("bugs"),
+	createSimpleValidator("keywords", { mustMatch: false }),
+	createSimpleValidator("homepage", { mustMatch: true }),
+	createSimpleValidator("bugs", { mustMatch: true }),
 	filesValidator,
 	exportsValidator,
 	typesValidator,
@@ -346,12 +349,4 @@ function isPrivate(pkg: PackageJson) {
 
 function isPublic(pkg: PackageJson) {
 	return !isPrivate(pkg);
-}
-
-function isCLIPackage(pkg: PackageJson) {
-	return !!pkg.bin;
-}
-
-function isVSCodeExtension(pkg: PackageJson) {
-	return !!(pkg.engines as Record<string, string> | undefined)?.vscode;
 }
