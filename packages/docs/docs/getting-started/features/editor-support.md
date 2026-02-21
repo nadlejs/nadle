@@ -54,26 +54,70 @@ The LSP activates on all Nadle config file formats:
 
 TypeScript syntax highlighting and type-checking continue to work as normal — the Nadle LSP adds Nadle-specific intelligence on top.
 
-## VS Code Setup
+## VS Code
 
-A VS Code extension is available in the `nadle-vscode` package. To use it during development:
+Install the [Nadle extension](https://marketplace.visualstudio.com/items?itemName=nadlejs.nadle-vscode) from the VS Code Marketplace. The extension bundles the language server — no additional setup is needed.
 
-1. Build the LSP server:
+## Neovim
 
-   ```sh
-   pnpm -F @nadle/internal-nadle-lsp build:tsup
-   ```
+Install the language server:
 
-2. Build the VS Code extension:
+```sh
+npm install -g nadle-lsp
+```
 
-   ```sh
-   pnpm -F @nadle/internal-nadle-vscode build
-   ```
+Neovim 0.11+ has built-in LSP support via `vim.lsp.config`. Add the following to your Neovim configuration:
 
-3. Press **F5** in VS Code (from the repo root) to launch the Extension Development Host.
+```lua
+vim.lsp.config["nadle"] = {
+  cmd = { "nadle-lsp" },
+  filetypes = { "typescript", "javascript" },
+  root_markers = { "nadle.config.ts", "nadle.config.js" },
+}
+vim.lsp.enable("nadle")
+```
 
-4. Open any project containing a `nadle.config.ts` file — the extension activates automatically.
+## Zed
 
-## Other Editors
+Install the language server:
 
-The LSP follows the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) specification and communicates over stdio. Any editor with LSP client support can use the Nadle language server by pointing it to the built `server.js` entry point.
+```sh
+npm install -g nadle-lsp
+```
+
+Add a `nadle` entry under `lsp` in your Zed `settings.json`:
+
+```json
+{
+	"lsp": {
+		"nadle": {
+			"binary": {
+				"path": "nadle-lsp"
+			}
+		}
+	}
+}
+```
+
+## Helix
+
+Install the language server:
+
+```sh
+npm install -g nadle-lsp
+```
+
+Add the following to your `languages.toml`:
+
+```toml
+[language-server.nadle]
+command = "nadle-lsp"
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server", "nadle"]
+```
+
+:::tip
+Any LSP-capable editor works — point it to `nadle-lsp` as the server command. The server communicates over stdio, so no port configuration is needed.
+:::

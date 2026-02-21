@@ -8,8 +8,7 @@
 	"license": "MIT",
 	"type": "commonjs",
 	"scripts": {
-		"build": "pnpm run copy-server && tsup",
-		"copy-server": "node scripts/copy-server.mjs",
+		"build": "nadle build",
 		"package": "vsce package",
 		"publish": "vsce publish"
 	},

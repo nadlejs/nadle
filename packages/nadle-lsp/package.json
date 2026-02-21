@@ -1,9 +1,9 @@
 {
-	"name": "@nadle/internal-nadle-lsp",
+	"name": "nadle-lsp",
+	"version": "0.0.1",
 	"description": "Language Server Protocol support for nadle.config.ts files",
 	"license": "MIT",
 	"type": "module",
-	"private": true,
 	"scripts": {
 		"build": "pnpm \"/build:/\"",
 		"build:tsup": "tsup",
@@ -12,7 +12,9 @@
 		"test": "vitest"
 	},
 	"files": [
-		"lib"
+		"lib",
+		"nadle-lsp.mjs",
+		"LICENSE"
 	],
 	"exports": {
 		".": {
@@ -20,6 +22,7 @@
 			"import": "./lib/index.js"
 		}
 	},
+	"bin": "nadle-lsp.mjs",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"typescript": "^5.9.3",

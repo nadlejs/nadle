@@ -34,6 +34,9 @@
 		},
 		"packages/nadle-vscode": {
 			"release-type": "node"
+		},
+		"packages/nadle-lsp": {
+			"release-type": "node"
 		}
 	},
 	"plugins": [{ "type": "sentence-case" }]

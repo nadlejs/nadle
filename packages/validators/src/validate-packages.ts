@@ -64,7 +64,9 @@ const nameValidator: PackageValidator = ({ pkg, path }) => {
 		throw new Error("Package must be located in the 'packages' directory. Got: " + pkgDirPath);
 	}
 
-	if (name === "nadle" || name === "create-nadle" || name === "nadle-vscode") {
+	const dirName = pkgDirPath.split(Path.sep)[1];
+
+	if (dirName !== undefined && name === dirName) {
 		return;
 	}
 
@@ -132,7 +134,7 @@ function createSimpleValidator(field: string): PackageValidator {
 		[`${field}Validator`]: function (context: { pkg: PackageJson }) {
 			const { pkg } = context;
 
-			if (isPrivate(pkg) || isVSCodeExtension(pkg)) {
+			if (isPrivate(pkg) || isVSCodeExtension(pkg) || isCLIPackage(pkg)) {
 				return;
 			}
 

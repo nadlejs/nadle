@@ -4,7 +4,7 @@
 		{
 			"label": "build-nadle-vscode",
 			"type": "shell",
-			"command": "pnpm -F @nadle/internal-nadle-lsp build:tsup && pnpm -F @nadle/internal-nadle-vscode build",
+			"command": "pnpm -F nadle-lsp build:tsup && pnpm -F @nadle/internal-nadle-vscode build",
 			"group": "build",
 			"problemMatcher": []
 		}
