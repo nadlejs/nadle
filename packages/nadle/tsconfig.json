@@ -1,7 +1,12 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"include": ["src", "test", "bench", "vitest.config.ts", "tsup.config.ts", "nadle.config.ts"],
-	"exclude": ["test/__fixtures__/pnpm-task/src/fail.ts"],
+	"exclude": [
+		"test/__fixtures__/npm-task/src/fail.ts",
+		"test/__fixtures__/npx-task/src/fail.ts",
+		"test/__fixtures__/pnpm-task/src/fail.ts",
+		"test/__fixtures__/pnpx-task/src/fail.ts"
+	],
 	"compilerOptions": {
 		"allowJs": true,
 		"baseUrl": ".",
