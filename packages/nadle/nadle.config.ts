@@ -3,31 +3,22 @@ import Fs from "node:fs/promises";
 
 import { tasks, Inputs, Outputs, ExecTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("buildJs", ExecTask, { command: "npx", args: ["tsup"] }).config({
+tasks.register("build", ExecTask, { command: "npx", args: ["tsup"] }).config({
 	group: "Building",
 	inputs: [Inputs.dirs("src")],
 	outputs: [Outputs.dirs("lib")],
 	description: "Bundle nadle with tsup"
-});
-tasks.register("buildDts", ExecTask, { command: "npx", args: ["tsc", "-p", "tsconfig.build.json"] }).config({
-	group: "Building",
-	description: "Type-check nadle and emit declarations"
 });
 tasks.register("generateMarkdown", ExecTask, { command: "npx", args: ["typedoc"] }).config({
 	group: "Building",
 	description: "Generate API markdown with typedoc"
 });
 
-tasks.register("build").config({
-	group: "Building",
-	dependsOn: ["buildJs", "buildDts"]
-});
-
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
 
 tasks.register("testAPI", ExecTask, { args: ["run"], command: "api-extractor" }).config({
 	group: "Testing",
-	dependsOn: ["buildDts"],
+	dependsOn: ["build"],
 	description: "Verify API surface with api-extractor"
 });
 tasks
@@ -62,6 +53,6 @@ tasks.register("test").config({
 
 tasks.register("updateAPI", ExecTask, { command: "api-extractor", args: ["run", "--local"] }).config({
 	group: "Maintenance",
-	dependsOn: ["buildDts"],
+	dependsOn: ["build"],
 	description: "Update API report locally"
 });
