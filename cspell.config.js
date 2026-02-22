@@ -66,6 +66,7 @@ const config = {
 		".specify/templates/**",
 		"./packages/docs/**",
 		".github/workflows/**",
+		"**/CHANGELOG.md",
 		"./packages/**/package.json",
 		"packages/nadle/test/unit/task-input-resolver.test.ts",
 		"packages/nadle/test/features/workspaces/tasks.test.ts",

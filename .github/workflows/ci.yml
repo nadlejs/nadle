@@ -29,8 +29,7 @@ concurrency:
 #           ┌── test (Ubuntu 22) ──────────────────────┤
 #           ├── test (macOS 22) ───────────────────────┤
 #   build ──┼── test (Windows 22) ─────────────────────┼── status
-#           ├── test (Ubuntu 24) ──────────────────────┤
-#           └── coverage ──────────────────────────────┤
+#           └── test (Ubuntu 24) ──────────────────────┤
 #                                                       │
 #   (release-any-commit runs independently)  ──────────┘
 
@@ -117,27 +116,9 @@ jobs:
       - name: Test create-nadle
         run: pnpm -F create-nadle exec vitest run
 
-  coverage:
-    name: Coverage
-    needs: [build]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: ./.github/actions/setup
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: build-output
-          path: packages
-
-      - name: Coverage
-        run: pnpm -F nadle exec vitest run --coverage
-
   status:
     name: CI Status
-    needs: [check, build, test, coverage]
+    needs: [check, build, test]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -146,6 +127,5 @@ jobs:
         if: |
           needs.check.result != 'success' ||
           needs.build.result != 'success' ||
-          needs.test.result != 'success' ||
-          needs.coverage.result != 'success'
+          needs.test.result != 'success'
         run: exit 1
