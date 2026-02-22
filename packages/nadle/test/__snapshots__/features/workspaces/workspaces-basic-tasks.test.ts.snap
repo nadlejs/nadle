@@ -93,6 +93,25 @@ Build one
 [log] <Bold>1</BoldDim> task executed
 `;
 
+exports[`workspaces basic tasks > when running a task from a workspace > without specifying the workspace > when the task is defined in the workspace > should run that task 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build one
+[log]
+<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>1</BoldDim> task executed
+`;
+
 exports[`workspaces basic tasks > when running a task from a workspace > without specifying the workspace > when the task is not defined in the workspace > should run the root task if defined 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
