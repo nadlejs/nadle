@@ -20,7 +20,9 @@
 			"import": "./lib/index.js"
 		}
 	},
-	"bin": "server.mjs",
+	"bin": {
+		"nadle-language-server": "server.mjs"
+	},
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"typescript": "^5.9.3",
