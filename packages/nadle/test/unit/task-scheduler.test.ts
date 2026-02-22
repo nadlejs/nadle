@@ -452,4 +452,37 @@ describe.concurrent("TaskScheduler", () => {
 			expect(ready).toContain("lint");
 		});
 	});
+
+	describe("performance", () => {
+		it("schedules 500 tasks across 100 workspaces in under 100ms", () => {
+			const workspaceCount = 100;
+			const tasksPerWorkspace = 5;
+			const taskNames = ["build", "test", "lint", "check", "deploy"];
+			const tasks: TaskDef[] = [];
+
+			// Create a chain of workspace deps: ws-1 -> ws-0, ws-2 -> ws-1, etc.
+			const workspaceDeps: Record<string, string[]> = {};
+			for (let wsIdx = 0; wsIdx < workspaceCount; wsIdx++) {
+				const wsId = `packages:ws-${wsIdx}`;
+				if (wsIdx > 0) workspaceDeps[wsId] = [`packages:ws-${wsIdx - 1}`];
+				for (let taskIdx = 0; taskIdx < tasksPerWorkspace; taskIdx++) {
+					tasks.push({ name: taskNames[taskIdx], workspaceId: wsId });
+				}
+			}
+
+			const deps = createMockDeps(tasks, {
+				parallel: true,
+				implicitDependencies: true,
+				workspaceDeps
+			});
+
+			const start = performance.now();
+			const scheduler = new TaskScheduler(deps).init();
+			scheduler.getExecutionPlan();
+			const elapsed = performance.now() - start;
+
+			expect(elapsed).toBeLessThan(100);
+			expect(scheduler.scheduledTask).toHaveLength(workspaceCount * tasksPerWorkspace);
+		});
+	});
 });
