@@ -109,6 +109,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
   The file is in the program because:
     Root file specified for compilation
 
+[log]
 Found 1 error.
 
 [log]
