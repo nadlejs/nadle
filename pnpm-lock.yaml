@@ -196,6 +196,18 @@ importers:
         specifier: 4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.2)
 
+  packages/kernel:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.19.25
+        version: 20.19.33
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.2)
+
   packages/language-server:
     dependencies:
       typescript:
@@ -235,6 +247,9 @@ importers:
       '@manypkg/tools':
         specifier: ^2.1.0
         version: 2.1.0
+      '@nadle/kernel':
+        specifier: workspace:*
+        version: link:../kernel
       consola:
         specifier: ^3.4.2
         version: 3.4.2

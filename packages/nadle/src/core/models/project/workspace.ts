@@ -1,7 +1,8 @@
 import { type Package } from "@manypkg/tools";
+import { deriveWorkspaceId } from "@nadle/kernel";
 
 import { PackageJson } from "./package.js";
-import { COLON, SLASH, BACKSLASH } from "../../utilities/constants.js";
+import { SLASH, BACKSLASH } from "../../utilities/constants.js";
 
 /**
  * Represents a workspace in a monorepo or project.
@@ -35,7 +36,7 @@ export namespace Workspace {
 	export function create(pkg: Package): Workspace {
 		const { relativeDir, packageJson, dir: absolutePath } = pkg;
 		const relativePath = relativeDir.replaceAll(BACKSLASH, SLASH);
-		const id = relativePath.replaceAll(SLASH, COLON);
+		const id = deriveWorkspaceId(relativePath);
 
 		return { id, label: id, absolutePath, relativePath, dependencies: [], configFilePath: null, packageJson: PackageJson.create(packageJson) };
 	}

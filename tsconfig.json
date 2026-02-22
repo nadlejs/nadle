@@ -2,6 +2,7 @@
 	"files": [],
 	"references": [
 		{ "path": "./packages/nadle" },
+		{ "path": "./packages/kernel" },
 		{ "path": "./packages/create-nadle" },
 		{ "path": "./packages/language-server" },
 		{ "path": "./packages/vscode-extension" },
