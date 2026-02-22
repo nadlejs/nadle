@@ -7,6 +7,7 @@ interface BufferedTask extends Omit<RegisteredTask, "label"> {}
 
 export class TaskRegistry {
 	private readonly registry = new Map<TaskIdentifier, RegisteredTask>();
+	private readonly nameIndex = new Map<string, RegisteredTask[]>();
 	/**
 	 * The id of the workspace where tasks are registering.
 	 */
@@ -25,8 +26,17 @@ export class TaskRegistry {
 		for (const bufferedTask of this.buffer.values()) {
 			const { id, name, workspaceId } = bufferedTask;
 			const workspaceLabel = Project.getWorkspaceById(project, workspaceId).label;
+			const task = { ...bufferedTask, label: TaskIdentifier.create(workspaceLabel, name) };
 
-			this.registry.set(id, { ...bufferedTask, label: TaskIdentifier.create(workspaceLabel, name) });
+			this.registry.set(id, task);
+
+			const existing = this.nameIndex.get(name);
+
+			if (existing) {
+				existing.push(task);
+			} else {
+				this.nameIndex.set(name, [task]);
+			}
 		}
 
 		this.buffer.clear();
@@ -59,7 +69,7 @@ export class TaskRegistry {
 	}
 
 	public getTaskByName(taskName: string): RegisteredTask[] {
-		return this.tasks.filter(({ name }) => name === taskName);
+		return this.nameIndex.get(taskName) ?? [];
 	}
 
 	public parse(taskInput: string, targetWorkspaceId: string): TaskIdentifier {

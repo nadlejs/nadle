@@ -98,7 +98,7 @@ pnpm -F nadle test basic              # Single test file
 - Type-level tests in `*.test-d.ts` files
 
 ## Active Technologies
-
+- TypeScript 5.9.3, ESM only, target node22 + tinypool (worker threads), jiti (config loading), tsup (bundler) (006-workspace-task-execution)
 - TypeScript 5.9.3, target node22 + `@typescript-eslint/utils` (rule creation), `@typescript-eslint/rule-tester` (testing), `eslint ^9.0.0` (peer) (005-eslint-plugin)
 
 ## Recent Changes

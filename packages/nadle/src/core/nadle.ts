@@ -2,6 +2,7 @@ import Process from "node:process";
 
 import { Handlers } from "./handlers/index.js";
 import { runWithInstance } from "./nadle-context.js";
+import { Project } from "./models/project/project.js";
 import { NadleError } from "./utilities/nadle-error.js";
 import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
@@ -10,6 +11,8 @@ import { TaskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { type State, type ExecutionContext } from "./context.js";
 import { ExecutionTracker } from "./models/execution-tracker.js";
+import { type SchedulerTask } from "./engine/scheduler-types.js";
+import { type TaskIdentifier } from "./models/task-identifier.js";
 import { RootWorkspace } from "./models/project/root-workspace.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { FileOptionRegistry } from "./registration/file-option-registry.js";
@@ -100,6 +103,26 @@ export class Nadle implements ExecutionContext {
 		}
 
 		return this.#options;
+	}
+
+	public getTaskById(taskId: TaskIdentifier): SchedulerTask {
+		return this.taskRegistry.getTaskById(taskId);
+	}
+
+	public getTasksByName(taskName: string): readonly SchedulerTask[] {
+		return this.taskRegistry.getTaskByName(taskName);
+	}
+
+	public parseTaskRef(input: string, targetWorkspaceId: string): TaskIdentifier {
+		return this.taskRegistry.parse(input, targetWorkspaceId);
+	}
+
+	public isRootWorkspace(workspaceId: string): boolean {
+		return RootWorkspace.isRootWorkspaceId(workspaceId);
+	}
+
+	public getWorkspaceDependencies(workspaceId: string): readonly string[] {
+		return Project.getWorkspaceById(this.options.project, workspaceId).dependencies;
 	}
 
 	public updateState(updater: (state: State) => State): void {

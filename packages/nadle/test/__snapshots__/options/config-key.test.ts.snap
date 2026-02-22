@@ -14,6 +14,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
   "cleanCache": false,
   "showConfig": true,
   "excludedTasks": [],
+  "implicitDependencies": true,
   "isWorkerThread": false,
   "tasks": [],
   "maxWorkers": 1,

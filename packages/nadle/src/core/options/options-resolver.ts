@@ -26,6 +26,7 @@ export class OptionsResolver {
 		cleanCache: false,
 		showConfig: false,
 		excludedTasks: [] as string[],
+		implicitDependencies: true,
 
 		isWorkerThread: false
 	} as const;
