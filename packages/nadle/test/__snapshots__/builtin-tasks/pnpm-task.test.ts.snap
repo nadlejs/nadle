@@ -13,14 +13,14 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [info] Project directory: /ROOT/test/__fixtures__/pnpm-task
 [info] Resolved options: {
   "cache": true,
+  "footer": false,
   "summary": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": false,
-  "excludedTasks": [],
-  "footer": false,
   "implicitDependencies": true,
+  "excludedTasks": [],
   "isWorkerThread": false,
   "tasks": [
     {

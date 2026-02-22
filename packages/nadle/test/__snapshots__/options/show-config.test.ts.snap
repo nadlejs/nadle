@@ -7,14 +7,14 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
 ---------- Stdout ------------
 [log] {
   "cache": true,
+  "footer": false,
   "summary": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
-  "excludedTasks": [],
-  "footer": false,
   "implicitDependencies": true,
+  "excludedTasks": [],
   "isWorkerThread": false,
   "tasks": [
     {
@@ -64,14 +64,14 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
 ---------- Stdout ------------
 [log] {
   "cache": true,
+  "footer": false,
   "summary": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
-  "excludedTasks": [],
-  "footer": false,
   "implicitDependencies": true,
+  "excludedTasks": [],
   "isWorkerThread": false,
   "tasks": [
     {
