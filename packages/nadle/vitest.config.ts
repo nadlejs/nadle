@@ -19,7 +19,7 @@ export default defineConfig({
 		pool: "threads",
 		testTimeout: 20000,
 		retry: isCI ? 5 : 2,
-		fileParallelism: !isCI,
+		fileParallelism: true,
 		setupFiles: "./test/__setup__/vitest.ts",
 		globalSetup: "./test/__setup__/global-setup.ts",
 		benchmark: {
