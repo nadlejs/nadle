@@ -23,14 +23,14 @@ Build backend
 Build api
 [log]
 <Green>✓</Green> Task <Bold>common:api:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-Build utils
 [log] <Yellow>></Yellow> Task <Bold>common:utils:build</BoldDim> <Yellow>STARTED</Yellow>
 
+Build utils
 [log]
 <Green>✓</Green> Task <Bold>common:utils:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-Build frontend
 [log] <Yellow>></Yellow> Task <Bold>frontend:build</BoldDim> <Yellow>STARTED</Yellow>
 
+Build frontend
 [log]
 <Green>✓</Green> Task <Bold>frontend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 Build root

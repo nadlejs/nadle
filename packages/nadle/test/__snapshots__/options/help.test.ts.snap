@@ -35,7 +35,7 @@ General options:
       --max-workers  Maximum number of workers (integer or percentage)
                                                    [string] [default: Os.availableParallelism() - 1]
       --footer       Enables the in-progress summary footer during task execution
-                                                                          [boolean] [default: !isCI]
+                                                                 [boolean] [default: !isCI && isTTY]
       --summary      Print a summary of executed tasks at the end of the run
                                                                           [boolean] [default: false]
 

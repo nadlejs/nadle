@@ -7,7 +7,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
 ---------- Stdout ------------
 [log] {
   "cache": true,
-  "footer": false,
   "summary": false,
   "parallel": false,
   "logLevel": "log",
@@ -15,6 +14,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
   "showConfig": true,
   "implicitDependencies": true,
   "excludedTasks": [],
+  "footer": false,
   "isWorkerThread": false,
   "tasks": [],
   "maxWorkers": 1,

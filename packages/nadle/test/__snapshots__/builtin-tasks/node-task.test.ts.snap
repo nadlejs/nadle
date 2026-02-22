@@ -13,7 +13,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [info] Project directory: /ROOT/test/__fixtures__/node-task
 [info] Resolved options: {
   "cache": true,
-  "footer": false,
   "summary": false,
   "parallel": false,
   "logLevel": "info",
@@ -21,6 +20,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
   "showConfig": false,
   "implicitDependencies": true,
   "excludedTasks": [],
+  "footer": false,
   "isWorkerThread": false,
   "tasks": [
     {
