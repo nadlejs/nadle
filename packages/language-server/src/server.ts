@@ -6,6 +6,7 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 import { TextDocuments, createConnection, ProposedFeatures, TextDocumentSyncKind } from "vscode-languageserver/node";
 
 import { getHover } from "./hover.js";
+import { getReferences } from "./references.js";
 import { getDefinition } from "./definitions.js";
 import { getCompletions } from "./completions.js";
 import { DocumentStore } from "./document-store.js";
@@ -24,6 +25,7 @@ connection.onInitialize((): InitializeResult => {
 		capabilities: {
 			hoverProvider: true,
 			definitionProvider: true,
+			referencesProvider: true,
 			textDocumentSync: TextDocumentSyncKind.Incremental,
 			completionProvider: {
 				resolveProvider: false,
@@ -127,6 +129,16 @@ connection.onDefinition(({ position, textDocument }) => {
 	}
 
 	return getDefinition(analysis, position, doc);
+});
+
+connection.onReferences(({ context, position, textDocument }) => {
+	const doc = documents.get(textDocument.uri);
+
+	if (!doc) {
+		return [];
+	}
+
+	return getReferences(store.getAllAnalyses(), position, doc, context);
 });
 
 documents.listen(connection);
