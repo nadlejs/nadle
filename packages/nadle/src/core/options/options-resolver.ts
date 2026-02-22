@@ -19,13 +19,13 @@ import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions 
 export class OptionsResolver {
 	private readonly defaultOptions = {
 		cache: true,
-		footer: !isCI,
 		summary: false,
 		parallel: false,
 		logLevel: "log",
 		cleanCache: false,
 		showConfig: false,
 		excludedTasks: [] as string[],
+		footer: !isCI && !!process.stdout.isTTY,
 
 		isWorkerThread: false
 	} as const;

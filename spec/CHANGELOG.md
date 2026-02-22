@@ -8,6 +8,14 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.4.1 — 2026-02-22
+
+### Changed
+
+- 09-cli, 13-reporting: Footer default is now `!isCI && isTTY` instead of `!isCI`.
+  The footer is automatically disabled when stdout is not a TTY (piped or redirected
+  output), matching the behavior of Vitest and other modern CLI tools.
+
 ## 1.4.0 — 2026-02-21
 
 ### Added

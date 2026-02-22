@@ -37,7 +37,7 @@ nadle [tasks...] [options]
 | `--log-level`   |       | string  | `"log"`                        | Logging level. Choices: `error`, `log`, `info`, `debug`. |
 | `--min-workers` |       | string  | `availableParallelism - 1`     | Minimum workers (integer or percentage).                 |
 | `--max-workers` |       | string  | `availableParallelism - 1`     | Maximum workers (integer or percentage).                 |
-| `--footer`      |       | boolean | `!isCI`                        | Enable the live progress footer during execution.        |
+| `--footer`      |       | boolean | `!isCI && isTTY`               | Enable the live progress footer during execution.        |
 | `--summary`     |       | boolean | `false`                        | Print a task execution summary at the end of the run.    |
 
 ### Miscellaneous
