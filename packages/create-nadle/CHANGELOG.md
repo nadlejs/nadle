@@ -1,5 +1,19 @@
 # create-nadle
 
+## [0.0.5](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.4...create-nadle/v0.0.5) (2026-02-22)
+
+
+### Features
+
+* Publish nadle-lsp as standalone npm package ([#510](https://github.com/nadlejs/nadle/issues/510)) ([4e7c4be](https://github.com/nadlejs/nadle/commit/4e7c4bec2d65ffb3ea6523e10d11a39a4b43b146))
+
+
+### Internal
+
+* Add publishConfig access public to all packages ([15b1c7f](https://github.com/nadlejs/nadle/commit/15b1c7f466ecd17731b445f01b5d6d1810e4a65c))
+* Consolidate build tasks and simplify tsconfig usage ([#518](https://github.com/nadlejs/nadle/issues/518)) ([37a1dc6](https://github.com/nadlejs/nadle/commit/37a1dc6917ca763f8065c19411918b4a8760a563))
+* Migrate nadle configs from ExecTask to PnpxTask ([#520](https://github.com/nadlejs/nadle/issues/520)) ([78f2ebd](https://github.com/nadlejs/nadle/commit/78f2ebd9435c182c0cfb5b2e423b53961bad80c5))
+
 ## [0.0.4](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.3...create-nadle/v0.0.4) (2026-02-20)
 
 
