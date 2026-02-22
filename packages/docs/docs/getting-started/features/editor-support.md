@@ -49,8 +49,8 @@ Ctrl+click (Cmd+click on macOS) a task name in a `dependsOn` value to jump to it
 
 The LSP activates on all Nadle config file formats:
 
-- `nadle.config.ts` / `nadle.config.mts` / `nadle.config.cts`
-- `nadle.config.js` / `nadle.config.mjs` / `nadle.config.cjs`
+- `nadle.config.ts` / `nadle.config.mts`
+- `nadle.config.js` / `nadle.config.mjs`
 
 TypeScript syntax highlighting and type-checking continue to work as normal — the Nadle LSP adds Nadle-specific intelligence on top.
 
@@ -76,7 +76,7 @@ Neovim 0.11+ has built-in LSP support via `vim.lsp.config`. Add the following to
 vim.lsp.config["nadle"] = {
   cmd = { "nadle-language-server" },
   filetypes = { "typescript", "javascript" },
-  root_markers = { "nadle.config.ts", "nadle.config.js" },
+  root_markers = { "nadle.config.ts", "nadle.config.mts", "nadle.config.js", "nadle.config.mjs" },
 }
 vim.lsp.enable("nadle")
 ```
