@@ -58,8 +58,8 @@ importers:
         specifier: ^5.70.2
         version: 5.83.1(@types/node@24.6.2)(typescript@5.9.3)
       nadle:
-        specifier: https://pkg.pr.new/nadle@2697846
-        version: https://pkg.pr.new/nadle@2697846(@types/react@19.2.0)
+        specifier: https://pkg.pr.new/nadle@368fc65
+        version: https://pkg.pr.new/nadle@368fc65(@types/react@19.2.0)
       prettier:
         specifier: ^3.7.3
         version: 3.8.1
@@ -6384,8 +6384,8 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
-  nadle@https://pkg.pr.new/nadle@2697846:
-    resolution: {integrity: sha512-XGJvaUs+iMYZF3Gc5FCB+QeJ/GhUZzLWHfHZIoZF3QUOcI6GDowfGVwfSuMk0HyrJ9fsJ3K+ZypvrZX84Yv2mw==, tarball: https://pkg.pr.new/nadle@2697846}
+  nadle@https://pkg.pr.new/nadle@368fc65:
+    resolution: {integrity: sha512-jL5TtQWRtqRohICprZteksI4zEGk2wvc9SntkRj/XNxy4KfzfMEEWQZSH7W91iUAOR8lVimXwCmbwtPFfV/v9A==, tarball: https://pkg.pr.new/nadle@368fc65}
     version: 0.5.1
     engines: {node: '>=22'}
     hasBin: true
@@ -16372,7 +16372,7 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  nadle@https://pkg.pr.new/nadle@2697846(@types/react@19.2.0):
+  nadle@https://pkg.pr.new/nadle@368fc65(@types/react@19.2.0):
     dependencies:
       '@manypkg/find-root': 3.1.0
       '@manypkg/tools': 2.1.0
