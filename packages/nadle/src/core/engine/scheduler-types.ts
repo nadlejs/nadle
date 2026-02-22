@@ -1,14 +1,14 @@
-import { type TaskIdentifier } from "../models/task-identifier.js";
-import { type TaskConfiguration } from "../interfaces/task-configuration.js";
-import { type ResolvedTask } from "../interfaces/resolved-task.js";
 import { type Callback } from "../utilities/types.js";
+import { type TaskIdentifier } from "../models/task-identifier.js";
+import { type ResolvedTask } from "../interfaces/resolved-task.js";
+import { type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 /**
  * Minimal task information needed by the scheduler.
  */
 export interface SchedulerTask {
-	readonly id: TaskIdentifier;
 	readonly name: string;
+	readonly id: TaskIdentifier;
 	readonly workspaceId: string;
 	readonly configResolver: Callback<TaskConfiguration>;
 }
@@ -26,8 +26,8 @@ export interface SchedulerLogger {
  */
 export interface SchedulerOptions {
 	readonly parallel: boolean;
-	readonly implicitDependencies: boolean;
 	readonly tasks: ResolvedTask[];
+	readonly implicitDependencies: boolean;
 	readonly excludedTasks: ResolvedTask[];
 }
 
@@ -38,11 +38,11 @@ export interface SchedulerOptions {
  * In tests, a plain object can be constructed with minimal setup.
  */
 export interface SchedulerDependencies {
-	getTaskById(taskId: TaskIdentifier): SchedulerTask;
-	getTasksByName(taskName: string): readonly SchedulerTask[];
-	parseTaskRef(input: string, targetWorkspaceId: string): TaskIdentifier;
-	isRootWorkspace(workspaceId: string): boolean;
-	getWorkspaceDependencies(workspaceId: string): readonly string[];
 	readonly logger: SchedulerLogger;
 	readonly options: SchedulerOptions;
+	isRootWorkspace(workspaceId: string): boolean;
+	getTaskById(taskId: TaskIdentifier): SchedulerTask;
+	getTasksByName(taskName: string): readonly SchedulerTask[];
+	getWorkspaceDependencies(workspaceId: string): readonly string[];
+	parseTaskRef(input: string, targetWorkspaceId: string): TaskIdentifier;
 }

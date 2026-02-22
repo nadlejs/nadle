@@ -31,6 +31,7 @@ export class TaskRegistry {
 			this.registry.set(id, task);
 
 			const existing = this.nameIndex.get(name);
+
 			if (existing) {
 				existing.push(task);
 			} else {

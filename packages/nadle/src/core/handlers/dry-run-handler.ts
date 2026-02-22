@@ -26,9 +26,10 @@ export class DryRunHandler extends BaseHandler {
 		for (const taskId of taskIds) {
 			const label = this.context.taskRegistry.getTaskById(taskId).label;
 			const implicitDeps = scheduler.getImplicitDeps(taskId);
-			const suffix = implicitDeps.length > 0
-				? c.dim(` (after ${implicitDeps.map((d) => this.context.taskRegistry.getTaskById(d).label).join(", ")} — implicit)`)
-				: "";
+			const suffix =
+				implicitDeps.length > 0
+					? c.dim(` (after ${implicitDeps.map((d) => this.context.taskRegistry.getTaskById(d).label).join(", ")} — implicit)`)
+					: "";
 			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(label)}${suffix}`);
 		}
 	}

@@ -3,8 +3,6 @@ import { it, vi, expect, describe } from "vitest";
 import { resolveImplicitDependencies } from "../../src/core/engine/implicit-dependency-resolver.js";
 import { type SchedulerDependencies, type SchedulerTask } from "../../src/core/engine/scheduler-types.js";
 
-type ResolverDeps = Pick<SchedulerDependencies, "getTasksByName" | "getWorkspaceDependencies" | "logger">;
-
 function createTask(name: string, workspaceId: string): SchedulerTask {
 	const id = workspaceId === "root" ? name : `${workspaceId}:${name}`;
 
@@ -13,9 +11,11 @@ function createTask(name: string, workspaceId: string): SchedulerTask {
 
 function createDeps(
 	tasks: SchedulerTask[],
-	workspaceDeps: Record<string, string[]> = {}
-): ResolverDeps {
+	workspaceDeps: Record<string, string[]> = {},
+	excludedTaskIds: ReadonlySet<string> = new Set()
+) {
 	return {
+		excludedTaskIds,
 		getTasksByName: (taskName: string) => tasks.filter((t) => t.name === taskName),
 		getWorkspaceDependencies: (wsId: string) => workspaceDeps[wsId] ?? [],
 		logger: { debug: vi.fn(), throw: vi.fn() as never }
@@ -27,7 +27,7 @@ describe.concurrent("resolveImplicitDependencies", () => {
 		const tasks = [createTask("build", "packages:lib"), createTask("build", "packages:app")];
 		const deps = createDeps(tasks, { "packages:app": ["packages:lib"] });
 
-		const result = resolveImplicitDependencies("build", "packages:app", new Set(), deps);
+		const result = resolveImplicitDependencies("build", "packages:app", deps);
 
 		expect(result).toEqual(new Set(["packages:lib:build"]));
 	});
@@ -46,10 +46,10 @@ describe.concurrent("resolveImplicitDependencies", () => {
 		};
 		const deps = createDeps(tasks, workspaceDeps);
 
-		const appResult = resolveImplicitDependencies("build", "packages:app", new Set(), deps);
+		const appResult = resolveImplicitDependencies("build", "packages:app", deps);
 		expect(appResult).toEqual(new Set(["packages:lib-a:build", "packages:lib-b:build"]));
 
-		const libAResult = resolveImplicitDependencies("build", "packages:lib-a", new Set(), deps);
+		const libAResult = resolveImplicitDependencies("build", "packages:lib-a", deps);
 		expect(libAResult).toEqual(new Set(["packages:core:build"]));
 	});
 
@@ -57,17 +57,17 @@ describe.concurrent("resolveImplicitDependencies", () => {
 		const tasks = [createTask("build", "packages:app")];
 		const deps = createDeps(tasks, { "packages:app": ["packages:lib"] });
 
-		const result = resolveImplicitDependencies("build", "packages:app", new Set(), deps);
+		const result = resolveImplicitDependencies("build", "packages:app", deps);
 
 		expect(result).toEqual(new Set());
 	});
 
 	it("skips excluded upstream tasks", () => {
 		const tasks = [createTask("build", "packages:lib"), createTask("build", "packages:app")];
-		const deps = createDeps(tasks, { "packages:app": ["packages:lib"] });
-
 		const excluded = new Set(["packages:lib:build"]);
-		const result = resolveImplicitDependencies("build", "packages:app", excluded, deps);
+		const deps = createDeps(tasks, { "packages:app": ["packages:lib"] }, excluded);
+
+		const result = resolveImplicitDependencies("build", "packages:app", deps);
 
 		expect(result).toEqual(new Set());
 	});
@@ -76,7 +76,7 @@ describe.concurrent("resolveImplicitDependencies", () => {
 		const tasks = [createTask("build", "packages:lib")];
 		const deps = createDeps(tasks, {});
 
-		const result = resolveImplicitDependencies("build", "packages:lib", new Set(), deps);
+		const result = resolveImplicitDependencies("build", "packages:lib", deps);
 
 		expect(result).toEqual(new Set());
 	});
@@ -85,7 +85,7 @@ describe.concurrent("resolveImplicitDependencies", () => {
 		const tasks = [createTask("build", "packages:lib")];
 		const deps = createDeps(tasks, { "packages:lib": ["packages:lib"] });
 
-		const result = resolveImplicitDependencies("build", "packages:lib", new Set(), deps);
+		const result = resolveImplicitDependencies("build", "packages:lib", deps);
 
 		// Self-dep won't match because the task itself is in the same workspace
 		// The resolver finds tasks in upstream workspaces with same name
@@ -99,7 +99,7 @@ describe.concurrent("resolveImplicitDependencies", () => {
 		const tasks = [createTask("build", "packages:lib"), createTask("build", "packages:app")];
 		const deps = createDeps(tasks, { "packages:app": ["packages:lib"] });
 
-		resolveImplicitDependencies("build", "packages:app", new Set(), deps);
+		resolveImplicitDependencies("build", "packages:app", deps);
 
 		expect(deps.logger.debug).toHaveBeenCalledWith(
 			{ tag: "Scheduler" },

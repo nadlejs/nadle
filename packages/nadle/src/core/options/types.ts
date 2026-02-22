@@ -15,14 +15,14 @@ export interface NadleBaseOptions {
 	readonly footer?: boolean;
 	/** Enable or disable parallel task execution. */
 	readonly parallel?: boolean;
-	/** Enable or disable implicit workspace task dependencies. */
-	readonly implicitDependencies?: boolean;
 	/** Log level for reporting. */
 	readonly logLevel?: SupportLogLevel;
 	/** Minimum number of worker threads (number or string, e.g., "50%"). */
 	readonly minWorkers?: number | string;
 	/** Maximum number of worker threads (number or string, e.g., "100%"). */
 	readonly maxWorkers?: number | string;
+	/** Enable or disable implicit workspace task dependencies. */
+	readonly implicitDependencies?: boolean;
 }
 
 /**

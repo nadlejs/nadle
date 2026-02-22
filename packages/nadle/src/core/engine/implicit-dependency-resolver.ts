@@ -1,7 +1,9 @@
-import { type TaskIdentifier } from "../models/task-identifier.js";
 import { type SchedulerDependencies } from "./scheduler-types.js";
+import { type TaskIdentifier } from "../models/task-identifier.js";
 
-type ResolverDeps = Pick<SchedulerDependencies, "getTasksByName" | "getWorkspaceDependencies" | "logger">;
+type ResolverDeps = Pick<SchedulerDependencies, "getTasksByName" | "getWorkspaceDependencies" | "logger"> & {
+	excludedTaskIds: ReadonlySet<TaskIdentifier>;
+};
 
 /**
  * Resolves implicit task dependencies based on workspace dependency relationships.
@@ -9,12 +11,7 @@ type ResolverDeps = Pick<SchedulerDependencies, "getTasksByName" | "getWorkspace
  * For a given task, finds all upstream workspaces and checks if they define
  * a task with the same name. If so, an implicit dependency edge is created.
  */
-export function resolveImplicitDependencies(
-	taskName: string,
-	workspaceId: string,
-	excludedTaskIds: ReadonlySet<TaskIdentifier>,
-	deps: ResolverDeps
-): Set<TaskIdentifier> {
+export function resolveImplicitDependencies(taskName: string, workspaceId: string, deps: ResolverDeps): Set<TaskIdentifier> {
 	const implicitDeps = new Set<TaskIdentifier>();
 	const upstreamWorkspaceIds = deps.getWorkspaceDependencies(workspaceId);
 
@@ -22,7 +19,7 @@ export function resolveImplicitDependencies(
 		const sameNameTasks = deps.getTasksByName(taskName);
 		const upstreamTask = sameNameTasks.find((task) => task.workspaceId === upstreamWorkspaceId);
 
-		if (!upstreamTask || excludedTaskIds.has(upstreamTask.id)) {
+		if (!upstreamTask || deps.excludedTaskIds.has(upstreamTask.id)) {
 			continue;
 		}
 
