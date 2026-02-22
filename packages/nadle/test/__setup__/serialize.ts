@@ -1,5 +1,6 @@
 export function serialize(input: string): string {
 	return [
+		normalizeLineEndings,
 		serializeANSI,
 		serializeDuration,
 		serializeErrorPointer,
@@ -11,8 +12,17 @@ export function serialize(input: string): string {
 		serializeHash,
 		serializeVersion,
 		removeUnstableLines,
+		collapseBlankLines,
 		removeTrailingSpaces
 	].reduce((result, serializer) => serializer(result), input);
+}
+
+function normalizeLineEndings(input: string) {
+	return input.replaceAll("\r", "");
+}
+
+function collapseBlankLines(input: string) {
+	return input.replace(/\n{3,}/g, "\n\n");
 }
 
 function removeTrailingSpaces(input: string) {
@@ -22,13 +32,28 @@ function removeTrailingSpaces(input: string) {
 		.join("\n");
 }
 
-const UnstableLines = ["ExperimentalWarning", "--trace-warnings", "npm warn"];
+const UnstableLines = ["ExperimentalWarning", "--trace-warnings", "npm warn", "npm notice"];
 
 function removeUnstableLines(input: string) {
-	return input
-		.split("\n")
-		.filter((line) => !UnstableLines.some((unstableLine) => line.includes(unstableLine)))
-		.join("\n");
+	const lines = input.split("\n");
+	const result: string[] = [];
+	let previousWasRemoved = false;
+
+	for (const line of lines) {
+		if (UnstableLines.some((unstableLine) => line.includes(unstableLine))) {
+			previousWasRemoved = true;
+			continue;
+		}
+
+		if (previousWasRemoved && line.trim() === "") {
+			continue;
+		}
+
+		previousWasRemoved = false;
+		result.push(line);
+	}
+
+	return result.join("\n");
 }
 
 function serializeVersion(input: string) {
