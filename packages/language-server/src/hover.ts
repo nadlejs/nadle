@@ -35,7 +35,7 @@ function formatHoverContent(reg: TaskRegistration): string {
 		}
 
 		if (details.length > 0) {
-			lines.push("", "---", ...details);
+			lines.push("", "---", details.join("\n\n"));
 		}
 	}
 
