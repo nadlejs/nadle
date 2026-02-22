@@ -76,6 +76,18 @@ describe("getHover", () => {
 		expect(value).toContain("**compile**");
 	});
 
+	it("separates detail lines with paragraph breaks", async () => {
+		const { doc, analysis } = await setupFixture("valid.ts");
+		const content = doc.getText();
+		const offset = findStringOffset(content, "release");
+		const position = doc.positionAt(offset);
+		const hover = getHover(analysis, position, doc);
+
+		expect(hover).not.toBeNull();
+		const value = (hover!.contents as { value: string }).value;
+		expect(value).toContain("**Dependencies**: build\n\n**Group**: publish");
+	});
+
 	it("returns null for non-task strings", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
 		const position = doc.positionAt(0);
