@@ -274,6 +274,75 @@ describe.concurrent("TaskScheduler", () => {
 		});
 	});
 
+	describe("cycle detection with implicit deps", () => {
+		it("detects cycle from circular workspace deps", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build", workspaceId: "packages:a" },
+					{ name: "build", workspaceId: "packages:b" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					workspaceDeps: { "packages:a": ["packages:b"], "packages:b": ["packages:a"] }
+				}
+			);
+
+			expect(() => new TaskScheduler(deps).init()).toThrow(/Cycle/);
+		});
+
+		it("no cycle when only one workspace has the task", () => {
+			const deps = createMockDeps(
+				[{ name: "build", workspaceId: "packages:a" }],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					workspaceDeps: { "packages:a": ["packages:b"], "packages:b": ["packages:a"] }
+				}
+			);
+
+			// No cycle because packages:b has no "build" task — implicit dep is skipped
+			expect(() => new TaskScheduler(deps).init()).not.toThrow();
+		});
+
+		it("no false cycle from redundant explicit + implicit edge", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app", dependsOn: "packages:lib:build" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					workspaceDeps: { "packages:app": ["packages:lib"] }
+				}
+			);
+
+			expect(() => new TaskScheduler(deps).init()).not.toThrow();
+		});
+
+		it("detects long implicit chain cycle", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build", workspaceId: "packages:a" },
+					{ name: "build", workspaceId: "packages:b" },
+					{ name: "build", workspaceId: "packages:c" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					workspaceDeps: {
+						"packages:a": ["packages:c"],
+						"packages:b": ["packages:a"],
+						"packages:c": ["packages:b"]
+					}
+				}
+			);
+
+			expect(() => new TaskScheduler(deps).init()).toThrow(/Cycle/);
+		});
+	});
+
 	describe("root task aggregation", () => {
 		it("root build runs after all child workspace builds", () => {
 			const deps = createMockDeps(

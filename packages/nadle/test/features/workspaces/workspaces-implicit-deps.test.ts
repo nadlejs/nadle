@@ -328,4 +328,121 @@ describe("workspaces > implicit dependencies", () => {
 			});
 		});
 	});
+
+	describe("cycle detection with implicit deps", () => {
+		it("should detect cycle from circular workspace deps", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stderr = await getStderr(exec`build --parallel`);
+
+					expect(stderr).toContain("Cycle detected");
+					expect(stderr).toContain("packages:a:build");
+					expect(stderr).toContain("packages:b:build");
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						a: {
+							[PACKAGE_JSON]: createPackageJson("a", {
+								dependencies: { b: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build a" }]
+							})
+						},
+						b: {
+							[PACKAGE_JSON]: createPackageJson("b", {
+								dependencies: { a: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build b" }]
+							})
+						}
+					}
+				}
+			});
+		});
+
+		it("should not cycle when only one workspace has the task", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stdout = await getStdout(exec`build --parallel`);
+
+					expect(stdout).toContain("Task packages:a:build DONE");
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						a: {
+							[PACKAGE_JSON]: createPackageJson("a", {
+								dependencies: { b: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build a" }]
+							})
+						},
+						b: {
+							[PACKAGE_JSON]: createPackageJson("b", {
+								dependencies: { a: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "test", log: "Test b" }]
+							})
+						}
+					}
+				}
+			});
+		});
+
+		it("should show workspace-qualified names in cycle error", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stderr = await getStderr(exec`build --parallel`);
+
+					expect(stderr).toContain("Cycle detected");
+					// Error message should include fully qualified workspace:task names
+					expect(stderr).toMatch(/packages:a:build.*packages:b:build|packages:b:build.*packages:a:build/);
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						a: {
+							[PACKAGE_JSON]: createPackageJson("a", {
+								dependencies: { b: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build a" }]
+							})
+						},
+						b: {
+							[PACKAGE_JSON]: createPackageJson("b", {
+								dependencies: { a: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build b" }]
+							})
+						}
+					}
+				}
+			});
+		});
+	});
 });
