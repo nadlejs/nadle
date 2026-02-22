@@ -61,11 +61,16 @@ The root workspace always exists in a Nadle project. Its ID is `root` by default
 
 When you run a task at the root level (e.g., `nadle build`), Nadle will:
 
-- Run the root workspace's version of the task first.
-- After it finishes, Nadle will also run all tasks with the same name in all sub-workspaces,
-  except those that are already scheduled to run before due to the [`dependsOn`](../guides/configuring-task.md#dependson) option.
+- Expand the task to include all sub-workspace tasks with the same name.
+- When `implicitDependencies` is enabled (the default), the root task automatically depends
+  on all expanded child workspace tasks, so the root task runs **last** — after all child
+  workspace instances complete.
+- Sub-workspace tasks also respect implicit dependency ordering based on `package.json`
+  workspace dependencies (e.g., if `app` depends on `lib`, then `lib:build` runs before
+  `app:build`).
 
-This ensures that root-level tasks can orchestrate and trigger the same-named tasks across your monorepo, while respecting dependencies.
+This ensures that root-level tasks orchestrate the same-named tasks across your monorepo,
+running children in the correct dependency order before the root task finalizes.
 
 :::note
 The reverse is not true—running a task in a sub-workspace does not automatically trigger the root workspace's version of the task. Only the explicitly referenced workspace's task will run.

@@ -59,16 +59,17 @@ file-level options that are merged between defaults and CLI options.
 
 Accepted options:
 
-| Option       | Type               | Description                                                             |
-| ------------ | ------------------ | ----------------------------------------------------------------------- |
-| `alias`      | object or function | Workspace alias configuration (see [07-workspace.md](07-workspace.md)). |
-| `cache`      | boolean            | Enable or disable caching.                                              |
-| `cacheDir`   | string             | Custom cache directory path.                                            |
-| `footer`     | boolean            | Enable or disable the live footer.                                      |
-| `logLevel`   | string             | Log level (`"error"`, `"log"`, `"info"`, `"debug"`).                    |
-| `parallel`   | boolean            | Enable parallel execution mode.                                         |
-| `minWorkers` | number or string   | Minimum worker thread count.                                            |
-| `maxWorkers` | number or string   | Maximum worker thread count.                                            |
+| Option                 | Type               | Description                                                             |
+| ---------------------- | ------------------ | ----------------------------------------------------------------------- |
+| `alias`                | object or function | Workspace alias configuration (see [07-workspace.md](07-workspace.md)). |
+| `cache`                | boolean            | Enable or disable caching.                                              |
+| `cacheDir`             | string             | Custom cache directory path.                                            |
+| `footer`               | boolean            | Enable or disable the live footer.                                      |
+| `implicitDependencies` | boolean            | Enable implicit workspace task dependencies and root aggregation.       |
+| `logLevel`             | string             | Log level (`"error"`, `"log"`, `"info"`, `"debug"`).                    |
+| `parallel`             | boolean            | Enable parallel execution mode.                                         |
+| `minWorkers`           | number or string   | Minimum worker thread count.                                            |
+| `maxWorkers`           | number or string   | Maximum worker thread count.                                            |
 
 If `configure()` is called from a non-root workspace config file, it raises an error.
 
@@ -82,16 +83,17 @@ Built-in defaults < File options (configure()) < CLI flags
 
 ## Built-in Defaults
 
-| Option       | Default                                 |
-| ------------ | --------------------------------------- |
-| `cache`      | `true`                                  |
-| `footer`     | `true` (but `false` in CI environments) |
-| `parallel`   | `false`                                 |
-| `logLevel`   | `"log"`                                 |
-| `summary`    | `false`                                 |
-| `cleanCache` | `false`                                 |
-| `minWorkers` | `availableParallelism - 1`              |
-| `maxWorkers` | `availableParallelism - 1`              |
+| Option                 | Default                                 |
+| ---------------------- | --------------------------------------- |
+| `cache`                | `true`                                  |
+| `footer`               | `true` (but `false` in CI environments) |
+| `implicitDependencies` | `true`                                  |
+| `parallel`             | `false`                                 |
+| `logLevel`             | `"log"`                                 |
+| `summary`              | `false`                                 |
+| `cleanCache`           | `false`                                 |
+| `minWorkers`           | `availableParallelism - 1`              |
+| `maxWorkers`           | `availableParallelism - 1`              |
 
 ## Worker Count Resolution
 

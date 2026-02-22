@@ -18,6 +18,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": false,
+  "implicitDependencies": true,
   "excludedTasks": [],
   "footer": false,
   "isWorkerThread": false,

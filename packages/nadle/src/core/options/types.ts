@@ -21,6 +21,8 @@ export interface NadleBaseOptions {
 	readonly minWorkers?: number | string;
 	/** Maximum number of worker threads (number or string, e.g., "100%"). */
 	readonly maxWorkers?: number | string;
+	/** Enable or disable implicit workspace task dependencies. */
+	readonly implicitDependencies?: boolean;
 }
 
 /**

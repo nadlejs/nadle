@@ -24,6 +24,7 @@ export class OptionsResolver {
 		logLevel: "log",
 		cleanCache: false,
 		showConfig: false,
+		implicitDependencies: true,
 		excludedTasks: [] as string[],
 		footer: !isCI && !!process.stdout.isTTY,
 

@@ -12,6 +12,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
+  "implicitDependencies": true,
   "excludedTasks": [],
   "footer": false,
   "isWorkerThread": false,

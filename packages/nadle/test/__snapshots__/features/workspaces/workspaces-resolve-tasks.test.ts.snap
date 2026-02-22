@@ -18,11 +18,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:biuld biuld
 Build backend
 [log]
 <Green>✓</Green> Task <Bold>backend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
-
-Build root
-[log]
-<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>common:api:build</BoldDim> <Yellow>STARTED</Yellow>
 
 Build api
@@ -38,6 +33,11 @@ Build utils
 Build frontend
 [log]
 <Green>✓</Green> Task <Bold>frontend:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build root
+[log]
+<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>5</BoldDim> tasks executed
