@@ -9,25 +9,14 @@ import { type SchedulerDependencies } from "./scheduler-types.js";
 import { resolveImplicitDependencies } from "./implicit-dependency-resolver.js";
 
 export class TaskScheduler {
-	// Map between a task and the set of tasks that depend on it
 	private readonly dependentsGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
-
-	// Map between a task and the set of tasks that it depends on
 	private readonly dependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
-
-	// Map between a task and the set of tasks that it depends on transitively
 	private readonly transitiveDependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
-
-	// Map between a tasks and its indegree
 	private readonly indegree = new EnsureMap<TaskIdentifier, number>(() => 0);
-
-	// Set of tasks that are ready to be executed
 	private readonly readyTasks = new Set<TaskIdentifier>();
-
+	private readonly rootAggregationDeps = new Map<TaskIdentifier, Set<TaskIdentifier>>();
 	private taskIds: TaskIdentifier[] = [];
 	private excludedTaskIds = new Set<TaskIdentifier>();
-
-	// The main task listed in the tasks argument need to be focused on
 	private mainTaskId: string | undefined = undefined;
 
 	public constructor(private readonly deps: SchedulerDependencies) {}
@@ -35,87 +24,74 @@ export class TaskScheduler {
 	public init(taskIds: string[] = this.deps.options.tasks.map(({ taskId }) => taskId)): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
 		this.excludedTaskIds = new Set(this.deps.options.excludedTasks.map(ResolvedTask.getId));
-
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
 		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
-
 		this.deps.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
 		this.deps.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
-
-		if (!this.deps.options.parallel) {
-			this.mainTaskId = this.taskIds[0];
-		}
-
+		if (!this.deps.options.parallel) this.mainTaskId = this.taskIds[0];
 		return this;
 	}
 
 	private expandWorkspaceTasks(taskIds: string[]): string[] {
 		const expandedTaskIds: string[] = [];
-
 		for (const taskId of taskIds) {
 			expandedTaskIds.push(taskId);
 			const { name, workspaceId } = this.deps.getTaskById(taskId);
+			if (!this.deps.isRootWorkspace(workspaceId)) continue;
 
-			if (!this.deps.isRootWorkspace(workspaceId)) {
-				continue;
-			}
-
+			const childTaskIds = new Set<TaskIdentifier>();
 			for (const sameNameTask of this.deps.getTasksByName(name)) {
 				if (!taskIds.includes(sameNameTask.id)) {
 					expandedTaskIds.push(sameNameTask.id);
+					childTaskIds.add(sameNameTask.id);
 				}
 			}
+			if (childTaskIds.size > 0 && this.deps.options.implicitDependencies) {
+				this.rootAggregationDeps.set(taskId, childTaskIds);
+			}
 		}
-
 		return expandedTaskIds;
 	}
 
 	private detectCycle(taskId: string, paths: string[]) {
 		for (const dependency of this.dependencyGraph.get(taskId)) {
-			const startTaskIndex = paths.indexOf(dependency);
-
-			if (startTaskIndex !== -1) {
-				this.deps.logger.throw(Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `)));
+			const startIndex = paths.indexOf(dependency);
+			if (startIndex !== -1) {
+				const cycle = [...paths.slice(startIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `);
+				this.deps.logger.throw(Messages.CycleDetected(cycle));
 			}
-
 			this.detectCycle(dependency, [...paths, dependency]);
 		}
 	}
 
 	private analyze(taskId: string): void {
-		if (this.dependencyGraph.has(taskId)) {
-			return;
-		}
+		if (this.dependencyGraph.has(taskId)) return;
 
 		const { name, workspaceId, configResolver } = this.deps.getTaskById(taskId);
-
 		const dependencies = new Set(
 			MaybeArray.toArray(configResolver().dependsOn ?? [])
-				.map((dependencyTaskInput) => this.deps.parseTaskRef(dependencyTaskInput, workspaceId))
-				.filter((taskId) => !this.excludedTaskIds.has(taskId))
+				.map((input) => this.deps.parseTaskRef(input, workspaceId))
+				.filter((id) => !this.excludedTaskIds.has(id))
 		);
 
 		if (this.deps.options.implicitDependencies) {
-			const implicitDeps = resolveImplicitDependencies(name, workspaceId, this.excludedTaskIds, this.deps);
-
-			for (const implicitDep of implicitDeps) {
-				dependencies.add(implicitDep);
+			for (const dep of resolveImplicitDependencies(name, workspaceId, this.excludedTaskIds, this.deps)) {
+				dependencies.add(dep);
+			}
+			for (const childId of this.rootAggregationDeps.get(taskId) ?? []) {
+				if (!this.excludedTaskIds.has(childId)) dependencies.add(childId);
 			}
 		}
 
 		this.dependencyGraph.set(taskId, dependencies);
 		this.indegree.set(taskId, dependencies.size);
-
 		this.transitiveDependencyGraph.set(taskId, new Set<string>(dependencies));
 
 		for (const dependency of dependencies) {
-			this.dependentsGraph.update(dependency, (oldDependents) => oldDependents.add(taskId));
-
+			this.dependentsGraph.update(dependency, (s) => s.add(taskId));
 			this.analyze(dependency);
-
 			this.transitiveDependencyGraph.update(taskId, (current) => {
 				this.transitiveDependencyGraph.get(dependency).forEach((d) => current.add(d));
-
 				return current;
 			});
 		}
@@ -126,25 +102,21 @@ export class TaskScheduler {
 	}
 
 	private getIndegreeEntries() {
-		const runningRootTaskId = this.mainTaskId;
-
-		if (!runningRootTaskId) {
+		if (!this.mainTaskId) {
 			return this.indegree.entries();
 		}
 
+		const rootId = this.mainTaskId;
+
 		return new Map(
 			Array.from(this.indegree.entries()).filter(
-				([taskId]) => taskId === runningRootTaskId || this.transitiveDependencyGraph.get(runningRootTaskId)?.has(taskId)
+				([taskId]) => taskId === rootId || this.transitiveDependencyGraph.get(rootId)?.has(taskId)
 			)
 		);
 	}
 
 	private isBelongToRootTaskTree(taskId: string): boolean {
-		if (!this.mainTaskId) {
-			return true;
-		}
-
-		if (taskId === this.mainTaskId) {
+		if (!this.mainTaskId || taskId === this.mainTaskId) {
 			return true;
 		}
 
@@ -153,26 +125,16 @@ export class TaskScheduler {
 
 	public getReadyTasks(doneTaskId?: string): Set<string> {
 		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
-
-		if (doneTaskId === undefined) {
-			return this.getInitialReadyTasks();
-		}
+		if (doneTaskId === undefined) return this.getInitialReadyTasks();
 
 		const nextReadyTasks = new Set<TaskIdentifier>();
-
 		for (const dependentTask of this.dependentsGraph.get(doneTaskId)) {
-			if (this.readyTasks.has(dependentTask)) {
-				continue;
-			}
-
+			if (this.readyTasks.has(dependentTask)) continue;
 			let indegree = this.indegree.get(dependentTask);
-
 			if (indegree === 0) {
-				throw new Error(`Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${doneTaskId}`);
+				throw new Error(`Incorrect state. Expect ${dependentTask} to have indegree > 0`);
 			}
-
 			this.indegree.set(dependentTask, --indegree);
-
 			if (indegree === 0 && this.isBelongToRootTaskTree(dependentTask)) {
 				nextReadyTasks.add(dependentTask);
 				this.readyTasks.add(dependentTask);
@@ -180,50 +142,38 @@ export class TaskScheduler {
 		}
 
 		if (doneTaskId === this.mainTaskId) {
-			const nextMainTask = this.moveToNextMainTask();
-
-			if (!nextMainTask) {
-				return new Set<string>();
-			}
-
+			if (!this.moveToNextMainTask()) return new Set<string>();
 			return this.getReadyTasks();
 		}
 
 		this.deps.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
-
 		return nextReadyTasks;
 	}
 
 	private getInitialReadyTasks() {
 		const nextReadyTasks = new Set<string>();
-
 		for (const [taskId, indegree] of this.getIndegreeEntries()) {
 			this.deps.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
-
 			if (indegree === 0 && !this.readyTasks.has(taskId)) {
 				nextReadyTasks.add(taskId);
 				this.readyTasks.add(taskId);
 			}
 		}
-
 		this.deps.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
-
 		return nextReadyTasks;
 	}
 
 	private moveToNextMainTask() {
-		this.mainTaskId = this.mainTaskId !== undefined ? this.taskIds[this.taskIds.indexOf(this.mainTaskId) + 1] : undefined;
-
+		const nextIndex = this.mainTaskId !== undefined ? this.taskIds.indexOf(this.mainTaskId) + 1 : -1;
+		this.mainTaskId = nextIndex >= 0 ? this.taskIds[nextIndex] : undefined;
 		return this.mainTaskId;
 	}
 
 	public getExecutionPlan(taskId?: TaskIdentifier): TaskIdentifier[] {
 		const readyTaskIds = Array.from(this.getReadyTasks(taskId));
-
 		for (const readyTaskId of readyTaskIds) {
 			readyTaskIds.push(...this.getExecutionPlan(readyTaskId));
 		}
-
 		return readyTaskIds;
 	}
 }

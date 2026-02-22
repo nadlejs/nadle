@@ -230,4 +230,102 @@ describe("workspaces > implicit dependencies", () => {
 			});
 		});
 	});
+
+	describe("root task aggregation", () => {
+		it("should run root build after all child workspace builds", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stdout = await getStdout(exec`build --parallel`);
+
+					expect(stdout).toRunInOrder("packages:lib:build", "build");
+					expect(stdout).toRunInOrder("packages:app:build", "build");
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						lib: {
+							[PACKAGE_JSON]: createPackageJson("lib"),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+						},
+						app: {
+							[PACKAGE_JSON]: createPackageJson("app"),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] })
+						}
+					}
+				}
+			});
+		});
+
+		it("should combine aggregation with implicit workspace deps", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stdout = await getStdout(exec`build --parallel`);
+
+					// lib before app (implicit dep), both before root (aggregation)
+					expect(stdout).toRunInOrder("packages:lib:build", "packages:app:build");
+					expect(stdout).toRunInOrder("packages:app:build", "build");
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						lib: {
+							[PACKAGE_JSON]: createPackageJson("lib"),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+						},
+						app: {
+							[PACKAGE_JSON]: createPackageJson("app", {
+								dependencies: { lib: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] })
+						}
+					}
+				}
+			});
+		});
+
+		it("should not aggregate when implicitDependencies is false", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stdout = await getStdout(exec`build --parallel`);
+
+					// All tasks should complete, root build not forced to wait
+					expect(stdout).toContain("Task build DONE");
+					expect(stdout).toContain("Task packages:lib:build DONE");
+					expect(stdout).toContain("Task packages:app:build DONE");
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						configure: { implicitDependencies: false },
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						lib: {
+							[PACKAGE_JSON]: createPackageJson("lib"),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+						},
+						app: {
+							[PACKAGE_JSON]: createPackageJson("app"),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] })
+						}
+					}
+				}
+			});
+		});
+	});
 });

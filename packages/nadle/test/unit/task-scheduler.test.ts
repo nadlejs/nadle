@@ -20,6 +20,7 @@ function toTaskId(name: string, workspaceId = "root") {
 interface MockOptions {
 	parallel?: boolean;
 	mainTasks?: string[];
+	mainTaskIds?: string[];
 	excludedTasks?: string[];
 	implicitDependencies?: boolean;
 	workspaceDeps?: Record<string, string[]>;
@@ -43,6 +44,13 @@ function createMockDeps(tasks: TaskDef[], options?: MockOptions): SchedulerDepen
 	const mainTaskDefs = options?.mainTasks ? tasks.filter((t) => options.mainTasks!.includes(t.name)) : tasks;
 	const workspaceDeps = options?.workspaceDeps ?? {};
 
+	const resolvedTasks = options?.mainTaskIds
+		? options.mainTaskIds.map((id) => ({ rawInput: id, corrected: false, taskId: id }))
+		: mainTaskDefs.map((t) => {
+				const wid = t.workspaceId ?? "root";
+				return { rawInput: t.name, corrected: false, taskId: toTaskId(t.name, wid) };
+			});
+
 	return {
 		getTaskById: (taskId: string) => {
 			const task = taskMap.get(taskId);
@@ -65,10 +73,7 @@ function createMockDeps(tasks: TaskDef[], options?: MockOptions): SchedulerDepen
 		options: {
 			parallel: options?.parallel ?? false,
 			implicitDependencies: options?.implicitDependencies ?? false,
-			tasks: mainTaskDefs.map((t) => {
-				const wid = t.workspaceId ?? "root";
-				return { rawInput: t.name, corrected: false, taskId: toTaskId(t.name, wid) };
-			}),
+			tasks: resolvedTasks,
 			excludedTasks: (options?.excludedTasks ?? []).map((id) => ({ taskId: id, rawInput: id, corrected: false }))
 		}
 	};
@@ -266,6 +271,116 @@ describe.concurrent("TaskScheduler", () => {
 
 			// app:build should be immediately ready since lib:build is excluded
 			expect(ready).toContain("packages:app:build");
+		});
+	});
+
+	describe("root task aggregation", () => {
+		it("root build runs after all child workspace builds", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build" },
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app" }
+				],
+				{ parallel: true, implicitDependencies: true, mainTaskIds: ["build"] }
+			);
+			const scheduler = new TaskScheduler(deps).init();
+			const plan = scheduler.getExecutionPlan();
+
+			expect(plan.indexOf("packages:lib:build")).toBeLessThan(plan.indexOf("build"));
+			expect(plan.indexOf("packages:app:build")).toBeLessThan(plan.indexOf("build"));
+		});
+
+		it("root build aggregates with implicit workspace deps", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build" },
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					mainTaskIds: ["build"],
+					workspaceDeps: { "packages:app": ["packages:lib"] }
+				}
+			);
+			const scheduler = new TaskScheduler(deps).init();
+			const plan = scheduler.getExecutionPlan();
+
+			expect(plan.indexOf("packages:lib:build")).toBeLessThan(plan.indexOf("packages:app:build"));
+			expect(plan.indexOf("packages:app:build")).toBeLessThan(plan.indexOf("build"));
+		});
+
+		it("does not aggregate when implicitDependencies is false", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build" },
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app" }
+				],
+				{ parallel: true, implicitDependencies: false, mainTaskIds: ["build"] }
+			);
+			const scheduler = new TaskScheduler(deps).init();
+			const ready = scheduler.getReadyTasks();
+
+			// All three should be immediately ready (no aggregation deps)
+			expect(ready).toContain("build");
+			expect(ready).toContain("packages:lib:build");
+			expect(ready).toContain("packages:app:build");
+		});
+
+		it("aggregation respects excluded tasks", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build" },
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					mainTaskIds: ["build"],
+					excludedTasks: ["packages:lib:build"]
+				}
+			);
+			const scheduler = new TaskScheduler(deps).init();
+			const ready = scheduler.getReadyTasks();
+
+			// lib:build and app:build are both immediately ready (lib:build excluded from aggregation)
+			expect(ready).toContain("packages:lib:build");
+			expect(ready).toContain("packages:app:build");
+			// root build not yet ready because it still depends on non-excluded app:build
+			expect(ready).not.toContain("build");
+		});
+
+		it("root build with explicit dependsOn and aggregation", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "install" },
+					{ name: "build", dependsOn: "install" },
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app" }
+				],
+				{ parallel: true, implicitDependencies: true, mainTaskIds: ["build"] }
+			);
+			const scheduler = new TaskScheduler(deps).init();
+			const plan = scheduler.getExecutionPlan();
+
+			expect(plan.indexOf("install")).toBeLessThan(plan.indexOf("build"));
+			expect(plan.indexOf("packages:lib:build")).toBeLessThan(plan.indexOf("build"));
+			expect(plan.indexOf("packages:app:build")).toBeLessThan(plan.indexOf("build"));
+		});
+
+		it("no aggregation when root has no child same-name tasks", () => {
+			const deps = createMockDeps(
+				[{ name: "lint" }, { name: "build", workspaceId: "packages:lib" }],
+				{ parallel: true, implicitDependencies: true, mainTaskIds: ["lint"] }
+			);
+			const scheduler = new TaskScheduler(deps).init();
+			const ready = scheduler.getReadyTasks();
+
+			expect(ready).toContain("lint");
 		});
 	});
 });

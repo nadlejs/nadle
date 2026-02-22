@@ -42,6 +42,43 @@ When a task is specified at the root workspace level and child workspaces have t
 with the same name, Nadle automatically expands the request to include the matching
 child workspace tasks. This only applies to tasks registered in the root workspace.
 
+## Implicit Workspace Dependencies
+
+When `implicitDependencies` is enabled (the default), Nadle automatically creates task
+dependency edges based on workspace dependency relationships declared in `package.json`.
+
+### Resolution Rules
+
+For each non-root task being analyzed, Nadle examines the workspace's dependency list
+(populated from `package.json` — see [07-workspace.md](07-workspace.md)). For each
+upstream workspace, if it defines a task with the **same name**, an implicit dependency
+edge is added so the upstream task runs first.
+
+- Implicit edges are **additive**: they combine with any explicit `dependsOn` declarations.
+- Implicit edges respect `--exclude`: if the upstream task is excluded, no edge is created.
+- **Deduplication**: if an explicit `dependsOn` already targets the same upstream task,
+  the implicit edge is a no-op (no duplicate edge).
+- Implicit dependencies are only resolved for tasks within child workspaces. Root workspace
+  tasks are not subject to implicit dependency resolution (they have no upstream workspaces).
+- If the upstream workspace has no task with the matching name, the edge is silently skipped.
+
+### Root Task Aggregation
+
+When workspace task expansion adds child workspace tasks for a root task (see above),
+and `implicitDependencies` is enabled, the root task automatically depends on **all**
+expanded child workspace tasks. This ensures the root task runs last, after all child
+workspace instances of the same task have completed.
+
+- Aggregation edges respect `--exclude`: excluded child tasks are not added as dependencies.
+- Aggregation combines with implicit workspace dependencies: child tasks respect their own
+  inter-workspace ordering, and the root task waits for all of them.
+- Aggregation is disabled when `implicitDependencies` is `false`.
+
+### Opt-Out
+
+Set `implicitDependencies: false` via `configure()` or CLI flag to disable all implicit
+dependency behavior, including both workspace dependency edges and root task aggregation.
+
 ## Execution Modes
 
 ### Parallel Mode (`--parallel`)
