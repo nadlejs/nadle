@@ -78,7 +78,7 @@ export const CLIOptions = {
 		key: "footer",
 		options: {
 			type: "boolean",
-			defaultDescription: "!isCI",
+			defaultDescription: "!isCI && isTTY",
 			description: "Enables the in-progress summary footer during task execution"
 		}
 	},
