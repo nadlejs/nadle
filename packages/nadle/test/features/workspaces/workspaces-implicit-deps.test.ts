@@ -445,4 +445,80 @@ describe("workspaces > implicit dependencies", () => {
 			});
 		});
 	});
+
+	describe("dry-run visibility", () => {
+		it("should show implicit dependency annotation in dry-run output", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stdout = await getStdout(exec`build --parallel --dry-run`);
+
+					expect(stdout).toContain("Execution plan");
+					// app:build should show implicit dep on lib:build
+					expect(stdout).toMatch(/packages:app:build.*implicit/);
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						lib: {
+							[PACKAGE_JSON]: createPackageJson("lib"),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build lib" }]
+							})
+						},
+						app: {
+							[PACKAGE_JSON]: createPackageJson("app", {
+								dependencies: { lib: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build app" }]
+							})
+						}
+					}
+				}
+			});
+		});
+
+		it("should not show implicit annotation for explicit deps", async () => {
+			await withFixture({
+				fixtureDir: "monorepo",
+				testFn: async ({ exec }) => {
+					const stdout = await getStdout(exec`build --parallel --dry-run`);
+
+					expect(stdout).toContain("Execution plan");
+					// lib:build line itself should not have implicit annotation
+					expect(stdout).toMatch(/Task packages:lib:build\s*$/m);
+				},
+				files: {
+					[PNPM_WORKSPACE]: createPnpmWorkspace(),
+					[PACKAGE_JSON]: createPackageJson("root"),
+					[CONFIG_FILE]: createNadleConfig({
+						tasks: [{ name: "build", log: "Build root" }]
+					}),
+
+					packages: {
+						lib: {
+							[PACKAGE_JSON]: createPackageJson("lib"),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build lib" }]
+							})
+						},
+						app: {
+							[PACKAGE_JSON]: createPackageJson("app", {
+								dependencies: { lib: "workspace:*" }
+							}),
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build", log: "Build app" }]
+							})
+						}
+					}
+				}
+			});
+		});
+	});
 });

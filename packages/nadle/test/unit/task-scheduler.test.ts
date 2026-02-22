@@ -214,6 +214,42 @@ describe.concurrent("TaskScheduler", () => {
 			expect(plan.indexOf("packages:lib:build")).toBeLessThan(plan.indexOf("packages:app:build"));
 		});
 
+		it("tracks implicit edges via getImplicitDeps", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					workspaceDeps: { "packages:app": ["packages:lib"] }
+				}
+			);
+			const scheduler = new TaskScheduler(deps).init();
+
+			expect(scheduler.getImplicitDeps("packages:app:build")).toEqual(["packages:lib:build"]);
+			expect(scheduler.getImplicitDeps("packages:lib:build")).toEqual([]);
+		});
+
+		it("does not track explicit deps as implicit", () => {
+			const deps = createMockDeps(
+				[
+					{ name: "build", workspaceId: "packages:lib" },
+					{ name: "build", workspaceId: "packages:app", dependsOn: "packages:lib:build" }
+				],
+				{
+					parallel: true,
+					implicitDependencies: true,
+					workspaceDeps: { "packages:app": ["packages:lib"] }
+				}
+			);
+			const scheduler = new TaskScheduler(deps).init();
+
+			// Explicit dep already covered it — should NOT be marked as implicit
+			expect(scheduler.getImplicitDeps("packages:app:build")).toEqual([]);
+		});
+
 		it("does NOT add implicit edges when disabled", () => {
 			const deps = createMockDeps(
 				[

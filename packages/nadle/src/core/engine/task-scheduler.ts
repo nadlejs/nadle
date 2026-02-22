@@ -14,6 +14,7 @@ export class TaskScheduler {
 	private readonly transitiveDependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
 	private readonly indegree = new EnsureMap<TaskIdentifier, number>(() => 0);
 	private readonly readyTasks = new Set<TaskIdentifier>();
+	private readonly implicitEdges = new Set<string>();
 	private readonly rootAggregationDeps = new Map<TaskIdentifier, Set<TaskIdentifier>>();
 	private taskIds: TaskIdentifier[] = [];
 	private excludedTaskIds = new Set<TaskIdentifier>();
@@ -76,10 +77,14 @@ export class TaskScheduler {
 
 		if (this.deps.options.implicitDependencies) {
 			for (const dep of resolveImplicitDependencies(name, workspaceId, this.excludedTaskIds, this.deps)) {
+				if (!dependencies.has(dep)) this.implicitEdges.add(`${dep}->${taskId}`);
 				dependencies.add(dep);
 			}
 			for (const childId of this.rootAggregationDeps.get(taskId) ?? []) {
-				if (!this.excludedTaskIds.has(childId)) dependencies.add(childId);
+				if (!this.excludedTaskIds.has(childId)) {
+					if (!dependencies.has(childId)) this.implicitEdges.add(`${childId}->${taskId}`);
+					dependencies.add(childId);
+				}
 			}
 		}
 
@@ -99,6 +104,10 @@ export class TaskScheduler {
 
 	public get scheduledTask(): string[] {
 		return Array.from(this.dependencyGraph.keys());
+	}
+
+	public getImplicitDeps(taskId: TaskIdentifier): TaskIdentifier[] {
+		return [...this.dependencyGraph.get(taskId)].filter((dep) => this.implicitEdges.has(`${dep}->${taskId}`));
 	}
 
 	private getIndegreeEntries() {
