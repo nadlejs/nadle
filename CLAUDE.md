@@ -10,6 +10,8 @@ packages/
     src/           # Source (91 TS files)
     test/          # Integration + unit tests (51 test files, vitest)
     lib/           # Built output (cli.js, index.js, worker.js)
+  language-server/ # LSP for nadle.config.ts (shared across editors)
+  vscode-extension/# VS Code extension (bundles language-server)
   create-nadle/    # Scaffolding CLI (npm create nadle)
   docs/            # Docusaurus site (nadle.dev)
   examples/basic/  # Basic example project
@@ -19,6 +21,8 @@ spec/              # Language-agnostic specification (single source of truth)
 ```
 
 Monorepo managed with **pnpm workspaces**. Nadle builds itself (`nadle.config.ts` at root).
+
+The IntelliJ plugin lives in a separate repo: [nadlejs/intellij-plugin](https://github.com/nadlejs/intellij-plugin).
 
 ## Architecture
 

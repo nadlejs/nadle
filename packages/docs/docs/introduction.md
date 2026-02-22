@@ -77,7 +77,7 @@ Nadle works seamlessly in:
 
 ## Editor Support
 
-TypeScript gives you IntelliSense and compile-time checks out of the box in any editor. Dedicated VS Code and IntelliJ plugins are planned.
+TypeScript gives you IntelliSense and compile-time checks out of the box in any editor. Dedicated [VS Code](https://marketplace.visualstudio.com/items?itemName=nadlejs.nadle-vscode-extension) and [IntelliJ](https://github.com/nadlejs/intellij-plugin) plugins are available, and any LSP-capable editor can use the [@nadle/language-server](https://www.npmjs.com/package/@nadle/language-server).
 
 ---
 
@@ -90,6 +90,5 @@ Have ideas or feedback?
 
 ## Roadmap
 
-- VS Code & IntelliJ integrations
 - Guided tutorial and onboarding CLI
 - Showcase examples and templates

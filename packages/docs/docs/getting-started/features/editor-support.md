@@ -1,6 +1,6 @@
 ---
-description: Get real-time diagnostics, autocompletion, and hover info for nadle.config.ts with the Nadle Language Server and VS Code extension.
-keywords: [nadle, editor, LSP, VS Code, language server, IntelliSense]
+description: Get real-time diagnostics, autocompletion, and hover info for nadle.config.ts with the Nadle Language Server, VS Code extension, and IntelliJ plugin.
+keywords: [nadle, editor, LSP, VS Code, IntelliJ, language server, IntelliSense]
 ---
 
 # Editor Support
@@ -57,6 +57,10 @@ TypeScript syntax highlighting and type-checking continue to work as normal — 
 ## VS Code
 
 Install the [Nadle extension](https://marketplace.visualstudio.com/items?itemName=nadlejs.nadle-vscode-extension) from the VS Code Marketplace. The extension bundles the language server — no additional setup is needed.
+
+## IntelliJ
+
+Install the [Nadle plugin](https://github.com/nadlejs/intellij-plugin) for IntelliJ-based IDEs (IntelliJ IDEA, WebStorm, etc.). The plugin provides the same diagnostics, autocompletion, hover information, and go-to-definition features as the VS Code extension.
 
 ## Neovim
 

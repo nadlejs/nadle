@@ -14,7 +14,7 @@ Nadle comes packed with powerful features to make your build automation and task
 - Built from the ground up with TypeScript
 - Complete type inference for tasks and configurations
 - Compile-time error detection
-- IDE support with IntelliSense
+- IDE support with IntelliSense ([VS Code](../getting-started/features/editor-support.md#vs-code), [IntelliJ](../getting-started/features/editor-support.md#intellij))
 
 ### Type-Safe Task Options
 
