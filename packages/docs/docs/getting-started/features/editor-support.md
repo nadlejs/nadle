@@ -49,8 +49,8 @@ Ctrl+click (Cmd+click on macOS) a task name in a `dependsOn` value to jump to it
 
 The LSP activates on all Nadle config file formats:
 
-- `nadle.config.ts` / `nadle.config.mts` / `nadle.config.cts`
-- `nadle.config.js` / `nadle.config.mjs` / `nadle.config.cjs`
+- `nadle.config.ts` / `nadle.config.mts`
+- `nadle.config.js` / `nadle.config.mjs`
 
 TypeScript syntax highlighting and type-checking continue to work as normal — the Nadle LSP adds Nadle-specific intelligence on top.
 
@@ -74,9 +74,9 @@ Neovim 0.11+ has built-in LSP support via `vim.lsp.config`. Add the following to
 
 ```lua
 vim.lsp.config["nadle"] = {
-  cmd = { "language-server" },
+  cmd = { "nadle-language-server" },
   filetypes = { "typescript", "javascript" },
-  root_markers = { "nadle.config.ts", "nadle.config.js" },
+  root_markers = { "nadle.config.ts", "nadle.config.mts", "nadle.config.js", "nadle.config.mjs" },
 }
 vim.lsp.enable("nadle")
 ```
@@ -96,7 +96,7 @@ Add a `nadle` entry under `lsp` in your Zed `settings.json`:
 	"lsp": {
 		"nadle": {
 			"binary": {
-				"path": "language-server"
+				"path": "nadle-language-server"
 			}
 		}
 	}
@@ -115,7 +115,7 @@ Add the following to your `languages.toml`:
 
 ```toml
 [language-server.nadle]
-command = "language-server"
+command = "nadle-language-server"
 
 [[language]]
 name = "typescript"
@@ -123,5 +123,5 @@ language-servers = ["typescript-language-server", "nadle"]
 ```
 
 :::tip
-Any LSP-capable editor works — point it to `language-server` as the server command. The server communicates over stdio, so no port configuration is needed.
+Any LSP-capable editor works — point it to `nadle-language-server` as the server command. The server communicates over stdio, so no port configuration is needed.
 :::
