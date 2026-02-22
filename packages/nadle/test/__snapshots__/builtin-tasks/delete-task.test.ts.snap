@@ -85,13 +85,13 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
 [info] Project directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Resolved options: {
   "cache": true,
-  "footer": false,
   "summary": false,
   "parallel": false,
   "logLevel": "info",
   "cleanCache": false,
   "showConfig": false,
   "excludedTasks": [],
+  "footer": false,
   "isWorkerThread": false,
   "tasks": [
     {
