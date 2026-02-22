@@ -113,8 +113,8 @@ export class TaskScheduler {
 		const { name, workspaceId } = this.deps.getTaskById(taskId);
 
 		const resolverDeps = {
-			excludedTaskIds: this.excludedTaskIds,
 			logger: this.deps.logger,
+			excludedTaskIds: this.excludedTaskIds,
 			getTasksByName: (n: string) => this.deps.getTasksByName(n),
 			getWorkspaceDependencies: (id: string) => this.deps.getWorkspaceDependencies(id)
 		};
