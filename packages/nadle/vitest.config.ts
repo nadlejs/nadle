@@ -21,6 +21,7 @@ export default defineConfig({
 		retry: isCI ? 5 : 2,
 		fileParallelism: !isCI,
 		setupFiles: "./test/__setup__/vitest.ts",
+		globalSetup: "./test/__setup__/global-setup.ts",
 		benchmark: {
 			include: ["bench/**/*.bench.ts"]
 		},

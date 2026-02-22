@@ -149,13 +149,14 @@ while still respecting their configured dependencies—unless a later task is a 
 ### `footer`
 
 - **Type:** `boolean`
-- **Default:** `!isCI`
+- **Default:** `!isCI && isTTY`
 - **CLI:** `--footer`, `--no-footer`
 
 Displays real-time progress information during task execution.
 Includes the number of scheduled tasks, running tasks, finished tasks, and other execution stats.
 Useful for tracking task flow in complex or long-running builds.
-Defaults to `false` unless running in a CI environment.
+Enabled by default when running in an interactive terminal (TTY) outside of CI.
+Automatically disabled when output is piped or redirected.
 
 ### `summary`
 

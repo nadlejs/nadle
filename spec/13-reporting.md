@@ -37,7 +37,7 @@ The footer is disabled in these conditions:
 | Condition      | Reason                                                      |
 | -------------- | ----------------------------------------------------------- |
 | CI environment | Detected via `std-env` library's `isCI` flag.               |
-| Piped output   | When stdout is not a TTY.                                   |
+| Non-TTY stdout | When `process.stdout.isTTY` is falsy (piped output, etc.).  |
 | Worker threads | Footer is always disabled inside workers (`footer: false`). |
 | `--no-footer`  | Explicit CLI flag.                                          |
 
