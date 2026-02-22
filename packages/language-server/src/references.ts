@@ -1,14 +1,10 @@
-import type { Location, Position, ReferenceContext } from "vscode-languageserver";
 import type { TextDocument } from "vscode-languageserver-textdocument";
+import type { Location, Position, ReferenceContext } from "vscode-languageserver";
 
 import type { DocumentAnalysis } from "./analyzer.js";
 import { findDependsOnNameAtPosition } from "./definitions.js";
 
-function findRegistrationNameAtPosition(
-	analysis: DocumentAnalysis,
-	offset: number,
-	document: TextDocument
-): string | null {
+function findRegistrationNameAtPosition(analysis: DocumentAnalysis, offset: number, document: TextDocument): string | null {
 	for (const reg of analysis.registrations) {
 		if (reg.name === null) {
 			continue;
@@ -25,12 +21,7 @@ function findRegistrationNameAtPosition(
 	return null;
 }
 
-export function getReferences(
-	analyses: DocumentAnalysis[],
-	position: Position,
-	document: TextDocument,
-	context: ReferenceContext
-): Location[] {
+export function getReferences(analyses: DocumentAnalysis[], position: Position, document: TextDocument, context: ReferenceContext): Location[] {
 	const offset = document.offsetAt(position);
 	const content = document.getText();
 	const currentUri = document.uri;
@@ -72,7 +63,7 @@ export function getReferences(
 
 			for (const dep of reg.configuration.dependsOn) {
 				if (dep.name === taskName && !dep.isWorkspaceQualified) {
-					locations.push({ uri: analysis.uri, range: dep.range });
+					locations.push({ range: dep.range, uri: analysis.uri });
 				}
 			}
 		}

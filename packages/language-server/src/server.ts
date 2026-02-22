@@ -131,7 +131,7 @@ connection.onDefinition(({ position, textDocument }) => {
 	return getDefinition(analysis, position, doc);
 });
 
-connection.onReferences(({ position, textDocument, context }) => {
+connection.onReferences(({ context, position, textDocument }) => {
 	const doc = documents.get(textDocument.uri);
 
 	if (!doc) {
