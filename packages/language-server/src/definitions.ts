@@ -4,7 +4,7 @@ import type { TextDocument } from "vscode-languageserver-textdocument";
 
 import type { DocumentAnalysis } from "./analyzer.js";
 
-function findDependsOnNameAtPosition(content: string, offset: number): { name: string; isWorkspaceQualified: boolean } | null {
+export function findDependsOnNameAtPosition(content: string, offset: number): { name: string; isWorkspaceQualified: boolean } | null {
 	const file = ts.createSourceFile("def.ts", content, ts.ScriptTarget.Latest, true);
 	let result: { name: string; isWorkspaceQualified: boolean } | null = null;
 

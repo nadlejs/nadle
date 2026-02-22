@@ -16,6 +16,10 @@ export class DocumentStore {
 		return result;
 	}
 
+	public getAllAnalyses(): DocumentAnalysis[] {
+		return [...this.cache.values()];
+	}
+
 	public removeDocument(uri: string): void {
 		this.cache.delete(uri);
 	}
