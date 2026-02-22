@@ -19,9 +19,9 @@ Build one
 Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-Check one
 [log] <Yellow>></Yellow> Task <Bold>packages:one:check</BoldDim> <Yellow>STARTED</Yellow>
 
+Check one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
