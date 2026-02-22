@@ -20,7 +20,7 @@ export interface State {
  * Used by modules that only need to read project config and log messages
  * (e.g., simple handlers, task scheduler).
  */
-export interface ProjectContext {
+interface ProjectContext {
 	readonly logger: Logger;
 	readonly taskRegistry: TaskRegistry;
 	readonly options: NadleResolvedOptions;

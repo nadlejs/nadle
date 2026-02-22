@@ -99,6 +99,7 @@ export interface NadleBaseOptions {
     readonly cache?: boolean;
     readonly cacheDir?: string;
     readonly footer?: boolean;
+    readonly implicitDependencies?: boolean;
     readonly logLevel?: SupportLogLevel;
     readonly maxWorkers?: number | string;
     readonly minWorkers?: number | string;

@@ -8,6 +8,20 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.5.0 — 2026-02-22
+
+### Added
+
+- 03-scheduling: Added implicit workspace dependencies section — automatic task
+  dependency edges based on workspace `package.json` relationships, including
+  resolution rules, deduplication, and opt-out via `implicitDependencies: false`.
+- 03-scheduling: Added root task aggregation — root workspace tasks automatically
+  depend on all expanded child workspace tasks when `implicitDependencies` is enabled.
+- 07-workspace: Updated workspace dependencies to reference implicit dependency
+  resolution behavior.
+- 08-configuration-loading: Added `implicitDependencies` option to `configure()`
+  and built-in defaults (default: `true`).
+
 ## 1.4.1 — 2026-02-22
 
 ### Changed

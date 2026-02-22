@@ -1,48 +1,36 @@
 import { highlight } from "../utilities/utils.js";
-import { type ProjectContext } from "../context.js";
 import { Messages } from "../utilities/messages.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
+import { type SchedulerDependencies } from "./scheduler-types.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
-import { RootWorkspace } from "../models/project/root-workspace.js";
+import { resolveImplicitDependencies } from "./implicit-dependency-resolver.js";
 
 export class TaskScheduler {
-	// Map between a task and the set of tasks that depend on it
 	private readonly dependentsGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
-
-	// Map between a task and the set of tasks that it depends on
 	private readonly dependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
-
-	// Map between a task and the set of tasks that it depends on transitively
 	private readonly transitiveDependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
-
-	// Map between a tasks and its indegree
 	private readonly indegree = new EnsureMap<TaskIdentifier, number>(() => 0);
-
-	// Set of tasks that are ready to be executed
 	private readonly readyTasks = new Set<TaskIdentifier>();
-
+	private readonly implicitEdges = new Set<string>();
+	private readonly rootAggregationDeps = new Map<TaskIdentifier, Set<TaskIdentifier>>();
 	private taskIds: TaskIdentifier[] = [];
 	private excludedTaskIds = new Set<TaskIdentifier>();
-
-	// The main task listed in the tasks argument need to be focused on
 	private mainTaskId: string | undefined = undefined;
 
-	public constructor(private readonly context: ProjectContext) {}
+	public constructor(private readonly deps: SchedulerDependencies) {}
 
-	public init(taskIds: string[] = this.context.options.tasks.map(({ taskId }) => taskId)): this {
+	public init(taskIds: string[] = this.deps.options.tasks.map(({ taskId }) => taskId)): this {
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
-		this.excludedTaskIds = new Set(this.context.options.excludedTasks.map(ResolvedTask.getId));
-
+		this.excludedTaskIds = new Set(this.deps.options.excludedTasks.map(ResolvedTask.getId));
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
 		this.taskIds.forEach((taskId) => this.detectCycle(taskId, [taskId]));
+		this.deps.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
+		this.deps.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
 
-		this.context.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
-		this.context.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
-
-		if (!this.context.options.parallel) {
+		if (!this.deps.options.parallel) {
 			this.mainTaskId = this.taskIds[0];
 		}
 
@@ -54,16 +42,23 @@ export class TaskScheduler {
 
 		for (const taskId of taskIds) {
 			expandedTaskIds.push(taskId);
-			const { name, workspaceId } = this.context.taskRegistry.getTaskById(taskId);
+			const { name, workspaceId } = this.deps.getTaskById(taskId);
 
-			if (!RootWorkspace.isRootWorkspaceId(workspaceId)) {
+			if (!this.deps.isRootWorkspace(workspaceId)) {
 				continue;
 			}
 
-			for (const sameNameTask of this.context.taskRegistry.getTaskByName(name)) {
+			const childTaskIds = new Set<TaskIdentifier>();
+
+			for (const sameNameTask of this.deps.getTasksByName(name)) {
 				if (!taskIds.includes(sameNameTask.id)) {
 					expandedTaskIds.push(sameNameTask.id);
+					childTaskIds.add(sameNameTask.id);
 				}
+			}
+
+			if (childTaskIds.size > 0 && this.deps.options.implicitDependencies) {
+				this.rootAggregationDeps.set(taskId, childTaskIds);
 			}
 		}
 
@@ -72,10 +67,11 @@ export class TaskScheduler {
 
 	private detectCycle(taskId: string, paths: string[]) {
 		for (const dependency of this.dependencyGraph.get(taskId)) {
-			const startTaskIndex = paths.indexOf(dependency);
+			const startIndex = paths.indexOf(dependency);
 
-			if (startTaskIndex !== -1) {
-				this.context.logger.throw(Messages.CycleDetected([...paths.slice(startTaskIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `)));
+			if (startIndex !== -1) {
+				const cycle = [...paths.slice(startIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `);
+				this.deps.logger.throw(Messages.CycleDetected(cycle));
 			}
 
 			this.detectCycle(dependency, [...paths, dependency]);
@@ -87,24 +83,24 @@ export class TaskScheduler {
 			return;
 		}
 
-		const { workspaceId, configResolver } = this.context.taskRegistry.getTaskById(taskId);
-
+		const { workspaceId, configResolver } = this.deps.getTaskById(taskId);
 		const dependencies = new Set(
 			MaybeArray.toArray(configResolver().dependsOn ?? [])
-				.map((dependencyTaskInput) => this.context.taskRegistry.parse(dependencyTaskInput, workspaceId))
-				.filter((taskId) => !this.excludedTaskIds.has(taskId))
+				.map((input) => this.deps.parseTaskRef(input, workspaceId))
+				.filter((id) => !this.excludedTaskIds.has(id))
 		);
+
+		if (this.deps.options.implicitDependencies) {
+			this.addImplicitDeps(taskId, dependencies);
+		}
 
 		this.dependencyGraph.set(taskId, dependencies);
 		this.indegree.set(taskId, dependencies.size);
-
 		this.transitiveDependencyGraph.set(taskId, new Set<string>(dependencies));
 
 		for (const dependency of dependencies) {
-			this.dependentsGraph.update(dependency, (oldDependents) => oldDependents.add(taskId));
-
+			this.dependentsGraph.update(dependency, (s) => s.add(taskId));
 			this.analyze(dependency);
-
 			this.transitiveDependencyGraph.update(taskId, (current) => {
 				this.transitiveDependencyGraph.get(dependency).forEach((d) => current.add(d));
 
@@ -113,30 +109,57 @@ export class TaskScheduler {
 		}
 	}
 
+	private addImplicitDeps(taskId: string, dependencies: Set<string>): void {
+		const { name, workspaceId } = this.deps.getTaskById(taskId);
+
+		const resolverDeps = {
+			excludedTaskIds: this.excludedTaskIds,
+			logger: this.deps.logger,
+			getTasksByName: (n: string) => this.deps.getTasksByName(n),
+			getWorkspaceDependencies: (id: string) => this.deps.getWorkspaceDependencies(id)
+		};
+
+		for (const dep of resolveImplicitDependencies(name, workspaceId, resolverDeps)) {
+			if (!dependencies.has(dep)) {
+				this.implicitEdges.add(`${dep}->${taskId}`);
+			}
+
+			dependencies.add(dep);
+		}
+
+		for (const childId of this.rootAggregationDeps.get(taskId) ?? []) {
+			if (!this.excludedTaskIds.has(childId)) {
+				if (!dependencies.has(childId)) {
+					this.implicitEdges.add(`${childId}->${taskId}`);
+				}
+
+				dependencies.add(childId);
+			}
+		}
+	}
+
 	public get scheduledTask(): string[] {
 		return Array.from(this.dependencyGraph.keys());
 	}
 
-	private getIndegreeEntries() {
-		const runningRootTaskId = this.mainTaskId;
+	public getImplicitDeps(taskId: TaskIdentifier): TaskIdentifier[] {
+		return [...this.dependencyGraph.get(taskId)].filter((dep) => this.implicitEdges.has(`${dep}->${taskId}`));
+	}
 
-		if (!runningRootTaskId) {
+	private getIndegreeEntries() {
+		if (!this.mainTaskId) {
 			return this.indegree.entries();
 		}
 
+		const rootId = this.mainTaskId;
+
 		return new Map(
-			Array.from(this.indegree.entries()).filter(
-				([taskId]) => taskId === runningRootTaskId || this.transitiveDependencyGraph.get(runningRootTaskId)?.has(taskId)
-			)
+			Array.from(this.indegree.entries()).filter(([taskId]) => taskId === rootId || this.transitiveDependencyGraph.get(rootId)?.has(taskId))
 		);
 	}
 
 	private isBelongToRootTaskTree(taskId: string): boolean {
-		if (!this.mainTaskId) {
-			return true;
-		}
-
-		if (taskId === this.mainTaskId) {
+		if (!this.mainTaskId || taskId === this.mainTaskId) {
 			return true;
 		}
 
@@ -144,7 +167,7 @@ export class TaskScheduler {
 	}
 
 	public getReadyTasks(doneTaskId?: string): Set<string> {
-		this.context.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
+		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
 
 		if (doneTaskId === undefined) {
 			return this.getInitialReadyTasks();
@@ -160,7 +183,7 @@ export class TaskScheduler {
 			let indegree = this.indegree.get(dependentTask);
 
 			if (indegree === 0) {
-				throw new Error(`Incorrect state. Expect ${dependentTask} to have indegree > 0 because it depends on the running task ${doneTaskId}`);
+				throw new Error(`Incorrect state. Expect ${dependentTask} to have indegree > 0`);
 			}
 
 			this.indegree.set(dependentTask, --indegree);
@@ -172,16 +195,14 @@ export class TaskScheduler {
 		}
 
 		if (doneTaskId === this.mainTaskId) {
-			const nextMainTask = this.moveToNextMainTask();
-
-			if (!nextMainTask) {
+			if (!this.moveToNextMainTask()) {
 				return new Set<string>();
 			}
 
 			return this.getReadyTasks();
 		}
 
-		this.context.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+		this.deps.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 		return nextReadyTasks;
 	}
@@ -190,7 +211,7 @@ export class TaskScheduler {
 		const nextReadyTasks = new Set<string>();
 
 		for (const [taskId, indegree] of this.getIndegreeEntries()) {
-			this.context.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
+			this.deps.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
 
 			if (indegree === 0 && !this.readyTasks.has(taskId)) {
 				nextReadyTasks.add(taskId);
@@ -198,13 +219,14 @@ export class TaskScheduler {
 			}
 		}
 
-		this.context.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+		this.deps.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
 
 		return nextReadyTasks;
 	}
 
 	private moveToNextMainTask() {
-		this.mainTaskId = this.mainTaskId !== undefined ? this.taskIds[this.taskIds.indexOf(this.mainTaskId) + 1] : undefined;
+		const nextIndex = this.mainTaskId !== undefined ? this.taskIds.indexOf(this.mainTaskId) + 1 : -1;
+		this.mainTaskId = nextIndex >= 0 ? this.taskIds[nextIndex] : undefined;
 
 		return this.mainTaskId;
 	}

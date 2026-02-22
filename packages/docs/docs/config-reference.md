@@ -137,6 +137,22 @@ When both are specified, CLI flags take precedence, allowing quick overrides wit
 
 Set the logging verbosity level. Higher levels include all lower level logs.
 
+### `implicitDependencies`
+
+- **Type:** `boolean`
+- **Default:** `true`
+- **CLI:** `--implicit-dependencies`, `--no-implicit-dependencies`
+
+Enables automatic task dependency edges based on workspace `package.json` relationships.
+When enabled, if workspace `app` depends on workspace `lib` (via `workspace:*` protocol),
+then `lib:build` will automatically run before `app:build` without needing explicit
+`dependsOn` configuration.
+
+Additionally, when a root task expands to include child workspace tasks, the root task
+will automatically depend on all expanded children, ensuring it runs last.
+
+Set to `false` to disable all implicit dependency behavior.
+
 ### `parallel`
 
 - **Type:** `boolean`

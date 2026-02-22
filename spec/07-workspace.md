@@ -49,9 +49,12 @@ Workspace dependencies are populated from the `package.json` dependency fields:
 - `optionalDependencies`
 
 If a dependency references another workspace in the project (e.g., via
-`workspace:*` protocol), it is recorded as a workspace dependency. These
-dependencies are informational and used for workspace ordering — they do not
-automatically create task dependencies.
+`workspace:*` protocol), it is recorded as a workspace dependency.
+
+When `implicitDependencies` is enabled (the default), these workspace
+dependencies are used to automatically create task dependency edges between
+workspaces. See [03-scheduling.md](03-scheduling.md) for details on implicit
+dependency resolution and root task aggregation.
 
 ## Aliases
 

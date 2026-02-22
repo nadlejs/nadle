@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# IDE
 .idea
 nadle.iml
 
@@ -17,9 +18,16 @@ __temp__
 .docusaurus
 .vercel
 .nadle*
+
+# generated docs
 packages/docs/docs/api
 packages/docs/static/spec
+
+# bundled vscode extension server
 packages/vscode-extension/server
+# worktrees
+.claude/worktrees
+
 # misc
 .DS_Store
 

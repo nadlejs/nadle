@@ -14,6 +14,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
   "showConfig": true,
   "excludedTasks": [],
   "footer": false,
+  "implicitDependencies": true,
   "isWorkerThread": false,
   "tasks": [
     {
@@ -70,6 +71,7 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
   "showConfig": true,
   "excludedTasks": [],
   "footer": false,
+  "implicitDependencies": true,
   "isWorkerThread": false,
   "tasks": [
     {

@@ -18,12 +18,19 @@ export class DryRunHandler extends BaseHandler {
 			return;
 		}
 
-		const taskIds = this.context.taskScheduler.init().getExecutionPlan();
+		const scheduler = this.context.taskScheduler.init();
+		const taskIds = scheduler.getExecutionPlan();
 
 		this.context.logger.log(c.bold("Execution plan:"));
 
 		for (const taskId of taskIds) {
-			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(this.context.taskRegistry.getTaskById(taskId).label)}`);
+			const label = this.context.taskRegistry.getTaskById(taskId).label;
+			const implicitDeps = scheduler.getImplicitDeps(taskId);
+			const suffix =
+				implicitDeps.length > 0
+					? c.dim(` (after ${implicitDeps.map((d) => this.context.taskRegistry.getTaskById(d).label).join(", ")} — implicit)`)
+					: "";
+			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(label)}${suffix}`);
 		}
 	}
 }
