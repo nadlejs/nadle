@@ -1,5 +1,6 @@
 import ts from "typescript";
 import type { Range } from "vscode-languageserver";
+import { isWorkspaceQualified } from "@nadle/kernel";
 
 export interface DependencyRef {
 	readonly name: string;
@@ -70,7 +71,7 @@ function extractDependsOn(node: ts.Expression, file: ts.SourceFile): DependencyR
 		refs.push({
 			name: node.text,
 			range: toRange(node, file),
-			isWorkspaceQualified: node.text.includes(":")
+			isWorkspaceQualified: isWorkspaceQualified(node.text)
 		});
 	} else if (ts.isArrayLiteralExpression(node)) {
 		for (const element of node.elements) {
@@ -78,7 +79,7 @@ function extractDependsOn(node: ts.Expression, file: ts.SourceFile): DependencyR
 				refs.push({
 					name: element.text,
 					range: toRange(element, file),
-					isWorkspaceQualified: element.text.includes(":")
+					isWorkspaceQualified: isWorkspaceQualified(element.text)
 				});
 			}
 		}

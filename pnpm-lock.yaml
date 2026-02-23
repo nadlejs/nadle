@@ -176,6 +176,9 @@ importers:
 
   packages/eslint-plugin:
     dependencies:
+      '@nadle/kernel':
+        specifier: workspace:*
+        version: link:../kernel
       eslint:
         specifier: ^9.0.0
         version: 9.39.2(jiti@2.6.1)
@@ -210,6 +213,9 @@ importers:
 
   packages/language-server:
     dependencies:
+      '@nadle/kernel':
+        specifier: workspace:*
+        version: link:../kernel
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

@@ -25,6 +25,7 @@
 	},
 	"types": "lib/index.d.ts",
 	"dependencies": {
+		"@nadle/kernel": "workspace:*",
 		"typescript": "^5.9.3",
 		"vscode-languageserver": "^9.0.1",
 		"vscode-languageserver-textdocument": "^1.0.12"

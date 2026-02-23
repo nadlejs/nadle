@@ -25,13 +25,12 @@ ruleTester.run("valid-task-name", rule, {
 		},
 		{
 			code: 'tasks.register("testNoWarningsAndUndocumentedAPI")'
+		},
+		{
+			code: 'tasks.register("Build")'
 		}
 	],
 	invalid: [
-		{
-			code: 'tasks.register("Build")',
-			errors: [{ messageId: "invalidName" }]
-		},
 		{
 			code: 'tasks.register("build-")',
 			errors: [{ messageId: "invalidName" }]
