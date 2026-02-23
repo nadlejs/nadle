@@ -1,4 +1,4 @@
-import { COLON } from "../utilities/constants.js";
+import { parseTaskReference, composeTaskIdentifier } from "@nadle/kernel";
 
 /**
  * A unique identifier for a task, typically in the form 'workspaceId:taskName'.
@@ -9,8 +9,6 @@ export type TaskIdentifier = string;
  * Namespace for TaskIdentifier utility functions.
  */
 export namespace TaskIdentifier {
-	const SEPARATOR = COLON;
-
 	/**
 	 * Create a TaskIdentifier from a workspace ID/label and a task name.
 	 * @param workspaceIdOrLabel - The workspace ID or label (empty string for root workspace).
@@ -18,11 +16,7 @@ export namespace TaskIdentifier {
 	 * @returns The composed TaskIdentifier string.
 	 */
 	export function create(workspaceIdOrLabel: string, taskName: string): TaskIdentifier {
-		if (workspaceIdOrLabel === "") {
-			return taskName;
-		}
-
-		return [...workspaceIdOrLabel.split(SEPARATOR), taskName].join(SEPARATOR);
+		return composeTaskIdentifier(workspaceIdOrLabel, taskName);
 	}
 
 	/**
@@ -31,12 +25,8 @@ export namespace TaskIdentifier {
 	 * @returns An object with taskNameInput and workspaceInput (undefined if root workspace).
 	 */
 	export function parser(taskInput: string): { taskNameInput: string; workspaceInput: string | undefined } {
-		if (!taskInput.includes(SEPARATOR)) {
-			return { taskNameInput: taskInput, workspaceInput: undefined };
-		}
+		const { taskName, workspaceInput } = parseTaskReference(taskInput);
 
-		const parts = taskInput.split(SEPARATOR);
-
-		return { taskNameInput: parts[parts.length - 1], workspaceInput: parts.slice(0, -1).join(SEPARATOR) };
+		return { workspaceInput, taskNameInput: taskName };
 	}
 }

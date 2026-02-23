@@ -2,6 +2,7 @@ import { tasks, Inputs, Outputs, ExecTask, PnpxTask } from "../../node_modules/n
 
 tasks.register("copy-server", ExecTask, { command: "node", args: ["scripts/copy-server.mjs"] }).config({
 	group: "Building",
+	dependsOn: ["packages:language-server:build"],
 	description: "Copy LSP server into extension"
 });
 

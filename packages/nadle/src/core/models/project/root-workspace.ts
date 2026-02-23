@@ -1,5 +1,7 @@
 import Path from "node:path";
 
+import { ROOT_WORKSPACE_ID, isRootWorkspaceId as _isRootWorkspaceId } from "@nadle/kernel";
+
 import { type PackageJson } from "./package.js";
 import { type Workspace } from "./workspace.js";
 import { readJson } from "../../utilities/fs.js";
@@ -18,7 +20,7 @@ export interface RootWorkspace extends Omit<Workspace, "configFilePath"> {
  */
 export namespace RootWorkspace {
 	/** The ID for the root workspace. */
-	export const ID = "root";
+	export const ID = ROOT_WORKSPACE_ID;
 
 	/**
 	 * Create a RootWorkspace object from an absolute path.
@@ -37,7 +39,7 @@ export namespace RootWorkspace {
 	 * @returns True if the ID is the root workspace.
 	 */
 	export function isRootWorkspaceId(workspaceId: string): boolean {
-		return workspaceId === ID;
+		return _isRootWorkspaceId(workspaceId);
 	}
 
 	/**
@@ -46,6 +48,6 @@ export namespace RootWorkspace {
 	 * @returns True if the workspace is a RootWorkspace.
 	 */
 	export function isInstance(workspace: Workspace): workspace is RootWorkspace {
-		return isRootWorkspaceId(workspace.id);
+		return _isRootWorkspaceId(workspace.id);
 	}
 }

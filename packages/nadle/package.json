@@ -25,6 +25,7 @@
 	"dependencies": {
 		"@manypkg/find-root": "^3.1.0",
 		"@manypkg/tools": "^2.1.0",
+		"@nadle/kernel": "workspace:*",
 		"consola": "^3.4.2",
 		"execa": "^9.6.1",
 		"fast-glob": "^3.3.3",

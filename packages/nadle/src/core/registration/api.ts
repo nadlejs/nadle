@@ -1,3 +1,5 @@
+import { VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
+
 import { Messages } from "../utilities/messages.js";
 import { getCurrentInstance } from "../nadle-context.js";
 import type { Task, RunnerContext } from "../interfaces/task.js";
@@ -111,7 +113,7 @@ function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Reso
 }
 
 function validateTaskName(name: string): void {
-	if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?$/i.test(name)) {
+	if (!VALID_TASK_NAME_PATTERN.test(name)) {
 		throw new Error(Messages.InvalidTaskName(`[${name}]`));
 	}
 }

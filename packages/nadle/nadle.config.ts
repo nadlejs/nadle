@@ -12,6 +12,7 @@ tasks.register("build", PnpxTask, { command: "tsup" }).config({
 
 tasks.register("generateMarkdown", PnpxTask, { command: "typedoc" }).config({
 	group: "Building",
+	dependsOn: ["build"],
 	description: "Generate API markdown with typedoc"
 });
 

@@ -43,6 +43,7 @@ const config = {
 		"indegree",
 		"nodir",
 		"reinit",
+		"worktrees",
 		"npmjs",
 		"softwareTerms",
 		"Sonarqube",
