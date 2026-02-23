@@ -1,10 +1,10 @@
 import { uniq } from "lodash-es";
+import { type Project, getAllWorkspaces, getWorkspaceByLabelOrId } from "@nadle/project";
 
 import { highlight } from "../utilities/utils.js";
 import { Messages } from "../utilities/messages.js";
 import { suggest } from "../utilities/suggestion.js";
 import { type Logger } from "../interfaces/logger.js";
-import { Project } from "../models/project/project.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
@@ -18,7 +18,7 @@ export class TaskInputResolver {
 		const targetWorkspace = project.currentWorkspaceId;
 		const fallbackWorkspace = project.currentWorkspaceId === project.rootWorkspace.id ? undefined : project.rootWorkspace.id;
 		const workspaces = uniq(
-			Project.getAllWorkspaces(project)
+			getAllWorkspaces(project)
 				.flatMap((workspace) => [workspace.label, workspace.id])
 				.filter(Boolean)
 		);
@@ -31,7 +31,7 @@ export class TaskInputResolver {
 			if (workspaceInput !== undefined) {
 				const suggestedWorkspaceLabelOrId = this.resolveWorkspace(workspaceInput, workspaces);
 
-				const workspace = Project.getWorkspaceByLabelOrId(project, suggestedWorkspaceLabelOrId);
+				const workspace = getWorkspaceByLabelOrId(project, suggestedWorkspaceLabelOrId);
 				resolvedTask = this.resolveTask({
 					project,
 					taskNameInput,
@@ -70,7 +70,7 @@ export class TaskInputResolver {
 		}
 
 		if (fallbackWorkspaceId !== undefined) {
-			const fallbackWorkspace = Project.getWorkspaceByLabelOrId(project, fallbackWorkspaceId);
+			const fallbackWorkspace = getWorkspaceByLabelOrId(project, fallbackWorkspaceId);
 
 			const resolvedFallbackTask = suggest(taskNameInput, this.taskNamesGetter(fallbackWorkspace.id), this.logger);
 

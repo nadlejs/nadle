@@ -1,9 +1,8 @@
 import type { Diagnostic } from "vscode-languageserver";
+import { VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
 import { DiagnosticSeverity } from "vscode-languageserver";
 
 import type { DocumentAnalysis } from "./analyzer.js";
-
-const TASK_NAME_PATTERN = /^[a-z](?:[a-z0-9-]*[a-z0-9])?$/i;
 
 export function computeDiagnostics(analysis: DocumentAnalysis): Diagnostic[] {
 	const diagnostics: Diagnostic[] = [];
@@ -13,7 +12,7 @@ export function computeDiagnostics(analysis: DocumentAnalysis): Diagnostic[] {
 			continue;
 		}
 
-		if (!TASK_NAME_PATTERN.test(reg.name)) {
+		if (!VALID_TASK_NAME_PATTERN.test(reg.name)) {
 			diagnostics.push({
 				source: "nadle",
 				range: reg.nameRange,

@@ -1,12 +1,10 @@
 import c from "tinyrainbow";
+import { type Workspace, getAllWorkspaces, isRootWorkspaceId } from "@nadle/project";
 
 import { BaseHandler } from "./base-handler.js";
 import { highlight } from "../utilities/utils.js";
-import { Project } from "../models/project/project.js";
 import { createTree } from "../utilities/create-tree.js";
 import { StringBuilder } from "../utilities/string-builder.js";
-import { type Workspace } from "../models/project/workspace.js";
-import { RootWorkspace } from "../models/project/root-workspace.js";
 
 export class ListWorkspacesHandler extends BaseHandler {
 	public readonly name = "listWorkspaces";
@@ -17,7 +15,7 @@ export class ListWorkspacesHandler extends BaseHandler {
 	}
 
 	public handle() {
-		const workspaces = Project.getAllWorkspaces(this.context.options.project);
+		const workspaces = getAllWorkspaces(this.context.options.project);
 
 		const parentWorkspaceMap = this.computeParentWorkspaceMap(workspaces);
 		const childrenWorkspaceMap = Object.fromEntries(
@@ -31,7 +29,7 @@ export class ListWorkspacesHandler extends BaseHandler {
 			(workspace) => childrenWorkspaceMap[workspace.id],
 			(workspace) =>
 				new StringBuilder()
-					.add(RootWorkspace.isInstance(workspace) ? "Root workspace" : "Workspace")
+					.add(isRootWorkspaceId(workspace.id) ? "Root workspace" : "Workspace")
 					.add(highlight(workspace.id))
 					.addIf(workspace.label !== workspace.id && workspace.label !== "", c.dim(`(alias: ${workspace.label})`))
 					.build()
@@ -44,7 +42,7 @@ export class ListWorkspacesHandler extends BaseHandler {
 		const parentWorkspaceMap: Record<string, Workspace | null> = {};
 
 		for (const childWorkspace of workspaces) {
-			if (RootWorkspace.isInstance(childWorkspace)) {
+			if (isRootWorkspaceId(childWorkspace.id)) {
 				parentWorkspaceMap[childWorkspace.id] = null;
 				continue;
 			}
@@ -68,7 +66,7 @@ export class ListWorkspacesHandler extends BaseHandler {
 	}
 
 	private isParentWorkspace(parentWorkspace: Workspace, childWorkspace: Workspace): boolean {
-		if (RootWorkspace.isInstance(parentWorkspace)) {
+		if (isRootWorkspaceId(parentWorkspace.id)) {
 			return true;
 		}
 

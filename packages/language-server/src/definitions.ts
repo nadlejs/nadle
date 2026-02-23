@@ -1,4 +1,5 @@
 import ts from "typescript";
+import { isWorkspaceQualified } from "@nadle/kernel";
 import type { Location, Position } from "vscode-languageserver";
 import type { TextDocument } from "vscode-languageserver-textdocument";
 
@@ -22,11 +23,11 @@ export function findDependsOnNameAtPosition(content: string, offset: number): { 
 
 	function checkInitializer(node: ts.Expression): void {
 		if (ts.isStringLiteral(node) && offset > node.getStart(file) && offset < node.getEnd()) {
-			result = { name: node.text, isWorkspaceQualified: node.text.includes(":") };
+			result = { name: node.text, isWorkspaceQualified: isWorkspaceQualified(node.text) };
 		} else if (ts.isArrayLiteralExpression(node)) {
 			for (const el of node.elements) {
 				if (ts.isStringLiteral(el) && offset > el.getStart(file) && offset < el.getEnd()) {
-					result = { name: el.text, isWorkspaceQualified: el.text.includes(":") };
+					result = { name: el.text, isWorkspaceQualified: isWorkspaceQualified(el.text) };
 
 					return;
 				}

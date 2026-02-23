@@ -1,10 +1,10 @@
 /* eslint-disable perfectionist/sort-objects */
 import { type Options } from "yargs";
+import { CONFIG_FILE_PATTERN } from "@nadle/project";
 
 import { type NadleCLIOptions } from "./types.js";
 import { Messages } from "../utilities/messages.js";
 import { SupportLogLevels } from "../utilities/consola.js";
-import { CONFIG_FILE_PATTERN } from "../utilities/constants.js";
 
 export const CLIOptions = {
 	configFile: {

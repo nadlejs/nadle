@@ -1,10 +1,9 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
+import { VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
 
 import { getTaskName, isTasksRegisterCall } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
-
-const VALID_TASK_NAME_PATTERN = /^[a-z][a-zA-Z0-9]*(-[a-zA-Z0-9]+)*$/;
 
 export default createRule({
 	defaultOptions: [],

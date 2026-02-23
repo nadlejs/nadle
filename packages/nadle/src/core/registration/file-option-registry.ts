@@ -1,6 +1,7 @@
+import { isRootWorkspaceId } from "@nadle/project";
+
 import { Messages } from "../utilities/messages.js";
 import { type NadleFileOptions } from "../options/types.js";
-import { RootWorkspace } from "../models/project/root-workspace.js";
 
 export class FileOptionRegistry {
 	private workspaceId: string | null = null;
@@ -15,7 +16,7 @@ export class FileOptionRegistry {
 			throw new Error("Working directory is not set");
 		}
 
-		if (!RootWorkspace.isRootWorkspaceId(this.workspaceId)) {
+		if (!isRootWorkspaceId(this.workspaceId)) {
 			throw new Error(Messages.InvalidConfigureUsage());
 		}
 
@@ -23,7 +24,7 @@ export class FileOptionRegistry {
 	}
 
 	public get(workspaceId: string): NadleFileOptions {
-		if (!RootWorkspace.isRootWorkspaceId(workspaceId)) {
+		if (!isRootWorkspaceId(workspaceId)) {
 			throw new Error(Messages.InvalidConfigureUsage());
 		}
 

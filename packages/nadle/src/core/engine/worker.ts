@@ -2,10 +2,10 @@ import Path from "node:path";
 import WorkerThreads from "node:worker_threads";
 
 import c from "tinyrainbow";
+import { getWorkspaceById } from "@nadle/project";
 
 import { Nadle } from "../nadle.js";
 import { bindObject } from "../utilities/utils.js";
-import { Project } from "../models/project/project.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { type NadleResolvedOptions } from "../options/types.js";
@@ -40,7 +40,7 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 	const nadle = await getOrCreateNadle(options);
 	const task = nadle.taskRegistry.getTaskById(taskId);
 	const taskConfig = task.configResolver();
-	const workspace = Project.getWorkspaceById(options.project, task.workspaceId);
+	const workspace = getWorkspaceById(options.project, task.workspaceId);
 	const workingDir = Path.resolve(workspace.absolutePath, taskConfig.workingDir ?? "");
 
 	const context: RunnerContext = {
@@ -68,7 +68,7 @@ interface CacheValidatorParams {
 
 function createCacheValidator(nadle: Nadle, params: CacheValidatorParams) {
 	const rootConfigFile = nadle.options.project.rootWorkspace.configFilePath;
-	const workspace = Project.getWorkspaceById(nadle.options.project, params.workspaceId);
+	const workspace = getWorkspaceById(nadle.options.project, params.workspaceId);
 	const configFiles = workspace.configFilePath ? [rootConfigFile, workspace.configFilePath] : [rootConfigFile];
 
 	return new CacheValidator(params.taskId, params.taskConfig, {

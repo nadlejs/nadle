@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "src/core/utilities/constants.js";
+import { PACKAGE_JSON } from "@nadle/project";
 import { getStderr, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
 
 describe.concurrent("workspaces configure", () => {

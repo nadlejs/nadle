@@ -1,18 +1,15 @@
 {
-	"name": "@nadle/language-server",
-	"version": "0.0.3",
-	"description": "Language Server Protocol support for nadle.config.ts files",
+	"name": "@nadle/project",
+	"version": "0.0.1",
+	"description": "Project discovery and workspace scanning for nadle",
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"build": "nadle build",
-		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
-		"test": "nadle test"
+		"build": "tsc -p tsconfig.build.json",
+		"test": "vitest run"
 	},
 	"files": [
-		"lib",
-		"server.mjs",
-		"LICENSE"
+		"lib"
 	],
 	"exports": {
 		".": {
@@ -20,22 +17,16 @@
 			"import": "./lib/index.js"
 		}
 	},
-	"bin": {
-		"nadle-language-server": "server.mjs"
-	},
 	"types": "lib/index.d.ts",
 	"dependencies": {
+		"@manypkg/find-root": "^3.1.0",
+		"@manypkg/tools": "^2.1.0",
 		"@nadle/kernel": "workspace:*",
-		"typescript": "^5.9.3",
-		"vscode-languageserver": "^9.0.1",
-		"vscode-languageserver-textdocument": "^1.0.12"
+		"find-up": "^8.0.0"
 	},
 	"devDependencies": {
-		"@size-limit/file": "^12.0.0",
 		"@types/node": "^20.19.25",
-		"size-limit": "^11.2.0",
-		"std-env": "^3.10.0",
-		"tsup": "^8.5.1",
+		"typescript": "^5.9.3",
 		"vitest": "4.0.18"
 	},
 	"engines": {
@@ -49,13 +40,13 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/nadlejs/nadle.git",
-		"directory": "packages/language-server"
+		"directory": "packages/project"
 	},
 	"keywords": [
 		"nadle",
-		"lsp",
-		"language-server",
-		"task-runner",
+		"project",
+		"workspace",
+		"discovery",
 		"typescript"
 	],
 	"homepage": "https://nadle.dev",

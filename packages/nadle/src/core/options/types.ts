@@ -1,4 +1,5 @@
-import { type Project } from "../models/project/project.js";
+import { type Project } from "@nadle/project";
+
 import { type SupportLogLevel } from "../utilities/consola.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
@@ -93,14 +94,4 @@ export interface NadleResolvedOptions extends Required<
 	readonly tasks: ResolvedTask[];
 	/** List of tasks to exclude from execution after resolution and auto-correction. */
 	readonly excludedTasks: ResolvedTask[];
-}
-
-/**
- * Shape of the Nadle configuration in package.json.
- */
-export interface NadlePackageJson {
-	readonly nadle?: {
-		/** Mark this package as the Nadle root. */
-		root?: true;
-	};
 }

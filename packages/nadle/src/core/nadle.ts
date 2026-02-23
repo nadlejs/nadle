@@ -1,8 +1,9 @@
 import Process from "node:process";
 
+import { getWorkspaceById, ROOT_WORKSPACE_ID, isRootWorkspaceId } from "@nadle/project";
+
 import { Handlers } from "./handlers/index.js";
 import { runWithInstance } from "./nadle-context.js";
-import { Project } from "./models/project/project.js";
 import { NadleError } from "./utilities/nadle-error.js";
 import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
@@ -13,7 +14,6 @@ import { type State, type ExecutionContext } from "./context.js";
 import { ExecutionTracker } from "./models/execution-tracker.js";
 import { type SchedulerTask } from "./engine/scheduler-types.js";
 import { type TaskIdentifier } from "./models/task-identifier.js";
-import { RootWorkspace } from "./models/project/root-workspace.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { FileOptionRegistry } from "./registration/file-option-registry.js";
 import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js";
@@ -59,8 +59,8 @@ export class Nadle implements ExecutionContext {
 		const { project } = resolvedOptions;
 		const fileReader = new DefaultFileReader();
 
-		this.taskRegistry.onConfigureWorkspace(RootWorkspace.ID);
-		this.fileOptionRegistry.onConfigureWorkspace(RootWorkspace.ID);
+		this.taskRegistry.onConfigureWorkspace(ROOT_WORKSPACE_ID);
+		this.fileOptionRegistry.onConfigureWorkspace(ROOT_WORKSPACE_ID);
 		await fileReader.read(project.rootWorkspace.configFilePath);
 
 		for (const workspace of project.workspaces) {
@@ -118,11 +118,11 @@ export class Nadle implements ExecutionContext {
 	}
 
 	public isRootWorkspace(workspaceId: string): boolean {
-		return RootWorkspace.isRootWorkspaceId(workspaceId);
+		return isRootWorkspaceId(workspaceId);
 	}
 
 	public getWorkspaceDependencies(workspaceId: string): readonly string[] {
-		return Project.getWorkspaceById(this.options.project, workspaceId).dependencies;
+		return getWorkspaceById(this.options.project, workspaceId).dependencies;
 	}
 
 	public updateState(updater: (state: State) => State): void {
