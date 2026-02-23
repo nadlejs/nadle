@@ -1,5 +1,5 @@
 import { it, describe } from "vitest";
-import { PACKAGE_JSON } from "src/core/utilities/constants.js";
+import { PACKAGE_JSON } from "@nadle/project";
 import { expectPass, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
 
 describe("workspaces alias", () => {

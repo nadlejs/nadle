@@ -1,18 +1,17 @@
 import Path from "node:path";
 import Process from "node:process";
 
-import { findUp } from "find-up";
-import { findRoot } from "@manypkg/find-root";
-import { NpmTool, PnpmTool, YarnTool, type Tool } from "@manypkg/tools";
+import {
+	type Project,
+	isPathExists,
+	discoverProject,
+	ROOT_WORKSPACE_ID,
+	locateConfigFiles,
+	resolveCurrentWorkspaceId,
+	DEFAULT_CONFIG_FILE_NAMES
+} from "@nadle/project";
 
-import type { NadlePackageJson } from "./types.js";
 import { Messages } from "../utilities/messages.js";
-import { Project } from "../models/project/project.js";
-import { readJson, isPathExists } from "../utilities/fs.js";
-import { RootWorkspace } from "../models/project/root-workspace.js";
-import { PACKAGE_JSON, DEFAULT_CONFIG_FILE_NAMES } from "../utilities/constants.js";
-
-const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
 type WorkspaceInitializer = (workspaceId: string, configFilePath: string) => Promise<void>;
 
@@ -20,109 +19,31 @@ type WorkspaceInitializer = (workspaceId: string, configFilePath: string) => Pro
 const cwd = Process.cwd();
 
 export class ProjectResolver {
-	#project: Project | null = null;
-
-	private get project(): Project {
-		if (this.#project === null) {
-			throw new Error("Project is not initialized. Please call init() first.");
-		}
-
-		return this.#project;
-	}
-
-	private set project(updater: (project: Project) => Project) {
-		this.#project = updater(this.project);
-	}
-
 	public async resolve(rootConfigFilePathOption: string | undefined, onInitWorkspace: WorkspaceInitializer): Promise<Project> {
-		await this.initProject();
-		await this.initializeRootWorkspace(onInitWorkspace, rootConfigFilePathOption);
-		await this.initializeSubWorkspaces(onInitWorkspace);
-		this.resolveCurrentWorkspaceId();
+		let project = await discoverProject(cwd);
 
-		return this.project;
-	}
+		const rootConfigFilePath = await this.resolveRootWorkspaceConfigFile(project.rootWorkspace.absolutePath, rootConfigFilePathOption);
+		await onInitWorkspace(ROOT_WORKSPACE_ID, rootConfigFilePath);
 
-	private async initializeRootWorkspace(onInitWorkspace: WorkspaceInitializer, rootConfigFilePathOption: string | undefined) {
-		const rootConfigFilePath = await this.resolveRootWorkspaceConfigFile(rootConfigFilePathOption);
-
-		await onInitWorkspace(RootWorkspace.ID, rootConfigFilePath);
-
-		this.project = (project) => {
-			return { ...project, rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath } };
-		};
-	}
-
-	private async initializeSubWorkspaces(onInitWorkspace: WorkspaceInitializer) {
-		const configFileMap: Record<string, string | null> = {};
-
-		for (const workspace of this.project.workspaces) {
-			for (const configFileName of DEFAULT_CONFIG_FILE_NAMES) {
-				const configFilePath = Path.resolve(workspace.absolutePath, configFileName);
-
-				if (await isPathExists(configFilePath)) {
-					configFileMap[workspace.id] = configFilePath;
-					await onInitWorkspace(workspace.id, configFilePath);
-				}
-			}
-		}
-
-		this.project = (project) => ({
+		project = {
 			...project,
-			workspaces: project.workspaces.map((workspace) => ({ ...workspace, configFilePath: configFileMap[workspace.id] ?? null }))
-		});
-	}
+			rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath }
+		};
 
-	private async initProject() {
-		const projectDir = await findUp(
-			async (directory) => {
-				const packageJsonPath = Path.join(directory, PACKAGE_JSON);
+		project = await locateConfigFiles(project);
 
-				if (await isPathExists(packageJsonPath)) {
-					const packageJson = await readJson<NadlePackageJson>(packageJsonPath);
-
-					if (packageJson.nadle?.root) {
-						return directory;
-					}
-				}
-
-				return undefined;
-			},
-			{ cwd, type: "directory" }
-		);
-
-		if (projectDir !== undefined) {
-			for (const detector of MonorepoDetectors) {
-				if (await detector.isMonorepoRoot(projectDir)) {
-					const packages = await detector.getPackages(projectDir);
-
-					this.#project = await Project.create(packages);
-
-					return;
-				}
+		for (const workspace of project.workspaces) {
+			if (workspace.configFilePath) {
+				await onInitWorkspace(workspace.id, workspace.configFilePath);
 			}
-
-			const rootWorkspace = await RootWorkspace.create(projectDir);
-			this.#project = { rootWorkspace, workspaces: [], packageManager: "npm", currentWorkspaceId: rootWorkspace.id };
-
-			return;
 		}
 
-		const monorepoRoot = await findRoot(cwd);
-		const detector = MonorepoDetectors.find(({ type }) => type === monorepoRoot.tool);
+		project = resolveCurrentWorkspaceId(project, cwd);
 
-		if (!detector) {
-			throw new Error(
-				`Unsupported monorepo tool: ${monorepoRoot.tool}. Supported tools are: ${MonorepoDetectors.map(({ type }) => type).join(", ")}.`
-			);
-		}
-
-		this.#project = await Project.create(await detector.getPackages(monorepoRoot.rootDir));
+		return project;
 	}
 
-	private async resolveRootWorkspaceConfigFile(rootConfigFilePath: string | undefined): Promise<string> {
-		const projectPath = this.project.rootWorkspace.absolutePath;
-
+	private async resolveRootWorkspaceConfigFile(projectPath: string, rootConfigFilePath: string | undefined): Promise<string> {
 		if (rootConfigFilePath !== undefined) {
 			const resolvedConfigPath = Path.resolve(projectPath, rootConfigFilePath);
 
@@ -142,23 +63,5 @@ export class ProjectResolver {
 		}
 
 		throw new Error(Messages.ConfigFileNotFound(projectPath));
-	}
-
-	private resolveCurrentWorkspaceId() {
-		let closest: string | undefined;
-		let currentWorkspaceId = this.project.rootWorkspace.id;
-
-		for (const workspace of this.project.workspaces) {
-			const workspacePath = workspace.absolutePath;
-
-			if (cwd.startsWith(workspacePath)) {
-				if (!closest || workspacePath.length > closest.length) {
-					closest = workspacePath;
-					currentWorkspaceId = workspace.id;
-				}
-			}
-		}
-
-		this.project = (project) => ({ ...project, currentWorkspaceId });
 	}
 }

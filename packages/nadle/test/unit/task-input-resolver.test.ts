@@ -1,6 +1,6 @@
+import { type Project } from "@nadle/project";
 import { type Logger } from "src/core/index.js";
 import { it, vi, expect, describe } from "vitest";
-import { type Project } from "src/core/models/project/project.js";
 import { ResolvedTask } from "src/core/interfaces/resolved-task.js";
 import { TaskInputResolver } from "src/core/options/task-input-resolver.js";
 

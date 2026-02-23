@@ -1,11 +1,11 @@
 import c from "tinyrainbow";
 import { groupBy } from "lodash-es";
+import { isRootWorkspaceId } from "@nadle/project";
 
 import { BaseHandler } from "./base-handler.js";
 import { DASH } from "../utilities/constants.js";
 import { capitalize } from "../utilities/utils.js";
 import { combineComparators } from "../utilities/comparator.js";
-import { RootWorkspace } from "../models/project/root-workspace.js";
 import type { RegisteredTask } from "../interfaces/registered-task.js";
 
 interface DescribedTask extends RegisteredTask {
@@ -69,7 +69,7 @@ export class ListHandler extends BaseHandler {
 		]);
 
 		const taskComparator = combineComparators<DescribedTask>([
-			(a, b) => Number(RootWorkspace.isRootWorkspaceId(b.workspaceId)) - Number(RootWorkspace.isRootWorkspaceId(a.workspaceId)),
+			(a, b) => Number(isRootWorkspaceId(b.workspaceId)) - Number(isRootWorkspaceId(a.workspaceId)),
 			(a, b) => a.label.localeCompare(b.label)
 		]);
 

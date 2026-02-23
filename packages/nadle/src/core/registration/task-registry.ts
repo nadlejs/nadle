@@ -1,5 +1,6 @@
+import { type Project, getWorkspaceById, getWorkspaceByLabelOrId } from "@nadle/project";
+
 import { Messages } from "../utilities/messages.js";
-import { Project } from "../models/project/project.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
 
@@ -25,7 +26,7 @@ export class TaskRegistry {
 
 		for (const bufferedTask of this.buffer.values()) {
 			const { id, name, workspaceId } = bufferedTask;
-			const workspaceLabel = Project.getWorkspaceById(project, workspaceId).label;
+			const workspaceLabel = getWorkspaceById(project, workspaceId).label;
 			const task = { ...bufferedTask, label: TaskIdentifier.create(workspaceLabel, name) };
 
 			this.registry.set(id, task);
@@ -75,9 +76,7 @@ export class TaskRegistry {
 	public parse(taskInput: string, targetWorkspaceId: string): TaskIdentifier {
 		const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
 		const targetWorkspace =
-			workspaceInput === undefined
-				? Project.getWorkspaceById(this.project, targetWorkspaceId)
-				: Project.getWorkspaceByLabelOrId(this.project, workspaceInput);
+			workspaceInput === undefined ? getWorkspaceById(this.project, targetWorkspaceId) : getWorkspaceByLabelOrId(this.project, workspaceInput);
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
 		if (!this.registry.has(taskId)) {

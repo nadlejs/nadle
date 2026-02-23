@@ -1,6 +1,6 @@
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "src/core/utilities/constants.js";
+import { PACKAGE_JSON } from "@nadle/project";
 import { getStderr, expectPass, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("workspaces resolve tasks", () => {

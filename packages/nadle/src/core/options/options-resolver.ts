@@ -2,14 +2,13 @@ import Os from "node:os";
 import Path from "node:path";
 
 import { isCI } from "std-env";
+import { type Project, configureProject, ROOT_WORKSPACE_ID } from "@nadle/project";
 
 import { clamp } from "../utilities/utils.js";
-import { Project } from "../models/project/project.js";
 import { ProjectResolver } from "./project-resolver.js";
 import { TaskInputResolver } from "./task-input-resolver.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
-import { RootWorkspace } from "../models/project/root-workspace.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
 import { type DefaultLogger } from "../interfaces/defaults/default-logger.js";
 import { type FileOptionRegistry } from "../registration/file-option-registry.js";
@@ -108,8 +107,8 @@ export class OptionsResolver {
 			await fileReader.read(configFilePath);
 		});
 
-		const { alias, ...fileOptions } = this.fileOptionRegistry.get(RootWorkspace.ID);
+		const { alias, ...fileOptions } = this.fileOptionRegistry.get(ROOT_WORKSPACE_ID);
 
-		return { fileOptions, project: Project.configure(project, alias) };
+		return { fileOptions, project: configureProject(project, alias) };
 	}
 }

@@ -1,0 +1,57 @@
+{
+	"name": "@nadle/project",
+	"version": "0.0.1",
+	"description": "Project discovery and workspace scanning for nadle",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"test": "vitest run"
+	},
+	"files": [
+		"lib"
+	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js"
+		}
+	},
+	"types": "lib/index.d.ts",
+	"dependencies": {
+		"@manypkg/find-root": "^3.1.0",
+		"@manypkg/tools": "^2.1.0",
+		"@nadle/kernel": "workspace:*",
+		"find-up": "^8.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.19.25",
+		"typescript": "^5.9.3",
+		"vitest": "4.0.18"
+	},
+	"engines": {
+		"node": ">=22"
+	},
+	"author": {
+		"name": "Nam Hoang Le",
+		"email": "namhoangle.dev@gmail.com",
+		"url": "https://github.com/nam-hle"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nadlejs/nadle.git",
+		"directory": "packages/project"
+	},
+	"keywords": [
+		"nadle",
+		"project",
+		"workspace",
+		"discovery",
+		"typescript"
+	],
+	"homepage": "https://nadle.dev",
+	"bugs": "https://github.com/nadlejs/nadle/issues",
+	"publishConfig": {
+		"access": "public"
+	}
+}

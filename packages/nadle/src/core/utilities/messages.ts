@@ -1,5 +1,6 @@
+import { CONFIG_FILE_PATTERN } from "@nadle/project";
+
 import { highlight } from "./utils.js";
-import { CONFIG_FILE_PATTERN } from "./constants.js";
 
 export const Messages = {
 	InvalidConfigureUsage: () => `configure function can only be called from the root workspace.`,
