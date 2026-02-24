@@ -11,12 +11,10 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer throwable --stacktrace
 
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> <Yellow>STARTED</Yellow>
 
-Preparing...
 [log]
 <Green>✓</Green> Task <Bold>prepare</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from nadle!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>throwable</BoldDim> <Yellow>STARTED</Yellow>

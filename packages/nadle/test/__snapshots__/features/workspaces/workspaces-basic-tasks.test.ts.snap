@@ -32,7 +32,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build
 
 [log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build two
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -51,22 +50,18 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:build
 
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build three
 [log]
 <Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build two
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -85,7 +80,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -107,7 +101,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer test
 
 [log] <Yellow>></Yellow> Task <Bold>test</BoldDim> <Yellow>STARTED</Yellow>
 
-Test root
 [log]
 <Green>✓</Green> Task <Bold>test</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -126,22 +119,18 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build build
 
 [log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build two
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build three
 [log]
 <Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -160,22 +149,18 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build three
 [log]
 <Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build two
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -194,12 +179,10 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build packages
 
 [log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build two
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
