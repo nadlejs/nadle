@@ -11,17 +11,14 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude build
 
 [log] <Yellow>></Yellow> Task <Bold>two:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:one:check</BoldDim> <Yellow>STARTED</Yellow>
 
-Check one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -43,17 +40,14 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude two:build
 
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:one:check</BoldDim> <Yellow>STARTED</Yellow>
 
-Check one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -72,17 +66,14 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude packages:tw
 
 [log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>packages:one:check</BoldDim> <Yellow>STARTED</Yellow>
 
-Check one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]

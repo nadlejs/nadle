@@ -8,29 +8,26 @@ describe("workspaces resolve tasks", () => {
 		[PNPM_WORKSPACE]: createPnpmWorkspace(),
 		[PACKAGE_JSON]: createPackageJson("root"),
 		[CONFIG_FILE]: createNadleConfig({
-			tasks: [
-				{ name: "build", log: "Build root" },
-				{ name: "test", log: "Test root" }
-			]
+			tasks: [{ name: "build" }, { name: "test" }]
 		}),
 
 		backend: {
 			[PACKAGE_JSON]: createPackageJson("backend"),
-			[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build backend" }] })
+			[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 		},
 		frontend: {
 			[PACKAGE_JSON]: createPackageJson("frontend"),
-			[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build frontend" }] })
+			[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 		},
 
 		common: {
 			api: {
 				[PACKAGE_JSON]: createPackageJson("api"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build api" }] })
+				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 			},
 			utils: {
 				[PACKAGE_JSON]: createPackageJson("utils"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build utils" }] })
+				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 			}
 		}
 	};

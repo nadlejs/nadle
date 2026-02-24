@@ -1,11 +1,5 @@
 import { tasks } from "nadle";
 
-tasks.register("check", () => {
-	console.log("Check API successfully!");
-});
+tasks.register("check");
 
-tasks
-	.register("build", () => {
-		console.log("Build API successfully!");
-	})
-	.config({ dependsOn: ["check"] });
+tasks.register("build").config({ dependsOn: ["check"] });

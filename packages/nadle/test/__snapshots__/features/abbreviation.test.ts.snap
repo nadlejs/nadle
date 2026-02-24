@@ -15,22 +15,18 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell goodbye cop
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from nadle!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> <Yellow>STARTED</Yellow>
 
-Goodbye, tak!
 [log]
 <Green>✓</Green> Task <Bold>goodbye</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> <Yellow>STARTED</Yellow>
 
-Preparing...
 [log]
 <Green>✓</Green> Task <Bold>prepare</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>copy</BoldDim> <Yellow>STARTED</Yellow>
 
-Copying from assets/ to dist/
 [log]
 <Green>✓</Green> Task <Bold>copy</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -52,7 +48,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from nadle!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]

@@ -16,16 +16,16 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
 							})
@@ -52,28 +52,28 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						core: {
 							[PACKAGE_JSON]: createPackageJson("core"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build core" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						"lib-a": {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib-a" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("lib-a", {
 								dependencies: { core: "workspace:*" }
 							})
 						},
 						"lib-b": {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib-b" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("lib-b", {
 								dependencies: { core: "workspace:*" }
 							})
 						},
 						app: {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { "lib-a": "workspace:*", "lib-b": "workspace:*" }
 							})
@@ -98,16 +98,16 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "test", log: "Test lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "test" }] })
 						},
 						app: {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
 							})
@@ -133,17 +133,17 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						configure: { implicitDependencies: false },
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }],
+						configure: { implicitDependencies: false }
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
 							})
@@ -167,20 +167,20 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
 							}),
 							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build app", config: { dependsOn: ["packages:lib:build"] } }]
+								tasks: [{ name: "build", config: { dependsOn: ["packages:lib:build"] } }]
 							})
 						}
 					}
@@ -202,16 +202,16 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								devDependencies: { lib: "workspace:*" }
 							})
@@ -236,17 +236,17 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
 							[PACKAGE_JSON]: createPackageJson("app"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						}
 					}
 				}
@@ -267,16 +267,16 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
 							})
@@ -301,18 +301,18 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						configure: { implicitDependencies: false },
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }],
+						configure: { implicitDependencies: false }
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build lib" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						},
 						app: {
 							[PACKAGE_JSON]: createPackageJson("app"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build app" }] })
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
 						}
 					}
 				}
@@ -335,24 +335,24 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						a: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("a", {
 								dependencies: { b: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build a" }]
 							})
 						},
 						b: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("b", {
 								dependencies: { a: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build b" }]
 							})
 						}
 					}
@@ -372,24 +372,24 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						b: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "test" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("b", {
 								dependencies: { a: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "test", log: "Test b" }]
 							})
 						},
 						a: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("a", {
 								dependencies: { b: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build a" }]
 							})
 						}
 					}
@@ -411,24 +411,24 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						a: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("a", {
 								dependencies: { b: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build a" }]
 							})
 						},
 						b: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("b", {
 								dependencies: { a: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build b" }]
 							})
 						}
 					}
@@ -452,22 +452,22 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
 							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build lib" }]
+								tasks: [{ name: "build" }]
 							})
 						},
 						app: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build app" }]
 							})
 						}
 					}
@@ -489,22 +489,22 @@ describe("workspaces > implicit dependencies", () => {
 					[PNPM_WORKSPACE]: createPnpmWorkspace(),
 					[PACKAGE_JSON]: createPackageJson("root"),
 					[CONFIG_FILE]: createNadleConfig({
-						tasks: [{ name: "build", log: "Build root" }]
+						tasks: [{ name: "build" }]
 					}),
 
 					packages: {
 						lib: {
 							[PACKAGE_JSON]: createPackageJson("lib"),
 							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build lib" }]
+								tasks: [{ name: "build" }]
 							})
 						},
 						app: {
+							[CONFIG_FILE]: createNadleConfig({
+								tasks: [{ name: "build" }]
+							}),
 							[PACKAGE_JSON]: createPackageJson("app", {
 								dependencies: { lib: "workspace:*" }
-							}),
-							[CONFIG_FILE]: createNadleConfig({
-								tasks: [{ name: "build", log: "Build app" }]
 							})
 						}
 					}

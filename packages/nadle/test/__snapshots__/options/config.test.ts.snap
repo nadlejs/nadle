@@ -11,7 +11,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.js!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -30,7 +29,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.ts!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -49,7 +47,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.js!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -68,7 +65,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.mts!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -87,7 +83,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.js!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -106,7 +101,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 
 [log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
 
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.ts!
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]

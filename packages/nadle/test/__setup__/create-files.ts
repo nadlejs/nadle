@@ -14,10 +14,7 @@ export function createPnpmWorkspace(packages: string[] = ["./**"]) {
 	return yaml.stringify({ packages });
 }
 
-export function createNadleConfig(params?: {
-	configure?: NadleFileOptions;
-	tasks?: { log?: string; name: string; config?: TaskConfiguration }[];
-}): string {
+export function createNadleConfig(params?: { configure?: NadleFileOptions; tasks?: { name: string; config?: TaskConfiguration }[] }): string {
 	const project = new Project({
 		useInMemoryFileSystem: true,
 		compilerOptions: { target: ScriptTarget.ESNext },
@@ -36,9 +33,9 @@ export function createNadleConfig(params?: {
 	}
 
 	for (const task of params?.tasks ?? []) {
-		const { log, name, config } = task;
+		const { name, config } = task;
 
-		let taskRegisterStatement = log ? `tasks.register("${name}", () => {console.log("${log}");})` : `tasks.register("${name}")`;
+		let taskRegisterStatement = `tasks.register("${name}")`;
 
 		if (config) {
 			taskRegisterStatement += `\n.config(${serializeJson(config, 2)})`;

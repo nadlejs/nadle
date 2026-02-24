@@ -18,25 +18,19 @@ describe("workspaces > excluded tasks", () => {
 			files: {
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build root" }], configure: { alias: { "packages/two": "two" } } }),
+				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }], configure: { alias: { "packages/two": "two" } } }),
 
 				packages: {
 					two: {
 						[PACKAGE_JSON]: createPackageJson("one"),
 						[CONFIG_FILE]: createNadleConfig({
-							tasks: [
-								{ name: "build", log: "Build one" },
-								{ name: "check", log: "Check one", config: { dependsOn: ["build"] } }
-							]
+							tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build"] } }]
 						})
 					},
 					one: {
 						[PACKAGE_JSON]: createPackageJson("one"),
 						[CONFIG_FILE]: createNadleConfig({
-							tasks: [
-								{ name: "build", log: "Build one" },
-								{ name: "check", log: "Check one", config: { dependsOn: ["build", "two:build", "root:build"] } }
-							]
+							tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build", "two:build", "root:build"] } }]
 						})
 					}
 				}
