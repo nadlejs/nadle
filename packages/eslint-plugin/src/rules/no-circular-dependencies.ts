@@ -1,3 +1,4 @@
+import { isWorkspaceQualified } from "@nadle/kernel";
 import { ESLintUtils, type TSESTree, AST_NODE_TYPES } from "@typescript-eslint/utils";
 
 import { getTaskName, getConfigObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
@@ -77,7 +78,7 @@ function extractDependsOn(configObj: TSESTree.ObjectExpression): {
 		}
 
 		for (const element of prop.value.elements) {
-			if (element?.type === AST_NODE_TYPES.Literal && typeof element.value === "string") {
+			if (element?.type === AST_NODE_TYPES.Literal && typeof element.value === "string" && !isWorkspaceQualified(element.value)) {
 				deps.push(element.value);
 			}
 		}
