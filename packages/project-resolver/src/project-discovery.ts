@@ -12,6 +12,22 @@ import { createWorkspace, createRootWorkspace } from "./workspace-factory.js";
 
 const MonorepoDetectors: Tool[] = [PnpmTool, NpmTool, YarnTool];
 
+const LockfileToPackageManager: ReadonlyArray<readonly [string, string]> = [
+	["pnpm-lock.yaml", "pnpm"],
+	["yarn.lock", "yarn"],
+	["package-lock.json", "npm"]
+];
+
+async function detectPackageManager(projectDir: string): Promise<string> {
+	for (const [lockfile, packageManager] of LockfileToPackageManager) {
+		if (await isPathExists(Path.join(projectDir, lockfile))) {
+			return packageManager;
+		}
+	}
+
+	return "npm";
+}
+
 interface NadlePackageJson {
 	readonly nadle?: { root?: true };
 }
@@ -61,8 +77,8 @@ export async function discoverProject(startDir: string): Promise<Project> {
 		return {
 			rootWorkspace,
 			workspaces: [],
-			packageManager: "npm",
-			currentWorkspaceId: rootWorkspace.id
+			currentWorkspaceId: rootWorkspace.id,
+			packageManager: await detectPackageManager(projectDir)
 		};
 	}
 

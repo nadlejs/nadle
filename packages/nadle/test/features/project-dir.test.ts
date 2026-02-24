@@ -49,20 +49,13 @@ describe.concurrent("projectDir", () => {
 	});
 
 	describe("given a single-package npm repo", () => {
-		const files = fixture()
-			.packageJson("single-npm")
-			.configRaw("")
-			.file("package-lock.json", "{}")
-			.dir("src")
-			.build();
+		const files = fixture().packageJson("single-npm").configRaw("").file("package-lock.json", "{}").dir("src").build();
 
 		it("should resolve the project root from a subdirectory", () =>
 			withGeneratedFixture({
 				files,
 				testFn: async ({ cwd }) => {
-					const stdout = await getStdout(
-						createExec({ cwd: Path.join(cwd, "src") })`--show-config`
-					);
+					const stdout = await getStdout(createExec({ cwd: Path.join(cwd, "src") })`--show-config`);
 
 					expect(stdout).toContain(`"packageManager": "npm"`);
 					expect(stdout).toContain(`"workspaces": []`);
@@ -71,44 +64,30 @@ describe.concurrent("projectDir", () => {
 	});
 
 	describe("given a single-package pnpm repo", () => {
-		const files = fixture()
-			.packageJson("single-pnpm")
-			.configRaw("")
-			.file("pnpm-lock.yaml", "lockfileVersion: '9.0'\n")
-			.dir("src")
-			.build();
+		const files = fixture().packageJson("single-pnpm").configRaw("").file("pnpm-lock.yaml", "lockfileVersion: '9.0'\n").dir("src").build();
 
 		it("should resolve the project root from a subdirectory", () =>
 			withGeneratedFixture({
 				files,
 				testFn: async ({ cwd }) => {
-					const stdout = await getStdout(
-						createExec({ cwd: Path.join(cwd, "src") })`--show-config`
-					);
+					const stdout = await getStdout(createExec({ cwd: Path.join(cwd, "src") })`--show-config`);
 
-					expect(stdout).toContain(`"packageManager": "npm"`);
+					expect(stdout).toContain(`"packageManager": "pnpm"`);
 					expect(stdout).toContain(`"workspaces": []`);
 				}
 			}));
 	});
 
 	describe("given a single-package yarn repo", () => {
-		const files = fixture()
-			.packageJson("single-yarn")
-			.configRaw("")
-			.file("yarn.lock", "")
-			.dir("src")
-			.build();
+		const files = fixture().packageJson("single-yarn").configRaw("").file("yarn.lock", "").dir("src").build();
 
 		it("should resolve the project root from a subdirectory", () =>
 			withGeneratedFixture({
 				files,
 				testFn: async ({ cwd }) => {
-					const stdout = await getStdout(
-						createExec({ cwd: Path.join(cwd, "src") })`--show-config`
-					);
+					const stdout = await getStdout(createExec({ cwd: Path.join(cwd, "src") })`--show-config`);
 
-					expect(stdout).toContain(`"packageManager": "npm"`);
+					expect(stdout).toContain(`"packageManager": "yarn"`);
 					expect(stdout).toContain(`"workspaces": []`);
 				}
 			}));
