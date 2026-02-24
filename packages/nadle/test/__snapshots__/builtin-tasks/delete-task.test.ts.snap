@@ -165,21 +165,3 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteFilesFooBar
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
 `;
-
-exports[`deleteTask > given multiple file paths > can delete them 3`] = `
----------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteFilesFooBar
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
-
-[log] <Yellow>></Yellow> Task <Bold>deleteFilesFooBar</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>deleteFilesFooBar</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>1</BoldDim> task executed
-`;

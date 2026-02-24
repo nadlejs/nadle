@@ -64,9 +64,9 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
 [info] Scheduled tasks: root:pass
+[info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
-[info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
 [info] pnpm command completed successfully.
 [log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>

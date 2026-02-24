@@ -3,6 +3,35 @@
 exports[`workspaces > excluded tasks > should not run excluded tasks 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude build
+---------- Stdout ------------
+[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] Using Nadle from /ROOT/lib/index.js
+[log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
+
+[log] <Yellow>></Yellow> Task <Bold>two:build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build one
+[log]
+<Green>✓</Green> Task <Bold>two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
+
+Build root
+[log]
+<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Yellow>></Yellow> Task <Bold>packages:one:check</BoldDim> <Yellow>STARTED</Yellow>
+
+Check one
+[log]
+<Green>✓</Green> Task <Bold>packages:one:check</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log]
+<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
+[log] <Bold>3</BoldDim> tasks executed
+`;
+
+exports[`workspaces > excluded tasks > should not run excluded tasks 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude two:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
@@ -32,20 +61,20 @@ Check one
 [log] <Bold>3</BoldDim> tasks executed
 `;
 
-exports[`workspaces > excluded tasks > should not run excluded tasks 2`] = `
+exports[`workspaces > excluded tasks > should not run excluded tasks 3`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude build
+Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude packages:two:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>two:build</BoldDim> <Yellow>STARTED</Yellow>
+[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
 
 Build one
 [log]
-<Green>✓</Green> Task <Bold>two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
 Build root
