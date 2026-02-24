@@ -11,7 +11,7 @@ export default defineConfig({
 		index: "src/index.ts",
 		server: "src/server.ts"
 	},
-	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument", "typescript"],
+	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument", "typescript", "@nadle/kernel", "@nadle/project-resolver"],
 	banner: {
 		js: "import { createRequire } from 'module'; import { fileURLToPath } from 'url'; import { dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = fileURLToPath(import.meta.url); const __dirname = dirname(__filename);"
 	}

@@ -1,4 +1,4 @@
-import { isRootWorkspaceId } from "@nadle/project";
+import { isRootWorkspaceId } from "@nadle/project-resolver";
 
 import { Messages } from "../utilities/messages.js";
 import { type NadleFileOptions } from "../options/types.js";

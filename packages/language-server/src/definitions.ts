@@ -1,9 +1,11 @@
 import ts from "typescript";
-import { isWorkspaceQualified } from "@nadle/kernel";
 import type { Location, Position } from "vscode-languageserver";
 import type { TextDocument } from "vscode-languageserver-textdocument";
+import { parseTaskReference, isWorkspaceQualified } from "@nadle/kernel";
 
+import type { LspContext } from "./lsp-context.js";
 import type { DocumentAnalysis } from "./analyzer.js";
+import type { ProjectContext } from "./project-context.js";
 
 export function findDependsOnNameAtPosition(content: string, offset: number): { name: string; isWorkspaceQualified: boolean } | null {
 	const file = ts.createSourceFile("def.ts", content, ts.ScriptTarget.Latest, true);
@@ -40,12 +42,68 @@ export function findDependsOnNameAtPosition(content: string, offset: number): { 
 	return result;
 }
 
-export function getDefinition(analysis: DocumentAnalysis, position: Position, document: TextDocument): Location | null {
+function findWorkspaceAnalysis(
+	workspaceInput: string,
+	allAnalyses: DocumentAnalysis[],
+	projectContext: ProjectContext
+): DocumentAnalysis | undefined {
+	for (const [uri, wsId] of projectContext.workspaceUriMap) {
+		if (wsId === workspaceInput) {
+			return allAnalyses.find((a) => a.uri === uri);
+		}
+	}
+
+	const allWorkspaces = [projectContext.project.rootWorkspace, ...projectContext.project.workspaces];
+	const workspace = allWorkspaces.find((ws) => ws.label === workspaceInput);
+
+	if (!workspace) {
+		return undefined;
+	}
+
+	for (const [uri, wsId] of projectContext.workspaceUriMap) {
+		if (wsId === workspace.id) {
+			return allAnalyses.find((a) => a.uri === uri);
+		}
+	}
+
+	return undefined;
+}
+
+export function getDefinition(analysis: DocumentAnalysis, position: Position, document: TextDocument, context: LspContext): Location | null {
 	const offset = document.offsetAt(position);
 	const ref = findDependsOnNameAtPosition(document.getText(), offset);
 
-	if (!ref || ref.isWorkspaceQualified) {
+	if (!ref) {
 		return null;
+	}
+
+	if (ref.isWorkspaceQualified) {
+		if (!context.projectContext) {
+			return null;
+		}
+
+		const { taskName, workspaceInput } = parseTaskReference(ref.name);
+
+		if (!workspaceInput) {
+			return null;
+		}
+
+		const targetAnalysis = findWorkspaceAnalysis(workspaceInput, context.allAnalyses, context.projectContext);
+
+		if (!targetAnalysis) {
+			return null;
+		}
+
+		const entries = targetAnalysis.taskNames.get(taskName);
+
+		if (!entries || entries.length === 0) {
+			return null;
+		}
+
+		return {
+			uri: targetAnalysis.uri,
+			range: entries[0].registrationRange
+		};
 	}
 
 	const entries = analysis.taskNames.get(ref.name);

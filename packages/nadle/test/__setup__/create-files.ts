@@ -1,8 +1,8 @@
 import yaml from "yaml";
 import serializeJson from "serialize-javascript";
-import { type PackageJson } from "@nadle/project";
 import { type NadleFileOptions } from "src/index.js";
 import type { TaskConfiguration } from "src/index.js";
+import { type PackageJson } from "@nadle/project-resolver";
 import { Project, QuoteKind, ScriptTarget } from "ts-morph";
 import { stringify } from "src/core/utilities/stringify.js";
 

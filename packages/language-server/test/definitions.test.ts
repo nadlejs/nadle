@@ -25,7 +25,7 @@ describe("getDefinition", () => {
 		const dependsOnIdx = content.indexOf('dependsOn: ["compile"');
 		const offset = dependsOnIdx + 'dependsOn: ["'.length + 1;
 		const position = doc.positionAt(offset);
-		const location = getDefinition(analysis, position, doc);
+		const location = getDefinition(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(location).not.toBeNull();
 		expect(location!.uri).toBe(analysis.uri);
@@ -40,7 +40,7 @@ describe("getDefinition", () => {
 		const wsIdx = content.indexOf('"other-pkg:build"');
 		const offset = wsIdx + 1;
 		const position = doc.positionAt(offset);
-		const location = getDefinition(analysis, position, doc);
+		const location = getDefinition(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(location).toBeNull();
 	});
@@ -51,7 +51,7 @@ describe("getDefinition", () => {
 		const idx = content.indexOf('"nonexistent"');
 		const offset = idx + 1;
 		const position = doc.positionAt(offset);
-		const location = getDefinition(analysis, position, doc);
+		const location = getDefinition(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(location).toBeNull();
 	});
@@ -62,7 +62,7 @@ describe("getDefinition", () => {
 		const idx = content.indexOf('"clean-cache"');
 		const offset = idx + 1;
 		const position = doc.positionAt(offset);
-		const location = getDefinition(analysis, position, doc);
+		const location = getDefinition(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(location).toBeNull();
 	});
@@ -73,7 +73,7 @@ describe("getDefinition", () => {
 		const idx = content.indexOf('dependsOn: "build"');
 		const offset = idx + 'dependsOn: "'.length;
 		const position = doc.positionAt(offset);
-		const location = getDefinition(analysis, position, doc);
+		const location = getDefinition(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(location).not.toBeNull();
 		const buildReg = analysis.registrations.find((r) => r.name === "build");

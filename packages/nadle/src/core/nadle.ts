@@ -1,6 +1,6 @@
 import Process from "node:process";
 
-import { getWorkspaceById, ROOT_WORKSPACE_ID, isRootWorkspaceId } from "@nadle/project";
+import { getWorkspaceById, ROOT_WORKSPACE_ID, isRootWorkspaceId } from "@nadle/project-resolver";
 
 import { Handlers } from "./handlers/index.js";
 import { runWithInstance } from "./nadle-context.js";

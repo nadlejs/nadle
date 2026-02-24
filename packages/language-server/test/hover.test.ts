@@ -30,7 +30,7 @@ describe("getHover", () => {
 		const content = doc.getText();
 		const offset = findStringOffset(content, "compile");
 		const position = doc.positionAt(offset);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(hover).not.toBeNull();
 		expect(hover!.contents).toHaveProperty("value");
@@ -44,7 +44,7 @@ describe("getHover", () => {
 		const content = doc.getText();
 		const offset = findStringOffset(content, "compile");
 		const position = doc.positionAt(offset);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		const value = (hover!.contents as { value: string }).value;
 		expect(value).toContain("Compile TypeScript");
@@ -55,7 +55,7 @@ describe("getHover", () => {
 		const content = doc.getText();
 		const offset = findStringOffset(content, "build");
 		const position = doc.positionAt(offset);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(hover).not.toBeNull();
 		const value = (hover!.contents as { value: string }).value;
@@ -69,7 +69,7 @@ describe("getHover", () => {
 		const dependsOnIdx = content.indexOf('dependsOn: ["compile"');
 		const offset = dependsOnIdx + 'dependsOn: ["'.length + 1;
 		const position = doc.positionAt(offset);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(hover).not.toBeNull();
 		const value = (hover!.contents as { value: string }).value;
@@ -81,7 +81,7 @@ describe("getHover", () => {
 		const content = doc.getText();
 		const offset = findStringOffset(content, "release");
 		const position = doc.positionAt(offset);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(hover).not.toBeNull();
 		const value = (hover!.contents as { value: string }).value;
@@ -91,7 +91,7 @@ describe("getHover", () => {
 	it("returns null for non-task strings", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
 		const position = doc.positionAt(0);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 		expect(hover).toBeNull();
 	});
 
@@ -100,7 +100,7 @@ describe("getHover", () => {
 		const content = doc.getText();
 		const offset = findStringOffset(content, "clean-cache");
 		const position = doc.positionAt(offset);
-		const hover = getHover(analysis, position, doc);
+		const hover = getHover(analysis, position, doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(hover).not.toBeNull();
 		const value = (hover!.contents as { value: string }).value;

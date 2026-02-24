@@ -9,7 +9,7 @@ import {
 	locateConfigFiles,
 	resolveCurrentWorkspaceId,
 	DEFAULT_CONFIG_FILE_NAMES
-} from "@nadle/project";
+} from "@nadle/project-resolver";
 
 import { Messages } from "../utilities/messages.js";
 

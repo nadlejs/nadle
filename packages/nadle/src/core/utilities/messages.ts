@@ -1,4 +1,4 @@
-import { CONFIG_FILE_PATTERN } from "@nadle/project";
+import { CONFIG_FILE_PATTERN } from "@nadle/project-resolver";
 
 import { highlight } from "./utils.js";
 

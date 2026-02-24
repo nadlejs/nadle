@@ -29,7 +29,7 @@ describe("getCompletions", () => {
 	it("returns task names inside a dependsOn string", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
 		const offset = offsetInsideDependsOn(doc.getText());
-		const items = getCompletions(analysis, doc.positionAt(offset), doc);
+		const items = getCompletions(analysis, doc.positionAt(offset), doc, { projectContext: null, allAnalyses: [analysis] });
 
 		expect(items.length).toBeGreaterThan(0);
 		const labels = items.map((i) => i.label);
@@ -39,7 +39,7 @@ describe("getCompletions", () => {
 	it("excludes the current task from suggestions", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
 		const offset = offsetInsideDependsOn(doc.getText());
-		const items = getCompletions(analysis, doc.positionAt(offset), doc);
+		const items = getCompletions(analysis, doc.positionAt(offset), doc, { projectContext: null, allAnalyses: [analysis] });
 
 		const labels = items.map((i) => i.label);
 		expect(labels).not.toContain("build");
@@ -47,14 +47,14 @@ describe("getCompletions", () => {
 
 	it("returns empty array outside dependsOn context", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
-		const items = getCompletions(analysis, doc.positionAt(0), doc);
+		const items = getCompletions(analysis, doc.positionAt(0), doc, { projectContext: null, allAnalyses: [analysis] });
 		expect(items).toHaveLength(0);
 	});
 
 	it("uses CompletionItemKind.Value", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
 		const offset = offsetInsideDependsOn(doc.getText());
-		const items = getCompletions(analysis, doc.positionAt(offset), doc);
+		const items = getCompletions(analysis, doc.positionAt(offset), doc, { projectContext: null, allAnalyses: [analysis] });
 
 		for (const item of items) {
 			expect(item.kind).toBe(CompletionItemKind.Value);
@@ -64,7 +64,7 @@ describe("getCompletions", () => {
 	it("includes detail with form and description", async () => {
 		const { doc, analysis } = await setupFixture("valid.ts");
 		const offset = offsetInsideDependsOn(doc.getText());
-		const items = getCompletions(analysis, doc.positionAt(offset), doc);
+		const items = getCompletions(analysis, doc.positionAt(offset), doc, { projectContext: null, allAnalyses: [analysis] });
 
 		const compileItem = items.find((i) => i.label === "compile");
 		expect(compileItem?.detail).toContain("ExecTask");

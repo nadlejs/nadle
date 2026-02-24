@@ -1,4 +1,4 @@
-import { type Project } from "@nadle/project";
+import { type Project } from "@nadle/project-resolver";
 
 import { type SupportLogLevel } from "../utilities/consola.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";

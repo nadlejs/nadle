@@ -63,7 +63,7 @@ jobs:
           name: build-output
           path: |
             packages/kernel/lib
-            packages/project/lib
+            packages/project-resolver/lib
             packages/nadle/lib
             packages/eslint-plugin/lib
             packages/create-nadle/lib
@@ -113,7 +113,7 @@ jobs:
         run: pnpm -F @nadle/kernel exec vitest run
 
       - name: Test project
-        run: pnpm -F @nadle/project exec vitest run
+        run: pnpm -F @nadle/project-resolver exec vitest run
 
       - name: Test nadle
         run: pnpm -F nadle exec vitest run

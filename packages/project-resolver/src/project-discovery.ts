@@ -89,8 +89,22 @@ export async function locateConfigFiles(project: Project): Promise<Project> {
 		}
 	}
 
+	let rootConfigFilePath = project.rootWorkspace.configFilePath;
+
+	if (rootConfigFilePath === "") {
+		for (const configFileName of DEFAULT_CONFIG_FILE_NAMES) {
+			const candidate = Path.resolve(project.rootWorkspace.absolutePath, configFileName);
+
+			if (await isPathExists(candidate)) {
+				rootConfigFilePath = candidate;
+				break;
+			}
+		}
+	}
+
 	return {
 		...project,
+		rootWorkspace: { ...project.rootWorkspace, configFilePath: rootConfigFilePath },
 		workspaces: project.workspaces.map((workspace) => ({
 			...workspace,
 			configFilePath: configFileMap[workspace.id] ?? null

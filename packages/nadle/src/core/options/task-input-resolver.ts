@@ -1,5 +1,5 @@
 import { uniq } from "lodash-es";
-import { type Project, getAllWorkspaces, getWorkspaceByLabelOrId } from "@nadle/project";
+import { type Project, getAllWorkspaces, getWorkspaceByLabelOrId } from "@nadle/project-resolver";
 
 import { highlight } from "../utilities/utils.js";
 import { Messages } from "../utilities/messages.js";

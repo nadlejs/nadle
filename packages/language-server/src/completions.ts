@@ -3,6 +3,8 @@ import { CompletionItemKind } from "vscode-languageserver";
 import type { Position, CompletionItem } from "vscode-languageserver";
 import type { TextDocument } from "vscode-languageserver-textdocument";
 
+import type { LspContext } from "./lsp-context.js";
+import type { ProjectContext } from "./project-context.js";
 import type { DocumentAnalysis, TaskRegistration } from "./analyzer.js";
 
 function formatDetail(reg: TaskRegistration): string {
@@ -76,7 +78,20 @@ function isInsideDependsOnString(content: string, offset: number): boolean {
 	return found;
 }
 
-export function getCompletions(analysis: DocumentAnalysis, position: Position, document: TextDocument): CompletionItem[] {
+function resolveWorkspaceLabel(uri: string, projectContext: ProjectContext): string | null {
+	const workspaceId = projectContext.workspaceUriMap.get(uri);
+
+	if (!workspaceId) {
+		return null;
+	}
+
+	const allWorkspaces = [projectContext.project.rootWorkspace, ...projectContext.project.workspaces];
+	const workspace = allWorkspaces.find((ws) => ws.id === workspaceId);
+
+	return workspace?.label ?? workspace?.id ?? null;
+}
+
+export function getCompletions(analysis: DocumentAnalysis, position: Position, document: TextDocument, context: LspContext): CompletionItem[] {
 	const offset = document.offsetAt(position);
 
 	if (!isInsideDependsOnString(document.getText(), offset)) {
@@ -98,6 +113,31 @@ export function getCompletions(analysis: DocumentAnalysis, position: Position, d
 			kind: CompletionItemKind.Value,
 			detail: formatDetail(entries[0])
 		});
+	}
+
+	if (context.projectContext) {
+		for (const other of context.allAnalyses) {
+			if (other.uri === analysis.uri) {
+				continue;
+			}
+
+			const wsLabel = resolveWorkspaceLabel(other.uri, context.projectContext);
+
+			if (!wsLabel) {
+				continue;
+			}
+
+			for (const [name, entries] of other.taskNames) {
+				const qualifiedName = `${wsLabel}:${name}`;
+				items.push({
+					label: qualifiedName,
+					sortText: qualifiedName,
+					filterText: qualifiedName,
+					kind: CompletionItemKind.Value,
+					detail: `${wsLabel} — ${formatDetail(entries[0])}`
+				});
+			}
+		}
 	}
 
 	return items;

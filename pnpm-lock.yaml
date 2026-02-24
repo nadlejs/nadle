@@ -216,6 +216,9 @@ importers:
       '@nadle/kernel':
         specifier: workspace:*
         version: link:../kernel
+      '@nadle/project-resolver':
+        specifier: workspace:*
+        version: link:../project-resolver
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -250,9 +253,9 @@ importers:
       '@nadle/kernel':
         specifier: workspace:*
         version: link:../kernel
-      '@nadle/project':
+      '@nadle/project-resolver':
         specifier: workspace:*
-        version: link:../project
+        version: link:../project-resolver
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -372,7 +375,7 @@ importers:
         specifier: ^2.8.2
         version: 2.8.2
 
-  packages/project:
+  packages/project-resolver:
     dependencies:
       '@manypkg/find-root':
         specifier: ^3.1.0

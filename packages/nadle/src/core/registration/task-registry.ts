@@ -1,4 +1,4 @@
-import { type Project, getWorkspaceById, getWorkspaceByLabelOrId } from "@nadle/project";
+import { type Project, getWorkspaceById, getWorkspaceByLabelOrId } from "@nadle/project-resolver";
 
 import { Messages } from "../utilities/messages.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
