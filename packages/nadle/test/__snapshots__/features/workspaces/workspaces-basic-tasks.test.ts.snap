@@ -159,7 +159,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-Build root
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
