@@ -7,7 +7,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
-    "id": "root",
     "label": "",
     "packageJson": {
       "name": "root",
@@ -16,7 +15,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
     "dependencies": [],
     "relativePath": ".",
-    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts",
+    "id": "root"
   },
   "packageManager": "pnpm",
   "currentWorkspaceId": "root",
@@ -65,7 +65,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
-    "id": "root",
     "label": "",
     "packageJson": {
       "name": "root",
@@ -74,7 +73,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
     "dependencies": [],
     "relativePath": ".",
-    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts",
+    "id": "root"
   },
   "packageManager": "pnpm",
   "currentWorkspaceId": "root",
@@ -123,7 +123,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.confi
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
-    "id": "root",
     "label": "",
     "packageJson": {
       "name": "root",
@@ -132,7 +131,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.confi
     "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
     "dependencies": [],
     "relativePath": ".",
-    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/config/nadle.config.js"
+    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/config/nadle.config.js",
+    "id": "root"
   },
   "packageManager": "pnpm",
   "currentWorkspaceId": "root",
@@ -159,7 +159,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
-    "id": "root",
     "label": "",
     "packageJson": {
       "name": "root",
@@ -168,7 +167,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
     "dependencies": [],
     "relativePath": ".",
-    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts",
+    "id": "root"
   },
   "packageManager": "pnpm",
   "currentWorkspaceId": "root",
@@ -206,7 +206,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
-    "id": "root",
     "label": "",
     "packageJson": {
       "name": "root",
@@ -215,7 +214,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
     "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
     "dependencies": [],
     "relativePath": ".",
-    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts"
+    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts",
+    "id": "root"
   },
   "packageManager": "pnpm",
   "currentWorkspaceId": "root",

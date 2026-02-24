@@ -36,7 +36,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
   "listWorkspaces": false,
   "project": {
     "rootWorkspace": {
-      "id": "root",
       "label": "",
       "packageJson": {
         "name": "@nadle/internal-nadle-test-fixtures-pnpx-task",
@@ -52,7 +51,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
       "absolutePath": "/ROOT/test/__fixtures__/pnpx-task",
       "dependencies": [],
       "relativePath": ".",
-      "configFilePath": "/ROOT/test/__fixtures__/pnpx-task/nadle.config.ts"
+      "configFilePath": "/ROOT/test/__fixtures__/pnpx-task/nadle.config.ts",
+      "id": "root"
     },
     "workspaces": [],
     "packageManager": "npm",
