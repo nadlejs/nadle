@@ -6,10 +6,13 @@ A type-safe, Gradle-inspired task runner for Node.js. See [ROADMAP.md](./ROADMAP
 
 ```
 packages/
+  kernel/          # @nadle/kernel — shared kernel (zero runtime deps)
+  project-resolver/# @nadle/project-resolver — project discovery & workspace scanning
   nadle/           # Core package — the task runner itself
     src/           # Source (91 TS files)
     test/          # Integration + unit tests (51 test files, vitest)
     lib/           # Built output (cli.js, index.js, worker.js)
+  eslint-plugin/   # eslint-plugin-nadle — ESLint rules for nadle.config.ts
   language-server/ # LSP for nadle.config.ts (shared across editors)
   vscode-extension/# VS Code extension (bundles language-server)
   create-nadle/    # Scaffolding CLI (npm create nadle)
@@ -37,6 +40,22 @@ The IntelliJ plugin lives in a separate repo: [nadlejs/intellij-plugin](https://
   significant to users (new feature, changed behavior, new CLI flag, new API, breaking change),
   update the relevant docs pages. Key areas: `docs/concepts/` for core concepts, `docs/guides/`
   for how-to guides, `docs/api/` for API reference, `docs/config-reference.md` for configuration.
+- **Package dependency graph**:
+  ```
+  @nadle/kernel ──┬──→ @nadle/project-resolver ──┬──→ nadle
+                  │                               └──→ @nadle/language-server
+                  ├──→ nadle
+                  ├──→ eslint-plugin-nadle
+                  └──→ @nadle/language-server
+  ```
+- **`@nadle/kernel`**: Zero-dependency shared package. Workspace identity derivation
+  (`deriveWorkspaceId`), task identifier parsing/composition, alias resolution,
+  workspace resolution, constants (`ROOT_WORKSPACE_ID`, `VALID_TASK_NAME_PATTERN`).
+- **`@nadle/project-resolver`**: Project discovery (`discoverProject`), workspace scanning,
+  config file location, workspace dependency resolution. Depends on `@nadle/kernel`.
+- **`eslint-plugin-nadle`**: 11 ESLint rules for `nadle.config.ts` files. Flat config only
+  (`eslint ^9.0.0`). Presets: `recommended`, `all`. Depends on `@nadle/kernel` for task name
+  and dependency validation.
 - **Entry**: `src/cli.ts` (yargs) → `Nadle` class → handler chain
 - **Task lifecycle**: Registration (`tasks.register`) → Scheduling (topological sort, DAG) →
   Execution (tinypool worker threads) → Reporting
@@ -49,7 +68,6 @@ Key source directories under `packages/nadle/src/`:
 - `core/registration/` — `tasks` API, `TaskRegistry`, `defineTask()`
 - `core/engine/` — `TaskScheduler` (DAG), `TaskPool` (workers), `worker.ts`
 - `core/caching/` — `CacheValidator`, `CacheManager`
-- `core/models/project/` — Project, Workspace, dependency resolvers
 - `core/handlers/` — Execute, DryRun, List, CleanCache, ShowConfig
 - `core/reporting/` — Reporter, footer renderer (Ink/React)
 - `builtin-tasks/` — ExecTask, PnpmTask, CopyTask, DeleteTask
@@ -92,8 +110,11 @@ pnpm -F nadle build                   # Build core package
 ## Testing
 
 ```bash
-pnpm -F nadle test                    # All tests
+pnpm -F nadle test                    # All nadle tests
 pnpm -F nadle test basic              # Single test file
+pnpm -F @nadle/kernel test            # Kernel tests
+pnpm -F @nadle/project-resolver test  # Project-resolver tests
+pnpm -F eslint-plugin-nadle test      # ESLint plugin tests
 ```
 
 - Framework: **vitest** with thread pool, 20s timeout
@@ -103,11 +124,8 @@ pnpm -F nadle test basic              # Single test file
 
 ## Active Technologies
 
-- TypeScript 5.9.3, target node22, ESM only + None (zero runtime dependencies) (007-shared-kernel-package)
-
-- TypeScript 5.9.3, ESM only, target node22 + tinypool (worker threads), jiti (config loading), tsup (bundler) (006-workspace-task-execution)
-- TypeScript 5.9.3, target node22 + `@typescript-eslint/utils` (rule creation), `@typescript-eslint/rule-tester` (testing), `eslint ^9.0.0` (peer) (005-eslint-plugin)
-
-## Recent Changes
-
-- 005-eslint-plugin: Added TypeScript 5.9.3, target node22 + `@typescript-eslint/utils` (rule creation), `@typescript-eslint/rule-tester` (testing), `eslint ^9.0.0` (peer)
+- TypeScript 5.9.3, ESM only, target node22
+- **nadle**: tinypool (worker threads), jiti (config loading), tsup (bundler)
+- **@nadle/kernel**: zero runtime dependencies
+- **@nadle/project-resolver**: `@manypkg/find-root`, `@manypkg/tools`, `find-up`
+- **eslint-plugin-nadle**: `@typescript-eslint/utils`, `eslint ^9.0.0` (peer)

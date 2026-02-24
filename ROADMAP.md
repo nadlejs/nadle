@@ -47,7 +47,14 @@ _Goal: Someone can go from zero to productive in 5 minutes._
   inputs. Without this, caching can produce wrong results, which kills trust.
 - **Workspace dependency ordering** (#362) — Respect `dependencies` in `package.json` during
   execution. Critical for monorepo correctness.
-- **Fix Windows caching** (#223) — Cross-platform reliability.
+- ~~**Fix Windows caching** (#223)~~ — Done.
+- **`eslint-plugin-nadle`** — Config file linter with 11 rules (task naming, dependency validation,
+  best practices). Ships with `recommended` and `all` presets.
+- **`@nadle/kernel`** — Shared zero-dependency package extracting workspace identity, task
+  identifiers, and alias resolution for reuse across `nadle`, `language-server`, and
+  `eslint-plugin`.
+- **`@nadle/project-resolver`** — Extracted project discovery and workspace scanning, shared by
+  `nadle` and `language-server`.
 - **Docs: "Getting Started in 5 minutes"** — Install, define 3 tasks, see caching + parallelism
   work. Side-by-side comparison with the equivalent npm scripts.
 
@@ -74,7 +81,6 @@ _Goal: Community can build and share task types._
   - Hook into lifecycle events (beforeTask, afterTask, beforeAll, afterAll)
 - **First-party plugins** — Seed the ecosystem:
   - `@nadle/plugin-typescript` — tsc with project references, incremental
-  - `@nadle/plugin-eslint` — lint with caching awareness
   - `@nadle/plugin-vitest` — test with coverage tracking
 - **Ergonomic API improvements** (#90) — Option-less shared tasks shouldn't require empty `{}`.
 

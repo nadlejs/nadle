@@ -74,15 +74,17 @@ user-facing docs should also be updated.
 
 ## Glossary
 
-| Term               | Definition                                                                                                |
-| ------------------ | --------------------------------------------------------------------------------------------------------- |
-| **Task**           | A named unit of work with an optional function and optional typed options.                                |
-| **Workspace**      | A directory within the project that can register its own tasks.                                           |
-| **Project**        | The top-level container: a root workspace, zero or more child workspaces, and a detected package manager. |
-| **Declaration**    | A file or directory pattern used to describe task inputs or outputs.                                      |
-| **Fingerprint**    | A SHA-256 hash of a file's contents, used for cache key computation.                                      |
-| **Cache Key**      | A hash derived from task ID, input fingerprints, and task environment.                                    |
-| **DAG**            | Directed Acyclic Graph representing task dependencies.                                                    |
-| **Listener**       | An object with optional methods for lifecycle events.                                                     |
-| **Handler**        | A command handler (List, DryRun, Execute, etc.) selected by the CLI.                                      |
-| **Runner Context** | The logger and working directory provided to every task function.                                         |
+| Term                 | Definition                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Task**             | A named unit of work with an optional function and optional typed options.                                             |
+| **Workspace**        | A directory within the project that can register its own tasks.                                                        |
+| **Project**          | The top-level container: a root workspace, zero or more child workspaces, and a detected package manager.              |
+| **Declaration**      | A file or directory pattern used to describe task inputs or outputs.                                                   |
+| **Fingerprint**      | A SHA-256 hash of a file's contents, used for cache key computation.                                                   |
+| **Cache Key**        | A hash derived from task ID, input fingerprints, and task environment.                                                 |
+| **DAG**              | Directed Acyclic Graph representing task dependencies.                                                                 |
+| **Listener**         | An object with optional methods for lifecycle events.                                                                  |
+| **Handler**          | A command handler (List, DryRun, Execute, etc.) selected by the CLI.                                                   |
+| **Runner Context**   | The logger and working directory provided to every task function.                                                      |
+| **Kernel**           | Shared zero-dependency package (`@nadle/kernel`) providing workspace identity, task identifiers, and alias resolution. |
+| **Project Resolver** | Package (`@nadle/project-resolver`) that discovers projects, scans workspaces, and resolves dependencies.              |
