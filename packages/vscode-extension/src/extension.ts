@@ -1,6 +1,7 @@
 import Path from "node:path";
 
-import type { ExtensionContext } from "vscode";
+import { workspace, RelativePattern } from "vscode";
+import type { ExtensionContext, FileSystemWatcher } from "vscode";
 import { TransportKind, LanguageClient } from "vscode-languageclient/node";
 
 let client: LanguageClient | undefined;
@@ -21,7 +22,30 @@ export function activate(context: ExtensionContext): void {
 	};
 
 	client = new LanguageClient("nadle", "Nadle Language Server", serverOptions, clientOptions);
-	client.start();
+	client.start().then(() => {
+		const folder = workspace.workspaceFolders?.[0];
+
+		if (!folder) {
+			return;
+		}
+
+		const watchers: FileSystemWatcher[] = [
+			workspace.createFileSystemWatcher(new RelativePattern(folder, "pnpm-workspace.yaml")),
+			workspace.createFileSystemWatcher(new RelativePattern(folder, "**/package.json")),
+			workspace.createFileSystemWatcher(new RelativePattern(folder, "**/nadle.config.*"))
+		];
+
+		for (const watcher of watchers) {
+			const notify = (): void => {
+				client!.sendNotification("nadle/refreshProject");
+			};
+
+			watcher.onDidChange(notify);
+			watcher.onDidCreate(notify);
+			watcher.onDidDelete(notify);
+			context.subscriptions.push(watcher);
+		}
+	});
 }
 
 export function deactivate(): Promise<void> | undefined {

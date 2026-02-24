@@ -1,7 +1,7 @@
 import Url from "node:url";
 
 import { createJiti } from "jiti";
-import { SUPPORT_EXTENSIONS } from "@nadle/project";
+import { SUPPORT_EXTENSIONS } from "@nadle/project-resolver";
 
 import { type FileReader } from "../file-reader.js";
 

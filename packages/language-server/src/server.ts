@@ -9,8 +9,10 @@ import { getHover } from "./hover.js";
 import { getReferences } from "./references.js";
 import { getDefinition } from "./definitions.js";
 import { getCompletions } from "./completions.js";
+import type { LspContext } from "./lsp-context.js";
 import { DocumentStore } from "./document-store.js";
 import { computeDiagnostics } from "./diagnostics.js";
+import { type ProjectContext, discoverProjectContext } from "./project-context.js";
 
 const DEBOUNCE_MS = 200;
 const CONFIG_PATTERN = /^nadle\.config\.[cm]?[jt]s$/;
@@ -20,7 +22,18 @@ const documents = new TextDocuments(TextDocument);
 const store = new DocumentStore();
 const debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
-connection.onInitialize((): InitializeResult => {
+let rootPath: string | null = null;
+let projectContext: ProjectContext | null = null;
+
+function getLspContext(): LspContext {
+	return { projectContext, allAnalyses: store.getAllAnalyses() };
+}
+
+connection.onInitialize((params): InitializeResult => {
+	if (params.rootUri) {
+		rootPath = Url.fileURLToPath(params.rootUri);
+	}
+
 	return {
 		capabilities: {
 			hoverProvider: true,
@@ -33,6 +46,12 @@ connection.onInitialize((): InitializeResult => {
 			}
 		}
 	};
+});
+
+connection.onInitialized(() => {
+	if (rootPath) {
+		discoverWorkspaces(rootPath);
+	}
 });
 
 function isNadleConfig(uri: string): boolean {
@@ -60,9 +79,22 @@ function scheduleAnalysis(uri: string): void {
 
 			const fileName = Path.basename(Url.fileURLToPath(uri));
 			const analysis = store.updateDocument(uri, doc.version, doc.getText(), fileName);
-			connection.sendDiagnostics({ uri, diagnostics: computeDiagnostics(analysis) });
+			connection.sendDiagnostics({
+				uri,
+				diagnostics: computeDiagnostics(analysis, store.getAllAnalyses(), projectContext)
+			});
 		}, DEBOUNCE_MS)
 	);
+}
+
+async function discoverWorkspaces(root: string): Promise<void> {
+	projectContext = await discoverProjectContext(root, store);
+
+	for (const doc of documents.all()) {
+		if (isNadleConfig(doc.uri)) {
+			scheduleAnalysis(doc.uri);
+		}
+	}
 }
 
 documents.onDidChangeContent(({ document }) => {
@@ -96,7 +128,7 @@ connection.onCompletion(({ position, textDocument }) => {
 		return [];
 	}
 
-	return getCompletions(analysis, position, doc);
+	return getCompletions(analysis, position, doc, getLspContext());
 });
 
 connection.onHover(({ position, textDocument }) => {
@@ -112,7 +144,7 @@ connection.onHover(({ position, textDocument }) => {
 		return null;
 	}
 
-	return getHover(analysis, position, doc);
+	return getHover(analysis, position, doc, getLspContext());
 });
 
 connection.onDefinition(({ position, textDocument }) => {
@@ -128,7 +160,7 @@ connection.onDefinition(({ position, textDocument }) => {
 		return null;
 	}
 
-	return getDefinition(analysis, position, doc);
+	return getDefinition(analysis, position, doc, getLspContext());
 });
 
 connection.onReferences(({ context, position, textDocument }) => {
@@ -139,6 +171,12 @@ connection.onReferences(({ context, position, textDocument }) => {
 	}
 
 	return getReferences(store.getAllAnalyses(), position, doc, context);
+});
+
+connection.onNotification("nadle/refreshProject", () => {
+	if (rootPath) {
+		discoverWorkspaces(rootPath);
+	}
 });
 
 documents.listen(connection);

@@ -2,7 +2,7 @@ import Os from "node:os";
 import Path from "node:path";
 
 import { isCI } from "std-env";
-import { type Project, configureProject, ROOT_WORKSPACE_ID } from "@nadle/project";
+import { type Project, configureProject, ROOT_WORKSPACE_ID } from "@nadle/project-resolver";
 
 import { clamp } from "../utilities/utils.js";
 import { ProjectResolver } from "./project-resolver.js";

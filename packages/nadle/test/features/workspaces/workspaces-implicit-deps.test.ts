@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project";
+import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { getStdout, getStderr, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("workspaces > implicit dependencies", () => {

@@ -1,5 +1,5 @@
 import c from "tinyrainbow";
-import { type Workspace, getAllWorkspaces, isRootWorkspaceId } from "@nadle/project";
+import { type Workspace, getAllWorkspaces, isRootWorkspaceId } from "@nadle/project-resolver";
 
 import { BaseHandler } from "./base-handler.js";
 import { highlight } from "../utilities/utils.js";

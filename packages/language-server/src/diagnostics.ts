@@ -1,10 +1,26 @@
 import type { Diagnostic } from "vscode-languageserver";
-import { VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
+import { getAllWorkspaces } from "@nadle/project-resolver";
 import { DiagnosticSeverity } from "vscode-languageserver";
+import { parseTaskReference, VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
 
 import type { DocumentAnalysis } from "./analyzer.js";
+import type { ProjectContext } from "./project-context.js";
 
-export function computeDiagnostics(analysis: DocumentAnalysis): Diagnostic[] {
+function findAnalysisByWorkspaceId(
+	workspaceId: string,
+	allAnalyses: DocumentAnalysis[],
+	projectContext: ProjectContext
+): DocumentAnalysis | undefined {
+	for (const [uri, wsId] of projectContext.workspaceUriMap) {
+		if (wsId === workspaceId) {
+			return allAnalyses.find((a) => a.uri === uri);
+		}
+	}
+
+	return undefined;
+}
+
+export function computeDiagnostics(analysis: DocumentAnalysis, allAnalyses: DocumentAnalysis[], projectContext: ProjectContext | null): Diagnostic[] {
 	const diagnostics: Diagnostic[] = [];
 
 	for (const reg of analysis.registrations) {
@@ -46,6 +62,34 @@ export function computeDiagnostics(analysis: DocumentAnalysis): Diagnostic[] {
 
 		for (const dep of reg.configuration.dependsOn) {
 			if (dep.isWorkspaceQualified) {
+				if (projectContext) {
+					const { taskName, workspaceInput } = parseTaskReference(dep.name);
+					const allWorkspaces = getAllWorkspaces(projectContext.project);
+					const targetWorkspace = allWorkspaces.find((ws) => ws.id === workspaceInput || ws.label === workspaceInput);
+
+					if (!targetWorkspace) {
+						diagnostics.push({
+							source: "nadle",
+							range: dep.range,
+							code: "nadle/unknown-workspace",
+							severity: DiagnosticSeverity.Warning,
+							message: `Workspace "${workspaceInput}" is not found in the project.`
+						});
+					} else {
+						const targetAnalysis = findAnalysisByWorkspaceId(targetWorkspace.id, allAnalyses, projectContext);
+
+						if (targetAnalysis && !targetAnalysis.taskNames.has(taskName)) {
+							diagnostics.push({
+								source: "nadle",
+								range: dep.range,
+								severity: DiagnosticSeverity.Warning,
+								code: "nadle/unresolved-workspace-dependency",
+								message: `Task "${taskName}" is not registered in workspace "${workspaceInput}".`
+							});
+						}
+					}
+				}
+
 				continue;
 			}
 

@@ -24,7 +24,7 @@
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"@nadle/kernel": "workspace:*",
-		"@nadle/project": "workspace:*",
+		"@nadle/project-resolver": "workspace:*",
 		"consola": "^3.4.2",
 		"execa": "^9.6.1",
 		"fast-glob": "^3.3.3",

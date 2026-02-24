@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project";
+import { PACKAGE_JSON } from "@nadle/project-resolver";
 import {
 	fixture,
 	getStdout,

@@ -1,5 +1,5 @@
 import { it, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project";
+import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { stringify } from "src/core/utilities/stringify.js";
 import {
 	createExec,

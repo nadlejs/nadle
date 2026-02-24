@@ -12,7 +12,7 @@ async function diagnosticsFor(fixture: string) {
 	const content = await Fs.readFile(Path.resolve(fixturesDir, fixture), "utf-8");
 	const analysis = analyzeDocument(content, fixture);
 
-	return computeDiagnostics(analysis);
+	return computeDiagnostics(analysis, [analysis], null);
 }
 
 describe("computeDiagnostics", () => {

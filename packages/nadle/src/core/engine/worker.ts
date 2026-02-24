@@ -2,7 +2,7 @@ import Path from "node:path";
 import WorkerThreads from "node:worker_threads";
 
 import c from "tinyrainbow";
-import { getWorkspaceById } from "@nadle/project";
+import { getWorkspaceById } from "@nadle/project-resolver";
 
 import { Nadle } from "../nadle.js";
 import { bindObject } from "../utilities/utils.js";

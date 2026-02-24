@@ -1,7 +1,7 @@
 import Path from "node:path";
 
 import { it, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project";
+import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { createExec, expectPass, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("workspaces > excluded tasks", () => {

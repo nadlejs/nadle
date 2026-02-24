@@ -1,6 +1,6 @@
 import c from "tinyrainbow";
 import { groupBy } from "lodash-es";
-import { isRootWorkspaceId } from "@nadle/project";
+import { isRootWorkspaceId } from "@nadle/project-resolver";
 
 import { BaseHandler } from "./base-handler.js";
 import { DASH } from "../utilities/constants.js";

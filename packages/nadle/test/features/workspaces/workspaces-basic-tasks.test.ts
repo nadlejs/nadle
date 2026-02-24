@@ -2,7 +2,7 @@ import Path from "node:path";
 
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project";
+import { PACKAGE_JSON } from "@nadle/project-resolver";
 import {
 	getStderr,
 	createExec,

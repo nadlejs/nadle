@@ -1,6 +1,6 @@
 /* eslint-disable perfectionist/sort-objects */
 import { type Options } from "yargs";
-import { CONFIG_FILE_PATTERN } from "@nadle/project";
+import { CONFIG_FILE_PATTERN } from "@nadle/project-resolver";
 
 import { type NadleCLIOptions } from "./types.js";
 import { Messages } from "../utilities/messages.js";
