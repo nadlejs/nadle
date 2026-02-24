@@ -2,6 +2,7 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths-ignore:
       - "*.md"
       - "packages/docs/**"
@@ -36,7 +37,7 @@ concurrency:
 jobs:
   build:
     name: Build
-    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'release-please--') }}
+    if: ${{ github.event.pull_request.draft != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -72,7 +73,7 @@ jobs:
 
   check:
     name: Lint
-    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'release-please--') }}
+    if: ${{ github.event.pull_request.draft != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -84,7 +85,7 @@ jobs:
 
   test:
     name: Test Node ${{ matrix.node-version }} on ${{ matrix.os }}
-    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'release-please--') }}
+    if: ${{ github.event.pull_request.draft != true }}
     needs: [build]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
