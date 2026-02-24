@@ -14,14 +14,14 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 Build one
 [log]
 <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-Build two
 [log] <Yellow>></Yellow> Task <Bold>two:build</BoldDim> <Yellow>STARTED</Yellow>
 
+Build two
 [log]
 <Green>✓</Green> Task <Bold>two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+Build root
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
-Build root
 [log]
 <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
