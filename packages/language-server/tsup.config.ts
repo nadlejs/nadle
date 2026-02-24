@@ -13,6 +13,6 @@ export default defineConfig({
 	},
 	noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument", "typescript", "@nadle/kernel", "@nadle/project-resolver"],
 	banner: {
-		js: "import { createRequire } from 'module'; import { fileURLToPath } from 'url'; import { dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = fileURLToPath(import.meta.url); const __dirname = dirname(__filename);"
+		js: "import { createRequire } from 'module'; import { fileURLToPath as _banner_fileURLToPath } from 'url'; import { dirname as _banner_dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = _banner_fileURLToPath(import.meta.url); const __dirname = _banner_dirname(__filename);"
 	}
 });
