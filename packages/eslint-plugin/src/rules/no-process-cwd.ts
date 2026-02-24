@@ -6,10 +6,10 @@ import { isInTaskAction } from "../utils/ast-helpers.js";
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
 export default createRule({
-	defaultOptions: [],
 	name: "no-process-cwd",
 	meta: {
 		schema: [],
+		defaultOptions: [],
 		type: "suggestion",
 		docs: {
 			description: "Disallow process.cwd() in task actions"

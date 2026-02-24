@@ -11,11 +11,11 @@ interface GraphEntry {
 }
 
 export default createRule({
-	defaultOptions: [],
 	name: "no-circular-dependencies",
 	meta: {
 		schema: [],
 		type: "problem",
+		defaultOptions: [],
 		docs: {
 			description: "Detect circular task dependency chains"
 		},

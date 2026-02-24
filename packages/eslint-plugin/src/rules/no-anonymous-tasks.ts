@@ -6,11 +6,11 @@ import { isTasksRegisterCall } from "../utils/ast-helpers.js";
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
 export default createRule({
-	defaultOptions: [],
 	name: "no-anonymous-tasks",
 	meta: {
 		schema: [],
 		type: "problem",
+		defaultOptions: [],
 		docs: {
 			description: "Require string literal names in task registration"
 		},

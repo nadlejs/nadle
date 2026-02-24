@@ -5,10 +5,10 @@ import { getTaskName, getConfigObject, isTasksRegisterCall } from "../utils/ast-
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
 export default createRule({
-	defaultOptions: [],
 	name: "require-task-description",
 	meta: {
 		schema: [],
+		defaultOptions: [],
 		type: "suggestion",
 		docs: {
 			description: "Require task descriptions"
