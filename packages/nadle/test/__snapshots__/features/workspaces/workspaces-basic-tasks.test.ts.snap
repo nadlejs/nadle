@@ -5,7 +5,7 @@ exports[`workspaces basic tasks > should register all tasks from all config file
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -26,7 +26,7 @@ exports[`workspaces basic tasks > when running a task from a workspace > with sp
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -44,7 +44,7 @@ exports[`workspaces basic tasks > when running a task from a workspace > with sp
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -74,7 +74,7 @@ exports[`workspaces basic tasks > when running a task from a workspace > without
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -92,7 +92,7 @@ exports[`workspaces basic tasks > when running a task from a workspace > without
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer test
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -113,7 +113,7 @@ exports[`workspaces basic tasks > when specifying a workspace task then the root
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -143,7 +143,7 @@ exports[`workspaces basic tasks > when specifying root task > should run that ta
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
@@ -159,6 +159,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 
 [log]
 <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+Build root
 [log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
@@ -173,7 +174,7 @@ exports[`workspaces basic tasks > when specifying sub-workspace tasks > should r
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build packages:one:build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 

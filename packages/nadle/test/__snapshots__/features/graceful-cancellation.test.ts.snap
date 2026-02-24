@@ -5,7 +5,7 @@ exports[`graceful cancellation > should report other running tasks as canceled i
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --no-footer main-task --max-workers 2
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
 

@@ -97,7 +97,7 @@ from-cache tasks).
 At execution start (unless `--show-config` is active), Nadle prints:
 
 ```
-🛠️ Welcome to Nadle v{version}!
+▶ Welcome to Nadle v{version}!
 Using Nadle from {path}
 Loaded configuration from {configFile}[ and {N} other(s) files]
 ```

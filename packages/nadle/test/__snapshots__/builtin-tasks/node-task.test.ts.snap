@@ -5,7 +5,7 @@ exports[`node Task > can print command when log level = info 1`] = `
 Working Directory: /ROOT/test/__fixtures__/node-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 
@@ -83,7 +83,7 @@ exports[`node Task > can run node script with no error 1`] = `
 Working Directory: /ROOT/test/__fixtures__/node-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 
@@ -103,7 +103,7 @@ exports[`node Task > throw error when running node script that exits with error 
 Working Directory: /ROOT/test/__fixtures__/node-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/node-task/nadle.config.ts
 

@@ -5,7 +5,7 @@ exports[`--config > should precedence the js config file over the ts config file
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
 
@@ -23,7 +23,7 @@ exports[`--config > should precedence the ts config file over the mts config fil
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
 
@@ -41,7 +41,7 @@ exports[`--config > should use the existent config path if not specify --config 
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
 
@@ -59,7 +59,7 @@ exports[`--config > should use the existent config path if not specify --config 
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.mts
 
@@ -77,7 +77,7 @@ exports[`--config > should use the existent config path if not specify --config 
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
 
@@ -95,7 +95,7 @@ exports[`--config > should use the existent config path if not specify --config 
 Working Directory: /ROOT/test/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
 

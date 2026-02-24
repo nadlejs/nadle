@@ -5,7 +5,7 @@ exports[`pnpx Task > can print command when log level = info 1`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpx-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpx-task/nadle.config.ts
 
@@ -81,7 +81,7 @@ exports[`pnpx Task > can run tsc command with no error ts file 1`] = `
 Working Directory: /ROOT/test/__fixtures__/pnpx-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpx-task/nadle.config.ts
 
@@ -99,7 +99,7 @@ exports[`pnpx Task > throw error when running tsc command with error ts file 1`]
 Working Directory: /ROOT/test/__fixtures__/pnpx-task
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fail
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/pnpx-task/nadle.config.ts
 
