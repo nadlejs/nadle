@@ -17,6 +17,7 @@ nadle.iml
 __temp__
 .docusaurus
 .vercel
+# legacy cache directory (before v0.6)
 .nadle*
 
 # generated docs

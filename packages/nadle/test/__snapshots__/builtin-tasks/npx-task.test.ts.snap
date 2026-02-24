@@ -58,7 +58,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
     "packageManager": "npm",
     "currentWorkspaceId": "root"
   },
-  "cacheDir": "/ROOT/test/__fixtures__/npx-task/.nadle",
+  "cacheDir": "/ROOT/test/__fixtures__/npx-task/node_modules/.cache/nadle",
   "minWorkers": 1
 }
 [info] Detected environments: { CI: false, TEST: true }

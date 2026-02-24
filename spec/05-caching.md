@@ -89,7 +89,7 @@ Multiple reasons may be reported for a single cache miss.
 
 ## Storage Layout
 
-Cache data is stored under the cache directory (default: `.nadle/`):
+Cache data is stored under the cache directory (default: `node_modules/.cache/nadle/`):
 
 ```
 {cacheDir}/

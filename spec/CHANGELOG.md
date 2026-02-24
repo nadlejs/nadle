@@ -8,6 +8,13 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.5.1 — 2026-02-24
+
+### Changed
+
+- 05-caching: Default cache directory changed from `.nadle/` to
+  `node_modules/.cache/nadle/` to align with JS ecosystem conventions.
+
 ## 1.5.0 — 2026-02-22
 
 ### Added

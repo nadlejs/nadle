@@ -52,7 +52,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
     "packageManager": "npm",
     "currentWorkspaceId": "root"
   },
-  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle",
+  "cacheDir": "/ROOT/test/__fixtures__/main/node_modules/.cache/nadle",
   "minWorkers": 1
 }
 `;
@@ -110,6 +110,6 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
     "packageManager": "npm",
     "currentWorkspaceId": "root"
   },
-  "cacheDir": "/ROOT/test/__fixtures__/main/.nadle"
+  "cacheDir": "/ROOT/test/__fixtures__/main/node_modules/.cache/nadle"
 }
 `;
