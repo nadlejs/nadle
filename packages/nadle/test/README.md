@@ -158,10 +158,7 @@ Generates a `nadle.config.ts` string with task registrations and optional config
 ```typescript
 createNadleConfig({
 	configure: { cacheDir: ".custom-cache" },
-	tasks: [
-		{ name: "build", log: "Building..." },
-		{ name: "test", log: "Testing...", config: { dependsOn: ["build"] } }
-	]
+	tasks: [{ name: "build" }, { name: "test", config: { dependsOn: ["build"] } }]
 });
 ```
 

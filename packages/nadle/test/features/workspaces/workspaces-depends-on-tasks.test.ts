@@ -29,13 +29,13 @@ describe.concurrent("workspaces > depends on tasks", () => {
 					files: {
 						[PNPM_WORKSPACE]: createPnpmWorkspace(),
 						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build root" }] }),
+						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 
 						packages: {
 							one: {
 								[PACKAGE_JSON]: createPackageJson("one"),
 								[CONFIG_FILE]: createNadleConfig({
-									tasks: [{ name: "check", log: "Check one", config: { dependsOn: ["build"] } }]
+									tasks: [{ name: "check", config: { dependsOn: ["build"] } }]
 								})
 							}
 						}
@@ -56,16 +56,13 @@ describe.concurrent("workspaces > depends on tasks", () => {
 					files: {
 						[PNPM_WORKSPACE]: createPnpmWorkspace(),
 						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build root" }] }),
+						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 
 						packages: {
 							one: {
 								[PACKAGE_JSON]: createPackageJson("one"),
 								[CONFIG_FILE]: createNadleConfig({
-									tasks: [
-										{ name: "build", log: "Build one" },
-										{ name: "check", log: "Check one", config: { dependsOn: ["buidl"] } }
-									]
+									tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["buidl"] } }]
 								})
 							}
 						}
@@ -86,16 +83,13 @@ describe.concurrent("workspaces > depends on tasks", () => {
 					files: {
 						[PNPM_WORKSPACE]: createPnpmWorkspace(),
 						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build root" }] }),
+						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 
 						packages: {
 							one: {
 								[PACKAGE_JSON]: createPackageJson("one"),
 								[CONFIG_FILE]: createNadleConfig({
-									tasks: [
-										{ name: "build", log: "Build one" },
-										{ name: "check", log: "Check one", config: { dependsOn: ["build"] } }
-									]
+									tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build"] } }]
 								})
 							}
 						}
@@ -122,7 +116,7 @@ describe.concurrent("workspaces > depends on tasks", () => {
 						[PNPM_WORKSPACE]: createPnpmWorkspace(),
 						[PACKAGE_JSON]: createPackageJson("root"),
 						[CONFIG_FILE]: createNadleConfig({
-							tasks: [{ name: "build", log: "Build root" }],
+							tasks: [{ name: "build" }],
 							configure: { alias: { "packages/two": "two" } }
 						}),
 
@@ -130,20 +124,16 @@ describe.concurrent("workspaces > depends on tasks", () => {
 							two: {
 								[PACKAGE_JSON]: createPackageJson("two"),
 								[CONFIG_FILE]: createNadleConfig({
-									tasks: [
-										{ name: "build", log: "Build two" },
-										{ name: "check", log: "Check two" }
-									]
+									tasks: [{ name: "build" }, { name: "check" }]
 								})
 							},
 							one: {
 								[PACKAGE_JSON]: createPackageJson("one"),
 								[CONFIG_FILE]: createNadleConfig({
 									tasks: [
-										{ name: "check", log: "Check two" },
+										{ name: "check" },
 										{
 											name: "build",
-											log: "Build one",
 											config: { dependsOn: ["packages:two:build", "two:check", "check", "root:build"] }
 										}
 									]
@@ -179,19 +169,19 @@ describe.concurrent("workspaces > depends on tasks", () => {
 						files: {
 							[PNPM_WORKSPACE]: createPnpmWorkspace(),
 							[PACKAGE_JSON]: createPackageJson("root"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build", log: "Build root" }] }),
+							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
 
 							packages: {
 								two: {
 									[PACKAGE_JSON]: createPackageJson("two"),
 									[CONFIG_FILE]: createNadleConfig({
-										tasks: [{ name: "build", log: "Build two" }]
+										tasks: [{ name: "build" }]
 									})
 								},
 								one: {
 									[PACKAGE_JSON]: createPackageJson("one"),
 									[CONFIG_FILE]: createNadleConfig({
-										tasks: [{ name: "build", log: "Build one", config: { dependsOn: dependency } }]
+										tasks: [{ name: "build", config: { dependsOn: dependency } }]
 									})
 								}
 							}

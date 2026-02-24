@@ -16,7 +16,7 @@ describe("workspaces > working directory", () => {
 			files: {
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: `import { tasks } from "nadle";\ntasks.register("build", () => { console.log("Build root"); });\n`,
+				[CONFIG_FILE]: `import { tasks } from "nadle";\ntasks.register("build");\n`,
 
 				packages: {
 					lib: {
@@ -42,7 +42,7 @@ describe("workspaces > working directory", () => {
 			files: {
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: `import { tasks } from "nadle";\ntasks.register("build", () => { console.log("Build root"); });\n`,
+				[CONFIG_FILE]: `import { tasks } from "nadle";\ntasks.register("build");\n`,
 
 				packages: {
 					lib: {

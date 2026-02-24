@@ -1,15 +1,13 @@
 import { it, describe } from "vitest";
 import { fixture, expectPass, withGeneratedFixture } from "setup";
 
-function helloConfig(importLine: string, callExpr: string): string {
-	const body = "console.log(`Hello from " + "${" + callExpr + "(import.meta.url)}!`);";
-
-	return [importLine, "", 'import { tasks } from "nadle";', "", 'tasks.register("hello", () => {', "\t" + body, "});", ""].join("\n");
+function helloConfig(importLine: string): string {
+	return [importLine, "", 'import { tasks } from "nadle";', "", 'tasks.register("hello");', ""].join("\n");
 }
 
-const urlConfig = helloConfig('import URL from "node:url";', "URL.fileURLToPath");
-const urlLowerConfig = helloConfig('import Url from "node:url";', "Url.fileURLToPath");
-const namedImportConfig = helloConfig('import { fileURLToPath } from "node:url";', "fileURLToPath");
+const urlConfig = helloConfig('import URL from "node:url";');
+const urlLowerConfig = helloConfig('import Url from "node:url";');
+const namedImportConfig = helloConfig('import { fileURLToPath } from "node:url";');
 
 const fixtures = {
 	"esm-ts": fixture().packageJson("esm-ts").configRaw(urlConfig).build(),
