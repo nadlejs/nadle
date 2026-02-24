@@ -25,10 +25,10 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - name: Disable auto-merge on release PRs
+      - name: Keep release PRs as draft
         run: |
-          gh pr list --label "autorelease: pending" --json number --jq '.[].number' | while read -r pr; do
-            gh pr merge "$pr" --disable-auto 2>/dev/null || true
+          gh pr list --label "autorelease: pending" --json number,isDraft --jq '.[] | select(.isDraft == false) | .number' | while read -r pr; do
+            gh pr ready "$pr" --undo 2>/dev/null || true
           done
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}

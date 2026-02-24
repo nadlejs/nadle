@@ -20,6 +20,7 @@ concurrency:
 jobs:
   size-limit:
     name: Size Limit
+    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:

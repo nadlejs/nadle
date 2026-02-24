@@ -40,7 +40,10 @@
 		},
 		"packages/kernel": {
 			"release-type": "node"
+		},
+		"packages/project-resolver": {
+			"release-type": "node"
 		}
 	},
-	"plugins": [{ "type": "sentence-case" }]
+	"plugins": [{ "type": "sentence-case" }, { "type": "node-workspace", "update-peer-dependencies": true }]
 }

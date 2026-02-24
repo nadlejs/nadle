@@ -36,6 +36,7 @@ concurrency:
 jobs:
   build:
     name: Build
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -71,6 +72,7 @@ jobs:
 
   check:
     name: Lint
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -82,6 +84,7 @@ jobs:
 
   test:
     name: Test Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'release-please--') }}
     needs: [build]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
@@ -133,7 +136,7 @@ jobs:
     steps:
       - name: Check results
         if: |
-          needs.check.result != 'success' ||
-          needs.build.result != 'success' ||
-          needs.test.result != 'success'
+          (needs.check.result == 'failure' || needs.check.result == 'cancelled') ||
+          (needs.build.result == 'failure' || needs.build.result == 'cancelled') ||
+          (needs.test.result == 'failure' || needs.test.result == 'cancelled')
         run: exit 1
