@@ -5,7 +5,7 @@ exports[`workspaces alias > function style 1`] = `
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
 
@@ -32,7 +32,7 @@ exports[`workspaces alias > object style 1`] = `
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 2 other(s) files
 
@@ -58,7 +58,7 @@ exports[`workspaces alias > root alias 1`] = `
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 1 other(s) files
 

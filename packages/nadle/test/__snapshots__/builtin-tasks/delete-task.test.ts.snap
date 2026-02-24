@@ -5,7 +5,7 @@ exports[`deleteTask > given a file path > can delete it 1`] = `
 Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteFileBaz
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -23,7 +23,7 @@ exports[`deleteTask > given a folder name > can delete it 1`] = `
 Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteFolderA
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -41,7 +41,7 @@ exports[`deleteTask > given a folder path > can delete it 1`] = `
 Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteFolderB1
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -59,7 +59,7 @@ exports[`deleteTask > given a glob > can delete all files match the glob 1`] = `
 Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -77,7 +77,7 @@ exports[`deleteTask > given a glob with enable info log > can print will-delete 
 Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level info
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -153,7 +153,7 @@ exports[`deleteTask > given multiple file paths > can delete them 1`] = `
 Working Directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteFilesFooBar
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/nadle.config.ts
 

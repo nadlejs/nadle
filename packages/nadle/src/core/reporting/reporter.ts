@@ -125,7 +125,7 @@ export class DefaultReporter implements Listener {
 		const workspaceConfigFileCount = project.workspaces.flatMap((workspace) => workspace.configFilePath ?? []).length;
 
 		if (!this.context.options.showConfig) {
-			this.context.logger.log(c.bold(c.cyan(`🛠️ Welcome to Nadle v${Nadle.version}!`)));
+			this.context.logger.log(c.bold(c.cyan(`▶ Welcome to Nadle v${Nadle.version}!`)));
 			this.context.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
 			this.context.logger.log(
 				`Loaded configuration from ${project.rootWorkspace.configFilePath}${workspaceConfigFileCount > 0 ? ` and ${workspaceConfigFileCount} other(s) files` : ""}\n`

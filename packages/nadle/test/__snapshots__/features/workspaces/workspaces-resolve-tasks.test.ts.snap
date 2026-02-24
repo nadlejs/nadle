@@ -5,7 +5,7 @@ exports[`workspaces resolve tasks > should correct typo tasks 1`] = `
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer backend:biuld biuld
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 4 other(s) files
 
@@ -43,7 +43,7 @@ exports[`workspaces resolve tasks > should correct typo workspaces 1`] = `
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer fronte:build backe:biuld
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 4 other(s) files
 

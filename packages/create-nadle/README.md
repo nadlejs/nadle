@@ -29,7 +29,7 @@ Gradle-inspired task runner for Node.js.
 
 - ⚡ Fast, parallel task execution for monorepos and multi-package workspaces
 - 🧩 Dependency-aware workflows with automatic task resolution
-- 🛠️ Flexible configuration via TypeScript, JSON, or CLI
+- ▶ Flexible configuration via TypeScript, JSON, or CLI
 - 🔄 Task aliasing and custom task mapping
 - 🗂️ Built-in caching for efficient incremental runs
 - 📝 Dry run, summary, and detailed logging support

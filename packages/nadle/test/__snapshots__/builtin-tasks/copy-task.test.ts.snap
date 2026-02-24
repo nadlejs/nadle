@@ -5,7 +5,7 @@ exports[`copyTask > given a file path > can copy it 1`] = `
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyFoo
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -24,7 +24,7 @@ exports[`copyTask > given a folder path > can copy it 1`] = `
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyAssets
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -44,7 +44,7 @@ exports[`copyTask > given a nested destination > creates directories automatical
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
 
@@ -63,7 +63,7 @@ exports[`copyTask > with include and exclude options > copies only matching file
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyWithFilter
 ---------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
+[log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__/nadle.config.ts
 
