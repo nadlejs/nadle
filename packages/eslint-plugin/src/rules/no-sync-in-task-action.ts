@@ -46,10 +46,10 @@ function getCalledName(callee: TSESTree.CallExpression["callee"]): string | unde
 }
 
 export default createRule({
-	defaultOptions: [],
 	name: "no-sync-in-task-action",
 	meta: {
 		schema: [],
+		defaultOptions: [],
 		type: "suggestion",
 		docs: {
 			description: "Disallow synchronous APIs in task actions"

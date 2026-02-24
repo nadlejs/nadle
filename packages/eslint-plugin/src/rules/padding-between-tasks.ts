@@ -25,11 +25,11 @@ function isTaskRegistrationStatement(node: TSESTree.ExpressionStatement): boolea
 }
 
 export default createRule({
-	defaultOptions: [],
 	name: "padding-between-tasks",
 	meta: {
 		schema: [],
 		type: "layout",
+		defaultOptions: [],
 		fixable: "whitespace",
 		docs: {
 			description: "Enforce empty lines between task registrations"

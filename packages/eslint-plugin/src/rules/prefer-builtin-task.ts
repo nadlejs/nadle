@@ -133,7 +133,6 @@ function detectPattern(node: TSESTree.CallExpression): MessageId | undefined {
 }
 
 export default createRule({
-	defaultOptions: [],
 	name: "prefer-builtin-task",
 	create(context) {
 		return {
@@ -155,6 +154,7 @@ export default createRule({
 	},
 	meta: {
 		schema: [],
+		defaultOptions: [],
 		type: "suggestion",
 		docs: {
 			description: "Suggest built-in task types when applicable"

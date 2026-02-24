@@ -160,7 +160,7 @@ describe.concurrent("workspaces > depends on tasks", () => {
 				{
 					dependency: ["packages:three:build"],
 					expectation: "should throw error when the workspace is not found",
-					expectedError: "Workspace packages:three not found. Available workspaces: root, packages:one, packages:two."
+					expectedError: 'Workspace "packages:three" not found. Available workspaces: root, packages:one, packages:two'
 				},
 				{
 					dependency: ["packages:two:check"],

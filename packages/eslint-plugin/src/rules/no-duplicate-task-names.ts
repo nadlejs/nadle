@@ -5,11 +5,11 @@ import { getTaskName, isTasksRegisterCall } from "../utils/ast-helpers.js";
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
 export default createRule({
-	defaultOptions: [],
 	name: "no-duplicate-task-names",
 	meta: {
 		schema: [],
 		type: "problem",
+		defaultOptions: [],
 		docs: {
 			description: "Prevent duplicate task names in the same file"
 		},

@@ -66,6 +66,12 @@ ruleTester.run("no-circular-dependencies", rule, {
 			code: `
 				tasks.register("a").config({ description: "builds stuff" });
 			`
+		},
+		{
+			name: "workspace-qualified deps are excluded from cycle detection",
+			code: `
+				tasks.register("a").config({ dependsOn: ["shared:a"] });
+			`
 		}
 	]
 });
