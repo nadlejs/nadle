@@ -142,7 +142,7 @@ tasks.register("deploy", async ({ context }) => {
 Nadle caches task results based on declared inputs and outputs. When inputs haven't changed since the last run, the task is skipped and outputs are restored from cache.
 
 - Declare file and directory inputs/outputs
-- Cache stored in `.nadle/` directory
+- Cache stored in `node_modules/.cache/nadle/` directory
 - Skip with `--no-cache` flag
 
 ```typescript

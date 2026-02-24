@@ -22,4 +22,4 @@ export const LINES = {
 	VERTICAL_RIGHT: "├"
 };
 
-export const DEFAULT_CACHE_DIR_NAME = ".nadle";
+export const DEFAULT_CACHE_DIR_NAME = "node_modules/.cache/nadle";

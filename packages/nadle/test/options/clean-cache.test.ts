@@ -11,7 +11,7 @@ const files = fixture()
 	.file("input.txt", "input")
 	.build();
 
-const DEFAULT_CACHE_DIR = ".nadle";
+const DEFAULT_CACHE_DIR = "node_modules/.cache/nadle";
 const CUSTOM_CACHE_DIR = ".nadle-custom";
 
 const cacheDirNames = [DEFAULT_CACHE_DIR, CUSTOM_CACHE_DIR];

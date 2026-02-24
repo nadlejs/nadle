@@ -8,6 +8,7 @@
 		"build": "nadle build",
 		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
 		"test": "nadle test",
+		"update": "vitest -u",
 		"bench": "vitest bench"
 	},
 	"files": [

@@ -102,7 +102,7 @@ export const CLIOptions = {
 		key: "cache-dir",
 		options: {
 			type: "string",
-			defaultDescription: "<projectDir>/.nadle",
+			defaultDescription: "<projectDir>/node_modules/.cache/nadle",
 			description: "Directory to store task cache results"
 		}
 	},

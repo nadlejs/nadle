@@ -24,23 +24,23 @@ describe.concurrent("--no-cache", () => {
 		expect(await getStdout(exec`--cache --show-config`)).contain(`"cache": true`);
 	});
 
-	it("should create the .nadle directory by default", () =>
+	it("should create the node_modules/.cache/nadle directory by default", () =>
 		withGeneratedFixture({
 			files: noCacheFiles,
 			testFn: async ({ cwd, exec }) => {
 				await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "done");
 				await expect(getStdout(exec`bundle`)).resolves.toSettle("bundle", "up-to-date");
-				await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(true);
+				await expect(isPathExists(Path.join(cwd, "node_modules/.cache/nadle"))).resolves.toBe(true);
 			}
 		}));
 
-	it("should not create the .nadle directory when specifying --no-cache", () =>
+	it("should not create the node_modules/.cache/nadle directory when specifying --no-cache", () =>
 		withGeneratedFixture({
 			files: noCacheFiles,
 			testFn: async ({ cwd, exec }) => {
 				await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
 				await expect(getStdout(exec`bundle --no-cache`)).resolves.toSettle("bundle", "done");
-				await expect(isPathExists(Path.join(cwd, ".nadle"))).resolves.toBe(false);
+				await expect(isPathExists(Path.join(cwd, "node_modules/.cache/nadle"))).resolves.toBe(false);
 			}
 		}));
 });

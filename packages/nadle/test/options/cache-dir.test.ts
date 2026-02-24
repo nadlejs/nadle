@@ -5,7 +5,7 @@ import { it, expect, describe } from "vitest";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";
 
-const DEFAULT_CACHE_DIR = ".nadle";
+const DEFAULT_CACHE_DIR = "node_modules/.cache/nadle";
 const VIA_FILE_CACHE_DIR = ".nadle-custom-by-file";
 const VIA_CLI_CACHE_DIR = ".nadle-custom-by-cli";
 
