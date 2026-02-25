@@ -19,6 +19,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
   "cleanCache": false,
   "showConfig": false,
   "implicitDependencies": true,
+  "maxCacheEntries": 5,
   "excludedTasks": [],
   "footer": false,
   "isWorkerThread": false,
@@ -55,8 +56,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer pass --log-level info
       "id": "root"
     },
     "workspaces": [],
-    "packageManager": "npm",
-    "currentWorkspaceId": "root"
+    "currentWorkspaceId": "root",
+    "packageManager": "npm"
   },
   "cacheDir": "/ROOT/test/__fixtures__/pnpx-task/node_modules/.cache/nadle",
   "minWorkers": 1

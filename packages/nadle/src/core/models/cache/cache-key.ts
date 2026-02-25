@@ -7,8 +7,10 @@ export type CacheKey = string;
 export namespace CacheKey {
 	interface Input {
 		readonly env?: TaskEnv;
+		readonly options?: object;
 		readonly taskId: TaskIdentifier;
 		readonly inputsFingerprints: FileFingerprints;
+		readonly dependencyFingerprints?: Record<string, string>;
 	}
 
 	export async function compute(input: Input): Promise<CacheKey> {

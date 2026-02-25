@@ -3,7 +3,9 @@ import Fs from "node:fs/promises";
 
 import { isPathExists } from "../utilities/fs.js";
 import { stringify } from "../utilities/stringify.js";
+import { mapWithLimit } from "../utilities/concurrency.js";
 import { COLON, UNDERSCORE } from "../utilities/constants.js";
+import { atomicWriteFile } from "../utilities/atomic-write.js";
 import { type CacheQuery } from "../models/cache/cache-key.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { TaskCacheMetadata, type RunCacheMetadata } from "../models/cache/cache-metadata.js";
@@ -31,7 +33,7 @@ export class CacheManager {
 
 			return JSON.parse(raw);
 		} catch (error) {
-			if (isFileNotFoundError(error)) {
+			if (isFileNotFoundError(error) || error instanceof SyntaxError) {
 				return null;
 			}
 
@@ -45,7 +47,7 @@ export class CacheManager {
 
 		const { taskId, version, cacheKey, timestamp, ...rest } = metadata;
 
-		await Fs.writeFile(file, stringify({ taskId, version, cacheKey, timestamp, ...rest }));
+		await atomicWriteFile(file, stringify({ taskId, version, cacheKey, timestamp, ...rest }));
 		await this.writeLatestRunMetadata(cacheQuery);
 	}
 
@@ -68,7 +70,7 @@ export class CacheManager {
 			});
 
 		await ensureDirectories(filePairs.map(({ targetPath }) => Path.dirname(targetPath)));
-		await Promise.all(filePairs.map(({ sourcePath, targetPath }) => Fs.copyFile(sourcePath, targetPath)));
+		await mapWithLimit(filePairs, ({ sourcePath, targetPath }) => Fs.copyFile(sourcePath, targetPath));
 	}
 
 	public async saveOutputs(cacheQuery: CacheQuery, outputPaths: string[]): Promise<void> {
@@ -81,7 +83,7 @@ export class CacheManager {
 		});
 
 		await ensureDirectories(filePairs.map(({ targetPath }) => Path.dirname(targetPath)));
-		await Promise.all(filePairs.map(({ sourcePath, targetPath }) => Fs.copyFile(sourcePath, targetPath)));
+		await mapWithLimit(filePairs, ({ sourcePath, targetPath }) => Fs.copyFile(sourcePath, targetPath));
 	}
 
 	private getOutputsCacheDirPath({ taskId, cacheKey }: CacheQuery): string {
@@ -98,7 +100,7 @@ export class CacheManager {
 
 			return this.readRunMetadata({ taskId, cacheKey: latest });
 		} catch (error) {
-			if (isFileNotFoundError(error)) {
+			if (isFileNotFoundError(error) || error instanceof SyntaxError) {
 				return null;
 			}
 
@@ -110,7 +112,58 @@ export class CacheManager {
 		const path = this.getTaskMetadataPath(taskId);
 		await Fs.mkdir(Path.dirname(path), { recursive: true });
 
-		await Fs.writeFile(path, stringify(TaskCacheMetadata.create(cacheKey)));
+		await atomicWriteFile(path, stringify(TaskCacheMetadata.create(cacheKey)));
+	}
+
+	public async evict(taskId: TaskIdentifier, maxCacheEntries: number): Promise<void> {
+		if (maxCacheEntries <= 0) {
+			return;
+		}
+
+		const runsDir = Path.join(this.getBaseTaskPath(taskId), CacheManager.RUNS_DIR_NAME);
+
+		if (!(await isPathExists(runsDir))) {
+			return;
+		}
+
+		const entries = await Fs.readdir(runsDir, { withFileTypes: true });
+		const runDirs = entries.filter((e) => e.isDirectory());
+
+		if (runDirs.length <= maxCacheEntries) {
+			return;
+		}
+
+		const latestMeta = await this.readTaskMetadata(taskId);
+		const runs = await Promise.all(
+			runDirs.map(async (dir) => {
+				const metaPath = Path.join(runsDir, dir.name, CacheManager.META_FILE_NAME);
+
+				try {
+					const raw = await Fs.readFile(metaPath, "utf8");
+					const meta = JSON.parse(raw) as RunCacheMetadata;
+
+					return { dir: dir.name, timestamp: meta.timestamp };
+				} catch {
+					return { dir: dir.name, timestamp: "" };
+				}
+			})
+		);
+
+		runs.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+
+		const toDelete = runs.slice(maxCacheEntries).filter((r) => r.dir !== latestMeta);
+
+		await Promise.all(toDelete.map((r) => Fs.rm(Path.join(runsDir, r.dir), { force: true, recursive: true }).catch(() => {})));
+	}
+
+	private async readTaskMetadata(taskId: TaskIdentifier): Promise<string | null> {
+		try {
+			const raw = await Fs.readFile(this.getTaskMetadataPath(taskId), "utf8");
+
+			return (JSON.parse(raw) as TaskCacheMetadata).latest;
+		} catch {
+			return null;
+		}
 	}
 
 	private getTaskMetadataPath(taskId: TaskIdentifier): string {

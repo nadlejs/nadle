@@ -91,6 +91,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
   "cleanCache": false,
   "showConfig": false,
   "implicitDependencies": true,
+  "maxCacheEntries": 5,
   "excludedTasks": [],
   "footer": false,
   "isWorkerThread": false,
@@ -127,8 +128,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer deleteJsonFiles --log-level
       "id": "root"
     },
     "workspaces": [],
-    "packageManager": "npm",
-    "currentWorkspaceId": "root"
+    "currentWorkspaceId": "root",
+    "packageManager": "npm"
   },
   "cacheDir": "/ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__/node_modules/.cache/nadle",
   "minWorkers": 1

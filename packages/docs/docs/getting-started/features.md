@@ -143,6 +143,10 @@ Nadle caches task results based on declared inputs and outputs. When inputs have
 
 - Declare file and directory inputs/outputs
 - Cache stored in `node_modules/.cache/nadle/` directory
+- Dependency-aware: downstream tasks re-execute when upstream outputs change
+- Task options included in cache key for correct invalidation
+- Automatic eviction of old cache entries (configurable `maxCacheEntries`)
+- Corruption-resilient: corrupted cache gracefully falls back to re-execution
 - Skip with `--no-cache` flag
 
 ```typescript

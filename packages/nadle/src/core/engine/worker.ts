@@ -16,14 +16,15 @@ const threadId = WorkerThreads.threadId;
 
 export type WorkerMessage =
 	| { readonly type: "start"; readonly threadId: number }
-	| { readonly threadId: number; readonly type: "up-to-date" }
-	| { readonly threadId: number; readonly type: "from-cache" };
+	| { readonly threadId: number; readonly type: "up-to-date"; readonly outputsFingerprint?: string }
+	| { readonly threadId: number; readonly type: "from-cache"; readonly outputsFingerprint?: string };
 
 export interface WorkerParams {
 	readonly taskId: string;
 	readonly env: NodeJS.ProcessEnv;
 	readonly options: NadleResolvedOptions;
 	readonly port: WorkerThreads.MessagePort;
+	readonly dependencyFingerprints: Record<string, string>;
 }
 
 let workerNadle: Nadle | null = null;
@@ -36,7 +37,7 @@ async function getOrCreateNadle(options: NadleResolvedOptions): Promise<Nadle> {
 	return workerNadle;
 }
 
-export default async ({ port, taskId, options, env: originalEnv }: WorkerParams) => {
+export default async ({ port, taskId, options, env: originalEnv, dependencyFingerprints }: WorkerParams): Promise<string | undefined> => {
 	const nadle = await getOrCreateNadle(options);
 	const task = nadle.taskRegistry.getTaskById(taskId);
 	const taskConfig = task.configResolver();
@@ -50,20 +51,30 @@ export default async ({ port, taskId, options, env: originalEnv }: WorkerParams)
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 
-	const cacheValidator = createCacheValidator(nadle, { taskId, taskConfig, workingDir, workspaceId: task.workspaceId });
+	const cacheValidator = createCacheValidator(nadle, {
+		taskId,
+		taskConfig,
+		workingDir,
+		taskOptions,
+		dependencyFingerprints,
+		workspaceId: task.workspaceId
+	});
 	const validationResult = await cacheValidator.validate();
 
 	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskId), validationResult.result);
 
 	const ctx: DispatchContext = { port, task, context, taskOptions, environmentInjector };
-	await dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
+
+	return dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
 };
 
 interface CacheValidatorParams {
 	taskId: string;
 	workingDir: string;
 	workspaceId: string;
+	taskOptions: unknown;
 	taskConfig: TaskConfiguration;
+	dependencyFingerprints: Record<string, string>;
 }
 
 function createCacheValidator(nadle: Nadle, params: CacheValidatorParams) {
@@ -72,10 +83,13 @@ function createCacheValidator(nadle: Nadle, params: CacheValidatorParams) {
 	const configFiles = workspace.configFilePath ? [rootConfigFile, workspace.configFilePath] : [rootConfigFile];
 
 	return new CacheValidator(params.taskId, params.taskConfig, {
+		...nadle.options,
 		configFiles,
 		workingDir: params.workingDir,
+		taskOptions: params.taskOptions as object | undefined,
+		dependencyFingerprints: params.dependencyFingerprints,
 		projectDir: nadle.options.project.rootWorkspace.absolutePath,
-		...nadle.options
+		maxCacheEntries: params.taskConfig.maxCacheEntries ?? nadle.options.maxCacheEntries
 	});
 }
 
@@ -94,25 +108,50 @@ interface DispatchParams {
 	validationResult: Awaited<ReturnType<CacheValidator["validate"]>>;
 }
 
-async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult }: DispatchParams) {
+async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult }: DispatchParams): Promise<string | undefined> {
 	if (validationResult.result === "not-cacheable" || validationResult.result === "cache-disabled") {
 		await executeTask(ctx);
-	} else if (validationResult.result === "up-to-date") {
-		ctx.port.postMessage({ threadId, type: "up-to-date" } satisfies WorkerMessage);
-	} else if (validationResult.result === "restore-from-cache") {
-		await validationResult.restore();
+
+		return undefined;
+	}
+
+	if (validationResult.result === "up-to-date") {
+		const fp = validationResult.outputsFingerprint;
+		ctx.port.postMessage({ threadId, type: "up-to-date", outputsFingerprint: fp } satisfies WorkerMessage);
+
+		return fp;
+	}
+
+	if (validationResult.result === "restore-from-cache") {
+		try {
+			await validationResult.restore();
+		} catch {
+			nadle.logger.warn(`  Cache restore failed, re-executing task`);
+			await executeTask(ctx);
+			const fp = await cacheValidator.update(validationResult);
+
+			return fp;
+		}
+
 		await cacheValidator.update(validationResult);
-		ctx.port.postMessage({ threadId, type: "from-cache" } satisfies WorkerMessage);
-	} else if (validationResult.result === "cache-miss") {
+		const fp = validationResult.outputsFingerprint;
+		ctx.port.postMessage({ threadId, type: "from-cache", outputsFingerprint: fp } satisfies WorkerMessage);
+
+		return fp;
+	}
+
+	if (validationResult.result === "cache-miss") {
 		for (const reason of validationResult.reasons) {
 			nadle.logger.info(`  - ${CacheMissReason.toString(reason)}`);
 		}
 
 		await executeTask(ctx);
-		await cacheValidator.update(validationResult);
-	} else {
-		throw new Error(`Unexpected cache validation result: ${validationResult}`);
+		const fp = await cacheValidator.update(validationResult);
+
+		return fp;
 	}
+
+	throw new Error(`Unexpected cache validation result: ${validationResult}`);
 }
 
 async function executeTask(ctx: DispatchContext) {

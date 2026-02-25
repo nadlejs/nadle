@@ -101,6 +101,7 @@ export interface NadleBaseOptions {
     readonly footer?: boolean;
     readonly implicitDependencies?: boolean;
     readonly logLevel?: SupportLogLevel;
+    readonly maxCacheEntries?: number;
     readonly maxWorkers?: number | string;
     readonly minWorkers?: number | string;
     readonly parallel?: boolean;
@@ -196,6 +197,7 @@ export interface TaskConfiguration {
     env?: TaskEnv;
     group?: string;
     inputs?: MaybeArray<Declaration>;
+    maxCacheEntries?: number;
     outputs?: MaybeArray<Declaration>;
     workingDir?: string;
 }

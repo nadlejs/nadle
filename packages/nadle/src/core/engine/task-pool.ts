@@ -11,6 +11,7 @@ const TERMINATING_WORKER_ERROR = "Terminating worker thread";
 
 export class TaskPool {
 	private readonly pool: TinyPool;
+	private readonly outputFingerprints = new Map<TaskIdentifier, string>();
 
 	public constructor(
 		private readonly context: ExecutionContext,
@@ -36,33 +37,11 @@ export class TaskPool {
 		const task = this.context.taskRegistry.getTaskById(taskId);
 
 		try {
-			const { port2: poolPort, port1: workerPort } = new MessageChannel();
-			let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
-			let resolveMessageReceived: () => void;
-			const messageReceived = new Promise<void>((r) => {
-				resolveMessageReceived = r;
-			});
-			poolPort.on("message", async (msg: WorkerMessage) => {
-				if (msg.type === "start") {
-					await this.context.eventEmitter.onTaskStart(task, msg.threadId);
-				} else if (msg.type === "up-to-date") {
-					executeType = "up-to-date";
-				} else if (msg.type === "from-cache") {
-					executeType = "from-cache";
-				}
+			const { executeType, outputsFingerprint } = await this.executeWorker(taskId);
 
-				resolveMessageReceived();
-			});
-
-			const workerParams: WorkerParams = {
-				taskId: task.id,
-				port: workerPort,
-				env: process.env,
-				options: { ...this.context.options, footer: false }
-			};
-
-			await this.pool.run(workerParams, { transferList: [workerPort] });
-			await messageReceived;
+			if (outputsFingerprint) {
+				this.outputFingerprints.set(taskId, outputsFingerprint);
+			}
 
 			if (executeType === "execute") {
 				await this.context.eventEmitter.onTaskFinish(task);
@@ -89,5 +68,54 @@ export class TaskPool {
 		}
 
 		await Promise.all(Array.from(this.getNextReadyTasks(taskId)).map((readyTaskId) => this.pushTask(readyTaskId)));
+	}
+
+	private async executeWorker(taskId: string) {
+		const task = this.context.taskRegistry.getTaskById(taskId);
+		const { port2: poolPort, port1: workerPort } = new MessageChannel();
+		let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
+		let resolveMessageReceived: () => void;
+		const messageReceived = new Promise<void>((r) => {
+			resolveMessageReceived = r;
+		});
+		poolPort.on("message", async (msg: WorkerMessage) => {
+			if (msg.type === "start") {
+				await this.context.eventEmitter.onTaskStart(task, msg.threadId);
+			} else if (msg.type === "up-to-date") {
+				executeType = "up-to-date";
+			} else if (msg.type === "from-cache") {
+				executeType = "from-cache";
+			}
+
+			resolveMessageReceived();
+		});
+
+		const workerParams: WorkerParams = {
+			taskId: task.id,
+			port: workerPort,
+			env: process.env,
+			options: { ...this.context.options, footer: false },
+			dependencyFingerprints: this.collectDependencyFingerprints(taskId)
+		};
+
+		const outputsFingerprint = (await this.pool.run(workerParams, { transferList: [workerPort] })) as string | undefined;
+		await messageReceived;
+
+		return { executeType, outputsFingerprint };
+	}
+
+	private collectDependencyFingerprints(taskId: TaskIdentifier): Record<string, string> {
+		const deps = this.context.taskScheduler.getDirectDependencies(taskId);
+		const fingerprints: Record<string, string> = {};
+
+		for (const depId of deps) {
+			const fp = this.outputFingerprints.get(depId);
+
+			if (fp) {
+				fingerprints[depId] = fp;
+			}
+		}
+
+		return fingerprints;
 	}
 }

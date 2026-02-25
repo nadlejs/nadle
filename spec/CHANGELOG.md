@@ -8,6 +8,21 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.6.0 — 2026-02-25
+
+### Added
+
+- 05-caching: Dependency fingerprints — downstream tasks automatically invalidate
+  when upstream task outputs change. Cache key now includes `dependencyFingerprints`.
+- 05-caching: Task options in cache key — cache key now includes resolved
+  `options` from `optionsResolver`, invalidating cache when options change.
+- 05-caching: Cache eviction — per-task LRU eviction with configurable
+  `maxCacheEntries` (default: 5). Old entries pruned after cache-miss saves.
+- 05-caching: Corruption recovery — corrupted JSON metadata treated as cache miss,
+  failed cache restores fall back to re-execution.
+- 05-caching: File I/O concurrency limits for cache save/restore operations.
+- 05-caching: Atomic metadata writes (write-then-rename) to prevent corruption.
+
 ## 1.5.1 — 2026-02-24
 
 ### Changed

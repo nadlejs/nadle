@@ -43,6 +43,13 @@ export interface TaskConfiguration {
 	 * These are used for caching, restoring, and cleanup.
 	 */
 	outputs?: MaybeArray<Declaration>;
+
+	/**
+	 * Maximum number of cache entries to keep for this task.
+	 * When exceeded, the oldest entries are evicted.
+	 * Overrides the global `maxCacheEntries` setting.
+	 */
+	maxCacheEntries?: number;
 }
 
 /**
