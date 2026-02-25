@@ -1,5 +1,6 @@
 {
 	"$schema": "https://unpkg.com/knip@latest/schema.json",
+	"entry": ["create-nadle.mjs", "src/cli.ts"],
 	"ignore": ["nadle.config.ts"],
 	"ignoreBinaries": ["nadle"]
 }

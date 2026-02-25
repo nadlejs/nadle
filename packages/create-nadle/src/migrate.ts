@@ -29,7 +29,7 @@ const LONG_RUNNING_SUFFIXES = [":watch", ":dev", ":serve"];
 const CROSS_ENV_PATTERN = /^cross-env\s+/;
 const ENV_VAR_PATTERN = /^[A-Z_][A-Z0-9_]*=/;
 
-export function classifyScript(name: string, allScriptNames: Set<string>): ScriptCategory {
+function classifyScript(name: string, allScriptNames: Set<string>): ScriptCategory {
 	if (LIFECYCLE_SCRIPTS.has(name)) {
 		return "lifecycle";
 	}
@@ -65,14 +65,14 @@ function isLongRunning(name: string): boolean {
 	return LONG_RUNNING_SUFFIXES.some((suffix) => name.endsWith(suffix));
 }
 
-export function transformTaskName(name: string): string {
+function transformTaskName(name: string): string {
 	return name
 		.toLowerCase()
 		.replaceAll(/[:._]/g, "-")
 		.replaceAll(/^-+|-+$/g, "");
 }
 
-export function detectTaskType(command: string, _pm: PackageManager): NadleTaskType {
+function detectTaskType(command: string, _pm: PackageManager): NadleTaskType {
 	const { cmd: trimmed } = extractCrossEnv(command);
 
 	if (trimmed.startsWith("node ")) {
@@ -124,7 +124,7 @@ function extractCrossEnv(command: string): { cmd: string; envVars: Record<string
 	return { envVars, cmd: result };
 }
 
-export function parseCommand(command: string): { cmd: string; args: string[]; envVars: Record<string, string> } {
+function parseCommand(command: string): { cmd: string; args: string[]; envVars: Record<string, string> } {
 	const { envVars, cmd: stripped } = extractCrossEnv(command);
 	const tokens = stripped.split(/\s+/).filter(Boolean);
 	const cmd = tokens[0] ?? "";
