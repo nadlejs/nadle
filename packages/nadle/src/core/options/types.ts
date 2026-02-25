@@ -16,6 +16,8 @@ export interface NadleBaseOptions {
 	readonly footer?: boolean;
 	/** Enable or disable parallel task execution. */
 	readonly parallel?: boolean;
+	/** Maximum number of cache entries to keep per task. Oldest are evicted when exceeded. */
+	readonly maxCacheEntries?: number;
 	/** Log level for reporting. */
 	readonly logLevel?: SupportLogLevel;
 	/** Minimum number of worker threads (number or string, e.g., "50%"). */

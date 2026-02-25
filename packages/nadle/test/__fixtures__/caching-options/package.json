@@ -1,0 +1,11 @@
+{
+	"name": "@nadle/internal-nadle-test-fixtures-caching-options",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"nadle": "workspace:*"
+	},
+	"nadle": {
+		"root": true
+	}
+}

@@ -142,6 +142,10 @@ export class TaskScheduler {
 		return Array.from(this.dependencyGraph.keys());
 	}
 
+	public getDirectDependencies(taskId: TaskIdentifier): ReadonlySet<TaskIdentifier> {
+		return this.dependencyGraph.get(taskId);
+	}
+
 	public getImplicitDeps(taskId: TaskIdentifier): TaskIdentifier[] {
 		return [...this.dependencyGraph.get(taskId)].filter((dep) => this.implicitEdges.has(`${dep}->${taskId}`));
 	}

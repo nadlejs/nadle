@@ -25,7 +25,7 @@ Cache validation produces exactly one of five results:
 1. Check if task is cacheable (inputs AND outputs defined). If not, return `not-cacheable`.
 2. Check if caching is enabled (`cache` flag). If not, return `cache-disabled`.
 3. Compute input fingerprints from config files and declared input patterns.
-4. Compute cache key from `{taskId, inputsFingerprints, env}`.
+4. Compute cache key from `{taskId, inputsFingerprints, env, options, dependencyFingerprints}`.
 5. Check if a cache entry exists for this key.
 6. If no cache entry exists, return `cache-miss` with reasons.
 7. Read the latest run metadata.
@@ -56,14 +56,27 @@ declarations are expanded to include all nested files recursively.
 
 The cache key is computed by hashing an object containing:
 
-| Field                | Description                                |
-| -------------------- | ------------------------------------------ |
-| `taskId`             | The task identifier string.                |
-| `inputsFingerprints` | Map of file path to SHA-256 hash.          |
-| `env`                | The task's environment variables (if any). |
+| Field                    | Description                                                     |
+| ------------------------ | --------------------------------------------------------------- |
+| `taskId`                 | The task identifier string.                                     |
+| `inputsFingerprints`     | Map of file path to SHA-256 hash.                               |
+| `env`                    | The task's environment variables (if any).                      |
+| `options`                | The resolved task options (if the task uses `optionsResolver`). |
+| `dependencyFingerprints` | Map of dependency task ID to output fingerprint (if any).       |
 
 The hash is SHA-256 with unordered object and array comparison, producing a 64-character
 hex string.
+
+### Dependency Fingerprints
+
+When a task depends on other tasks (via `dependsOn`), the cache key includes the
+output fingerprints of its direct dependencies. This ensures that a downstream task
+is re-executed whenever an upstream task produces different outputs, even if the
+downstream task's own inputs have not changed.
+
+After a task completes, its output fingerprint is stored by the task pool. When
+dispatching a downstream task, the pool collects fingerprints from all direct
+dependencies and passes them as `dependencyFingerprints` in the worker parameters.
 
 ## Up-to-date vs Restore-from-cache
 
@@ -153,10 +166,41 @@ On restore-from-cache:
 
 After validation, the cache is updated based on the result:
 
-| Result               | Update Action                                            |
-| -------------------- | -------------------------------------------------------- |
-| `not-cacheable`      | No action.                                               |
-| `up-to-date`         | No action.                                               |
-| `restore-from-cache` | Update latest run pointer.                               |
-| `cache-miss`         | Save outputs, write run metadata, update latest pointer. |
-| `cache-disabled`     | No action.                                               |
+| Result               | Update Action                                                               |
+| -------------------- | --------------------------------------------------------------------------- |
+| `not-cacheable`      | No action.                                                                  |
+| `up-to-date`         | No action.                                                                  |
+| `restore-from-cache` | Update latest run pointer.                                                  |
+| `cache-miss`         | Save outputs, write run metadata, update latest pointer, evict old entries. |
+| `cache-disabled`     | No action.                                                                  |
+
+## Cache Eviction
+
+Each task has a maximum number of cache entries (`maxCacheEntries`, default: 5).
+After a cache-miss save, entries beyond this limit are evicted:
+
+1. List all run directories for the task.
+2. If the count is within the limit, do nothing.
+3. Sort runs by timestamp (newest first).
+4. Delete the oldest runs that exceed the limit, never deleting the current latest.
+
+The `maxCacheEntries` can be set globally via `configure()` or per-task in the task
+configuration. The per-task value takes precedence over the global value.
+
+## Corruption Recovery
+
+Cache metadata files are written atomically (write to `.tmp`, then rename) to
+minimize corruption risk. If corruption does occur:
+
+- **Corrupted JSON** (SyntaxError during parse): Treated as missing cache. The task
+  re-executes and overwrites the corrupted entry.
+- **Failed cache restore** (missing or partial output files): Falls back to
+  re-executing the task, then saves fresh outputs.
+
+No explicit cleanup of corrupted entries is performed. The eviction mechanism
+naturally prunes old entries over time.
+
+## File I/O Concurrency
+
+Cache save and restore operations use a concurrency limiter (default: 64 concurrent
+file operations) to prevent "too many open files" errors when tasks have large output sets.

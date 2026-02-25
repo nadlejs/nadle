@@ -12,6 +12,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
+  "maxCacheEntries": 5,
   "implicitDependencies": true,
   "excludedTasks": [],
   "footer": false,
@@ -49,8 +50,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
       "id": "root"
     },
     "workspaces": [],
-    "packageManager": "npm",
-    "currentWorkspaceId": "root"
+    "currentWorkspaceId": "root",
+    "packageManager": "npm"
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/node_modules/.cache/nadle",
   "minWorkers": 1
@@ -69,6 +70,7 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
+  "maxCacheEntries": 5,
   "implicitDependencies": true,
   "excludedTasks": [],
   "footer": false,
@@ -107,8 +109,8 @@ Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-w
       "id": "root"
     },
     "workspaces": [],
-    "packageManager": "npm",
-    "currentWorkspaceId": "root"
+    "currentWorkspaceId": "root",
+    "packageManager": "npm"
   },
   "cacheDir": "/ROOT/test/__fixtures__/main/node_modules/.cache/nadle"
 }

@@ -229,6 +229,28 @@ This is useful in scenarios where the cache might be outdated, or when debugging
 
 Use this flag to force fresh execution and bypass any cached results.
 
+### `maxCacheEntries`
+
+- **Type:** `number`
+- **Default:** `5`
+
+Sets the maximum number of cache entries kept per task. After each cache-miss save,
+entries beyond this limit are automatically evicted (oldest first). This can also be
+set per-task in the task configuration, which takes precedence over the global value.
+
+```typescript
+// Per-task override
+tasks
+	.register("build", async () => {
+		/* ... */
+	})
+	.config({
+		maxCacheEntries: 3,
+		inputs: [Inputs.dirs("src")],
+		outputs: [Outputs.dirs("dist")]
+	});
+```
+
 ## Configuration File Example
 
 Here's a complete example of a Nadle configuration file:
