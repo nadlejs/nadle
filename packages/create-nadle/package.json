@@ -15,7 +15,9 @@
 	],
 	"bin": "create-nadle.mjs",
 	"dependencies": {
+		"@clack/prompts": "^1.0.1",
 		"execa": "^9.6.1",
+		"find-up": "^7.0.0",
 		"preferred-pm": "^4.1.1"
 	},
 	"devDependencies": {
@@ -68,7 +70,7 @@
 	"size-limit": [
 		{
 			"path": "lib/**",
-			"limit": "20 KB",
+			"limit": "60 KB",
 			"name": "bundled",
 			"brotli": false
 		}
