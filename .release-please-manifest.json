@@ -4,5 +4,5 @@
 	"packages/language-server": "0.0.3",
 	"packages/eslint-plugin": "0.0.1",
 	"packages/kernel": "0.0.1",
-	"packages/project-resolver": "0.0.1"
+	"packages/project-resolver": "0.0.2"
 }
