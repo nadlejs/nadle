@@ -17,10 +17,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell goodbye cop
 
 [log]
 <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>goodbye</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>goodbye</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>goodbye</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log] <Yellow>></Yellow> Task <Bold>prepare</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
