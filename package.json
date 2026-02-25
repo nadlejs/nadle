@@ -7,24 +7,24 @@
 		"start": "pnpm -r --parallel start"
 	},
 	"devDependencies": {
-		"@microsoft/api-extractor": "^7.55.1",
+		"@microsoft/api-extractor": "^7.57.5",
 		"@nadle/eslint-config": "^1.0.2",
 		"@nadle/prettier-config": "^0.0.5",
 		"@nadle/ts-config": "^0.0.2",
 		"@vitest/eslint-plugin": "^1.6.9",
-		"cspell": "^9.3.2",
+		"cspell": "^9.7.0",
 		"eslint": "^9.39.1",
 		"eslint-plugin-nadle": "workspace:*",
 		"glob": "^11.1.0",
 		"husky": "^9.1.7",
 		"jiti": "^2.6.1",
-		"knip": "^5.70.2",
+		"knip": "^5.85.0",
 		"nadle": "https://pkg.pr.new/nadle@368fc65",
 		"prettier": "^3.7.3",
-		"rimraf": "^6.1.2",
+		"rimraf": "^6.1.3",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.48.0"
+		"typescript-eslint": "^8.56.1"
 	},
 	"engines": {
 		"node": ">=22"
