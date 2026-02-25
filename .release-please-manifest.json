@@ -1,5 +1,5 @@
 {
-	"packages/nadle": "0.5.1",
+	"packages/nadle": "0.5.2",
 	"packages/create-nadle": "0.0.4",
 	"packages/language-server": "0.0.3",
 	"packages/eslint-plugin": "0.0.1",
