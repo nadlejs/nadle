@@ -27,6 +27,7 @@ export function toRunInOrder(stdout: string, ...groups: (string[] | string)[]): 
 function assertOrder(stdout: string, firstTask: string, secondTask: string) {
 	const firstTaskDoneIndex = stdout.indexOf(`Task ${firstTask} DONE`);
 	const secondTaskStartedIndex = stdout.indexOf(`Task ${secondTask} STARTED`);
+	const secondTaskDoneIndex = stdout.indexOf(`Task ${secondTask} DONE`);
 
 	if (firstTaskDoneIndex === -1) {
 		return {
@@ -35,14 +36,17 @@ function assertOrder(stdout: string, firstTask: string, secondTask: string) {
 		};
 	}
 
-	if (secondTaskStartedIndex === -1) {
+	// Fall back to DONE index for empty tasks that don't emit STARTED
+	const secondTaskIndex = secondTaskStartedIndex !== -1 ? secondTaskStartedIndex : secondTaskDoneIndex;
+
+	if (secondTaskIndex === -1) {
 		return {
 			pass: false,
 			message: () => `Expected task '${secondTask}' to have run, but it did not. Stdout:\n${stdout}`
 		};
 	}
 
-	const pass = firstTaskDoneIndex < secondTaskStartedIndex;
+	const pass = firstTaskDoneIndex < secondTaskIndex;
 
 	return {
 		pass,
