@@ -9,10 +9,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -27,29 +24,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>1</BoldDim> task executed
-`;
-
-exports[`--config > should precedence the ts config file over the mts config file 2`] = `
----------- Context -----------
-Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
-
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.ts!
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -64,10 +39,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -82,10 +54,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.mts
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -100,29 +69,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log]
-<Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
-[log] <Bold>1</BoldDim> task executed
-`;
-
-exports[`--config > should use the existent config path if not specify --config in esm-js package 2`] = `
----------- Context -----------
-Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
----------- Stdout ------------
-[log] <Bold><Cyan>🛠️ Welcome to Nadle {version}!</Cyan></BoldDim>
-[log] Using Nadle from /ROOT/lib/index.js
-[log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.js
-
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-Hello from /ROOT/test/__temp__/__{hash}__/nadle.config.js!
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -137,10 +84,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
 
-[log] <Yellow>></Yellow> Task <Bold>hello</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>hello</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed

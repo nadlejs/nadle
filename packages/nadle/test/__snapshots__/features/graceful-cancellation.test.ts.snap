@@ -9,9 +9,9 @@ Command: /ROOT/nadle.mjs --no-footer main-task --max-workers 2
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__temp__/__{hash}__/nadle.config.ts
 
-[log] <Yellow>></Yellow> Task <Bold>fail-task</BoldDim> <Yellow>STARTED</Yellow>
-
 [log] <Yellow>></Yellow> Task <Bold>success-task</BoldDim> <Yellow>STARTED</Yellow>
+
+[log] <Yellow>></Yellow> Task <Bold>fail-task</BoldDim> <Yellow>STARTED</Yellow>
 
 [log]
 <Red>×</Red> Task <Bold>fail-task</BoldDim> <Red>FAILED</Red> {duration}
