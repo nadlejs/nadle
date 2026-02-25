@@ -1,5 +1,99 @@
 # nadle
 
+## [0.5.2](https://github.com/nadlejs/nadle/compare/nadle/v0.5.1...nadle/v0.5.2) (2026-02-25)
+
+
+### Features
+
+* Add @nadle/kernel shared package ([#533](https://github.com/nadlejs/nadle/issues/533)) ([417be79](https://github.com/nadlejs/nadle/commit/417be7963b9a02e979ec2781a2dfdb90a4b5e143))
+* Add NodeTask builtin task for running Node.js scripts ([#521](https://github.com/nadlejs/nadle/issues/521)) ([4e2da72](https://github.com/nadlejs/nadle/commit/4e2da72fb65c6f49a7e7c003441ca00c8082c70b))
+* Add NpmTask, NpxTask, and PnpxTask builtin tasks ([#519](https://github.com/nadlejs/nadle/issues/519)) ([2697846](https://github.com/nadlejs/nadle/commit/2697846710151328ca917d9df21e5e9bc1ef1dd6))
+* Consume @nadle/kernel in eslint-plugin ([#542](https://github.com/nadlejs/nadle/issues/542)) ([dea5776](https://github.com/nadlejs/nadle/commit/dea5776beea3c329b5cf652fc1e13f01569cca3e))
+* Disable footer when stdout is not a TTY ([#523](https://github.com/nadlejs/nadle/issues/523)) ([741f419](https://github.com/nadlejs/nadle/commit/741f4192646651f144e1c994194caee00a923384))
+* Extract @nadle/project package and refactor nadle core ([#540](https://github.com/nadlejs/nadle/issues/540)) ([3525cbd](https://github.com/nadlejs/nadle/commit/3525cbdd4f62a22dbf9074ce1fdb7850e85256ea))
+* Fixture builder and programmatic test fixture migration ([#488](https://github.com/nadlejs/nadle/issues/488)) ([10c2a61](https://github.com/nadlejs/nadle/commit/10c2a61cc7362b5d864cdb231dd8f00cae249da1))
+* Implicit workspace task dependencies and root aggregation ([#524](https://github.com/nadlejs/nadle/issues/524)) ([368fc65](https://github.com/nadlejs/nadle/commit/368fc650d9953f4adc6bf11aaff2740d427d8949))
+* Improve caching with dependency fingerprints, eviction, and corruption recovery ([#550](https://github.com/nadlejs/nadle/issues/550)) ([1af5dd6](https://github.com/nadlejs/nadle/commit/1af5dd6bc74482475e0917b0e3dd76045879a861))
+* Introduce project-resolver package, enhance language server workspace discovery, and cross-workspace LSP logic ([#541](https://github.com/nadlejs/nadle/issues/541)) ([cb267ca](https://github.com/nadlejs/nadle/commit/cb267ca06a6e782aad8d903271e74b8dfd12e485))
+* Publish nadle-lsp as standalone npm package ([#510](https://github.com/nadlejs/nadle/issues/510)) ([4e7c4be](https://github.com/nadlejs/nadle/commit/4e7c4bec2d65ffb3ea6523e10d11a39a4b43b146))
+* Use node_modules/.cache/nadle as default cache directory ([#546](https://github.com/nadlejs/nadle/issues/546)) ([276116b](https://github.com/nadlejs/nadle/commit/276116b5dd873efdd7b470e7512d1014978f0cef))
+
+
+### Bug Fixes
+
+* Detect package manager from lockfile in single-package repos ([#548](https://github.com/nadlejs/nadle/issues/548)) ([0a3bf36](https://github.com/nadlejs/nadle/commit/0a3bf3679c6d95dba8f5cbc58920abe93cd8d4cf))
+* Include env in cache key computation ([#454](https://github.com/nadlejs/nadle/issues/454)) ([6e43b53](https://github.com/nadlejs/nadle/commit/6e43b53786b6efb5bb59c99a5f6834aa0a8fd12e))
+* Include sub-workspace config file in cache fingerprint ([#461](https://github.com/nadlejs/nadle/issues/461)) ([313efc6](https://github.com/nadlejs/nadle/commit/313efc6fec01c3783e92ee7e4c759fd421f4d851))
+* Narrow catch clauses in cache metadata reads to ENOENT ([#459](https://github.com/nadlejs/nadle/issues/459)) ([6658206](https://github.com/nadlejs/nadle/commit/6658206e701cf405b0ab78629e034535bf6f6865))
+* Prevent running count from going negative for UpToDate/FromCache tasks ([#446](https://github.com/nadlejs/nadle/issues/446)) ([5dfc947](https://github.com/nadlejs/nadle/commit/5dfc947cfcfb63051a211f9c8bdd2e8a7926daf0))
+* Remove duplicate re-export in core/index.ts ([#455](https://github.com/nadlejs/nadle/issues/455)) ([d2e87ec](https://github.com/nadlejs/nadle/commit/d2e87ec74f9f50a9fe80c72f0512255d2d170e65))
+* Replace welcome banner emoji with stable unicode char ([#547](https://github.com/nadlejs/nadle/issues/547)) ([706d4dd](https://github.com/nadlejs/nadle/commit/706d4ddf34c3bc35d026a2da1c696f0e7d56f6f9))
+* Resolve workspace task workingDir relative to workspace ([#494](https://github.com/nadlejs/nadle/issues/494)) ([44434fa](https://github.com/nadlejs/nadle/commit/44434fa6f89b9df07d04ebe1e719e5a1107d0f88))
+
+
+### Documentation
+
+* Apply nadle branding with slogan and updated descriptions ([#503](https://github.com/nadlejs/nadle/issues/503)) ([91f1c07](https://github.com/nadlejs/nadle/commit/91f1c07c8b8b7dd5cb9be68cb73ab58d1a381e0a))
+* Bundle spec files into HTML with spec-md ([#489](https://github.com/nadlejs/nadle/issues/489)) ([3c9092a](https://github.com/nadlejs/nadle/commit/3c9092a2e03c9396e1a689e2192459cd84bab293))
+* Rewrite landing page, README, and documentation ([#475](https://github.com/nadlejs/nadle/issues/475)) ([dab47a2](https://github.com/nadlejs/nadle/commit/dab47a2de585efd784f9be484be1f57d8b466eb0))
+
+
+### Performance
+
+* Skip redundant project resolution in worker threads ([24a7008](https://github.com/nadlejs/nadle/commit/24a700881d4ee5a8d5126fd19b8457c3356304c7)), closes [#428](https://github.com/nadlejs/nadle/issues/428)
+
+
+### Internal
+
+* Add code coverage with @vitest/coverage-v8 ([#472](https://github.com/nadlejs/nadle/issues/472)) ([35effad](https://github.com/nadlejs/nadle/commit/35effad12a05a2a092223001f40c35c21f8360d6))
+* Add publishConfig access public to all packages ([15b1c7f](https://github.com/nadlejs/nadle/commit/15b1c7f466ecd17731b445f01b5d6d1810e4a65c))
+* Add typed NadleError class with errorCode property ([#457](https://github.com/nadlejs/nadle/issues/457)) ([1b859b1](https://github.com/nadlejs/nadle/commit/1b859b1a87f4f46cec48e763908826cd081b7fa9))
+* Add unit tests for core components ([#465](https://github.com/nadlejs/nadle/issues/465)) ([dc38938](https://github.com/nadlejs/nadle/commit/dc38938e09e7d3403c96c23bc8a1b447d97971da))
+* Consolidate build tasks and simplify tsconfig usage ([#518](https://github.com/nadlejs/nadle/issues/518)) ([37a1dc6](https://github.com/nadlejs/nadle/commit/37a1dc6917ca763f8065c19411918b4a8760a563))
+* Consolidate tsconfig setup across the monorepo ([#490](https://github.com/nadlejs/nadle/issues/490)) ([1d221f1](https://github.com/nadlejs/nadle/commit/1d221f1bd74928169237ce1726ca7f5512f14187))
+* **deps-dev:** Bump @size-limit/file from 11.2.0 to 12.0.0 ([#482](https://github.com/nadlejs/nadle/issues/482)) ([8af6b7c](https://github.com/nadlejs/nadle/commit/8af6b7c4f4a7dcfb69e8091850268aed1587e063))
+* **deps-dev:** Bump @vitest/expect from 3.2.4 to 4.0.18 ([#451](https://github.com/nadlejs/nadle/issues/451)) ([eb64792](https://github.com/nadlejs/nadle/commit/eb6479219c53579e51397f465c2069fbc5d76aca))
+* **deps-dev:** Bump serialize-javascript from 6.0.2 to 7.0.0 ([#399](https://github.com/nadlejs/nadle/issues/399)) ([638e674](https://github.com/nadlejs/nadle/commit/638e674327bab7577e5d4f4f68b8f5f67df9bc21))
+* **deps-dev:** Bump the minor-updates group with 5 updates ([#381](https://github.com/nadlejs/nadle/issues/381)) ([6998e24](https://github.com/nadlejs/nadle/commit/6998e246464589fab6e7fe8129093a8b1eea9741))
+* **deps-dev:** Bump the minor-updates group with 6 updates ([#384](https://github.com/nadlejs/nadle/issues/384)) ([dabb88b](https://github.com/nadlejs/nadle/commit/dabb88b1a9c839488a7bd798bcf6a0012be3b964))
+* **deps-dev:** Bump ts-morph from 26.0.0 to 27.0.2 ([#400](https://github.com/nadlejs/nadle/issues/400)) ([0d1c17b](https://github.com/nadlejs/nadle/commit/0d1c17b7e5f758a34986aa1b68a8b3d5dedbe484))
+* **deps-dev:** Bump vitest from 3.2.4 to 4.0.18 ([#450](https://github.com/nadlejs/nadle/issues/450)) ([115bd5e](https://github.com/nadlejs/nadle/commit/115bd5e6aaee28de15645b08c0d92e659bc762bf))
+* **deps:** Bump find-up from 7.0.0 to 8.0.0 ([#481](https://github.com/nadlejs/nadle/issues/481)) ([dc4036a](https://github.com/nadlejs/nadle/commit/dc4036a0afa203edddcd0f0d5a8ac6bb69fb7169))
+* **deps:** Bump glob from 11.0.3 to 11.1.0 in the security-updates group across 1 directory ([#404](https://github.com/nadlejs/nadle/issues/404)) ([4a750c1](https://github.com/nadlejs/nadle/commit/4a750c19c286f5d042c1736fa36fdda8b36ec1f6))
+* **deps:** Bump the minor-updates ([#394](https://github.com/nadlejs/nadle/issues/394)) ([4171039](https://github.com/nadlejs/nadle/commit/417103902dffabbead641941746ac8ea49da8a38))
+* **deps:** Bump the minor-updates group across 1 directory with 12 updates ([#380](https://github.com/nadlejs/nadle/issues/380)) ([51c18f8](https://github.com/nadlejs/nadle/commit/51c18f8e2aafbb1a00c5c2ee906bff41adc30fa3))
+* **deps:** Bump the minor-updates group across 1 directory with 4 updates ([#467](https://github.com/nadlejs/nadle/issues/467)) ([7fc4bc4](https://github.com/nadlejs/nadle/commit/7fc4bc4411f816c613e720c07a1f7ed4f9175ab4))
+* **deps:** Bump the minor-updates group with 7 updates ([#386](https://github.com/nadlejs/nadle/issues/386)) ([690a8cf](https://github.com/nadlejs/nadle/commit/690a8cf2814059175077e49a32e0f2bbd2047800))
+* **deps:** Bump tinypool from 1.1.1 to 2.0.0 ([#398](https://github.com/nadlejs/nadle/issues/398)) ([c3428c7](https://github.com/nadlejs/nadle/commit/c3428c76a7abb6fc0e9b560a6d4fb862069644e0))
+* **deps:** Bump tinyrainbow from 2.0.0 to 3.0.3 ([#401](https://github.com/nadlejs/nadle/issues/401)) ([e059dc1](https://github.com/nadlejs/nadle/commit/e059dc1f261710392b72551cc95640e0f82cd495))
+* Drop coverage job and skip spell check for changelogs ([e1c8330](https://github.com/nadlejs/nadle/commit/e1c83302a8360384e926ffe2661eba8abbbb5b49))
+* Expand type-level tests for the public API ([#469](https://github.com/nadlejs/nadle/issues/469)) ([54b8876](https://github.com/nadlejs/nadle/commit/54b8876d30361956ed7670218d44e62d4ed370d9))
+* Isolate fixture-mutating tests with hashed temp copies ([#487](https://github.com/nadlejs/nadle/issues/487)) ([21f6d59](https://github.com/nadlejs/nadle/commit/21f6d594316343b273b282481d1ea4cbe1d47d89))
+* Low-priority improvements ([#414](https://github.com/nadlejs/nadle/issues/414), [#422](https://github.com/nadlejs/nadle/issues/422), [#423](https://github.com/nadlejs/nadle/issues/423), [#424](https://github.com/nadlejs/nadle/issues/424), [#425](https://github.com/nadlejs/nadle/issues/425)) ([#426](https://github.com/nadlejs/nadle/issues/426)) ([9e4c26b](https://github.com/nadlejs/nadle/commit/9e4c26b10cb21a8a5b07ff4a1c8f8c40151a6039))
+* Make BaseHandler an abstract class ([#456](https://github.com/nadlejs/nadle/issues/456)) ([7e667d8](https://github.com/nadlejs/nadle/commit/7e667d87f5684e082322bde59e1534dc6ae1773c))
+* Migrate nadle configs from ExecTask to PnpxTask ([#520](https://github.com/nadlejs/nadle/issues/520)) ([78f2ebd](https://github.com/nadlejs/nadle/commit/78f2ebd9435c182c0cfb5b2e423b53961bad80c5))
+* Move FileLogger from reporting to utilities layer ([#463](https://github.com/nadlejs/nadle/issues/463)) ([4adf0d7](https://github.com/nadlejs/nadle/commit/4adf0d77669e2f985d25b02ab4aa2f35475a9a27))
+* Move workspace tasks to workspace nadle configs ([#495](https://github.com/nadlejs/nadle/issues/495)) ([28b440e](https://github.com/nadlejs/nadle/commit/28b440ee247e3d87b1b1e848d2ea2f1c5c2afe5a))
+* Parallelize CI workflow with dependent job graph ([#522](https://github.com/nadlejs/nadle/issues/522)) ([c0ac3fe](https://github.com/nadlejs/nadle/commit/c0ac3fe1a777a6fabc93201015a287f5be0f481f))
+* Parallelize file I/O in cache save/restore ([#460](https://github.com/nadlejs/nadle/issues/460)) ([e70a239](https://github.com/nadlejs/nadle/commit/e70a2395ec4e356d6627e3d0e64ec4e7e32f9541))
+* Remove eslint-disable overrides for line/complexity/params limits ([#470](https://github.com/nadlejs/nadle/issues/470)) ([4629a10](https://github.com/nadlejs/nadle/commit/4629a10ecff0b6cb56c1c957df290bcbdcf1e663))
+* Remove indicative console.log from test task bodies ([#545](https://github.com/nadlejs/nadle/issues/545)) ([425b9a6](https://github.com/nadlejs/nadle/commit/425b9a60aded706560cbd78523038d0879398bb1))
+* Replace `any` with `unknown` in source type annotations ([#471](https://github.com/nadlejs/nadle/issues/471)) ([0201413](https://github.com/nadlejs/nadle/commit/0201413dde2e159cd769b57cbae84d94f593c559))
+* Replace global singleton registries with instance-scoped registries ([fa66bb2](https://github.com/nadlejs/nadle/commit/fa66bb276904c536e0a2a3c4e19a1774bf6965a1)), closes [#435](https://github.com/nadlejs/nadle/issues/435)
+* Replace Nadle god object with specialized context interfaces ([#473](https://github.com/nadlejs/nadle/issues/473)) ([a847071](https://github.com/nadlejs/nadle/commit/a8470719279e96c7818b9e667dc790f6b3e381d7))
+* Type the worker message protocol ([#458](https://github.com/nadlejs/nadle/issues/458)) ([924273c](https://github.com/nadlejs/nadle/commit/924273cb189e44d00157b8c5e4e919a4556a08f0))
+* Update snapshots ([fd592e9](https://github.com/nadlejs/nadle/commit/fd592e92901f267f12ed5efa2c563afbb58ac8b5))
+* Update snapshots for task execution logs and context ([4ac6a0b](https://github.com/nadlejs/nadle/commit/4ac6a0b308d7a3f2ab35b62c4584f699e7f0bdc2))
+* Update snapshots for task execution logs and context 2 ([dfb9f37](https://github.com/nadlejs/nadle/commit/dfb9f37837795736ddea865d3e45de8520227ed2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.2
+    * @nadle/project-resolver bumped to 0.0.2
+
 ## [0.5.1](https://github.com/nadlejs/nadle/compare/nadle/v0.5.0...nadle/v0.5.1) (2025-07-20)
 
 ### Features
