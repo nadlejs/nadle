@@ -18,6 +18,7 @@
 		"@clack/prompts": "^1.0.1",
 		"execa": "^9.6.1",
 		"find-up": "^7.0.0",
+		"meow": "^14.1.0",
 		"preferred-pm": "^4.1.1"
 	},
 	"devDependencies": {

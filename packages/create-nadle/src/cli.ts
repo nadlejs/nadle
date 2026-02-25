@@ -3,6 +3,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 import Process from "node:process";
 
+import meow from "meow";
 import { execa } from "execa";
 
 import { runWizard } from "./wizard.js";
@@ -10,18 +11,28 @@ import { detectProject } from "./detect.js";
 import { generateConfig } from "./generate.js";
 import type { PackageManager, ProjectContext } from "./types.js";
 
-interface CliFlags {
-	yes: boolean;
-}
+const cli = meow(
+	`
+  Usage
+    $ create-nadle
 
-function parseFlags(argv: string[]): CliFlags {
-	return {
-		yes: argv.includes("--yes") || argv.includes("-y")
-	};
-}
+  Options
+    --yes, -y  Skip prompts and use defaults
 
-function isInteractive(flags: CliFlags): boolean {
-	return !flags.yes && Boolean(Process.stdin.isTTY);
+  Examples
+    $ npm create nadle
+    $ pnpm create nadle -- --yes
+`,
+	{
+		importMeta: import.meta,
+		flags: {
+			yes: { shortFlag: "y", default: false, type: "boolean" }
+		}
+	}
+);
+
+function isInteractive(): boolean {
+	return !cli.flags.yes && Boolean(Process.stdin.isTTY);
 }
 
 function getInstallArgs(pm: PackageManager): string[] {
@@ -115,10 +126,9 @@ async function runInteractive(cwd: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
-	const flags = parseFlags(Process.argv.slice(2));
 	const cwd = Process.cwd();
 
-	if (isInteractive(flags)) {
+	if (isInteractive()) {
 		await runInteractive(cwd);
 	} else {
 		await runNonInteractive(cwd);

@@ -87,6 +87,9 @@ importers:
       find-up:
         specifier: ^7.0.0
         version: 7.0.0
+      meow:
+        specifier: ^14.1.0
+        version: 14.1.0
       preferred-pm:
         specifier: ^4.1.1
         version: 4.1.1
@@ -6184,6 +6187,10 @@ packages:
 
   memfs@4.48.1:
     resolution: {integrity: sha512-vWO+1ROkhOALF1UnT9aNOOflq5oFDlqwTXaPg6duo07fBLxSH0+bcF0TY1lbA1zTNKyGgDxgaDdKx5MaewLX5A==}
+
+  meow@14.1.0:
+    resolution: {integrity: sha512-EDYo6VlmtnumlcBCbh1gLJ//9jvM/ndXHfVXIFrZVr6fGcwTUyCTFNTLCKuY3ffbK8L/+3Mzqnd58RojiZqHVw==}
+    engines: {node: '>=20'}
 
   merge-descriptors@1.0.3:
     resolution: {integrity: sha512-gaNvAS7TZ897/rVaZ0nMtAyxNyi/pdbjbAwUpFQpN70GqnVfOiXpeUUMKRBmzXaSQ8DdTX4/0ms62r2K+hE6mQ==}
@@ -16037,6 +16044,8 @@ snapshots:
       thingies: 2.5.0(tslib@2.8.1)
       tree-dump: 1.1.0(tslib@2.8.1)
       tslib: 2.8.1
+
+  meow@14.1.0: {}
 
   merge-descriptors@1.0.3: {}
 
