@@ -1,9 +1,8 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { it, describe, expect } from "vitest";
-
+import { it, expect, describe } from "vitest";
 import { cliPath, withFixture, PACKAGE_JSON, PNPM_WORKSPACE, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("given a pnpm monorepo project", () => {
@@ -11,11 +10,11 @@ describe("given a pnpm monorepo project", () => {
 		await withFixture({
 			fixtureDir: "monorepo",
 			files: {
+				"pnpm-lock.yaml": "",
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("root", {
 					devDependencies: { nadle: "*" }
-				}),
-				"pnpm-lock.yaml": ""
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });

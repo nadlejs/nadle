@@ -1,10 +1,9 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { describe, it, expect } from "vitest";
-
-import { cliPath, withFixture, PACKAGE_JSON, CONFIG_FILE, createPackageJson } from "setup";
+import { it, expect, describe } from "vitest";
+import { cliPath, withFixture, CONFIG_FILE, PACKAGE_JSON, createPackageJson } from "setup";
 
 describe("overwrite handling", () => {
 	it("--yes with existing config skips and exits 0", async () => {
@@ -13,14 +12,14 @@ describe("overwrite handling", () => {
 		await withFixture({
 			fixtureDir: "overwrite",
 			files: {
+				"package-lock.json": "{}",
+				[CONFIG_FILE]: originalContent,
 				[PACKAGE_JSON]: createPackageJson("has-config", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}",
-				[CONFIG_FILE]: originalContent
+				})
 			},
 			testFn: async ({ cwd }) => {
-				const { exitCode, stdout } = await execa(cliPath, ["--yes"], {
+				const { stdout, exitCode } = await execa(cliPath, ["--yes"], {
 					cwd
 				});
 
@@ -38,11 +37,11 @@ describe("overwrite handling", () => {
 		await withFixture({
 			fixtureDir: "overwrite",
 			files: {
+				"tsconfig.json": "{}",
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("no-config", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}",
-				"tsconfig.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { exitCode } = await execa(cliPath, ["--yes"], { cwd });

@@ -1,9 +1,8 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { describe, it, expect } from "vitest";
-
+import { it, expect, describe } from "vitest";
 import { cliPath, withFixture, PACKAGE_JSON, PNPM_WORKSPACE, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("project detection with --yes", () => {
@@ -11,11 +10,11 @@ describe("project detection with --yes", () => {
 		await withFixture({
 			fixtureDir: "detection",
 			files: {
+				"tsconfig.json": "{}",
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("ts-project", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}",
-				"tsconfig.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { stdout } = await execa(cliPath, ["--yes"], { cwd });
@@ -35,12 +34,12 @@ describe("project detection with --yes", () => {
 		await withFixture({
 			fixtureDir: "detection",
 			files: {
+				"pnpm-lock.yaml": "",
+				"tsconfig.json": "{}",
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("mono-root", {
 					devDependencies: { nadle: "*" }
-				}),
-				"pnpm-lock.yaml": "",
-				"tsconfig.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { stdout } = await execa(cliPath, ["--yes"], { cwd });
@@ -59,10 +58,10 @@ describe("project detection with --yes", () => {
 		await withFixture({
 			fixtureDir: "detection",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("js-project", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });
@@ -80,6 +79,8 @@ describe("project detection with --yes", () => {
 		await withFixture({
 			fixtureDir: "detection",
 			files: {
+				"tsconfig.json": "{}",
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("scripts-project", {
 					devDependencies: { nadle: "*" },
 					scripts: {
@@ -87,9 +88,7 @@ describe("project detection with --yes", () => {
 						test: "vitest",
 						start: "node server.js"
 					}
-				}),
-				"package-lock.json": "{}",
-				"tsconfig.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { stdout } = await execa(cliPath, ["--yes"], { cwd });
@@ -109,12 +108,12 @@ describe("project detection with --yes", () => {
 		await withFixture({
 			fixtureDir: "detection",
 			files: {
+				src: {},
+				"tsconfig.json": "{}",
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("subdir-project", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}",
-				"tsconfig.json": "{}",
-				src: {}
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const subDir = Path.join(cwd, "src");

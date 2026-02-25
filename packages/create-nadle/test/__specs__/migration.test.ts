@@ -1,21 +1,20 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { describe, it, expect } from "vitest";
-
-import { cliPath, withFixture, PACKAGE_JSON, CONFIG_FILE, createPackageJson } from "setup";
+import { it, expect, describe } from "vitest";
+import { cliPath, withFixture, CONFIG_FILE, PACKAGE_JSON, createPackageJson } from "setup";
 
 describe("script migration", () => {
 	it("migrates simple scripts as ExecTask", async () => {
 		await withFixture({
 			fixtureDir: "migration",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("simple", {
 					devDependencies: { nadle: "*" },
 					scripts: { build: "tsc", test: "vitest" }
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });
@@ -35,14 +34,14 @@ describe("script migration", () => {
 		await withFixture({
 			fixtureDir: "migration",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("pre-post", {
 					devDependencies: { nadle: "*" },
 					scripts: {
-						prebuild: "rimraf dist",
-						build: "tsc"
+						build: "tsc",
+						prebuild: "rimraf dist"
 					}
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });
@@ -60,6 +59,7 @@ describe("script migration", () => {
 		await withFixture({
 			fixtureDir: "migration",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("lifecycle", {
 					devDependencies: { nadle: "*" },
 					scripts: {
@@ -67,8 +67,7 @@ describe("script migration", () => {
 						prepare: "husky",
 						postinstall: "patch-package"
 					}
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });
@@ -87,6 +86,7 @@ describe("script migration", () => {
 		await withFixture({
 			fixtureDir: "migration",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("long-running", {
 					devDependencies: { nadle: "*" },
 					scripts: {
@@ -94,8 +94,7 @@ describe("script migration", () => {
 						dev: "next dev",
 						start: "node server.js"
 					}
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });
@@ -113,14 +112,14 @@ describe("script migration", () => {
 		await withFixture({
 			fixtureDir: "migration",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("name-transform", {
 					devDependencies: { nadle: "*" },
 					scripts: {
 						"build:prod": "tsc",
 						type_check: "tsc --noEmit"
 					}
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				await execa(cliPath, ["--yes"], { cwd });

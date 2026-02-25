@@ -1,21 +1,20 @@
-import Fs from "node:fs/promises";
 import Path from "node:path";
+import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { describe, it, expect } from "vitest";
-
-import { cliPath, withFixture, PACKAGE_JSON, CONFIG_FILE, createPackageJson } from "setup";
+import { it, expect, describe } from "vitest";
+import { cliPath, withFixture, CONFIG_FILE, PACKAGE_JSON, createPackageJson } from "setup";
 
 describe("non-interactive mode", () => {
 	it("--yes flag skips prompts and generates config", async () => {
 		await withFixture({
 			fixtureDir: "non-interactive",
 			files: {
+				"tsconfig.json": "{}",
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("yes-flag", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}",
-				"tsconfig.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { exitCode } = await execa(cliPath, ["--yes"], { cwd });
@@ -33,10 +32,10 @@ describe("non-interactive mode", () => {
 		await withFixture({
 			fixtureDir: "non-interactive",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("short-alias", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { exitCode } = await execa(cliPath, ["-y"], { cwd });
@@ -54,10 +53,10 @@ describe("non-interactive mode", () => {
 		await withFixture({
 			fixtureDir: "non-interactive",
 			files: {
+				"package-lock.json": "{}",
 				[PACKAGE_JSON]: createPackageJson("non-tty", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}"
+				})
 			},
 			testFn: async ({ cwd }) => {
 				const { exitCode } = await execa(cliPath, [], {
@@ -78,14 +77,14 @@ describe("non-interactive mode", () => {
 		await withFixture({
 			fixtureDir: "non-interactive",
 			files: {
+				"package-lock.json": "{}",
+				[CONFIG_FILE]: 'import { tasks } from "nadle";\n',
 				[PACKAGE_JSON]: createPackageJson("existing-config", {
 					devDependencies: { nadle: "*" }
-				}),
-				"package-lock.json": "{}",
-				[CONFIG_FILE]: 'import { tasks } from "nadle";\n'
+				})
 			},
 			testFn: async ({ cwd }) => {
-				const { exitCode, stdout } = await execa(cliPath, ["--yes"], {
+				const { stdout, exitCode } = await execa(cliPath, ["--yes"], {
 					cwd
 				});
 
