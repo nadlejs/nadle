@@ -1,5 +1,25 @@
 # create-nadle
 
+## [0.0.5](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.4...create-nadle/v0.0.5) (2026-02-25)
+
+
+### Features
+
+* Publish nadle-lsp as standalone npm package ([#510](https://github.com/nadlejs/nadle/issues/510)) ([4e7c4be](https://github.com/nadlejs/nadle/commit/4e7c4bec2d65ffb3ea6523e10d11a39a4b43b146))
+* Rewrite create-nadle with project detection, script migration, and interactive wizard ([#549](https://github.com/nadlejs/nadle/issues/549)) ([b46fa55](https://github.com/nadlejs/nadle/commit/b46fa551c1c956baca6888a624e69d2c2766bbea))
+
+
+### Bug Fixes
+
+* Replace welcome banner emoji with stable unicode char ([#547](https://github.com/nadlejs/nadle/issues/547)) ([706d4dd](https://github.com/nadlejs/nadle/commit/706d4ddf34c3bc35d026a2da1c696f0e7d56f6f9))
+
+
+### Internal
+
+* Add publishConfig access public to all packages ([15b1c7f](https://github.com/nadlejs/nadle/commit/15b1c7f466ecd17731b445f01b5d6d1810e4a65c))
+* Consolidate build tasks and simplify tsconfig usage ([#518](https://github.com/nadlejs/nadle/issues/518)) ([37a1dc6](https://github.com/nadlejs/nadle/commit/37a1dc6917ca763f8065c19411918b4a8760a563))
+* Migrate nadle configs from ExecTask to PnpxTask ([#520](https://github.com/nadlejs/nadle/issues/520)) ([78f2ebd](https://github.com/nadlejs/nadle/commit/78f2ebd9435c182c0cfb5b2e423b53961bad80c5))
+
 ## [0.0.4](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.3...create-nadle/v0.0.4) (2026-02-20)
 
 
