@@ -12,61 +12,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
-  "implicitDependencies": true,
   "maxCacheEntries": 5,
-  "excludedTasks": [],
-  "footer": false,
-  "isWorkerThread": false,
-  "tasks": [],
-  "maxWorkers": 1,
-  "configKey": "",
-  "list": false,
-  "dryRun": false,
-  "stacktrace": false,
-  "listWorkspaces": false,
-  "project": {
-    "rootWorkspace": {
-      "label": "",
-      "packageJson": {
-        "name": "@nadle/internal-nadle-test-fixtures-main",
-        "type": "module",
-        "private": true,
-        "dependencies": {
-          "nadle": "workspace:*"
-        },
-        "nadle": {
-          "root": true
-        }
-      },
-      "absolutePath": "/ROOT/test/__fixtures__/main",
-      "dependencies": [],
-      "relativePath": ".",
-      "configFilePath": "/ROOT/test/__fixtures__/main/nadle.config.ts",
-      "id": "root"
-    },
-    "workspaces": [],
-    "currentWorkspaceId": "root",
-    "packageManager": "npm"
-  },
-  "cacheDir": "/ROOT/test/__fixtures__/main/node_modules/.cache/nadle",
-  "minWorkers": 1
-}
-`;
-
-exports[`--config-key > should have no effect if not specified any value 2`] = `
----------- Context -----------
-Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
----------- Stdout ------------
-[log] {
-  "cache": true,
-  "summary": false,
-  "parallel": false,
-  "logLevel": "log",
-  "cleanCache": false,
-  "showConfig": true,
   "implicitDependencies": true,
-  "maxCacheEntries": 5,
   "excludedTasks": [],
   "footer": false,
   "isWorkerThread": false,
