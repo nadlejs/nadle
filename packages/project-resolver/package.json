@@ -1,6 +1,6 @@
 {
 	"name": "@nadle/project-resolver",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Project discovery and workspace scanning for nadle",
 	"license": "MIT",
 	"type": "module",
