@@ -5,8 +5,8 @@
 	"devDependencies": {
 		"@types/node": "^20.19.25",
 		"glob": "^11.1.0",
-		"tinyrainbow": "^3.0.3",
-		"type-fest": "^5.4.4",
+		"tinyrainbow": "^3.1.0",
+		"type-fest": "^5.5.0",
 		"typescript": "^5.9.3"
 	}
 }
