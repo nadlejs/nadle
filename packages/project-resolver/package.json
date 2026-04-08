@@ -24,14 +24,14 @@
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"@manypkg/find-root": "^3.1.0",
-		"@manypkg/tools": "^2.1.0",
+		"@manypkg/tools": "^2.1.1",
 		"@nadle/kernel": "workspace:*",
 		"find-up": "^8.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.19.25",
 		"typescript": "^5.9.3",
-		"vitest": "4.0.18"
+		"vitest": "4.1.3"
 	},
 	"engines": {
 		"node": ">=22"
