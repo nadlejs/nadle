@@ -32,12 +32,12 @@
 		"vscode-languageserver-textdocument": "^1.0.12"
 	},
 	"devDependencies": {
-		"@size-limit/file": "^12.0.0",
+		"@size-limit/file": "^12.1.0",
 		"@types/node": "^20.19.25",
 		"size-limit": "^11.2.0",
 		"std-env": "^3.10.0",
 		"tsup": "^8.5.1",
-		"vitest": "4.0.18"
+		"vitest": "4.1.7"
 	},
 	"engines": {
 		"node": ">=22"
