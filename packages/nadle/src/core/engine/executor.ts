@@ -70,10 +70,21 @@ export class PoolExecutor implements Executor {
  * invoking `notify` directly, so no MessagePort is involved.
  */
 export class InlineExecutor implements Executor {
+	// Serializes task execution: the scheduler dispatches ready tasks concurrently,
+	// but maxWorkers === 1 must run them strictly one at a time, matching the
+	// single-thread pool. Each run() chains onto the previous one's completion.
+	private tail: Promise<unknown> = Promise.resolve();
+
 	public constructor(private readonly nadle: Nadle) {}
 
 	public run(params: WorkerParams, notify: Notifier): Promise<string | undefined> {
-		return runTask(this.nadle, params, notify);
+		const result = this.tail.then(() => runTask(this.nadle, params, notify));
+
+		// Keep the chain alive regardless of this task's outcome so a failure
+		// does not break serialization of subsequent tasks.
+		this.tail = result.catch(() => undefined);
+
+		return result;
 	}
 
 	public async destroy(): Promise<void> {
