@@ -41,8 +41,11 @@ export class PoolExecutor implements Executor {
 		});
 
 		poolPort.on("message", async (message: WorkerMessage) => {
-			await notify(message);
-			resolveMessageReceived();
+			try {
+				await notify(message);
+			} finally {
+				resolveMessageReceived();
+			}
 		});
 
 		try {

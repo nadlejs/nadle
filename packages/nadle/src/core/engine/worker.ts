@@ -82,8 +82,12 @@ export async function runTask(
 
 export default async (params: WorkerParams): Promise<string | undefined> => {
 	const nadle = await getOrCreateNadle(params.options);
-	// The pool entry always receives a port (injected by PoolExecutor).
-	const port = params.port!;
+	const { port } = params;
+
+	if (!port) {
+		throw new Error("Worker thread invoked without a message port.");
+	}
+
 	const notify: Notifier = (message) => port.postMessage(message);
 
 	return runTask(nadle, params, notify);
