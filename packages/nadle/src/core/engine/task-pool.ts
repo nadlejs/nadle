@@ -1,35 +1,33 @@
-import TinyPool from "tinypool";
-
+import { type Nadle } from "../nadle.js";
 import { type ExecutionContext } from "../context.js";
 import { TaskStatus } from "../interfaces/registered-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { type WorkerParams, type WorkerMessage } from "./worker.js";
+import { PoolExecutor, type Executor, InlineExecutor } from "./executor.js";
 
 // It seems this is the error message thrown by TinyPool when a worker is terminated
 // See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438
 const TERMINATING_WORKER_ERROR = "Terminating worker thread";
 
 export class TaskPool {
-	private readonly pool: TinyPool;
+	private readonly executor: Executor;
 	private readonly outputFingerprints = new Map<TaskIdentifier, string>();
 
 	public constructor(
 		private readonly context: ExecutionContext,
 		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>
 	) {
-		this.pool = new TinyPool({
-			concurrentTasksPerWorker: 1,
-			minThreads: this.context.options.minWorkers,
-			maxThreads: this.context.options.maxWorkers,
-			filename: new URL("./worker.js", import.meta.url).href
-		});
+		const { minWorkers, maxWorkers } = this.context.options;
+
+		this.executor =
+			maxWorkers === 1 ? new InlineExecutor(this.context as unknown as Nadle) : new PoolExecutor({ minThreads: minWorkers, maxThreads: maxWorkers });
 	}
 
 	public async run() {
 		try {
 			await Promise.all(Array.from(this.getNextReadyTasks()).map((taskId) => this.pushTask(taskId)));
 		} finally {
-			await this.pool.destroy();
+			await this.executor.destroy();
 		}
 	}
 
@@ -98,10 +96,19 @@ export class TaskPool {
 			dependencyFingerprints: this.collectDependencyFingerprints(taskId)
 		};
 
-		const outputsFingerprint = (await this.pool.run(workerParams, { transferList: [workerPort] })) as string | undefined;
-		await messageReceived;
+		try {
+			const outputsFingerprint = await this.executor.run(workerParams, workerPort);
+			await messageReceived;
 
-		return { executeType, outputsFingerprint };
+			return { executeType, outputsFingerprint };
+		} finally {
+			// Close both ports so the channel does not keep the event loop alive.
+			// In the pool path the worker port is transferred to the thread (closing
+			// it here is a no-op); in the inline path both ports live in this process
+			// and must be closed or the CLI never exits.
+			poolPort.close();
+			workerPort.close();
+		}
 	}
 
 	private collectDependencyFingerprints(taskId: TaskIdentifier): Record<string, string> {
