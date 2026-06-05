@@ -37,8 +37,10 @@ async function getOrCreateNadle(options: NadleResolvedOptions): Promise<Nadle> {
 	return workerNadle;
 }
 
-export default async ({ port, taskId, options, env: originalEnv, dependencyFingerprints }: WorkerParams): Promise<string | undefined> => {
-	const nadle = await getOrCreateNadle(options);
+export async function runTask(
+	nadle: Nadle,
+	{ port, taskId, options, env: originalEnv, dependencyFingerprints }: WorkerParams
+): Promise<string | undefined> {
 	const task = nadle.taskRegistry.getTaskById(taskId);
 	const taskConfig = task.configResolver();
 	const workspace = getWorkspaceById(options.project, task.workspaceId);
@@ -66,6 +68,12 @@ export default async ({ port, taskId, options, env: originalEnv, dependencyFinge
 	const ctx: DispatchContext = { port, task, context, taskOptions, environmentInjector };
 
 	return dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
+}
+
+export default async (params: WorkerParams): Promise<string | undefined> => {
+	const nadle = await getOrCreateNadle(params.options);
+
+	return runTask(nadle, params);
 };
 
 interface CacheValidatorParams {
