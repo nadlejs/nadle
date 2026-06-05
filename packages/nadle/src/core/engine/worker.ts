@@ -12,7 +12,10 @@ import { type NadleResolvedOptions } from "../options/types.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
 import { type TaskEnv, type TaskConfiguration } from "../interfaces/task-configuration.js";
 
-const threadId = WorkerThreads.threadId;
+// In a worker thread this is the real thread id (>= 1). In the main process
+// (inline path) it is 0; map it to 1 so the reporter footer, which indexes
+// running-task lines by threadId - 1, renders the single inline slot.
+const threadId = WorkerThreads.threadId || 1;
 
 export type WorkerMessage =
 	| { readonly type: "start"; readonly threadId: number }
@@ -22,8 +25,8 @@ export type WorkerMessage =
 /**
  * Delivers a lifecycle message to the TaskPool. In the pool path it posts to a
  * MessagePort (cross-thread); in the inline path it invokes the handler directly
- * and synchronously, so awaiting it guarantees the reporter has run before the
- * task body executes.
+ * in-process. Callers await it, so in the inline path the reporter has run before
+ * the task body executes.
  */
 export type Notifier = (message: WorkerMessage) => void | Promise<void>;
 
@@ -182,8 +185,14 @@ async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validati
 async function executeTask(ctx: DispatchContext) {
 	await ctx.notify({ threadId, type: "start" } satisfies WorkerMessage);
 	ctx.environmentInjector.apply();
-	await ctx.task.run({ context: ctx.context, options: ctx.taskOptions });
-	ctx.environmentInjector.restore();
+
+	try {
+		await ctx.task.run({ context: ctx.context, options: ctx.taskOptions });
+	} finally {
+		// Restore even when the task throws: in the inline path this mutates the
+		// main process's env, so a skipped restore would leak into later tasks.
+		ctx.environmentInjector.restore();
+	}
 }
 
 interface Injector<T> {
