@@ -19,11 +19,20 @@ export type WorkerMessage =
 	| { readonly threadId: number; readonly type: "up-to-date"; readonly outputsFingerprint?: string }
 	| { readonly threadId: number; readonly type: "from-cache"; readonly outputsFingerprint?: string };
 
+/**
+ * Delivers a lifecycle message to the TaskPool. In the pool path it posts to a
+ * MessagePort (cross-thread); in the inline path it invokes the handler directly
+ * and synchronously, so awaiting it guarantees the reporter has run before the
+ * task body executes.
+ */
+export type Notifier = (message: WorkerMessage) => void | Promise<void>;
+
 export interface WorkerParams {
 	readonly taskId: string;
 	readonly env: NodeJS.ProcessEnv;
 	readonly options: NadleResolvedOptions;
-	readonly port: WorkerThreads.MessagePort;
+	/** Present only on the pool path; injected by PoolExecutor for the worker thread. */
+	readonly port?: WorkerThreads.MessagePort;
 	readonly dependencyFingerprints: Record<string, string>;
 }
 
@@ -39,7 +48,8 @@ async function getOrCreateNadle(options: NadleResolvedOptions): Promise<Nadle> {
 
 export async function runTask(
 	nadle: Nadle,
-	{ port, taskId, options, env: originalEnv, dependencyFingerprints }: WorkerParams
+	{ taskId, options, env: originalEnv, dependencyFingerprints }: WorkerParams,
+	notify: Notifier
 ): Promise<string | undefined> {
 	const task = nadle.taskRegistry.getTaskById(taskId);
 	const taskConfig = task.configResolver();
@@ -65,15 +75,18 @@ export async function runTask(
 
 	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskId), validationResult.result);
 
-	const ctx: DispatchContext = { port, task, context, taskOptions, environmentInjector };
+	const ctx: DispatchContext = { task, notify, context, taskOptions, environmentInjector };
 
 	return dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
 }
 
 export default async (params: WorkerParams): Promise<string | undefined> => {
 	const nadle = await getOrCreateNadle(params.options);
+	// The pool entry always receives a port (injected by PoolExecutor).
+	const port = params.port!;
+	const notify: Notifier = (message) => port.postMessage(message);
 
-	return runTask(nadle, params);
+	return runTask(nadle, params, notify);
 };
 
 interface CacheValidatorParams {
@@ -102,9 +115,9 @@ function createCacheValidator(nadle: Nadle, params: CacheValidatorParams) {
 }
 
 interface DispatchContext {
+	notify: Notifier;
 	taskOptions: unknown;
 	context: RunnerContext;
-	port: WorkerThreads.MessagePort;
 	environmentInjector: Injector<void>;
 	task: ReturnType<Nadle["taskRegistry"]["getTaskById"]>;
 }
@@ -125,7 +138,7 @@ async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validati
 
 	if (validationResult.result === "up-to-date") {
 		const fp = validationResult.outputsFingerprint;
-		ctx.port.postMessage({ threadId, type: "up-to-date", outputsFingerprint: fp } satisfies WorkerMessage);
+		await ctx.notify({ threadId, type: "up-to-date", outputsFingerprint: fp } satisfies WorkerMessage);
 
 		return fp;
 	}
@@ -143,7 +156,7 @@ async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validati
 
 		await cacheValidator.update(validationResult);
 		const fp = validationResult.outputsFingerprint;
-		ctx.port.postMessage({ threadId, type: "from-cache", outputsFingerprint: fp } satisfies WorkerMessage);
+		await ctx.notify({ threadId, type: "from-cache", outputsFingerprint: fp } satisfies WorkerMessage);
 
 		return fp;
 	}
@@ -163,7 +176,7 @@ async function dispatchByValidationResult({ ctx, nadle, cacheValidator, validati
 }
 
 async function executeTask(ctx: DispatchContext) {
-	ctx.port.postMessage({ threadId, type: "start" } satisfies WorkerMessage);
+	await ctx.notify({ threadId, type: "start" } satisfies WorkerMessage);
 	ctx.environmentInjector.apply();
 	await ctx.task.run({ context: ctx.context, options: ctx.taskOptions });
 	ctx.environmentInjector.restore();
