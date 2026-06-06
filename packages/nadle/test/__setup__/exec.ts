@@ -83,37 +83,51 @@ Command: ${params.command}`.trimStart();
 	return snapshot;
 }
 
+interface SettledResult {
+	cwd: string;
+	stdout: string;
+	stderr: string;
+	command: string;
+	exitCode: number | undefined;
+}
+
+/**
+ * Await a CLI result whether it succeeds or fails, returning the fields needed to
+ * build a snapshot. The single place that resolves a ResultPromise; assertions on
+ * the exit code live in the callers (getStdout/getStderr/expectPass/expectFail).
+ */
+export async function settle(resultPromise: ResultPromise): Promise<SettledResult> {
+	try {
+		const { cwd, stdout, stderr, command, exitCode } = await resultPromise;
+
+		return { cwd, command, exitCode, stdout: stdout as string, stderr: stderr as string };
+	} catch (error) {
+		const { cwd, stdout, stderr, command, exitCode } = error as Result;
+
+		return { cwd, command, exitCode, stdout: stdout as string, stderr: stderr as string };
+	}
+}
+
 export async function getStdout(resultPromise: ResultPromise, options?: { stripAnsi?: boolean; serializeAll?: boolean }): Promise<string> {
-	const { cwd, stdout, command, exitCode } = await resultPromise;
+	const { cwd, stdout, command, exitCode } = await settle(resultPromise);
 
 	expect(exitCode).toBe(0);
 
-	const output = stdout as string;
-
 	if (options?.serializeAll) {
-		return serialize(createSnapshotTemplate({ cwd, command, stdout: output }));
+		return serialize(createSnapshotTemplate({ cwd, stdout, command }));
 	}
 
 	if (options?.stripAnsi ?? true) {
-		return stripAnsi(createSnapshotTemplate({ cwd, command, stdout: output }));
+		return stripAnsi(createSnapshotTemplate({ cwd, stdout, command }));
 	}
 
-	return output;
+	return stdout;
 }
 
 export async function getStderr(resultPromise: ResultPromise, options?: { stripAnsi?: boolean }): Promise<string> {
-	let stderr = "";
+	const { stderr, exitCode } = await settle(resultPromise);
 
-	try {
-		await resultPromise;
-		throw new Error("Expected command to fail, but it succeeded.");
-	} catch (error) {
-		const execaError = error as Result;
-
-		expect(execaError.exitCode).not.toBe(0);
-
-		stderr = execaError.stderr as string;
-	}
+	expect(exitCode).not.toBe(0);
 
 	if (options?.stripAnsi ?? true) {
 		return stripAnsi(stderr);
