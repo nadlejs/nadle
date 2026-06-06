@@ -3,6 +3,7 @@ import Fs from "node:fs/promises";
 
 import { expect } from "vitest";
 
+import { linkLocalNadle } from "./fs.js";
 import { serialize } from "./serialize.js";
 import { toRun } from "./matchers/to-run.js";
 import { toSettle } from "./matchers/to-settle.js";
@@ -44,16 +45,6 @@ for (const entry of await Fs.readdir(fixturesDir, { withFileTypes: true })) {
 			continue;
 		}
 
-		const symlinkPath = Path.join(dir, "node_modules", "nadle");
-
-		try {
-			await Fs.access(symlinkPath);
-			continue;
-		} catch {
-			// Symlink doesn't exist, create it
-		}
-
-		await Fs.mkdir(Path.join(dir, "node_modules"), { recursive: true });
-		await Fs.symlink(rootPackage, symlinkPath, "junction");
+		await linkLocalNadle(dir);
 	}
 }
