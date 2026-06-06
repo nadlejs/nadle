@@ -11,6 +11,39 @@ import { tempDir, fixturesDir, CONFIG_FILE } from "./constants.js";
 
 const TEMP_DIR = "__temp__";
 
+/**
+ * Create a `node_modules/nadle` junction in `dir` pointing at the local package,
+ * so a generated fixture resolves "nadle" to this checkout rather than a published
+ * version. Shared by withGeneratedFixture and the global vitest setup.
+ */
+export async function linkLocalNadle(dir: string) {
+	const symlinkPath = Path.join(dir, "node_modules", "nadle");
+
+	if (await isPathExists(symlinkPath)) {
+		return;
+	}
+
+	await Fs.mkdir(Path.join(dir, "node_modules"), { recursive: true });
+	await Fs.symlink(Path.resolve(import.meta.dirname, "..", ".."), symlinkPath, "junction");
+}
+
+/**
+ * Run `fn`, then remove `cwd` unless `preserve` is set. On failure, leave `cwd`
+ * in place and log where to find it. Shared cleanup wrapper for fixture runners.
+ */
+async function withCleanup(cwd: string, preserve: boolean, fn: () => Awaitable<void>) {
+	try {
+		await fn();
+
+		if (!preserve) {
+			await Fs.rm(cwd, { force: true, recursive: true });
+		}
+	} catch (err) {
+		console.warn(`⚠️  Test failed — fixture preserved at: file://${cwd}`);
+		throw err;
+	}
+}
+
 export async function withFixture(params: {
 	copyAll?: boolean;
 	preserve?: boolean;
@@ -50,33 +83,7 @@ export async function withFixture(params: {
 
 	const getFiles = () => fixturify.readSync(cwd, { ignore: ignoreFiles });
 
-	try {
-		await testFn({ cwd, getFiles, exec: createExec({ cwd }) });
-
-		if (!preserve) {
-			await Fs.rm(cwd, { force: true, recursive: true });
-		}
-	} catch (err) {
-		console.warn(`⚠️  Test failed — fixture preserved at: file://${cwd}`);
-		throw err;
-	}
-}
-
-export async function withTemp(params: { preserve?: boolean; testFn: (params: { cwd: string }) => Promise<void> }) {
-	const { testFn, preserve = false } = params;
-	const cwd = Path.join(tempDir, randomHash());
-	await Fs.mkdir(cwd, { recursive: true });
-
-	try {
-		await testFn({ cwd });
-
-		if (!preserve) {
-			await Fs.rm(cwd, { force: true, recursive: true });
-		}
-	} catch (err) {
-		console.warn(`⚠️  Test failed — files preserved at: ${cwd}`);
-		throw err;
-	}
+	await withCleanup(cwd, preserve, () => testFn({ cwd, getFiles, exec: createExec({ cwd }) }));
 }
 
 type FileChange =
@@ -96,21 +103,9 @@ export async function withGeneratedFixture(params: {
 
 	await Fs.mkdir(cwd, { recursive: true });
 	fixturify.writeSync(cwd, files);
+	await linkLocalNadle(cwd);
 
-	const nodeModulesDir = Path.join(cwd, "node_modules");
-	await Fs.mkdir(nodeModulesDir, { recursive: true });
-	await Fs.symlink(Path.resolve(import.meta.dirname, "..", ".."), Path.join(nodeModulesDir, "nadle"), "junction");
-
-	try {
-		await testFn({ cwd, exec: createExec({ cwd }) });
-
-		if (!preserve) {
-			await Fs.rm(cwd, { force: true, recursive: true });
-		}
-	} catch (err) {
-		console.warn(`⚠️  Test failed — fixture preserved at: file://${cwd}`);
-		throw err;
-	}
+	await withCleanup(cwd, preserve, () => testFn({ cwd, exec: createExec({ cwd }) }));
 }
 
 export function createFileModifier(baseDir: string) {
