@@ -1,36 +1,17 @@
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project-resolver";
-import { getStderr, expectPass, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
+import { getStderr, expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces resolve tasks", () => {
-	const project: fixturify.DirJSON = {
-		[PNPM_WORKSPACE]: createPnpmWorkspace(),
-		[PACKAGE_JSON]: createPackageJson("root"),
-		[CONFIG_FILE]: createNadleConfig({
-			tasks: [{ name: "build" }, { name: "test" }]
-		}),
-
-		backend: {
-			[PACKAGE_JSON]: createPackageJson("backend"),
-			[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-		},
-		frontend: {
-			[PACKAGE_JSON]: createPackageJson("frontend"),
-			[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-		},
-
-		common: {
-			api: {
-				[PACKAGE_JSON]: createPackageJson("api"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-			},
-			utils: {
-				[PACKAGE_JSON]: createPackageJson("utils"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-			}
+	const project: fixturify.DirJSON = workspaceFixture({
+		root: { tasks: [{ name: "build" }, { name: "test" }] },
+		workspaces: {
+			backend: { tasks: [{ name: "build" }] },
+			frontend: { tasks: [{ name: "build" }] },
+			"common/api": { tasks: [{ name: "build" }] },
+			"common/utils": { tasks: [{ name: "build" }] }
 		}
-	};
+	});
 
 	it("should correct typo tasks", async () => {
 		await withFixture({

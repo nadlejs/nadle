@@ -1,8 +1,7 @@
 import Path from "node:path";
 
 import { it, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project-resolver";
-import { createExec, expectPass, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createNadleConfig, createPackageJson, createPnpmWorkspace } from "setup";
+import { createExec, expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces > excluded tasks", () => {
 	it("should not run excluded tasks", async () => {
@@ -15,26 +14,14 @@ describe("workspaces > excluded tasks", () => {
 				await expectPass(exec`check --exclude two:build`);
 				await expectPass(exec`check --exclude packages:two:build`);
 			},
-			files: {
-				[PNPM_WORKSPACE]: createPnpmWorkspace(),
-				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }], configure: { alias: { "packages/two": "two" } } }),
-
-				packages: {
-					two: {
-						[PACKAGE_JSON]: createPackageJson("one"),
-						[CONFIG_FILE]: createNadleConfig({
-							tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build"] } }]
-						})
-					},
-					one: {
-						[PACKAGE_JSON]: createPackageJson("one"),
-						[CONFIG_FILE]: createNadleConfig({
-							tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build", "two:build", "root:build"] } }]
-						})
-					}
+			files: workspaceFixture({
+				root: { tasks: [{ name: "build" }], configure: { alias: { "packages/two": "two" } } },
+				workspaces: {
+					// Both workspaces intentionally share the package name "one".
+					"packages/two": { name: "one", tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build"] } }] },
+					"packages/one": { tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build", "two:build", "root:build"] } }] }
 				}
-			}
+			})
 		});
 	});
 });
