@@ -12,7 +12,7 @@ function createTask(name: string, workspaceId: string): SchedulerTask {
 function createDeps(tasks: SchedulerTask[], workspaceDeps: Record<string, string[]> = {}, excludedTaskIds: ReadonlySet<string> = new Set()) {
 	return {
 		excludedTaskIds,
-		logger: { debug: vi.fn(), throw: vi.fn() as never },
+		logger: { debug: vi.fn(), error: vi.fn() },
 		getWorkspaceDependencies: (wsId: string) => workspaceDeps[wsId] ?? [],
 		getTasksByName: (taskName: string) => tasks.filter((t) => t.name === taskName)
 	};

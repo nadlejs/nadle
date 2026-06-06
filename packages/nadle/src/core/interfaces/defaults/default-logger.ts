@@ -68,14 +68,6 @@ export class DefaultLogger implements Logger {
 	}
 
 	/**
-	 * Log an error message.
-	 */
-	public throw(message: string): never {
-		this.error(message);
-		throw new Error(message);
-	}
-
-	/**
 	 * Log a warning message.
 	 */
 	public warn(message: InputLogObject | string, ...args: unknown[]): void {

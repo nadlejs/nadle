@@ -2,6 +2,7 @@ import { highlight } from "../utilities/utils.js";
 import { Messages } from "../utilities/messages.js";
 import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
+import { NadleError } from "../utilities/nadle-error.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { type SchedulerDependencies } from "./scheduler-types.js";
@@ -70,8 +71,9 @@ export class TaskScheduler {
 			const startIndex = paths.indexOf(dependency);
 
 			if (startIndex !== -1) {
-				const cycle = [...paths.slice(startIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `);
-				this.deps.logger.throw(Messages.CycleDetected(cycle));
+				const message = Messages.CycleDetected([...paths.slice(startIndex), dependency].map(highlight).join(` ${RIGHT_ARROW} `));
+				this.deps.logger.error(message);
+				throw new NadleError(message);
 			}
 
 			this.detectCycle(dependency, [...paths, dependency]);

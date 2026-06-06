@@ -61,7 +61,7 @@ export async function runTask(
 
 	const context: RunnerContext = {
 		workingDir,
-		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns", "throw"])
+		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
 	};
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
