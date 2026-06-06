@@ -31,7 +31,7 @@
 		"size-limit": "^11.2.0",
 		"std-env": "^3.10.0",
 		"typescript": "^5.9.3",
-		"vitest": "4.0.18",
+		"vitest": "4.1.0",
 		"yaml": "^2.8.2"
 	},
 	"engines": {
