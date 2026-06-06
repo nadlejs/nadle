@@ -96,20 +96,20 @@ export const tasks: TasksAPI = {
 	}
 };
 
-function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver"> {
+function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver" | "empty"> {
 	if (task === undefined) {
-		return { run: () => {}, optionsResolver: undefined };
+		return { empty: true, run: () => {}, optionsResolver: undefined };
 	}
 
 	if (typeof task === "function") {
-		return { run: task, optionsResolver: undefined };
+		return { run: task, empty: false, optionsResolver: undefined };
 	}
 
 	if (optionsResolver === undefined) {
 		throw new Error("Option builder is required for option task");
 	}
 
-	return { ...task, optionsResolver };
+	return { ...task, empty: false, optionsResolver };
 }
 
 function validateTaskName(name: string): void {

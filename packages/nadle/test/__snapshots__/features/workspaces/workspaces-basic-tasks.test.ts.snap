@@ -30,10 +30,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -48,22 +45,10 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:build
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>4</BoldDim> tasks executed
@@ -78,10 +63,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -99,10 +81,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer test
 [log] Resolved tasks:
     <Bold><Yellow>test</Yellow></BoldDim>  → <Green><Bold>root:test</BoldDim></Green>
 
-[log] <Yellow>></Yellow> Task <Bold>test</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>test</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>test</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>1</BoldDim> task executed
@@ -117,22 +96,10 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build build
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>4</BoldDim> tasks executed
@@ -147,22 +114,10 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:three:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:three:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>4</BoldDim> tasks executed
@@ -177,14 +132,8 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build packages
 [log] Using Nadle from /ROOT/lib/index.js
 [log] Loaded configuration from /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts and 3 other(s) files
 
-[log] <Yellow>></Yellow> Task <Bold>packages:two:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
-[log] <Yellow>></Yellow> Task <Bold>packages:one:build</BoldDim> <Yellow>STARTED</Yellow>
-
-[log]
-<Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:two:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
+[log] <Green>✓</Green> Task <Bold>packages:one:build</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
 <Bold><Green>RUN SUCCESSFUL</Green></BoldDim> in <Bold>{duration}</BoldDim>
 [log] <Bold>2</BoldDim> tasks executed
