@@ -1,6 +1,5 @@
 import { it, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project-resolver";
-import { expectPass, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
+import { expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces alias", () => {
 	it("object style", async () => {
@@ -9,22 +8,13 @@ describe("workspaces alias", () => {
 			testFn: async ({ exec }) => {
 				await expectPass(exec`build`);
 			},
-			files: {
-				[PNPM_WORKSPACE]: createPnpmWorkspace(),
-				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }], configure: { alias: { "packages/one": "one" } } }),
-
-				packages: {
-					one: {
-						[PACKAGE_JSON]: createPackageJson("one"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-					},
-					two: {
-						[PACKAGE_JSON]: createPackageJson("two"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-					}
+			files: workspaceFixture({
+				root: { tasks: [{ name: "build" }], configure: { alias: { "packages/one": "one" } } },
+				workspaces: {
+					"packages/one": { tasks: [{ name: "build" }] },
+					"packages/two": { tasks: [{ name: "build" }] }
 				}
-			}
+			})
 		});
 	});
 
@@ -34,10 +24,12 @@ describe("workspaces alias", () => {
 			testFn: async ({ exec }) => {
 				await expectPass(exec`build`);
 			},
-			files: {
-				[PNPM_WORKSPACE]: createPnpmWorkspace(),
-				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({
+			files: workspaceFixture({
+				workspaces: {
+					"packages/one": { tasks: [{ name: "build" }] },
+					"packages/two": { tasks: [{ name: "build" }] }
+				},
+				root: {
 					tasks: [{ name: "build" }],
 					configure: {
 						alias: (workspacePath) => {
@@ -46,19 +38,8 @@ describe("workspaces alias", () => {
 							}
 						}
 					}
-				}),
-
-				packages: {
-					one: {
-						[PACKAGE_JSON]: createPackageJson("one"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-					},
-					two: {
-						[PACKAGE_JSON]: createPackageJson("two"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-					}
 				}
-			}
+			})
 		});
 	});
 
@@ -68,23 +49,12 @@ describe("workspaces alias", () => {
 			testFn: async ({ exec }) => {
 				await expectPass(exec`build`);
 			},
-			files: {
-				[PNPM_WORKSPACE]: createPnpmWorkspace(),
-				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({
-					tasks: [{ name: "build" }],
-					configure: {
-						alias: { ".": "my-root" }
-					}
-				}),
-
-				packages: {
-					one: {
-						[PACKAGE_JSON]: createPackageJson("one"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-					}
-				}
-			}
+			files: workspaceFixture({
+				workspaces: {
+					"packages/one": { tasks: [{ name: "build" }] }
+				},
+				root: { tasks: [{ name: "build" }], configure: { alias: { ".": "my-root" } } }
+			})
 		});
 	});
 

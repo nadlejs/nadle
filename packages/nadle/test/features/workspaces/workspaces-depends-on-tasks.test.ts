@@ -1,18 +1,7 @@
 import Path from "node:path";
 
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project-resolver";
-import {
-	getStderr,
-	getStdout,
-	createExec,
-	CONFIG_FILE,
-	withFixture,
-	PNPM_WORKSPACE,
-	createNadleConfig,
-	createPackageJson,
-	createPnpmWorkspace
-} from "setup";
+import { getStderr, getStdout, createExec, withFixture, workspaceFixture } from "setup";
 
 describe.concurrent("workspaces > depends on tasks", () => {
 	describe("when declare a task without workspace", () => {
@@ -20,25 +9,17 @@ describe.concurrent("workspaces > depends on tasks", () => {
 			it("should throw an error even if having a same task in root workspace", async () => {
 				await withFixture({
 					fixtureDir: "monorepo",
+					files: workspaceFixture({
+						root: { tasks: [{ name: "build" }] },
+						workspaces: {
+							"packages/one": { tasks: [{ name: "check", config: { dependsOn: ["build"] } }] }
+						}
+					}),
 					testFn: async ({ cwd }) => {
 						// TODO: Should we enable --stacktrace by default?
 						await expect(getStderr(createExec({ cwd: Path.join(cwd, "packages", "one") })`check --stacktrace`)).resolves.toContain(
 							`Task build not found in packages:one workspace.`
 						);
-					},
-					files: {
-						[PNPM_WORKSPACE]: createPnpmWorkspace(),
-						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
-
-						packages: {
-							one: {
-								[PACKAGE_JSON]: createPackageJson("one"),
-								[CONFIG_FILE]: createNadleConfig({
-									tasks: [{ name: "check", config: { dependsOn: ["build"] } }]
-								})
-							}
-						}
 					}
 				});
 			});
@@ -48,24 +29,16 @@ describe.concurrent("workspaces > depends on tasks", () => {
 			it("should throw an error instead of trying to correct it", async () => {
 				await withFixture({
 					fixtureDir: "monorepo",
+					files: workspaceFixture({
+						root: { tasks: [{ name: "build" }] },
+						workspaces: {
+							"packages/one": { tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["buidl"] } }] }
+						}
+					}),
 					testFn: async ({ cwd }) => {
 						await expect(getStderr(createExec({ cwd: Path.join(cwd, "packages", "one") })`check --stacktrace`)).resolves.toContain(
 							`Task buidl not found in packages:one workspace.`
 						);
-					},
-					files: {
-						[PNPM_WORKSPACE]: createPnpmWorkspace(),
-						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
-
-						packages: {
-							one: {
-								[PACKAGE_JSON]: createPackageJson("one"),
-								[CONFIG_FILE]: createNadleConfig({
-									tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["buidl"] } }]
-								})
-							}
-						}
 					}
 				});
 			});
@@ -75,24 +48,16 @@ describe.concurrent("workspaces > depends on tasks", () => {
 			it("should run the declared task first", async () => {
 				await withFixture({
 					fixtureDir: "monorepo",
+					files: workspaceFixture({
+						root: { tasks: [{ name: "build" }] },
+						workspaces: {
+							"packages/one": { tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build"] } }] }
+						}
+					}),
 					testFn: async ({ cwd }) => {
 						const stdout = await getStdout(createExec({ cwd: Path.join(cwd, "packages", "one") })`check`);
 
 						expect(stdout).toRunInOrder("packages:one:build", "packages:one:check");
-					},
-					files: {
-						[PNPM_WORKSPACE]: createPnpmWorkspace(),
-						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
-
-						packages: {
-							one: {
-								[PACKAGE_JSON]: createPackageJson("one"),
-								[CONFIG_FILE]: createNadleConfig({
-									tasks: [{ name: "build" }, { name: "check", config: { dependsOn: ["build"] } }]
-								})
-							}
-						}
 					}
 				});
 			});
@@ -112,35 +77,21 @@ describe.concurrent("workspaces > depends on tasks", () => {
 						expect(stdout).toRunInOrder("packages:one:check", "packages:one:build");
 						expect(stdout).toRunInOrder("build", "packages:one:build");
 					},
-					files: {
-						[PNPM_WORKSPACE]: createPnpmWorkspace(),
-						[PACKAGE_JSON]: createPackageJson("root"),
-						[CONFIG_FILE]: createNadleConfig({
-							tasks: [{ name: "build" }],
-							configure: { alias: { "packages/two": "two" } }
-						}),
-
-						packages: {
-							two: {
-								[PACKAGE_JSON]: createPackageJson("two"),
-								[CONFIG_FILE]: createNadleConfig({
-									tasks: [{ name: "build" }, { name: "check" }]
-								})
-							},
-							one: {
-								[PACKAGE_JSON]: createPackageJson("one"),
-								[CONFIG_FILE]: createNadleConfig({
-									tasks: [
-										{ name: "check" },
-										{
-											name: "build",
-											config: { dependsOn: ["packages:two:build", "two:check", "check", "root:build"] }
-										}
-									]
-								})
+					files: workspaceFixture({
+						root: { tasks: [{ name: "build" }], configure: { alias: { "packages/two": "two" } } },
+						workspaces: {
+							"packages/two": { tasks: [{ name: "build" }, { name: "check" }] },
+							"packages/one": {
+								tasks: [
+									{ name: "check" },
+									{
+										name: "build",
+										config: { dependsOn: ["packages:two:build", "two:check", "check", "root:build"] }
+									}
+								]
 							}
 						}
-					}
+					})
 				});
 			});
 		});
@@ -166,26 +117,13 @@ describe.concurrent("workspaces > depends on tasks", () => {
 						testFn: async ({ cwd }) => {
 							await expect(getStderr(createExec({ cwd: Path.join(cwd, "packages", "one") })`build --stacktrace`)).resolves.toContain(expectedError);
 						},
-						files: {
-							[PNPM_WORKSPACE]: createPnpmWorkspace(),
-							[PACKAGE_JSON]: createPackageJson("root"),
-							[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] }),
-
-							packages: {
-								two: {
-									[PACKAGE_JSON]: createPackageJson("two"),
-									[CONFIG_FILE]: createNadleConfig({
-										tasks: [{ name: "build" }]
-									})
-								},
-								one: {
-									[PACKAGE_JSON]: createPackageJson("one"),
-									[CONFIG_FILE]: createNadleConfig({
-										tasks: [{ name: "build", config: { dependsOn: dependency } }]
-									})
-								}
+						files: workspaceFixture({
+							root: { tasks: [{ name: "build" }] },
+							workspaces: {
+								"packages/two": { tasks: [{ name: "build" }] },
+								"packages/one": { tasks: [{ name: "build", config: { dependsOn: dependency } }] }
 							}
-						}
+						})
 					});
 				});
 			}

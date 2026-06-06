@@ -2,42 +2,17 @@ import Path from "node:path";
 
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
-import { PACKAGE_JSON } from "@nadle/project-resolver";
-import {
-	getStderr,
-	createExec,
-	expectPass,
-	CONFIG_FILE,
-	withFixture,
-	PNPM_WORKSPACE,
-	createNadleConfig,
-	createPackageJson,
-	createPnpmWorkspace
-} from "setup";
+import { getStderr, createExec, expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces basic tasks", () => {
-	const project: fixturify.DirJSON = {
-		[PNPM_WORKSPACE]: createPnpmWorkspace(),
-		[PACKAGE_JSON]: createPackageJson("root"),
-		[CONFIG_FILE]: createNadleConfig({
-			tasks: [{ name: "build" }, { name: "test" }]
-		}),
-
-		packages: {
-			one: {
-				[PACKAGE_JSON]: createPackageJson("one"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-			},
-			two: {
-				[PACKAGE_JSON]: createPackageJson("two"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-			},
-			three: {
-				[PACKAGE_JSON]: createPackageJson("three"),
-				[CONFIG_FILE]: createNadleConfig({ tasks: [{ name: "build" }] })
-			}
+	const project: fixturify.DirJSON = workspaceFixture({
+		root: { tasks: [{ name: "build" }, { name: "test" }] },
+		workspaces: {
+			"packages/one": { tasks: [{ name: "build" }] },
+			"packages/two": { tasks: [{ name: "build" }] },
+			"packages/three": { tasks: [{ name: "build" }] }
 		}
-	};
+	});
 
 	it("should register all tasks from all config files", async () => {
 		await withFixture({
