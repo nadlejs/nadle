@@ -1,23 +1,18 @@
 import { expect } from "vitest";
-import type { Result, ResultPromise } from "execa";
+import type { ResultPromise } from "execa";
 
-import { createSnapshotTemplate } from "./exec.js";
+import { settle, createSnapshotTemplate } from "./exec.js";
 
 export async function expectFail(resultPromise: ResultPromise) {
-	try {
-		await resultPromise;
-		throw new Error("Expected command to fail, but it succeeded.");
-	} catch (error) {
-		const { cwd, stdout, stderr, command, exitCode } = error as Result;
+	const { cwd, stdout, stderr, command, exitCode } = await settle(resultPromise);
 
-		expect(exitCode).toBe(1);
-		expect(createSnapshotTemplate({ cwd, command, stdout: stdout as string, stderr: stderr as string })).toMatchSnapshot();
-	}
+	expect(exitCode).toBe(1);
+	expect(createSnapshotTemplate({ cwd, stdout, stderr, command })).toMatchSnapshot();
 }
 
 export async function expectPass(resultPromise: ResultPromise) {
-	const { cwd, stdout, stderr, command, exitCode } = await resultPromise;
+	const { cwd, stdout, stderr, command, exitCode } = await settle(resultPromise);
 
 	expect(exitCode).toBe(0);
-	expect(createSnapshotTemplate({ cwd, command, stdout: stdout as string, stderr: stderr as string })).toMatchSnapshot();
+	expect(createSnapshotTemplate({ cwd, stdout, stderr, command })).toMatchSnapshot();
 }
