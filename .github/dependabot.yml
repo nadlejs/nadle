@@ -16,6 +16,14 @@ updates:
       interval: "weekly"
     pull-request-branch-name:
       separator: "-"
+    # vitest 4.1.x ships a broken internal package resolution: @vitest/utils imports
+    # `createDOMElementFilter` from @vitest/pretty-format, which no longer exports it,
+    # crashing every test on startup. Hold at 4.0.x until the 4.1 line is fixed.
+    ignore:
+      - dependency-name: "vitest"
+        versions: ["4.1.x"]
+      - dependency-name: "@vitest/*"
+        versions: ["4.1.x"]
     groups:
       security-updates:
         applies-to: security-updates
