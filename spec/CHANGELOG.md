@@ -8,6 +8,14 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.8.0 — 2026-06-07
+
+### Changed
+
+- 01-task: Typed-task registration — `optionsResolver` is now optional when the
+  options type has no required fields (an empty object satisfies it), defaulting
+  to `{}`. It remains mandatory when any field is required.
+
 ## 1.7.0 — 2026-06-07
 
 ### Added
