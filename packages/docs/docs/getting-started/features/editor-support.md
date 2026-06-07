@@ -45,6 +45,10 @@ Hovering over a task name in a `dependsOn` value shows a tooltip with the task's
 
 Ctrl+click (Cmd+click on macOS) a task name in a `dependsOn` value to jump to its `tasks.register()` call in the same file.
 
+### File Structure / Outline
+
+The outline view lists every task registered in the file (one entry per `tasks.register()` call), so you can navigate large config files and jump straight to a task. Typed tasks also show their task type (e.g. `ExecTask`).
+
 ## Supported File Formats
 
 The LSP activates on all Nadle config file formats:
