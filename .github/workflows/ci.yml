@@ -75,11 +75,10 @@ jobs:
       - name: Check
         run: nadle check
 
-      - name: Typecheck
-        run: pnpm exec tsc -b --noEmit
-
-      - name: Verify API surface
-        run: nadle packages:nadle:testNoWarningsAndUndocumentedAPI
+      # typecheck + the API-surface tasks both depend on the package build, so
+      # run them together — nadle dedupes the shared build within one invocation.
+      - name: Typecheck and verify API surface
+        run: nadle typecheck packages:nadle:testNoWarningsAndUndocumentedAPI
 
   test:
     name: Test Node ${{ matrix.node-version }} on ${{ matrix.os }} (shard ${{ matrix.shard }}/3)
