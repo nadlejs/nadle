@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { createMockDeps, generateRandomDag, driveWithDurations } from "./__helpers__.js";
+import { randomSubset, createMockDeps, generateRandomDag, driveWithDurations, generateRandomWorkspaceDag } from "./__helpers__.js";
 
 // Property-style stress test: across many seeds, build a random acyclic graph
 // with random (but deterministic) task durations, run it on the simulated
@@ -54,6 +54,60 @@ describe.concurrent("TaskScheduler — randomized duration stress", () => {
 		expect(order).toHaveLength(200);
 
 		for (const [dep, dependent] of edges) {
+			expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
+		}
+	});
+});
+
+// Random graphs with a random subset of tasks excluded. An excluded task is
+// never pulled in as a dependency, and every surviving edge (neither endpoint
+// excluded) must still be honored.
+describe.concurrent("TaskScheduler — randomized exclusion", () => {
+	const SEEDS = Array.from({ length: 100 }, (_, i) => i + 1);
+
+	it.each(SEEDS)("seed %i: excluded tasks never run and surviving edges hold", (seed) => {
+		const { tasks, edges, durations } = generateRandomDag(seed, 25);
+		const allIds = tasks.map((t) => t.name);
+		// exclude a subset, but never the seed/main tasks so something still runs
+		const excluded = new Set(randomSubset(seed * 31, allIds.slice(5), 0.25));
+
+		// only non-excluded tasks are requested as main tasks
+		const mainTaskIds = allIds.filter((id) => !excluded.has(id));
+		const deps = createMockDeps(tasks, { mainTaskIds, parallel: true, excludedTasks: [...excluded] });
+
+		const { order, timeline } = driveWithDurations(deps, durations);
+
+		// no excluded task ran
+		for (const id of excluded) {
+			expect(order).not.toContain(id);
+		}
+
+		// every edge whose endpoints both survived is still ordered correctly
+		const survivingEdges = edges.filter(
+			([dep, dependent]) => !excluded.has(dep) && !excluded.has(dependent) && timeline.has(dep) && timeline.has(dependent)
+		);
+
+		for (const [dep, dependent] of survivingEdges) {
+			expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
+		}
+	});
+});
+
+// Random multi-workspace projects driven by a random acyclic workspace-dependency
+// graph, with implicit deps enabled. Every implicit edge derived from the
+// workspace graph must be honored on the clock.
+describe.concurrent("TaskScheduler — randomized implicit workspace deps", () => {
+	const SEEDS = Array.from({ length: 100 }, (_, i) => i + 1);
+
+	it.each(SEEDS)("seed %i: implicit workspace edges are honored", (seed) => {
+		const { tasks, durations, workspaceDeps, implicitEdges } = generateRandomWorkspaceDag(seed, 15);
+		const deps = createMockDeps(tasks, { workspaceDeps, parallel: true, implicitDependencies: true });
+
+		const { order, timeline } = driveWithDurations(deps, durations);
+
+		expect(order).toHaveLength(tasks.length);
+
+		for (const [dep, dependent] of implicitEdges) {
 			expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
 		}
 	});

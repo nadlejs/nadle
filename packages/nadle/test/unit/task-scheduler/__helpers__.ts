@@ -230,6 +230,66 @@ export function generateRandomDag(seed: number, taskCount: number, maxDepsPerTas
 	return { tasks, edges, durations };
 }
 
+export interface RandomWorkspaceDag {
+	tasks: TaskDef[];
+	durations: Record<string, number>;
+	/** Implicit task edges [depTaskId, dependentTaskId] derived from workspaceDeps. */
+	implicitEdges: Array<[string, string]>;
+	/** Workspace-level dependency graph used to derive implicit task edges. */
+	workspaceDeps: Record<string, string[]>;
+}
+
+/**
+ * Builds a random multi-workspace project from a seed: N workspaces, each with
+ * the same task name, wired by an acyclic workspace-dependency graph (a
+ * workspace only depends on lower-indexed workspaces). With implicit deps on,
+ * the scheduler should add an edge from a dependency workspace's task to the
+ * dependent workspace's task.
+ */
+export function generateRandomWorkspaceDag(seed: number, workspaceCount: number, taskName = "build"): RandomWorkspaceDag {
+	const rng = createRng(seed);
+	const wsIds = Array.from({ length: workspaceCount }, (_, i) => `packages:ws${i}`);
+	const tasks: TaskDef[] = [];
+	const durations: Record<string, number> = {};
+	const workspaceDeps: Record<string, string[]> = {};
+	const implicitEdges: Array<[string, string]> = [];
+
+	for (let i = 0; i < workspaceCount; i++) {
+		const wsId = wsIds[i];
+		const taskId = `${wsId}:${taskName}`;
+
+		tasks.push({ name: taskName, workspaceId: wsId });
+		durations[taskId] = 1 + Math.floor(rng() * 100);
+
+		if (i > 0) {
+			const depCount = Math.floor(rng() * Math.min(3, i + 1));
+			const deps = new Set<string>();
+
+			for (let d = 0; d < depCount; d++) {
+				const depWs = wsIds[Math.floor(rng() * i)];
+
+				if (!deps.has(depWs)) {
+					deps.add(depWs);
+					implicitEdges.push([`${depWs}:${taskName}`, taskId]);
+				}
+			}
+
+			if (deps.size > 0) {
+				workspaceDeps[wsId] = [...deps];
+			}
+		}
+	}
+
+	return { tasks, durations, workspaceDeps, implicitEdges };
+}
+
+/** Picks a deterministic random subset of `items` (each included ~`rate`). */
+export function randomSubset<T>(seed: number, items: T[], rate = 0.2): T[] {
+	const rng = createRng(seed);
+
+	return items.filter(() => rng() < rate);
+}
+
 export interface ClockDriveResult {
 	/** Order in which tasks completed (by simulated finish time). */
 	order: string[];
