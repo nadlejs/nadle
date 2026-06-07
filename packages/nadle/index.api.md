@@ -166,6 +166,7 @@ export const PnpmTask: Task<PnpmTaskOptions>;
 // @public
 export interface PnpmTaskOptions {
     readonly args: MaybeArray<string>;
+    readonly filter?: MaybeArray<string>;
 }
 
 // @public

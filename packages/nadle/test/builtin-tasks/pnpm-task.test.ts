@@ -1,7 +1,7 @@
 import Path from "node:path";
 
-import { it, describe } from "vitest";
-import { createExec, expectFail, expectPass, fixturesDir } from "setup";
+import { it, expect, describe } from "vitest";
+import { getStdout, createExec, expectFail, expectPass, fixturesDir } from "setup";
 
 describe("pnpm Task", () => {
 	const exec = createExec({ cwd: Path.join(fixturesDir, "pnpm-task") });
@@ -16,5 +16,11 @@ describe("pnpm Task", () => {
 
 	it("throw error when running tsc command with error ts file", async () => {
 		await expectFail(exec`fail`);
+	});
+
+	it("prepends --filter flags when filter is set", async () => {
+		const stdout = await getStdout(exec`filtered --log-level info`);
+
+		expect(stdout).toContain("Running pnpm command: pnpm --filter @nadle/internal-nadle-test-fixtures-pnpm-task exec echo hello");
 	});
 });

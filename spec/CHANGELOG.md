@@ -8,6 +8,13 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.9.0 — 2026-06-07
+
+### Added
+
+- 10-builtin-tasks: PnpmTask `filter` option — scopes the command to specific
+  workspace package(s) by prepending `--filter <value>` flag(s) before `args`.
+
 ## 1.8.0 — 2026-06-07
 
 ### Changed

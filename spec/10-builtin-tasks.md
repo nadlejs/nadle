@@ -28,18 +28,20 @@ Executes a pnpm command. Specialized variant of ExecTask with `pnpm` as the comm
 
 ### Options
 
-| Field  | Type                       | Required | Description                  |
-| ------ | -------------------------- | -------- | ---------------------------- |
-| `args` | string or array of strings | Yes      | Arguments to pass to `pnpm`. |
+| Field    | Type                       | Required | Description                                                          |
+| -------- | -------------------------- | -------- | -------------------------------------------------------------------- |
+| `args`   | string or array of strings | Yes      | Arguments to pass to `pnpm`.                                         |
+| `filter` | string or array of strings | No       | Workspace package(s) to scope the command to, as `--filter` flag(s). |
 
 ### Behavior
 
-1. Normalize arguments to an array.
-2. Spawn `pnpm` with the arguments.
-3. Set working directory to the task's `workingDir`.
-4. Force color output (`FORCE_COLOR=1`).
-5. Stream combined output to the task logger.
-6. Await subprocess completion.
+1. Normalize `filter` to an array and expand each value into a `--filter <value>` pair.
+2. Normalize `args` to an array and append it after the filter flags.
+3. Spawn `pnpm` with the combined arguments.
+4. Set working directory to the task's `workingDir`.
+5. Force color output (`FORCE_COLOR=1`).
+6. Stream combined output to the task logger.
+7. Await subprocess completion.
 
 ## NodeTask
 
