@@ -2,6 +2,7 @@ import { isRootWorkspaceId } from "@nadle/project-resolver";
 
 import { Messages } from "../utilities/messages.js";
 import { type NadleFileOptions } from "../options/types.js";
+import { ConfigurationError } from "../utilities/nadle-error.js";
 
 export class FileOptionRegistry {
 	private workspaceId: string | null = null;
@@ -17,7 +18,7 @@ export class FileOptionRegistry {
 		}
 
 		if (!isRootWorkspaceId(this.workspaceId)) {
-			throw new Error(Messages.InvalidConfigureUsage());
+			throw new ConfigurationError(Messages.InvalidConfigureUsage());
 		}
 
 		this.registry.set(this.workspaceId, options);
@@ -25,7 +26,7 @@ export class FileOptionRegistry {
 
 	public get(workspaceId: string): NadleFileOptions {
 		if (!isRootWorkspaceId(workspaceId)) {
-			throw new Error(Messages.InvalidConfigureUsage());
+			throw new ConfigurationError(Messages.InvalidConfigureUsage());
 		}
 
 		return this.registry.get(workspaceId) ?? {};

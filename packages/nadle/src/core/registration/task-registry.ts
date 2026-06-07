@@ -2,6 +2,7 @@ import { type Project, getWorkspaceById, getWorkspaceByLabelOrId } from "@nadle/
 
 import { Messages } from "../utilities/messages.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
+import { TaskNotFoundError } from "../utilities/nadle-error.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
 
 interface BufferedTask extends Omit<RegisteredTask, "label"> {}
@@ -80,7 +81,7 @@ export class TaskRegistry {
 		const taskId = TaskIdentifier.create(targetWorkspace.id, taskNameInput);
 
 		if (!this.registry.has(taskId)) {
-			throw new Error(Messages.UnresolvedTaskWithoutSuggestions(taskNameInput, targetWorkspace.label));
+			throw new TaskNotFoundError(Messages.UnresolvedTaskWithoutSuggestions(taskNameInput, targetWorkspace.label));
 		}
 
 		return taskId;

@@ -3,11 +3,22 @@ import { type ExecutionContext } from "../context.js";
 import { TaskStatus } from "../interfaces/registered-task.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { PoolExecutor, type Executor, InlineExecutor } from "./executor.js";
+import { NadleError, TaskExecutionError } from "../utilities/nadle-error.js";
 import { type Notifier, type WorkerParams, type WorkerMessage } from "./worker.js";
 
 // It seems this is the error message thrown by TinyPool when a worker is terminated
 // See: https://github.com/tinylibs/tinypool/blob/main/src/index.ts#L438
 const TERMINATING_WORKER_ERROR = "Terminating worker thread";
+
+function toTaskExecutionError(error: unknown, label: string): NadleError {
+	if (error instanceof NadleError) {
+		return error;
+	}
+
+	const message = error instanceof Error ? error.message : String(error);
+
+	return new TaskExecutionError(`Task ${label} failed: ${message}`, { cause: error });
+}
 
 export class TaskPool {
 	private readonly executor: Executor;
@@ -62,7 +73,8 @@ export class TaskPool {
 			}
 
 			await this.context.eventEmitter.onTaskFailed(task);
-			throw error;
+
+			throw toTaskExecutionError(error, task.label);
 		}
 
 		await Promise.all(Array.from(this.getNextReadyTasks(taskId)).map((readyTaskId) => this.pushTask(readyTaskId)));

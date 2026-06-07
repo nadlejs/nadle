@@ -54,6 +54,6 @@ describe.concurrent("NadleError", () => {
 	});
 
 	it("is constructable with message and optional errorCode", () => {
-		expectTypeOf(NadleError).constructorParameters.toEqualTypeOf<[string, number?]>();
+		expectTypeOf(NadleError).constructorParameters.toEqualTypeOf<[string, number?, ErrorOptions?]>();
 	});
 });

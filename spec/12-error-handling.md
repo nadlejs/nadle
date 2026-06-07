@@ -10,6 +10,22 @@ NadleError is a specialized error class with a numeric exit code.
 | `errorCode` | number | `1`            | Process exit code used when this error reaches the top level. |
 | `name`      | string | `"NadleError"` | Error name for stack traces.                                  |
 
+## NadleError Subclasses
+
+NadleError has a hierarchy of subclasses so consumers can catch specific error
+categories programmatically. Each subclass fixes a distinct `errorCode`.
+
+| Subclass                | `errorCode` | Raised when                                                                                                                                                                      |
+| ----------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ConfigurationError`    | `2`         | Config is missing or invalid: config file not found, invalid options or task inputs, invalid task name, duplicate task name, invalid `configure()` usage, invalid worker config. |
+| `TaskNotFoundError`     | `3`         | A requested task or workspace cannot be resolved.                                                                                                                                |
+| `CyclicDependencyError` | `4`         | The task graph contains a cycle.                                                                                                                                                 |
+| `TaskExecutionError`    | `1`         | A task throws during execution. Wraps the original error as `cause`; keeps exit code `1` to preserve the baseline failure contract.                                              |
+
+Invariant violations (states that should be impossible — unset working
+directory, project not yet configured, exhaustiveness fallbacks) remain plain
+`Error`, not NadleError subclasses.
+
 ## Error Propagation
 
 Errors flow through the system in this chain:
@@ -31,7 +47,9 @@ Task function throws
 3. The pool's `pushTask` method catches the rejection.
 4. If the error is a worker termination (cancellation), `onTaskCanceled` is emitted
    and the error is swallowed.
-5. Otherwise, `onTaskFailed` is emitted and the error is re-thrown.
+5. Otherwise, `onTaskFailed` is emitted. A NadleError is re-thrown as-is; any
+   other error is wrapped in a `TaskExecutionError` (with the original as `cause`)
+   before being re-thrown.
 6. The re-thrown error propagates to the `execute()` method.
 7. `onExecutionFailed` is emitted with the error.
 8. The process exits with the appropriate code.

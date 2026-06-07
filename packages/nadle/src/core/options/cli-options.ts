@@ -6,6 +6,7 @@ import { type NadleCLIOptions } from "./types.js";
 import { Messages } from "../utilities/messages.js";
 import { SupportLogLevels } from "../utilities/consola.js";
 import { SupportReporters } from "../reporting/reporters.js";
+import { ConfigurationError } from "../utilities/nadle-error.js";
 
 export const CLIOptions = {
 	configFile: {
@@ -191,6 +192,6 @@ function createWorkerCoercer(type: "min" | "max") {
 			return workers;
 		}
 
-		throw new Error(Messages.InvalidWorkerConfig(type, workers));
+		throw new ConfigurationError(Messages.InvalidWorkerConfig(type, workers));
 	};
 }

@@ -5,8 +5,8 @@ import { highlight } from "../utilities/utils.js";
 import { Messages } from "../utilities/messages.js";
 import { suggest } from "../utilities/suggestion.js";
 import { type Logger } from "../interfaces/logger.js";
-import { NadleError } from "../utilities/nadle-error.js";
 import { TaskIdentifier } from "../models/task-identifier.js";
+import { TaskNotFoundError } from "../utilities/nadle-error.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
 export class TaskInputResolver {
@@ -87,7 +87,7 @@ export class TaskInputResolver {
 			suggestions: formatSuggestions(resolvedTask.suggestions)
 		});
 		this.logger.error(message);
-		throw new NadleError(message);
+		throw new TaskNotFoundError(message);
 	}
 
 	private resolveWorkspace(workspaceInput: string, workspaceLabels: string[]): string {
@@ -96,7 +96,7 @@ export class TaskInputResolver {
 		if (suggestedWorkspace.result === undefined) {
 			const message = Messages.UnresolvedWorkspace(workspaceInput, formatSuggestions(suggestedWorkspace.suggestions));
 			this.logger.error(message);
-			throw new NadleError(message);
+			throw new TaskNotFoundError(message);
 		}
 
 		return suggestedWorkspace.result;

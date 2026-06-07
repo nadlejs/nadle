@@ -16,6 +16,11 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   New `agent` reporter emits compact, plain, low-noise output (one line per task
   plus a summary line) for AI agents and scripts. `default` remains the
   human-oriented reporter.
+- 12-error-handling: NadleError subclass hierarchy — `ConfigurationError` (exit
+  code 2), `TaskNotFoundError` (3), `CyclicDependencyError` (4), and
+  `TaskExecutionError` (1, wraps the original task error as `cause`). Lets
+  consumers catch specific error categories. Invariant violations remain plain
+  `Error`.
 
 ## 1.6.0 — 2026-02-25
 
