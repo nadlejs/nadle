@@ -104,6 +104,7 @@ export interface NadleBaseOptions {
     readonly maxWorkers?: number | string;
     readonly minWorkers?: number | string;
     readonly parallel?: boolean;
+    readonly reporter?: SupportReporter;
 }
 
 // @public
@@ -180,6 +181,12 @@ export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 // @public
 export const SupportLogLevels: ["error", "log", "info", "debug"];
+
+// @public
+export type SupportReporter = (typeof SupportReporters)[number];
+
+// @public
+export const SupportReporters: readonly ["default", "agent"];
 
 // @public
 export interface Task<Options = unknown> {

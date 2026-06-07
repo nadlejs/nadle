@@ -174,6 +174,20 @@ Useful for tracking task flow in complex or long-running builds.
 Enabled by default when running in an interactive terminal (TTY) outside of CI.
 Automatically disabled when output is piped or redirected.
 
+### `reporter`
+
+- **Type:** `'default' | 'agent'`
+- **Default:** `'default'`
+- **CLI:** `--reporter <default|agent>`
+
+Selects the output style. `default` is the human-oriented reporter (welcome banner,
+colored task status messages, optional live footer, optional summary table).
+
+`agent` is a compact, plain reporter for AI agents and scripts: no colors, banner,
+footer, or spinners — just one stable line per task (`DONE <task> <time>`,
+`FAILED <task> <time>`, etc.) and a single summary line at the end
+(`SUCCESS in <time> (done N ...)`). Lower token noise and deterministic, easy to parse.
+
 ### `summary`
 
 - **Type:** `boolean`

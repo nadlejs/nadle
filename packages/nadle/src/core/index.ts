@@ -3,3 +3,4 @@ export * from "./options/index.js";
 export * from "./utilities/index.js";
 export * from "./interfaces/index.js";
 export * from "./registration/index.js";
+export { type SupportReporter, SupportReporters } from "./reporting/reporters.js";

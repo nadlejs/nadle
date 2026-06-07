@@ -19,6 +19,7 @@ const argv = yargs(hideBin(Process.argv))
 		[CLIOptions.exclude.key]: CLIOptions.exclude.options,
 		[CLIOptions.noCache.key]: CLIOptions.noCache.options,
 		[CLIOptions.summary.key]: CLIOptions.summary.options,
+		[CLIOptions.reporter.key]: CLIOptions.reporter.options,
 		[CLIOptions.parallel.key]: CLIOptions.parallel.options,
 		[CLIOptions.cacheDir.key]: CLIOptions.cacheDir.options,
 		[CLIOptions.logLevel.key]: CLIOptions.logLevel.options,

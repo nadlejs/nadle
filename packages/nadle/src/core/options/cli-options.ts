@@ -5,6 +5,7 @@ import { CONFIG_FILE_PATTERN } from "@nadle/project-resolver";
 import { type NadleCLIOptions } from "./types.js";
 import { Messages } from "../utilities/messages.js";
 import { SupportLogLevels } from "../utilities/consola.js";
+import { SupportReporters } from "../reporting/reporters.js";
 
 export const CLIOptions = {
 	configFile: {
@@ -80,6 +81,15 @@ export const CLIOptions = {
 			type: "boolean",
 			defaultDescription: "!isCI && isTTY",
 			description: "Enables the in-progress summary footer during task execution"
+		}
+	},
+	reporter: {
+		key: "reporter",
+		options: {
+			type: "string",
+			defaultDescription: "default",
+			choices: SupportReporters,
+			description: "Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)"
 		}
 	},
 	cache: {

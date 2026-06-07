@@ -3,6 +3,41 @@
 Nadle provides real-time execution feedback through a footer renderer and an optional
 end-of-run summary.
 
+## Reporters
+
+The output style is selected by the `reporter` option (`--reporter`):
+
+| Reporter  | Audience          | Behavior                                                                                       |
+| --------- | ----------------- | ---------------------------------------------------------------------------------------------- |
+| `default` | Humans (default)  | Welcome banner, colored task status messages, optional live footer, optional summary table.    |
+| `agent`   | AI agents/scripts | Compact, plain (no color/banner/footer/spinner): one stable line per task plus a summary line. |
+
+The remaining sections of this document describe the `default` reporter. The `agent`
+reporter is specified below.
+
+### Agent Reporter
+
+Selected with `--reporter=agent`. Emits one plain line per task outcome and a single
+summary line. No colors, welcome banner, footer, STARTED lines, or profiling table.
+
+| Event           | Output                      |
+| --------------- | --------------------------- |
+| Task finished   | `DONE {label} {duration}`   |
+| Task up-to-date | `UP-TO-DATE {label}`        |
+| Task from cache | `FROM-CACHE {label}`        |
+| Task failed     | `FAILED {label} {duration}` |
+| Task canceled   | `CANCELED {label}`          |
+
+Summary line:
+
+```
+SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ failed {N}])
+FAILED in {duration} (done {N}[ ... ] failed {N})
+```
+
+With `--stacktrace`, the full error stack is printed after a failed run. The process
+exit code is unchanged from the default reporter.
+
 ## Footer
 
 The footer is a live-updating display at the bottom of the terminal showing execution

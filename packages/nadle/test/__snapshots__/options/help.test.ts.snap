@@ -43,4 +43,8 @@ General options:
 Miscellaneous options:
   -h, --help     Show this help                                                            [boolean]
   -v, --version  Show version number                                                       [boolean]
+
+Options:
+      --reporter  Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)
+                                           [string] [choices: "default", "agent"] [default: default]
 `;

@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.7.0 — 2026-06-07
+
+### Added
+
+- 13-reporting: Reporters — `reporter` option (`--reporter`) selects output style.
+  New `agent` reporter emits compact, plain, low-noise output (one line per task
+  plus a summary line) for AI agents and scripts. `default` remains the
+  human-oriented reporter.
+
 ## 1.6.0 — 2026-02-25
 
 ### Added
