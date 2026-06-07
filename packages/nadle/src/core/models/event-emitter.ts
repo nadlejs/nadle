@@ -5,6 +5,10 @@ import { type RegisteredTask } from "../interfaces/registered-task.js";
 export class EventEmitter implements Required<Listener> {
 	public constructor(private readonly listeners: Listener[]) {}
 
+	public addListener(listener: Listener): void {
+		this.listeners.push(listener);
+	}
+
 	private async emit<K extends keyof Listener>(event: K, ...args: Parameters<NonNullable<Listener[K]>>): Promise<void> {
 		for (const listener of this.listeners) {
 			await (listener[event] as ((...args: unknown[]) => Awaitable<void>) | undefined)?.(...args);

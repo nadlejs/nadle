@@ -8,6 +8,7 @@ import { NadleError } from "./utilities/nadle-error.js";
 import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
+import { AgentReporter } from "./reporting/agent-reporter.js";
 import { TaskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { type State, type ExecutionContext } from "./context.js";
@@ -29,7 +30,7 @@ export class Nadle implements ExecutionContext {
 	public readonly fileOptionRegistry = new FileOptionRegistry();
 	public readonly taskScheduler = new TaskScheduler(this);
 	public readonly executionTracker = new ExecutionTracker();
-	public readonly eventEmitter: EventEmitter = new EventEmitter([this.executionTracker, new DefaultReporter(this)]);
+	public readonly eventEmitter: EventEmitter = new EventEmitter([this.executionTracker]);
 
 	#options: NadleResolvedOptions | undefined;
 
@@ -39,6 +40,7 @@ export class Nadle implements ExecutionContext {
 		this.#options = await runWithInstance(this, () =>
 			new OptionsResolver(this.logger, this.taskRegistry, this.fileOptionRegistry).resolve(this.cliOptions)
 		);
+		this.eventEmitter.addListener(this.#options.reporter === "agent" ? new AgentReporter(this) : new DefaultReporter(this));
 		await this.eventEmitter.onInitialize();
 
 		return this;

@@ -25,6 +25,7 @@ export class OptionsResolver {
 		cleanCache: false,
 		showConfig: false,
 		maxCacheEntries: 5,
+		reporter: "default",
 		implicitDependencies: true,
 		excludedTasks: [] as string[],
 		footer: !isCI && !!process.stdout.isTTY,
