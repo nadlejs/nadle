@@ -17,6 +17,11 @@ export type Awaitable<T> = T | PromiseLike<T>;
 export type Callback<T = unknown, P = void> = (params: P) => T;
 
 // @public
+export class ConfigurationError extends NadleError {
+    constructor(message: string);
+}
+
+// @public
 export function configure(options: NadleFileOptions): void;
 
 // @public
@@ -28,6 +33,11 @@ export interface CopyTaskOptions {
     readonly from: string;
     readonly include?: MaybeArray<string>;
     readonly to: string;
+}
+
+// @public
+export class CyclicDependencyError extends NadleError {
+    constructor(message: string);
 }
 
 // @public
@@ -109,7 +119,7 @@ export interface NadleBaseOptions {
 
 // @public
 export class NadleError extends Error {
-    constructor(message: string, errorCode?: number);
+    constructor(message: string, errorCode?: number, options?: ErrorOptions);
     readonly errorCode: number;
 }
 
@@ -217,9 +227,19 @@ export interface TaskConfigurationBuilder {
 export type TaskEnv = Record<string, string | number | boolean>;
 
 // @public
+export class TaskExecutionError extends NadleError {
+    constructor(message: string, options?: ErrorOptions);
+}
+
+// @public
 export type TaskFn = Callback<Awaitable<void>, {
     context: RunnerContext;
 }>;
+
+// @public
+export class TaskNotFoundError extends NadleError {
+    constructor(message: string);
+}
 
 // @public
 export const tasks: TasksAPI;

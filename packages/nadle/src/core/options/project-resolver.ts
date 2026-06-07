@@ -12,6 +12,7 @@ import {
 } from "@nadle/project-resolver";
 
 import { Messages } from "../utilities/messages.js";
+import { ConfigurationError } from "../utilities/nadle-error.js";
 
 type WorkspaceInitializer = (workspaceId: string, configFilePath: string) => Promise<void>;
 
@@ -48,7 +49,7 @@ export class ProjectResolver {
 			const resolvedConfigPath = Path.resolve(projectPath, rootConfigFilePath);
 
 			if (!(await isPathExists(resolvedConfigPath))) {
-				throw new Error(Messages.SpecifiedConfigFileNotFound(resolvedConfigPath));
+				throw new ConfigurationError(Messages.SpecifiedConfigFileNotFound(resolvedConfigPath));
 			}
 
 			return resolvedConfigPath;
@@ -62,6 +63,6 @@ export class ProjectResolver {
 			}
 		}
 
-		throw new Error(Messages.ConfigFileNotFound(projectPath));
+		throw new ConfigurationError(Messages.ConfigFileNotFound(projectPath));
 	}
 }

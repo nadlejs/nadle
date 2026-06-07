@@ -6,9 +6,9 @@ import { type Project, configureProject, ROOT_WORKSPACE_ID } from "@nadle/projec
 
 import { clamp } from "../utilities/utils.js";
 import { ProjectResolver } from "./project-resolver.js";
-import { NadleError } from "../utilities/nadle-error.js";
 import { TaskInputResolver } from "./task-input-resolver.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
+import { ConfigurationError } from "../utilities/nadle-error.js";
 import { DEFAULT_CACHE_DIR_NAME } from "../utilities/constants.js";
 import { type TaskRegistry } from "../registration/task-registry.js";
 import { type DefaultLogger } from "../interfaces/defaults/default-logger.js";
@@ -78,7 +78,7 @@ export class OptionsResolver {
 		} else {
 			const message = `Invalid worker value: ${configValue}`;
 			this.logger.error(message);
-			throw new NadleError(message);
+			throw new ConfigurationError(message);
 		}
 
 		return clamp(result, 1, this.availableWorkers);

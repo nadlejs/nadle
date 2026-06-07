@@ -2,6 +2,7 @@ import { VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
 
 import { Messages } from "../utilities/messages.js";
 import { getCurrentInstance } from "../nadle-context.js";
+import { ConfigurationError } from "../utilities/nadle-error.js";
 import type { Task, RunnerContext } from "../interfaces/task.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
 import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
@@ -72,7 +73,7 @@ export const tasks: TasksAPI = {
 		validateTaskName(name);
 
 		if (taskRegistry.hasTaskName(name)) {
-			throw new Error(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
+			throw new ConfigurationError(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 
 		let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
@@ -114,6 +115,6 @@ function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Reso
 
 function validateTaskName(name: string): void {
 	if (!VALID_TASK_NAME_PATTERN.test(name)) {
-		throw new Error(Messages.InvalidTaskName(`[${name}]`));
+		throw new ConfigurationError(Messages.InvalidTaskName(`[${name}]`));
 	}
 }
