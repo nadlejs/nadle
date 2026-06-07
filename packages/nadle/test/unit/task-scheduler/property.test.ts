@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { randomSubset, createMockDeps, generateRandomDag, driveWithDurations, generateRandomWorkspaceDag } from "./__helpers__.js";
+import { randomSubset, reachableFrom, createMockDeps, generateRandomDag, driveWithDurations, generateRandomWorkspaceDag } from "./__helpers__.js";
 
 // Property-style stress test: across many seeds, build a random acyclic graph
 // with random (but deterministic) task durations, run it on the simulated
@@ -109,6 +109,66 @@ describe.concurrent("TaskScheduler — randomized implicit workspace deps", () =
 
 		for (const [dep, dependent] of implicitEdges) {
 			expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
+		}
+	});
+});
+
+// A random subset of tasks is requested as main tasks. Exactly the requested
+// tasks plus their transitive dependencies should run — nothing more, nothing
+// less — and every edge among them must hold.
+describe.concurrent("TaskScheduler — randomized main-task subset", () => {
+	const SEEDS = Array.from({ length: 100 }, (_, i) => i + 1);
+
+	it.each(SEEDS)("seed %i: runs exactly the requested closure", (seed) => {
+		const { tasks, edges, durations } = generateRandomDag(seed, 25);
+		const allIds = tasks.map((t) => t.name);
+		// always include at least one main task so something runs
+		const chosen = randomSubset(seed * 17, allIds, 0.3);
+		const mainTaskIds = chosen.length > 0 ? chosen : [allIds[allIds.length - 1]];
+
+		const deps = createMockDeps(tasks, { mainTaskIds, parallel: true });
+		const { order, timeline } = driveWithDurations(deps, durations);
+
+		const expected = reachableFrom(mainTaskIds, edges);
+
+		expect(new Set(order)).toEqual(expected);
+
+		const activeEdges = edges.filter(([, dependent]) => expected.has(dependent));
+
+		for (const [dep, dependent] of activeEdges) {
+			expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
+		}
+	});
+});
+
+// Sequential mode: a random ordered list of main tasks; each main task's full
+// dependency subtree must drain before the next main task starts, and the main
+// tasks themselves complete in request order.
+describe.concurrent("TaskScheduler — randomized sequential mode", () => {
+	const SEEDS = Array.from({ length: 100 }, (_, i) => i + 1);
+
+	it.each(SEEDS)("seed %i: each main tree drains before the next, in order", (seed) => {
+		const { tasks, edges, durations } = generateRandomDag(seed, 20);
+		const allIds = tasks.map((t) => t.name);
+		const mains = randomSubset(seed * 13, allIds, 0.25);
+		const mainTaskIds = mains.length >= 2 ? mains : allIds.slice(-2);
+
+		const deps = createMockDeps(tasks, { mainTaskIds, parallel: false });
+		const { order } = driveWithDurations(deps, durations);
+
+		// main tasks complete in the requested order
+		const mainCompletionIdx = mainTaskIds.map((id) => order.indexOf(id));
+
+		for (let i = 1; i < mainCompletionIdx.length; i++) {
+			expect(mainCompletionIdx[i]).toBeGreaterThan(mainCompletionIdx[i - 1]);
+		}
+
+		// every edge in the run is still honored
+		const ran = new Set(order);
+		const activeEdges = edges.filter(([, dependent]) => ran.has(dependent));
+
+		for (const [dep, dependent] of activeEdges) {
+			expect(order.indexOf(dep)).toBeLessThan(order.indexOf(dependent));
 		}
 	});
 });

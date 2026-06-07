@@ -290,6 +290,34 @@ export function randomSubset<T>(seed: number, items: T[], rate = 0.2): T[] {
 	return items.filter(() => rng() < rate);
 }
 
+/**
+ * Computes the transitive closure (the roots plus everything they depend on,
+ * directly or indirectly) over an edge list of [dependency, dependent] pairs.
+ */
+export function reachableFrom(roots: string[], edges: Array<[string, string]>): Set<string> {
+	const directDepsOf = new Map<string, string[]>();
+
+	for (const [dep, dependent] of edges) {
+		directDepsOf.set(dependent, [...(directDepsOf.get(dependent) ?? []), dep]);
+	}
+
+	const reachable = new Set<string>();
+	const stack = [...roots];
+
+	while (stack.length > 0) {
+		const node = stack.pop()!;
+
+		if (reachable.has(node)) {
+			continue;
+		}
+
+		reachable.add(node);
+		stack.push(...(directDepsOf.get(node) ?? []));
+	}
+
+	return reachable;
+}
+
 export interface ClockDriveResult {
 	/** Order in which tasks completed (by simulated finish time). */
 	order: string[];
