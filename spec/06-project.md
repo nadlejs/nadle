@@ -16,12 +16,13 @@ zero or more child workspaces, and a detected package manager.
 
 The project root is found by searching upward from the current directory:
 
-1. Look for a `nadle.config.{js,mjs,ts,mts}` file.
-2. Detect a monorepo root via package manager tooling (lock files, workspace config).
-3. Check for `nadle.root: true` in `package.json`.
+1. Look for a `package.json` marked with `nadle.root: true`. If found, that directory is the
+   root (and is further inspected for a monorepo layout).
+2. Otherwise, detect a monorepo root via package manager tooling (lock files, workspace config).
+3. Otherwise, fall back to the closest ancestor directory that contains a `package.json`,
+   treated as a single-package project.
 
-The root workspace must have a config file. If no config file is found, Nadle raises
-an error with guidance to use `--config`.
+If no `package.json` is found in any ancestor directory, Nadle raises an error.
 
 ## Package Manager Detection
 

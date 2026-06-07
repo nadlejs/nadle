@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.11.0 — 2026-06-07
+
+### Changed
+
+- 06-project: Root detection — when there is no `nadle.root` marker and no
+  recognizable monorepo, Nadle now falls back to the closest ancestor directory
+  containing a `package.json` (treated as a single-package project) instead of
+  failing. An error is raised only when no `package.json` exists in any ancestor.
+
 ## 1.10.0 — 2026-06-07
 
 ### Added

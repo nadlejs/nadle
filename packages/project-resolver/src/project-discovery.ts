@@ -72,24 +72,62 @@ export async function discoverProject(startDir: string): Promise<Project> {
 			}
 		}
 
-		const rootWorkspace = await createRootWorkspace(projectDir);
-
-		return {
-			rootWorkspace,
-			workspaces: [],
-			currentWorkspaceId: rootWorkspace.id,
-			packageManager: await detectPackageManager(projectDir)
-		};
+		return createSinglePackageProject(projectDir);
 	}
 
-	const monorepoRoot = await findRoot(startDir);
+	const monorepo = await findMonorepo(startDir);
+
+	if (monorepo !== undefined) {
+		return createProject(await monorepo.detector.getPackages(monorepo.rootDir));
+	}
+
+	// No `nadle.root` marker and no recognizable monorepo: fall back to the closest
+	// ancestor directory that contains a package.json, treated as a single-package project.
+	const packageJsonDir = await findUp(PACKAGE_JSON, { cwd: startDir });
+
+	if (packageJsonDir !== undefined) {
+		return createSinglePackageProject(Path.dirname(packageJsonDir));
+	}
+
+	throw new Error(
+		`Unable to locate a Nadle project root from ${startDir}: no monorepo root, nadle.root marker, or package.json found in any ancestor directory.`
+	);
+}
+
+async function createSinglePackageProject(projectDir: string): Promise<Project> {
+	const rootWorkspace = await createRootWorkspace(projectDir);
+
+	return {
+		rootWorkspace,
+		workspaces: [],
+		currentWorkspaceId: rootWorkspace.id,
+		packageManager: await detectPackageManager(projectDir)
+	};
+}
+
+async function findMonorepo(startDir: string): Promise<{ detector: Tool; rootDir: string } | undefined> {
+	let monorepoRoot;
+
+	try {
+		monorepoRoot = await findRoot(startDir);
+	} catch {
+		// @manypkg throws when it cannot find any package.json root; the caller falls back.
+		return undefined;
+	}
+
+	// `@manypkg` reports a lone package.json as the synthetic `root` tool — not a real
+	// monorepo. Treat it like "no monorepo" so the caller takes the single-package fallback.
+	if (monorepoRoot.tool === "root") {
+		return undefined;
+	}
+
 	const detector = MonorepoDetectors.find(({ type }) => type === monorepoRoot.tool);
 
-	if (!detector) {
+	if (detector === undefined) {
 		throw new Error(`Unsupported monorepo tool: ${monorepoRoot.tool}. Supported tools are: ${MonorepoDetectors.map(({ type }) => type).join(", ")}.`);
 	}
 
-	return createProject(await detector.getPackages(monorepoRoot.rootDir));
+	return { detector, rootDir: monorepoRoot.rootDir };
 }
 
 export async function locateConfigFiles(project: Project): Promise<Project> {

@@ -24,9 +24,10 @@ The root of the repository is also treated as a special workspace, known as the 
 1. Starting from the current working directory, Nadle traverses up the directory tree to find a `package.json` file that contains a field named `nadle` with a nested field `root` set to `true`.
    - If found, that folder is treated as the root workspace.
    - Nadle then tries to detect the package manager by looking for its specific files (e.g., `pnpm-workspace.yaml` for pnpm, or a `workspaces` field inside `package.json`).
-2. If no such `package.json` is found, Nadle re-traversing up to find a common setup for a supported package manager (npm, pnpm, yarn).
+2. If no such `package.json` is found, Nadle re-traverses up to find a common setup for a supported package manager (npm, pnpm, yarn).
    - If found, Nadle resolves workspaces using the conventions and configuration of the detected package manager.
-   - If no package manager is detected, Nadle throws an error indicating that it cannot find a valid workspace setup.
+3. If no monorepo setup is detected, Nadle falls back to the closest ancestor directory that contains a `package.json` and treats it as a single-package project.
+   - If no `package.json` is found in any ancestor directory, Nadle throws an error.
 
 This approach ensures Nadle can work seamlessly with monorepos managed by popular tools, and allows explicit root workspace configuration for advanced setups.
 
