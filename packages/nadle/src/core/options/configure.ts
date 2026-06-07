@@ -1,5 +1,6 @@
 import { type NadleFileOptions } from "./types.js";
 import { getCurrentInstance } from "../nadle-context.js";
+import { validateFileOptions } from "./file-options-validator.js";
 
 /**
  * Configure Nadle with global file options.
@@ -13,6 +14,8 @@ export function configure(options: NadleFileOptions) {
 	if (typeof options !== "object" || options === null) {
 		throw new TypeError("Options must be an object");
 	}
+
+	validateFileOptions(options);
 
 	getCurrentInstance().fileOptionRegistry.register(options);
 }

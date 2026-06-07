@@ -39,3 +39,10 @@ If a value is provided both via CLI and via `configure(...)`, the CLI value will
 ## Available Options
 
 For a full list of supported configuration fields and their types, see [Common Options section](../config-reference#common-options) in the config reference.
+
+## Validation
+
+Nadle validates the options you pass to `configure()` when the config file loads. A malformed
+value — a wrong type, an unknown `logLevel`/`reporter`, a non-positive `maxCacheEntries`, an empty
+`cacheDir`, or a bad `minWorkers`/`maxWorkers` — fails fast with a clear configuration error
+instead of being silently ignored or surfacing later as a confusing runtime failure.

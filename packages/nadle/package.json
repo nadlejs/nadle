@@ -105,7 +105,7 @@
 	"size-limit": [
 		{
 			"path": "lib/**",
-			"limit": "140 KB",
+			"limit": "145 KB",
 			"name": "bundled",
 			"brotli": false
 		}

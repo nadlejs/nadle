@@ -4,7 +4,6 @@ import { getWorkspaceById, ROOT_WORKSPACE_ID, isRootWorkspaceId } from "@nadle/p
 
 import { Handlers } from "./handlers/index.js";
 import { runWithInstance } from "./nadle-context.js";
-import { NadleError } from "./utilities/nadle-error.js";
 import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
@@ -16,6 +15,7 @@ import { ExecutionTracker } from "./models/execution-tracker.js";
 import { type SchedulerTask } from "./engine/scheduler-types.js";
 import { type TaskIdentifier } from "./models/task-identifier.js";
 import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
+import { NadleError, TaskExecutionError } from "./utilities/nadle-error.js";
 import { FileOptionRegistry } from "./registration/file-option-registry.js";
 import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
@@ -75,9 +75,9 @@ export class Nadle implements ExecutionContext {
 	}
 
 	public async execute() {
-		await this.init();
-
 		try {
+			await this.init();
+
 			await this.eventEmitter.onExecutionStart();
 
 			for (const Handler of Handlers) {
@@ -93,6 +93,12 @@ export class Nadle implements ExecutionContext {
 
 			await this.eventEmitter.onExecutionFinish();
 		} catch (error) {
+			// Resolution/configuration errors are raised before the reporter is attached, so
+			// surface their message here; task-execution failures are reported by the reporter.
+			if (error instanceof NadleError && !(error instanceof TaskExecutionError)) {
+				this.logger.error(error.message);
+			}
+
 			await this.eventEmitter.onExecutionFailed(error);
 
 			Process.exit(error instanceof NadleError ? error.errorCode : 1);
