@@ -95,4 +95,26 @@ describe.concurrent("TaskInputResolver", () => {
 	it("suggests correct task and workspace name for typos", () => {
 		expect(resolver.resolve(["backe:biuld"], project).map(ResolvedTask.getId)).toEqual(["backend:build"]);
 	});
+
+	it("expands a glob pattern to all matching tasks in the target workspace", () => {
+		expect(resolver.resolve(["pre*"], project).map(ResolvedTask.getId)).toEqual(["frontend:prepare"]);
+		expect(resolver.resolve(["*e*"], project).map(ResolvedTask.getId)).toEqual([
+			"frontend:clean",
+			"frontend:prepare",
+			"frontend:dev",
+			"frontend:test"
+		]);
+	});
+
+	it("expands a workspace-qualified glob within that workspace", () => {
+		expect(resolver.resolve(["backend:*"], project).map(ResolvedTask.getId)).toEqual(["backend:build", "backend:test"]);
+	});
+
+	it("falls back to the root workspace when a glob matches nothing in the target workspace", () => {
+		expect(resolver.resolve(["dep*"], project).map(ResolvedTask.getId)).toEqual(["root:deploy"]);
+	});
+
+	it("throws when a glob pattern matches no task", () => {
+		expect(() => resolver.resolve(["nope*"], project)).toThrowPlainMessage("No task matching pattern nope* found in frontend nor root workspace.");
+	});
 });

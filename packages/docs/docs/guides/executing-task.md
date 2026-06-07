@@ -42,6 +42,28 @@ With `--parallel`, Nadle will run the `eslint`, `prettier`, and `spell-check` ta
 as long as there are no dependencies between them. If any of these tasks declare dependencies,
 Nadle will still ensure the dependencies are completed before running the dependent task, even in parallel mode.
 
+## Running Tasks by Glob Pattern
+
+Instead of listing task names individually, you can select them with a glob pattern. Any task
+argument that contains a glob character (`*`, `?`, `[`, `]`, `{`, `}`, `!`) is matched against the
+registered task names:
+
+```sh
+nadle "build*"
+```
+
+This runs every task whose name starts with `build` (e.g. `build`, `build-css`, `build-js`). Quote
+the pattern so your shell does not expand it first.
+
+Patterns also work with a workspace qualifier and with [`--exclude`](../config-reference.md#exclude):
+
+```sh
+nadle "api:build*"          # only matching tasks in the api workspace
+nadle "build*" --exclude "build-*-dev"
+```
+
+If a pattern matches no task, Nadle exits with an error rather than running nothing.
+
 ## Running Task with Dependencies
 
 If a task declares dependencies using the [`dependsOn`](./configuring-task.md#dependson) option,

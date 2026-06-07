@@ -1,4 +1,5 @@
 import { uniq } from "lodash-es";
+import micromatch from "micromatch";
 import { type Project, getAllWorkspaces, getWorkspaceByLabelOrId } from "@nadle/project-resolver";
 
 import { highlight } from "../utilities/utils.js";
@@ -24,8 +25,16 @@ export class TaskInputResolver {
 				.filter(Boolean)
 		);
 
-		return taskInputs.map((taskInput) => {
+		return taskInputs.flatMap((taskInput) => {
 			const { taskNameInput, workspaceInput } = TaskIdentifier.parser(taskInput);
+
+			if (isGlob(taskNameInput)) {
+				const targetWorkspaceId =
+					workspaceInput === undefined ? targetWorkspace : getWorkspaceByLabelOrId(project, this.resolveWorkspace(workspaceInput, workspaces)).id;
+				const fallbackWorkspaceId = workspaceInput === undefined ? fallbackWorkspace : undefined;
+
+				return this.resolveGlob({ project, taskInput, taskNameInput, targetWorkspaceId, fallbackWorkspaceId });
+			}
 
 			let resolvedTask: string;
 
@@ -53,8 +62,43 @@ export class TaskInputResolver {
 				(workspaceInput !== undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== workspaceInput) ||
 				(workspaceInput === undefined && TaskIdentifier.parser(resolvedTask).workspaceInput !== targetWorkspace);
 
-			return { corrected, rawInput: taskInput, taskId: resolvedTask };
+			return [{ corrected, rawInput: taskInput, taskId: resolvedTask }];
 		});
+	}
+
+	private resolveGlob(options: {
+		project: Project;
+		taskInput: string;
+		taskNameInput: string;
+		targetWorkspaceId: string;
+		fallbackWorkspaceId: string | undefined;
+	}): ResolvedTask[] {
+		const { project, taskInput, taskNameInput, targetWorkspaceId, fallbackWorkspaceId } = options;
+
+		const matchIn = (workspaceId: string): ResolvedTask[] =>
+			micromatch(this.taskNamesGetter(workspaceId), taskNameInput).map((taskName) => ({
+				corrected: false,
+				rawInput: taskInput,
+				taskId: TaskIdentifier.create(workspaceId, taskName)
+			}));
+
+		const matches = matchIn(targetWorkspaceId);
+
+		if (matches.length > 0) {
+			return matches;
+		}
+
+		if (fallbackWorkspaceId !== undefined) {
+			const fallbackMatches = matchIn(getWorkspaceByLabelOrId(project, fallbackWorkspaceId).id);
+
+			if (fallbackMatches.length > 0) {
+				return fallbackMatches;
+			}
+		}
+
+		const message = Messages.UnresolvedTaskPattern({ targetWorkspaceId, fallbackWorkspaceId, pattern: taskNameInput });
+		this.logger.error(message);
+		throw new TaskNotFoundError(message);
 	}
 
 	private resolveTask(options: {
@@ -101,6 +145,10 @@ export class TaskInputResolver {
 
 		return suggestedWorkspace.result;
 	}
+}
+
+function isGlob(taskNameInput: string): boolean {
+	return /[*?[\]{}!]/.test(taskNameInput);
 }
 
 function formatSuggestions(suggestions: string[]): string {
