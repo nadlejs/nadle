@@ -56,7 +56,7 @@
 		"@vitest/coverage-v8": "^4.0.18",
 		"@vitest/expect": "^4.0.18",
 		"fixturify": "^3.0.0",
-		"knip": "^5.70.2",
+		"knip": "^6.16.1",
 		"serialize-javascript": "^7.0.5",
 		"size-limit": "^11.2.0",
 		"strip-ansi": "^7.2.0",
