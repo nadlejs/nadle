@@ -23,21 +23,28 @@ export interface TasksAPI {
 	register(name: string): TaskConfigurationBuilder;
 
 	/**
+	 * Register a task with options and a resolver.
+	 *
+	 * The resolver may be omitted when the task's options have no required fields
+	 * (i.e. an empty object satisfies `Options`); otherwise it is mandatory.
+	 * @param name - The unique name of the task.
+	 * @param optTask - The task definition with options.
+	 * @param optionsResolver - A resolver for the task's options.
+	 * @returns ConfigBuilder for further configuration.
+	 */
+	register<Options>(
+		name: string,
+		optTask: Task<Options>,
+		...optionsResolver: {} extends Options ? [optionsResolver?: Resolver<Options>] : [optionsResolver: Resolver<Options>]
+	): TaskConfigurationBuilder;
+
+	/**
 	 * Register a task with a task function.
 	 * @param name - The unique name of the task.
 	 * @param fnTask - The function to execute for this task.
 	 * @returns ConfigBuilder for further configuration.
 	 */
 	register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
-
-	/**
-	 * Register a task with options and a resolver.
-	 * @param name - The unique name of the task.
-	 * @param optTask - The task definition with options.
-	 * @param optionsResolver - A resolver for the task's options.
-	 * @returns ConfigBuilder for further configuration.
-	 */
-	register<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): TaskConfigurationBuilder;
 }
 
 /**
@@ -106,11 +113,7 @@ function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Reso
 		return { run: task, empty: false, optionsResolver: undefined };
 	}
 
-	if (optionsResolver === undefined) {
-		throw new Error("Option builder is required for option task");
-	}
-
-	return { ...task, empty: false, optionsResolver };
+	return { ...task, empty: false, optionsResolver: optionsResolver ?? (() => ({})) };
 }
 
 function validateTaskName(name: string): void {

@@ -10,11 +10,16 @@ config file loading, calls to `tasks.register()` delegate to the active Nadle in
 via an `AsyncLocalStorage` context. Each Nadle instance owns its own task registry,
 ensuring full isolation between instances. There are three registration forms:
 
-| Form       | Parameters                              | Description                                                                                             |
-| ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| No-op      | `name`                                  | Registers a lifecycle-only task with no function body. Useful as an aggregation point for dependencies. |
-| Function   | `name`, `taskFn`                        | Registers a task with a function that receives a runner context.                                        |
-| Typed task | `name`, `taskObject`, `optionsResolver` | Registers a reusable task type with typed options and a resolver.                                       |
+| Form       | Parameters                               | Description                                                                                             |
+| ---------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| No-op      | `name`                                   | Registers a lifecycle-only task with no function body. Useful as an aggregation point for dependencies. |
+| Function   | `name`, `taskFn`                         | Registers a task with a function that receives a runner context.                                        |
+| Typed task | `name`, `taskObject`, `optionsResolver?` | Registers a reusable task type with typed options. The resolver provides those options.                 |
+
+For the typed-task form, the `optionsResolver` is **optional when the options type has no
+required fields** (an empty object satisfies it); in that case the options default to an
+empty object (`{}`). When the options type has at least one required field, the resolver is
+mandatory.
 
 All three forms return a **configuration builder** that exposes a `.config()` method
 (see [02-task-configuration.md](02-task-configuration.md)).

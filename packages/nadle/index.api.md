@@ -247,8 +247,8 @@ export const tasks: TasksAPI;
 // @public
 export interface TasksAPI {
     register(name: string): TaskConfigurationBuilder;
+    register<Options>(name: string, optTask: Task<Options>, ...optionsResolver: {} extends Options ? [optionsResolver?: Resolver<Options>] : [optionsResolver: Resolver<Options>]): TaskConfigurationBuilder;
     register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
-    register<Options>(name: string, optTask: Task<Options>, optionsResolver: Resolver<Options>): TaskConfigurationBuilder;
 }
 
 // (No @packageDocumentation comment for this package)
