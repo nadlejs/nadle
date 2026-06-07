@@ -27,6 +27,9 @@ export const Messages = {
 	}) =>
 		`Task ${highlight(options.taskNameInput)} not found in ${highlight(options.targetWorkspaceId)}${options.fallbackWorkspaceId ? ` nor ${highlight(options.fallbackWorkspaceId)}` : ""} workspace. ${options.suggestions}`,
 
+	UnresolvedTaskPattern: (options: { pattern: string; targetWorkspaceId: string; fallbackWorkspaceId: string | undefined }) =>
+		`No task matching pattern ${highlight(options.pattern)} found in ${highlight(options.targetWorkspaceId)}${options.fallbackWorkspaceId ? ` nor ${highlight(options.fallbackWorkspaceId)}` : ""} workspace.`,
+
 	EmptyWorkspaceLabel: (workspaceId: string) => `Workspace ${highlight(workspaceId)} alias can not be empty.`,
 	UnresolvedWorkspace: (workspaceInput: string, suggestions: string) => `Workspace ${highlight(workspaceInput)} not found. ${suggestions}`,
 	WorkspaceNotFound: (workspaceInput: string, availableWorkspaces: string) =>

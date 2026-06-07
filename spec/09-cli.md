@@ -11,6 +11,21 @@ nadle [tasks...] [options]
 - `tasks` — zero or more task names or task identifiers to execute.
 - If no tasks are specified and stdin is a TTY, Nadle enters interactive task selection.
 
+### Glob Task Selection
+
+A task name (the name segment, after any workspace qualifier) may be a glob pattern — any input
+containing `*`, `?`, `[`, `]`, `{`, `}`, or `!`. Patterns are matched against the registered task
+names of the resolved workspace:
+
+- An unqualified pattern (e.g. `build*`) matches task names in the target workspace; if none match
+  there, the root workspace is tried as a fallback.
+- A workspace-qualified pattern (e.g. `backend:build*`) matches only within that workspace.
+- A pattern that matches no task is an error (exit code 3) — patterns never silently expand to
+  nothing.
+
+Glob patterns apply equally to the `--exclude` option. Because task names never contain glob
+characters, an input is treated as a glob if and only if it contains one.
+
 ## Flags
 
 ### Execution Options

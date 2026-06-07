@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.10.0 — 2026-06-07
+
+### Added
+
+- 09-cli: Glob task selection — a task-name input containing glob characters
+  (`*`, `?`, `[`, `]`, `{`, `}`, `!`) expands to all registered task names that
+  match, in the target workspace (falling back to root) or within a
+  workspace-qualified pattern. Applies to `--exclude` too. A pattern matching no
+  task is an error (exit code 3).
+
 ## 1.9.0 — 2026-06-07
 
 ### Added
