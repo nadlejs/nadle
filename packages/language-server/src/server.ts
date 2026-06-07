@@ -12,6 +12,7 @@ import { getCompletions } from "./completions.js";
 import type { LspContext } from "./lsp-context.js";
 import { DocumentStore } from "./document-store.js";
 import { computeDiagnostics } from "./diagnostics.js";
+import { getDocumentSymbols } from "./document-symbols.js";
 import { type ProjectContext, discoverProjectContext } from "./project-context.js";
 
 const DEBOUNCE_MS = 200;
@@ -39,6 +40,7 @@ connection.onInitialize((params): InitializeResult => {
 			hoverProvider: true,
 			definitionProvider: true,
 			referencesProvider: true,
+			documentSymbolProvider: true,
 			textDocumentSync: TextDocumentSyncKind.Incremental,
 			completionProvider: {
 				resolveProvider: false,
@@ -171,6 +173,16 @@ connection.onReferences(({ context, position, textDocument }) => {
 	}
 
 	return getReferences(store.getAllAnalyses(), position, doc, context);
+});
+
+connection.onDocumentSymbol(({ textDocument }) => {
+	const analysis = store.getAnalysis(textDocument.uri);
+
+	if (!analysis) {
+		return [];
+	}
+
+	return getDocumentSymbols(analysis);
 });
 
 connection.onNotification("nadle/refreshProject", () => {
