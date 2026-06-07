@@ -4,8 +4,9 @@ import c from "tinyrainbow";
 
 import { type Logger } from "../logger.js";
 import { FileLogger } from "../../utilities/file-logger.js";
-import { LogLevels, createNadleConsola, type InputLogObject, type SupportLogLevel } from "../../utilities/consola.js";
+import { type SupportReporter } from "../../reporting/reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../../utilities/constants.js";
+import { LogLevels, createNadleConsola, type InputLogObject, createPlainReporters, type SupportLogLevel } from "../../utilities/consola.js";
 
 const l = new FileLogger("logger");
 
@@ -15,6 +16,9 @@ const l = new FileLogger("logger");
 interface LoggerOptions {
 	/** Log level for output. */
 	readonly logLevel?: SupportLogLevel;
+
+	/** Output reporter; the agent reporter forces plain, ANSI-free output. */
+	readonly reporter?: SupportReporter;
 
 	/** @internal True if running in a worker thread. */
 	readonly isWorkerThread?: boolean;
@@ -36,6 +40,10 @@ export class DefaultLogger implements Logger {
 	public configure(options: LoggerOptions) {
 		const { logLevel = "log", isWorkerThread = false } = options;
 		this.consola.level = LogLevels[logLevel];
+
+		if (options.reporter === "agent") {
+			this.consola.options.reporters = createPlainReporters();
+		}
 
 		if (this.outputStream.isTTY) {
 			this.outputStream.write(HIDE_CURSOR);

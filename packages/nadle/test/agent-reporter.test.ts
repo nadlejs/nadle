@@ -1,6 +1,6 @@
 import stripAnsi from "strip-ansi";
 import { it, expect, describe } from "vitest";
-import { config, settle, fixture, getStdout, withGeneratedFixture } from "setup";
+import { config, settle, fixture, getStdout, createExec, withGeneratedFixture } from "setup";
 
 const files = fixture()
 	.packageJson("agent-reporter")
@@ -42,6 +42,20 @@ describe("agent reporter", () => {
 				expect(exitCode).toBe(1);
 				expect(clean).toContain("FAILED boom");
 				expect(clean).toMatch(/FAILED in .+ \(done 0 failed 1\)/);
+			}
+		}));
+
+	it("emits no ANSI escape codes even in a non-CI, non-test environment", () =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ cwd }) => {
+				// FORCE_COLOR + non-CI/non-test pushes the default reporter toward ANSI
+				// output; the agent reporter must still produce plain text.
+				const exec = createExec({ cwd, env: { CI: "false", TEST: "false", FORCE_COLOR: "1" } });
+				const { stdout } = await settle(exec`--reporter=agent c`);
+
+				expect(stdout).toContain("DONE c");
+				expect(stdout).toBe(stripAnsi(stdout));
 			}
 		}));
 });

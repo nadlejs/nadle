@@ -29,6 +29,14 @@ function createConsolaReporters(): ConsolaReporter[] {
 	return [FancyReporter];
 }
 
+/**
+ * Plain, ANSI-free reporter. Used by the agent reporter so its output never
+ * contains escape codes, regardless of TTY/CI/test environment.
+ */
+export function createPlainReporters(): ConsolaReporter[] {
+	return [new CIReporter()];
+}
+
 export function createNadleConsola(logLevel: SupportLogLevel = "log") {
 	return createConsola({ level: LogLevels[logLevel], formatOptions: { date: false }, reporters: createConsolaReporters() });
 }
