@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { ranBefore, createMockDeps, driveWithDurations } from "./__helpers__.js";
+import { SEEDS, ranBefore, createMockDeps, randomDurations, driveWithDurations } from "./__helpers__.js";
 
 // These tests model real task runtime on a simulated clock: a long-running task
 // offered early can finish after short tasks offered later. The scheduler must
@@ -90,5 +90,34 @@ describe.concurrent("TaskScheduler — duration-driven scheduling", () => {
 		const { order } = driveWithDurations(deps, { c: 1, b: 50, a: 100 });
 
 		expect(order).toEqual(["a", "b", "c"]);
+	});
+
+	// Sweep a known diamond graph across many deterministic timing profiles: no
+	// matter what durations the seed produces, dependency edges must hold and
+	// every task runs exactly once.
+	describe.concurrent("diamond under seeded random durations", () => {
+		const ids = ["a", "b", "c", "d"];
+		const edges: Array<[string, string]> = [
+			["a", "b"],
+			["a", "c"],
+			["b", "d"],
+			["c", "d"]
+		];
+
+		it.each(SEEDS)("seed %i holds every edge", (seed) => {
+			const deps = createMockDeps(
+				[{ name: "a" }, { name: "b", dependsOn: "a" }, { name: "c", dependsOn: "a" }, { name: "d", dependsOn: ["b", "c"] }],
+				{ parallel: true }
+			);
+
+			const { order, timeline } = driveWithDurations(deps, randomDurations(seed, ids));
+
+			expect(new Set(order)).toEqual(new Set(ids));
+
+			for (const [dep, dependent] of edges) {
+				expect(ranBefore(order, dep, dependent)).toBe(true);
+				expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
+			}
+		});
 	});
 });

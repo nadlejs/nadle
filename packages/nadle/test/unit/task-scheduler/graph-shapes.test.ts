@@ -1,12 +1,41 @@
 import { it, expect, describe } from "vitest";
 
-import { drive, policies, ranBefore, type TaskDef, createMockDeps } from "./__helpers__.js";
+import { SEEDS, drive, policies, ranBefore, type TaskDef, createMockDeps, randomDurations, driveWithDurations } from "./__helpers__.js";
 
 /** Asserts every dependency completes before each of its dependents. */
 function expectTopologicallyValid(order: string[], edges: Array<[string, string]>) {
 	for (const [dep, dependent] of edges) {
 		expect(ranBefore(order, dep, dependent)).toBe(true);
 	}
+}
+
+/** Builds the deterministic 10x5 layered DAG used by several tests. */
+function buildLayeredDag(layers = 10, perLayer = 5) {
+	const tasks: TaskDef[] = [];
+	const edges: Array<[string, string]> = [];
+
+	for (let l = 0; l < layers; l++) {
+		for (let n = 0; n < perLayer; n++) {
+			const name = `l${l}n${n}`;
+
+			if (l === 0) {
+				tasks.push({ name });
+				continue;
+			}
+
+			const dep1 = `l${l - 1}n${n % perLayer}`;
+			const dep2 = `l${l - 1}n${(n + 1) % perLayer}`;
+			const dependsOn = dep1 === dep2 ? [dep1] : [dep1, dep2];
+
+			tasks.push({ name, dependsOn });
+
+			for (const d of dependsOn) {
+				edges.push([d, name]);
+			}
+		}
+	}
+
+	return { tasks, edges };
 }
 
 describe.concurrent("TaskScheduler — complex graph shapes", () => {
@@ -102,37 +131,27 @@ describe.concurrent("TaskScheduler — complex graph shapes", () => {
 	});
 
 	it("validates a generated multi-layer DAG (10 layers, 5 per layer)", () => {
-		const layers = 10;
-		const perLayer = 5;
-		const tasks: TaskDef[] = [];
-		const edges: Array<[string, string]> = [];
-
-		for (let l = 0; l < layers; l++) {
-			for (let n = 0; n < perLayer; n++) {
-				const name = `l${l}n${n}`;
-
-				if (l === 0) {
-					tasks.push({ name });
-					continue;
-				}
-
-				// each node depends on two deterministic nodes from the previous layer
-				const dep1 = `l${l - 1}n${n % perLayer}`;
-				const dep2 = `l${l - 1}n${(n + 1) % perLayer}`;
-				const dependsOn = dep1 === dep2 ? [dep1] : [dep1, dep2];
-
-				tasks.push({ name, dependsOn });
-
-				for (const d of dependsOn) {
-					edges.push([d, name]);
-				}
-			}
-		}
+		const { tasks, edges } = buildLayeredDag();
 
 		const { order } = drive(createMockDeps(tasks, { parallel: true }), policies.reverseAlpha);
 
-		expect(order).toHaveLength(layers * perLayer);
-		expect(new Set(order).size).toBe(layers * perLayer);
+		expect(order).toHaveLength(50);
+		expect(new Set(order).size).toBe(50);
 		expectTopologicallyValid(order, edges);
+	});
+
+	describe.concurrent("layered DAG under seeded random durations", () => {
+		it.each(SEEDS)("seed %i keeps every edge valid on the clock", (seed) => {
+			const { tasks, edges } = buildLayeredDag();
+			const ids = tasks.map((t) => t.name);
+
+			const { order, timeline } = driveWithDurations(createMockDeps(tasks, { parallel: true }), randomDurations(seed, ids));
+
+			expect(order).toHaveLength(50);
+
+			for (const [dep, dependent] of edges) {
+				expect(timeline.get(dep)!.end).toBeLessThanOrEqual(timeline.get(dependent)!.start);
+			}
+		});
 	});
 });

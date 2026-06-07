@@ -146,6 +146,90 @@ export function ranBefore(order: string[], before: string, after: string): boole
 	return order.indexOf(before) < order.indexOf(after);
 }
 
+/**
+ * Deterministic PRNG (mulberry32). Seeded so randomized tests are fully
+ * reproducible — `Math.random` is unavailable in this codebase and would make
+ * failures impossible to replay.
+ */
+export function createRng(seed: number): () => number {
+	let state = seed >>> 0;
+
+	return () => {
+		state = (state + 0x6d2b79f5) >>> 0;
+		let t = state;
+		t = Math.imul(t ^ (t >>> 15), t | 1);
+		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+}
+
+/**
+ * Deterministic pseudo-random durations (1..100) for a fixed set of task ids,
+ * derived from a seed. Lets a known-shape graph be exercised under many
+ * different but reproducible timing profiles.
+ */
+export function randomDurations(seed: number, taskIds: string[]): Record<string, number> {
+	const rng = createRng(seed);
+	const durations: Record<string, number> = {};
+
+	for (const id of taskIds) {
+		durations[id] = 1 + Math.floor(rng() * 100);
+	}
+
+	return durations;
+}
+
+/** A handful of fixed seeds to sweep a known graph across timing profiles. */
+export const SEEDS = [1, 7, 42, 99, 123, 777, 2024, 31337];
+
+export interface RandomDag {
+	tasks: TaskDef[];
+	/** All [dependency, dependent] edges in the generated graph. */
+	edges: Array<[string, string]>;
+	/** A deterministic duration per task. */
+	durations: Record<string, number>;
+}
+
+/**
+ * Builds a random but acyclic task graph from a seed. The graph stays acyclic
+ * because dependencies are only ever drawn from lower-indexed tasks. Each task also
+ * gets a deterministic pseudo-random duration.
+ */
+export function generateRandomDag(seed: number, taskCount: number, maxDepsPerTask = 3): RandomDag {
+	const rng = createRng(seed);
+	const names = Array.from({ length: taskCount }, (_, i) => `t${i}`);
+	const tasks: TaskDef[] = [];
+	const edges: Array<[string, string]> = [];
+	const durations: Record<string, number> = {};
+
+	for (let i = 0; i < taskCount; i++) {
+		const name = names[i];
+
+		durations[name] = 1 + Math.floor(rng() * 100);
+
+		const dependsOn: string[] = [];
+
+		if (i > 0) {
+			const depCount = Math.floor(rng() * Math.min(maxDepsPerTask, i + 1));
+
+			for (let d = 0; d < depCount; d++) {
+				const depIndex = Math.floor(rng() * i); // strictly lower index -> acyclic
+				const dep = names[depIndex];
+
+				if (!dependsOn.includes(dep)) {
+					dependsOn.push(dep);
+					edges.push([dep, name]);
+				}
+			}
+		}
+
+		tasks.push(dependsOn.length > 0 ? { name, dependsOn } : { name });
+	}
+
+	return { tasks, edges, durations };
+}
+
 export interface ClockDriveResult {
 	/** Order in which tasks completed (by simulated finish time). */
 	order: string[];
