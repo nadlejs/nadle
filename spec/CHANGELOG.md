@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.12.0 — 2026-06-07
+
+### Added
+
+- 08-configuration-loading: Runtime validation of `configure()` options — malformed
+  values (wrong type, invalid enum, non-positive numbers, empty `cacheDir`,
+  malformed worker counts, non-object/function `alias`) now raise a configuration
+  error (exit code 2) at config-load time instead of failing later or silently.
+
 ## 1.11.0 — 2026-06-07
 
 ### Changed

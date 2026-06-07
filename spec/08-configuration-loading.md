@@ -67,11 +67,25 @@ Accepted options:
 | `footer`               | boolean            | Enable or disable the live footer.                                      |
 | `implicitDependencies` | boolean            | Enable implicit workspace task dependencies and root aggregation.       |
 | `logLevel`             | string             | Log level (`"error"`, `"log"`, `"info"`, `"debug"`).                    |
+| `maxCacheEntries`      | number             | Maximum cache entries to keep per task (positive integer).              |
+| `reporter`             | string             | Output reporter (`"default"`, `"agent"`).                               |
 | `parallel`             | boolean            | Enable parallel execution mode.                                         |
 | `minWorkers`           | number or string   | Minimum worker thread count.                                            |
 | `maxWorkers`           | number or string   | Maximum worker thread count.                                            |
 
 If `configure()` is called from a non-root workspace config file, it raises an error.
+
+### Validation
+
+`configure()` validates its options at config-load time and raises a configuration error
+(exit code 2) for any malformed value, rather than failing later or silently ignoring it:
+
+- `cache`, `footer`, `parallel`, `implicitDependencies` must be booleans.
+- `cacheDir` must be a non-empty string.
+- `maxCacheEntries` must be a positive integer.
+- `logLevel` must be one of the supported levels; `reporter` one of the supported reporters.
+- `minWorkers` / `maxWorkers` must be a positive integer or a percentage string (e.g. `"50%"`).
+- `alias` must be an object or a function.
 
 ## Option Precedence
 
