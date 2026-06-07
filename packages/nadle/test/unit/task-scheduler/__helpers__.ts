@@ -145,3 +145,68 @@ export function drive(deps: SchedulerDependencies, policy: CompletionPolicy = po
 export function ranBefore(order: string[], before: string, after: string): boolean {
 	return order.indexOf(before) < order.indexOf(after);
 }
+
+export interface ClockDriveResult {
+	/** Order in which tasks completed (by simulated finish time). */
+	order: string[];
+	/** Max concurrent in-flight tasks observed. */
+	peakConcurrency: number;
+	/** Map of taskId -> { start, end } on the simulated clock. */
+	timeline: Map<string, { end: number; start: number }>;
+}
+
+/**
+ * Drives the scheduler with an explicit duration per task on a simulated clock,
+ * modelling a real concurrent pool: every runnable task starts immediately and
+ * runs for its duration; whichever is due next on the clock completes first,
+ * which unblocks its dependents (started at that clock time). This makes task
+ * runtime — not just completion order — drive the schedule, so a long task
+ * offered first can finish after a short task offered later.
+ *
+ * Duration defaults to 1 for any task not listed.
+ */
+export function driveWithDurations(deps: SchedulerDependencies, durations: Record<string, number>): ClockDriveResult {
+	const scheduler = new TaskScheduler(deps).init();
+	const order: string[] = [];
+	const timeline = new Map<string, { end: number; start: number }>();
+
+	// in-flight tasks keyed by id -> finish time on the clock
+	const inFlight = new Map<string, number>();
+	let clock = 0;
+	let peakConcurrency = 0;
+
+	const start = (taskId: string) => {
+		const duration = durations[taskId] ?? 1;
+
+		timeline.set(taskId, { start: clock, end: clock + duration });
+		inFlight.set(taskId, clock + duration);
+		peakConcurrency = Math.max(peakConcurrency, inFlight.size);
+	};
+
+	for (const taskId of scheduler.getReadyTasks()) {
+		start(taskId);
+	}
+
+	while (inFlight.size > 0) {
+		// advance the clock to the next task that finishes (ties: lexicographic)
+		let nextId = "";
+		let nextEnd = Infinity;
+
+		for (const [id, end] of inFlight) {
+			if (end < nextEnd || (end === nextEnd && id < nextId)) {
+				nextEnd = end;
+				nextId = id;
+			}
+		}
+
+		clock = nextEnd;
+		inFlight.delete(nextId);
+		order.push(nextId);
+
+		for (const unblocked of scheduler.getReadyTasks(nextId)) {
+			start(unblocked);
+		}
+	}
+
+	return { order, timeline, peakConcurrency };
+}
