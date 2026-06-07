@@ -24,6 +24,6 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer throwable --stacktrace
 [log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 ---------- Stderr ------------
-[error] Error: This is an error
+[error] TaskExecutionError: Task throwable failed: This is an error
     {stackTrace...}
 `;
