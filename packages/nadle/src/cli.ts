@@ -65,6 +65,7 @@ const argv = yargs(hideBin(Process.argv))
 		"General options:"
 	)
 	.group(["help", "version"], "Miscellaneous options:")
+	.example("nadle test -- -u", "Run the test task, passing -u through to its underlying command")
 	.parserConfiguration({ "populate--": true })
 	.wrap(100)
 	.strict()
