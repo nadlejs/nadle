@@ -1,3 +1,5 @@
+import Path from "node:path";
+
 import { glob } from "glob";
 import { rimraf, type RimrafAsyncOptions } from "rimraf";
 
@@ -24,10 +26,15 @@ export const DeleteTask = defineTask<DeleteTaskOptions>({
 		const { paths, ...restOptions } = options;
 		const { workingDir } = context;
 
+		// Glob once and delete the resolved paths literally, so the logged list is
+		// exactly what gets deleted (no second, independent glob inside rimraf).
 		const matchPaths = await glob(paths, { cwd: workingDir });
 		context.logger.info(`Current working dir: ${workingDir}`);
 		context.logger.info("Deleting paths:", matchPaths.map(normalizeGlobPath).join(", "));
 
-		await rimraf(paths, { ...restOptions, glob: { cwd: workingDir, ...restOptions } });
+		await rimraf(
+			matchPaths.map((matchPath) => Path.resolve(workingDir, matchPath)),
+			restOptions
+		);
 	}
 });
