@@ -184,6 +184,7 @@ export type Resolver<T = unknown> = T | Callback<T>;
 // @public
 export interface RunnerContext {
     readonly logger: Logger;
+    readonly passthroughArgs: readonly string[];
     readonly workingDir: string;
 }
 
