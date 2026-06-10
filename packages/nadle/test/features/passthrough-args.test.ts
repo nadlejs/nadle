@@ -83,6 +83,17 @@ describe.concurrent("passthrough args", () => {
 			}
 		}));
 
+	it("passes args to every glob-matched task", () =>
+		withGeneratedFixture({
+			files: execFiles,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`echo-* -- --flag`);
+
+				expect(stdout).toContain("A:--flag");
+				expect(stdout).toContain("B:--flag");
+			}
+		}));
+
 	it("logs a notice when multiple requested tasks receive args", () =>
 		withGeneratedFixture({
 			files: execFiles,
