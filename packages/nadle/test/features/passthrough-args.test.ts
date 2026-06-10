@@ -16,6 +16,18 @@ const files = fixture()
 	)
 	.build();
 
+const execFiles = fixture()
+	.packageJson("passthrough-args-exec")
+	.configRaw(
+		[
+			`import { tasks, ExecTask } from "nadle";`,
+			``,
+			`tasks.register("echo-a", ExecTask, { command: "node", args: ["-e", "console.log('A:' + process.argv.slice(1).join(' '))", "--"] });`,
+			`tasks.register("echo-b", ExecTask, { command: "node", args: ["-e", "console.log('B:' + process.argv.slice(1).join(' '))", "--"] });`
+		].join("\n")
+	)
+	.build();
+
 describe.concurrent("passthrough args", () => {
 	it("passes args after -- to the requested task", () =>
 		withGeneratedFixture({
@@ -46,6 +58,27 @@ describe.concurrent("passthrough args", () => {
 				const stdout = await getStdout(exec`verify`);
 
 				expect(stdout).toContain("ARGS=[]");
+			}
+		}));
+
+	it("appends args to ExecTask commands", () =>
+		withGeneratedFixture({
+			files: execFiles,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`echo-a -- --flag value`);
+
+				expect(stdout).toContain("A:--flag value");
+			}
+		}));
+
+	it("appends the same args to every requested task", () =>
+		withGeneratedFixture({
+			files: execFiles,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`echo-a echo-b -- --flag`);
+
+				expect(stdout).toContain("A:--flag");
+				expect(stdout).toContain("B:--flag");
 			}
 		}));
 

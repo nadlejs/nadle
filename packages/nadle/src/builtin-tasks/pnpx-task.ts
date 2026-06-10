@@ -20,7 +20,7 @@ export interface PnpxTaskOptions {
  */
 export const PnpxTask = defineTask<PnpxTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = options.args == null ? [] : MaybeArray.toArray(options.args);
+		const args = [...(options.args == null ? [] : MaybeArray.toArray(options.args)), ...context.passthroughArgs];
 
 		context.logger.info(`Running pnpm exec command: pnpm exec ${options.command} ${args.join(" ")}`);
 

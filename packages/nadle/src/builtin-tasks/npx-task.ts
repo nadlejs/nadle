@@ -20,7 +20,7 @@ export interface NpxTaskOptions {
  */
 export const NpxTask = defineTask<NpxTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = options.args == null ? [] : MaybeArray.toArray(options.args);
+		const args = [...(options.args == null ? [] : MaybeArray.toArray(options.args)), ...context.passthroughArgs];
 
 		context.logger.info(`Running npx command: npx ${options.command} ${args.join(" ")}`);
 

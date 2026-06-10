@@ -18,7 +18,7 @@ export interface NpmTaskOptions {
  */
 export const NpmTask = defineTask<NpmTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = MaybeArray.toArray(options.args);
+		const args = [...MaybeArray.toArray(options.args), ...context.passthroughArgs];
 
 		context.logger.info(`Running npm command: npm ${args.join(" ")}`);
 
