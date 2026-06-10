@@ -124,6 +124,40 @@ You can exclude multiple tasks by repeating the flag or providing a comma-separa
 nadle build --exclude lint,spell-check
 ```
 
+## Passing Extra Arguments to Tasks
+
+Arguments after a bare `--` are passed through to the tasks you request, instead of being parsed
+as Nadle options:
+
+```sh
+nadle test -- -u
+```
+
+Here the `test` task's underlying command receives `-u` appended after its configured arguments.
+This works for all exec-based built-in tasks (`ExecTask`, `PnpmTask`, `PnpxTask`, `NpmTask`,
+`NpxTask`, `NodeTask`). `CopyTask` and `DeleteTask` ignore passthrough arguments.
+
+Only tasks named on the command line (including glob matches) receive the arguments — their
+dependencies do not:
+
+```sh
+nadle build -- --sourcemap     # build gets --sourcemap; its dependencies do not
+nadle "test:*" -- --reporter dot
+```
+
+When several requested tasks receive the same arguments, Nadle logs a notice listing them.
+
+Custom tasks can read the arguments from the runner context:
+
+```ts
+tasks.register("greet", ({ context }) => {
+	console.log(context.passthroughArgs);
+});
+```
+
+Passthrough arguments are part of the cache key: a run with arguments is never served from a
+cache entry produced without them (dependencies stay cached as usual).
+
 ## Task and Workspace Name Autocorrect
 
 Nadle automatically suggests and corrects task and workspace names if you mistype or use a partial name.
