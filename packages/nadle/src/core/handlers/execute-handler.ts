@@ -31,6 +31,12 @@ export class ExecuteHandler extends BaseHandler {
 			}
 		}
 
+		const { passthroughArgs } = this.context.options;
+
+		if (passthroughArgs.length > 0 && chosenTasks.length > 1) {
+			this.context.logger.log(Messages.PassthroughArgsNotice([...passthroughArgs], chosenTasks));
+		}
+
 		const scheduler = this.context.taskScheduler.init(chosenTasks);
 		await this.context.eventEmitter.onTasksScheduled(scheduler.scheduledTask.map((taskId) => this.context.taskRegistry.getTaskById(taskId)));
 

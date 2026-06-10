@@ -82,6 +82,26 @@ describe.concurrent("passthrough args", () => {
 			}
 		}));
 
+	it("logs a notice when multiple requested tasks receive args", () =>
+		withGeneratedFixture({
+			files: execFiles,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`echo-a echo-b -- --flag`);
+
+				expect(stdout).toContain("Passing extra arguments [--flag] to 2 tasks");
+			}
+		}));
+
+	it("logs no notice for a single requested task", () =>
+		withGeneratedFixture({
+			files: execFiles,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`echo-a -- --flag`);
+
+				expect(stdout).not.toContain("Passing extra arguments");
+			}
+		}));
+
 	it("still rejects unknown flags before --", () =>
 		withGeneratedFixture({
 			files,

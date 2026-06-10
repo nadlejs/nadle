@@ -15,6 +15,8 @@ export const Messages = {
 		`Task ${highlight(taskName)} already registered in workspace ${highlight(workspaceId)}`,
 	NoTasksFound: () =>
 		`No tasks were specified. Please specify one or more tasks to execute, or use the ${highlight("--list")} option to view available tasks.`,
+	PassthroughArgsNotice: (args: string[], taskLabels: string[]) =>
+		`Passing extra arguments [${args.join(" ")}] to ${taskLabels.length} tasks: ${taskLabels.join(", ")}`,
 	UnresolvedTaskWithoutSuggestions: (taskNameInput: string, targetWorkspaceId: string) =>
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)} workspace.`,
 	InvalidTaskName: (taskName: string) =>
