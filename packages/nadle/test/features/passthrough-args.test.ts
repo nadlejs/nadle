@@ -1,3 +1,4 @@
+import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
 import { settle, fixture, getStdout, withGeneratedFixture } from "setup";
 
@@ -111,5 +112,65 @@ describe.concurrent("passthrough args", () => {
 				expect(exitCode).not.toBe(0);
 				expect(stderr).toContain("unknown-flag");
 			}
+		}));
+});
+
+const cachedFiles = fixture()
+	.packageJson("passthrough-args-cache")
+	.file("input.txt", "content")
+	.configRaw(
+		[
+			`import Path from "node:path";`,
+			`import Fs from "node:fs/promises";`,
+			``,
+			`import { tasks, Inputs, Outputs } from "nadle";`,
+			``,
+			`tasks`,
+			`\t.register("emit", async ({ context }) => {`,
+			`\t\tawait Fs.writeFile(Path.join(context.workingDir, "out.txt"), "done");`,
+			`\t})`,
+			`\t.config({ inputs: [Inputs.files("input.txt")], outputs: [Outputs.files("out.txt")] });`
+		].join("\n")
+	)
+	.build();
+
+describe.skipIf(isWindows).concurrent("passthrough args in cache key", () => {
+	it("does not reuse the no-args cache entry when args are passed", () =>
+		withGeneratedFixture({
+			files: cachedFiles,
+			testFn: async ({ exec }) => {
+				await exec`emit`;
+
+				await expect(getStdout(exec`emit`)).resolves.toSettle("emit", "up-to-date");
+				await expect(getStdout(exec`emit -- -u`)).resolves.toSettle("emit", "done");
+			}
+		}));
+
+	it("keeps dependency tasks cached when args are passed to the requested task", () =>
+		withGeneratedFixture({
+			testFn: async ({ exec }) => {
+				await exec`verify`;
+
+				await expect(getStdout(exec`verify -- -u`)).resolves.toSettle("prepare", "up-to-date");
+			},
+			files: fixture()
+				.packageJson("passthrough-args-cache-dep")
+				.file("input.txt", "content")
+				.configRaw(
+					[
+						`import Path from "node:path";`,
+						`import Fs from "node:fs/promises";`,
+						``,
+						`import { tasks, Inputs, Outputs } from "nadle";`,
+						``,
+						`tasks`,
+						`\t.register("prepare", async ({ context }) => {`,
+						`\t\tawait Fs.writeFile(Path.join(context.workingDir, "out.txt"), "done");`,
+						`\t})`,
+						`\t.config({ inputs: [Inputs.files("input.txt")], outputs: [Outputs.files("out.txt")] });`,
+						`tasks.register("verify", () => {}).config({ dependsOn: ["prepare"] });`
+					].join("\n")
+				)
+				.build()
 		}));
 });

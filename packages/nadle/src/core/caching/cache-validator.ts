@@ -23,6 +23,7 @@ interface CacheValidatorContext {
 	readonly taskOptions?: object;
 	readonly configFiles: string[];
 	readonly maxCacheEntries: number;
+	readonly passthroughArgs: readonly string[];
 	readonly dependencyFingerprints: Record<string, string>;
 }
 
@@ -89,6 +90,9 @@ export class CacheValidator {
 			taskId: this.taskId,
 			env: this.taskConfiguration.env,
 			options: this.context.taskOptions,
+			// Spread conditionally: an explicit undefined key would still change the hash,
+			// invalidating cache entries created before passthrough args existed.
+			...(this.context.passthroughArgs.length > 0 ? { passthroughArgs: this.context.passthroughArgs } : {}),
 			dependencyFingerprints: Object.keys(this.context.dependencyFingerprints).length > 0 ? this.context.dependencyFingerprints : undefined
 		});
 
