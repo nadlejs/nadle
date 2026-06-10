@@ -26,6 +26,29 @@ names of the resolved workspace:
 Glob patterns apply equally to the `--exclude` option. Because task names never contain glob
 characters, an input is treated as a glob if and only if it contains one.
 
+### Argument Passthrough
+
+Arguments after the first bare `--` are not parsed as Nadle options; they are captured
+verbatim and passed through to tasks.
+
+```
+nadle <tasks...> [options] -- <args...>
+```
+
+Rules:
+
+- Passthrough arguments are delivered only to tasks explicitly requested on the command
+  line (including tasks matched by a glob pattern). Dependency tasks never receive them.
+- Every requested task receives the same arguments. When more than one requested task
+  will receive arguments, an informational notice is logged.
+- Task runners access the arguments via the runner context (`passthroughArgs`).
+  Exec-based builtin tasks append them to their underlying command.
+- Passthrough arguments participate in the cache key of requested tasks; an invocation
+  with arguments is never served from a cache entry produced without them. Dependency
+  task cache keys are unaffected.
+- Strict option parsing still applies before `--`: unknown Nadle flags remain an error.
+- Dry run annotates requested tasks with the arguments they would receive.
+
 ## Flags
 
 ### Execution Options

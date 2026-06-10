@@ -8,6 +8,19 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 1.13.0 — 2026-06-10
+
+### Added
+
+- 09-cli: Argument passthrough — CLI args after the first bare `--` are captured
+  verbatim and delivered only to explicitly requested tasks (glob matches included);
+  dependency tasks never receive them. Args are exposed on the runner context
+  (`passthroughArgs`), appended by exec-based builtin tasks, included in the cache
+  key of requested tasks, surfaced in dry run, and a notice is logged when more than
+  one requested task receives them.
+- 10-builtin-tasks: Documented which builtin tasks consume passthrough arguments
+  (exec-based ones append; CopyTask and DeleteTask ignore).
+
 ## 1.12.0 — 2026-06-07
 
 ### Added

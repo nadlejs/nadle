@@ -177,6 +177,9 @@ All built-in tasks share these characteristics:
 
 - They all respect the `workingDir` from the runner context.
 - ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, and PnpxTask force color output via `FORCE_COLOR=1` environment variable.
+- ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, and PnpxTask append the runner context's
+  passthrough arguments (CLI args after `--`, see spec 09) after their configured arguments.
+  CopyTask and DeleteTask ignore passthrough arguments.
 - All tasks stream output through the task logger.
 
 ## Custom Task Types
