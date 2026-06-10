@@ -65,6 +65,7 @@ const argv = yargs(hideBin(Process.argv))
 		"General options:"
 	)
 	.group(["help", "version"], "Miscellaneous options:")
+	.parserConfiguration({ "populate--": true })
 	.wrap(100)
 	.strict()
 	.parseSync();

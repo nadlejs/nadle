@@ -39,6 +39,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly tasks: string[];
 	/** List of tasks to exclude from execution. */
 	readonly excludedTasks?: string[];
+	/** Arguments after `--` on the command line, passed through to requested tasks. */
+	readonly passthroughArgs?: string[];
 
 	/** List all available tasks. */
 	readonly list: boolean;

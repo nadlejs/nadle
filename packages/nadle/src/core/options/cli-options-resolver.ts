@@ -41,6 +41,7 @@ const transform =
 	};
 
 const transformers = [
+	transform("--", { transformKey: "passthroughArgs" }),
 	exclude((key) => aliases.includes(key)),
 	exclude((key) => key.includes(DASH)),
 	exclude("$0"),
