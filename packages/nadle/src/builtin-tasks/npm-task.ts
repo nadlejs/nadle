@@ -1,5 +1,4 @@
-import { execa } from "execa";
-
+import { runCommand } from "./run-command.js";
 import { MaybeArray } from "../core/index.js";
 import { defineTask } from "../core/registration/define-task.js";
 
@@ -18,18 +17,11 @@ export interface NpmTaskOptions {
  */
 export const NpmTask = defineTask<NpmTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = [...MaybeArray.toArray(options.args), ...context.passthroughArgs];
-
-		context.logger.info(`Running npm command: npm ${args.join(" ")}`);
-
-		const subprocess = execa("npm", args, { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
-
-		subprocess.all?.on("data", (chunk) => {
-			context.logger.log(chunk.toString());
+		await runCommand(context, {
+			command: "npm",
+			args: MaybeArray.toArray(options.args),
+			doneMessage: `npm command completed successfully.`,
+			startMessage: (finalArgs) => `Running npm command: npm ${finalArgs.join(" ")}`
 		});
-
-		await subprocess;
-
-		context.logger.info(`npm command completed successfully.`);
 	}
 });

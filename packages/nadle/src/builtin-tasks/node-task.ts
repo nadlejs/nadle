@@ -1,5 +1,4 @@
-import { execa } from "execa";
-
+import { runCommand } from "./run-command.js";
 import type { MaybeArray } from "../core/index.js";
 import { defineTask } from "../core/registration/define-task.js";
 
@@ -20,18 +19,13 @@ export interface NodeTaskOptions {
  */
 export const NodeTask = defineTask<NodeTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = [...(options.args == null ? [] : typeof options.args === "string" ? [options.args] : options.args), ...context.passthroughArgs];
+		const args = options.args == null ? [] : typeof options.args === "string" ? [options.args] : options.args;
 
-		context.logger.info(`Running node script: node ${options.script} ${args.join(" ")}`);
-
-		const subprocess = execa("node", [options.script, ...args], { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
-
-		subprocess.all?.on("data", (chunk) => {
-			context.logger.log(chunk.toString());
+		await runCommand(context, {
+			command: "node",
+			args: [options.script, ...args],
+			doneMessage: `Node script completed successfully.`,
+			startMessage: (finalArgs) => `Running node script: node ${finalArgs.join(" ")}`
 		});
-
-		await subprocess;
-
-		context.logger.info(`Node script completed successfully.`);
 	}
 });

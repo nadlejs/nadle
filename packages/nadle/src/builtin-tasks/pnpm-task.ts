@@ -1,5 +1,4 @@
-import { execa } from "execa";
-
+import { runCommand } from "./run-command.js";
 import { MaybeArray } from "../core/index.js";
 import { defineTask } from "../core/registration/define-task.js";
 
@@ -23,18 +22,12 @@ export interface PnpmTaskOptions {
 export const PnpmTask = defineTask<PnpmTaskOptions>({
 	run: async ({ options, context }) => {
 		const filterArgs = MaybeArray.toArray(options.filter ?? []).flatMap((filter) => ["--filter", filter]);
-		const args = [...filterArgs, ...MaybeArray.toArray(options.args), ...context.passthroughArgs];
 
-		context.logger.info(`Running pnpm command: pnpm ${args.join(" ")}`);
-
-		const subprocess = execa("pnpm", args, { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
-
-		subprocess.all?.on("data", (chunk) => {
-			context.logger.log(chunk.toString());
+		await runCommand(context, {
+			command: "pnpm",
+			doneMessage: `pnpm command completed successfully.`,
+			args: [...filterArgs, ...MaybeArray.toArray(options.args)],
+			startMessage: (finalArgs) => `Running pnpm command: pnpm ${finalArgs.join(" ")}`
 		});
-
-		await subprocess;
-
-		context.logger.info(`pnpm command completed successfully.`);
 	}
 });
