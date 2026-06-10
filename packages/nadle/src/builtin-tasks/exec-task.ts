@@ -1,5 +1,6 @@
-import { execa, parseCommandString } from "execa";
+import { parseCommandString } from "execa";
 
+import { runCommand } from "./run-command.js";
 import type { MaybeArray } from "../core/index.js";
 import { defineTask } from "../core/registration/define-task.js";
 
@@ -22,17 +23,11 @@ export const ExecTask = defineTask<ExecTaskOptions>({
 	run: async ({ options, context }) => {
 		const { args, command } = options;
 
-		const commandArguments = [...(args == null ? [] : typeof args === "string" ? parseCommandString(args) : args), ...context.passthroughArgs];
-
-		context.logger.info(`Running command: ${command} ${commandArguments.join(" ")}`);
-
-		const subprocess = execa(command, commandArguments, { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
-
-		subprocess.all?.on("data", (chunk) => {
-			context.logger.log(chunk.toString());
+		await runCommand(context, {
+			command,
+			doneMessage: `Run completed successfully.`,
+			startMessage: (finalArgs) => `Running command: ${command} ${finalArgs.join(" ")}`,
+			args: args == null ? [] : typeof args === "string" ? parseCommandString(args) : args
 		});
-
-		await subprocess;
-		context.logger.info(`Run completed successfully.`);
 	}
 });
