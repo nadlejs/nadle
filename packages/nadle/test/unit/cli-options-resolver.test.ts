@@ -71,6 +71,19 @@ describe.concurrent("CLIOptionsResolver.resolve", () => {
 		expect(result).not.toHaveProperty("config");
 	});
 
+	it("captures args after -- into passthroughArgs", () => {
+		const result = CLIOptionsResolver.resolve({ tasks: ["test"], "--": ["-u", "--reporter", "dot"] });
+
+		expect(result.passthroughArgs).toEqual(["-u", "--reporter", "dot"]);
+		expect(result).not.toHaveProperty("--");
+	});
+
+	it("omits passthroughArgs when -- is absent", () => {
+		const result = CLIOptionsResolver.resolve({ tasks: ["test"] });
+
+		expect(result.passthroughArgs).toBeUndefined();
+	});
+
 	it("preserves other valid options", () => {
 		const result = CLIOptionsResolver.resolve({
 			footer: false,

@@ -47,4 +47,7 @@ Miscellaneous options:
 Options:
       --reporter  Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)
                                            [string] [choices: "default", "agent"] [default: default]
+
+Examples:
+  nadle test -- -u  Run the test task, passing -u through to its underlying command
 `;

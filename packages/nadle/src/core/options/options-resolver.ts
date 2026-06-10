@@ -28,6 +28,7 @@ export class OptionsResolver {
 		reporter: "default",
 		implicitDependencies: true,
 		excludedTasks: [] as string[],
+		passthroughArgs: [] as string[],
 		footer: !isCI && !!process.stdout.isTTY,
 
 		isWorkerThread: false

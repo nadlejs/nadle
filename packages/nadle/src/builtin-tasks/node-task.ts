@@ -20,7 +20,7 @@ export interface NodeTaskOptions {
  */
 export const NodeTask = defineTask<NodeTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = options.args == null ? [] : typeof options.args === "string" ? [options.args] : options.args;
+		const args = [...(options.args == null ? [] : typeof options.args === "string" ? [options.args] : options.args), ...context.passthroughArgs];
 
 		context.logger.info(`Running node script: node ${options.script} ${args.join(" ")}`);
 

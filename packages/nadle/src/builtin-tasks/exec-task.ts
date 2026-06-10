@@ -22,7 +22,7 @@ export const ExecTask = defineTask<ExecTaskOptions>({
 	run: async ({ options, context }) => {
 		const { args, command } = options;
 
-		const commandArguments = args == null ? [] : typeof args === "string" ? parseCommandString(args) : args;
+		const commandArguments = [...(args == null ? [] : typeof args === "string" ? parseCommandString(args) : args), ...context.passthroughArgs];
 
 		context.logger.info(`Running command: ${command} ${commandArguments.join(" ")}`);
 

@@ -9,6 +9,7 @@ export namespace CacheKey {
 		readonly env?: TaskEnv;
 		readonly options?: object;
 		readonly taskId: TaskIdentifier;
+		readonly passthroughArgs?: readonly string[];
 		readonly inputsFingerprints: FileFingerprints;
 		readonly dependencyFingerprints?: Record<string, string>;
 	}

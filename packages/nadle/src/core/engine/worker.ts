@@ -58,9 +58,12 @@ export async function runTask(
 	const taskConfig = task.configResolver();
 	const workspace = getWorkspaceById(options.project, task.workspaceId);
 	const workingDir = Path.resolve(workspace.absolutePath, taskConfig.workingDir ?? "");
+	const requested = options.tasks.some((resolvedTask) => resolvedTask.taskId === taskId);
+	const passthroughArgs = requested ? options.passthroughArgs : [];
 
 	const context: RunnerContext = {
 		workingDir,
+		passthroughArgs,
 		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
 	};
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
@@ -71,6 +74,7 @@ export async function runTask(
 		taskConfig,
 		workingDir,
 		taskOptions,
+		passthroughArgs,
 		dependencyFingerprints,
 		workspaceId: task.workspaceId
 	});
@@ -102,6 +106,7 @@ interface CacheValidatorParams {
 	workspaceId: string;
 	taskOptions: unknown;
 	taskConfig: TaskConfiguration;
+	passthroughArgs: readonly string[];
 	dependencyFingerprints: Record<string, string>;
 }
 
@@ -110,10 +115,13 @@ function createCacheValidator(nadle: Nadle, params: CacheValidatorParams) {
 	const workspace = getWorkspaceById(nadle.options.project, params.workspaceId);
 	const configFiles = workspace.configFilePath ? [rootConfigFile, workspace.configFilePath] : [rootConfigFile];
 
+	// Override the global options value with the per-task one: dependency tasks must
+	// keep a stable cache key regardless of what was passed on the CLI.
 	return new CacheValidator(params.taskId, params.taskConfig, {
 		...nadle.options,
 		configFiles,
 		workingDir: params.workingDir,
+		passthroughArgs: params.passthroughArgs,
 		taskOptions: params.taskOptions as object | undefined,
 		dependencyFingerprints: params.dependencyFingerprints,
 		projectDir: nadle.options.project.rootWorkspace.absolutePath,
