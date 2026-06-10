@@ -2,6 +2,7 @@ import c from "tinyrainbow";
 
 import { BaseHandler } from "./base-handler.js";
 import { Messages } from "../utilities/messages.js";
+import { ResolvedTask } from "../interfaces/resolved-task.js";
 
 export class DryRunHandler extends BaseHandler {
 	public readonly name = "dry-run";
@@ -23,14 +24,18 @@ export class DryRunHandler extends BaseHandler {
 
 		this.context.logger.log(c.bold("Execution plan:"));
 
+		const { passthroughArgs } = this.context.options;
+		const requestedTaskIds = new Set(this.context.options.tasks.map(ResolvedTask.getId));
+
 		for (const taskId of taskIds) {
 			const label = this.context.taskRegistry.getTaskById(taskId).label;
 			const implicitDeps = scheduler.getImplicitDeps(taskId);
+			const argsSuffix = passthroughArgs.length > 0 && requestedTaskIds.has(taskId) ? c.dim(` (args: ${passthroughArgs.join(" ")})`) : "";
 			const suffix =
 				implicitDeps.length > 0
 					? c.dim(` (after ${implicitDeps.map((d) => this.context.taskRegistry.getTaskById(d).label).join(", ")} — implicit)`)
 					: "";
-			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(label)}${suffix}`);
+			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(label)}${argsSuffix}${suffix}`);
 		}
 	}
 }

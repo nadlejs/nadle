@@ -103,6 +103,17 @@ describe.concurrent("passthrough args", () => {
 			}
 		}));
 
+	it("shows args on requested tasks in dry run", () =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`build --dry-run -- -u`);
+
+				expect(stdout).toContain("build (args: -u)");
+				expect(stdout).not.toContain("compile (args:");
+			}
+		}));
+
 	it("still rejects unknown flags before --", () =>
 		withGeneratedFixture({
 			files,
