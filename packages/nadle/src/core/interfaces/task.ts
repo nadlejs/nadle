@@ -22,4 +22,6 @@ export interface RunnerContext {
 	readonly logger: Logger;
 	/** The working directory for the task. */
 	readonly workingDir: string;
+	/** Arguments after `--` on the CLI. Empty unless this task was explicitly requested. */
+	readonly passthroughArgs: readonly string[];
 }

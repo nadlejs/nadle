@@ -58,9 +58,12 @@ export async function runTask(
 	const taskConfig = task.configResolver();
 	const workspace = getWorkspaceById(options.project, task.workspaceId);
 	const workingDir = Path.resolve(workspace.absolutePath, taskConfig.workingDir ?? "");
+	const requested = options.tasks.some((resolvedTask) => resolvedTask.taskId === taskId);
+	const passthroughArgs = requested ? options.passthroughArgs : [];
 
 	const context: RunnerContext = {
 		workingDir,
+		passthroughArgs,
 		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
 	};
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
