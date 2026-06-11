@@ -28,15 +28,8 @@ export function configure(options: NadleFileOptions): void;
 export const CopyTask: Task<CopyTaskOptions>;
 
 // @public
-export interface CopyTaskOptions {
-    readonly exclude?: MaybeArray<string>;
-    readonly flatten?: boolean;
-    readonly from: MaybeArray<FileSelection>;
-    readonly include?: MaybeArray<string>;
-    readonly into: string;
-    readonly overwrite?: "error" | "replace" | "skip";
-    readonly rename?: Record<string, string>;
-    readonly strict?: boolean;
+export interface CopyTaskOptions extends FileOperationOptions {
+    readonly overwrite?: OverwritePolicy;
 }
 
 // @public
@@ -84,6 +77,17 @@ export interface FileDeclaration {
 }
 
 // @public
+export interface FileOperationOptions {
+    readonly exclude?: MaybeArray<string>;
+    readonly flatten?: boolean;
+    readonly from: MaybeArray<FileSelection>;
+    readonly include?: MaybeArray<string>;
+    readonly into: string;
+    readonly rename?: Record<string, string>;
+    readonly strict?: boolean;
+}
+
+// @public
 export type FileSelection = string | FileSelector;
 
 // @public
@@ -115,6 +119,14 @@ export type MaybeArray<T> = T | T[];
 // @public
 export namespace MaybeArray {
     export function toArray<T>(value: MaybeArray<T>): T[];
+}
+
+// @public
+export const MoveTask: Task<MoveTaskOptions>;
+
+// @public
+export interface MoveTaskOptions extends FileOperationOptions {
+    readonly overwrite?: OverwritePolicy;
 }
 
 // @public
@@ -175,6 +187,9 @@ export namespace Outputs {
 }
 
 // @public
+export type OverwritePolicy = "error" | "replace" | "skip";
+
+// @public
 export const PnpmTask: Task<PnpmTaskOptions>;
 
 // @public
@@ -213,6 +228,14 @@ export type SupportReporter = (typeof SupportReporters)[number];
 
 // @public
 export const SupportReporters: readonly ["default", "agent"];
+
+// @public
+export const SyncTask: Task<SyncTaskOptions>;
+
+// @public
+export interface SyncTaskOptions extends FileOperationOptions {
+    readonly preserve?: MaybeArray<string>;
+}
 
 // @public
 export interface Task<Options = unknown> {

@@ -31,7 +31,7 @@ export interface FileSelector {
 export type FileSelection = string | FileSelector;
 
 /** A file resolved from a selection: absolute source path plus destination-relative path. */
-export interface SelectedFile {
+interface SelectedFile {
 	readonly source: string;
 	readonly relativePath: string;
 }

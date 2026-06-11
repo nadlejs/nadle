@@ -5,5 +5,8 @@ export * from "./pnpm-task.js";
 export * from "./pnpx-task.js";
 export * from "./exec-task.js";
 export * from "./copy-task.js";
+export * from "./move-task.js";
+export * from "./sync-task.js";
 export * from "./delete-task.js";
 export { type FileSelector, type FileSelection } from "./file-selection.js";
+export { type OverwritePolicy, type FileOperationOptions } from "./file-operations.js";
