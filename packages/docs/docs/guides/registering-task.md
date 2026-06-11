@@ -74,8 +74,8 @@ This makes it easy to reuse logic across multiple tasks without duplicating code
 import { tasks, CopyTask } from "nadle";
 
 tasks.register("copy", CopyTask, {
-	from: "assets/",
-	to: "dist/"
+	from: "assets",
+	into: "dist"
 });
 ```
 

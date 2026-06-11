@@ -124,35 +124,45 @@ for running binaries from `node_modules/.bin` through npx.
 5. Stream combined output to the task logger.
 6. Await subprocess completion.
 
+## File Selections
+
+File-operation tasks share one source vocabulary. A **file selection** is either:
+
+- a **string** — a path (relative to the working directory) to a file or a directory, or
+- a **selector object** — `{ dir, include?, exclude? }`, where `include`/`exclude` are glob
+  patterns matched against files inside `dir` (include defaults to all files).
+
+A string selection pointing to a file yields that file. One pointing to a directory selects
+the files inside it (applying the task-level default `include`/`exclude` patterns, if any).
+A missing source logs a warning and yields nothing — unless the task's `strict` option is
+set, in which case it is an error.
+
 ## CopyTask
 
-Copies files and directories using glob patterns.
+Copies files into a destination directory.
 
 ### Options
 
-| Field     | Type                       | Required | Description                                       |
-| --------- | -------------------------- | -------- | ------------------------------------------------- |
-| `from`    | string                     | Yes      | Source path (relative to working directory).      |
-| `to`      | string                     | Yes      | Destination path (relative to working directory). |
-| `include` | string or array of strings | No       | Glob patterns to include. Default: `**/*`.        |
-| `exclude` | string or array of strings | No       | Glob patterns to exclude. Default: none.          |
+| Field       | Type                            | Required | Description                                                                |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `from`      | file selection or array thereof | Yes      | Source files, directories, or selectors.                                   |
+| `into`      | string                          | Yes      | Destination directory (relative to working directory). Created if missing. |
+| `include`   | string or array of strings      | No       | Default include patterns for directory selections without their own.       |
+| `exclude`   | string or array of strings      | No       | Default exclude patterns for directory selections without their own.       |
+| `flatten`   | boolean                         | No       | Copy all files directly into `into`, dropping source directory structure.  |
+| `rename`    | record of string to string      | No       | Renames by exact base name, e.g. `{ "config.dev.json": "config.json" }`.   |
+| `overwrite` | `replace` \| `skip` \| `error`  | No       | Behavior when a destination file exists. Default: `replace`.               |
+| `strict`    | boolean                         | No       | Fail when a source is missing or nothing matches. Default: `false`.        |
 
 ### Behavior
 
-**When `from` is a directory:**
-
-1. Create the destination directory.
-2. Glob all files matching `include` patterns, ignoring `exclude` patterns.
-3. Copy each matched file, preserving relative directory structure.
-
-**When `from` is a file:**
-
-1. Check if the file matches include/exclude patterns.
-2. If the destination is a directory (or ends with a path separator), copy into it.
-3. Otherwise, copy to the exact destination path.
-4. Create parent directories as needed.
-
-If the source path does not exist, a warning is logged and no error is raised.
+1. Resolve all `from` selections to files (see File Selections).
+2. Compute each file's destination: its selection-relative path under `into`, flattened to
+   the base name when `flatten` is set, then renamed when its base name appears in `rename`.
+3. If two source files map to the same destination, the task fails.
+4. Apply the `overwrite` policy per existing destination file: `replace` overwrites,
+   `skip` logs and skips, `error` fails the task.
+5. Create parent directories as needed and copy.
 
 ## DeleteTask
 

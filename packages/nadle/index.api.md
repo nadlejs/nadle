@@ -30,9 +30,13 @@ export const CopyTask: Task<CopyTaskOptions>;
 // @public
 export interface CopyTaskOptions {
     readonly exclude?: MaybeArray<string>;
-    readonly from: string;
+    readonly flatten?: boolean;
+    readonly from: MaybeArray<FileSelection>;
     readonly include?: MaybeArray<string>;
-    readonly to: string;
+    readonly into: string;
+    readonly overwrite?: "error" | "replace" | "skip";
+    readonly rename?: Record<string, string>;
+    readonly strict?: boolean;
 }
 
 // @public
@@ -77,6 +81,16 @@ export interface ExecTaskOptions {
 export interface FileDeclaration {
     readonly patterns: string[];
     readonly type: "file";
+}
+
+// @public
+export type FileSelection = string | FileSelector;
+
+// @public
+export interface FileSelector {
+    readonly dir: string;
+    readonly exclude?: MaybeArray<string>;
+    readonly include?: MaybeArray<string>;
 }
 
 // @public

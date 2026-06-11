@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`copyTask > given a file path > can copy it 1`] = `
+exports[`copyTask > given a file path > copies it into the destination directory 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
 Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyFoo
@@ -11,7 +11,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyFoo
 
 [log] <Yellow>></Yellow> Task <Bold>copyFoo</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] Copy foo.txt -> dist
+[log] Copy foo.txt -> dist/foo.txt
 [log]
 <Green>✓</Green> Task <Bold>copyFoo</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
@@ -50,7 +50,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
 
 [log] <Yellow>></Yellow> Task <Bold>copyToNested</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] Copy foo.txt -> dist/sub/nested
+[log] Copy foo.txt -> dist/sub/nested/foo.txt
 [log]
 <Green>✓</Green> Task <Bold>copyToNested</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
