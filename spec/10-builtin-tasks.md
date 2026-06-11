@@ -1,6 +1,6 @@
 # 10 — Built-in Task Types
 
-Nadle provides ten built-in reusable task types, all created via `defineTask()`.
+Nadle provides twelve built-in reusable task types, all created via `defineTask()`.
 
 ## Argument Normalization
 
@@ -202,6 +202,40 @@ without an `overwrite` option — existing destination files are always replaced
 3. Prune directories left empty.
 
 The destination ends up containing exactly the selected files (plus preserved ones).
+
+## ZipTask
+
+Creates a zip archive from selected files.
+
+### Options
+
+| Field     | Type                            | Required | Description                                                          |
+| --------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
+| `from`    | file selection or array thereof | Yes      | Source files, directories, or selectors (see File Selections).       |
+| `archive` | string                          | Yes      | Path of the archive to create (relative to working directory).       |
+| `prefix`  | string                          | No       | Entry-name prefix; files are stored as `<prefix>/<relative path>`.   |
+| `include` | string or array of strings      | No       | Default include patterns for directory selections without their own. |
+| `exclude` | string or array of strings      | No       | Default exclude patterns for directory selections without their own. |
+| `strict`  | boolean                         | No       | Fail when a source is missing or nothing matches. Default: `false`.  |
+
+Entry names are the selection-relative paths (always with forward slashes). Two sources
+mapping to the same entry name fail the task. Parent directories of the archive are
+created as needed.
+
+## UnzipTask
+
+Extracts a zip archive into a directory.
+
+### Options
+
+| Field     | Type                       | Required | Description                                                     |
+| --------- | -------------------------- | -------- | --------------------------------------------------------------- |
+| `archive` | string                     | Yes      | Path of the archive to extract (relative to working directory). |
+| `into`    | string                     | Yes      | Destination directory. Created if missing.                      |
+| `include` | string or array of strings | No       | Glob patterns selecting which entries to extract. Default: all. |
+
+A missing archive is an error. Entries whose names would escape the destination
+directory (path traversal) fail the task.
 
 ## DeleteTask
 
