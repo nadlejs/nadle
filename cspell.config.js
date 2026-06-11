@@ -53,6 +53,7 @@ const config = {
 		"TSES",
 		"nadlejs",
 		"pnpx",
+		"tsgo",
 		"Uncategorized",
 		...extractLibraryNames()
 	],
