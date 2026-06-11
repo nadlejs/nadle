@@ -81,9 +81,15 @@ tasks.register("build").config({
 
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
 
+tasks.register("testUnit", PnpxTask, { args: ["run"], command: "vitest" }).config({
+	group: "Testing",
+	dependsOn: ["compile", "packages:nadle:build", "packages:language-server:build"],
+	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
+});
+
 tasks.register("test").config({
 	group: "Testing",
-	dependsOn: ["typecheck"],
+	dependsOn: ["typecheck", "testUnit"],
 	description: "Run all tests and checks"
 });
 

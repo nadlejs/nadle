@@ -6,9 +6,3 @@ tasks.register("build", PnpxTask, { command: "tsup" }).config({
 	outputs: [Outputs.dirs("lib")],
 	description: "Bundle language-server with tsup"
 });
-
-tasks.register("test", PnpxTask, { args: "run", command: "vitest" }).config({
-	group: "Testing",
-	dependsOn: ["build"],
-	description: "Run LSP unit tests"
-});

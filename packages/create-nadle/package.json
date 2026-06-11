@@ -6,8 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "nadle build",
-		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
-		"test": "nadle test"
+		"start": "tsc -p tsconfig.build.json --watch --noEmit false"
 	},
 	"files": [
 		"lib",
@@ -29,7 +28,6 @@
 		"fixturify": "^3.0.0",
 		"serialize-javascript": "^7.0.5",
 		"size-limit": "^12.1.0",
-		"std-env": "^3.10.0",
 		"typescript": "^5.9.3",
 		"vitest": "4.0.18",
 		"yaml": "^2.9.0"

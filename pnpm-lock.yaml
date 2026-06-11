@@ -39,6 +39,9 @@ importers:
       '@typescript/native-preview':
         specifier: 7.0.0-dev.20260611.2
         version: 7.0.0-dev.20260611.2
+      '@vitest/coverage-v8':
+        specifier: 4.0.18
+        version: 4.0.18(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
       '@vitest/eslint-plugin':
         specifier: ^1.6.19
         version: 1.6.19(@typescript-eslint/eslint-plugin@8.60.1(@typescript-eslint/parser@8.60.1(eslint@9.39.2(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.2(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.2(jiti@2.7.0))(typescript@5.9.3)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
@@ -64,14 +67,17 @@ importers:
         specifier: ^6.16.1
         version: 6.16.1
       nadle:
-        specifier: https://pkg.pr.new/nadle@368fc65
-        version: https://pkg.pr.new/nadle@368fc65(@types/react@19.2.17)
+        specifier: https://pkg.pr.new/nadle@40659bc
+        version: https://pkg.pr.new/nadle@40659bc(@types/react@19.2.17)
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
       rimraf:
         specifier: ^6.1.3
         version: 6.1.3
+      std-env:
+        specifier: ^3.10.0
+        version: 3.10.0
       tsx:
         specifier: ^4.22.4
         version: 4.22.4
@@ -81,6 +87,9 @@ importers:
       typescript-eslint:
         specifier: ^8.60.1
         version: 8.60.1(eslint@9.39.2(jiti@2.7.0))(typescript@5.9.3)
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
 
   packages/create-nadle:
     dependencies:
@@ -121,9 +130,6 @@ importers:
       size-limit:
         specifier: ^12.1.0
         version: 12.1.0(jiti@2.7.0)
-      std-env:
-        specifier: ^3.10.0
-        version: 3.10.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -356,9 +362,6 @@ importers:
       '@types/yargs':
         specifier: ^17.0.35
         version: 17.0.35
-      '@vitest/coverage-v8':
-        specifier: ^4.0.18
-        version: 4.0.18(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@20.19.33)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
       '@vitest/expect':
         specifier: ^4.0.18
         version: 4.0.18
@@ -693,16 +696,8 @@ packages:
     resolution: {integrity: sha512-brcMGQaVzIeUb+6/bs1Av0f8YuNNjKY2JyvfRCsFuFsdKccEQ5Ges2y74D74NZ1Rz8lKJ9ksJkfqwQFJ/iNEyQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-string-parser@7.27.1':
-    resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-string-parser@7.29.7':
     resolution: {integrity: sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-validator-identifier@7.28.5':
-    resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-identifier@7.29.7':
@@ -720,11 +715,6 @@ packages:
   '@babel/helpers@7.29.7':
     resolution: {integrity: sha512-1k2lAGRMfHTcwuNYcCNUmaUffmQv8KWMfh2iJUUeRlwlwH4FdNG7mfPI10NPfLHJFThE4Tyr4mv7kTNZOiPuBg==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.29.0':
-    resolution: {integrity: sha512-IyDgFV5GeDUVX4YdF/3CPULtVGSXXMLh1xVIgdCgxApktqnQV0r7/8Nqthg+8YLGaAtdyIlo2qIdZrbCv4+7ww==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   '@babel/parser@7.29.7':
     resolution: {integrity: sha512-hnORnjP/1P/zFEndoeX+n+t1RwWRJiJpM/jO7FW32Kn9r5+sJB2JWOdYo4L6k78j15eCwY3Gm/7364B1EMwtNg==}
@@ -1189,10 +1179,6 @@ packages:
 
   '@babel/traverse@7.29.7':
     resolution: {integrity: sha512-EhlfNQtZ+NK22w5BM61ciuiq1m58ed33Wr1Xan//ZRTy6hgjnwyCffRYwzsGXdASJSUJ1guZILsErh1eQcl+zw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.29.0':
-    resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.29.7':
@@ -2719,11 +2705,22 @@ packages:
     peerDependencies:
       eslint: ^9.30.1
 
+  '@nadle/kernel@https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4':
+    resolution: {integrity: sha512-pat7Q24UcPNgEAGEHcE47DE0f663pYDJT2+F9ZUi5NOlmUkLJllvRmqxR9z1rrKO2Vb2jI7VyiMw5sAkIdcftQ==, tarball: https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4}
+    version: 0.0.1
+    engines: {node: '>=22'}
+
   '@nadle/prettier-config@0.0.5':
     resolution: {integrity: sha512-1nzPG/YZ0j3qa9LQ3WwjJQN8NzHlrU3qyXn/D5E8ixsSI4qH7qULERnfB52Uq9SW8I1ykYm3yY+xpROWfz15VQ==}
     engines: {node: '>=20'}
     peerDependencies:
       prettier: ^3.6.2
+
+  '@nadle/project-resolver@https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4':
+    resolution: {integrity: sha512-YxWRf/es05f+Br8dxF6pTcfS6iaJX9aa8zTBCsLGHyHfe7wvguuwSgGIxfG7BxVeJTJhGaXHfMSSrsWZ+wCpDw==, tarball: https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4}
+    version: 0.0.1
+    engines: {node: '>=22'}
+    hasBin: true
 
   '@nadle/ts-config@0.0.2':
     resolution: {integrity: sha512-eP6B9Tov+h0B35Zl/Kfy84/5OwilHhRif0cD01hB2B9iyh0dm+SflFoIjd/Einm7FMpHMZvlPoowM8gFPeOiQA==}
@@ -6620,9 +6617,6 @@ packages:
     resolution: {integrity: sha512-XT9ewWAC43tiAV7xDAPflMkG0qOPn2QjHqlgX8FOqmWa/rxnyYDulF9T0F7tRy1u+TVTmK/M//6VIOye+2zDXg==}
     engines: {node: '>=20'}
 
-  lodash-es@4.17.23:
-    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
-
   lodash-es@4.18.1:
     resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
 
@@ -7059,8 +7053,8 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
-  nadle@https://pkg.pr.new/nadle@368fc65:
-    resolution: {tarball: https://pkg.pr.new/nadle@368fc65}
+  nadle@https://pkg.pr.new/nadle@40659bc:
+    resolution: {integrity: sha512-QPq2i/pmYMedPsqOXTZPPlRIaJ3QMoBCx8XvqQ025H5OedAyR6PbjGV4aG0MqVVSGiklI+xrdc+AIhEZMiB+8g==, tarball: https://pkg.pr.new/nadle@40659bc}
     version: 0.5.1
     engines: {node: '>=22'}
     hasBin: true
@@ -9868,11 +9862,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-string-parser@7.27.1': {}
-
   '@babel/helper-string-parser@7.29.7': {}
-
-  '@babel/helper-validator-identifier@7.28.5': {}
 
   '@babel/helper-validator-identifier@7.29.7': {}
 
@@ -9890,10 +9880,6 @@ snapshots:
     dependencies:
       '@babel/template': 7.29.7
       '@babel/types': 7.29.7
-
-  '@babel/parser@7.29.0':
-    dependencies:
-      '@babel/types': 7.29.0
 
   '@babel/parser@7.29.7':
     dependencies:
@@ -10493,11 +10479,6 @@ snapshots:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
-
-  '@babel/types@7.29.0':
-    dependencies:
-      '@babel/helper-string-parser': 7.27.1
-      '@babel/helper-validator-identifier': 7.28.5
 
   '@babel/types@7.29.7':
     dependencies:
@@ -12640,9 +12621,18 @@ snapshots:
       - typescript
       - vitest
 
+  '@nadle/kernel@https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4': {}
+
   '@nadle/prettier-config@0.0.5(prettier@3.8.3)':
     dependencies:
       prettier: 3.8.3
+
+  '@nadle/project-resolver@https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4':
+    dependencies:
+      '@manypkg/find-root': 3.1.0
+      '@manypkg/tools': 2.1.1
+      '@nadle/kernel': https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4
+      find-up: 8.0.0
 
   '@nadle/ts-config@0.0.2': {}
 
@@ -16981,8 +16971,6 @@ snapshots:
     dependencies:
       p-locate: 6.0.0
 
-  lodash-es@4.17.23: {}
-
   lodash-es@4.18.1: {}
 
   lodash.debounce@4.0.8: {}
@@ -17043,8 +17031,8 @@ snapshots:
 
   magicast@0.5.2:
     dependencies:
-      '@babel/parser': 7.29.0
-      '@babel/types': 7.29.0
+      '@babel/parser': 7.29.7
+      '@babel/types': 7.29.7
       source-map-js: 1.2.1
 
   make-dir@4.0.0:
@@ -17700,22 +17688,23 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  nadle@https://pkg.pr.new/nadle@368fc65(@types/react@19.2.17):
+  nadle@https://pkg.pr.new/nadle@40659bc(@types/react@19.2.17):
     dependencies:
-      '@manypkg/find-root': 3.1.0
-      '@manypkg/tools': 2.1.1
+      '@nadle/kernel': https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4
+      '@nadle/project-resolver': https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@40659bccb71bb7d2b7c4849802e3d6c2dbd496a4
       consola: 3.4.2
       execa: 9.6.1
       fast-glob: 3.3.3
       fastest-levenshtein: 1.0.16
-      find-up: 8.0.0
+      fflate: 0.8.3
       fuzzysort: 3.1.0
       glob: 11.1.0
       ink: 6.7.0(@types/react@19.2.17)(react@19.1.0)
       jiti: 2.7.0
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       micromatch: 4.0.8
       object-hash: 3.0.0
+      p-limit: 7.3.0
       react: 19.1.0
       rimraf: 6.1.3
       std-env: 3.10.0

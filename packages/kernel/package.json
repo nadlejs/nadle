@@ -5,8 +5,7 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"build": "tsc -p tsconfig.build.json",
-		"test": "vitest run"
+		"build": "nadle build"
 	},
 	"files": [
 		"lib"

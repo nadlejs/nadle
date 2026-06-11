@@ -42,16 +42,10 @@ tasks
 		description: "Ensure no API warnings or undocumented items"
 	});
 
-tasks.register("testUnit", PnpxTask, { args: "run", command: "vitest" }).config({
-	group: "Testing",
-	dependsOn: ["build"],
-	description: "Run unit tests"
-});
-
 tasks.register("test").config({
 	group: "Testing",
 	description: "Run all tests and checks",
-	dependsOn: ["testUnit", "testAPI", "testNoWarningsAndUndocumentedAPI"]
+	dependsOn: ["testAPI", "testNoWarningsAndUndocumentedAPI"]
 });
 
 // --- Maintenance (nadle-specific) ---
