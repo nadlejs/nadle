@@ -8,6 +8,21 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 2.0.0 — 2026-06-11
+
+### Changed (BREAKING)
+
+- 10-builtin-tasks: CopyTask redesign — the `to` option is removed; `into` is the
+  required destination and is always a directory (the previous file-or-directory
+  destination guessing is gone). `from` accepts multiple sources (paths or selectors).
+
+### Added
+
+- 10-builtin-tasks: File Selections — a shared source vocabulary for file-operation
+  tasks (path string or `{ dir, include?, exclude? }` selector).
+- 10-builtin-tasks: CopyTask options — `flatten`, `rename` (by base name), `overwrite`
+  (`replace`/`skip`/`error`), and `strict`; destination-collision detection.
+
 ## 1.13.0 — 2026-06-10
 
 ### Added

@@ -1,139 +1,101 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import fg from "fast-glob";
-import micromatch from "micromatch";
-
-import { MaybeArray } from "../core/index.js";
+import { type MaybeArray } from "../core/index.js";
 import { isPathExists } from "../core/utilities/fs.js";
-import { type Logger } from "../core/interfaces/logger.js";
+import { type RunnerContext } from "../core/interfaces/task.js";
 import { defineTask } from "../core/registration/define-task.js";
+import { TaskExecutionError } from "../core/utilities/nadle-error.js";
+import { type SelectedFile, type FileSelection, resolveFileSelections } from "./file-selection.js";
 
 /**
  * Options for the CopyTask.
  */
 export interface CopyTaskOptions {
-	/** Destination path to copy to. */
-	readonly to: string;
-	/** Source path to copy from. */
-	readonly from: string;
-	/** Glob patterns to exclude from copying. */
-	readonly exclude?: MaybeArray<string>;
-	/** Glob patterns to include in copying. */
+	/** Destination directory. Created if missing. */
+	readonly into: string;
+	/** Fail when a source path is missing or no files match. Defaults to false. */
+	readonly strict?: boolean;
+	/** Copy all files directly into `into`, dropping source directory structure. */
+	readonly flatten?: boolean;
+	/** Default include patterns for directory selections without their own. */
 	readonly include?: MaybeArray<string>;
-}
-
-interface CopyContext {
-	readonly logger: Logger;
-	readonly srcPath: string;
-	readonly destPath: string;
-	readonly workingDir: string;
-	readonly includePatterns: string[];
-	readonly excludePatterns: string[];
+	/** Default exclude patterns for directory selections without their own. */
+	readonly exclude?: MaybeArray<string>;
+	/** Source file(s), directory(ies), or selector(s) with glob patterns. */
+	readonly from: MaybeArray<FileSelection>;
+	/** Renames by exact base name, e.g. `{ "config.dev.json": "config.json" }`. */
+	readonly rename?: Record<string, string>;
+	/** Behavior when a destination file already exists. Defaults to `replace`. */
+	readonly overwrite?: "error" | "replace" | "skip";
 }
 
 /**
  * Task for copying files and directories.
  *
- * Supports include/exclude glob patterns and handles both files and directories.
+ * Sources are files, directories, or glob selectors; the destination (`into`) is
+ * always a directory. Supports flattening, renaming, and overwrite policies.
  */
 export const CopyTask = defineTask<CopyTaskOptions>({
 	run: async ({ options, context }) => {
-		const { to, from, exclude = [], include = "**/*" } = options;
-		const { logger, workingDir } = context;
-
-		const srcPath = Path.resolve(workingDir, from);
-		const destPath = Path.resolve(workingDir, to);
-
-		logger.info(`Copying from ${from} to ${to} within working directory ${workingDir}`);
-		const includePatterns = MaybeArray.toArray(include);
-		const excludePatterns = MaybeArray.toArray(exclude);
-
-		logger.debug(`Include patterns: ${includePatterns.join(", ")}`);
-
-		if (excludePatterns.length > 0) {
-			logger.debug(`Exclude patterns: ${excludePatterns.join(", ")}`);
+		if (options.into === undefined) {
+			throw new TaskExecutionError(`CopyTask requires the 'into' option.`);
 		}
 
-		const srcPathExists = await isPathExists(srcPath);
+		const files = await resolveFileSelections({
+			logger: context.logger,
+			selections: options.from,
+			workingDir: context.workingDir,
+			strict: options.strict ?? false,
+			defaultInclude: options.include,
+			defaultExclude: options.exclude
+		});
 
-		if (!srcPathExists) {
-			logger.warn(`File '${srcPath}' does not exist.`);
+		const intoPath = Path.resolve(context.workingDir, options.into);
+		const targets = computeTargets(files, intoPath, options);
 
-			return;
-		}
-
-		const copyCtx: CopyContext = {
-			logger,
-			srcPath,
-			destPath,
-			workingDir,
-			includePatterns,
-			excludePatterns
-		};
-		const srcStat = await Fs.stat(srcPath);
-
-		if (srcStat.isDirectory()) {
-			await copyDirectory(copyCtx);
-			logger.info(`Copied directory ${from} to ${to}`);
-
-			return;
-		}
-
-		await copySingleFile(copyCtx);
-		logger.info(`Copied file ${from} to ${to}`);
+		await copyFiles(targets, options.overwrite ?? "replace", context);
+		context.logger.info(`Copied ${targets.size} file(s) into ${options.into}`);
 	}
 });
 
-async function copyDirectory(ctx: CopyContext): Promise<void> {
-	const { logger, srcPath, destPath, workingDir, includePatterns, excludePatterns } = ctx;
-
-	await Fs.mkdir(destPath, { recursive: true });
-
-	const files = await fg(includePatterns, {
-		dot: true,
-		cwd: srcPath,
-		onlyFiles: true,
-		ignore: excludePatterns
-	});
-
-	logger.info(`Found ${files.length} file(s) to copy`);
+function computeTargets(files: SelectedFile[], intoPath: string, options: Pick<CopyTaskOptions, "rename" | "flatten">): Map<string, string> {
+	const targets = new Map<string, string>();
 
 	for (const file of files) {
-		const source = Path.join(srcPath, file);
-		const target = Path.join(destPath, file);
+		let relativePath = options.flatten ? Path.basename(file.relativePath) : file.relativePath;
+		const renamed = options.rename?.[Path.basename(relativePath)];
 
-		await Fs.mkdir(Path.dirname(target), { recursive: true });
-		logger.log(`Copy ${Path.relative(workingDir, source)} -> ${Path.relative(workingDir, target)}`);
-		await Fs.cp(source, target);
+		if (renamed !== undefined) {
+			relativePath = Path.join(Path.dirname(relativePath), renamed);
+		}
+
+		const target = Path.join(intoPath, relativePath);
+		const existingSource = targets.get(target);
+
+		if (existingSource !== undefined) {
+			throw new TaskExecutionError(`Both '${existingSource}' and '${file.source}' map to the same destination '${target}'.`);
+		}
+
+		targets.set(target, file.source);
 	}
+
+	return targets;
 }
 
-async function copySingleFile(ctx: CopyContext): Promise<void> {
-	const { logger, srcPath, destPath, workingDir, includePatterns, excludePatterns } = ctx;
+async function copyFiles(targets: Map<string, string>, overwrite: "error" | "replace" | "skip", context: RunnerContext): Promise<void> {
+	for (const [target, source] of targets) {
+		if (overwrite !== "replace" && (await isPathExists(target))) {
+			if (overwrite === "error") {
+				throw new TaskExecutionError(`Destination '${target}' already exists.`);
+			}
 
-	let targetFile = destPath;
-
-	try {
-		const destStat = await Fs.stat(destPath);
-
-		if (destStat.isDirectory()) {
-			targetFile = Path.join(destPath, Path.basename(srcPath));
+			context.logger.info(`Skip existing ${Path.relative(context.workingDir, target)}`);
+			continue;
 		}
-	} catch {
-		if (destPath.endsWith(Path.sep)) {
-			targetFile = Path.join(destPath, Path.basename(srcPath));
-		}
-	}
 
-	if (
-		!micromatch.isMatch(Path.basename(srcPath), includePatterns) ||
-		(excludePatterns.length > 0 && micromatch.isMatch(Path.basename(srcPath), excludePatterns))
-	) {
-		return;
+		await Fs.mkdir(Path.dirname(target), { recursive: true });
+		context.logger.log(`Copy ${Path.relative(context.workingDir, source)} -> ${Path.relative(context.workingDir, target)}`);
+		await Fs.cp(source, target);
 	}
-
-	await Fs.mkdir(Path.dirname(targetFile), { recursive: true });
-	logger.log(`Copy ${Path.relative(workingDir, srcPath)} -> ${Path.relative(workingDir, targetFile)}`);
-	await Fs.cp(srcPath, targetFile);
 }

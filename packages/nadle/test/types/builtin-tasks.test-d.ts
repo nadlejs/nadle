@@ -11,6 +11,7 @@ import {
 	type Task,
 	DeleteTask,
 	type MaybeArray,
+	type FileSelection,
 	type NpmTaskOptions,
 	type NpxTaskOptions,
 	type NodeTaskOptions,
@@ -90,11 +91,18 @@ describe.concurrent("CopyTask", () => {
 		expectTypeOf(CopyTask).toEqualTypeOf<Task<CopyTaskOptions>>();
 	});
 
-	it("CopyTaskOptions has from, to, include, exclude", () => {
-		expectTypeOf<CopyTaskOptions["from"]>().toEqualTypeOf<string>();
-		expectTypeOf<CopyTaskOptions["to"]>().toEqualTypeOf<string>();
+	it("CopyTaskOptions has from, into, include, exclude", () => {
+		expectTypeOf<CopyTaskOptions["from"]>().toEqualTypeOf<MaybeArray<FileSelection>>();
+		expectTypeOf<CopyTaskOptions["into"]>().toEqualTypeOf<string>();
 		expectTypeOf<CopyTaskOptions["include"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
 		expectTypeOf<CopyTaskOptions["exclude"]>().toEqualTypeOf<MaybeArray<string> | undefined>();
+	});
+
+	it("CopyTaskOptions has flatten, rename, overwrite, strict", () => {
+		expectTypeOf<CopyTaskOptions["flatten"]>().toEqualTypeOf<boolean | undefined>();
+		expectTypeOf<CopyTaskOptions["rename"]>().toEqualTypeOf<Record<string, string> | undefined>();
+		expectTypeOf<CopyTaskOptions["overwrite"]>().toEqualTypeOf<"error" | "replace" | "skip" | undefined>();
+		expectTypeOf<CopyTaskOptions["strict"]>().toEqualTypeOf<boolean | undefined>();
 	});
 });
 
