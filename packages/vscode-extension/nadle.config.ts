@@ -2,22 +2,16 @@ import { tasks, Inputs, Outputs, ExecTask, PnpxTask } from "../../node_modules/n
 
 tasks.register("copy-server", ExecTask, { command: "node", args: ["scripts/copy-server.mjs"] }).config({
 	group: "Building",
-	dependsOn: ["packages:language-server:build"],
-	description: "Copy LSP server into extension"
-});
-
-tasks.register("build-tsup", PnpxTask, { command: "tsup" }).config({
-	group: "Building",
-	dependsOn: ["copy-server"],
-	description: "Bundle vscode extension with tsup"
+	dependsOn: ["root:bundle"],
+	outputs: [Outputs.dirs("server")],
+	description: "Copy LSP server into extension",
+	inputs: [Inputs.dirs("../language-server/lib"), Inputs.files("scripts/copy-server.mjs")]
 });
 
 tasks.register("build").config({
 	group: "Building",
-	outputs: [Outputs.dirs("lib")],
-	description: "Build vscode extension",
-	dependsOn: ["copy-server", "build-tsup"],
-	inputs: [Inputs.dirs("src"), Inputs.files("scripts/copy-server.mjs")]
+	dependsOn: ["copy-server"],
+	description: "Build vscode extension"
 });
 
 tasks.register("package", PnpxTask, { command: "vsce", args: "package" }).config({

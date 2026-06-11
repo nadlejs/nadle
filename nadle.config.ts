@@ -22,8 +22,8 @@ tasks
 	})
 	.config({
 		group: "Checking",
-		description: "Lint all files with ESLint",
-		dependsOn: ["packages:eslint-plugin:build"]
+		dependsOn: ["compile"],
+		description: "Lint all files with ESLint"
 	});
 
 tasks
@@ -54,7 +54,7 @@ tasks.register("check").config({
 
 tasks.register("typecheck", PnpxTask, { command: "tsgo", args: ["-b", "--noEmit"] }).config({
 	group: "Building",
-	dependsOn: ["packages:nadle:build"],
+	dependsOn: ["bundle"],
 	description: "Type-check all project references"
 });
 
@@ -68,10 +68,21 @@ tasks.register("compile", PnpxTask, { command: "tsgo", args: ["-b", "./tsconfig.
 	]
 });
 
+tasks.register("bundle", PnpxTask, { command: "tsup" }).config({
+	group: "Building",
+	dependsOn: ["compile"],
+	description: "Bundle all tsup-based packages in one pass",
+	outputs: [Outputs.dirs("packages/nadle/lib", "packages/language-server/lib", "packages/vscode-extension/lib")],
+	inputs: [
+		Inputs.dirs("packages/nadle/src", "packages/language-server/src", "packages/vscode-extension/src"),
+		Inputs.files("tsup.config.ts", "tsconfig.src.json", "tsconfig.base.json")
+	]
+});
+
 tasks.register("dist").config({
 	group: "Building",
 	description: "Bundle all tsup-based packages",
-	dependsOn: ["packages:nadle:build", "packages:language-server:build", "packages:vscode-extension:build"]
+	dependsOn: ["bundle", "packages:vscode-extension:copy-server"]
 });
 
 tasks.register("build").config({
@@ -83,7 +94,7 @@ tasks.register("build").config({
 
 tasks.register("testUnit", PnpxTask, { args: ["run"], command: "vitest" }).config({
 	group: "Testing",
-	dependsOn: ["compile", "packages:nadle:build", "packages:language-server:build"],
+	dependsOn: ["compile", "bundle"],
 	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
 });
 

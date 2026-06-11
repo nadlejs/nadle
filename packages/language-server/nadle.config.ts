@@ -1,8 +1,0 @@
-import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
-
-tasks.register("build", PnpxTask, { command: "tsup" }).config({
-	group: "Building",
-	inputs: [Inputs.dirs("src")],
-	outputs: [Outputs.dirs("lib")],
-	description: "Bundle language-server with tsup"
-});

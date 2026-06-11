@@ -1,13 +1,12 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, PnpxTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("build", PnpxTask, { command: "tsup" }).config({
+tasks.register("build").config({
 	group: "Building",
-	inputs: [Inputs.dirs("src")],
-	outputs: [Outputs.dirs("lib")],
-	description: "Bundle nadle with tsup"
+	dependsOn: ["root:bundle"],
+	description: "Bundle nadle (delegates to root bundle)"
 });
 
 tasks.register("generateMarkdown", PnpxTask, { command: "typedoc" }).config({
