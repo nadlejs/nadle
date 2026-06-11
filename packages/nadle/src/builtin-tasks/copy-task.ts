@@ -1,8 +1,12 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
+import pLimit from "p-limit";
+
 import { defineTask } from "../core/registration/define-task.js";
 import { shouldWrite, resolveTargets, type OverwritePolicy, type FileOperationOptions } from "./file-operations.js";
+
+const COPY_CONCURRENCY = 8;
 
 /**
  * Options for the CopyTask.
@@ -22,17 +26,21 @@ export const CopyTask = defineTask<CopyTaskOptions>({
 	run: async ({ options, context }) => {
 		const targets = await resolveTargets(options, context);
 		const overwrite = options.overwrite ?? "replace";
+		const limit = pLimit(COPY_CONCURRENCY);
 
-		for (const [target, source] of targets) {
-			if (!(await shouldWrite(target, overwrite, context))) {
-				continue;
-			}
+		await Promise.all(
+			[...targets.entries()].map(([target, source]) =>
+				limit(async () => {
+					if (!(await shouldWrite(target, overwrite, context))) {
+						return;
+					}
 
-			await Fs.mkdir(Path.dirname(target), { recursive: true });
-			context.logger.log(`Copy ${Path.relative(context.workingDir, source)} -> ${Path.relative(context.workingDir, target)}`);
-			await Fs.cp(source, target);
-		}
-
+					await Fs.mkdir(Path.dirname(target), { recursive: true });
+					context.logger.log(`Copy ${Path.relative(context.workingDir, source)} -> ${Path.relative(context.workingDir, target)}`);
+					await Fs.cp(source, target);
+				})
+			)
+		);
 		context.logger.info(`Copied ${targets.size} file(s) into ${options.into}`);
 	}
 });
