@@ -1,6 +1,6 @@
 # 10 — Built-in Task Types
 
-Nadle provides twelve built-in reusable task types, all created via `defineTask()`.
+Nadle provides thirteen built-in reusable task types, all created via `defineTask()`.
 
 ## ExecTask
 
@@ -229,6 +229,26 @@ Extracts a zip archive into a directory.
 
 A missing archive is an error. Entries whose names would escape the destination
 directory (path traversal) fail the task.
+
+## DownloadTask
+
+Downloads a file over HTTP(S).
+
+### Options
+
+| Field      | Type   | Required | Description                                                   |
+| ---------- | ------ | -------- | ------------------------------------------------------------- |
+| `url`      | string | Yes      | The URL to download.                                          |
+| `into`     | string | Yes      | Destination directory. Created if missing.                    |
+| `filename` | string | No       | Destination file name. Default: last segment of the URL path. |
+| `sha256`   | string | No       | Expected SHA-256 hex digest; the task fails on mismatch.      |
+
+### Behavior
+
+- A non-success HTTP status fails the task.
+- When `sha256` is given and the destination file already exists with a matching
+  digest, the download is skipped.
+- A digest mismatch after download fails the task and removes the file.
 
 ## DeleteTask
 
