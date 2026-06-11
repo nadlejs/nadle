@@ -5,8 +5,7 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"build": "nadle compile",
-		"start": "tsc -p tsconfig.build.json --watch --noEmit false"
+		"build": "nadle compile"
 	},
 	"files": [
 		"lib",

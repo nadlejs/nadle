@@ -4,9 +4,6 @@
 	"description": "Shared kernel: workspace resolution, task identifiers, and alias mapping for nadle",
 	"license": "MIT",
 	"type": "module",
-	"scripts": {
-		"build": "nadle compile"
-	},
 	"files": [
 		"lib"
 	],

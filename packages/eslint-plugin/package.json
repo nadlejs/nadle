@@ -4,10 +4,6 @@
 	"description": "The official ESLint plugin for Nadle",
 	"license": "MIT",
 	"type": "module",
-	"scripts": {
-		"build": "nadle compile",
-		"start": "tsc -p tsconfig.build.json --watch --noEmit false"
-	},
 	"files": [
 		"lib"
 	],

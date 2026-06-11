@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"prepare": "husky",
-		"start": "pnpm -r --parallel start"
+		"start": "tsgo -b ./tsconfig.compile.json --watch"
 	},
 	"devDependencies": {
 		"@microsoft/api-extractor": "^7.58.7",

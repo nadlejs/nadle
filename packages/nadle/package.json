@@ -6,7 +6,6 @@
 	"type": "module",
 	"scripts": {
 		"build": "nadle build",
-		"start": "tsc -p tsconfig.build.json --watch --noEmit false",
 		"test": "nadle test",
 		"update": "vitest -u --project nadle --config ../../vitest.config.ts",
 		"bench": "vitest bench --project nadle --config ../../vitest.config.ts"

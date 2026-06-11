@@ -4,10 +4,6 @@
 	"description": "Language Server Protocol support for nadle.config.ts files",
 	"license": "MIT",
 	"type": "module",
-	"scripts": {
-		"build": "nadle bundle",
-		"start": "tsc -p tsconfig.build.json --watch --noEmit false"
-	},
 	"files": [
 		"lib",
 		"server.mjs",
