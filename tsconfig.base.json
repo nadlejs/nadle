@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"allowJs": true,
 		"composite": true,
+		"types": ["node"],
 		"skipLibCheck": true,
 		"tsBuildInfoFile": "${configDir}/build/tsconfig.tsbuildinfo.json"
 	}
