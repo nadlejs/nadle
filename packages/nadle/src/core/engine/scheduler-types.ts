@@ -16,7 +16,7 @@ export interface SchedulerTask {
 /**
  * Narrow logger contract for the scheduler.
  */
-export interface SchedulerLogger {
+interface SchedulerLogger {
 	debug(message: unknown, ...args: unknown[]): void;
 	error(message: unknown, ...args: unknown[]): void;
 }
@@ -24,7 +24,7 @@ export interface SchedulerLogger {
 /**
  * Options subset the scheduler needs.
  */
-export interface SchedulerOptions {
+interface SchedulerOptions {
 	readonly parallel: boolean;
 	readonly tasks: ResolvedTask[];
 	readonly implicitDependencies: boolean;
