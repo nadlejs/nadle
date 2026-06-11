@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { findUp } from "find-up";
-import Prefer from "preferred-pm";
+import { preferredPM } from "preferred-pm";
 
 import { parseScripts } from "./migrate.js";
 import type { PackageManager, ProjectContext } from "./types.js";
@@ -28,7 +28,7 @@ async function detectRoot(cwd: string): Promise<string> {
 }
 
 async function detectPackageManager(rootDir: string): Promise<PackageManager> {
-	const result = await Prefer(rootDir);
+	const result = await preferredPM(rootDir);
 
 	if (result && (result.name === "pnpm" || result.name === "npm" || result.name === "yarn")) {
 		return result.name;
