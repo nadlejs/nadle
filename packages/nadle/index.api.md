@@ -290,6 +290,29 @@ export interface TasksAPI {
     register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
 }
 
+// @public
+export const UnzipTask: Task<UnzipTaskOptions>;
+
+// @public
+export interface UnzipTaskOptions {
+    readonly archive: string;
+    readonly include?: MaybeArray<string>;
+    readonly into: string;
+}
+
+// @public
+export const ZipTask: Task<ZipTaskOptions>;
+
+// @public
+export interface ZipTaskOptions {
+    readonly archive: string;
+    readonly exclude?: MaybeArray<string>;
+    readonly from: MaybeArray<FileSelection>;
+    readonly include?: MaybeArray<string>;
+    readonly prefix?: string;
+    readonly strict?: boolean;
+}
+
 // (No @packageDocumentation comment for this package)
 
 ```

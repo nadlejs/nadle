@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 2.2.0 — 2026-06-11
+
+### Added
+
+- 10-builtin-tasks: ZipTask — creates a zip archive from file selections, with an
+  optional entry-name `prefix`; duplicate entry names fail the task.
+- 10-builtin-tasks: UnzipTask — extracts an archive into a directory, with optional
+  `include` entry filtering; path-traversal entries fail the task.
+
 ## 2.1.0 — 2026-06-11
 
 ### Added
