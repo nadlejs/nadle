@@ -34,7 +34,7 @@
 	"devDependencies": {
 		"@size-limit/file": "^12.1.0",
 		"@types/node": "^20.19.25",
-		"size-limit": "^11.2.0",
+		"size-limit": "^12.1.0",
 		"std-env": "^3.10.0",
 		"tsup": "^8.5.1",
 		"vitest": "4.0.18"
