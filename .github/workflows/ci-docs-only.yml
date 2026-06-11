@@ -1,0 +1,25 @@
+# Companion to ci.yml: branch protection requires the "CI Status" check, but ci.yml
+# skips docs-only changes via paths-ignore, leaving those PRs blocked on a check that
+# never reports. This workflow runs on exactly the inverted paths and reports an
+# instant "CI Status" success. Keep the paths lists in sync with ci.yml.
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "*.md"
+      - "packages/docs/**"
+      - "LICENSE"
+
+permissions:
+  contents: read
+
+jobs:
+  status:
+    name: CI Status
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Docs-only change
+        run: echo "Docs-only change — full CI skipped."
