@@ -13,7 +13,7 @@ tasks.register("prepareAPIMarkdown", PnpxTask, { command: "tsx", args: "scripts/
 	description: "Prepare API markdown for docusaurus"
 });
 
-tasks.register("build", PnpxTask, { args: "build", command: "docusaurus" }).config({
+tasks.register("buildSite", PnpxTask, { args: "build", command: "docusaurus" }).config({
 	group: "Building",
 	outputs: [Outputs.dirs("build")],
 	description: "Build documentation site",

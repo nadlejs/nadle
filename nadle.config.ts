@@ -87,7 +87,8 @@ tasks.register("dist").config({
 
 tasks.register("build").config({
 	group: "Building",
-	description: "Build all packages"
+	dependsOn: ["compile", "typecheck", "bundle"],
+	description: "Compile, type-check, and bundle all packages"
 });
 
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
