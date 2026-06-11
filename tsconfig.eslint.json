@@ -1,6 +1,6 @@
 {
 	"extends": "./tsconfig.base.json",
-	"include": ["./nadle.config.ts", "./cspell.config.js", "./eslint.config.ts"],
+	"include": ["./nadle.config.ts", "./cspell.config.js", "./eslint.config.ts", "./vitest.config.ts", "./tsup.config.ts"],
 	"compilerOptions": {
 		"allowJs": true
 	}

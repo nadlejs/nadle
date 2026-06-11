@@ -1,3 +1,7 @@
+import Path from "node:path";
+
+const PACKAGE_ROOT = Path.resolve(import.meta.dirname, "../..");
+
 export function serialize(input: string): string {
 	return [
 		serializeANSI,
@@ -50,7 +54,7 @@ function serializeRelativePath(input: string) {
 function serializeAbsoluteFilePath(input: string) {
 	return input
 		.replaceAll("\\\\", "\\")
-		.replaceAll(process.cwd(), "/ROOT")
+		.replaceAll(PACKAGE_ROOT, "/ROOT")
 		.replace(/\/ROOT\S+/g, (match) => match.replaceAll(`\\`, "/"));
 }
 
