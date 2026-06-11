@@ -1,6 +1,6 @@
 # 10 — Built-in Task Types
 
-Nadle provides eight built-in reusable task types, all created via `defineTask()`.
+Nadle provides ten built-in reusable task types, all created via `defineTask()`.
 
 ## ExecTask
 
@@ -163,6 +163,38 @@ Copies files into a destination directory.
 4. Apply the `overwrite` policy per existing destination file: `replace` overwrites,
    `skip` logs and skips, `error` fails the task.
 5. Create parent directories as needed and copy.
+
+## MoveTask
+
+Moves files into a destination directory. Identical options and destination-mapping
+behavior to CopyTask (including `flatten`, `rename`, `overwrite`, `strict`), with one
+difference: each source file is removed after it reaches its destination.
+
+- A filesystem rename is used when possible; cross-device moves fall back to
+  copy-then-delete.
+- Files skipped by the `overwrite` policy keep their source.
+- Emptied source directories are not removed.
+
+## SyncTask
+
+Mirrors sources into a destination directory. Identical selection and
+destination-mapping behavior to CopyTask (including `flatten`, `rename`, `strict`),
+without an `overwrite` option — existing destination files are always replaced.
+
+### Additional option
+
+| Field      | Type                       | Required | Description                                                 |
+| ---------- | -------------------------- | -------- | ----------------------------------------------------------- |
+| `preserve` | string or array of strings | No       | Glob patterns (relative to `into`) for files never deleted. |
+
+### Behavior
+
+1. Resolve and copy as CopyTask (always replacing).
+2. Delete every file under `into` that does not correspond to a source and does not
+   match a `preserve` pattern.
+3. Prune directories left empty.
+
+The destination ends up containing exactly the selected files (plus preserved ones).
 
 ## DeleteTask
 

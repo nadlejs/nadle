@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 2.1.0 — 2026-06-11
+
+### Added
+
+- 10-builtin-tasks: MoveTask — CopyTask semantics plus source removal (rename
+  syscall with copy-then-delete fallback; skipped files keep their source).
+- 10-builtin-tasks: SyncTask — mirrors sources into the destination, deleting
+  extraneous files (except `preserve` matches) and pruning empty directories.
+
 ## 2.0.0 — 2026-06-11
 
 ### Changed (BREAKING)
