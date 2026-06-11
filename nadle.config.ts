@@ -1,4 +1,4 @@
-import { tasks, PnpmTask, PnpxTask, DeleteTask } from "./node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, PnpmTask, PnpxTask, DeleteTask } from "./node_modules/nadle/lib/index.js";
 
 // --- Maintenance ---
 
@@ -56,6 +56,22 @@ tasks.register("typecheck", PnpxTask, { command: "tsgo", args: ["-b", "--noEmit"
 	group: "Building",
 	dependsOn: ["packages:nadle:build"],
 	description: "Type-check all project references"
+});
+
+tasks.register("compile", PnpxTask, { command: "tsgo", args: ["-b", "./tsconfig.compile.json"] }).config({
+	group: "Building",
+	description: "Compile and type-check all tsgo-built packages in one pass",
+	outputs: [Outputs.dirs("packages/kernel/lib", "packages/project-resolver/lib", "packages/create-nadle/lib", "packages/eslint-plugin/lib")],
+	inputs: [
+		Inputs.dirs("packages/kernel/src", "packages/project-resolver/src", "packages/create-nadle/src", "packages/eslint-plugin/src"),
+		Inputs.files("tsconfig.compile.json", "tsconfig.src.json", "tsconfig.base.json", "packages/*/tsconfig.build.json")
+	]
+});
+
+tasks.register("dist").config({
+	group: "Building",
+	description: "Bundle all tsup-based packages",
+	dependsOn: ["packages:nadle:build", "packages:language-server:build", "packages:vscode-extension:build"]
 });
 
 tasks.register("build").config({

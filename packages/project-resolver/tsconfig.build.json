@@ -1,9 +1,4 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"include": ["src"],
-	"compilerOptions": {
-		"composite": false,
-		"outDir": "lib",
-		"rootDir": "src"
-	}
+	"extends": "../../tsconfig.src.json",
+	"references": [{ "path": "../kernel/tsconfig.build.json" }]
 }
