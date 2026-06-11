@@ -1,6 +1,13 @@
 # 10 — Built-in Task Types
 
-Nadle provides ten built-in reusable task types, all created via `defineTask()`.
+Nadle provides thirteen built-in reusable task types, all created via `defineTask()`.
+
+## Argument Normalization
+
+All exec-based tasks (ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, PnpxTask) share one
+semantic for the `args` option: a **string** is split into arguments on spaces, with
+backslash-escaped spaces preserved (`a\ b` stays one argument); an **array** is taken
+as-is, each element one argument.
 
 ## ExecTask
 
@@ -8,14 +15,14 @@ Executes an arbitrary external command.
 
 ### Options
 
-| Field     | Type                       | Required | Description                                                                                 |
-| --------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------- |
-| `command` | string                     | Yes      | The command to execute.                                                                     |
-| `args`    | string or array of strings | No       | Arguments for the command. If a string, it is parsed into arguments by splitting on spaces. |
+| Field     | Type                       | Required | Description                                             |
+| --------- | -------------------------- | -------- | ------------------------------------------------------- |
+| `command` | string                     | Yes      | The command to execute.                                 |
+| `args`    | string or array of strings | No       | Arguments for the command (see Argument Normalization). |
 
 ### Behavior
 
-1. Parse arguments (string arguments are split into an array).
+1. Normalize arguments (see Argument Normalization).
 2. Spawn the process with the command and arguments.
 3. Set working directory to the task's `workingDir`.
 4. Force color output in the subprocess (`FORCE_COLOR=1`).
@@ -36,7 +43,7 @@ Executes a pnpm command. Specialized variant of ExecTask with `pnpm` as the comm
 ### Behavior
 
 1. Normalize `filter` to an array and expand each value into a `--filter <value>` pair.
-2. Normalize `args` to an array and append it after the filter flags.
+2. Normalize `args` (see Argument Normalization) and append it after the filter flags.
 3. Spawn `pnpm` with the combined arguments.
 4. Set working directory to the task's `workingDir`.
 5. Force color output (`FORCE_COLOR=1`).
@@ -56,7 +63,7 @@ Executes a Node.js script. Specialized variant of ExecTask with `node` as the co
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `node <script> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -75,7 +82,7 @@ Executes an npm command. Specialized variant of ExecTask with `npm` as the comma
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `npm` with the arguments.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -96,7 +103,7 @@ for running binaries from `node_modules/.bin` through pnpm.
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `pnpm exec <command> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -117,7 +124,7 @@ for running binaries from `node_modules/.bin` through npx.
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `npx <command> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -195,6 +202,60 @@ without an `overwrite` option — existing destination files are always replaced
 3. Prune directories left empty.
 
 The destination ends up containing exactly the selected files (plus preserved ones).
+
+## ZipTask
+
+Creates a zip archive from selected files.
+
+### Options
+
+| Field     | Type                            | Required | Description                                                          |
+| --------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
+| `from`    | file selection or array thereof | Yes      | Source files, directories, or selectors (see File Selections).       |
+| `archive` | string                          | Yes      | Path of the archive to create (relative to working directory).       |
+| `prefix`  | string                          | No       | Entry-name prefix; files are stored as `<prefix>/<relative path>`.   |
+| `include` | string or array of strings      | No       | Default include patterns for directory selections without their own. |
+| `exclude` | string or array of strings      | No       | Default exclude patterns for directory selections without their own. |
+| `strict`  | boolean                         | No       | Fail when a source is missing or nothing matches. Default: `false`.  |
+
+Entry names are the selection-relative paths (always with forward slashes). Two sources
+mapping to the same entry name fail the task. Parent directories of the archive are
+created as needed.
+
+## UnzipTask
+
+Extracts a zip archive into a directory.
+
+### Options
+
+| Field     | Type                       | Required | Description                                                     |
+| --------- | -------------------------- | -------- | --------------------------------------------------------------- |
+| `archive` | string                     | Yes      | Path of the archive to extract (relative to working directory). |
+| `into`    | string                     | Yes      | Destination directory. Created if missing.                      |
+| `include` | string or array of strings | No       | Glob patterns selecting which entries to extract. Default: all. |
+
+A missing archive is an error. Entries whose names would escape the destination
+directory (path traversal) fail the task.
+
+## DownloadTask
+
+Downloads a file over HTTP(S).
+
+### Options
+
+| Field      | Type   | Required | Description                                                   |
+| ---------- | ------ | -------- | ------------------------------------------------------------- |
+| `url`      | string | Yes      | The URL to download.                                          |
+| `into`     | string | Yes      | Destination directory. Created if missing.                    |
+| `filename` | string | No       | Destination file name. Default: last segment of the URL path. |
+| `sha256`   | string | No       | Expected SHA-256 hex digest; the task fails on mismatch.      |
+
+### Behavior
+
+- A non-success HTTP status fails the task.
+- When `sha256` is given and the destination file already exists with a matching
+  digest, the download is skipped.
+- A digest mismatch after download fails the task and removes the file.
 
 ## DeleteTask
 

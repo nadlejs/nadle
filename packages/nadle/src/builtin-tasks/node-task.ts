@@ -1,5 +1,5 @@
-import { runCommand } from "./run-command.js";
 import type { MaybeArray } from "../core/index.js";
+import { runCommand, normalizeArgs } from "./run-command.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -19,12 +19,10 @@ export interface NodeTaskOptions {
  */
 export const NodeTask = defineTask<NodeTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = options.args == null ? [] : typeof options.args === "string" ? [options.args] : options.args;
-
 		await runCommand(context, {
 			command: "node",
-			args: [options.script, ...args],
 			doneMessage: `Node script completed successfully.`,
+			args: [options.script, ...normalizeArgs(options.args)],
 			startMessage: (finalArgs) => `Running node script: node ${finalArgs.join(" ")}`
 		});
 	}

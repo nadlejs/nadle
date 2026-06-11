@@ -8,6 +8,33 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.2.0 — 2026-06-11
+
+### Added
+
+- 10-builtin-tasks: DownloadTask — HTTP(S) download into a directory with optional
+  SHA-256 verification; matching existing files skip the download, mismatches fail
+  the task and remove the file.
+
+## 3.1.0 — 2026-06-11
+
+### Added
+
+- 10-builtin-tasks: ZipTask — creates a zip archive from file selections, with an
+  optional entry-name `prefix`; duplicate entry names fail the task.
+- 10-builtin-tasks: UnzipTask — extracts an archive into a directory, with optional
+  `include` entry filtering; path-traversal entries fail the task.
+
+## 3.0.0 — 2026-06-11
+
+### Changed (BREAKING)
+
+- 10-builtin-tasks: Argument Normalization — all exec-based tasks now share one
+  semantic for a string `args` value: split into arguments on spaces, with
+  backslash-escaped spaces preserved (previously only ExecTask split;
+  NodeTask/NpmTask/NpxTask/PnpmTask/PnpxTask treated the whole string as a single
+  argument). Array values are unchanged.
+
 ## 2.1.0 — 2026-06-11
 
 ### Added
