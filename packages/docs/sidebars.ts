@@ -30,6 +30,7 @@ const sidebars: SidebarsConfig = {
 				"guides/registering-task",
 				"guides/configuring-task",
 				"guides/executing-task",
+				"guides/file-operation-tasks",
 				"guides/configuring-nadle",
 				"guides/eslint-plugin"
 			]
