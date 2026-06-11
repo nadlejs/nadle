@@ -62,6 +62,17 @@ export interface DirDeclaration {
 }
 
 // @public
+export const DownloadTask: Task<DownloadTaskOptions>;
+
+// @public
+export interface DownloadTaskOptions {
+    readonly filename?: string;
+    readonly into: string;
+    readonly sha256?: string;
+    readonly url: string;
+}
+
+// @public
 export const ExecTask: Task<ExecTaskOptions>;
 
 // @public
@@ -288,6 +299,29 @@ export interface TasksAPI {
     register(name: string): TaskConfigurationBuilder;
     register<Options>(name: string, optTask: Task<Options>, ...optionsResolver: {} extends Options ? [optionsResolver?: Resolver<Options>] : [optionsResolver: Resolver<Options>]): TaskConfigurationBuilder;
     register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
+}
+
+// @public
+export const UnzipTask: Task<UnzipTaskOptions>;
+
+// @public
+export interface UnzipTaskOptions {
+    readonly archive: string;
+    readonly include?: MaybeArray<string>;
+    readonly into: string;
+}
+
+// @public
+export const ZipTask: Task<ZipTaskOptions>;
+
+// @public
+export interface ZipTaskOptions {
+    readonly archive: string;
+    readonly exclude?: MaybeArray<string>;
+    readonly from: MaybeArray<FileSelection>;
+    readonly include?: MaybeArray<string>;
+    readonly prefix?: string;
+    readonly strict?: boolean;
 }
 
 // (No @packageDocumentation comment for this package)
