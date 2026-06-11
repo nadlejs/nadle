@@ -8,6 +8,14 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.2.0 — 2026-06-11
+
+### Added
+
+- 10-builtin-tasks: DownloadTask — HTTP(S) download into a directory with optional
+  SHA-256 verification; matching existing files skip the download, mismatches fail
+  the task and remove the file.
+
 ## 3.1.0 — 2026-06-11
 
 ### Added

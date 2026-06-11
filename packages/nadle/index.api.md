@@ -62,6 +62,17 @@ export interface DirDeclaration {
 }
 
 // @public
+export const DownloadTask: Task<DownloadTaskOptions>;
+
+// @public
+export interface DownloadTaskOptions {
+    readonly filename?: string;
+    readonly into: string;
+    readonly sha256?: string;
+    readonly url: string;
+}
+
+// @public
 export const ExecTask: Task<ExecTaskOptions>;
 
 // @public
