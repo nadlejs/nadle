@@ -1,5 +1,5 @@
-import { runCommand } from "./run-command.js";
-import { MaybeArray } from "../core/index.js";
+import { type MaybeArray } from "../core/index.js";
+import { runCommand, normalizeArgs } from "./run-command.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -19,12 +19,10 @@ export interface PnpxTaskOptions {
  */
 export const PnpxTask = defineTask<PnpxTaskOptions>({
 	run: async ({ options, context }) => {
-		const args = options.args == null ? [] : MaybeArray.toArray(options.args);
-
 		await runCommand(context, {
 			command: "pnpm",
-			args: ["exec", options.command, ...args],
 			doneMessage: `pnpm exec command completed successfully.`,
+			args: ["exec", options.command, ...normalizeArgs(options.args)],
 			startMessage: (finalArgs) => `Running pnpm exec command: pnpm ${finalArgs.join(" ")}`
 		});
 	}

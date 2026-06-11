@@ -1,7 +1,5 @@
-import { parseCommandString } from "execa";
-
-import { runCommand } from "./run-command.js";
 import type { MaybeArray } from "../core/index.js";
+import { runCommand, normalizeArgs } from "./run-command.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -25,9 +23,9 @@ export const ExecTask = defineTask<ExecTaskOptions>({
 
 		await runCommand(context, {
 			command,
+			args: normalizeArgs(args),
 			doneMessage: `Run completed successfully.`,
-			startMessage: (finalArgs) => `Running command: ${command} ${finalArgs.join(" ")}`,
-			args: args == null ? [] : typeof args === "string" ? parseCommandString(args) : args
+			startMessage: (finalArgs) => `Running command: ${command} ${finalArgs.join(" ")}`
 		});
 	}
 });

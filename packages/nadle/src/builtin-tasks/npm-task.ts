@@ -1,5 +1,5 @@
-import { runCommand } from "./run-command.js";
-import { MaybeArray } from "../core/index.js";
+import { type MaybeArray } from "../core/index.js";
+import { runCommand, normalizeArgs } from "./run-command.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -19,7 +19,7 @@ export const NpmTask = defineTask<NpmTaskOptions>({
 	run: async ({ options, context }) => {
 		await runCommand(context, {
 			command: "npm",
-			args: MaybeArray.toArray(options.args),
+			args: normalizeArgs(options.args),
 			doneMessage: `npm command completed successfully.`,
 			startMessage: (finalArgs) => `Running npm command: npm ${finalArgs.join(" ")}`
 		});

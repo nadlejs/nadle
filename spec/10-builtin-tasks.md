@@ -2,20 +2,27 @@
 
 Nadle provides ten built-in reusable task types, all created via `defineTask()`.
 
+## Argument Normalization
+
+All exec-based tasks (ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, PnpxTask) share one
+semantic for the `args` option: a **string** is split into arguments on spaces, with
+backslash-escaped spaces preserved (`a\ b` stays one argument); an **array** is taken
+as-is, each element one argument.
+
 ## ExecTask
 
 Executes an arbitrary external command.
 
 ### Options
 
-| Field     | Type                       | Required | Description                                                                                 |
-| --------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------- |
-| `command` | string                     | Yes      | The command to execute.                                                                     |
-| `args`    | string or array of strings | No       | Arguments for the command. If a string, it is parsed into arguments by splitting on spaces. |
+| Field     | Type                       | Required | Description                                             |
+| --------- | -------------------------- | -------- | ------------------------------------------------------- |
+| `command` | string                     | Yes      | The command to execute.                                 |
+| `args`    | string or array of strings | No       | Arguments for the command (see Argument Normalization). |
 
 ### Behavior
 
-1. Parse arguments (string arguments are split into an array).
+1. Normalize arguments (see Argument Normalization).
 2. Spawn the process with the command and arguments.
 3. Set working directory to the task's `workingDir`.
 4. Force color output in the subprocess (`FORCE_COLOR=1`).
@@ -36,7 +43,7 @@ Executes a pnpm command. Specialized variant of ExecTask with `pnpm` as the comm
 ### Behavior
 
 1. Normalize `filter` to an array and expand each value into a `--filter <value>` pair.
-2. Normalize `args` to an array and append it after the filter flags.
+2. Normalize `args` (see Argument Normalization) and append it after the filter flags.
 3. Spawn `pnpm` with the combined arguments.
 4. Set working directory to the task's `workingDir`.
 5. Force color output (`FORCE_COLOR=1`).
@@ -56,7 +63,7 @@ Executes a Node.js script. Specialized variant of ExecTask with `node` as the co
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `node <script> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -75,7 +82,7 @@ Executes an npm command. Specialized variant of ExecTask with `npm` as the comma
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `npm` with the arguments.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -96,7 +103,7 @@ for running binaries from `node_modules/.bin` through pnpm.
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `pnpm exec <command> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
@@ -117,7 +124,7 @@ for running binaries from `node_modules/.bin` through npx.
 
 ### Behavior
 
-1. Normalize arguments to an array.
+1. Normalize arguments (see Argument Normalization).
 2. Spawn `npx <command> <args>`.
 3. Set working directory to the task's `workingDir`.
 4. Force color output (`FORCE_COLOR=1`).
