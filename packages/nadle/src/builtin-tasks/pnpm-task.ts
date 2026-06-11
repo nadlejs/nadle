@@ -1,5 +1,5 @@
-import { runCommand } from "./run-command.js";
 import { MaybeArray } from "../core/index.js";
+import { runCommand, normalizeArgs } from "./run-command.js";
 import { defineTask } from "../core/registration/define-task.js";
 
 /**
@@ -26,7 +26,7 @@ export const PnpmTask = defineTask<PnpmTaskOptions>({
 		await runCommand(context, {
 			command: "pnpm",
 			doneMessage: `pnpm command completed successfully.`,
-			args: [...filterArgs, ...MaybeArray.toArray(options.args)],
+			args: [...filterArgs, ...normalizeArgs(options.args)],
 			startMessage: (finalArgs) => `Running pnpm command: pnpm ${finalArgs.join(" ")}`
 		});
 	}

@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.0.0 — 2026-06-11
+
+### Changed (BREAKING)
+
+- 10-builtin-tasks: Argument Normalization — all exec-based tasks now share one
+  semantic for a string `args` value: split into arguments on spaces, with
+  backslash-escaped spaces preserved (previously only ExecTask split;
+  NodeTask/NpmTask/NpxTask/PnpmTask/PnpxTask treated the whole string as a single
+  argument). Array values are unchanged.
+
 ## 2.1.0 — 2026-06-11
 
 ### Added

@@ -1,7 +1,17 @@
-import { execa } from "execa";
+import { execa, parseCommandString } from "execa";
 
+import { type MaybeArray } from "../core/index.js";
 import { type RunnerContext } from "../core/interfaces/task.js";
 import { TaskExecutionError } from "../core/utilities/nadle-error.js";
+
+/**
+ * Normalizes a task's `args` option: a string is split into arguments on spaces
+ * (backslash-escaped spaces are preserved); an array is taken as-is. One semantic
+ * for all exec-based builtin tasks.
+ */
+export function normalizeArgs(args: MaybeArray<string> | undefined): string[] {
+	return args == null ? [] : typeof args === "string" ? parseCommandString(args) : [...args];
+}
 
 interface RunCommandParams {
 	/** The binary to spawn. */
