@@ -56,6 +56,10 @@ const config = {
 		"tsgo",
 		"direnv",
 		"envrc",
+		"dogfoods",
+		"subdeps",
+		"esbuild",
+		"keytar",
 		"Uncategorized",
 		...extractLibraryNames()
 	],
