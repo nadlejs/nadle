@@ -59,7 +59,7 @@ tasks.register("check").config({
 
 tasks.register("typecheck", PnpxTask, { command: "tsgo", args: ["-b", "--noEmit"] }).config({
 	group: "Building",
-	dependsOn: ["bundle"],
+	dependsOn: ["compile"],
 	description: "Type-check all project references"
 });
 
@@ -108,6 +108,7 @@ tasks.register("test").config({
 
 tasks.register("fixEslint", PnpxTask, { command: "eslint", args: [".", "--quiet", "--fix"] }).config({
 	group: "Formatting",
+	dependsOn: ["compile"],
 	description: "Fix lint issues with ESLint"
 });
 
