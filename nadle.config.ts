@@ -69,7 +69,7 @@ tasks.register("compile", PnpxTask, { command: "tsgo", args: ["-b", "./tsconfig.
 	outputs: [Outputs.dirs("packages/kernel/lib", "packages/project-resolver/lib", "packages/create-nadle/lib", "packages/eslint-plugin/lib")],
 	inputs: [
 		Inputs.dirs("packages/kernel/src", "packages/project-resolver/src", "packages/create-nadle/src", "packages/eslint-plugin/src"),
-		Inputs.files("tsconfig.compile.json", "tsconfig.src.json", "tsconfig.base.json", "packages/*/tsconfig.build.json")
+		Inputs.files("tsconfig.compile.json", "tsconfig.src.json", "tsconfig.base.json", "packages/*/tsconfig.build.json", "pnpm-lock.yaml")
 	]
 });
 
@@ -80,14 +80,8 @@ tasks.register("bundle", PnpxTask, { command: "tsup" }).config({
 	outputs: [Outputs.dirs("packages/nadle/lib", "packages/language-server/lib", "packages/vscode-extension/lib")],
 	inputs: [
 		Inputs.dirs("packages/nadle/src", "packages/language-server/src", "packages/vscode-extension/src"),
-		Inputs.files("tsup.config.ts", "tsconfig.src.json", "tsconfig.base.json")
+		Inputs.files("tsup.config.ts", "tsconfig.src.json", "tsconfig.base.json", "pnpm-lock.yaml")
 	]
-});
-
-tasks.register("dist").config({
-	group: "Building",
-	description: "Bundle all tsup-based packages",
-	dependsOn: ["bundle", "packages:vscode-extension:copy-server"]
 });
 
 tasks.register("build").config({
