@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/nadlejs/nadle/compare/language-server/v0.0.4...language-server/v0.0.5) (2026-06-12)
+
+
+### Bug Fixes
+
+* Resolve workspace dependencies in published packages ([#625](https://github.com/nadlejs/nadle/issues/625)) ([4cba337](https://github.com/nadlejs/nadle/commit/4cba3378a8b6643d9d95a4f94191766f129df120))
+
 ## [0.0.4](https://github.com/nadlejs/nadle/compare/language-server/v0.0.3...language-server/v0.0.4) (2026-06-12)
 
 
