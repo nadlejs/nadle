@@ -2,9 +2,7 @@
 	"name": "@nadle/internal-docs",
 	"private": true,
 	"scripts": {
-		"clean": "docusaurus clear",
 		"dev": "docusaurus start",
-		"build": "nadle build",
 		"serve": "docusaurus serve"
 	},
 	"dependencies": {

@@ -7,6 +7,7 @@ export default defineConfig([
 		target: "node22",
 		skipNodeModulesBundle: true,
 		outDir: "packages/nadle/lib",
+		banner: { js: "#!/usr/bin/env node" },
 		tsconfig: "packages/nadle/tsconfig.build.json",
 		dts: { entry: "packages/nadle/src/index.ts", compilerOptions: { rootDir: "packages/nadle/src" } },
 		entry: {
@@ -28,7 +29,7 @@ export default defineConfig([
 		dts: { entry: "packages/language-server/src/index.ts", compilerOptions: { rootDir: "packages/language-server/src" } },
 		noExternal: ["vscode-languageserver", "vscode-languageserver-textdocument", "typescript", "@nadle/kernel", "@nadle/project-resolver"],
 		banner: {
-			js: "import { createRequire } from 'module'; import { fileURLToPath } from 'url'; import { dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = fileURLToPath(import.meta.url); const __dirname = dirname(__filename);"
+			js: "#!/usr/bin/env node\nimport { createRequire } from 'module'; import { fileURLToPath } from 'url'; import { dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = fileURLToPath(import.meta.url); const __dirname = dirname(__filename);"
 		}
 	},
 	{

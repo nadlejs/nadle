@@ -3,7 +3,7 @@
 exports[`abbreviation > should log resolved tasks only 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell goodbye cop
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hell goodbye cop
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -34,7 +34,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell goodbye cop
 exports[`abbreviation > should resolve abbr task properly 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hell
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hell
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

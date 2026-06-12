@@ -7,11 +7,6 @@
 	"description": "VS Code extension for nadle.config.ts language support",
 	"license": "MIT",
 	"type": "commonjs",
-	"scripts": {
-		"build": "nadle build",
-		"package": "vsce package",
-		"publish": "vsce publish"
-	},
 	"files": [
 		"lib",
 		"server",

@@ -10,10 +10,15 @@ tasks
 
 // --- Checking ---
 
-tasks.register("spell", PnpxTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] }).config({
-	group: "Checking",
-	description: "Check spelling across all files"
-});
+tasks
+	.register("spell", PnpxTask, {
+		command: "cspell",
+		args: ["**", "--quiet", "--gitignore", "--cache", "--cache-location", "node_modules/.cache/cspell/.cspellcache"]
+	})
+	.config({
+		group: "Checking",
+		description: "Check spelling across all files"
+	});
 
 tasks
 	.register("eslint", PnpxTask, {
@@ -29,7 +34,7 @@ tasks
 tasks
 	.register("prettier", PnpxTask, {
 		command: "prettier",
-		args: ["--experimental-cli", "--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
+		args: ["--experimental-cli", "--check", "."]
 	})
 	.config({ group: "Checking", description: "Check formatting with Prettier" });
 
@@ -64,7 +69,7 @@ tasks.register("compile", PnpxTask, { command: "tsgo", args: ["-b", "./tsconfig.
 	outputs: [Outputs.dirs("packages/kernel/lib", "packages/project-resolver/lib", "packages/create-nadle/lib", "packages/eslint-plugin/lib")],
 	inputs: [
 		Inputs.dirs("packages/kernel/src", "packages/project-resolver/src", "packages/create-nadle/src", "packages/eslint-plugin/src"),
-		Inputs.files("tsconfig.compile.json", "tsconfig.src.json", "tsconfig.base.json", "packages/*/tsconfig.build.json")
+		Inputs.files("tsconfig.compile.json", "tsconfig.src.json", "tsconfig.base.json", "packages/*/tsconfig.build.json", "pnpm-lock.yaml")
 	]
 });
 
@@ -75,14 +80,8 @@ tasks.register("bundle", PnpxTask, { command: "tsup" }).config({
 	outputs: [Outputs.dirs("packages/nadle/lib", "packages/language-server/lib", "packages/vscode-extension/lib")],
 	inputs: [
 		Inputs.dirs("packages/nadle/src", "packages/language-server/src", "packages/vscode-extension/src"),
-		Inputs.files("tsup.config.ts", "tsconfig.src.json", "tsconfig.base.json")
+		Inputs.files("tsup.config.ts", "tsconfig.src.json", "tsconfig.base.json", "pnpm-lock.yaml")
 	]
-});
-
-tasks.register("dist").config({
-	group: "Building",
-	description: "Bundle all tsup-based packages",
-	dependsOn: ["bundle", "packages:vscode-extension:copy-server"]
 });
 
 tasks.register("build").config({
@@ -95,7 +94,7 @@ tasks.register("build").config({
 
 tasks.register("testUnit", PnpxTask, { args: ["run"], command: "vitest" }).config({
 	group: "Testing",
-	dependsOn: ["compile", "bundle"],
+	dependsOn: ["bundle"],
 	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
 });
 

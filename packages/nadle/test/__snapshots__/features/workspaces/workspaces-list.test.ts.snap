@@ -3,7 +3,7 @@
 exports[`workspaces > list > should list all nested workspaces 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --list-workspaces
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -25,7 +25,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
 exports[`workspaces > list > should list all nested workspaces 2 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --list-workspaces
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -48,7 +48,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
 exports[`workspaces > list > should list all workspaces 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list-workspaces
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --list-workspaces
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

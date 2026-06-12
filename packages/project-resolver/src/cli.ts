@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import Process from "node:process";
 
 import type { Workspace, RootWorkspace } from "./types.js";

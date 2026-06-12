@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint-disable no-console */
 import Path from "node:path";
 import Fs from "node:fs/promises";
