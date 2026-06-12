@@ -20,7 +20,7 @@
 	"dependencies": {
 		"@manypkg/find-root": "^3.1.0",
 		"@manypkg/tools": "^2.1.1",
-		"@nadle/kernel": "workspace:*",
+		"@nadle/kernel": "workspace:^",
 		"find-up": "^8.0.0"
 	},
 	"devDependencies": {
