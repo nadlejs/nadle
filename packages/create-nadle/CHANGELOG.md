@@ -1,5 +1,35 @@
 # create-nadle
 
+## [0.0.5](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.4...create-nadle/v0.0.5) (2026-06-12)
+
+
+### Features
+
+* Publish nadle-lsp as standalone npm package ([#510](https://github.com/nadlejs/nadle/issues/510)) ([4e7c4be](https://github.com/nadlejs/nadle/commit/4e7c4bec2d65ffb3ea6523e10d11a39a4b43b146))
+* Rewrite create-nadle with project detection, script migration, and interactive wizard ([#549](https://github.com/nadlejs/nadle/issues/549)) ([b46fa55](https://github.com/nadlejs/nadle/commit/b46fa551c1c956baca6888a624e69d2c2766bbea))
+
+
+### Bug Fixes
+
+* Repair CI fallout from bin shim removal and pnpm 11 ([#622](https://github.com/nadlejs/nadle/issues/622)) ([1286458](https://github.com/nadlejs/nadle/commit/12864584ac8ef541bfa38b91ca916a5bcf2187c0))
+* Replace welcome banner emoji with stable unicode char ([#547](https://github.com/nadlejs/nadle/issues/547)) ([706d4dd](https://github.com/nadlejs/nadle/commit/706d4ddf34c3bc35d026a2da1c696f0e7d56f6f9))
+
+
+### Internal
+
+* Add publishConfig access public to all packages ([15b1c7f](https://github.com/nadlejs/nadle/commit/15b1c7f466ecd17731b445f01b5d6d1810e4a65c))
+* Consolidate build tasks and simplify tsconfig usage ([#518](https://github.com/nadlejs/nadle/issues/518)) ([37a1dc6](https://github.com/nadlejs/nadle/commit/37a1dc6917ca763f8065c19411918b4a8760a563))
+* **deps-dev:** Bump knip from 5.83.1 to 6.16.1 ([#598](https://github.com/nadlejs/nadle/issues/598)) ([40659bc](https://github.com/nadlejs/nadle/commit/40659bccb71bb7d2b7c4849802e3d6c2dbd496a4))
+* **deps-dev:** Bump serialize-javascript from 7.0.2 to 7.0.5 in the security-updates group across 1 directory ([#553](https://github.com/nadlejs/nadle/issues/553)) ([7d64518](https://github.com/nadlejs/nadle/commit/7d64518dc9a1185d3732a46ef8bcd37806f097f5))
+* **deps-dev:** Bump size-limit from 11.2.0 to 12.1.0 ([#597](https://github.com/nadlejs/nadle/issues/597)) ([810b595](https://github.com/nadlejs/nadle/commit/810b59509fe74b0ef59015493eb69475260eb1a3))
+* **deps:** Bump preferred-pm from 4.1.1 to 5.0.0 ([#576](https://github.com/nadlejs/nadle/issues/576)) ([4289fd8](https://github.com/nadlejs/nadle/commit/4289fd828aa77080d8a0b7de79797ab077d3da94))
+* **deps:** Bump the minor-updates group across 1 directory with 29 updates ([#581](https://github.com/nadlejs/nadle/issues/581)) ([367ba74](https://github.com/nadlejs/nadle/commit/367ba74b2ff9a679826b5d42e14ce957bd4bfd11))
+* Migrate nadle configs from ExecTask to PnpxTask ([#520](https://github.com/nadlejs/nadle/issues/520)) ([78f2ebd](https://github.com/nadlejs/nadle/commit/78f2ebd9435c182c0cfb5b2e423b53961bad80c5))
+* Minimal package scripts, tighter task caching, and shim-free bins ([#620](https://github.com/nadlejs/nadle/issues/620)) ([5955d4b](https://github.com/nadlejs/nadle/commit/5955d4b4ff167a3cf2a675fbcef2966a68072601))
+* Unify build pipeline - single compile, bundle, and test entry points at root ([#618](https://github.com/nadlejs/nadle/issues/618)) ([809fc6e](https://github.com/nadlejs/nadle/commit/809fc6e4ffe9e24d639a785e396474fecabe33e2))
+* Upgrade pnpm to 11 ([#621](https://github.com/nadlejs/nadle/issues/621)) ([8ca0d9c](https://github.com/nadlejs/nadle/commit/8ca0d9c0acdf12505d9daeb52e419f755584b6ed))
+* Use tsgo (TypeScript native preview) for build and typecheck ([#617](https://github.com/nadlejs/nadle/issues/617)) ([b87bc1a](https://github.com/nadlejs/nadle/commit/b87bc1a2577b17354d46c4d8097db31f12c6fae3))
+
 ## [0.0.4](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.3...create-nadle/v0.0.4) (2026-02-20)
 
 
