@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.3](https://github.com/nadlejs/nadle/compare/eslint-plugin-nadle/v0.0.2...eslint-plugin-nadle/v0.0.3) (2026-06-12)
+
+
+### Bug Fixes
+
+* Resolve workspace dependencies in published packages ([#625](https://github.com/nadlejs/nadle/issues/625)) ([4cba337](https://github.com/nadlejs/nadle/commit/4cba3378a8b6643d9d95a4f94191766f129df120))
+
+
+### Internal
+
+* Release eslint-plugin-nadle v0.0.2 ([#517](https://github.com/nadlejs/nadle/issues/517)) ([d655c0b](https://github.com/nadlejs/nadle/commit/d655c0b5e18f2a5d56659cff70d4ac9875fef369))
+
 ## [0.0.2](https://github.com/nadlejs/nadle/compare/eslint-plugin-nadle/v0.0.1...eslint-plugin-nadle/v0.0.2) (2026-06-12)
 
 
