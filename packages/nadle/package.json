@@ -8,8 +8,7 @@
 		"build": "nadle build"
 	},
 	"files": [
-		"lib",
-		"nadle.mjs"
+		"lib"
 	],
 	"exports": {
 		".": {
@@ -17,7 +16,7 @@
 			"import": "./lib/index.js"
 		}
 	},
-	"bin": "nadle.mjs",
+	"bin": "lib/cli.js",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"@nadle/kernel": "workspace:*",

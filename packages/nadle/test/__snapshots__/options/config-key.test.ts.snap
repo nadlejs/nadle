@@ -3,7 +3,7 @@
 exports[`--config-key > should have no effect if not specified any value 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 ---------- Stdout ------------
 [log] {
   "cache": true,
@@ -58,7 +58,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key
 exports[`--config-key > should print undefined if config key does not exist 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key notFound
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key notFound
 ---------- Stdout ------------
 [log] undefined
 `;
@@ -66,7 +66,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`--config-key > should use the specified config key and show correct config 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
@@ -97,7 +97,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`--config-key > should work with nested key 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.rootWorkspace.absolutePath
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.rootWorkspace.absolutePath
 ---------- Stdout ------------
 [log] "/ROOT/test/__fixtures__/pnpm-workspaces"
 `;
@@ -105,7 +105,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`--config-key > should work with nested key 2`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces[1]
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.workspaces[1]
 ---------- Stdout ------------
 [log] {
   "id": "frontend",
@@ -130,7 +130,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`--config-key > should work with nested key 3`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces[1].id
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.workspaces[1].id
 ---------- Stdout ------------
 [log] "frontend"
 `;
@@ -138,7 +138,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`--config-key > should work with nested key 4`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project.workspaces.1.id
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.workspaces.1.id
 ---------- Stdout ------------
 [log] "frontend"
 `;
@@ -146,7 +146,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`--config-key > should work with nested key 5`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build --show-config --config-key tasks[0].taskId
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer build --show-config --config-key tasks[0].taskId
 ---------- Stdout ------------
 [log] "root:build"
 `;

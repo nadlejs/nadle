@@ -5,8 +5,7 @@
 	"license": "MIT",
 	"type": "module",
 	"files": [
-		"lib",
-		"cli.mjs"
+		"lib"
 	],
 	"exports": {
 		".": {
@@ -15,7 +14,7 @@
 		}
 	},
 	"bin": {
-		"nadle-project-resolver": "cli.mjs"
+		"nadle-project-resolver": "lib/cli.js"
 	},
 	"types": "lib/index.d.ts",
 	"dependencies": {

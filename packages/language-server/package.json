@@ -6,7 +6,6 @@
 	"type": "module",
 	"files": [
 		"lib",
-		"server.mjs",
 		"LICENSE"
 	],
 	"exports": {
@@ -16,7 +15,7 @@
 		}
 	},
 	"bin": {
-		"nadle-language-server": "server.mjs"
+		"nadle-language-server": "lib/server.js"
 	},
 	"types": "lib/index.d.ts",
 	"dependencies": {
