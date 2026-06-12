@@ -2,7 +2,7 @@
 	"packages/nadle": "0.5.2",
 	"packages/create-nadle": "0.0.5",
 	"packages/language-server": "0.0.4",
-	"packages/eslint-plugin": "0.0.2",
+	"packages/eslint-plugin": "0.0.3",
 	"packages/kernel": "0.0.2",
 	"packages/project-resolver": "0.0.3"
 }
