@@ -54,6 +54,8 @@ const config = {
 		"nadlejs",
 		"pnpx",
 		"tsgo",
+		"direnv",
+		"envrc",
 		"Uncategorized",
 		...extractLibraryNames()
 	],
