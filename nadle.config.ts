@@ -10,10 +10,15 @@ tasks
 
 // --- Checking ---
 
-tasks.register("spell", PnpxTask, { command: "cspell", args: ["**", "--quiet", "--gitignore"] }).config({
-	group: "Checking",
-	description: "Check spelling across all files"
-});
+tasks
+	.register("spell", PnpxTask, {
+		command: "cspell",
+		args: ["**", "--quiet", "--gitignore", "--cache", "--cache-location", "node_modules/.cache/cspell/.cspellcache"]
+	})
+	.config({
+		group: "Checking",
+		description: "Check spelling across all files"
+	});
 
 tasks
 	.register("eslint", PnpxTask, {
@@ -29,7 +34,7 @@ tasks
 tasks
 	.register("prettier", PnpxTask, {
 		command: "prettier",
-		args: ["--experimental-cli", "--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
+		args: ["--experimental-cli", "--check", "."]
 	})
 	.config({ group: "Checking", description: "Check formatting with Prettier" });
 
@@ -95,7 +100,7 @@ tasks.register("build").config({
 
 tasks.register("testUnit", PnpxTask, { args: ["run"], command: "vitest" }).config({
 	group: "Testing",
-	dependsOn: ["compile", "bundle"],
+	dependsOn: ["bundle"],
 	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
 });
 

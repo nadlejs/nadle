@@ -5,10 +5,7 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"build": "nadle build",
-		"test": "nadle test",
-		"update": "vitest -u --project nadle --config ../../vitest.config.ts",
-		"bench": "vitest bench --project nadle --config ../../vitest.config.ts"
+		"build": "nadle build"
 	},
 	"files": [
 		"lib",
