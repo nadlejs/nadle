@@ -1,5 +1,12 @@
 # nadle
 
+## [0.5.3](https://github.com/nadlejs/nadle/compare/nadle/v0.5.2...nadle/v0.5.3) (2026-06-12)
+
+
+### Bug Fixes
+
+* Resolve workspace dependencies in published packages ([#625](https://github.com/nadlejs/nadle/issues/625)) ([4cba337](https://github.com/nadlejs/nadle/commit/4cba3378a8b6643d9d95a4f94191766f129df120))
+
 ## [0.5.2](https://github.com/nadlejs/nadle/compare/nadle/v0.5.1...nadle/v0.5.2) (2026-06-12)
 
 
