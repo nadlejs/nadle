@@ -204,7 +204,7 @@ importers:
   packages/eslint-plugin:
     dependencies:
       '@nadle/kernel':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../kernel
       eslint:
         specifier: ^9.0.0
@@ -241,10 +241,10 @@ importers:
   packages/language-server:
     dependencies:
       '@nadle/kernel':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../kernel
       '@nadle/project-resolver':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../project-resolver
       typescript:
         specifier: ^5.9.3
@@ -278,10 +278,10 @@ importers:
   packages/nadle:
     dependencies:
       '@nadle/kernel':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../kernel
       '@nadle/project-resolver':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../project-resolver
       consola:
         specifier: ^3.4.2
@@ -411,7 +411,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@nadle/kernel':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../kernel
       find-up:
         specifier: ^8.0.0

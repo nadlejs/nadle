@@ -50,7 +50,11 @@ jobs:
 
       - name: Publish to npm
         if: ${{ !startsWith(github.ref_name, 'vscode-extension/') }}
-        run: npm publish --provenance --access public
+        # pnpm pack rewrites workspace: protocol deps to real versions;
+        # npm publish then handles OIDC trusted publishing + provenance.
+        run: |
+          pnpm pack --out package.tgz
+          npm publish package.tgz --provenance --access public
         working-directory: packages/${{ steps.parse-tag.outputs.package }}
 
       - name: Publish VS Code Extension
