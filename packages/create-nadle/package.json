@@ -8,10 +8,9 @@
 		"build": "nadle compile"
 	},
 	"files": [
-		"lib",
-		"create-nadle.mjs"
+		"lib"
 	],
-	"bin": "create-nadle.mjs",
+	"bin": "lib/cli.js",
 	"dependencies": {
 		"@clack/prompts": "^1.5.1",
 		"execa": "^9.6.1",

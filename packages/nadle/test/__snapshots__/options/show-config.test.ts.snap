@@ -3,7 +3,7 @@
 exports[`--show-config > should show config 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello --show-config
 ---------- Stdout ------------
 [log] {
   "cache": true,
@@ -63,7 +63,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello --show-config
 exports[`--show-config > should show config with extra options 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/main
-Command: /ROOT/nadle.mjs --no-footer hello --show-config --min-workers 2 --max-workers 3
+Command: /ROOT/lib/cli.js --no-footer hello --show-config --min-workers 2 --max-workers 3
 ---------- Stdout ------------
 [log] {
   "cache": true,

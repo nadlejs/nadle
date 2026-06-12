@@ -19,7 +19,7 @@ describe("overwrite handling", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { stdout, exitCode } = await execa(cliPath, ["--yes"], {
+				const { stdout, exitCode } = await execa("node", [cliPath, "--yes"], {
 					cwd
 				});
 
@@ -44,7 +44,7 @@ describe("overwrite handling", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { exitCode } = await execa(cliPath, ["--yes"], { cwd });
+				const { exitCode } = await execa("node", [cliPath, "--yes"], { cwd });
 
 				expect(exitCode).toBe(0);
 

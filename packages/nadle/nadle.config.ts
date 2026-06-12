@@ -1,7 +1,7 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { tasks, PnpxTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
 
 tasks.register("build").config({
 	group: "Building",
@@ -12,7 +12,9 @@ tasks.register("build").config({
 tasks.register("generateMarkdown", PnpxTask, { command: "typedoc" }).config({
 	group: "Building",
 	dependsOn: ["build"],
-	description: "Generate API markdown with typedoc"
+	outputs: [Outputs.dirs("../docs/docs/api")],
+	description: "Generate API markdown with typedoc",
+	inputs: [Inputs.dirs("lib"), Inputs.files("typedoc.json")]
 });
 
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
@@ -20,7 +22,9 @@ tasks.register("generateMarkdown", PnpxTask, { command: "typedoc" }).config({
 tasks.register("testAPI", PnpxTask, { args: ["run"], command: "api-extractor" }).config({
 	group: "Testing",
 	dependsOn: ["build"],
-	description: "Verify API surface with api-extractor"
+	outputs: [Outputs.dirs("build/api")],
+	description: "Verify API surface with api-extractor",
+	inputs: [Inputs.files("lib/index.d.ts", "api-extractor.json", "../../api-extractor.json", "index.api.md")]
 });
 
 tasks

@@ -18,6 +18,12 @@ import { type ProjectContext, discoverProjectContext } from "./project-context.j
 const DEBOUNCE_MS = 200;
 const CONFIG_PATTERN = /^nadle\.config\.[cm]?[jt]s$/;
 
+// Default to stdio transport when launched directly (e.g. via the package bin)
+// without an explicit transport flag from the client.
+if (!process.argv.some((arg) => arg === "--stdio" || arg === "--node-ipc" || arg.startsWith("--socket") || arg.startsWith("--pipe"))) {
+	process.argv.push("--stdio");
+}
+
 const connection = createConnection(ProposedFeatures.all);
 const documents = new TextDocuments(TextDocument);
 const store = new DocumentStore();

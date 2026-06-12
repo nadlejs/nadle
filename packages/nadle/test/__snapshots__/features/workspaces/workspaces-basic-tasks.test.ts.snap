@@ -3,7 +3,7 @@
 exports[`workspaces basic tasks > should register all tasks from all config files 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --list
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -24,7 +24,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --list
 exports[`workspaces basic tasks > when running a task from a workspace > with specifying workspace explicitly > when the task is defined in the workspace > should run the that task 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer packages:two:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -39,7 +39,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build
 exports[`workspaces basic tasks > when running a task from a workspace > with specifying workspace explicitly > when the task is defined in the workspace > should run the that task 2`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer root:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -57,7 +57,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer root:build
 exports[`workspaces basic tasks > when running a task from a workspace > without specifying the workspace > when the task is defined in the workspace > should run that task 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -72,7 +72,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 exports[`workspaces basic tasks > when running a task from a workspace > without specifying the workspace > when the task is not defined in the workspace > should run the root task if defined 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer test
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer test
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -90,7 +90,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer test
 exports[`workspaces basic tasks > when specifying a workspace task then the root task with the same name > should run the workspace task first, then the root and and finally other workspace tasks with the same name 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer packages:two:build build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -108,7 +108,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build build
 exports[`workspaces basic tasks > when specifying root task > should run that task first then all sub-workspace task with the same name 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -126,7 +126,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer build
 exports[`workspaces basic tasks > when specifying sub-workspace tasks > should run those tasks only 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer packages:two:build packages:one:build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer packages:two:build packages:one:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

@@ -77,7 +77,7 @@ jobs:
         with:
           path: |
             node_modules/.cache/eslint
-            node_modules/.cache/prettier
+            node_modules/.cache/cspell
           key: lint-cache-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             lint-cache-${{ runner.os }}-
@@ -96,6 +96,11 @@ jobs:
     needs: [build]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
+    # bash everywhere: PowerShell strips the bare `--` separator that nadle
+    # needs for passthrough args.
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:

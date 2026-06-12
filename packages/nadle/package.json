@@ -5,14 +5,10 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"build": "nadle build",
-		"test": "nadle test",
-		"update": "vitest -u --project nadle --config ../../vitest.config.ts",
-		"bench": "vitest bench --project nadle --config ../../vitest.config.ts"
+		"build": "nadle build"
 	},
 	"files": [
-		"lib",
-		"nadle.mjs"
+		"lib"
 	],
 	"exports": {
 		".": {
@@ -20,7 +16,7 @@
 			"import": "./lib/index.js"
 		}
 	},
-	"bin": "nadle.mjs",
+	"bin": "lib/cli.js",
 	"types": "lib/index.d.ts",
 	"dependencies": {
 		"@nadle/kernel": "workspace:*",

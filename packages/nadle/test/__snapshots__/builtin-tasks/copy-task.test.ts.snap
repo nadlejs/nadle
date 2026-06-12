@@ -3,7 +3,7 @@
 exports[`copyTask > given a file path > copies it into the destination directory 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyFoo
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer copyFoo
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -22,7 +22,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyFoo
 exports[`copyTask > given a folder path > can copy it 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyAssets
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer copyAssets
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -42,7 +42,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyAssets
 exports[`copyTask > given a nested destination > creates directories automatically 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer copyToNested
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -61,7 +61,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyToNested
 exports[`copyTask > with include and exclude options > copies only matching files 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/copy-task/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer copyWithFilter
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer copyWithFilter
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

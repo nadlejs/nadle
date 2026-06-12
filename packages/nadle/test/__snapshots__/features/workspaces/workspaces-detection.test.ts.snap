@@ -3,7 +3,7 @@
 exports[`workspaces detection > multiple packages 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
@@ -61,7 +61,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`workspaces detection > multiple packages with config files 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
@@ -119,7 +119,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`workspaces detection > multiple packages with custom config file 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.config.js --show-config --config-key project
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --config config/nadle.config.js --show-config --config-key project
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
@@ -155,7 +155,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --config config/nadle.confi
 exports[`workspaces detection > multiple packages with ignore packages 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {
@@ -202,7 +202,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key 
 exports[`workspaces detection > one package 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer --show-config --config-key project
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project
 ---------- Stdout ------------
 [log] {
   "rootWorkspace": {

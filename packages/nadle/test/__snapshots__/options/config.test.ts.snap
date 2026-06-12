@@ -3,7 +3,7 @@
 exports[`--config > should precedence the js config file over the ts config file 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -18,7 +18,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 exports[`--config > should precedence the ts config file over the mts config file 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -33,7 +33,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 exports[`--config > should use the existent config path if not specify --config in cjs-js package 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -48,7 +48,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 exports[`--config > should use the existent config path if not specify --config in cjs-ts package 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -63,7 +63,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 exports[`--config > should use the existent config path if not specify --config in esm-js package 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -78,7 +78,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
 exports[`--config > should use the existent config path if not specify --config in esm-ts package 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer hello
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

@@ -3,7 +3,7 @@
 exports[`graceful cancellation > should report other running tasks as canceled instead of failed 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__temp__/__{hash}__
-Command: /ROOT/nadle.mjs --no-footer main-task --max-workers 2
+Command: /ROOT/lib/cli.js --no-footer main-task --max-workers 2
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js

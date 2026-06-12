@@ -3,7 +3,7 @@
 exports[`workspaces > excluded tasks > should not run excluded tasks 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer check --exclude build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -20,7 +20,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude build
 exports[`workspaces > excluded tasks > should not run excluded tasks 2`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude two:build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer check --exclude two:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
@@ -40,7 +40,7 @@ Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude two:build
 exports[`workspaces > excluded tasks > should not run excluded tasks 3`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/one
-Command: /ROOT/nadle.mjs --max-workers 1 --no-footer check --exclude packages:two:build
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer check --exclude packages:two:build
 ---------- Stdout ------------
 [log] <Bold><Cyan>▶ Welcome to Nadle {version}!</Cyan></BoldDim>
 [log] Using Nadle from /ROOT/lib/index.js
