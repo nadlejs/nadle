@@ -30,7 +30,13 @@ jobs:
 
       - name: Parse tag
         id: parse-tag
-        run: echo "package=${GITHUB_REF_NAME%%/*}" >> "$GITHUB_OUTPUT"
+        # Tag components are npm package names; map the ones whose directory differs.
+        run: |
+          package="${GITHUB_REF_NAME%%/*}"
+          case "$package" in
+            eslint-plugin-nadle) package=eslint-plugin ;;
+          esac
+          echo "package=$package" >> "$GITHUB_OUTPUT"
 
       - name: Build
         run: nadle build
