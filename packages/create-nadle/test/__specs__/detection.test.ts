@@ -17,7 +17,7 @@ describe("project detection with --yes", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { stdout } = await execa(cliPath, ["--yes"], { cwd });
+				const { stdout } = await execa("node", [cliPath, "--yes"], { cwd });
 
 				expect(stdout).toContain("Detected package manager: npm");
 				expect(stdout).toContain("Detected TypeScript project");
@@ -42,7 +42,7 @@ describe("project detection with --yes", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { stdout } = await execa(cliPath, ["--yes"], { cwd });
+				const { stdout } = await execa("node", [cliPath, "--yes"], { cwd });
 
 				expect(stdout).toContain("Detected monorepo");
 
@@ -64,7 +64,7 @@ describe("project detection with --yes", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				await execa(cliPath, ["--yes"], { cwd });
+				await execa("node", [cliPath, "--yes"], { cwd });
 
 				const config = await Fs.readFile(Path.join(cwd, "nadle.config.ts"), "utf8");
 
@@ -91,7 +91,7 @@ describe("project detection with --yes", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { stdout } = await execa(cliPath, ["--yes"], { cwd });
+				const { stdout } = await execa("node", [cliPath, "--yes"], { cwd });
 
 				expect(stdout).toContain("Auto-migrating 2 task-like scripts");
 
@@ -118,7 +118,7 @@ describe("project detection with --yes", () => {
 			testFn: async ({ cwd }) => {
 				const subDir = Path.join(cwd, "src");
 
-				await execa(cliPath, ["--yes"], { cwd: subDir });
+				await execa("node", [cliPath, "--yes"], { cwd: subDir });
 
 				const config = await Fs.readFile(Path.join(cwd, "nadle.config.ts"), "utf8");
 
