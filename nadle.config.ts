@@ -29,7 +29,7 @@ tasks
 tasks
 	.register("prettier", PnpxTask, {
 		command: "prettier",
-		args: ["--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
+		args: ["--experimental-cli", "--check", ".", "--cache", "--cache-location", "node_modules/.cache/prettier/.prettierCache"]
 	})
 	.config({ group: "Checking", description: "Check formatting with Prettier" });
 
@@ -112,7 +112,7 @@ tasks.register("fixEslint", PnpxTask, { command: "eslint", args: [".", "--quiet"
 	description: "Fix lint issues with ESLint"
 });
 
-tasks.register("fixPrettier", PnpxTask, { command: "prettier", args: ["--write", "."] }).config({
+tasks.register("fixPrettier", PnpxTask, { command: "prettier", args: ["--experimental-cli", "--write", "."] }).config({
 	group: "Formatting",
 	description: "Format all files with Prettier"
 });
