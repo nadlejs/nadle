@@ -131,11 +131,11 @@ jobs:
       # The nadle suite dominates wall-clock, so split it across shards. The small
       # packages run once (on shard 1) instead of redundantly on every shard.
       - name: Test nadle
-        run: pnpm exec nadle testUnit -- --project nadle --shard=${{ matrix.shard }}/3
+        run: nadle testUnit -- --project nadle --shard=${{ matrix.shard }}/3
 
       - name: Test other packages
         if: ${{ matrix.shard == 1 }}
-        run: pnpm exec nadle testUnit -- --project kernel --project project-resolver --project eslint-plugin --project create-nadle --project language-server
+        run: nadle testUnit -- --project kernel --project project-resolver --project eslint-plugin --project create-nadle --project language-server
 
   status:
     name: CI Status

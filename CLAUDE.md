@@ -75,11 +75,16 @@ Key source directories under `packages/nadle/src/`:
 ## Development
 
 ```bash
-pnpm install                          # Install dependencies
-npx nadle check build test --summary  # Full CI pipeline (nadle runs itself)
-pnpm -F nadle test                    # Run tests only
-pnpm -F nadle build                   # Build core package
+pnpm install                  # Install dependencies
+nadle check build test        # Full CI pipeline (nadle runs itself)
+nadle compile                 # tsgo: compile + type-check kernel, project-resolver, create-nadle, eslint-plugin
+nadle bundle                  # tsup: bundle nadle, language-server, vscode-extension
+nadle build                   # compile + typecheck + bundle (everything tests need)
+nadle testUnit                # All vitest projects (root vitest.config.ts)
 ```
+
+Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via direnv);
+`pnpm nadle <task>` works everywhere as fallback. CI invokes bare `nadle` too.
 
 ## Code Conventions
 
@@ -101,8 +106,10 @@ pnpm -F nadle build                   # Build core package
 
 ## Build & Release
 
-- **Build**: `tsup` (3 entry points: cli, index, worker)
-- **Bundle size limit**: 140 KB (tracked by `size-limit`)
+- **Build**: tsgo (`nadle compile`, root `tsconfig.compile.json`) for unbundled packages;
+  tsup (`nadle bundle`, root `tsup.config.ts`) for nadle (cli/index/worker), language-server,
+  and vscode-extension
+- **Bundle size limit**: 160 KB (tracked by `size-limit`)
 - **API surface**: Tracked by `@microsoft/api-extractor` → `index.api.md`
 - **Release**: `release-please` for automated changelog + version bumps
 - **CI**: Ubuntu + macOS + Windows, Node 22/24
@@ -110,12 +117,14 @@ pnpm -F nadle build                   # Build core package
 ## Testing
 
 ```bash
-pnpm -F nadle test                    # All nadle tests
-pnpm -F nadle test basic              # Single test file
-pnpm -F @nadle/kernel test            # Kernel tests
-pnpm -F @nadle/project-resolver test  # Project-resolver tests
-pnpm -F eslint-plugin-nadle test      # ESLint plugin tests
+nadle testUnit                                  # All vitest projects
+nadle testUnit -- --project nadle               # Only the nadle suite (passthrough args)
+nadle testUnit -- --project kernel              # Kernel tests
+pnpm exec vitest run --project nadle basic      # Single test file, no task graph
 ```
+
+All test configuration lives in the root `vitest.config.ts` (six projects:
+nadle, create-nadle, language-server, kernel, project-resolver, eslint-plugin).
 
 - Framework: **vitest** with thread pool, 20s timeout
 - Retries: 5 on CI, 2 locally
