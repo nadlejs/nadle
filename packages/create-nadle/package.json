@@ -1,6 +1,6 @@
 {
 	"name": "create-nadle",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Initialize Nadle into an existing project with zero hassle.",
 	"license": "MIT",
 	"type": "module",
