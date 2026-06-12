@@ -10,10 +10,9 @@ packages:
 # default 24h minimumReleaseAge supply-chain delay.
 minimumReleaseAgeExclude:
   - "@typescript/native-preview*"
-
-# Nadle dogfoods itself via pkg.pr.new snapshots whose workspace deps
-# (@nadle/kernel etc.) resolve as URL tarballs - exotic subdeps by design.
-blockExoticSubdeps: false
+  - "@nadle/kernel@0.0.2"
+  - "@nadle/project-resolver@0.0.3"
+  - nadle@0.5.3
 
 # Only esbuild needs its install script; the rest were silently skipped
 # under pnpm 10 as well and work fine without building.
