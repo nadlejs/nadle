@@ -96,6 +96,11 @@ jobs:
     needs: [build]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
+    # bash everywhere: PowerShell strips the bare `--` separator that nadle
+    # needs for passthrough args.
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:

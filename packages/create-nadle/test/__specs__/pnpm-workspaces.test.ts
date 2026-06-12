@@ -17,7 +17,7 @@ describe("given a pnpm monorepo project", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				await execa(cliPath, ["--yes"], { cwd });
+				await execa("node", [cliPath, "--yes"], { cwd });
 
 				const config = await Fs.readFile(Path.join(cwd, "nadle.config.ts"), "utf8");
 

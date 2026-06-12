@@ -17,7 +17,7 @@ describe("non-interactive mode", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { exitCode } = await execa(cliPath, ["--yes"], { cwd });
+				const { exitCode } = await execa("node", [cliPath, "--yes"], { cwd });
 
 				expect(exitCode).toBe(0);
 
@@ -38,7 +38,7 @@ describe("non-interactive mode", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { exitCode } = await execa(cliPath, ["-y"], { cwd });
+				const { exitCode } = await execa("node", [cliPath, "-y"], { cwd });
 
 				expect(exitCode).toBe(0);
 
@@ -59,7 +59,7 @@ describe("non-interactive mode", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { exitCode } = await execa(cliPath, [], {
+				const { exitCode } = await execa("node", [cliPath], {
 					cwd,
 					stdin: "pipe"
 				});
@@ -84,7 +84,7 @@ describe("non-interactive mode", () => {
 				})
 			},
 			testFn: async ({ cwd }) => {
-				const { stdout, exitCode } = await execa(cliPath, ["--yes"], {
+				const { stdout, exitCode } = await execa("node", [cliPath, "--yes"], {
 					cwd
 				});
 
