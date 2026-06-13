@@ -26,7 +26,36 @@ const config: Config = {
 		defaultLocale: "en"
 	},
 
-	plugins: ["./src/plugins/tailwind-config.ts"],
+	plugins: [
+		"./src/plugins/tailwind-config.ts",
+		[
+			"@signalwire/docusaurus-plugin-llms-txt",
+			{
+				depth: 2,
+				siteTitle: "Nadle",
+				siteDescription: "A type-safe, Gradle-inspired task runner for Node.js. Sharp tasks. Fast builds.",
+				optionalLinks: [
+					{
+						title: "Specification",
+						url: `${SPEC_BASE_URL}/spec/`,
+						description: "The language-agnostic specification — the single source of truth for Nadle behavior."
+					}
+				],
+				content: {
+					includeBlog: false,
+					enableLlmsFullTxt: true,
+					excludeRoutes: ["/search", "/search/**"],
+					routeRules: [
+						{ depth: 2, route: "/docs/getting-started/**", categoryName: "Getting Started" },
+						{ depth: 2, route: "/docs/concepts/**", categoryName: "Concepts" },
+						{ depth: 2, route: "/docs/guides/**", categoryName: "Guides" },
+						{ depth: 2, route: "/docs/config-reference", categoryName: "Config Reference" },
+						{ depth: 2, route: "/docs/api/**", categoryName: "API Reference" }
+					]
+				}
+			}
+		]
+	],
 	presets: [
 		[
 			"classic",
