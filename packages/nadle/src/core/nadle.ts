@@ -8,6 +8,7 @@ import { EventEmitter } from "./models/event-emitter.js";
 import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { AgentReporter } from "./reporting/agent-reporter.js";
+import { PluginRegistry } from "./plugins/plugin-registry.js";
 import { TaskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { type State, type ExecutionContext } from "./context.js";
@@ -27,6 +28,7 @@ export class Nadle implements ExecutionContext {
 
 	public readonly logger = new DefaultLogger();
 	public readonly taskRegistry = new TaskRegistry();
+	public readonly pluginRegistry = new PluginRegistry();
 	public readonly fileOptionRegistry = new FileOptionRegistry();
 	public readonly taskScheduler = new TaskScheduler(this);
 	public readonly executionTracker = new ExecutionTracker();
