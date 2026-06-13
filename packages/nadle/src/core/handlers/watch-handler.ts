@@ -67,6 +67,7 @@ export class WatchHandler extends BaseHandler {
 
 	private async collectWatchPaths(taskIds: string[]): Promise<string[]> {
 		const paths = new Set<string>();
+		let anyInputs = false;
 
 		for (const taskId of taskIds) {
 			const task = this.context.taskRegistry.getTaskById(taskId);
@@ -75,6 +76,8 @@ export class WatchHandler extends BaseHandler {
 			if (config.inputs === undefined) {
 				continue;
 			}
+
+			anyInputs = true;
 
 			const workspace = getWorkspaceById(this.context.options.project, task.workspaceId);
 			const workingDir = Path.resolve(workspace.absolutePath, config.workingDir ?? "");
@@ -86,11 +89,14 @@ export class WatchHandler extends BaseHandler {
 			}
 		}
 
-		// Config files invalidate everything — watch them too.
-		const { rootWorkspace } = this.context.options.project;
+		// Only watch config files when there is something input-driven to re-run;
+		// watching config for a graph of no-input tasks would re-run pointlessly.
+		if (anyInputs) {
+			const { rootWorkspace } = this.context.options.project;
 
-		if (rootWorkspace.configFilePath) {
-			paths.add(rootWorkspace.configFilePath);
+			if (rootWorkspace.configFilePath) {
+				paths.add(rootWorkspace.configFilePath);
+			}
 		}
 
 		return [...paths];

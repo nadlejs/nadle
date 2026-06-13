@@ -8,5 +8,6 @@ export * from "./read-config.js";
 export * from "./create-files.js";
 export * from "./blur-snapshot.js";
 export * from "./config-builder.js";
+export * from "./watch.js";
 export * from "./fixture-builder.js";
 export * from "./workspace-fixture.js";
