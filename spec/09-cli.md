@@ -65,6 +65,7 @@ Rules:
 | `--watch`           | `-w`  | boolean  | `false` | Re-run the requested tasks when their declared inputs change.       |
 | `--graph`           |       | string   | `tree`  | Print the dependency graph instead of executing. `tree`/`mermaid`.  |
 | `--explain`         |       | string   |         | Explain a single task (why it runs, dependents, inputs); no run.    |
+| `--since`           |       | string   |         | Run only the requested tasks affected by changes since a git ref.   |
 | `--show-config`     |       | boolean  | `false` | Print the resolved configuration.                                   |
 | `--config-key`      |       | string   |         | Path to a specific config value (dot/bracket notation).             |
 | `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                     |
@@ -108,6 +109,13 @@ After options are resolved, Nadle selects a handler using a **first-match-wins**
 Each handler is instantiated and its `canHandle()` method is checked. The first handler
 that returns `true` has its `handle()` method invoked. Only one handler runs per
 invocation.
+
+The **Execute** handler additionally honors `--since <ref>`: before scheduling, it
+filters the requested (expanded) task set to those affected by files changed since the
+git ref. A task is affected when a changed file lies within its workspace directory;
+the dependencies of an affected task are included so its inputs are produced. If no
+task is affected, Execute reports it and runs nothing. Cross-workspace dependent
+propagation is out of scope for this version.
 
 ### Handler Interface
 

@@ -24,6 +24,8 @@ Execution options:
                                                                           [boolean] [default: false]
       --explain          Explain why a task runs, what depends on it, and its inputs, instead of
                          executing                                                          [string]
+      --since            Run only the requested tasks affected by changes since the given git ref
+                                                                                            [string]
       --show-config      Print the resolved configuration                 [boolean] [default: false]
       --config-key       Path to a specific resolved configuration value, using dot/bracket notation
                                                                        [string] [default: undefined]

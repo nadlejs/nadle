@@ -93,6 +93,15 @@ const configs: ConfigArray = tsEslint.config(
 	},
 	{
 		rules: {
+			"max-lines": "off"
+		},
+		// The core DAG engine: cohesive scheduling logic (analyze, cycle detection,
+		// ready-task ordering, graph reset) that belongs together. Splitting purely to
+		// satisfy a line count would scatter tightly-coupled graph state.
+		files: ["packages/nadle/src/core/engine/task-scheduler.ts"]
+	},
+	{
+		rules: {
 			"no-console": "off"
 		},
 		files: ["packages/sample-app/**", "packages/nadle/test/**", "packages/validators/**", "packages/examples/**"]

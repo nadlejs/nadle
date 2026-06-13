@@ -10,6 +10,7 @@ export const Messages = {
 	ConfigFileNotFound: (projectPath: string) =>
 		`No ${CONFIG_FILE_PATTERN}} found in ${highlight(projectPath)} directory or parent directories. Please use --config to specify a custom path.`,
 
+	NoTasksAffected: (ref: string) => `No requested tasks were affected by changes since ${highlight(ref)}. Nothing to run.`,
 	CycleDetected: (cyclePath: string) => `Cycle detected in task ${cyclePath}. Please resolve the cycle before executing tasks.`,
 	DuplicatedTaskName: (taskName: string, workspaceId: string) =>
 		`Task ${highlight(taskName)} already registered in workspace ${highlight(workspaceId)}`,

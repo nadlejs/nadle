@@ -12,18 +12,27 @@ files changed since a git ref — the table-stakes monorepo-CI feature (Turborep
 ## Definition of "affected"
 
 A scheduled task is **directly affected** if a changed file falls within its
-workspace directory (`workspace.absolutePath`). This is the Turborepo/Nx model:
+workspace directory (`workspace.absolutePath`). This is the workspace-locality model:
 a change dirties its containing workspace, no per-task `inputs` declaration required.
 
-A **requested root task runs** iff the task itself or any task in its dependency
-subtree is directly affected. Affectedness flows from a changed (dirty) dependency
-up to its dependents: if `test` depends on `build` and `build`'s workspace changed,
-`test` is affected.
+**A task runs iff it is directly affected, plus the dependencies a directly-affected
+task needs to run.** So `nadle build --since main` runs `build` in exactly the
+workspaces whose files changed, plus any dependency tasks those builds require. The
+aggregating root task (`build` expanded across all workspaces) naturally drops to
+just the affected children.
 
-Rationale for workspace-dir containment (not input-glob matching) as the primary
-signal: most tasks don't declare `inputs`, and requiring them would make `--since`
-silently skip everything. Workspace containment always works. Input declarations
-could refine this later (a follow-up), but coarser-but-correct beats precise-but-empty.
+Rationale for workspace-dir containment (not input-glob matching) as the signal:
+most tasks don't declare `inputs`, and requiring them would make `--since` silently
+skip everything. Workspace containment always works.
+
+### Not included: cross-workspace dependent propagation
+
+If package B depends on package A and only A changed, B's task is **not** run unless
+B's own workspace also changed. Full dependent propagation (rebuild B because its
+dependency A changed) needs the workspace-dependency graph, which is separate from the
+task graph, and is deferred to a follow-up. The workspace-locality model is the simple,
+predictable first cut; a directly-affected task still pulls in its own dependencies so
+its inputs are produced.
 
 ### Edge cases
 
@@ -55,7 +64,7 @@ explicit set); document as out-of-scope for now.
 ## Architecture / files
 
 - **`core/options/cli-options.ts`** — add `since: { key: "since", options: { type:
-  "string", description: "Run only tasks affected by changes since a git ref" } }`.
+"string", description: "Run only tasks affected by changes since a git ref" } }`.
   Group under "Execution options:" in `cli.ts`.
 - **`core/options/types.ts`** — `NadleCLIOptions.since?: string`; omit from the
   `Required<>` of `NadleResolvedOptions` and redeclare `since?: string` (same shape
@@ -65,17 +74,17 @@ explicit set); document as out-of-scope for now.
     via `node:child_process` execFile (promisified), returns absolute paths
     (resolve each against the git repo root from `git rev-parse --show-toplevel`, or
     against cwd). Throws `ConfigurationError` on git failure.
-  - `computeAffectedRoots({ roots, changedFiles, project, getDependencies, getWorkspaceId }):
-    string[]` — pure given its injected lookups; no I/O. For each scheduled task,
-    decide directly-affected by workspace-dir containment; a root is affected if it or
-    any transitive dependency is directly affected. Returns the affected subset of
-    `roots`.
-  Keeping `computeAffectedRoots` pure (deps injected as plain functions) makes it
-  unit-testable without git or a real project.
+  - `computeAffectedTasks({ changedFiles, workspaceDirs, scheduledTasks,
+getWorkspaceId, getTransitiveDependencies }): string[]` — pure given its injected
+    lookups; no I/O. Over the full scheduled set, a task is directly affected when a
+    changed file lies within its workspace directory; the result is the directly
+    affected tasks plus the dependencies they need. Pure (deps injected as plain
+    functions) so it is unit-testable without git or a real project.
 - **`core/handlers/execute-handler.ts`** — when `options.since` is set and there are
-  chosen tasks: build the scheduler once to get the dependency graph, compute changed
-  files, compute affected roots, then re-init the scheduler with only the affected
-  roots. If none affected, log "no tasks affected since <ref>" and return.
+  chosen tasks: init the scheduler once to get the expanded graph, compute changed
+  files, compute the affected task set, then re-init the scheduler with only those
+  tasks. If none affected, log the no-tasks-affected notice and return. (Re-init is
+  safe because `init()` now resets its derived graph state — see below.)
 
 ### Why filter in ExecuteHandler
 
@@ -84,10 +93,10 @@ context (project, registry, scheduler) is available, and it is before the pool r
 the same place watch-mode re-derives its set. No scheduler/worker change needed beyond
 a small public accessor for transitive dependencies (see below).
 
-### Scheduler accessor
+### Scheduler accessor + idempotent init
 
-`computeAffectedRoots` needs each task's full dependency set. The scheduler already
-computes `transitiveDependencyGraph` (private). Add a public method:
+`computeAffectedTasks` needs each task's dependency set to pull in the deps an affected
+task requires. The scheduler computes `transitiveDependencyGraph` (private); expose:
 
 ```ts
 public getTransitiveDependencies(taskId: TaskIdentifier): ReadonlySet<TaskIdentifier> {
@@ -95,8 +104,11 @@ public getTransitiveDependencies(taskId: TaskIdentifier): ReadonlySet<TaskIdenti
 }
 ```
 
-Then a root is affected iff `root` is directly-affected OR any id in
-`getTransitiveDependencies(root)` is directly-affected.
+Because the handler re-inits the shared scheduler (once for the affected pre-pass, once
+for the real run), `init()` now begins with a `reset()` that clears all derived graph
+state (dependency/dependents/transitive maps, indegree, ready set, implicit edges).
+This makes re-init idempotent — and also makes the watch loop's per-cycle re-init
+start from a clean graph rather than stale indegree values.
 
 ## Determining a task's workspace directory
 
@@ -120,7 +132,7 @@ the wiring with an injected changed-file list.
   - root-config change (root workspace) → everything affected.
   - no changed files → empty result.
 - **`test/options/since.test.ts`** — integration: a multi-workspace fixture, `git
-  init` + commit, modify one package's file, `nadle <task> --since HEAD` runs only the
+init` + commit, modify one package's file, `nadle <task> --since HEAD` runs only the
   affected package's task; a clean tree prints "no tasks affected".
   - invalid ref → error mentioning git's message.
 
@@ -140,6 +152,6 @@ file). show-config/config-key dumps gain `since` — regenerate those two alone 
 - Input-glob-level affectedness refinement (workspace-dir containment is enough now).
 - `--since` with `--watch` (ignored).
 - Remote/base-branch auto-detection, merge-base computation beyond what `git diff
-  <ref>` already does (users pass the ref they want; `git diff main` already diffs
+<ref>` already does (users pass the ref they want; `git diff main` already diffs
   against the merge-base-ish working tree).
 - Caching the changed-file list (one git call per run is negligible).
