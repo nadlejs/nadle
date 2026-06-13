@@ -52,6 +52,15 @@ export const CLIOptions = {
 			description: "Run specified tasks in dry run mode"
 		}
 	},
+	graph: {
+		key: "graph",
+		options: {
+			type: "string",
+			// Bare `--graph` yields "" → treated as the default "tree" format in the resolver.
+			choices: ["", "tree", "mermaid"] as const,
+			description: "Print the task dependency graph instead of executing (tree or mermaid)"
+		}
+	},
 	stacktrace: {
 		key: "stacktrace",
 		options: {

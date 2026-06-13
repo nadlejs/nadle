@@ -51,6 +51,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly dryRun: boolean;
 	/** Show summary after execution. */
 	readonly summary?: boolean;
+	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */
+	readonly graph?: "tree" | "mermaid";
 
 	/** Show stacktrace on errors. */
 	readonly stacktrace: boolean;
@@ -84,10 +86,13 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
  * Fully resolved Nadle options, including required fields and project reference.
  */
 export interface NadleResolvedOptions extends Required<
-	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks">
+	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks" | "graph">
 > {
 	/** Project information. */
 	readonly project: Project;
+
+	/** Task graph output format, when --graph was requested. */
+	readonly graph?: "tree" | "mermaid";
 
 	/** Minimum number of worker threads (resolved as number). */
 	readonly minWorkers: number;

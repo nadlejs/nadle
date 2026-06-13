@@ -14,6 +14,7 @@ const argv = yargs(hideBin(Process.argv))
 	.options({
 		[CLIOptions.list.key]: CLIOptions.list.options,
 		[CLIOptions.cache.key]: CLIOptions.cache.options,
+		[CLIOptions.graph.key]: CLIOptions.graph.options,
 		[CLIOptions.dryRun.key]: CLIOptions.dryRun.options,
 		[CLIOptions.footer.key]: CLIOptions.footer.options,
 		[CLIOptions.exclude.key]: CLIOptions.exclude.options,
