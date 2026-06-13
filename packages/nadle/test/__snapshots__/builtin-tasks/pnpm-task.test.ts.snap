@@ -11,61 +11,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer pass --log-level info
 
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/pnpm-task
-[info] Resolved options: {
-  "why": false,
-  "cache": true,
-  "watch": false,
-  "summary": false,
-  "parallel": false,
-  "logLevel": "info",
-  "cleanCache": false,
-  "showConfig": false,
-  "maxCacheEntries": 5,
-  "reporter": "default",
-  "implicitDependencies": true,
-  "excludedTasks": [],
-  "passthroughArgs": [],
-  "footer": false,
-  "isWorkerThread": false,
-  "tasks": [
-    {
-      "corrected": false,
-      "rawInput": "pass",
-      "taskId": "root:pass"
-    }
-  ],
-  "maxWorkers": 1,
-  "list": false,
-  "dryRun": false,
-  "stacktrace": false,
-  "listWorkspaces": false,
-  "project": {
-    "rootWorkspace": {
-      "label": "",
-      "packageJson": {
-        "name": "@nadle/internal-nadle-test-fixtures-pnpm-task",
-        "type": "module",
-        "private": true,
-        "dependencies": {
-          "nadle": "workspace:*"
-        },
-        "nadle": {
-          "root": true
-        }
-      },
-      "absolutePath": "/ROOT/test/__fixtures__/pnpm-task",
-      "dependencies": [],
-      "relativePath": ".",
-      "configFilePath": "/ROOT/test/__fixtures__/pnpm-task/nadle.config.ts",
-      "id": "root"
-    },
-    "workspaces": [],
-    "currentWorkspaceId": "root",
-    "packageManager": "npm"
-  },
-  "cacheDir": "/ROOT/test/__fixtures__/pnpm-task/node_modules/.cache/nadle",
-  "minWorkers": 1
-}
+[info] Resolved options: {options}
 [info] Detected environments: { CI: false, TEST: true }
 [info] Execution started
 [info] Scheduled tasks: root:pass

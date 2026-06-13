@@ -13,6 +13,7 @@ export function serialize(input: string): string {
 		serializeRelativePath,
 		serializeAbsoluteFilePath,
 		serializeStackTrace,
+		serializeOptionsDump,
 		serializeHash,
 		serializeVersion,
 		removeUnstableLines,
@@ -85,6 +86,14 @@ function serializeAbsoluteFilePath(input: string) {
 
 function serializeStackTrace(input: string) {
 	return input.replaceAll(/at .+( .+)?(\s+at .+( .+)?)+/g, "{stackTrace...}");
+}
+
+// The info-level "Resolved options: { … }" dump embeds the entire resolved
+// options object. Redact its body so unrelated task snapshots don't churn every
+// time an option is added (the --show-config snapshot, which asserts the dump
+// intentionally, uses a different output shape and is unaffected).
+function serializeOptionsDump(input: string) {
+	return input.replace(/Resolved options: \{[\s\S]*?\n\}/g, "Resolved options: {options}");
 }
 
 function serializeHash(input: string) {
