@@ -22,6 +22,8 @@ Execution options:
   -m, --dry-run          Run specified tasks in dry run mode              [boolean] [default: false]
   -w, --watch            Re-run the requested tasks when their inputs change
                                                                           [boolean] [default: false]
+      --explain          Explain why a task runs, what depends on it, and its inputs, instead of
+                         executing                                                          [string]
       --show-config      Print the resolved configuration                 [boolean] [default: false]
       --config-key       Path to a specific resolved configuration value, using dot/bracket notation
                                                                        [string] [default: undefined]

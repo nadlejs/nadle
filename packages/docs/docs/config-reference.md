@@ -106,6 +106,19 @@ nadle build --graph
 nadle build --graph=mermaid
 ```
 
+### `--explain`
+
+- **Type:** `string` (a task name)
+
+Explain a single task without running it: why it would run (the dependency paths that pull it in,
+or whether it was requested directly), what depends on it, and its declared inputs (plus whether
+caching is enabled). Complements `--why`, which explains a past run's cache outcome — `--explain`
+is purely static.
+
+```bash
+nadle build --explain install
+```
+
 ### `--why`
 
 - **Type:** `boolean`

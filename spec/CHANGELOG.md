@@ -8,6 +8,17 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.3.0 — 2026-06-13
+
+### Added
+
+- 09-cli: Document the introspection flags and their handlers, which had been
+  implemented but not yet specified — `--watch` (re-run on input change), `--graph`
+  (`tree`/`mermaid` dependency graph), `--explain` (static single-task explanation:
+  why it runs, dependents, inputs), and `--why` (per-task cache-outcome explanation).
+  Handler-chain table updated to the actual order: Graph and Explain run before
+  DryRun/ShowConfig; Watch runs before the default Execute handler.
+
 ## 3.2.0 — 2026-06-11
 
 ### Added
