@@ -51,7 +51,7 @@ describe.concurrent("--exclude", () => {
 			}
 		}));
 
-	it.skip("should do nothing if it is also the only main specify task", () =>
+	it("should do nothing if it is also the only main specify task", () =>
 		withGeneratedFixture({
 			files: abcFiles,
 			testFn: async ({ exec }) => {

@@ -16,6 +16,14 @@ export class ExecuteHandler extends BaseHandler {
 		let chosenTasks = this.context.options.tasks.map(ResolvedTask.getId);
 
 		if (chosenTasks.length === 0) {
+			// The interactive picker needs a TTY for raw-mode stdin. Without one
+			// (CI, pipes, exec-based tests) Ink crashes, so fall back to a message.
+			if (!process.stdin.isTTY) {
+				this.context.logger.log(Messages.NoTasksFound());
+
+				return;
+			}
+
 			this.context.updateState((state) => ({ ...state, selectingTasks: true }));
 			chosenTasks = await renderTaskSelection(
 				this.context.taskRegistry.tasks.map(({ id, label, configResolver }) => {

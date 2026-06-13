@@ -58,5 +58,8 @@ describe("workspaces alias", () => {
 		});
 	});
 
-	it.todo("Validate");
+	// TODO(#416): assert alias validation rejects invalid configs — duplicate
+	// aliases mapping to different workspaces, an alias colliding with a real
+	// workspace id, and an alias for a non-existent path should each error.
+	it.todo("rejects invalid alias configuration");
 });
