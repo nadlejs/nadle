@@ -18,7 +18,21 @@ describe("plugins", () => {
 				expect(result.exitCode).toBe(0);
 
 				const log = await Fs.readFile(Path.join(cwd, "hooks.log"), "utf8");
-				expect(log).toBe("beforeAll\nafterAll\n");
+				const lines = log.trim().split("\n");
+				expect(lines[0]).toBe("beforeAll");
+				expect(lines.at(-1)).toBe("afterAll");
+			}
+		}));
+
+	it("fires beforeTask and afterTask around an executed task", () =>
+		withGeneratedFixture({
+			files,
+			testFn: async ({ cwd, exec }) => {
+				await settle(exec`hello`);
+
+				const log = await Fs.readFile(Path.join(cwd, "hooks.log"), "utf8");
+				expect(log).toContain("beforeTask:hello");
+				expect(log).toContain("afterTask:hello:done");
 			}
 		}));
 });
