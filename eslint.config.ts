@@ -85,6 +85,14 @@ const configs: ConfigArray = tsEslint.config(
 	},
 	{
 		rules: {
+			"max-lines": "off"
+		},
+		// Flat declarative CLI option registry — the 200-line complexity heuristic
+		// doesn't fit a one-entry-per-flag list that only grows with new flags.
+		files: ["packages/nadle/src/core/options/cli-options.ts"]
+	},
+	{
+		rules: {
 			"no-console": "off"
 		},
 		files: ["packages/sample-app/**", "packages/nadle/test/**", "packages/validators/**", "packages/examples/**"]

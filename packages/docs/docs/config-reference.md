@@ -91,6 +91,19 @@ nadle build --graph
 nadle build --graph=mermaid
 ```
 
+### `--why`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Explain each task's cache outcome. For a hit, states whether the task was up-to-date or restored
+from cache; for a miss, lists exactly what changed (the input file added/removed/modified, or that
+no previous cache existed). Useful for answering "why did this rebuild?".
+
+```bash
+nadle build --why
+```
+
 ### `--stacktrace`
 
 - **Type:** `boolean`
