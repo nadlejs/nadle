@@ -5,6 +5,7 @@
 ```ts
 
 import { InputLogObject } from 'consola';
+import { Project } from '@nadle/project-resolver';
 import { RimrafAsyncOptions } from 'rimraf';
 
 // @public
@@ -39,6 +40,9 @@ export class CyclicDependencyError extends NadleError {
 
 // @public
 export type Declaration = FileDeclaration | DirDeclaration;
+
+// @public
+export function definePlugin<Options = void>(plugin: NadlePlugin<Options>): NadlePlugin<Options>;
 
 // @public
 export function defineTask<Options>(params: DefineTaskParams<Options>): Task<Options>;
@@ -166,6 +170,20 @@ export interface NadleFileOptions extends Partial<NadleBaseOptions> {
 }
 
 // @public
+export interface NadlePlugin<Options = void> {
+    // (undocumented)
+    readonly enforce?: "pre" | "post";
+    // (undocumented)
+    readonly hooks?: PluginHooks<Options>;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    readonly reporters?: readonly PluginReporter[];
+    // (undocumented)
+    readonly tasks?: readonly PluginTask[];
+}
+
+// @public
 export const NodeTask: Task<NodeTaskOptions>;
 
 // @public
@@ -201,6 +219,41 @@ export namespace Outputs {
 export type OverwritePolicy = "error" | "replace" | "skip";
 
 // @public
+export interface PluginHooks<Options> {
+    // (undocumented)
+    readonly afterAll?: (ctx: RunHookContext<Options>) => Awaitable<void>;
+    // (undocumented)
+    readonly afterTask?: (ctx: TaskHookContext<Options>) => Awaitable<void>;
+    // (undocumented)
+    readonly beforeAll?: (ctx: RunHookContext<Options>) => Awaitable<void>;
+    // (undocumented)
+    readonly beforeTask?: (ctx: TaskHookContext<Options>) => Awaitable<void>;
+}
+
+// @public
+export interface PluginReporter {
+    // Warning: (ae-forgotten-export) The symbol "ExecutionContext" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Listener" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly create: (context: ExecutionContext) => Listener;
+    // (undocumented)
+    readonly name: string;
+}
+
+// @public
+export interface PluginTask {
+    // (undocumented)
+    readonly config?: TaskConfiguration;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    readonly optionsResolver?: Resolver;
+    // (undocumented)
+    readonly task: Task<never> | Task;
+}
+
+// @public
 export const PnpmTask: Task<PnpmTaskOptions>;
 
 // @public
@@ -220,6 +273,22 @@ export interface PnpxTaskOptions {
 
 // @public
 export type Resolver<T = unknown> = T | Callback<T>;
+
+// @public
+export interface RunHookContext<Options> {
+    // (undocumented)
+    readonly error?: unknown;
+    // (undocumented)
+    readonly logger: Logger;
+    // (undocumented)
+    readonly outcome?: "success" | "failed";
+    // (undocumented)
+    readonly pluginOptions: Options;
+    // Warning: (ae-forgotten-export) The symbol "RegisteredTask" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly tasks: readonly RegisteredTask[];
+}
 
 // @public
 export interface RunnerContext {
@@ -285,6 +354,22 @@ export class TaskExecutionError extends NadleError {
 export type TaskFn = Callback<Awaitable<void>, {
     context: RunnerContext;
 }>;
+
+// @public
+export interface TaskHookContext<Options> {
+    // (undocumented)
+    readonly error?: unknown;
+    // (undocumented)
+    readonly logger: Logger;
+    // (undocumented)
+    readonly pluginOptions: Options;
+    // (undocumented)
+    readonly result?: "done" | "failed" | "up-to-date" | "from-cache" | "canceled";
+    // (undocumented)
+    readonly task: RegisteredTask;
+    // (undocumented)
+    readonly threadId?: number;
+}
 
 // @public
 export class TaskNotFoundError extends NadleError {
