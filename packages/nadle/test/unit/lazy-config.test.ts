@@ -26,7 +26,7 @@ describe("lazy task configuration (#647)", () => {
 		const registry = new TaskRegistry();
 		let calls = 0;
 
-		runWithInstance({ taskRegistry: registry, fileOptionRegistry: {} as never }, () => {
+		runWithInstance({ taskRegistry: registry, pluginRegistry: {} as never, fileOptionRegistry: {} as never }, () => {
 			registry.onConfigureWorkspace("root");
 
 			tasks.register("build").config(() => {
