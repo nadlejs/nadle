@@ -2,6 +2,7 @@ import { formatTime } from "../utilities/utils.js";
 import { type ExecutionContext } from "../context.js";
 import { type Listener } from "../interfaces/listener.js";
 import { StringBuilder } from "../utilities/string-builder.js";
+import { profileAccessors, collectProfileData } from "./profile-report.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
 
@@ -47,7 +48,23 @@ export class AgentReporter implements Listener {
 			return;
 		}
 
+		if (this.context.options.summary) {
+			this.emitProfile();
+		}
+
 		this.context.logger.log(this.summaryLine("SUCCESS"));
+	}
+
+	private emitProfile() {
+		const { hotspots, criticalPath } = collectProfileData(profileAccessors(this.context, this.tracker));
+
+		if (criticalPath !== null) {
+			this.context.logger.log(`CRITICAL ${criticalPath.path.join(" ")} ${formatTime(criticalPath.duration)}`);
+		}
+
+		for (const hotspot of hotspots) {
+			this.context.logger.log(`HOTSPOT ${hotspot.label} ${formatTime(hotspot.duration)} ${hotspot.suggestion}`);
+		}
 	}
 
 	public onExecutionFailed(error: unknown) {

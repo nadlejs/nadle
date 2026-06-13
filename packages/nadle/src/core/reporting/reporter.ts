@@ -14,6 +14,7 @@ import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
+import { profileAccessors, collectProfileData, renderProfileReport } from "./profile-report.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, RIGHT_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export class DefaultReporter implements Listener {
@@ -204,6 +205,8 @@ export class DefaultReporter implements Listener {
 					})
 				})
 			);
+
+			this.context.logger.log(renderProfileReport(collectProfileData(profileAccessors(this.context, this.tracker))));
 		}
 
 		const print = (count: number) => `${c.bold(count)} task${count > 1 ? "s" : ""}`;

@@ -264,8 +264,11 @@ footer, or spinners — just one stable line per task (`DONE <task> <time>`,
 - **Default:** `false`
 - **CLI:** `--summary`, `--no-summary`
 
-Prints a summary of the slowest tasks after all tasks have finished.
-Only the top slowest tasks are shown, sorted by duration in descending order.
+Prints profiling insights after all tasks have finished: a table of the slowest tasks
+(sorted by duration), the **critical path** (the longest cumulative-duration
+dependency chain that bounded the run), and **cache-miss hotspots** — the tasks that
+executed, each with a suggestion (declare inputs & outputs to make it cacheable, or
+note that an input changed).
 Useful for identifying performance bottlenecks and optimizing build times.
 
 ### `maxWorkers`

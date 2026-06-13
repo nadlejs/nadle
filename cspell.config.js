@@ -60,6 +60,7 @@ const config = {
 		"dogfooded",
 		"transpiling",
 		"flamegraph",
+		"hotspot",
 		"hotspots",
 		"codemod",
 		"SARIF",

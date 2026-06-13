@@ -57,7 +57,7 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly watch?: boolean;
 	/** Explain why a task runs, what depends on it, and its declared inputs, instead of executing. */
 	readonly explain?: string;
-	/** Show summary after execution. */
+	/** Show summary after execution (task durations, critical path, cache-miss hotspots). */
 	readonly summary?: boolean;
 	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */
 	readonly graph?: "tree" | "mermaid";
