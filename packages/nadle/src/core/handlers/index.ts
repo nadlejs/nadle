@@ -1,4 +1,5 @@
 import { ListHandler } from "./list-handler.js";
+import { GraphHandler } from "./graph-handler.js";
 import { DryRunHandler } from "./dry-run-handler.js";
 import { ExecuteHandler } from "./execute-handler.js";
 import { CleanCacheHandler } from "./clean-cache-handler.js";
@@ -10,6 +11,7 @@ export const Handlers: HandlerConstructor[] = [
 	ListHandler,
 	ListWorkspacesHandler,
 	CleanCacheHandler,
+	GraphHandler,
 	DryRunHandler,
 	ShowConfigHandler,
 	ExecuteHandler
