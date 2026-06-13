@@ -2,4 +2,35 @@ User-agent: *
 Allow: /
 Disallow: /search
 
+# AI crawlers are explicitly welcome.
+# Agent-oriented guide: https://nadle.dev/llms.txt
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /search
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /search
+
+User-agent: GPTBot
+Allow: /
+Disallow: /search
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /search
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /search
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /search
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /search
+
 Sitemap: https://nadle.dev/sitemap.xml
