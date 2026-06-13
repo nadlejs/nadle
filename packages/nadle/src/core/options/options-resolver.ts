@@ -20,6 +20,7 @@ export class OptionsResolver {
 	private readonly defaultOptions = {
 		why: false,
 		cache: true,
+		watch: false,
 		summary: false,
 		parallel: false,
 		logLevel: "log",

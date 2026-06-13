@@ -51,6 +51,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly why?: boolean;
 	/** Perform a dry run without executing tasks. */
 	readonly dryRun: boolean;
+	/** Re-run the requested tasks whenever their declared inputs change. */
+	readonly watch?: boolean;
 	/** Show summary after execution. */
 	readonly summary?: boolean;
 	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */

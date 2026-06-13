@@ -77,6 +77,21 @@ Simulate task execution without actually running the tasks. Shows what would be 
 nadle --dry-run build
 ```
 
+### `--watch`
+
+- **Type:** `boolean`
+- **Alias:** `-w`
+- **Default:** `false`
+
+Run the requested tasks, then keep running and re-run them whenever any of their
+declared `inputs` change. Only tasks whose inputs actually changed re-execute;
+the rest stay cached. Config files are watched too (when any task declares
+inputs). Press Ctrl-C to exit. Tasks with no declared `inputs` are not watchable.
+
+```bash
+nadle build --watch
+```
+
 ### `--graph`
 
 - **Type:** `string`

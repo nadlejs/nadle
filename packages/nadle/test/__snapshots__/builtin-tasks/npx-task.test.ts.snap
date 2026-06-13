@@ -14,6 +14,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer pass --log-level info
 [info] Resolved options: {
   "why": false,
   "cache": true,
+  "watch": false,
   "summary": false,
   "parallel": false,
   "logLevel": "info",
