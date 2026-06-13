@@ -65,6 +65,7 @@ Found 1 error.
 
 [log]
 <Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
+[log] <Dim>  ↩ to re-run just this task: nadle fail</BoldDim>
 [log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>0</BoldDim><Dim> task executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 [log]
