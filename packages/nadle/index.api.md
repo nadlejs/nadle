@@ -41,6 +41,9 @@ export class CyclicDependencyError extends NadleError {
 export type Declaration = FileDeclaration | DirDeclaration;
 
 // @public
+export function definePlugin<Options = void>(plugin: NadlePlugin<Options>): NadlePlugin<Options>;
+
+// @public
 export function defineTask<Options>(params: DefineTaskParams<Options>): Task<Options>;
 
 // @public
@@ -115,6 +118,21 @@ export namespace Inputs {
 }
 
 // @public
+export interface Listener {
+    readonly onExecutionFailed?: (error: unknown) => Awaitable<void>;
+    readonly onExecutionFinish?: () => Awaitable<void>;
+    readonly onExecutionStart?: () => Awaitable<void>;
+    readonly onInitialize?: () => Awaitable<this>;
+    readonly onTaskCanceled?: (task: RegisteredTask) => Awaitable<void>;
+    readonly onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
+    readonly onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
+    readonly onTaskRestoreFromCache?: (task: RegisteredTask) => Awaitable<void>;
+    readonly onTasksScheduled?: (tasks: RegisteredTask[]) => Awaitable<void>;
+    readonly onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
+    readonly onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
+}
+
+// @public
 export interface Logger {
     debug(message: InputLogObject | string, ...args: unknown[]): void;
     error(message: InputLogObject | string, ...args: unknown[]): void;
@@ -151,7 +169,7 @@ export interface NadleBaseOptions {
     readonly maxWorkers?: number | string;
     readonly minWorkers?: number | string;
     readonly parallel?: boolean;
-    readonly reporter?: SupportReporter;
+    readonly reporter?: string;
 }
 
 // @public
@@ -163,6 +181,15 @@ export class NadleError extends Error {
 // @public
 export interface NadleFileOptions extends Partial<NadleBaseOptions> {
     readonly alias?: AliasOption;
+}
+
+// @public
+export interface NadlePlugin<Options = void> {
+    readonly enforce?: "pre" | "post";
+    readonly hooks?: PluginHooks<Options>;
+    readonly name: string;
+    readonly reporters?: readonly PluginReporter[];
+    readonly tasks?: readonly PluginTask[];
 }
 
 // @public
@@ -201,6 +228,28 @@ export namespace Outputs {
 export type OverwritePolicy = "error" | "replace" | "skip";
 
 // @public
+export interface PluginHooks<Options> {
+    readonly afterAll?: (ctx: RunHookContext<Options>) => Awaitable<void>;
+    readonly afterTask?: (ctx: TaskHookContext<Options>) => Awaitable<void>;
+    readonly beforeAll?: (ctx: RunHookContext<Options>) => Awaitable<void>;
+    readonly beforeTask?: (ctx: TaskHookContext<Options>) => Awaitable<void>;
+}
+
+// @public
+export interface PluginReporter {
+    readonly create: (context: ReporterContext) => Listener;
+    readonly name: string;
+}
+
+// @public
+export interface PluginTask {
+    readonly config?: TaskConfiguration;
+    readonly name: string;
+    readonly optionsResolver?: Resolver;
+    readonly task: Task<never> | Task;
+}
+
+// @public
 export const PnpmTask: Task<PnpmTaskOptions>;
 
 // @public
@@ -219,7 +268,32 @@ export interface PnpxTaskOptions {
 }
 
 // @public
+export interface RegisteredTask extends Task {
+    readonly configResolver: Callback<TaskConfiguration>;
+    readonly empty: boolean;
+    readonly id: TaskIdentifier;
+    readonly label: string;
+    readonly name: string;
+    readonly optionsResolver: Resolver | undefined;
+    readonly workspaceId: string;
+}
+
+// @public
+export interface ReporterContext {
+    readonly logger: Logger;
+}
+
+// @public
 export type Resolver<T = unknown> = T | Callback<T>;
+
+// @public
+export interface RunHookContext<Options> {
+    readonly error?: unknown;
+    readonly logger: Logger;
+    readonly outcome?: "success" | "failed";
+    readonly pluginOptions: Options;
+    readonly tasks: readonly RegisteredTask[];
+}
 
 // @public
 export interface RunnerContext {
@@ -287,6 +361,28 @@ export type TaskFn = Callback<Awaitable<void>, {
 }>;
 
 // @public
+export interface TaskHookContext<Options> {
+    readonly error?: unknown;
+    readonly logger: Logger;
+    readonly pluginOptions: Options;
+    readonly result?: "done" | "failed" | "up-to-date" | "from-cache" | "canceled";
+    readonly task: RegisteredTask;
+    readonly threadId?: number;
+}
+
+// @public
+export type TaskIdentifier = string;
+
+// @public
+export namespace TaskIdentifier {
+    export function create(workspaceIdOrLabel: string, taskName: string): TaskIdentifier;
+    export function parser(taskInput: string): {
+        taskNameInput: string;
+        workspaceInput: string | undefined;
+    };
+}
+
+// @public
 export class TaskNotFoundError extends NadleError {
     constructor(message: string);
 }
@@ -302,6 +398,18 @@ export interface TasksAPI {
 }
 
 // @public
+export enum TaskStatus {
+    Canceled = "canceled",
+    Failed = "failed",
+    Finished = "finished",
+    FromCache = "from-cache",
+    Registered = "registered",
+    Running = "running",
+    Scheduled = "scheduled",
+    UpToDate = "up-to-date"
+}
+
+// @public
 export const UnzipTask: Task<UnzipTaskOptions>;
 
 // @public
@@ -310,6 +418,9 @@ export interface UnzipTaskOptions {
     readonly include?: MaybeArray<string>;
     readonly into: string;
 }
+
+// @public
+export function use<Options = void>(plugin: NadlePlugin<Options>, options?: Options): void;
 
 // @public
 export const ZipTask: Task<ZipTaskOptions>;

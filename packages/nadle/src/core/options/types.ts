@@ -1,7 +1,6 @@
 import { type Project } from "@nadle/project-resolver";
 
 import { type SupportLogLevel } from "../utilities/consola.js";
-import { type SupportReporter } from "../reporting/reporters.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
 /**
@@ -15,12 +14,12 @@ export interface NadleBaseOptions {
 
 	/** Show footer in output. */
 	readonly footer?: boolean;
+	/** Output reporter to use: a built-in (`default`/`agent`) or a plugin-registered reporter name. */
+	readonly reporter?: string;
 	/** Enable or disable parallel task execution. */
 	readonly parallel?: boolean;
 	/** Maximum number of cache entries to keep per task. Oldest are evicted when exceeded. */
 	readonly maxCacheEntries?: number;
-	/** Output reporter to use. */
-	readonly reporter?: SupportReporter;
 	/** Log level for reporting. */
 	readonly logLevel?: SupportLogLevel;
 	/** Minimum number of worker threads (number or string, e.g., "50%"). */

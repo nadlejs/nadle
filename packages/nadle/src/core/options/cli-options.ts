@@ -5,7 +5,6 @@ import { CONFIG_FILE_PATTERN } from "@nadle/project-resolver";
 import { type NadleCLIOptions } from "./types.js";
 import { Messages } from "../utilities/messages.js";
 import { SupportLogLevels } from "../utilities/consola.js";
-import { SupportReporters } from "../reporting/reporters.js";
 import { ConfigurationError } from "../utilities/nadle-error.js";
 
 export const CLIOptions = {
@@ -129,8 +128,7 @@ export const CLIOptions = {
 		options: {
 			type: "string",
 			defaultDescription: "default",
-			choices: SupportReporters,
-			description: "Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)"
+			description: "Output reporter: a built-in ('default'/'agent') or a plugin-registered reporter name"
 		}
 	},
 	cache: {

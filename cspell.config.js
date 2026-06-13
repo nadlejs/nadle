@@ -63,6 +63,7 @@ const config = {
 		"hotspot",
 		"hotspots",
 		"codemod",
+		"dedup",
 		"SARIF",
 		"subdeps",
 		"esbuild",

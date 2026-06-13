@@ -1,10 +1,12 @@
 import AsyncHooks from "node:async_hooks";
 
+import { type PluginRegistry } from "./plugins/plugin-registry.js";
 import { type TaskRegistry } from "./registration/task-registry.js";
 import { type FileOptionRegistry } from "./registration/file-option-registry.js";
 
 interface NadleInstance {
 	readonly taskRegistry: TaskRegistry;
+	readonly pluginRegistry: PluginRegistry;
 	readonly fileOptionRegistry: FileOptionRegistry;
 }
 

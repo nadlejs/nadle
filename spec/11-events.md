@@ -69,6 +69,18 @@ The duration timer is unreferenced so it does not prevent the process from exiti
 
 ## Custom Listeners
 
-Custom listeners are not directly supported through the public API in the current
-implementation. The event emitter is initialized with a fixed set of listeners
-(ExecutionTracker and DefaultReporter).
+The core registers a fixed set of listeners (ExecutionTracker and the active reporter).
+User-facing extension is through the **plugin system**: a plugin applied with `use()`
+contributes lifecycle hooks that the core dispatches on the main thread via an internal
+listener. The hooks map to events as follows:
+
+| Plugin hook  | Event(s)                                                                                                                          |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| `beforeAll`  | `onExecutionStart` (may throw to abort the run)                                                                                   |
+| `afterAll`   | `onExecutionFinish` / `onExecutionFailed` (errors downgraded to a warning)                                                        |
+| `beforeTask` | `onTaskStart` (fires only for tasks that actually execute, not cache hits)                                                        |
+| `afterTask`  | `onTaskFinish` / `onTaskFailed` / `onTaskUpToDate` / `onTaskRestoreFromCache` / `onTaskCanceled` (errors downgraded to a warning) |
+
+Hooks run in plugin order, grouped by the optional `enforce` (`pre` → normal → `post`).
+Because `beforeTask` is skipped for cache hits while `afterTask` always fires, the two are
+not a guaranteed pair. Plugins may also contribute task types and reporters.

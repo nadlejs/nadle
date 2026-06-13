@@ -4,7 +4,6 @@ import c from "tinyrainbow";
 
 import { type Logger } from "../logger.js";
 import { FileLogger } from "../../utilities/file-logger.js";
-import { type SupportReporter } from "../../reporting/reporters.js";
 import { ERASE_DOWN, HIDE_CURSOR, CLEAR_SCREEN, CURSOR_TO_START, ERASE_SCROLLBACK } from "../../utilities/constants.js";
 import { LogLevels, createNadleConsola, type InputLogObject, createPlainReporters, type SupportLogLevel } from "../../utilities/consola.js";
 
@@ -18,7 +17,7 @@ interface LoggerOptions {
 	readonly logLevel?: SupportLogLevel;
 
 	/** Output reporter; the agent reporter forces plain, ANSI-free output. */
-	readonly reporter?: SupportReporter;
+	readonly reporter?: string;
 
 	/** @internal True if running in a worker thread. */
 	readonly isWorkerThread?: boolean;
