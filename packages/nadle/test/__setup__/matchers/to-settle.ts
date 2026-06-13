@@ -1,6 +1,6 @@
 import { type ExpectationResult } from "@vitest/expect";
 
-export function toSettle(stdout: string, taskId: string, status: "done" | "up-to-date" | "from-cache" | "failed"): ExpectationResult {
+export function toSettle(stdout: string, taskId: string, status: "done" | "up-to-date" | "from-cache" | "failed" | "canceled"): ExpectationResult {
 	const taskDoneIndex = stdout.indexOf(`Task ${taskId} ${status.toUpperCase()}`);
 
 	if (taskDoneIndex === -1) {
