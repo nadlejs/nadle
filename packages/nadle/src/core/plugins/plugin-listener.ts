@@ -1,9 +1,11 @@
 import { type ExecutionContext } from "../context.js";
 import { type Listener } from "../interfaces/listener.js";
 import { type PluginRegistry } from "./plugin-registry.js";
-import { type PluginHooks, type RunHookContext } from "./plugin.js";
+import { type RegisteredTask } from "../interfaces/registered-task.js";
+import { type PluginHooks, type RunHookContext, type TaskHookContext } from "./plugin.js";
 
 type RunHook = "beforeAll" | "afterAll";
+type TaskHook = "beforeTask" | "afterTask";
 
 /**
  * Bridges nadle's lifecycle events to plugin hooks (all on the main thread).
@@ -27,6 +29,43 @@ export class PluginListener implements Listener {
 
 	public async onExecutionFailed(error: unknown): Promise<void> {
 		await this.dispatchSafe("afterAll", { error, outcome: "failed" });
+	}
+
+	public async onTaskStart(task: RegisteredTask, threadId: number): Promise<void> {
+		await this.dispatchTaskSafe("beforeTask", task, { threadId });
+	}
+
+	public async onTaskFinish(task: RegisteredTask): Promise<void> {
+		await this.dispatchTaskSafe("afterTask", task, { result: "done" });
+	}
+
+	public async onTaskFailed(task: RegisteredTask): Promise<void> {
+		await this.dispatchTaskSafe("afterTask", task, { result: "failed" });
+	}
+
+	public async onTaskUpToDate(task: RegisteredTask): Promise<void> {
+		await this.dispatchTaskSafe("afterTask", task, { result: "up-to-date" });
+	}
+
+	public async onTaskRestoreFromCache(task: RegisteredTask): Promise<void> {
+		await this.dispatchTaskSafe("afterTask", task, { result: "from-cache" });
+	}
+
+	public async onTaskCanceled(task: RegisteredTask): Promise<void> {
+		await this.dispatchTaskSafe("afterTask", task, { result: "canceled" });
+	}
+
+	private async dispatchTaskSafe(hook: TaskHook, task: RegisteredTask, extra: Partial<TaskHookContext<unknown>>): Promise<void> {
+		for (const { plugin, options } of this.registry.getOrdered()) {
+			const fn = (plugin.hooks as PluginHooks<unknown> | undefined)?.[hook];
+			const ctx: TaskHookContext<unknown> = { task, pluginOptions: options, logger: this.context.logger, ...extra };
+
+			try {
+				await fn?.(ctx);
+			} catch (error) {
+				this.context.logger.warn(`Plugin ${plugin.name} ${hook} hook failed: ${error instanceof Error ? error.message : String(error)}`);
+			}
+		}
 	}
 
 	private buildContext(extra: Partial<RunHookContext<unknown>>, options: unknown): RunHookContext<unknown> {
