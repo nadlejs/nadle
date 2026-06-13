@@ -55,6 +55,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly summary?: boolean;
 	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */
 	readonly graph?: "tree" | "mermaid";
+	/** Re-run the requested tasks whenever their declared inputs change. */
+	readonly watch?: boolean;
 
 	/** Show stacktrace on errors. */
 	readonly stacktrace: boolean;

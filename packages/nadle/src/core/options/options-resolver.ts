@@ -19,6 +19,7 @@ import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions 
 export class OptionsResolver {
 	private readonly defaultOptions = {
 		why: false,
+		watch: false,
 		cache: true,
 		summary: false,
 		parallel: false,

@@ -52,6 +52,15 @@ export const CLIOptions = {
 			description: "Run specified tasks in dry run mode"
 		}
 	},
+	watch: {
+		key: "watch",
+		options: {
+			alias: "w",
+			default: false,
+			type: "boolean",
+			description: "Re-run the requested tasks when their inputs change"
+		}
+	},
 	graph: {
 		key: "graph",
 		options: {
