@@ -25,7 +25,13 @@ const icons: Record<string, ReactNode> = {
 			<path d="M13 18h4" strokeLinecap="round" />
 		</>
 	),
-	builtin: <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" strokeLinecap="round" strokeLinejoin="round" />,
+	builtin: (
+		<path
+			d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	),
 	monorepo: (
 		<>
 			<rect x="3" y="3" width="7" height="7" rx="1.5" />
@@ -43,9 +49,21 @@ interface Card {
 }
 
 const CARDS: Card[] = [
-	{ icon: "cli", title: "Smart CLI", description: "Abbreviation matching, autocorrection, dry run, and summary mode. Run tasks with minimal typing." },
-	{ icon: "progress", title: "Real-time progress", description: "Interactive footer shows scheduled, running, and completed tasks live as they execute." },
-	{ icon: "monorepo", title: "Monorepo-native", description: "First-class workspace support. Run tasks across packages with full dependency awareness." },
+	{
+		icon: "cli",
+		title: "Smart CLI",
+		description: "Abbreviation matching, autocorrection, dry run, and summary mode. Run tasks with minimal typing."
+	},
+	{
+		icon: "progress",
+		title: "Real-time progress",
+		description: "Interactive footer shows scheduled, running, and completed tasks live as they execute."
+	},
+	{
+		icon: "monorepo",
+		title: "Monorepo-native",
+		description: "First-class workspace support. Run tasks across packages with full dependency awareness."
+	},
 	{ icon: "builtin", title: "Built-in tasks", description: "ExecTask, PnpmTask, CopyTask, DeleteTask. Common operations ready out of the box." },
 	{ icon: "architecture", title: "Modern architecture", description: "Pure ESM, Node.js 22+, worker-thread isolation. Zero legacy compromises." },
 	{ icon: "agent", title: "Agent-ready", description: "Ships llms.txt and llms-full.txt so AI agents can discover and reason about your tasks." }

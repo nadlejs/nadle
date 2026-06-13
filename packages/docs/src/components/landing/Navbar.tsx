@@ -42,9 +42,7 @@ const Navbar: FC = () => {
 						</Link>
 					))}
 					{version && (
-						<Link
-							href={`${GITHUB_URL}/releases/tag/v${version}`}
-							className="navbar-version-label no-underline hover:no-underline">
+						<Link href={`${GITHUB_URL}/releases/tag/v${version}`} className="navbar-version-label no-underline hover:no-underline">
 							v{version}
 						</Link>
 					)}

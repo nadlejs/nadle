@@ -31,7 +31,7 @@ export const CodeWindow: FC<{ code: string; title: string; language?: string }> 
 	</div>
 );
 
-export const TerminalBlock: FC<{ title?: string; content: string; }> = ({ content, title = "Terminal" }) => (
+export const TerminalBlock: FC<{ title?: string; content: string }> = ({ content, title = "Terminal" }) => (
 	<div className="relative rounded-xl overflow-hidden border border-white/[0.08] bg-[#0b0d12] shadow-2xl">
 		<WindowChrome title={title} />
 		<pre className="p-5 text-sm leading-relaxed font-mono overflow-x-auto !bg-transparent !m-0 !rounded-none text-slate-300">{content}</pre>
@@ -85,7 +85,7 @@ export const InstallCommand: FC = () => {
 
 /* ── Scroll-reveal wrapper (IntersectionObserver) ────────────────────────── */
 
-export const SectionReveal: FC<{ className?: string; children: ReactNode; }> = ({ children, className }) => {
+export const SectionReveal: FC<{ className?: string; children: ReactNode }> = ({ children, className }) => {
 	const ref = useRef<HTMLDivElement>(null);
 	const [visible, setVisible] = useState(false);
 
