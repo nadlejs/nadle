@@ -15,6 +15,9 @@ describe("when register two tasks with the same name", () => {
 			}
 		}));
 
+	// TODO(#416): mirror the root-workspace duplicate-task case above for a
+	// sub-workspace — register the same task name twice inside a package of a
+	// monorepo fixture and assert "Task <name> already registered in workspace <id>".
 	it.todo("should throw error within workspace");
 });
 
