@@ -39,6 +39,8 @@ General options:
                                                                  [boolean] [default: !isCI && isTTY]
       --summary      Print a summary of executed tasks at the end of the run
                                                                           [boolean] [default: false]
+      --why          Explain each task's cache outcome (hit/miss and what changed)
+                                                                          [boolean] [default: false]
 
 Miscellaneous options:
   -h, --help     Show this help                                                            [boolean]
