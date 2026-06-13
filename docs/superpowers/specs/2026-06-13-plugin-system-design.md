@@ -1,14 +1,16 @@
 # Plugin System Design (`definePlugin` / `use`)
 
-**Status:** Draft for user review (self-driven brainstorm; revised after an adversarial self-review round).
+**Status:** Draft for user review (self-driven brainstorm; revised after two adversarial self-review rounds, then scope-expanded to include plugin-contributed reporters; auto-discovery split into a linked sub-spec).
 **Issue:** [#641](https://github.com/nadlejs/nadle/issues/641) — plugins register task types, add config options, hook lifecycle (`beforeTask`/`afterTask`/`beforeAll`/`afterAll`). Core of the Distribution pillar: task types as shippable npm packages.
 
 ## Goal
 
 Let a published npm package contribute, to a user's nadle build: (1) reusable **task
 types**, (2) **lifecycle hooks** to observe a run and react before/after each task and
-before/after the whole run, and (3) its own **named options** read from config. A plugin
-is applied explicitly by the user in `nadle.config.ts` — no auto-discovery, no magic.
+before/after the whole run, (3) custom **reporters**, and (4) its own typed **options**
+(passed at application). A plugin is applied explicitly by the user via `use()` in
+`nadle.config.ts`; an optional manifest-driven auto-discovery layer (its own sub-spec)
+removes that boilerplate without replacing `use()`.
 
 ## Design pivot: everything runs on the main thread
 
@@ -29,10 +31,42 @@ case demands it (see Out of scope).
 This makes the whole feature additive over `Listener` + `tasks.register` — the two seams
 that already exist and are public.
 
+## Prior art (researched) & where nadle diverges
+
+Surveyed Vite, Rollup, ESLint (flat), Webpack/tapable, Gradle, Nx, Turborepo, esbuild, and
+test-runner reporters (Vitest/Jest/Mocha). Decisions cross-checked against them:
+
+- **Main-thread hooks (deferring worker-side hooks): validated.** No surveyed tool runs
+  plugin hooks across a worker/process boundary — Jest/Webpack run *work* in workers and
+  aggregate to **main-thread** reporters/hooks over IPC. esbuild explicitly keeps its plugin
+  API minimal "to preserve performance … and avoid exposing too much API surface." nadle
+  follows the same posture; worker-side hooks stay deferred (Out of scope).
+- **`use(plugin)` vs a `plugins: [...]` array: deliberate divergence.** The JS bundler
+  ecosystem uses a declarative array; Gradle (nadle's lineage) uses imperative
+  `apply(plugin)`. nadle's config is already **imperative** (`tasks.register(...)`,
+  `configure(...)`), so `use(plugin)` is consistent with the existing surface and the Gradle
+  model. The array form was considered and rejected (see "Why a free `use()`"). Ordering,
+  which an array gives positionally, is provided here by `enforce`.
+- **`enforce: "pre"|"post"` for ordering: adopted from Vite/Rollup** (replacing an earlier
+  implicit reverse-teardown rule that matched nothing in the wild).
+- **Plain hook context object: validated** against esbuild's `setup(build)` capability-bag.
+  Keep the ctx the single source of plugin capabilities (don't split between ctx and
+  globals), as esbuild/Rollup (`this`) do.
+- **Reporters as a Listener (interface) instance, not a bare factory: aligned** with
+  Vitest/Jest, where a reporter is a class/object implementing the reporter lifecycle. Our
+  `create(context) => Listener` returns exactly such an instance.
+- **Future (not v1): Gradle-style typed config extensions.** Gradle plugins add typed,
+  namespaced config blocks via `extensions.create("name", Type)`. That is the highest-value
+  idea to steal later given nadle's type-safe selling point — a plugin contributing a
+  checked `myplugin { … }` config namespace — but it is a substantial addition and stays out
+  of v1; plugin options arrive via `use(plugin, options)` for now.
+
 ## Plugin shape
 
 A plugin is a plain object, built by an identity helper `definePlugin` (typing only,
-mirroring `defineTask`). It is **applied**, never auto-discovered:
+mirroring `defineTask`). It is **applied** explicitly via `use()` here; the separate
+auto-discovery sub-spec adds a manifest layer that applies it for you, but that builds on
+this same contract:
 
 ```ts
 // my-plugin/index.ts  (a "nadle.plugin.ts" by convention — just where authors export it)
@@ -40,6 +74,7 @@ import { definePlugin } from "nadle";
 
 export const myPlugin = definePlugin<{ threshold?: number }>({
   name: "timing",                    // required, unique; used for dedup + error messages
+  enforce: "post",                   // OPTIONAL "pre" | "post" — Vite-style hook ordering
 
   // (1) task types this plugin contributes. Each entry is registered exactly as if the
   //     user wrote tasks.register(name, task, optionsResolver).config(config) — so a
@@ -132,8 +167,14 @@ worker thread id (meaningless under the inline executor when `--max-workers=1`).
 `definePlugin<Options>` generic threads the type to every hook). `logger` is the core
 logger (so plugin output is consistent and respects `--log-level`/reporter).
 
-**Ordering:** `beforeAll`/`beforeTask` run in plugin-application order. `afterAll`/`afterTask`
-run in **reverse** order (teardown wraps setup).
+**Ordering (Vite-style `enforce`, not implicit reverse):** a plugin may declare
+`enforce: "pre" | "post"` (default: neither). Hooks dispatch in the order **pre plugins →
+normal plugins → post plugins**, each group in application order, for *all* hooks (before
+and after alike). This is the proven, predictable model from Vite/Rollup. The earlier
+draft's "after-hooks run in reverse" rule was dropped — the research found **no** mainstream
+tool does implicit reverse teardown (Gradle's `doLast` is FIFO; Vite/Rollup use explicit
+`enforce`/`order`), and it surprises authors. A plugin needing strict teardown-after-setup
+ordering uses `enforce: "post"`.
 
 **Failure semantics (and how they're actually enforced — the emitter does not give these
 for free):**
