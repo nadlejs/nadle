@@ -1,11 +1,20 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
+import Process from "node:process";
 
 import { execa } from "execa";
 import stripAnsi from "strip-ansi";
 import type fixturify from "fixturify";
 import { it, expect, describe } from "vitest";
 import { settle, workspaceFixture, withGeneratedFixture } from "setup";
+
+// The integration fixtures `git init` a temp dir that lives inside the already-
+// checked-out repo on CI. On Windows that nesting (plus git's safe.directory rules
+// and slower process spawns) makes the child `git` calls hang and time out, which is
+// a test-environment artifact, not product behavior. The pure affected-set logic is
+// covered cross-platform by test/unit/affected.test.ts; here we drive real git only
+// on POSIX runners.
+const itPosix = Process.platform === "win32" ? it.skip : it;
 
 const project: fixturify.DirJSON = workspaceFixture({
 	root: { tasks: [{ name: "build" }] },
@@ -26,7 +35,7 @@ async function gitInit(cwd: string) {
 const out = (result: Awaited<ReturnType<typeof settle>>) => stripAnsi(result.stdout);
 
 describe("--since", () => {
-	it("runs only the task whose workspace changed", () =>
+	itPosix("runs only the task whose workspace changed", () =>
 		withGeneratedFixture({
 			files: project,
 			testFn: async ({ cwd, exec }) => {
@@ -40,9 +49,10 @@ describe("--since", () => {
 				expect(out(result)).toContain("packages:one:build");
 				expect(out(result)).not.toContain("packages:two:build");
 			}
-		}));
+		})
+	);
 
-	it("reports when nothing is affected", () =>
+	itPosix("reports when nothing is affected", () =>
 		withGeneratedFixture({
 			files: project,
 			testFn: async ({ cwd, exec }) => {
@@ -53,9 +63,10 @@ describe("--since", () => {
 				expect(result.exitCode).toBe(0);
 				expect(out(result)).toContain("No requested tasks were affected by changes since");
 			}
-		}));
+		})
+	);
 
-	it("errors on an invalid git ref", () =>
+	itPosix("errors on an invalid git ref", () =>
 		withGeneratedFixture({
 			files: project,
 			testFn: async ({ cwd, exec }) => {
@@ -66,5 +77,6 @@ describe("--since", () => {
 				expect(result.exitCode).not.toBe(0);
 				expect(result.stderr).toContain("does-not-exist-ref");
 			}
-		}));
+		})
+	);
 });
