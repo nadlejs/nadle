@@ -8,6 +8,17 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.7.0 — 2026-06-13
+
+### Added
+
+- 11-events / 13-reporting: Plugin system. A plugin (applied with `use(plugin, options?)`
+  in config) contributes task types, lifecycle hooks (`beforeAll`/`afterAll`/`beforeTask`/
+  `afterTask`, dispatched main-thread from the existing events; `beforeAll` may abort,
+  teardown errors downgrade to warnings; `beforeTask` is skipped for cache hits), and
+  custom reporters (selected by `--reporter <name>`, opening the previously-closed reporter
+  name space). Hook order follows an optional `enforce: "pre" | "post"`.
+
 ## 3.6.0 — 2026-06-13
 
 ### Added

@@ -353,3 +353,84 @@ configure({
 	footer: false
 });
 ```
+
+## Plugins
+
+A plugin is a package that contributes task types, lifecycle hooks, and/or custom reporters
+to your build. Author one with `definePlugin` and apply it in `nadle.config.ts` with `use`:
+
+```ts
+import { use } from "nadle";
+import { myPlugin } from "my-nadle-plugin";
+
+use(myPlugin, {
+	/* plugin options (typed) */
+});
+```
+
+`use(plugin, options?)` registers the plugin's task types (so they behave exactly like tasks
+you register yourself, with full `inputs`/`outputs`/`dependsOn` config), records its options,
+and wires its hooks. Applying the same plugin twice is a no-op if the options match and an
+error if they differ.
+
+### Authoring a plugin
+
+```ts
+import { definePlugin } from "nadle";
+
+export const myPlugin = definePlugin<{ threshold?: number }>({
+	name: "timing", // required, unique
+	enforce: "post", // optional ordering: "pre" | "post"
+	tasks: [
+		{
+			name: "deploy",
+			task: DeployTask,
+			config: {
+				inputs: [
+					/* … */
+				]
+			}
+		}
+	],
+	hooks: {
+		beforeAll: (ctx) => {
+			/* once, before scheduling — throw to abort the run */
+		},
+		afterAll: (ctx) => {
+			/* once, after the run settles — ctx.outcome is "success" | "failed" */
+		},
+		beforeTask: (ctx) => {
+			/* a task is about to execute — NOT fired for cache hits */
+		},
+		afterTask: (ctx) => {
+			/* a task settled — ctx.result: "done" | "failed" | "up-to-date" | "from-cache" | "canceled" */
+		}
+	}
+});
+```
+
+All hooks are optional and run on the main thread. **`beforeTask` and `afterTask` are not a
+guaranteed pair:** `beforeTask` fires only when a task actually executes (not for cache hits),
+while `afterTask` fires for every terminal outcome. Treat `beforeTask` as "about to do real
+work" and `afterTask` as "settled — check `result`". Hook ordering follows `enforce` (`pre`
+plugins first, then normal, then `post`); errors thrown from `afterAll`/`beforeTask`/`afterTask`
+are logged as warnings and never fail the run, while a throwing `beforeAll` aborts it.
+
+### Custom reporters
+
+A plugin can contribute a reporter (a `Listener`), selected with `--reporter <name>`:
+
+```ts
+export const jsonPlugin = definePlugin({
+	name: "json-reporter",
+	reporters: [{ name: "json", create: (context) => new JsonReporter(context.logger) }]
+});
+```
+
+```bash
+nadle build --reporter json
+```
+
+Exactly one reporter is active at a time (a plugin reporter replaces the default). A reporter
+name may not shadow the built-in `default`/`agent`; an unknown `--reporter` name errors with
+the list of available reporters.

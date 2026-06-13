@@ -12,6 +12,13 @@ The output style is selected by the `reporter` option (`--reporter`):
 | `default` | Humans (default)  | Welcome banner, colored task status messages, optional live footer, optional summary table.    |
 | `agent`   | AI agents/scripts | Compact, plain (no color/banner/footer/spinner): one stable line per task plus a summary line. |
 
+The reporter name space is open: in addition to the two built-ins, a plugin may contribute
+a named reporter (a listener factory), selected by the same `--reporter <name>` option.
+Exactly one reporter is active per run (a plugin reporter replaces the default). A plugin
+reporter may not shadow a built-in name, and an unknown reporter name is a configuration
+error listing the available reporters. See the plugin system for how reporters are
+contributed.
+
 The remaining sections of this document describe the `default` reporter. The `agent`
 reporter is specified below.
 
