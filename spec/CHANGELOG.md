@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.4.0 — 2026-06-13
+
+### Added
+
+- 09-cli: `--since <ref>` for affected-only execution. The Execute handler filters
+  the requested (expanded) task set to those whose workspace directory contains a file
+  changed since the git ref (via `git diff --name-only <ref>`), pulling in the
+  dependencies an affected task needs. Reports and runs nothing when no task is
+  affected. Cross-workspace dependent propagation is out of scope for this version.
+
 ## 3.3.0 — 2026-06-13
 
 ### Added

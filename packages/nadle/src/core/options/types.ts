@@ -49,6 +49,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 
 	/** Explain each task's cache outcome (hit/miss and, on a miss, what changed). */
 	readonly why?: boolean;
+	/** Run only the requested tasks affected by changes since the given git ref. */
+	readonly since?: string;
 	/** Perform a dry run without executing tasks. */
 	readonly dryRun: boolean;
 	/** Re-run the requested tasks whenever their declared inputs change. */
@@ -92,7 +94,7 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
  * Fully resolved Nadle options, including required fields and project reference.
  */
 export interface NadleResolvedOptions extends Required<
-	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks" | "graph" | "explain">
+	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks" | "graph" | "explain" | "since">
 > {
 	/** Project information. */
 	readonly project: Project;
@@ -102,6 +104,9 @@ export interface NadleResolvedOptions extends Required<
 
 	/** Task name to explain, when --explain was requested. */
 	readonly explain?: string;
+
+	/** Git ref to diff against for affected-only execution, when --since was requested. */
+	readonly since?: string;
 
 	/** Minimum number of worker threads (resolved as number). */
 	readonly minWorkers: number;

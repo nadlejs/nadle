@@ -1,8 +1,11 @@
+import { getAllWorkspaces } from "@nadle/project-resolver";
+
 import { BaseHandler } from "./base-handler.js";
 import { TaskPool } from "../engine/task-pool.js";
 import { Messages } from "../utilities/messages.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { renderTaskSelection } from "../views/tasks-selection.js";
+import { getChangedFiles, computeAffectedTasks } from "../engine/affected.js";
 
 export class ExecuteHandler extends BaseHandler {
 	public readonly name = "execute";
@@ -39,6 +42,16 @@ export class ExecuteHandler extends BaseHandler {
 			}
 		}
 
+		if (this.context.options.since !== undefined && this.context.options.since !== "") {
+			chosenTasks = await this.filterAffected(chosenTasks, this.context.options.since);
+
+			if (chosenTasks.length === 0) {
+				this.context.logger.log(Messages.NoTasksAffected(this.context.options.since));
+
+				return;
+			}
+		}
+
 		const { passthroughArgs } = this.context.options;
 
 		if (passthroughArgs.length > 0 && chosenTasks.length > 1) {
@@ -49,5 +62,22 @@ export class ExecuteHandler extends BaseHandler {
 		await this.context.eventEmitter.onTasksScheduled(scheduler.scheduledTask.map((taskId) => this.context.taskRegistry.getTaskById(taskId)));
 
 		await new TaskPool(this.context, (taskId) => scheduler.getReadyTasks(taskId)).run();
+	}
+
+	private async filterAffected(roots: string[], since: string): Promise<string[]> {
+		const { project } = this.context.options;
+		const scheduler = this.context.taskScheduler.init(roots);
+
+		const changedFiles = await getChangedFiles(since, project.rootWorkspace.absolutePath);
+
+		const workspaceDirs = new Map(getAllWorkspaces(project).map((workspace) => [workspace.id, workspace.absolutePath]));
+
+		return computeAffectedTasks({
+			changedFiles,
+			workspaceDirs,
+			scheduledTasks: scheduler.scheduledTask,
+			getTransitiveDependencies: (taskId) => scheduler.getTransitiveDependencies(taskId),
+			getWorkspaceId: (taskId) => this.context.taskRegistry.getTaskById(taskId).workspaceId
+		});
 	}
 }

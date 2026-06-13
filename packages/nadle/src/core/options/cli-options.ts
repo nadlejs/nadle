@@ -77,6 +77,13 @@ export const CLIOptions = {
 			description: "Explain why a task runs, what depends on it, and its inputs, instead of executing"
 		}
 	},
+	since: {
+		key: "since",
+		options: {
+			type: "string",
+			description: "Run only the requested tasks affected by changes since the given git ref"
+		}
+	},
 	why: {
 		key: "why",
 		options: {

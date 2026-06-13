@@ -106,6 +106,21 @@ nadle build --graph
 nadle build --graph=mermaid
 ```
 
+### `--since`
+
+- **Type:** `string` (a git ref)
+
+Run only the requested tasks affected by changes since a git ref. A task is affected
+when a file inside its workspace directory changed (computed via `git diff --name-only
+<ref>`); the dependencies that affected task needs are pulled in too. `nadle build
+--since main` builds exactly the packages that changed. If nothing is affected, Nadle
+prints a notice and exits 0. Cross-workspace dependent propagation (rebuilding B
+because its dependency A changed) is not yet included.
+
+```bash
+nadle build test --since main
+```
+
 ### `--explain`
 
 - **Type:** `string` (a task name)
