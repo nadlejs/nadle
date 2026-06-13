@@ -463,8 +463,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vscode-languageclient:
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^10.0.0
+        version: 10.0.0
 
 packages:
 
@@ -7006,10 +7006,6 @@ packages:
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
 
-  minimatch@5.1.6:
-    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
-    engines: {node: '>=10'}
-
   minimatch@9.0.9:
     resolution: {integrity: sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -9216,18 +9212,31 @@ packages:
     resolution: {integrity: sha512-C+r0eKJUIfiDIfwJhria30+TYWPtuHJXHtI7J0YlOmKAo7ogxP20T0zxB7HZQIFhIyvoBPwWskjxrvAtfjyZfA==}
     engines: {node: '>=14.0.0'}
 
-  vscode-languageclient@9.0.1:
-    resolution: {integrity: sha512-JZiimVdvimEuHh5olxhxkht09m3JzUGwggb5eRUkzzJhZ2KjCN0nh55VfiED9oez9DyF8/fz1g1iBV3h+0Z2EA==}
-    engines: {vscode: ^1.82.0}
+  vscode-jsonrpc@9.0.0:
+    resolution: {integrity: sha512-+VvMmQPJhtvJ+8O+zu2JKIRiLxXF8NW7krWgyMGeOHrp4Cn23T5hc0v2LknNeopDOB70wghHAds7mKtcZ0I4Sg==}
+    engines: {node: '>=14.0.0'}
+
+  vscode-languageclient@10.0.0:
+    resolution: {integrity: sha512-3yRHFkktZQCCg8ehHnD2Z4DZ4mZ17FNo8bxM4OFt8wtpxNBAOZGHmpbIflZSkicvCxi+ozuWntbdeWiY0gP77w==}
+    engines: {vscode: ^1.91.0}
 
   vscode-languageserver-protocol@3.17.5:
     resolution: {integrity: sha512-mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==}
 
+  vscode-languageserver-protocol@3.18.0:
+    resolution: {integrity: sha512-Zdz+kJ12Iz6tc11xfZyEo501bBATHXrCjmMfnaR3pMnf1CoqZBKIynba3P+/bi9VEdrMbNtAVKYpKhbODvqy+Q==}
+
   vscode-languageserver-textdocument@1.0.12:
     resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
 
+  vscode-languageserver-textdocument@1.0.13:
+    resolution: {integrity: sha512-nx0ZHwMGIsVkzFG3/VLeJYBLTaFBRuNdGDvevvjuoayU5EOS2fEYazOhtCM3PI9ClMMg5igc0uwXtAq4tJj+Dw==}
+
   vscode-languageserver-types@3.17.5:
     resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
+
+  vscode-languageserver-types@3.18.0:
+    resolution: {integrity: sha512-8TsGPNMIMiiBdkORgRSvLjuiEIiAFtO+KssmYWxQ+uSVvlf7RjK8YKCOjPzZ+YA04jXEV7+7LvkSmHkhpNS99g==}
 
   vscode-languageserver@9.0.1:
     resolution: {integrity: sha512-woByF3PDpkHFUreUa7Hos7+pUWdeWMXRd26+ZX2A8cFx6v/JPTtd4/uN0/jB6XQHYaOlHbio03NTHCqrgG5n7g==}
@@ -12277,7 +12286,7 @@ snapshots:
     dependencies:
       '@eslint/object-schema': 2.1.7
       debug: 4.4.3
-      minimatch: 3.1.5
+      minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
 
@@ -12298,7 +12307,7 @@ snapshots:
       ignore: 5.3.2
       import-fresh: 3.3.1
       js-yaml: 4.1.1
-      minimatch: 3.1.5
+      minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
@@ -17648,10 +17657,6 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.6
 
-  minimatch@5.1.6:
-    dependencies:
-      brace-expansion: 2.1.1
-
   minimatch@9.0.9:
     dependencies:
       brace-expansion: 2.1.1
@@ -20167,20 +20172,32 @@ snapshots:
 
   vscode-jsonrpc@8.2.0: {}
 
-  vscode-languageclient@9.0.1:
+  vscode-jsonrpc@9.0.0: {}
+
+  vscode-languageclient@10.0.0:
     dependencies:
-      minimatch: 5.1.6
-      semver: 7.7.4
-      vscode-languageserver-protocol: 3.17.5
+      minimatch: 10.2.5
+      semver: 7.8.4
+      vscode-languageserver-protocol: 3.18.0
+      vscode-languageserver-textdocument: 1.0.13
 
   vscode-languageserver-protocol@3.17.5:
     dependencies:
       vscode-jsonrpc: 8.2.0
       vscode-languageserver-types: 3.17.5
 
+  vscode-languageserver-protocol@3.18.0:
+    dependencies:
+      vscode-jsonrpc: 9.0.0
+      vscode-languageserver-types: 3.18.0
+
   vscode-languageserver-textdocument@1.0.12: {}
 
+  vscode-languageserver-textdocument@1.0.13: {}
+
   vscode-languageserver-types@3.17.5: {}
+
+  vscode-languageserver-types@3.18.0: {}
 
   vscode-languageserver@9.0.1:
     dependencies:
