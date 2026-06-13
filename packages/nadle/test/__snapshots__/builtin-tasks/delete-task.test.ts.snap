@@ -84,6 +84,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer deleteJsonFiles --log-leve
 [info] Using 1 worker for task execution
 [info] Project directory: /ROOT/test/__fixtures__/delete-task/__temp__/__{hash}__
 [info] Resolved options: {
+  "why": false,
   "cache": true,
   "summary": false,
   "parallel": false,
