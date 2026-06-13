@@ -53,6 +53,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly dryRun: boolean;
 	/** Re-run the requested tasks whenever their declared inputs change. */
 	readonly watch?: boolean;
+	/** Explain why a task runs, what depends on it, and its declared inputs, instead of executing. */
+	readonly explain?: string;
 	/** Show summary after execution. */
 	readonly summary?: boolean;
 	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */
@@ -90,13 +92,16 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
  * Fully resolved Nadle options, including required fields and project reference.
  */
 export interface NadleResolvedOptions extends Required<
-	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks" | "graph">
+	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks" | "graph" | "explain">
 > {
 	/** Project information. */
 	readonly project: Project;
 
 	/** Task graph output format, when --graph was requested. */
 	readonly graph?: "tree" | "mermaid";
+
+	/** Task name to explain, when --explain was requested. */
+	readonly explain?: string;
 
 	/** Minimum number of worker threads (resolved as number). */
 	readonly minWorkers: number;

@@ -70,6 +70,13 @@ export const CLIOptions = {
 			description: "Print the task dependency graph instead of executing (tree or mermaid)"
 		}
 	},
+	explain: {
+		key: "explain",
+		options: {
+			type: "string",
+			description: "Explain why a task runs, what depends on it, and its inputs, instead of executing"
+		}
+	},
 	why: {
 		key: "why",
 		options: {

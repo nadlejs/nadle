@@ -62,21 +62,25 @@ Rules:
 | `--list`            | `-l`  | boolean  | `false` | List all available tasks.                                           |
 | `--list-workspaces` |       | boolean  | `false` | List all available workspaces.                                      |
 | `--dry-run`         | `-m`  | boolean  | `false` | Show execution plan without running tasks.                          |
+| `--watch`           | `-w`  | boolean  | `false` | Re-run the requested tasks when their declared inputs change.       |
+| `--graph`           |       | string   | `tree`  | Print the dependency graph instead of executing. `tree`/`mermaid`.  |
+| `--explain`         |       | string   |         | Explain a single task (why it runs, dependents, inputs); no run.    |
 | `--show-config`     |       | boolean  | `false` | Print the resolved configuration.                                   |
 | `--config-key`      |       | string   |         | Path to a specific config value (dot/bracket notation).             |
 | `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                     |
 
 ### General Options
 
-| Flag            | Alias | Type    | Default                        | Description                                              |
-| --------------- | ----- | ------- | ------------------------------ | -------------------------------------------------------- |
-| `--config`      | `-c`  | string  | `nadle.config.{js,mjs,ts,mts}` | Path to config file.                                     |
-| `--cache-dir`   |       | string  | `<projectDir>/.nadle`          | Directory to store cache results.                        |
-| `--log-level`   |       | string  | `"log"`                        | Logging level. Choices: `error`, `log`, `info`, `debug`. |
-| `--min-workers` |       | string  | `availableParallelism - 1`     | Minimum workers (integer or percentage).                 |
-| `--max-workers` |       | string  | `availableParallelism - 1`     | Maximum workers (integer or percentage).                 |
-| `--footer`      |       | boolean | `!isCI && isTTY`               | Enable the live progress footer during execution.        |
-| `--summary`     |       | boolean | `false`                        | Print a task execution summary at the end of the run.    |
+| Flag            | Alias | Type    | Default                        | Description                                               |
+| --------------- | ----- | ------- | ------------------------------ | --------------------------------------------------------- |
+| `--config`      | `-c`  | string  | `nadle.config.{js,mjs,ts,mts}` | Path to config file.                                      |
+| `--cache-dir`   |       | string  | `<projectDir>/.nadle`          | Directory to store cache results.                         |
+| `--log-level`   |       | string  | `"log"`                        | Logging level. Choices: `error`, `log`, `info`, `debug`.  |
+| `--min-workers` |       | string  | `availableParallelism - 1`     | Minimum workers (integer or percentage).                  |
+| `--max-workers` |       | string  | `availableParallelism - 1`     | Maximum workers (integer or percentage).                  |
+| `--footer`      |       | boolean | `!isCI && isTTY`               | Enable the live progress footer during execution.         |
+| `--summary`     |       | boolean | `false`                        | Print a task execution summary at the end of the run.     |
+| `--why`         |       | boolean | `false`                        | Explain each task's cache outcome (hit/miss and changes). |
 
 ### Miscellaneous
 
@@ -94,9 +98,12 @@ After options are resolved, Nadle selects a handler using a **first-match-wins**
 | 1        | **List**           | `--list` is `true`               |
 | 2        | **ListWorkspaces** | `--list-workspaces` is `true`    |
 | 3        | **CleanCache**     | `--clean-cache` is `true`        |
-| 4        | **DryRun**         | `--dry-run` is `true`            |
-| 5        | **ShowConfig**     | `--show-config` is `true`        |
-| 6        | **Execute**        | Always matches (default handler) |
+| 4        | **Graph**          | `--graph` is set                 |
+| 5        | **Explain**        | `--explain` is set               |
+| 6        | **DryRun**         | `--dry-run` is `true`            |
+| 7        | **ShowConfig**     | `--show-config` is `true`        |
+| 8        | **Watch**          | `--watch` is `true`              |
+| 9        | **Execute**        | Always matches (default handler) |
 
 Each handler is instantiated and its `canHandle()` method is checked. The first handler
 that returns `true` has its `handle()` method invoked. Only one handler runs per

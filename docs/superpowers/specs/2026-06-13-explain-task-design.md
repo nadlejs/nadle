@@ -7,8 +7,8 @@
 
 Print a static, human-readable explanation of a single task's place in the graph:
 why it would run (what pulls it in), what depends on it, and what its declared
-inputs are. Complements the runtime cache `--why` (#636) — that explains a *past
-run's* cache outcome; this explains the *static graph* without running anything.
+inputs are. Complements the runtime cache `--why` (#636) — that explains a _past
+run's_ cache outcome; this explains the _static graph_ without running anything.
 
 ## Surface
 
@@ -53,6 +53,7 @@ Inputs:
 ```
 
 Section rules:
+
 - **Why it runs** — every dependency path from a requested root down to the task.
   If the task itself was requested, lead with "Requested directly on the command
   line." If nothing pulls it in and it wasn't requested, say "Nothing requests this
@@ -68,8 +69,8 @@ Section rules:
 Mirror the `--graph` slice (#653), which is the closest existing pattern.
 
 - **`core/options/cli-options.ts`** — add `explain` option: `{ key: "explain",
-  options: { type: "string", description: "Explain why a task runs, what depends on
-  it, and its inputs" } }`. Group under "Execution options:" in `cli.ts`.
+options: { type: "string", description: "Explain why a task runs, what depends on
+it, and its inputs" } }`. Group under "Execution options:" in `cli.ts`.
 - **`core/options/types.ts`** — `NadleCLIOptions.explain?: string`; omit `explain`
   from the `Required<>` in `NadleResolvedOptions` and redeclare `explain?: string`
   (same shape as `graph`).
@@ -80,18 +81,18 @@ Mirror the `--graph` slice (#653), which is the closest existing pattern.
   references) so it is unit-testable in isolation, exactly like `renderTaskGraph`.
   ```ts
   export namespace TaskExplanation {
-    export interface Props {
-      readonly taskId: string;
-      readonly requestedDirectly: boolean;
-      /** Each path is root → … → taskId (labels), excluding the direct-request case. */
-      readonly pullPaths: readonly string[][];
-      /** Direct dependents (labels). */
-      readonly dependents: readonly string[];
-      readonly inputs: readonly string[];
-      readonly cachingEnabled: boolean;
-    }
+  	export interface Props {
+  		readonly taskId: string;
+  		readonly requestedDirectly: boolean;
+  		/** Each path is root → … → taskId (labels), excluding the direct-request case. */
+  		readonly pullPaths: readonly string[][];
+  		/** Direct dependents (labels). */
+  		readonly dependents: readonly string[];
+  		readonly inputs: readonly string[];
+  		readonly cachingEnabled: boolean;
+  	}
   }
-  export function renderTaskExplanation(props: TaskExplanation.Props): string
+  export function renderTaskExplanation(props: TaskExplanation.Props): string;
   ```
 - **`core/handlers/explain-handler.ts`** — new `ExplainHandler extends BaseHandler`.
   `canHandle()` → `this.context.options.explain !== undefined`. `handle()`:

@@ -19,6 +19,7 @@ const argv = yargs(hideBin(Process.argv))
 		[CLIOptions.watch.key]: CLIOptions.watch.options,
 		[CLIOptions.dryRun.key]: CLIOptions.dryRun.options,
 		[CLIOptions.footer.key]: CLIOptions.footer.options,
+		[CLIOptions.explain.key]: CLIOptions.explain.options,
 		[CLIOptions.exclude.key]: CLIOptions.exclude.options,
 		[CLIOptions.noCache.key]: CLIOptions.noCache.options,
 		[CLIOptions.summary.key]: CLIOptions.summary.options,
@@ -49,6 +50,7 @@ const argv = yargs(hideBin(Process.argv))
 			CLIOptions.listWorkspaces.key,
 			CLIOptions.dryRun.key,
 			CLIOptions.watch.key,
+			CLIOptions.explain.key,
 			CLIOptions.showConfig.key,
 			CLIOptions.configKey.key,
 			CLIOptions.stacktrace.key
