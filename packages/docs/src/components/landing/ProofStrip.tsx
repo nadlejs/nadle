@@ -23,9 +23,7 @@ const ProofStrip: FC = () => (
 			</Link>
 			<ul className="flex flex-wrap items-center justify-center gap-2.5 list-none p-0 m-0">
 				{CHIPS.map((chip) => (
-					<li
-						key={chip}
-						className="font-mono text-xs text-slate-400 bg-white/[0.04] border border-white/[0.08] rounded-full px-3 py-1.5">
+					<li key={chip} className="font-mono text-xs text-slate-400 bg-white/[0.04] border border-white/[0.08] rounded-full px-3 py-1.5">
 						{chip}
 					</li>
 				))}

@@ -61,14 +61,7 @@ const TaskGraph: FC = () => (
 			</g>
 			{NODES.map((node) => (
 				<g key={node.id} className="landing-dag-node" style={{ ["--dag-step" as string]: node.step }}>
-					<rect
-						rx={10}
-						width={NODE_W}
-						height={NODE_H}
-						x={node.cx - NODE_W / 2}
-						y={node.cy - NODE_H / 2}
-						className="landing-dag-rect"
-					/>
+					<rect rx={10} width={NODE_W} height={NODE_H} x={node.cx - NODE_W / 2} y={node.cy - NODE_H / 2} className="landing-dag-rect" />
 					<circle r={4} cx={node.cx - NODE_W / 2 + 16} cy={node.cy} className="landing-dag-dot" />
 					<text x={node.cx + 4} y={node.cy} dominantBaseline="central" textAnchor="middle" className="landing-dag-text">
 						{node.label}
