@@ -108,7 +108,19 @@ export class DefaultReporter implements Listener {
 		this.context.logger.log(
 			`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(this.tracker.getTaskState(task.id).duration ?? 0)}`
 		);
+		this.context.logger.log(c.dim(`  ${CURVE_ARROW} to re-run just this task: ${this.reproCommand(task)}`));
 		this.renderer.schedule();
+	}
+
+	private reproCommand(task: RegisteredTask): string {
+		const requested = this.context.options.tasks.some((resolved) => resolved.taskId === task.id);
+		const passthroughArgs = this.context.options.passthroughArgs;
+
+		if (requested && passthroughArgs.length > 0) {
+			return `nadle ${task.label} -- ${passthroughArgs.join(" ")}`;
+		}
+
+		return `nadle ${task.label}`;
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
@@ -213,9 +225,15 @@ export class DefaultReporter implements Listener {
 		const finishedTasks = `${c.bold(this.stats[TaskStatus.Finished])} task${this.stats[TaskStatus.Finished] > 1 ? "s" : ""}`;
 		const failedTasks = `${c.bold(this.stats[TaskStatus.Failed])} task${this.stats[TaskStatus.Failed] > 1 ? "s" : ""}`;
 
-		this.context.logger.log(
-			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
-		);
+		const summary = new StringBuilder(", ").add(`${finishedTasks} executed`).add(`${failedTasks} failed`);
+
+		const skipped = this.tracker.skippedCount;
+
+		if (skipped > 0) {
+			summary.add(`${c.bold(skipped)} downstream task${skipped > 1 ? "s" : ""} skipped`);
+		}
+
+		this.context.logger.log(`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${summary.build()})`)}`);
 
 		if (!this.context.options.stacktrace) {
 			this.context.logger.log(

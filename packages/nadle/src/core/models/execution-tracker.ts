@@ -41,6 +41,14 @@ export class ExecutionTracker implements Listener {
 		return Object.entries(this.taskStates).flatMap(([_, state]) => (state?.status === status ? state : []));
 	}
 
+	/**
+	 * Tasks left in the Scheduled state once a run ends are those that never ran
+	 * because an upstream task failed — i.e. downstream tasks that were skipped.
+	 */
+	public get skippedCount(): number {
+		return this.getTaskStateByStatus(TaskStatus.Scheduled).length;
+	}
+
 	public getTaskState(taskId: TaskIdentifier): TaskState {
 		return this.taskStates[taskId] ?? defaultTaskState;
 	}
