@@ -1,5 +1,6 @@
 export * from "./fs.js";
 export * from "./exec.js";
+export * from "./watch.js";
 export * from "./random.js";
 export * from "./expects.js";
 export * from "./constants.js";
@@ -8,6 +9,5 @@ export * from "./read-config.js";
 export * from "./create-files.js";
 export * from "./blur-snapshot.js";
 export * from "./config-builder.js";
-export * from "./watch.js";
 export * from "./fixture-builder.js";
 export * from "./workspace-fixture.js";

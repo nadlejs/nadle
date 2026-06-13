@@ -8,6 +8,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 [log] {
   "why": false,
   "cache": true,
+  "watch": false,
   "summary": false,
   "parallel": false,
   "logLevel": "log",
@@ -98,12 +99,20 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 exports[`--config-key > should work with nested key 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer build --show-config --config-key tasks[0].taskId
+---------- Stdout ------------
+[log] "root:build"
+`;
+
+exports[`--config-key > should work with nested key 2`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.rootWorkspace.absolutePath
 ---------- Stdout ------------
 [log] "/ROOT/test/__fixtures__/pnpm-workspaces"
 `;
 
-exports[`--config-key > should work with nested key 2`] = `
+exports[`--config-key > should work with nested key 3`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.workspaces[1]
@@ -128,7 +137,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 }
 `;
 
-exports[`--config-key > should work with nested key 3`] = `
+exports[`--config-key > should work with nested key 4`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.workspaces[1].id
@@ -136,7 +145,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 [log] "frontend"
 `;
 
-exports[`--config-key > should work with nested key 4`] = `
+exports[`--config-key > should work with nested key 5`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project.workspaces.1.id
@@ -144,7 +153,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 [log] "frontend"
 `;
 
-exports[`--config-key > should work with nested key 5`] = `
+exports[`--config-key > should work with nested key 6`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/pnpm-workspaces
 Command: /ROOT/lib/cli.js --max-workers 1 --no-footer build --show-config --config-key tasks[0].taskId

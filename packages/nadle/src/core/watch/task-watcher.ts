@@ -1,11 +1,11 @@
-export interface WatchSubscription {
+interface WatchSubscription {
 	close(): Promise<void>;
 }
 
 /** Subscribe to file changes for the given paths; invoke onChange on each raw event. */
-export type WatcherSubscribe = (paths: string[], onChange: () => void) => WatchSubscription;
+type WatcherSubscribe = (paths: string[], onChange: () => void) => WatchSubscription;
 
-export interface TaskWatcherOptions {
+interface TaskWatcherOptions {
 	readonly debounceMs?: number;
 	/** Injectable for tests; defaults to a chokidar-backed subscription. */
 	readonly subscribe?: WatcherSubscribe;

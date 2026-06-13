@@ -4,11 +4,11 @@ import Process from "node:process";
 import c from "tinyrainbow";
 import { getWorkspaceById } from "@nadle/project-resolver";
 
-import { TaskPool } from "../engine/task-pool.js";
 import { BaseHandler } from "./base-handler.js";
+import { TaskPool } from "../engine/task-pool.js";
 import { Messages } from "../utilities/messages.js";
-import { MaybeArray } from "../utilities/maybe-array.js";
 import { TaskWatcher } from "../watch/task-watcher.js";
+import { MaybeArray } from "../utilities/maybe-array.js";
 import { Declaration } from "../models/cache/declaration.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 
@@ -39,9 +39,9 @@ export class WatchHandler extends BaseHandler {
 
 		const runOnce = async (): Promise<void> => {
 			try {
-				const sched = this.context.taskScheduler.init(chosenTasks);
-				await this.context.eventEmitter.onTasksScheduled(sched.scheduledTask.map((taskId) => this.context.taskRegistry.getTaskById(taskId)));
-				await new TaskPool(this.context, (taskId) => sched.getReadyTasks(taskId)).run();
+				const runScheduler = this.context.taskScheduler.init(chosenTasks);
+				await this.context.eventEmitter.onTasksScheduled(runScheduler.scheduledTask.map((taskId) => this.context.taskRegistry.getTaskById(taskId)));
+				await new TaskPool(this.context, (taskId) => runScheduler.getReadyTasks(taskId)).run();
 			} catch (error) {
 				// Watch mode never exits on a failed run — report and keep watching.
 				this.context.logger.error(error instanceof Error ? error.message : String(error));

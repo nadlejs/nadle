@@ -1,6 +1,6 @@
 import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
-import { watchSession, withFixture, createFileModifier } from "setup";
+import { withFixture, watchSession, createFileModifier } from "setup";
 
 // Windows file-watching is the #420 risk area; start skipped there.
 describe.skipIf(isWindows)("--watch", () => {

@@ -6,6 +6,7 @@ import { TaskWatcher } from "../../src/core/watch/task-watcher.js";
 // and records close() calls. Matches the WatcherSubscribe signature.
 function createFakeWatcher() {
 	let emit: () => void = () => {};
+
 	const closed = { value: false };
 	const subscribe = (_paths: string[], onChange: () => void) => {
 		emit = onChange;
@@ -13,7 +14,7 @@ function createFakeWatcher() {
 		return { close: async () => void (closed.value = true) };
 	};
 
-	return { subscribe, fire: () => emit(), closed };
+	return { closed, subscribe, fire: () => emit() };
 }
 
 describe("TaskWatcher", () => {
@@ -37,6 +38,7 @@ describe("TaskWatcher", () => {
 		vi.useFakeTimers();
 		const fake = createFakeWatcher();
 		let release: () => void = () => {};
+
 		const run = vi
 			.fn()
 			.mockImplementationOnce(() => new Promise<void>((resolve) => (release = resolve)))

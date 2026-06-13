@@ -14,8 +14,8 @@ Every cacheable task already declares `inputs` (file/dir globs) for its cache
 key. That same declaration **is** the watch list — no new user configuration.
 Re-running through the normal scheduler + cache means a change to one input only
 re-executes the tasks actually affected; everything else reports `up-to-date`
-and is skipped. Watch mode is therefore mostly *wiring existing machinery to a
-file watcher*, not new build logic.
+and is skipped. Watch mode is therefore mostly _wiring existing machinery to a
+file watcher_, not new build logic.
 
 ## Non-Goals (YAGNI)
 
