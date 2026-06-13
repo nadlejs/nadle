@@ -77,6 +77,20 @@ Simulate task execution without actually running the tasks. Shows what would be 
 nadle --dry-run build
 ```
 
+### `--graph`
+
+- **Type:** `string`
+- **Choices:** `tree` (default), `mermaid`
+
+Print the task dependency graph instead of executing. `tree` renders an indented forest rooted at
+the requested tasks; `mermaid` emits a `graph TD` block you can paste into docs. Implicit
+(workspace-derived) dependencies are marked.
+
+```bash
+nadle build --graph
+nadle build --graph=mermaid
+```
+
 ### `--stacktrace`
 
 - **Type:** `boolean`

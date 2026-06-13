@@ -48,6 +48,7 @@ const transformers = [
 	exclude(UNDERSCORE),
 	transform("config", { transformKey: "configFile" }),
 	transform("cache", { transformValue: Boolean }),
+	transform("graph", { transformValue: (value) => (value === "" ? "tree" : value) }),
 	transform("exclude", { transformKey: "excludedTasks" })
 ];
 
