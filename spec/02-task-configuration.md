@@ -26,6 +26,13 @@ The configuration builder exposes a single method:
 Calling `.config()` **replaces** the entire configuration (it does not merge). The last
 call wins.
 
+A callback form is resolved **lazily and at most once** per task: it is not evaluated at
+registration, only when the configuration is first needed (scheduling, execution, or
+reporting), and the result is memoized so the callback never runs more than once for a
+task in a given invocation (configuration avoidance). Callbacks must therefore be pure
+with respect to that single evaluation; do not rely on a side effect running on every
+read.
+
 ## dependsOn Resolution
 
 Dependency strings are resolved as follows:

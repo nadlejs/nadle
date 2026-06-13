@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.6.0 — 2026-06-13
+
+### Added
+
+- 02-task-configuration: A callback-form `.config()` is now resolved lazily and
+  memoized — evaluated at most once per task per invocation, only when the
+  configuration is first needed (configuration avoidance, #647). Callbacks must be
+  pure with respect to that single evaluation.
+
 ## 3.5.0 — 2026-06-13
 
 ### Changed
