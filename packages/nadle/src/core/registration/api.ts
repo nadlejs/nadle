@@ -86,9 +86,14 @@ export const tasks: TasksAPI = {
 		let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
 
 		const register = () => {
+			// Resolve the config at most once per task (configuration avoidance, #647):
+			// the user's config callback can do real work, and it is read several times
+			// per run (scheduling, execution, reporting). Memoize so it runs only once.
+			let resolved: TaskConfiguration | undefined;
+
 			taskRegistry.register({
 				name,
-				configResolver: () => (typeof configCollector === "function" ? configCollector() : configCollector),
+				configResolver: () => (resolved ??= typeof configCollector === "function" ? configCollector() : configCollector),
 				...computeTaskInfo(task, optionsResolver)
 			});
 		};
