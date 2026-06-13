@@ -9,6 +9,7 @@ import { DefaultReporter } from "./reporting/reporter.js";
 import { TaskScheduler } from "./engine/task-scheduler.js";
 import { AgentReporter } from "./reporting/agent-reporter.js";
 import { PluginRegistry } from "./plugins/plugin-registry.js";
+import { PluginListener } from "./plugins/plugin-listener.js";
 import { TaskRegistry } from "./registration/task-registry.js";
 import { OptionsResolver } from "./options/options-resolver.js";
 import { type State, type ExecutionContext } from "./context.js";
@@ -43,9 +44,18 @@ export class Nadle implements ExecutionContext {
 			new OptionsResolver(this.logger, this.taskRegistry, this.fileOptionRegistry).resolve(this.cliOptions)
 		);
 		this.eventEmitter.addListener(this.#options.reporter === "agent" ? new AgentReporter(this) : new DefaultReporter(this));
+
+		if (this.hasPluginHooks()) {
+			this.eventEmitter.addListener(new PluginListener(this, this.pluginRegistry));
+		}
+
 		await this.eventEmitter.onInitialize();
 
 		return this;
+	}
+
+	private hasPluginHooks(): boolean {
+		return this.pluginRegistry.getApplied().some(({ plugin }) => plugin.hooks !== undefined && Object.keys(plugin.hooks).length > 0);
 	}
 
 	public async initForWorker(resolvedOptions: NadleResolvedOptions): Promise<this> {

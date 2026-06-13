@@ -135,6 +135,14 @@ const configs: ConfigArray = tsEslint.config(
 		}
 	},
 	{
+		// Test config files exercising the plugin API. `use()` collides with the React
+		// `use` hook name, so react-hooks misfires here; these are nadle configs, not React.
+		files: ["packages/nadle/test/__configs__/**"],
+		rules: {
+			"react-hooks/rules-of-hooks": "off"
+		}
+	},
+	{
 		files: ["packages/language-server/test/__fixtures__/**"],
 		rules: {
 			"n/no-extraneous-import": "off",
