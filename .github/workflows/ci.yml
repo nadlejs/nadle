@@ -142,9 +142,27 @@ jobs:
         if: ${{ matrix.shard == 1 }}
         run: nadle testUnit -- --project kernel --project project-resolver --project eslint-plugin --project create-nadle --project language-server
 
+  size-limit:
+    name: Size Limit
+    if: ${{ github.event.pull_request.draft != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        package: [nadle, create-nadle]
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: ./.github/actions/setup
+
+      - name: Build
+        run: nadle compile bundle
+
+      - name: Run Size Limit
+        run: pnpm --filter ./packages/${{ matrix.package }} exec size-limit
+
   status:
     name: CI Status
-    needs: [check, build, test]
+    needs: [check, build, test, size-limit]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -153,5 +171,6 @@ jobs:
         if: |
           (needs.check.result == 'failure' || needs.check.result == 'cancelled') ||
           (needs.build.result == 'failure' || needs.build.result == 'cancelled') ||
-          (needs.test.result == 'failure' || needs.test.result == 'cancelled')
+          (needs.test.result == 'failure' || needs.test.result == 'cancelled') ||
+          (needs.size-limit.result == 'failure' || needs.size-limit.result == 'cancelled')
         run: exit 1
