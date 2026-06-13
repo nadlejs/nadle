@@ -169,7 +169,7 @@ export interface NadleBaseOptions {
     readonly maxWorkers?: number | string;
     readonly minWorkers?: number | string;
     readonly parallel?: boolean;
-    readonly reporter?: SupportReporter;
+    readonly reporter?: string;
 }
 
 // @public

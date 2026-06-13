@@ -55,8 +55,8 @@ Miscellaneous options:
 Options:
       --graph     Print the task dependency graph instead of executing (tree or mermaid)
                                                            [string] [choices: "", "tree", "mermaid"]
-      --reporter  Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)
-                                           [string] [choices: "default", "agent"] [default: default]
+      --reporter  Output reporter: a built-in ('default'/'agent') or a plugin-registered reporter
+                  name                                                   [string] [default: default]
 
 Examples:
   nadle test -- -u  Run the test task, passing -u through to its underlying command

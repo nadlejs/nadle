@@ -1,5 +1,5 @@
-import { type NadlePlugin } from "./plugin.js";
 import { ConfigurationError } from "../utilities/nadle-error.js";
+import { type NadlePlugin, type PluginReporter } from "./plugin.js";
 
 interface AppliedPlugin {
 	readonly options: unknown;
@@ -7,9 +7,11 @@ interface AppliedPlugin {
 }
 
 const ENFORCE_ORDER = { pre: 0, post: 2, normal: 1 } as const;
+const BUILTIN_REPORTERS = new Set(["default", "agent"]);
 
 export class PluginRegistry {
 	private readonly applied = new Map<string, AppliedPlugin>();
+	private readonly reporters = new Map<string, PluginReporter["create"]>();
 
 	public apply(plugin: NadlePlugin<never>, options?: unknown): void {
 		const existing = this.applied.get(plugin.name);
@@ -24,7 +26,27 @@ export class PluginRegistry {
 			throw new ConfigurationError(`Plugin ${plugin.name} is already applied with different options.`);
 		}
 
+		for (const reporter of plugin.reporters ?? []) {
+			this.registerReporter(reporter);
+		}
+
 		this.applied.set(plugin.name, { plugin, options });
+	}
+
+	private registerReporter(reporter: PluginReporter): void {
+		if (BUILTIN_REPORTERS.has(reporter.name) || this.reporters.has(reporter.name)) {
+			throw new ConfigurationError(`Reporter name "${reporter.name}" is already registered.`);
+		}
+
+		this.reporters.set(reporter.name, reporter.create);
+	}
+
+	public getReporter(name: string): PluginReporter["create"] | undefined {
+		return this.reporters.get(name);
+	}
+
+	public getReporterNames(): string[] {
+		return [...this.reporters.keys()];
 	}
 
 	public getApplied(): AppliedPlugin[] {

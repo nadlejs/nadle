@@ -38,6 +38,28 @@ describe("PluginRegistry", () => {
 		expect(() => registry.apply(plugin("a"), { x: 2 })).toThrow(/already applied/);
 	});
 
+	it("registers a reporter factory and looks it up by name", () => {
+		const registry = new PluginRegistry();
+		const create = () => ({}) as never;
+		registry.apply({ name: "json-plugin", reporters: [{ create, name: "json" }] });
+
+		expect(registry.getReporter("json")).toBe(create);
+		expect(registry.getReporter("missing")).toBeUndefined();
+	});
+
+	it("errors when two plugins register the same reporter name", () => {
+		const registry = new PluginRegistry();
+		registry.apply({ name: "a", reporters: [{ name: "json", create: () => ({}) as never }] });
+
+		expect(() => registry.apply({ name: "b", reporters: [{ name: "json", create: () => ({}) as never }] })).toThrow(/reporter/i);
+	});
+
+	it("rejects a reporter that shadows a built-in name", () => {
+		const registry = new PluginRegistry();
+
+		expect(() => registry.apply({ name: "a", reporters: [{ name: "default", create: () => ({}) as never }] })).toThrow(/reporter/i);
+	});
+
 	it("orders plugins pre then normal then post, application order within each group", () => {
 		const registry = new PluginRegistry();
 		registry.apply(plugin("normal1"));
