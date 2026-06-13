@@ -22,6 +22,7 @@
 		"@docusaurus/module-type-aliases": "^3.10.1",
 		"@docusaurus/tsconfig": "^3.10.1",
 		"@docusaurus/types": "^3.10.1",
+		"@signalwire/docusaurus-plugin-llms-txt": "1.2.2",
 		"@types/node": "^20.19.33",
 		"glob": "^11.1.0",
 		"spec-md": "^3.1.0",
