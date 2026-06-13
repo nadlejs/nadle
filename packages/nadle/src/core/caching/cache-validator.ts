@@ -8,7 +8,7 @@ import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
 import { CacheKey, type CacheQuery } from "../models/cache/cache-key.js";
 import { type TaskConfiguration } from "../interfaces/task-configuration.js";
 
-type CacheValidationResult =
+export type CacheValidationResult =
 	| { result: "not-cacheable" }
 	| { result: "cache-disabled" }
 	| { result: "up-to-date"; outputsFingerprint: string }

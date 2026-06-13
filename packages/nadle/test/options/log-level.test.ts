@@ -1,16 +1,27 @@
-import { it, describe } from "vitest";
-import { exec, expectPass } from "setup";
+import { exec, getStdout } from "setup";
+import { it, expect, describe } from "vitest";
 
 describe("--log-level", () => {
-	it.skip("shows info log when passing --log-level=info", async () => {
-		await expectPass(exec`hello --log-level=info`);
+	it("shows the welcome banner and resolved options at info level", async () => {
+		const stdout = await getStdout(exec`hello --log-level=info`);
+
+		expect(stdout).toContain("Welcome to Nadle");
+		expect(stdout).toContain('"logLevel": "info"');
 	});
 
-	it.skip("shows debug log when passing --log-level=debug", async () => {
-		await expectPass(exec`hello --log-level=debug`);
+	it("still shows the welcome banner at debug level", async () => {
+		const stdout = await getStdout(exec`hello --log-level=debug`);
+
+		expect(stdout).toContain("Welcome to Nadle");
+		expect(stdout).toContain('"logLevel": "debug"');
 	});
 
-	it("shows error log only when passing --log-level=error", async () => {
-		await expectPass(exec`hello --log-level=error`);
+	it("suppresses informational output when passing --log-level=error", async () => {
+		const stdout = await getStdout(exec`hello --log-level=error`);
+
+		// error level drops the banner, the "Using Nadle from" line, and the options dump.
+		expect(stdout).not.toContain("Welcome to Nadle");
+		expect(stdout).not.toContain("Using Nadle from");
+		expect(stdout).not.toContain('"logLevel"');
 	});
 });

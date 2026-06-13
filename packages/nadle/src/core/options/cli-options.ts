@@ -61,6 +61,14 @@ export const CLIOptions = {
 			description: "Print the task dependency graph instead of executing (tree or mermaid)"
 		}
 	},
+	why: {
+		key: "why",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Explain each task's cache outcome (hit/miss and what changed)"
+		}
+	},
 	stacktrace: {
 		key: "stacktrace",
 		options: {

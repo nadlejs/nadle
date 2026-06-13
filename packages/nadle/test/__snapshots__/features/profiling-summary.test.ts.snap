@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`profiling summary > should not render if there is no tasks 1`] = ``;
+
+exports[`profiling summary > should render all tasks if less then 5 1`] = `
+
+<Bold><Green>Profiling Summary</Green></BoldDim>
+┌─────────┬──────────┬────────────┐
+│ Task    │ Duration │ Percentage │
+├─────────┼──────────┼────────────┤
+│ compile │       {duration} │      28.4% │
+│ test    │       {duration} │       6.2% │
+└─────────┴──────────┴────────────┘
+`;
+
+exports[`profiling summary > should render top 5 slowest tasks descending 1`] = `
+
+<Bold><Green>Profiling Summary</Green></BoldDim>
+┌────────────┬──────────┬────────────┐
+│ Task       │ Duration │ Percentage │
+├────────────┼──────────┼────────────┤
+│ install    │       {duration} │      45.6% │
+│ compile    │       {duration} │      28.4% │
+│ compileSvg │       {duration} │       8.1% │
+│ compileTs  │       {duration} │       7.1% │
+│ test       │       {duration} │       6.2% │
+└────────────┴──────────┴────────────┘
+`;

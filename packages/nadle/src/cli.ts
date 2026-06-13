@@ -12,6 +12,7 @@ const argv = yargs(hideBin(Process.argv))
 	.command("$0 [tasks...]", "Execute one or more named tasks")
 
 	.options({
+		[CLIOptions.why.key]: CLIOptions.why.options,
 		[CLIOptions.list.key]: CLIOptions.list.options,
 		[CLIOptions.cache.key]: CLIOptions.cache.options,
 		[CLIOptions.graph.key]: CLIOptions.graph.options,
@@ -61,7 +62,8 @@ const argv = yargs(hideBin(Process.argv))
 			CLIOptions.minWorkers.key,
 			CLIOptions.maxWorkers.key,
 			CLIOptions.footer.key,
-			CLIOptions.summary.key
+			CLIOptions.summary.key,
+			CLIOptions.why.key
 		],
 		"General options:"
 	)

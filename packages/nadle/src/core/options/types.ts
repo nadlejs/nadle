@@ -47,6 +47,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	/** List all workspaces. */
 	readonly listWorkspaces: boolean;
 
+	/** Explain each task's cache outcome (hit/miss and, on a miss, what changed). */
+	readonly why?: boolean;
 	/** Perform a dry run without executing tasks. */
 	readonly dryRun: boolean;
 	/** Show summary after execution. */
