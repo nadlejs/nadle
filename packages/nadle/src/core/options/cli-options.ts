@@ -170,7 +170,7 @@ export const CLIOptions = {
 		options: {
 			type: "boolean" as const,
 			default: false,
-			description: "Print a summary of executed tasks at the end of the run"
+			description: "Print a summary at the end of the run: task durations, critical path, and cache-miss hotspots"
 		}
 	},
 

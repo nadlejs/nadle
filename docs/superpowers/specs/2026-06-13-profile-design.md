@@ -1,12 +1,14 @@
-# `nadle --profile` (Profiling Insights) Design
+# Profiling Insights (extends `--summary`) Design
 
-**Status:** Approved (self-driven; user directed "do features, don't ask").
-**Issue:** [#648](https://github.com/nadlejs/nadle/issues/648) — `--profile` flamegraph + cache-miss hotspots, extends `--summary`.
+**Status:** Approved. User chose to **fold the new sections into `--summary`** rather
+than add a separate `--profile` flag (the analysis is the same profiling concern; one
+flag keeps the surface small).
+**Issue:** [#648](https://github.com/nadlejs/nadle/issues/648) — flamegraph + cache-miss hotspots, extends `--summary`.
 
 ## Scope
 
 `--summary` already prints a top-N task wall-clock table (`profiling-summary.tsx`).
-`--profile` extends that report with two analysis sections:
+This change extends `--summary` itself with two analysis sections (no new flag):
 
 1. **Critical path** — the longest cumulative-duration dependency chain (root → … →
    leaf). This is the terminal-appropriate equivalent of a flamegraph's hot stack: the
@@ -20,11 +22,11 @@
 
 A graphical SVG/HTML flamegraph is **out of scope** (a terminal task runner shouldn't
 spawn a browser asset; the duration table + critical path is the in-terminal
-equivalent). A machine-readable `--profile=json` export for external flamegraph tools
-is a sensible follow-up, noted below, not built now.
+equivalent). A machine-readable JSON export for external flamegraph tools is a
+sensible follow-up, not built now.
 
-`--profile` implies `--summary`'s table (it's the same data); setting `--profile`
-renders the table plus the two new sections. `--summary` alone stays unchanged.
+`--summary` now renders the existing duration table plus the two new sections. There
+is no separate `--profile` flag.
 
 ## Data available
 
@@ -41,21 +43,19 @@ At `onExecutionFinish`, `ExecutionTracker` holds per-task `status`, `duration`, 
 
 ## Architecture / files
 
-- **`core/options/cli-options.ts`** — add `profile` boolean option (default false,
-  grouped under "General options:" next to `summary`).
-- **`core/options/types.ts`** — `NadleCLIOptions.profile?: boolean`; it is a plain
-  boolean with a default, so it stays inside the `Required<>` of
-  `NadleResolvedOptions` (like `summary`). Add `profile: false` to `defaultOptions`.
-- **`core/reporting/profile-report.ts`** — new pure module:
+- No new CLI option — the sections render under the existing `--summary` gate.
+- **`core/reporting/profile-report.ts`** — new module (mostly pure):
   - `computeCriticalPath({ roots, getDependencies, getDuration }): { path: string[];
-    duration: number }` — longest cumulative-duration chain. Pure.
+duration: number }` — longest cumulative-duration chain. Pure.
   - `renderProfileReport({ criticalPath, hotspots }): string` — formats the two
     sections (reuses the table style from `profiling-summary.tsx` where useful). Pure.
   - A `Hotspot` shape `{ label, duration, suggestion }`.
-- **`core/reporting/reporter.ts`** — in `onExecutionFinish`, when `options.profile`,
-  render the existing summary table (as today) then append the profile report built
-  from tracker + scheduler data.
-- **`core/reporting/agent-reporter.ts`** — when `options.profile`, emit plain
+  - `collectProfileData(accessors)` / `profileAccessors(context, tracker)` — build the
+    report data from the live scheduler + tracker, shared by both reporters so neither
+    duplicates the traversal.
+- **`core/reporting/reporter.ts`** — in `onExecutionFinish`, under the existing
+  `options.summary` gate, render the duration table then append the profile report.
+- **`core/reporting/agent-reporter.ts`** — under `options.summary`, emit plain
   `CRITICAL <a> <b> <c> <dur>` and `HOTSPOT <label> <dur> <suggestion>` lines (stable,
   greppable), consistent with its one-line style.
 
@@ -90,15 +90,12 @@ real wall-clock spent.
 
 ## Snapshot impact
 
-`--profile` adds a new flag → `--help` snapshot regenerates (one file). The
-resolved-options dump gains `profile`, but #658's redaction shields builtin-task
-snapshots; show-config/config-key only serialize set options (profile defaults false →
-absent unless asserted). Regenerate help; verify show-config/config-key with `-u` if
-they assert the dump with profile set. No failure-path snapshots touched.
+No new flag → no help/show-config/config-key churn. The existing `--summary` output
+gains the two sections; the existing summary test (`features/profiling-summary.test.ts`)
+does not assert the full block verbatim, so it is unaffected.
 
 ## Out of scope (YAGNI)
 
 - Graphical SVG/HTML flamegraph.
-- `--profile=json` machine export (sensible follow-up for external flamegraph tools;
-  file an issue if wanted).
+- JSON machine export (sensible follow-up for external flamegraph tools).
 - Per-task CPU/memory profiling (wall-clock only; that's what the scheduler tracks).

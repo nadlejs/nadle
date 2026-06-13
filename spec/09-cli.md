@@ -72,16 +72,16 @@ Rules:
 
 ### General Options
 
-| Flag            | Alias | Type    | Default                        | Description                                               |
-| --------------- | ----- | ------- | ------------------------------ | --------------------------------------------------------- |
-| `--config`      | `-c`  | string  | `nadle.config.{js,mjs,ts,mts}` | Path to config file.                                      |
-| `--cache-dir`   |       | string  | `<projectDir>/.nadle`          | Directory to store cache results.                         |
-| `--log-level`   |       | string  | `"log"`                        | Logging level. Choices: `error`, `log`, `info`, `debug`.  |
-| `--min-workers` |       | string  | `availableParallelism - 1`     | Minimum workers (integer or percentage).                  |
-| `--max-workers` |       | string  | `availableParallelism - 1`     | Maximum workers (integer or percentage).                  |
-| `--footer`      |       | boolean | `!isCI && isTTY`               | Enable the live progress footer during execution.         |
-| `--summary`     |       | boolean | `false`                        | Print a task execution summary at the end of the run.     |
-| `--why`         |       | boolean | `false`                        | Explain each task's cache outcome (hit/miss and changes). |
+| Flag            | Alias | Type    | Default                        | Description                                                                               |
+| --------------- | ----- | ------- | ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `--config`      | `-c`  | string  | `nadle.config.{js,mjs,ts,mts}` | Path to config file.                                                                      |
+| `--cache-dir`   |       | string  | `<projectDir>/.nadle`          | Directory to store cache results.                                                         |
+| `--log-level`   |       | string  | `"log"`                        | Logging level. Choices: `error`, `log`, `info`, `debug`.                                  |
+| `--min-workers` |       | string  | `availableParallelism - 1`     | Minimum workers (integer or percentage).                                                  |
+| `--max-workers` |       | string  | `availableParallelism - 1`     | Maximum workers (integer or percentage).                                                  |
+| `--footer`      |       | boolean | `!isCI && isTTY`               | Enable the live progress footer during execution.                                         |
+| `--summary`     |       | boolean | `false`                        | Print profiling insights at the end: slow-task table, critical path, cache-miss hotspots. |
+| `--why`         |       | boolean | `false`                        | Explain each task's cache outcome (hit/miss and changes).                                 |
 
 ### Miscellaneous
 

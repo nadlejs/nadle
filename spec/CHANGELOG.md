@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.5.0 — 2026-06-13
+
+### Changed
+
+- 09-cli: `--summary` now prints profiling insights — in addition to the slow-task
+  duration table, it shows the **critical path** (longest cumulative-duration
+  dependency chain) and **cache-miss hotspots** (executed tasks ranked by duration,
+  each with a suggestion: declare inputs/outputs to enable caching, or an input
+  changed). Folded into `--summary` rather than a separate flag.
+
 ## 3.4.0 — 2026-06-13
 
 ### Added
