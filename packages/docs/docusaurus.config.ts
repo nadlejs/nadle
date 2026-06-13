@@ -21,6 +21,10 @@ const config: Config = {
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 
+	customFields: {
+		version: NadlePackageJson.version
+	},
+
 	i18n: {
 		locales: ["en"],
 		defaultLocale: "en"

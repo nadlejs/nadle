@@ -156,3 +156,325 @@ ol {
 		gap: 2rem;
 	}
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   Landing page (nadle.dev home) — Linear / Vercel dark redesign
+   ════════════════════════════════════════════════════════════════════════ */
+
+:root {
+	--landing-bg: #08090c;
+	--landing-cyan: #22d3ee;
+	--landing-blue: #3b82f6;
+	--landing-violet: #8b5cf6;
+}
+
+/* Hide the global Docusaurus navbar only on the landing route (custom navbar). */
+body:has(.landing-root) .navbar {
+	display: none;
+}
+
+.landing-root {
+	position: relative;
+	overflow-x: clip;
+	color: #e2e8f0;
+	background: var(--landing-bg);
+}
+
+/* Dotted grid + faint noise background overlay */
+.landing-bg {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background-image:
+		radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.12) 1px, transparent 0),
+		radial-gradient(ellipse 80% 50% at 50% -10%, rgba(34, 211, 238, 0.08), transparent 70%);
+	background-size:
+		32px 32px,
+		100% 100%;
+	mask-image: linear-gradient(to bottom, black, black 60%, transparent);
+}
+
+.landing-bg::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	opacity: 0.025;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Navbar ── */
+.landing-nav {
+	border-bottom: 1px solid transparent;
+	transition:
+		background-color 0.25s ease,
+		border-color 0.25s ease,
+		backdrop-filter 0.25s ease;
+}
+
+.landing-nav[data-scrolled] {
+	background: rgba(8, 9, 12, 0.72);
+	backdrop-filter: saturate(160%) blur(12px);
+	border-bottom-color: rgba(148, 163, 184, 0.1);
+}
+
+/* ── Typography ── */
+.landing-display {
+	color: #fff;
+	line-height: 1.05;
+}
+
+.landing-gradient-text {
+	background: linear-gradient(100deg, var(--landing-cyan), var(--landing-blue) 45%, var(--landing-violet));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+/* ── Glows ── */
+.landing-glow {
+	position: absolute;
+	width: 360px;
+	height: 360px;
+	border-radius: 9999px;
+	pointer-events: none;
+	filter: blur(40px);
+	z-index: 0;
+}
+
+.landing-glow-cyan {
+	background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 70%);
+}
+.landing-glow-blue {
+	background: radial-gradient(circle, rgba(59, 130, 246, 0.16), transparent 70%);
+	width: 300px;
+	height: 300px;
+}
+.landing-glow-violet {
+	background: radial-gradient(circle, rgba(139, 92, 246, 0.18), transparent 70%);
+}
+
+/* ── CTA buttons ── */
+.landing-cta-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #fff;
+	border-radius: 0.5rem;
+	background: linear-gradient(100deg, var(--landing-cyan), var(--landing-blue));
+	box-shadow: 0 8px 24px -8px rgba(59, 130, 246, 0.5);
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.landing-cta-primary:hover {
+	color: #fff;
+	text-decoration: none;
+	transform: translateY(-1px);
+	box-shadow: 0 12px 28px -8px rgba(59, 130, 246, 0.65);
+}
+
+.landing-cta-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #cbd5e1;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(148, 163, 184, 0.2);
+	background: rgba(255, 255, 255, 0.02);
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease,
+		background 0.2s ease;
+}
+
+.landing-cta-secondary:hover {
+	color: #fff;
+	text-decoration: none;
+	border-color: rgba(148, 163, 184, 0.4);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.landing-cta-panel {
+	background:
+		radial-gradient(ellipse at top, rgba(59, 130, 246, 0.12), transparent 60%),
+		rgba(255, 255, 255, 0.02);
+	border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+/* ── Feature cards ── */
+.landing-feature-card {
+	border: 1px solid rgba(148, 163, 184, 0.1);
+	background: rgba(255, 255, 255, 0.02);
+	transition:
+		border-color 0.3s ease,
+		transform 0.3s ease;
+}
+
+.landing-feature-card:hover {
+	transform: translateY(-2px);
+	border-color: rgba(34, 211, 238, 0.3);
+}
+
+.landing-feature-card-glow {
+	position: absolute;
+	inset: 0;
+	border-radius: 1rem;
+	opacity: 0;
+	pointer-events: none;
+	background: radial-gradient(ellipse at top, rgba(34, 211, 238, 0.1), transparent 60%);
+	transition: opacity 0.3s ease;
+}
+
+.landing-feature-card:hover .landing-feature-card-glow {
+	opacity: 1;
+}
+
+/* ── Scroll reveal ── */
+.landing-reveal {
+	opacity: 0;
+	transform: translateY(24px);
+	transition:
+		opacity 0.6s ease,
+		transform 0.6s ease;
+}
+
+.landing-reveal[data-reveal="in"] {
+	opacity: 1;
+	transform: none;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Animated task-graph DAG
+   ════════════════════════════════════════════════════════════════════════ */
+
+.landing-dag-rect {
+	fill: rgba(255, 255, 255, 0.03);
+	stroke: rgba(148, 163, 184, 0.2);
+	stroke-width: 1;
+}
+
+.landing-dag-text {
+	fill: #cbd5e1;
+	font-size: 13px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.landing-dag-dot {
+	fill: #64748b;
+}
+
+.landing-dag-edge {
+	stroke: rgba(148, 163, 184, 0.18);
+}
+
+/* Looping pipeline: 5s cycle, nodes/edges light up by topological step.
+   --dag-step (0,1,2) staggers each element's delay across the loop. */
+.landing-dag-node {
+	animation: dag-node 5s ease-in-out infinite;
+	animation-delay: calc(var(--dag-step) * 1.1s);
+}
+
+.landing-dag-node .landing-dag-rect {
+	animation: dag-rect 5s ease-in-out infinite;
+	animation-delay: calc(var(--dag-step) * 1.1s);
+}
+
+.landing-dag-node .landing-dag-dot {
+	animation: dag-dot 5s ease-in-out infinite;
+	animation-delay: calc(var(--dag-step) * 1.1s);
+}
+
+.landing-dag-edge {
+	stroke-dasharray: 6 6;
+	animation: dag-edge 5s ease-in-out infinite;
+	animation-delay: calc(var(--dag-step) * 1.1s);
+}
+
+@keyframes dag-rect {
+	0%,
+	100% {
+		stroke: rgba(148, 163, 184, 0.2);
+	}
+	15% {
+		stroke: var(--landing-cyan);
+	}
+	40%,
+	90% {
+		stroke: rgba(34, 197, 94, 0.6);
+	}
+}
+
+@keyframes dag-node {
+	0%,
+	100% {
+		filter: drop-shadow(0 0 0 transparent);
+	}
+	15% {
+		filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.5));
+	}
+}
+
+@keyframes dag-dot {
+	0%,
+	100% {
+		fill: #64748b;
+	}
+	15% {
+		fill: var(--landing-cyan);
+	}
+	40%,
+	90% {
+		fill: #22c55e;
+	}
+}
+
+@keyframes dag-edge {
+	0%,
+	100% {
+		stroke: rgba(148, 163, 184, 0.18);
+		stroke-dashoffset: 24;
+	}
+	20% {
+		stroke: rgba(34, 211, 238, 0.7);
+	}
+	40%,
+	90% {
+		stroke: rgba(34, 197, 94, 0.45);
+		stroke-dashoffset: 0;
+	}
+}
+
+/* ── Reduced motion: freeze all looping/auto animation at a sane final state ── */
+@media (prefers-reduced-motion: reduce) {
+	.landing-reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.landing-dag-node,
+	.landing-dag-node .landing-dag-rect,
+	.landing-dag-node .landing-dag-dot,
+	.landing-dag-edge {
+		animation: none;
+	}
+
+	.landing-dag-rect {
+		stroke: rgba(34, 197, 94, 0.6);
+	}
+	.landing-dag-dot {
+		fill: #22c55e;
+	}
+	.landing-dag-edge {
+		stroke: rgba(34, 197, 94, 0.45);
+		stroke-dashoffset: 0;
+	}
+}
