@@ -21,6 +21,7 @@
 	"dependencies": {
 		"@nadle/kernel": "workspace:^",
 		"@nadle/project-resolver": "workspace:^",
+		"chokidar": "^5.0.0",
 		"consola": "^3.4.2",
 		"execa": "^9.6.1",
 		"fast-glob": "^3.3.3",
