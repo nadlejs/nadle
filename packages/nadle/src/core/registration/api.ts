@@ -55,6 +55,7 @@ const LAZY_SPEC = Symbol("nadle.lazySpec");
  * spec is resolved lazily (and memoized) when first read.
  */
 export interface LazySpec<Options = void> {
+	/** @internal The wrapped spec thunk. */
 	readonly [LAZY_SPEC]: () => TaskSpec<Options>;
 }
 

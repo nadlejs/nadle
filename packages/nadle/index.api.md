@@ -125,8 +125,6 @@ export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<O
 
 // @public
 export interface LazySpec<Options = void> {
-    // (undocumented)
-    readonly [LAZY_SPEC]: () => TaskSpec<Options>;
 }
 
 // @public
