@@ -5,7 +5,7 @@ import fg from "fast-glob";
 import { Node, Project, SyntaxKind, type CallExpression, type ObjectLiteralExpression } from "ts-morph";
 
 /** A manual-review site logged when a call can't be migrated mechanically. */
-export interface ManualReview {
+interface ManualReview {
 	file: string;
 	line: number;
 	reason: string;
@@ -214,7 +214,7 @@ export function migrateSource(source: string, fileName = "source.ts"): string {
 }
 
 /** Migrate a source string, returning the rewritten source and any manual-review sites. */
-export function migrateWithReviews(source: string, fileName = "source.ts"): { source: string; reviews: ManualReview[] } {
+function migrateWithReviews(source: string, fileName = "source.ts"): { source: string; reviews: ManualReview[] } {
 	const project = new Project({ useInMemoryFileSystem: true });
 	const sourceFile = project.createSourceFile(fileName, source, { overwrite: true });
 	const reviews: ManualReview[] = [];

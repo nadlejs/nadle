@@ -2,62 +2,59 @@ import { tasks, Inputs, Outputs, PnpmTask, PnpxTask, DeleteTask } from "./node_m
 
 // --- Maintenance ---
 
-tasks.register("clean", {
-	run: DeleteTask,
-	group: "Maintenance",
-	description: "Delete all build artifacts and temp directories",
-	options: {
+tasks
+	.register("clean", DeleteTask, {
 		paths: ["**/lib/**", "**/build/**", "**/__temp__/**", "packages/docs/docs/api/**", "packages/docs/.docusaurus/**", "packages/docs/static/spec/**"]
-	}
-});
+	})
+	.config({ group: "Maintenance", description: "Delete all build artifacts and temp directories" });
 
 // --- Checking ---
 
-tasks.register("spell", {
-	run: PnpxTask,
+tasks
+	.register("spell", PnpxTask, {
+		command: "cspell",
+		args: ["**", "--quiet", "--gitignore", "--cache", "--cache-location", "node_modules/.cache/cspell/.cspellcache"]
+	})
+	.config({
+		group: "Checking",
+		description: "Check spelling across all files"
+	});
+
+tasks
+	.register("eslint", PnpxTask, {
+		command: "eslint",
+		args: [".", "--quiet", "--cache", "--cache-location", "node_modules/.cache/eslint/"]
+	})
+	.config({
+		group: "Checking",
+		dependsOn: ["compile"],
+		description: "Lint all files with ESLint"
+	});
+
+tasks
+	.register("prettier", PnpxTask, {
+		command: "prettier",
+		args: ["--experimental-cli", "--check", "."]
+	})
+	.config({ group: "Checking", description: "Check formatting with Prettier" });
+
+tasks.register("knip", PnpmTask, { args: ["-r", "-F", "nadle", "-F", "create-nadle", "exec", "knip"] }).config({
 	group: "Checking",
-	description: "Check spelling across all files",
-	options: { command: "cspell", args: ["**", "--quiet", "--gitignore", "--cache", "--cache-location", "node_modules/.cache/cspell/.cspellcache"] }
+	description: "Find unused dependencies and exports"
 });
 
-tasks.register("eslint", {
-	run: PnpxTask,
-	group: "Checking",
-	dependsOn: ["compile"],
-	description: "Lint all files with ESLint",
-	options: { command: "eslint", args: [".", "--quiet", "--cache", "--cache-location", "node_modules/.cache/eslint/"] }
-});
-
-tasks.register("prettier", {
-	run: PnpxTask,
-	group: "Checking",
-	description: "Check formatting with Prettier",
-	options: { command: "prettier", args: ["--experimental-cli", "--check", "."] }
-});
-
-tasks.register("knip", {
-	run: PnpmTask,
-	group: "Checking",
-	description: "Find unused dependencies and exports",
-	options: { args: ["-r", "-F", "nadle", "-F", "create-nadle", "exec", "knip"] }
-});
-
-tasks.register("validate", {
-	run: PnpxTask,
+tasks.register("validate", PnpxTask, { command: "tsx", args: "./src/index.ts" }).config({
 	group: "Checking",
 	workingDir: "./packages/validators",
-	description: "Run package validators",
-	options: { command: "tsx", args: "./src/index.ts" }
+	description: "Run package validators"
 });
 
-tasks.register("checkLinks", {
-	run: PnpxTask,
+tasks.register("checkLinks", PnpxTask, { command: "remark", args: ["--quiet", "--frail", "spec/"] }).config({
 	group: "Checking",
-	options: { command: "remark", args: ["--quiet", "--frail", "spec/"] },
 	description: "Check for broken Markdown links and anchors in the spec"
 });
 
-tasks.register("check", {
+tasks.register("check").config({
 	group: "Checking",
 	description: "Run all checks (spell, lint, format, knip, validate, links)",
 	dependsOn: ["spell", "eslint", "prettier", "knip", "validate", "checkLinks"]
@@ -65,20 +62,17 @@ tasks.register("check", {
 
 // --- Building (nadle-specific, kept here due to workspace self-reference limitation) ---
 
-tasks.register("typecheck", {
-	run: PnpxTask,
-	group: "Building", // Depends on bundle: test files import "nadle"/"@nadle/language-server", whose .d.ts
+tasks.register("typecheck", PnpxTask, { command: "tsgo", args: ["-b", "--noEmit"] }).config({
+	group: "Building",
+	// Depends on bundle: test files import "nadle"/"@nadle/language-server", whose .d.ts
 	// are emitted by tsup (bundle), not by compile. Without this, typecheck can race ahead
 	// of bundle on a clean build and fail to resolve those package types.
 	dependsOn: ["compile", "bundle"],
-	description: "Type-check all project references",
-	options: { command: "tsgo", args: ["-b", "--noEmit"] }
+	description: "Type-check all project references"
 });
 
-tasks.register("compile", {
-	run: PnpxTask,
+tasks.register("compile", PnpxTask, { command: "tsgo", args: ["-b", "./tsconfig.compile.json"] }).config({
 	group: "Building",
-	options: { command: "tsgo", args: ["-b", "./tsconfig.compile.json"] },
 	description: "Compile and type-check all tsgo-built packages in one pass",
 	outputs: [Outputs.dirs("packages/kernel/lib", "packages/project-resolver/lib", "packages/create-nadle/lib", "packages/eslint-plugin/lib")],
 	inputs: [
@@ -87,11 +81,9 @@ tasks.register("compile", {
 	]
 });
 
-tasks.register("bundle", {
-	run: PnpxTask,
+tasks.register("bundle", PnpxTask, { command: "tsup" }).config({
 	group: "Building",
 	dependsOn: ["compile"],
-	options: { command: "tsup" },
 	description: "Bundle all tsup-based packages in one pass",
 	outputs: [Outputs.dirs("packages/nadle/lib", "packages/language-server/lib", "packages/vscode-extension/lib")],
 	inputs: [
@@ -100,7 +92,7 @@ tasks.register("bundle", {
 	]
 });
 
-tasks.register("build", {
+tasks.register("build").config({
 	group: "Building",
 	dependsOn: ["compile", "typecheck", "bundle"],
 	description: "Compile, type-check, and bundle all packages"
@@ -108,31 +100,33 @@ tasks.register("build", {
 
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
 
-tasks.register("testUnit", {
-	run: PnpxTask,
+tasks.register("testUnit", PnpxTask, { args: ["run"], command: "vitest" }).config({
 	group: "Testing",
 	dependsOn: ["bundle"],
-	options: { args: ["run"], command: "vitest" },
 	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
 });
 
-tasks.register("test", { group: "Testing", dependsOn: ["typecheck", "testUnit"], description: "Run all tests and checks" });
+tasks.register("test").config({
+	group: "Testing",
+	dependsOn: ["typecheck", "testUnit"],
+	description: "Run all tests and checks"
+});
 
 // --- Formatting ---
 
-tasks.register("fixEslint", {
-	run: PnpxTask,
+tasks.register("fixEslint", PnpxTask, { command: "eslint", args: [".", "--quiet", "--fix"] }).config({
 	group: "Formatting",
 	dependsOn: ["compile"],
-	description: "Fix lint issues with ESLint",
-	options: { command: "eslint", args: [".", "--quiet", "--fix"] }
+	description: "Fix lint issues with ESLint"
 });
 
-tasks.register("fixPrettier", {
-	run: PnpxTask,
+tasks.register("fixPrettier", PnpxTask, { command: "prettier", args: ["--experimental-cli", "--write", "."] }).config({
 	group: "Formatting",
-	description: "Format all files with Prettier",
-	options: { command: "prettier", args: ["--experimental-cli", "--write", "."] }
+	description: "Format all files with Prettier"
 });
 
-tasks.register("format", { group: "Formatting", dependsOn: ["fixEslint", "fixPrettier"], description: "Fix lint and format all files" });
+tasks.register("format").config({
+	group: "Formatting",
+	dependsOn: ["fixEslint", "fixPrettier"],
+	description: "Fix lint and format all files"
+});

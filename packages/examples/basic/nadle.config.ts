@@ -4,19 +4,14 @@ configure({
 	logLevel: "debug"
 });
 
-tasks.register("hello", {
-	group: "Greetings",
-	description: "Say hello",
-	run: async () => {
+tasks
+	.register("hello", async () => {
 		console.log("Hello from Nadle!");
-	}
-});
+	})
+	.config({ group: "Greetings", description: "Say hello" });
 
-tasks.register("goodbye", {
-	group: "Greetings",
-	dependsOn: ["hello"],
-	description: "Say goodbye",
-	run: () => {
+tasks
+	.register("goodbye", () => {
 		console.log("Goodbye, Nadle!");
-	}
-});
+	})
+	.config({ group: "Greetings", dependsOn: ["hello"], description: "Say goodbye" });
