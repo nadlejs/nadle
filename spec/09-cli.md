@@ -104,6 +104,12 @@ Once installed, pressing TAB completes:
   (discovered by loading the config, exactly as `--list` does), and
 - **option flags** — the known CLI flags.
 
+When the active shell can render a description alongside each candidate (such shells
+accept a `value:description` pairing), task completions carry the task's description so
+the menu shows the same context as `--list`. Tasks without a description, and shells
+that cannot display descriptions, complete to the bare task name. The description is the
+only annotation; no other metadata is attached.
+
 Completion discovers task names dynamically from the current project, so it always
 reflects the tasks actually defined. The completion command and the completion
 callback produce no other output (no banner, footer, or logs).

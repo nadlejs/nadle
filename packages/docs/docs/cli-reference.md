@@ -59,4 +59,6 @@ nadle completion >> ~/.zshrc   # or ~/.bashrc, or your fish config
 ```
 
 After reloading your shell, pressing TAB completes both option flags and the live
-task names defined by your configuration.
+task names defined by your configuration. In shells that can show a description next
+to each candidate (such as zsh), task completions include the task's description,
+matching what `--list` shows; tasks without a description complete to the bare name.

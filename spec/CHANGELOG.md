@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.11.1 — 2026-06-14
+
+### Changed
+
+- 09-cli: Shell completion now annotates task candidates with their description in
+  shells that can render a `value:description` pairing, matching the context shown by
+  `--list`. Tasks without a description and shells that cannot display descriptions
+  still complete to the bare task name.
+
 ## 3.11.0 — 2026-06-14
 
 ### Added
