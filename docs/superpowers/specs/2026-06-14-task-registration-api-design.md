@@ -62,21 +62,21 @@ tasks.register("eslint", {
 One object. Every axis is a named, optional key. No adjacency ambiguity (`run`
 and `options` are distinct keys from the config fields). No second call.
 
-The spec object is `TaskSpec<Options>`:
+The spec object is `TaskSpec<Options>`. Its canonical definition is the
+conditional `type` under [Type rules](#options-required-ness-strict) (the
+required-ness of `run`/`options` depends on `Options`, which an `interface`
+cannot express). Illustratively, it is `TaskConfiguration` plus two keys:
 
-```ts
-interface TaskSpec<Options = void> extends TaskConfiguration {
-  /** Inline function or a Task object. Omit for placeholder/aggregator tasks. */
-  run?: TaskFn | Task<Options>;
-  /** Options for a Task body — a value OR a resolver thunk returning it
-   *  (`Resolver<Options> = Options | (() => Options)`). Present/required per
-   *  the rules below. The thunk form subsumes the old `optionsResolver`
-   *  positional, so options can be computed lazily without a separate axis. */
-  options?: Resolver<Options>;
-}
-// TaskConfiguration already carries group, description, dependsOn, inputs,
-// outputs, env, workingDir, timeout, retries, maxCacheEntries.
-```
+- `run?: TaskFn | Task<Options>` — inline function or a `Task` object. Omit for
+  placeholder/aggregator tasks.
+- `options?: Resolver<Options>` — a value OR a resolver thunk returning it
+  (`Resolver<Options> = Options | (() => Options)`). Required/optional per the
+  type rules. The thunk form subsumes the old `optionsResolver` positional, so
+  options can be computed lazily without a separate axis.
+
+`TaskConfiguration` already carries `group`, `description`, `dependsOn`,
+`inputs`, `outputs`, `env`, `workingDir`, `timeout`, `retries`,
+`maxCacheEntries` — all spread directly onto the spec.
 
 ### Shorthand forms (trivial tasks pay no object tax)
 
@@ -97,9 +97,9 @@ shorthand is sugar for `{ }` and `{ run: fn }` respectively.
 | 3 | fn + config | `register("goodbye", { run: fn, group, dependsOn })` |
 | 4 | Task + required options | `register("eslint", { run: PnpxTask, options })` |
 | 5 | Task + options + config | `register("eslint", { run: PnpxTask, options, group, dependsOn })` |
-| 6 | lazy config | `register("x", { run, options, config: () => ({ env }) })` — see Lazy |
+| 6 | lazy config | `register("x", () => ({ run, options, env }))` — whole-spec thunk, see Lazy |
 | 7 | optional options | `register("x", { run: MyTask })` — options omittable per rules |
-| 8 | programmatic/spread | `register("task-A", makeSpec({...}))` — returns a `TaskSpec` |
+| 8 | programmatic/spread | `register("task-A", defineSpec({...}))` — returns a `TaskSpec` |
 | 9 | context-using fn | `register("pwd", ({ context }) => ...)` — fn unchanged |
 
 ## Type rules
@@ -117,6 +117,9 @@ type TaskSpec<Options> =
   ({} extends Options
     ? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
     : { run: Task<Options>; options: Resolver<Options> });
+
+// register's spec argument may be the spec or a thunk returning it:
+type SpecArg<Options> = TaskSpec<Options> | (() => TaskSpec<Options>);
 ```
 
 - Body is `void`/no options → `options` may be omitted.
@@ -133,23 +136,28 @@ intersection is conflict-free. The spec adds a **reserved-key guarantee**:
 ## Lazy configuration
 
 Today `.config()` accepts a callback for deferred config (#675 memoizes it). The
-keyed form needs an equivalent. **Decision:** allow the *entire spec's config
-portion* to be deferred via an optional `config` thunk that merges over the
-inline keys:
+keyed form keeps one — and only one — deferral mechanism: **the spec argument
+itself may be a thunk** returning the spec. This mirrors the old
+`.config(callback)` (defer the whole thing) without inventing a third lazy path:
 
 ```ts
-tasks.register("secondTask", {
+// whole spec deferred
+tasks.register("secondTask", () => ({
   run: MyTask,
   options: {},
-  config: () => ({ env: { SECOND_TASK_ENV: "..." } }),
-});
+  env: { SECOND_TASK_ENV: "..." },
+}));
 ```
 
-Resolution order: inline keys are the base; the `config` thunk (if present) is
-invoked at most once (same memoization as #675) and shallow-merged over the
-base. This keeps lazy work (which "can do real work, read several times per
-run") out of the registration hot path. A spec with no `config` thunk resolves
-synchronously to its inline keys.
+So `register`'s second argument is `TaskSpec<Options> | (() => TaskSpec<Options>)`.
+The thunk is invoked at most once (same memoization as #675), keeping lazy work
+(which "can do real work, read several times per run") out of the registration
+hot path. An eager spec object resolves synchronously.
+
+There are exactly two deferral points, no overlap: **the whole spec** (a spec
+thunk, for config that must be computed at resolve time) and **`options`** (a
+`Resolver<Options>`, for a `Task` body whose options are computed). There is no
+separate `config:` key — config fields live directly on the spec.
 
 ## Removal of `.config()`
 
@@ -175,9 +183,9 @@ updated in the same change set.
   (`register(name, spec)`). Collapse the internal re-`register()` swap: config
   is now known at call time (or via the `config` thunk), so `register` runs once.
 - `define-task.ts` — `defineTask` keeps returning a `Task<Options>` (body only);
-  unaffected. Add an optional `defineSpec`/`makeSpec` helper for case #8
-  (programmatic specs) so spread sites get a typed builder instead of tuple
-  spread.
+  unaffected. Add a `defineSpec` helper (mirrors `defineTask`/`definePlugin`)
+  for case #8 (programmatic specs) so spread sites get a typed spec instead of
+  tuple spread.
 - `TasksAPI` / `TaskConfigurationBuilder` — `TaskConfigurationBuilder` deleted;
   `TasksAPI.register` retyped.
 
@@ -223,7 +231,8 @@ rewritten to match `register(name, spec)`:
 A **codemod** (ts-morph or jscodeshift) ships with the change to mechanically
 rewrite `register(a, b, c).config(d)` → `register(a, { run: b, options: c, ...d })`,
 handling: name-only, fn, Task+options, `.config(obj)`, `.config(callback)`
-(→ `config:` thunk), and tuple-spread (`register(...x)`). Documented in the
+(→ whole-spec thunk `register(a, () => ({ run: b, options: c, ...d }))`), and
+tuple-spread (`register(...x)`). Documented in the
 migration guide. The repo's own ~60 fixtures are the codemod's first test corpus.
 
 ### 7. Spec (`spec/`) — language-agnostic
@@ -290,7 +299,8 @@ surprised.
 
 ## Open questions (resolved)
 
-- *Lazy form?* → `config:` thunk key, memoized, merged over inline keys.
+- *Lazy form?* → the whole spec argument may be a thunk (`() => TaskSpec`),
+  memoized; the only whole-spec deferral path. No separate `config:` key.
 - *Trivial-task tax?* → `register(name)` / `register(name, fn)` shorthands kept.
 - *Options strictness?* → required iff `Options` has required fields (conditional
   mapped type).
