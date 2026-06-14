@@ -115,6 +115,14 @@ export const CLIOptions = {
 			defaultDescription: "undefined"
 		}
 	},
+	json: {
+		key: "json",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Emit machine-readable JSON from read commands (--list, --list-workspaces, --dry-run, --graph, --explain) instead of human text"
+		}
+	},
 	footer: {
 		key: "footer",
 		options: {
@@ -177,6 +185,14 @@ export const CLIOptions = {
 			type: "boolean" as const,
 			default: false,
 			description: "Diagnose project, config, and cache health without executing tasks"
+		}
+	},
+	capabilities: {
+		key: "capabilities",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Emit a machine-readable JSON description of CLI flags, tasks, and task configuration schema"
 		}
 	},
 

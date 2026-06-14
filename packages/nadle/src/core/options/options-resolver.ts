@@ -19,6 +19,7 @@ import { type NadleCLIOptions, type NadleFileOptions, type NadleResolvedOptions 
 export class OptionsResolver {
 	private readonly defaultOptions = {
 		why: false,
+		json: false,
 		cache: true,
 		watch: false,
 		doctor: false,
@@ -28,6 +29,7 @@ export class OptionsResolver {
 		cleanCache: false,
 		showConfig: false,
 		maxCacheEntries: 5,
+		capabilities: false,
 		reporter: "default",
 		implicitDependencies: true,
 		excludedTasks: [] as string[],
@@ -55,6 +57,9 @@ export class OptionsResolver {
 		return {
 			...baseOptions,
 			project,
+
+			// JSON output must be the only thing on stdout: suppress the live footer.
+			footer: baseOptions.json ? false : baseOptions.footer,
 
 			cacheDir: Path.resolve(project.rootWorkspace.absolutePath, baseOptions.cacheDir ?? DEFAULT_CACHE_DIR_NAME),
 

@@ -8,7 +8,7 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
-## 3.12.0 — 2026-06-14
+## 3.14.0 — 2026-06-14
 
 ### Added
 
@@ -17,6 +17,28 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   explicit machine-output flag), a failure emits a single one-line structured error
   record (`errorCode`, `errorType`, `message`, and `task` for task-execution errors)
   to the error stream. The default human error path is unchanged.
+
+## 3.13.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--json` flag. Switches the read-only inspection commands (`--list`,
+  `--list-workspaces`, `--dry-run`, `--graph`, `--explain`) to emit a single
+  machine-readable JSON document on standard output — no banner, footer, colors,
+  or run summary, and the live footer is forced off. `--list --json` reports each
+  task's `name`, `label`, `group`, `description`, `dependsOn`, `inputs`, `outputs`,
+  and `workspace`. `--show-config`/`--config-key` already emit JSON and are
+  unaffected.
+
+## 3.12.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--capabilities` handler. Emits a single machine-readable JSON document
+  describing this version's CLI flags (derived from the same definitions that drive
+  option parsing, so it cannot drift), the tasks discovered from the live configuration,
+  and a JSON Schema for the task configuration object. The document is the only output;
+  the handler performs no execution and mutates nothing.
 
 ## 3.11.0 — 2026-06-14
 

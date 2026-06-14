@@ -7,6 +7,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello --show-config
 ---------- Stdout ------------
 [log] {
   "why": false,
+  "json": false,
   "cache": true,
   "watch": false,
   "doctor": false,
@@ -16,6 +17,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer hello --show-config
   "cleanCache": false,
   "showConfig": true,
   "maxCacheEntries": 5,
+  "capabilities": false,
   "reporter": "default",
   "implicitDependencies": true,
   "excludedTasks": [],
@@ -70,6 +72,7 @@ Command: /ROOT/lib/cli.js --no-footer hello --show-config --min-workers 2 --max-
 ---------- Stdout ------------
 [log] {
   "why": false,
+  "json": false,
   "cache": true,
   "watch": false,
   "doctor": false,
@@ -79,6 +82,7 @@ Command: /ROOT/lib/cli.js --no-footer hello --show-config --min-workers 2 --max-
   "cleanCache": false,
   "showConfig": true,
   "maxCacheEntries": 5,
+  "capabilities": false,
   "reporter": "default",
   "implicitDependencies": true,
   "excludedTasks": [],
