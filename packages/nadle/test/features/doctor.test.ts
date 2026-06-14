@@ -26,7 +26,7 @@ describe.concurrent("doctor", () => {
 			files: fixture()
 				.packageJson("doctor-partial")
 				.configRaw(
-					['import { tasks, Inputs } from "nadle";', "", 'tasks.register("build", () => {}).config({ inputs: [Inputs.dirs("src")] });'].join("\n")
+					['import { tasks, Inputs } from "nadle";', "", 'tasks.register("build", { run: () => {}, inputs: [Inputs.dirs("src")] });'].join("\n")
 				)
 				.dir("src")
 				.build()
@@ -46,7 +46,7 @@ describe.concurrent("doctor", () => {
 					[
 						'import { tasks, Inputs, Outputs } from "nadle";',
 						"",
-						'tasks.register("build", () => {}).config({ inputs: [Inputs.dirs("src")], outputs: [Outputs.dirs("dist")] });'
+						'tasks.register("build", { run: () => {}, inputs: [Inputs.dirs("src")], outputs: [Outputs.dirs("dist")] });'
 					].join("\n")
 				)
 				.dir("src")

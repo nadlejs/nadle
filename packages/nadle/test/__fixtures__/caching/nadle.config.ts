@@ -4,8 +4,7 @@ import Fs from "node:fs/promises";
 import { glob } from "glob";
 import { tasks, Inputs, Outputs } from "nadle";
 
-tasks
-	.register("bundle-resources", async ({ context }) => {
+tasks.register("bundle-resources", { run: async ({ context }) => {
 		for (const entry of await glob("resources/**/*.txt", {})) {
 			const path = Path.join(context.workingDir, entry);
 			const content = await Fs.readFile(path, "utf-8");
@@ -15,5 +14,4 @@ tasks
 			await Fs.mkdir(Path.dirname(outputPath), { recursive: true });
 			await Fs.writeFile(outputPath, modifiedContent);
 		}
-	})
-	.config({ outputs: [Outputs.dirs("dist")], inputs: [Inputs.dirs("resources")] });
+	}, outputs: [Outputs.dirs("dist")], inputs: [Inputs.dirs("resources")] });

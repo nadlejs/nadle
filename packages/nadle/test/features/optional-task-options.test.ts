@@ -18,7 +18,7 @@ const GreetTask: Task<GreetOptions> = {
 	}
 };
 
-tasks.register("greet", GreetTask);
+tasks.register("greet", { run: GreetTask });
 `;
 
 describe.concurrent("optional task options", () => {

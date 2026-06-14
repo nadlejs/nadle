@@ -25,8 +25,8 @@ describe.skipIf(isWindows).concurrent("zipTask and unzipTask", () => {
 			},
 			files: makeFixture(
 				[
-					`tasks.register("zip", ZipTask, { from: "assets", archive: "out/bundle.zip" });`,
-					`tasks.register("unzip", UnzipTask, { archive: "out/bundle.zip", into: "extracted" });`
+					`tasks.register("zip", { run: ZipTask, options: { from: "assets", archive: "out/bundle.zip" } });`,
+					`tasks.register("unzip", { run: UnzipTask, options: { archive: "out/bundle.zip", into: "extracted" } });`
 				].join("\n")
 			)
 		}));
@@ -41,8 +41,8 @@ describe.skipIf(isWindows).concurrent("zipTask and unzipTask", () => {
 			},
 			files: makeFixture(
 				[
-					`tasks.register("zip", ZipTask, { from: "assets", archive: "bundle.zip", prefix: "bundle" });`,
-					`tasks.register("unzip", UnzipTask, { archive: "bundle.zip", into: "extracted" });`
+					`tasks.register("zip", { run: ZipTask, options: { from: "assets", archive: "bundle.zip", prefix: "bundle" } });`,
+					`tasks.register("unzip", { run: UnzipTask, options: { archive: "bundle.zip", into: "extracted" } });`
 				].join("\n")
 			)
 		}));
@@ -57,15 +57,15 @@ describe.skipIf(isWindows).concurrent("zipTask and unzipTask", () => {
 			},
 			files: makeFixture(
 				[
-					`tasks.register("zip", ZipTask, { from: "assets", archive: "bundle.zip" });`,
-					`tasks.register("unzip", UnzipTask, { archive: "bundle.zip", into: "extracted", include: "sub/**" });`
+					`tasks.register("zip", { run: ZipTask, options: { from: "assets", archive: "bundle.zip" } });`,
+					`tasks.register("unzip", { run: UnzipTask, options: { archive: "bundle.zip", into: "extracted", include: "sub/**" } });`
 				].join("\n")
 			)
 		}));
 
 	it("fails when the archive does not exist", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("unzip", UnzipTask, { archive: "missing.zip", into: "extracted" });`),
+			files: makeFixture(`tasks.register("unzip", { run: UnzipTask, options: { archive: "missing.zip", into: "extracted" } });`),
 			testFn: async ({ exec }) => {
 				const { stdout, stderr, exitCode } = await settle(exec`unzip --stacktrace`);
 
@@ -76,7 +76,7 @@ describe.skipIf(isWindows).concurrent("zipTask and unzipTask", () => {
 
 	it("fails on missing source when strict", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("zip", ZipTask, { strict: true, from: "missing", archive: "bundle.zip" });`),
+			files: makeFixture(`tasks.register("zip", { run: ZipTask, options: { strict: true, from: "missing", archive: "bundle.zip" } });`),
 			testFn: async ({ exec }) => {
 				const { stdout, stderr, exitCode } = await settle(exec`zip --stacktrace`);
 

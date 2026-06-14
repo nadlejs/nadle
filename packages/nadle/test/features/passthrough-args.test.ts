@@ -11,7 +11,7 @@ const files = fixture()
 			`import { tasks } from "nadle";`,
 			``,
 			`tasks.register("compile", ${echoArgs});`,
-			`tasks.register("build", ${echoArgs}).config({ dependsOn: ["compile"] });`,
+			`tasks.register("build", { run: ${echoArgs}, dependsOn: ["compile"] });`,
 			`tasks.register("verify", ${echoArgs});`
 		].join("\n")
 	)
@@ -23,8 +23,8 @@ const execFiles = fixture()
 		[
 			`import { tasks, ExecTask } from "nadle";`,
 			``,
-			`tasks.register("echo-a", ExecTask, { command: "node", args: ["-e", "console.log('A:' + process.argv.slice(1).join(' '))", "--"] });`,
-			`tasks.register("echo-b", ExecTask, { command: "node", args: ["-e", "console.log('B:' + process.argv.slice(1).join(' '))", "--"] });`
+			`tasks.register("echo-a", { run: ExecTask, options: { command: "node", args: ["-e", "console.log('A:' + process.argv.slice(1).join(' '))", "--"] } });`,
+			`tasks.register("echo-b", { run: ExecTask, options: { command: "node", args: ["-e", "console.log('B:' + process.argv.slice(1).join(' '))", "--"] } });`
 		].join("\n")
 	)
 	.build();
@@ -147,11 +147,12 @@ const cachedFiles = fixture()
 			``,
 			`import { tasks, Inputs, Outputs } from "nadle";`,
 			``,
-			`tasks`,
-			`\t.register("emit", async ({ context }) => {`,
+			`tasks.register("emit", {`,
+			`\trun: async ({ context }) => {`,
 			`\t\tawait Fs.writeFile(Path.join(context.workingDir, "out.txt"), "done");`,
-			`\t})`,
-			`\t.config({ inputs: [Inputs.files("input.txt")], outputs: [Outputs.files("out.txt")] });`
+			`\t},`,
+			`\tinputs: [Inputs.files("input.txt")], outputs: [Outputs.files("out.txt")]`,
+			`});`
 		].join("\n")
 	)
 	.build();
@@ -185,12 +186,13 @@ describe.skipIf(isWindows).concurrent("passthrough args in cache key", () => {
 						``,
 						`import { tasks, Inputs, Outputs } from "nadle";`,
 						``,
-						`tasks`,
-						`\t.register("prepare", async ({ context }) => {`,
+						`tasks.register("prepare", {`,
+						`\trun: async ({ context }) => {`,
 						`\t\tawait Fs.writeFile(Path.join(context.workingDir, "out.txt"), "done");`,
-						`\t})`,
-						`\t.config({ inputs: [Inputs.files("input.txt")], outputs: [Outputs.files("out.txt")] });`,
-						`tasks.register("verify", () => {}).config({ dependsOn: ["prepare"] });`
+						`\t},`,
+						`\tinputs: [Inputs.files("input.txt")], outputs: [Outputs.files("out.txt")]`,
+						`});`,
+						`tasks.register("verify", { run: () => {}, dependsOn: ["prepare"] });`
 					].join("\n")
 				)
 				.build()
