@@ -141,7 +141,7 @@ export class DefaultReporter implements Listener {
 
 		const workspaceConfigFileCount = project.workspaces.flatMap((workspace) => workspace.configFilePath ?? []).length;
 
-		if (!this.context.options.showConfig) {
+		if (!this.context.options.showConfig && !this.context.options.capabilities) {
 			this.context.logger.log(c.bold(c.cyan(`▶ Welcome to Nadle v${Nadle.version}!`)));
 			this.context.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
 			this.context.logger.log(
@@ -186,7 +186,7 @@ export class DefaultReporter implements Listener {
 		this.renderer.finish();
 		this.context.logger.info("Execution finished");
 
-		if (this.context.options.showConfig) {
+		if (this.context.options.showConfig || this.context.options.capabilities) {
 			return;
 		}
 

@@ -7,6 +7,7 @@ import { ExplainHandler } from "./explain-handler.js";
 import { ExecuteHandler } from "./execute-handler.js";
 import { CleanCacheHandler } from "./clean-cache-handler.js";
 import { ShowConfigHandler } from "./show-config-handler.js";
+import { CapabilitiesHandler } from "./capabilities-handler.js";
 import { type HandlerConstructor } from "../interfaces/handler.js";
 import { ListWorkspacesHandler } from "./list-workspace-handler.js";
 
@@ -19,6 +20,7 @@ export const Handlers: HandlerConstructor[] = [
 	DryRunHandler,
 	ShowConfigHandler,
 	DoctorHandler,
+	CapabilitiesHandler,
 	WatchHandler,
 	ExecuteHandler
 ];

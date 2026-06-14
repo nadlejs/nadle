@@ -53,23 +53,24 @@ Rules:
 
 ### Execution Options
 
-| Flag                | Alias | Type     | Default | Description                                                         |
-| ------------------- | ----- | -------- | ------- | ------------------------------------------------------------------- |
-| `--parallel`        |       | boolean  | `false` | Run all specified tasks in parallel while respecting dependencies.  |
-| `--exclude`         | `-x`  | string[] |         | Tasks to exclude from execution. Supports comma-separated values.   |
-| `--no-cache`        |       | boolean  | `false` | Disable task caching. All tasks execute and results are not stored. |
-| `--clean-cache`     |       | boolean  | `false` | Delete all files in the cache directory.                            |
-| `--list`            | `-l`  | boolean  | `false` | List all available tasks.                                           |
-| `--list-workspaces` |       | boolean  | `false` | List all available workspaces.                                      |
-| `--dry-run`         | `-m`  | boolean  | `false` | Show execution plan without running tasks.                          |
-| `--watch`           | `-w`  | boolean  | `false` | Re-run the requested tasks when their declared inputs change.       |
-| `--graph`           |       | string   | `tree`  | Print the dependency graph instead of executing. `tree`/`mermaid`.  |
-| `--explain`         |       | string   |         | Explain a single task (why it runs, dependents, inputs); no run.    |
-| `--since`           |       | string   |         | Run only the requested tasks affected by changes since a git ref.   |
-| `--show-config`     |       | boolean  | `false` | Print the resolved configuration.                                   |
-| `--config-key`      |       | string   |         | Path to a specific config value (dot/bracket notation).             |
-| `--doctor`          |       | boolean  | `false` | Diagnose project, config, and cache health; no execution.           |
-| `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                     |
+| Flag                | Alias | Type     | Default | Description                                                           |
+| ------------------- | ----- | -------- | ------- | --------------------------------------------------------------------- |
+| `--parallel`        |       | boolean  | `false` | Run all specified tasks in parallel while respecting dependencies.    |
+| `--exclude`         | `-x`  | string[] |         | Tasks to exclude from execution. Supports comma-separated values.     |
+| `--no-cache`        |       | boolean  | `false` | Disable task caching. All tasks execute and results are not stored.   |
+| `--clean-cache`     |       | boolean  | `false` | Delete all files in the cache directory.                              |
+| `--list`            | `-l`  | boolean  | `false` | List all available tasks.                                             |
+| `--list-workspaces` |       | boolean  | `false` | List all available workspaces.                                        |
+| `--dry-run`         | `-m`  | boolean  | `false` | Show execution plan without running tasks.                            |
+| `--watch`           | `-w`  | boolean  | `false` | Re-run the requested tasks when their declared inputs change.         |
+| `--graph`           |       | string   | `tree`  | Print the dependency graph instead of executing. `tree`/`mermaid`.    |
+| `--explain`         |       | string   |         | Explain a single task (why it runs, dependents, inputs); no run.      |
+| `--since`           |       | string   |         | Run only the requested tasks affected by changes since a git ref.     |
+| `--show-config`     |       | boolean  | `false` | Print the resolved configuration.                                     |
+| `--config-key`      |       | string   |         | Path to a specific config value (dot/bracket notation).               |
+| `--doctor`          |       | boolean  | `false` | Diagnose project, config, and cache health; no execution.             |
+| `--capabilities`    |       | boolean  | `false` | Emit a machine-readable JSON description of flags, tasks, and config. |
+| `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                       |
 
 ### General Options
 
@@ -128,8 +129,9 @@ After options are resolved, Nadle selects a handler using a **first-match-wins**
 | 6        | **DryRun**         | `--dry-run` is `true`            |
 | 7        | **ShowConfig**     | `--show-config` is `true`        |
 | 8        | **Doctor**         | `--doctor` is `true`             |
-| 9        | **Watch**          | `--watch` is `true`              |
-| 10       | **Execute**        | Always matches (default handler) |
+| 9        | **Capabilities**   | `--capabilities` is `true`       |
+| 10       | **Watch**          | `--watch` is `true`              |
+| 11       | **Execute**        | Always matches (default handler) |
 
 Each handler is instantiated and its `canHandle()` method is checked. The first handler
 that returns `true` has its `handle()` method invoked. Only one handler runs per
@@ -160,6 +162,30 @@ The checks are:
 
 The set of checks may grow over time; the contract is that Doctor is read-only and
 that an error-level finding makes the exit code non-zero.
+
+### Capabilities
+
+The **Capabilities** handler (`--capabilities`) prints a single machine-readable JSON
+document describing what this version of Nadle can do, then exits without executing
+anything. It is intended for tools and agents that need to discover Nadle's surface
+programmatically instead of parsing help text or loading the configuration themselves.
+
+The document is the only output (no banner, footer, or logs) and has the shape:
+
+- `version` — the Nadle version that produced the document.
+- `flags` — the full list of recognized CLI flags, each with its `name`, `type`,
+  `description`, optional `default`, optional `choices`, and `aliases`. This list is
+  **derived from the same definitions that drive option parsing**, so it can never drift
+  from the flags Nadle actually accepts. Internal/hidden flags are omitted.
+- `tasks` — the tasks discovered from the live configuration (exactly the set `--list`
+  would show), each with its identifier, name, label, workspace, and optional `group`
+  and `description`.
+- `config` — a JSON Schema describing the task configuration object accepted in a
+  configuration file (the fields a task may declare, e.g. `dependsOn`, `env`,
+  `workingDir`, `inputs`, `outputs`, and caching/retry controls).
+
+Because task discovery loads the configuration, configuration errors surface here as they
+would for any other handler; when the configuration loads, the handler always succeeds.
 
 ### Handler Interface
 
