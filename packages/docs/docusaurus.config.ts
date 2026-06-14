@@ -19,7 +19,8 @@ const config: Config = {
 	organizationName: "nadlejs",
 
 	onBrokenLinks: "throw",
-	onBrokenMarkdownLinks: "warn",
+	onBrokenAnchors: "throw",
+	onBrokenMarkdownLinks: "throw",
 
 	customFields: {
 		version: NadlePackageJson.version

@@ -69,6 +69,7 @@ const config = {
 		"esbuild",
 		"keytar",
 		"Uncategorized",
+		"reimplementation",
 		...extractLibraryNames()
 	],
 	ignorePaths: [

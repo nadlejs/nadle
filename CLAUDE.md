@@ -2,6 +2,32 @@
 
 A type-safe, Gradle-inspired task runner for Node.js. See [ROADMAP.md](./ROADMAP.md) for vision.
 
+## Spec-Driven Workflow (read first)
+
+`spec/` is the **single source of truth** for all Nadle behavior. Code and docs derive from it.
+
+- **Spec first.** For any change to behavior, public API, or a CLI/config option: update
+  `spec/` first (it's the design), then implement to match, then update derived artifacts.
+  When code already diverges, the spec wins — fix the code, unless the current behavior is
+  deliberately the better contract (say so).
+- **Spec is language/library-agnostic.** It describes _what_ Nadle does so any language can
+  reimplement it. No languages, runtimes, libraries, tools, or internal symbol/file names —
+  only concepts and contracts (tasks, workspaces, DAG, cache keys, events, exit codes). Those
+  details live in code and `packages/docs/`.
+- **Spec upkeep.** Each `spec/NN-*.md` owns one concept; a new one adds a `spec/README.md` TOC
+  row + glossary entry. Every change adds a `spec/CHANGELOG.md` entry and bumps the
+  `spec/README.md` version (semver: major = breaking, minor = new section, patch = fix).
+  `checkLinks` validates spec links/anchors.
+
+**Definition of Done** — a behavior/API/CLI change updates ALL applicable, same PR:
+
+- `spec/` (first, + CHANGELOG + version).
+- `packages/docs/` — concepts/guides + reference pages (`config-reference.md` per option,
+  `cli-reference.md` per flag, regenerated). New flags/options match **type/choices/default**
+  in both the reference table and the spec; new pages wired into `sidebars.ts`.
+- `packages/nadle/index.api.md` — regenerated after any export change.
+- Option-dump snapshots — regenerated for any new resolved option (see Testing).
+
 ## Project Structure
 
 ```
@@ -29,17 +55,7 @@ The IntelliJ plugin lives in a separate repo: [nadlejs/intellij-plugin](https://
 
 ## Architecture
 
-- **Specification**: `spec/` contains the language-agnostic specification — the single source of
-  truth for all Nadle behavior, concepts, and contracts. Always consult these files first when
-  understanding or modifying Nadle's behavior. If you discover behavior, concepts, or contracts
-  that are missing or outdated in the spec, update the relevant `spec/` files to keep them
-  accurate. When updating spec files, also add an entry to `spec/CHANGELOG.md` and bump the
-  version in `spec/README.md` following semver (major for breaking behavioral changes, minor
-  for new concepts/sections, patch for clarifications).
-- **User-facing docs**: `packages/docs/` is the Docusaurus site (nadle.dev). When a change is
-  significant to users (new feature, changed behavior, new CLI flag, new API, breaking change),
-  update the relevant docs pages. Key areas: `docs/concepts/` for core concepts, `docs/guides/`
-  for how-to guides, `docs/api/` for API reference, `docs/config-reference.md` for configuration.
+- **Spec & docs**: see [Spec-Driven Workflow](#spec-driven-workflow-read-first) above.
 - **Package dependency graph**:
   ```
   @nadle/kernel ──┬──→ @nadle/project-resolver ──┬──→ nadle
@@ -59,7 +75,7 @@ The IntelliJ plugin lives in a separate repo: [nadlejs/intellij-plugin](https://
 - **Entry**: `src/cli.ts` (yargs) → `Nadle` class → handler chain
 - **Task lifecycle**: Registration (`tasks.register`) → Scheduling (topological sort, DAG) →
   Execution (tinypool worker threads) → Reporting
-- **Caching**: Input fingerprinting + output snapshots in `.nadle/` directory
+- **Caching**: Input fingerprinting + output snapshots in `node_modules/.cache/nadle/`
 - **Config loading**: `jiti` transpiles `nadle.config.ts` at runtime
 - **Public API**: Exported from `src/index.ts`, tracked by `api-extractor` in `index.api.md`
 
@@ -114,33 +130,6 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 - **Release**: `release-please` for automated changelog + version bumps
 - **CI**: Ubuntu + macOS + Windows, Node 22/24
 
-## Definition of Done (keep spec/docs/impl in sync)
-
-The `spec/` directory is the single source of truth and `packages/docs/` is the
-user-facing contract. They drift silently because nothing fails CI when they fall
-behind the code. Any change to **behavior, a public API, or a CLI/config option**
-is not done until every applicable item below is updated **in the same PR**:
-
-- **Spec** (`spec/`): update the relevant numbered section so it matches the new
-  behavior. New concept → new/expanded section (and a TOC + glossary entry in
-  `spec/README.md`). Always add a `spec/CHANGELOG.md` entry and bump
-  `spec/README.md` version (semver: major = breaking, minor = new
-  concept/section, patch = clarification/fix).
-- **User docs** (`packages/docs/`): update `docs/concepts/` and/or `docs/guides/`,
-  plus the reference pages — `docs/config-reference.md` for any config option and
-  `docs/cli-reference.md` for any CLI flag. A new flag/option must appear in BOTH
-  the reference tables and the spec, with matching **type, choices, and default**.
-  Wire any new doc page into `packages/docs/sidebars.ts`.
-- **Public API** (`packages/nadle/index.api.md`): regenerate from
-  `build/api/index.api.md` after any export change (see Build & Release).
-- **Option-dump snapshots**: any new resolved option also requires regenerating
-  all option-dump snapshots (see Testing / project memory).
-
-Before claiming a feature is complete, grep the spec and the two reference docs
-for the option/flag/symbol names you touched and confirm the type/default/choices
-agree with the code. CLI flag tables and worker/cache defaults are the usual drift
-sites.
-
 ## Testing
 
 ```bash
@@ -157,11 +146,3 @@ nadle, create-nadle, language-server, kernel, project-resolver, eslint-plugin).
 - Retries: 5 on CI, 2 locally
 - Custom matchers in `test/__setup__/matchers/`
 - Type-level tests in `*.test-d.ts` files
-
-## Active Technologies
-
-- TypeScript 5.9.3, ESM only, target node22
-- **nadle**: tinypool (worker threads), jiti (config loading), tsup (bundler)
-- **@nadle/kernel**: zero runtime dependencies
-- **@nadle/project-resolver**: `@manypkg/find-root`, `@manypkg/tools`, `find-up`
-- **eslint-plugin-nadle**: `@typescript-eslint/utils`, `eslint ^9.0.0` (peer)

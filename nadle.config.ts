@@ -49,10 +49,15 @@ tasks.register("validate", PnpxTask, { command: "tsx", args: "./src/index.ts" })
 	description: "Run package validators"
 });
 
+tasks.register("checkLinks", PnpxTask, { command: "remark", args: ["--quiet", "--frail", "spec/"] }).config({
+	group: "Checking",
+	description: "Check for broken Markdown links and anchors in the spec"
+});
+
 tasks.register("check").config({
 	group: "Checking",
-	dependsOn: ["spell", "eslint", "prettier", "knip", "validate"],
-	description: "Run all checks (spell, lint, format, knip, validate)"
+	description: "Run all checks (spell, lint, format, knip, validate, links)",
+	dependsOn: ["spell", "eslint", "prettier", "knip", "validate", "checkLinks"]
 });
 
 // --- Building (nadle-specific, kept here due to workspace self-reference limitation) ---
