@@ -176,6 +176,7 @@ export interface NadleBaseOptions {
 export class NadleError extends Error {
     constructor(message: string, errorCode?: number, options?: ErrorOptions);
     readonly errorCode: number;
+    toStructured(): StructuredError;
 }
 
 // @public
@@ -303,6 +304,14 @@ export interface RunnerContext {
 }
 
 // @public
+export interface StructuredError {
+    readonly errorCode: number;
+    readonly errorType: string;
+    readonly message: string;
+    readonly task?: string;
+}
+
+// @public
 export type SupportLogLevel = (typeof SupportLogLevels)[number];
 
 // @public
@@ -354,7 +363,14 @@ export type TaskEnv = Record<string, string | number | boolean>;
 
 // @public
 export class TaskExecutionError extends NadleError {
-    constructor(message: string, options?: ErrorOptions);
+    constructor(message: string, options?: TaskExecutionErrorOptions);
+    readonly task?: string;
+    toStructured(): StructuredError;
+}
+
+// @public
+export interface TaskExecutionErrorOptions extends ErrorOptions {
+    readonly task?: string;
 }
 
 // @public
