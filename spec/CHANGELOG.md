@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.12.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--capabilities` handler. Emits a single machine-readable JSON document
+  describing this version's CLI flags (derived from the same definitions that drive
+  option parsing, so it cannot drift), the tasks discovered from the live configuration,
+  and a JSON Schema for the task configuration object. The document is the only output;
+  the handler performs no execution and mutates nothing.
+
 ## 3.11.0 — 2026-06-14
 
 ### Added

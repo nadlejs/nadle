@@ -44,6 +44,7 @@ nadle [tasks...] [options]
 | `--clean-cache`     | boolean                               | `false`                                  | Deletes all files in the cache directory. Can be used with --cache-dir to specify a custom location      |
 | `--summary`         | boolean                               | `false`                                  | Print a summary at the end of the run: task durations, critical path, and cache-miss hotspots            |
 | `--doctor`          | boolean                               | `false`                                  | Diagnose project, config, and cache health without executing tasks                                       |
+| `--capabilities`    | boolean                               | `false`                                  | Emit a machine-readable JSON description of CLI flags, tasks, and task configuration schema              |
 | `--exclude`, `-x`   | string[]                              | —                                        | Tasks to exclude from execution                                                                          |
 | `--log-level`       | `error` \| `log` \| `info` \| `debug` | `log`                                    | Set the logging level                                                                                    |
 | `--min-workers`     | string                                | `Os.availableParallelism() - 1`          | Minimum number of workers (integer or percentage)                                                        |

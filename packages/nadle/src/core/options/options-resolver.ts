@@ -28,6 +28,7 @@ export class OptionsResolver {
 		cleanCache: false,
 		showConfig: false,
 		maxCacheEntries: 5,
+		capabilities: false,
 		reporter: "default",
 		implicitDependencies: true,
 		excludedTasks: [] as string[],

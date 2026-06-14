@@ -75,6 +75,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly configKey?: string;
 	/** Show resolved configuration. */
 	readonly showConfig: boolean;
+	/** Emit a machine-readable JSON description of flags, tasks, and config instead of executing. */
+	readonly capabilities: boolean;
 }
 
 /**

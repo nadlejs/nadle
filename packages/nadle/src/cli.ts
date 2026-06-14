@@ -57,6 +57,7 @@ const parser = yargs(hideBin(Process.argv))
 		[CLIOptions.cleanCache.key]: CLIOptions.cleanCache.options,
 		[CLIOptions.showConfig.key]: CLIOptions.showConfig.options,
 		[CLIOptions.stacktrace.key]: CLIOptions.stacktrace.options,
+		[CLIOptions.capabilities.key]: CLIOptions.capabilities.options,
 		[CLIOptions.listWorkspaces.key]: CLIOptions.listWorkspaces.options
 	})
 	.version("version", "Show version number", Nadle.version)
@@ -78,6 +79,7 @@ const parser = yargs(hideBin(Process.argv))
 			CLIOptions.showConfig.key,
 			CLIOptions.configKey.key,
 			CLIOptions.doctor.key,
+			CLIOptions.capabilities.key,
 			CLIOptions.stacktrace.key
 		],
 		"Execution options:"
