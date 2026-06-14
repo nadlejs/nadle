@@ -1,5 +1,5 @@
-import { type Task } from "../interfaces/task.js";
 import { type TaskSpec } from "./api.js";
+import { type Task } from "../interfaces/task.js";
 
 /**
  * Parameters for defining a task.

@@ -85,9 +85,7 @@ function isFunctionLike(node: ts.Expression): boolean {
 const CONFIG_KEYS = new Set(["dependsOn", "description", "group", "inputs", "outputs"]);
 
 function extractConfig(spec: ts.ObjectLiteralExpression, file: ts.SourceFile): TaskConfigInfo | null {
-	const hasConfigKey = spec.properties.some(
-		(prop) => ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name) && CONFIG_KEYS.has(prop.name.text)
-	);
+	const hasConfigKey = spec.properties.some((prop) => ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name) && CONFIG_KEYS.has(prop.name.text));
 
 	if (!hasConfigKey) {
 		return null;
@@ -133,8 +131,8 @@ function extractConfig(spec: ts.ObjectLiteralExpression, file: ts.SourceFile): T
 }
 
 interface ParsedSpec {
-	form: TaskRegistration["form"];
 	taskObjectName: string | null;
+	form: TaskRegistration["form"];
 	configuration: TaskConfigInfo | null;
 }
 
@@ -142,7 +140,7 @@ interface ParsedSpec {
  * Classifies the `run` property of a keyed spec object and resolves the task
  * object name when `run` references a Task identifier.
  */
-function classifyRun(spec: ts.ObjectLiteralExpression): { form: TaskRegistration["form"]; taskObjectName: string | null } {
+function classifyRun(spec: ts.ObjectLiteralExpression): { taskObjectName: string | null; form: TaskRegistration["form"] } {
 	const runProp = spec.properties.find(
 		(prop): prop is ts.PropertyAssignment => ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name) && prop.name.text === "run"
 	);
@@ -171,11 +169,11 @@ function classifyRun(spec: ts.ObjectLiteralExpression): { form: TaskRegistration
  */
 function parseSecondArg(secondArg: ts.Expression | undefined, file: ts.SourceFile): ParsedSpec {
 	if (!secondArg) {
-		return { form: "no-op", taskObjectName: null, configuration: null };
+		return { form: "no-op", configuration: null, taskObjectName: null };
 	}
 
 	if (isFunctionLike(secondArg)) {
-		return { form: "function", taskObjectName: null, configuration: null };
+		return { form: "function", configuration: null, taskObjectName: null };
 	}
 
 	if (ts.isObjectLiteralExpression(secondArg)) {
@@ -185,14 +183,14 @@ function parseSecondArg(secondArg: ts.Expression | undefined, file: ts.SourceFil
 	}
 
 	// Dynamic spec (e.g. lazy(...)): name is still resolvable, config is not.
-	return { form: "no-op", taskObjectName: null, configuration: null };
+	return { form: "no-op", configuration: null, taskObjectName: null };
 }
 
 function extractRegistration(registerCall: ts.CallExpression, file: ts.SourceFile): TaskRegistration {
 	const nameArg = registerCall.arguments[0];
 	const name = nameArg && ts.isStringLiteral(nameArg) ? nameArg.text : null;
 	const nameRange = nameArg ? toRange(nameArg, file) : toRange(registerCall, file);
-	const { form, taskObjectName, configuration } = parseSecondArg(registerCall.arguments[1], file);
+	const { form, configuration, taskObjectName } = parseSecondArg(registerCall.arguments[1], file);
 
 	return {
 		name,

@@ -1,6 +1,6 @@
-import { tasks, lazy, type Task } from "nadle";
+import { lazy, tasks, type Task } from "nadle";
 
-tasks.register("firstTask", { run: () => console.log({ FIRST_TASK_ENV: process.env.FIRST_TASK_ENV }), env: { FIRST_TASK_ENV: "first task env" } });
+tasks.register("firstTask", { env: { FIRST_TASK_ENV: "first task env" }, run: () => console.log({ FIRST_TASK_ENV: process.env.FIRST_TASK_ENV }) });
 
 const MyTask: Task = {
 	run: () => {
@@ -9,4 +9,7 @@ const MyTask: Task = {
 	}
 };
 
-tasks.register("secondTask", lazy(() => ({ run: MyTask, env: { SECOND_TASK_ENV: "second task env" } })));
+tasks.register(
+	"secondTask",
+	lazy(() => ({ run: MyTask, env: { SECOND_TASK_ENV: "second task env" } }))
+);

@@ -7,6 +7,9 @@ import { lazy, tasks, Inputs, Outputs } from "nadle";
 tasks.register(
 	"bundle-resources",
 	lazy(() => ({
+		outputs: [Outputs.dirs("dist")],
+		inputs: [Inputs.dirs("resources")],
+		env: { BUILD_MODE: process.env.BUILD_MODE ?? "development" },
 		run: async ({ context }) => {
 			for (const entry of await glob("resources/**/*.txt", {})) {
 				const path = Path.join(context.workingDir, entry);
@@ -17,9 +20,6 @@ tasks.register(
 				await Fs.mkdir(Path.dirname(outputPath), { recursive: true });
 				await Fs.writeFile(outputPath, modifiedContent);
 			}
-		},
-		outputs: [Outputs.dirs("dist")],
-		inputs: [Inputs.dirs("resources")],
-		env: { BUILD_MODE: process.env.BUILD_MODE ?? "development" }
+		}
 	}))
 );

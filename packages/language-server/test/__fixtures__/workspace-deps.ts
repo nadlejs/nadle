@@ -12,8 +12,8 @@ tasks.register("test", {
 // Reference to unknown workspace
 tasks.register("deploy", {
 	run: ExecTask,
-	options: { command: "deploy" },
-	dependsOn: "unknown-ws:build"
+	dependsOn: "unknown-ws:build",
+	options: { command: "deploy" }
 });
 
 // Reference to known workspace but unknown task

@@ -1,5 +1,5 @@
 import { it, describe, expectTypeOf } from "vitest";
-import { lazy, tasks, CopyTask, PnpmTask, defineSpec, type Task, type TaskSpec } from "nadle";
+import { lazy, tasks, CopyTask, PnpmTask, type Task, defineSpec, type TaskSpec } from "nadle";
 
 interface OptionalOptions {
 	readonly flag?: boolean;
@@ -33,8 +33,18 @@ describe.concurrent("tasks.register", () => {
 	});
 
 	it("accepts a lazy() wrapped spec for deferred config", () => {
-		expectTypeOf(tasks.register("check", lazy(() => ({ group: "build", dependsOn: ["install"], description: "Check something" })))).toEqualTypeOf<void>();
-		expectTypeOf(tasks.register("eslint", lazy(() => ({ run: PnpmTask, options: () => ({ args: ["eslint"] }) })))).toEqualTypeOf<void>();
+		expectTypeOf(
+			tasks.register(
+				"check",
+				lazy(() => ({ group: "build", dependsOn: ["install"], description: "Check something" }))
+			)
+		).toEqualTypeOf<void>();
+		expectTypeOf(
+			tasks.register(
+				"eslint",
+				lazy(() => ({ run: PnpmTask, options: () => ({ args: ["eslint"] }) }))
+			)
+		).toEqualTypeOf<void>();
 	});
 });
 

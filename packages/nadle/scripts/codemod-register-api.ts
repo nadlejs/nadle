@@ -214,7 +214,7 @@ export function migrateSource(source: string, fileName = "source.ts"): string {
 }
 
 /** Migrate a source string, returning the rewritten source and any manual-review sites. */
-export function migrateWithReviews(source: string, fileName = "source.ts"): { source: string; reviews: ManualReview[]; } {
+export function migrateWithReviews(source: string, fileName = "source.ts"): { source: string; reviews: ManualReview[] } {
 	const project = new Project({ useInMemoryFileSystem: true });
 	const sourceFile = project.createSourceFile(fileName, source, { overwrite: true });
 	const reviews: ManualReview[] = [];

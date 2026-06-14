@@ -16,20 +16,20 @@ tasks.register("build", { dependsOn: ["test", "compile"] });
 
 tasks.register("base");
 tasks.register("fast", {
+	dependsOn: ["base"],
 	run: async () => {
 		await new Promise((r) => setTimeout(r, 1000));
-	},
-	dependsOn: ["base"]
+	}
 });
 tasks.register("slow", {
+	dependsOn: ["base"],
 	run: async () => {
 		await new Promise((r) => setTimeout(r, 2000));
-	},
-	dependsOn: ["base"]
+	}
 });
 
 tasks.register("keyed", {
-	run: () => console.log("keyed ran"),
 	group: "New",
-	description: "keyed-spec task"
+	description: "keyed-spec task",
+	run: () => console.log("keyed ran")
 });

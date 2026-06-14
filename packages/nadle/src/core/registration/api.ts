@@ -40,9 +40,9 @@ export type TaskSpec<Options = void> = TaskConfiguration &
 	// Tuple wrapping `[void] extends [Options]` suppresses distributivity: plain
 	// `void extends Options` distributes over unions and lands void in the wrong branch.
 	([void] extends [Options]
-		? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
+		? { options?: Resolver<Options>; run?: TaskFn | Task<Options> }
 		: {} extends Options
-			? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
+			? { options?: Resolver<Options>; run?: TaskFn | Task<Options> }
 			: { run: Task<Options>; options: Resolver<Options> });
 
 /** Stable public name for register's spec argument; internals of TaskSpec can be refined without breaking callers. Thunk form intentionally dropped. */
@@ -104,8 +104,8 @@ export const tasks: TasksAPI = {
 };
 
 interface NormalizedSpec {
-	readonly run: TaskFn | Task | undefined;
 	readonly options: Resolver | undefined;
+	readonly run: TaskFn | Task | undefined;
 	readonly getConfig: () => TaskConfiguration;
 }
 
@@ -117,7 +117,7 @@ interface NormalizedSpec {
  */
 function normalizeSecondArg(second?: TaskFn | SpecArg<unknown> | LazySpec): NormalizedSpec {
 	if (typeof second === "function") {
-		return { run: second as TaskFn, options: undefined, getConfig: () => ({}) };
+		return { options: undefined, run: second as TaskFn, getConfig: () => ({}) };
 	}
 
 	if (isLazySpec(second)) {
@@ -141,7 +141,7 @@ function normalizeSecondArg(second?: TaskFn | SpecArg<unknown> | LazySpec): Norm
 	if (second !== undefined) {
 		const { run: specRun, options: specOptions, ...config } = second as TaskSpec;
 
-		return { run: specRun as TaskFn | Task | undefined, options: specOptions as Resolver | undefined, getConfig: () => config };
+		return { getConfig: () => config, run: specRun as TaskFn | Task | undefined, options: specOptions as Resolver | undefined };
 	}
 
 	return { run: undefined, options: undefined, getConfig: () => ({}) };

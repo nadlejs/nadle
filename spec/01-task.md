@@ -12,11 +12,11 @@ ensuring full isolation between instances. A registration associates a name with
 optional **task body** and a set of **configuration** fields. There are three
 registration forms:
 
-| Form       | Provides                                | Description                                                                                             |
-| ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| No-op      | name only                               | Registers a lifecycle-only task with no function body. Useful as an aggregation point for dependencies. |
-| Function   | name + a function body                  | Registers a task with a function that receives a runner context.                                        |
-| Typed task | name + a typed task body + an options resolver | Registers a reusable task type with typed options. The resolver provides those options.          |
+| Form       | Provides                                       | Description                                                                                             |
+| ---------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| No-op      | name only                                      | Registers a lifecycle-only task with no function body. Useful as an aggregation point for dependencies. |
+| Function   | name + a function body                         | Registers a task with a function that receives a runner context.                                        |
+| Typed task | name + a typed task body + an options resolver | Registers a reusable task type with typed options. The resolver provides those options.                 |
 
 For the typed-task form, the options resolver is **optional when the options type has no
 required fields** (an empty object satisfies it); in that case the options default to an

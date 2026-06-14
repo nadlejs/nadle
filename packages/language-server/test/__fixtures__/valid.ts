@@ -8,9 +8,9 @@ tasks.register("clean-cache");
 tasks.register("compile", {
 	run: ExecTask,
 	group: "build",
-	options: { command: "tsc", args: ["--build"] },
 	outputs: [Outputs.dirs("lib")],
 	description: "Compile TypeScript",
+	options: { command: "tsc", args: ["--build"] },
 	inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")]
 });
 

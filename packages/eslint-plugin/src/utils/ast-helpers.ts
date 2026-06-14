@@ -83,11 +83,7 @@ function isTaskActionFunction(node: TSESTree.Node): boolean {
 		if (specObject?.type === AST_NODE_TYPES.ObjectExpression) {
 			const registerCall = specObject.parent;
 
-			if (
-				registerCall?.type === AST_NODE_TYPES.CallExpression &&
-				registerCall.arguments[1] === specObject &&
-				isTasksRegisterCall(registerCall)
-			) {
+			if (registerCall?.type === AST_NODE_TYPES.CallExpression && registerCall.arguments[1] === specObject && isTasksRegisterCall(registerCall)) {
 				return true;
 			}
 		}

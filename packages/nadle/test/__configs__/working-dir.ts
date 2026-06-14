@@ -4,8 +4,8 @@ const printWorkingDirTask: Task = {
 	run: ({ context }) => console.log(`Current working directory: ${context.workingDir}`)
 };
 
-tasks.register("current", { run: ({ context }) => console.log(`Current working directory: ${context.workingDir}`), workingDir: "." });
-tasks.register("oneLevelDown", { run: printWorkingDirTask, workingDir: "./subdir1" });
+tasks.register("current", { workingDir: ".", run: ({ context }) => console.log(`Current working directory: ${context.workingDir}`) });
+tasks.register("oneLevelDown", { workingDir: "./subdir1", run: printWorkingDirTask });
 tasks.register("twoLevelsDown", { run: printWorkingDirTask, workingDir: "./subdir1/subdir2" });
-tasks.register("oneLevelUp", { run: printWorkingDirTask, workingDir: ".." });
-tasks.register("twoLevelsUp", { run: printWorkingDirTask, workingDir: "../.." });
+tasks.register("oneLevelUp", { workingDir: "..", run: printWorkingDirTask });
+tasks.register("twoLevelsUp", { workingDir: "../..", run: printWorkingDirTask });

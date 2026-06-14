@@ -15,10 +15,10 @@ ruleTester.run("no-circular-dependencies", rule, {
 		},
 		{
 			name: "self-reference (a -> a)",
-			errors: [{ messageId: "circular", data: { cycle: "a -> a" } }],
 			code: `
 				tasks.register("a", { dependsOn: ["a"] });
-			`
+			`,
+			errors: [{ messageId: "circular", data: { cycle: "a -> a" } }]
 		},
 		{
 			name: "transitive cycle (a -> b -> c -> a)",

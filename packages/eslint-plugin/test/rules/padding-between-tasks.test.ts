@@ -65,8 +65,8 @@ tasks.register("test");
 			`.trim()
 		},
 		{
-			errors: [{ messageId: "needsPadding" as const }],
 			name: "no empty line between keyed spec tasks",
+			errors: [{ messageId: "needsPadding" as const }],
 			code: `
 tasks.register("build", { description: "Build" });
 tasks.register("test", { description: "Test" });

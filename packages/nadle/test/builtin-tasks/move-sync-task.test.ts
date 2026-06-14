@@ -64,34 +64,34 @@ describe.skipIf(isWindows).concurrent("moveTask", () => {
 describe.skipIf(isWindows).concurrent("syncTask", () => {
 	it("mirrors the source, deleting extraneous files and empty directories", () =>
 		withGeneratedFixture({
-			files: makeFixture(
-				[
-					`tasks.register("seed", { run: CopyTask, options: { from: "other", into: "dist/stale" } });`,
-					`tasks.register("sync", { run: SyncTask, options: { from: "assets", into: "dist" } });`
-				].join("\n")
-			),
 			testFn: async ({ cwd, exec }) => {
 				await getStdout(exec`seed`);
 				await getStdout(exec`sync`);
 
 				expect(readFiles(cwd)["dist"]).toEqual({ "bar.txt": "bar contents", sub: { "baz.txt": "baz contents" } });
-			}
+			},
+			files: makeFixture(
+				[
+					`tasks.register("seed", { run: CopyTask, options: { from: "other", into: "dist/stale" } });`,
+					`tasks.register("sync", { run: SyncTask, options: { from: "assets", into: "dist" } });`
+				].join("\n")
+			)
 		}));
 
 	it("keeps files matching preserve patterns", () =>
 		withGeneratedFixture({
-			files: makeFixture(
-				[
-					`tasks.register("seed", { run: CopyTask, options: { from: "other", into: "dist" } });`,
-					`tasks.register("sync", { run: SyncTask, options: { from: "assets", into: "dist", preserve: ["qux.*"] } });`
-				].join("\n")
-			),
 			testFn: async ({ cwd, exec }) => {
 				await getStdout(exec`seed`);
 				await getStdout(exec`sync`);
 
 				expect(readFiles(cwd)["dist"]).toEqual({ "bar.txt": "bar contents", "qux.txt": "qux contents", sub: { "baz.txt": "baz contents" } });
-			}
+			},
+			files: makeFixture(
+				[
+					`tasks.register("seed", { run: CopyTask, options: { from: "other", into: "dist" } });`,
+					`tasks.register("sync", { run: SyncTask, options: { from: "assets", into: "dist", preserve: ["qux.*"] } });`
+				].join("\n")
+			)
 		}));
 
 	it("overwrites stale content at the destination", () =>

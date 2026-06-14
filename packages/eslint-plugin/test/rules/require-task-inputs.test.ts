@@ -10,8 +10,8 @@ describe("require-task-inputs", () => {
 		invalid: [
 			{
 				name: "outputs without inputs",
-				errors: [{ data: { name: "build" }, messageId: "missingInputs" as const }],
-				code: `tasks.register("build", { outputs: [Outputs.dirs("lib")] });`
+				code: `tasks.register("build", { outputs: [Outputs.dirs("lib")] });`,
+				errors: [{ data: { name: "build" }, messageId: "missingInputs" as const }]
 			},
 			{
 				name: "outputs present, inputs missing",

@@ -1,7 +1,7 @@
 import { it, expect, describe } from "vitest";
 import { type Project } from "@nadle/project-resolver";
 
-import { tasks, lazy } from "../../src/core/registration/api.js";
+import { lazy, tasks } from "../../src/core/registration/api.js";
 import { runWithInstance } from "../../src/core/nadle-context.js";
 import { TaskRegistry } from "../../src/core/registration/task-registry.js";
 

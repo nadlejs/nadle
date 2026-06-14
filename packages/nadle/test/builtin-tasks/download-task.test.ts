@@ -48,7 +48,9 @@ describe.skipIf(isWindows).concurrent("downloadTask", () => {
 			(_request, response) => response.end(CONTENT),
 			(baseUrl) =>
 				withGeneratedFixture({
-					files: makeFixture(`tasks.register("download", { run: DownloadTask, options: { url: "${baseUrl}/file.txt", into: "dist", sha256: "${"0".repeat(64)}" } });`),
+					files: makeFixture(
+						`tasks.register("download", { run: DownloadTask, options: { url: "${baseUrl}/file.txt", into: "dist", sha256: "${"0".repeat(64)}" } });`
+					),
 					testFn: async ({ cwd, exec }) => {
 						const { stdout, stderr, exitCode } = await settle(exec`download --stacktrace`);
 
@@ -73,7 +75,9 @@ describe.skipIf(isWindows).concurrent("downloadTask", () => {
 						expect(stdout).toContain("Skip download");
 					},
 					files: {
-						...makeFixture(`tasks.register("download", { run: DownloadTask, options: { url: "${baseUrl}/file.txt", into: "dist", sha256: "${DIGEST}" } });`),
+						...makeFixture(
+							`tasks.register("download", { run: DownloadTask, options: { url: "${baseUrl}/file.txt", into: "dist", sha256: "${DIGEST}" } });`
+						),
 						dist: { "file.txt": CONTENT }
 					}
 				})

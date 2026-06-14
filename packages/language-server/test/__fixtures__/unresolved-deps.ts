@@ -19,6 +19,6 @@ tasks.register("deploy", {
 // Single string dependsOn with typo
 tasks.register("release", {
 	run: ExecTask,
-	options: { command: "npm" },
-	dependsOn: "typo-task"
+	dependsOn: "typo-task",
+	options: { command: "npm" }
 });

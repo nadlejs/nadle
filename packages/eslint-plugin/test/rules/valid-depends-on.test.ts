@@ -85,8 +85,8 @@ ruleTester.run("valid-depends-on", rule, {
 		},
 		{
 			errors: [{ messageId: "invalidWorkspaceRef" }],
-			name: "workspace-qualified with empty task name (trailing colon)",
-			code: 'tasks.register("build", { dependsOn: ["shared:"] })'
+			code: 'tasks.register("build", { dependsOn: ["shared:"] })',
+			name: "workspace-qualified with empty task name (trailing colon)"
 		},
 		{
 			name: "colon only (empty workspace and task)",

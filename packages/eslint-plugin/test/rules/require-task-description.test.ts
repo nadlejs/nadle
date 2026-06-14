@@ -31,8 +31,8 @@ describe("require-task-description", () => {
 		],
 		invalid: [
 			{
-				code: 'tasks.register("build")',
 				name: "register without spec",
+				code: 'tasks.register("build")',
 				errors: [{ data: { name: "build" }, messageId: "missingConfig" as const }]
 			},
 			{
