@@ -68,8 +68,11 @@ The spec object is `TaskSpec<Options>`:
 interface TaskSpec<Options = void> extends TaskConfiguration {
   /** Inline function or a Task object. Omit for placeholder/aggregator tasks. */
   run?: TaskFn | Task<Options>;
-  /** Options for a Task body. Present/required per the rules below. */
-  options?: Options;
+  /** Options for a Task body — a value OR a resolver thunk returning it
+   *  (`Resolver<Options> = Options | (() => Options)`). Present/required per
+   *  the rules below. The thunk form subsumes the old `optionsResolver`
+   *  positional, so options can be computed lazily without a separate axis. */
+  options?: Resolver<Options>;
 }
 // TaskConfiguration already carries group, description, dependsOn, inputs,
 // outputs, env, workingDir, timeout, retries, maxCacheEntries.
@@ -112,12 +115,13 @@ keyed field via a conditional mapped type rather than a conditional tuple:
 type TaskSpec<Options> =
   TaskConfiguration &
   ({} extends Options
-    ? { run?: TaskFn | Task<Options>; options?: Options }
-    : { run: Task<Options>; options: Options });
+    ? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
+    : { run: Task<Options>; options: Resolver<Options> });
 ```
 
 - Body is `void`/no options → `options` may be omitted.
-- Body is `Task<{ command: string }>` → `options` is required and type-checked.
+- Body is `Task<{ command: string }>` → `options` is required and type-checked
+  (value or a `() => { command: string }` thunk).
 - Inline `fn` body → `options` forbidden (a function takes no nadle options).
 
 ### `run` vs config-field collision
@@ -230,6 +234,44 @@ entry, bump `spec/README.md` version (**major** — breaking), and reconcile any
 spec example that shows the old call shape. Done first, per the spec-driven
 workflow.
 
+## Limitations & extensibility
+
+The keyed spec is net-positive for extensibility — it **converges** the public
+API with the existing plugin shape (`PluginTask` is already
+`{ name, task, config?, optionsResolver? }`), so one `TaskSpec` type can back
+both. But three constraints are called out explicitly so future work isn't
+surprised.
+
+### Resolved in this design
+
+- **Lazy/computed options (was a dropped axis).** The current public API and
+  `PluginTask` both expose `optionsResolver` (`Resolver<T> = T | (() => T)`). An
+  earlier draft of this spec dropped it. Fixed: `options` now accepts
+  `Resolver<Options>` (value **or** thunk), subsuming `optionsResolver` into one
+  key rather than a separate positional/field. `computeTaskInfo` already
+  normalizes value-or-thunk (`api.ts:121`), so the runtime is unchanged.
+
+- **Plugin per-task metadata (flat-namespace extension point).** `TaskSpec`
+  flattens body + options + ~10 config fields into one object. Without a plan,
+  a plugin wanting to attach task-level metadata (e.g. a cache policy, tags) has
+  nowhere typed to put it. **Decision:** plugins extend `TaskConfiguration` via
+  **TypeScript declaration merging** (module augmentation of the
+  `TaskConfiguration` interface) under a plugin-namespaced key, not by adding
+  bare top-level keys. The reserved-key set (`run`, `options`) is documented so
+  augmentation can never shadow the body axes. This keeps the flat ergonomics
+  for users while giving plugins a sound, collision-resistant typed slot.
+
+### Out of scope — a model constraint, not an API-shape one
+
+- **Type-safe `dependsOn` is blocked by the imperative registration model, not
+  by this object shape.** A `TaskName` union for `dependsOn` would need all task
+  names known at type-check time. Tasks register imperatively top-to-bottom, and
+  cross-workspace refs (`pkg:build`, `//root:build`) are not local names — so a
+  "names-seen-so-far" union cannot cover forward or cross-workspace deps. The
+  keyed object makes `dependsOn` the natural home for such a type *later*, but
+  achieving it likely requires a declaration-model shift (collect-then-resolve),
+  designed separately. This redesign neither solves nor worsens it.
+
 ## Alternatives considered
 
 - **Gradle trailing closure** — `register(name, body, options, (t) => {...})`.
@@ -253,6 +295,10 @@ workflow.
 - *Options strictness?* → required iff `Options` has required fields (conditional
   mapped type).
 - *`.config()` fate?* → removed; codemod migrates.
+- *Lazy/computed options?* → `options` accepts `Resolver<Options>` (value or
+  thunk); subsumes the old `optionsResolver` axis.
+- *Plugin per-task metadata?* → declaration-merging `TaskConfiguration` under a
+  namespaced key; `run`/`options` reserved.
 
 ## Out of scope (future specs)
 
