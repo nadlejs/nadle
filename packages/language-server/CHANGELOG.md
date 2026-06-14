@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.6](https://github.com/nadlejs/nadle/compare/language-server/v0.0.5...language-server/v0.0.6) (2026-06-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.0.5](https://github.com/nadlejs/nadle/compare/language-server/v0.0.4...language-server/v0.0.5) (2026-06-12)
 
 
