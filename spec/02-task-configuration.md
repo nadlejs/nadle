@@ -82,3 +82,12 @@ original values afterward.
 The `workingDir` field is resolved relative to the project root workspace's absolute path.
 If omitted, it defaults to the project root. The resolved absolute path is provided to
 the task function via the runner context.
+
+## Timeouts and Retries
+
+`timeout` (milliseconds, positive integer) bounds each execution attempt of the
+task function; an attempt that does not settle in time fails with a timeout error.
+`retries` (non-negative integer, default `0`) is the number of additional attempts
+after the first failure. Together a task runs up to `1 + retries` attempts and
+fails only if all attempts fail. Both apply only to the task function, not to
+cache restore. See [04-execution.md](04-execution.md).

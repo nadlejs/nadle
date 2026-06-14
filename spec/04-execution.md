@@ -64,6 +64,29 @@ There is **no explicit "done" message**. Completion is inferred:
    - **cache-miss**: log reasons, send `"start"`, apply env, execute, restore env,
      save outputs and metadata.
 
+## Timeouts and Retries
+
+A task may declare a `timeout` (milliseconds) and/or a `retries` count (see
+[02-task-configuration.md](02-task-configuration.md)). They apply only to the
+execution of the task function — never to cache restore, which is not retried or
+timed.
+
+- **Attempt** — one invocation of the task function. A task runs up to
+  `1 + retries` attempts (default `retries` is `0`, i.e. a single attempt).
+- **Timeout** — if `timeout` is set, each attempt is bounded. An attempt that
+  does not settle within `timeout` milliseconds fails with a timeout error. The
+  task function is not forcibly interrupted (its asynchronous work may continue);
+  the attempt is treated as failed for scheduling and retry purposes.
+- **Retry** — when an attempt fails (including by timeout), the task is retried
+  until it succeeds or the attempts are exhausted. The final failure (the last
+  attempt's error) is the task's error. A succeeding attempt makes the task
+  succeed regardless of earlier failures.
+- Environment injection is applied and restored around the attempts, not around
+  each individual attempt.
+
+`timeout` must be a positive integer and `retries` a non-negative integer;
+otherwise a configuration error is raised.
+
 ## Environment Injection
 
 Before executing the task function:

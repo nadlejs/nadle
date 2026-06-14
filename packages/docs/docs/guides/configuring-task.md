@@ -128,6 +128,36 @@ tasks.register("build").config({
 });
 ```
 
+## timeout
+
+- **Type:** `number` (milliseconds, positive integer)
+
+Bounds each execution attempt of the task. An attempt that does not settle within the
+timeout fails with a timeout error (and is eligible for `retries`). The task function is
+not forcibly interrupted; the attempt is treated as failed.
+
+```ts
+tasks.register("deploy").config({
+	timeout: 30_000
+});
+```
+
+## retries
+
+- **Type:** `number` (non-negative integer, default `0`)
+
+Number of additional attempts after the first failure. The task runs up to `1 + retries`
+attempts and fails only if every attempt fails. Useful for inherently flaky steps (network,
+external services). Both `timeout` and `retries` apply only to the task function, never to
+restoring outputs from cache.
+
+```ts
+tasks.register("flaky-check").config({
+	retries: 2,
+	timeout: 10_000
+});
+```
+
 :::tip
 
 You can also use a function to return a configuration object.

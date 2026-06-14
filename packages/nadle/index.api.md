@@ -339,6 +339,8 @@ export interface TaskConfiguration {
     inputs?: MaybeArray<Declaration>;
     maxCacheEntries?: number;
     outputs?: MaybeArray<Declaration>;
+    retries?: number;
+    timeout?: number;
     workingDir?: string;
 }
 

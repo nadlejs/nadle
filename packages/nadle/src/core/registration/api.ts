@@ -93,7 +93,7 @@ export const tasks: TasksAPI = {
 
 			taskRegistry.register({
 				name,
-				configResolver: () => (resolved ??= typeof configCollector === "function" ? configCollector() : configCollector),
+				configResolver: () => (resolved ??= validateConfig(name, typeof configCollector === "function" ? configCollector() : configCollector)),
 				...computeTaskInfo(task, optionsResolver)
 			});
 		};
@@ -125,4 +125,16 @@ function validateTaskName(name: string): void {
 	if (!VALID_TASK_NAME_PATTERN.test(name)) {
 		throw new ConfigurationError(Messages.InvalidTaskName(`[${name}]`));
 	}
+}
+
+function validateConfig(name: string, config: TaskConfiguration): TaskConfiguration {
+	if (config.timeout !== undefined && (!Number.isInteger(config.timeout) || config.timeout <= 0)) {
+		throw new ConfigurationError(`Task ${name} has an invalid timeout: ${config.timeout}. Expected a positive integer.`);
+	}
+
+	if (config.retries !== undefined && (!Number.isInteger(config.retries) || config.retries < 0)) {
+		throw new ConfigurationError(`Task ${name} has an invalid retries: ${config.retries}. Expected a non-negative integer.`);
+	}
+
+	return config;
 }

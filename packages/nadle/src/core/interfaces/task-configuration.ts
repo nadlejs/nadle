@@ -50,6 +50,20 @@ export interface TaskConfiguration {
 	 * Overrides the global `maxCacheEntries` setting.
 	 */
 	maxCacheEntries?: number;
+
+	/**
+	 * Maximum time in milliseconds a single execution attempt may take.
+	 * An attempt that does not settle in time fails with a timeout error
+	 * (eligible for retry). Must be a positive integer.
+	 */
+	timeout?: number;
+
+	/**
+	 * Number of additional attempts after the first failure (default `0`).
+	 * The task runs up to `1 + retries` attempts and fails only if all fail.
+	 * Must be a non-negative integer.
+	 */
+	retries?: number;
 }
 
 /**

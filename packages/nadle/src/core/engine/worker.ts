@@ -5,6 +5,7 @@ import c from "tinyrainbow";
 import { getWorkspaceById } from "@nadle/project-resolver";
 
 import { Nadle } from "../nadle.js";
+import { runWithRetries } from "./task-runner.js";
 import { bindObject } from "../utilities/utils.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { type NadleResolvedOptions } from "../options/types.js";
@@ -86,7 +87,7 @@ export async function runTask(
 		nadle.logger.log(explainCacheOutcome(task.label, validationResult));
 	}
 
-	const ctx: DispatchContext = { task, notify, context, taskOptions, environmentInjector };
+	const ctx: DispatchContext = { task, notify, context, taskConfig, taskOptions, environmentInjector };
 
 	return dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
 }
@@ -137,6 +138,7 @@ interface DispatchContext {
 	notify: Notifier;
 	taskOptions: unknown;
 	context: RunnerContext;
+	taskConfig: TaskConfiguration;
 	environmentInjector: Injector<void>;
 	task: ReturnType<Nadle["taskRegistry"]["getTaskById"]>;
 }
@@ -199,7 +201,10 @@ async function executeTask(ctx: DispatchContext) {
 	ctx.environmentInjector.apply();
 
 	try {
-		await ctx.task.run({ context: ctx.context, options: ctx.taskOptions });
+		await runWithRetries(() => Promise.resolve(ctx.task.run({ context: ctx.context, options: ctx.taskOptions })), {
+			timeout: ctx.taskConfig.timeout,
+			retries: ctx.taskConfig.retries ?? 0
+		});
 	} finally {
 		// Restore even when the task throws: in the inline path this mutates the
 		// main process's env, so a skipped restore would leak into later tasks.

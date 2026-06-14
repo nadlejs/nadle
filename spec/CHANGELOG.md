@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.9.0 — 2026-06-14
+
+### Added
+
+- 02-task-configuration / 04-execution: Task `timeout` (milliseconds, positive
+  integer) and `retries` (non-negative integer, default 0). A task runs up to
+  `1 + retries` attempts; each attempt is bounded by `timeout` and an over-time
+  attempt fails (eligible for retry). Both apply only to the task function, not
+  to cache restore. Invalid values raise a configuration error.
+
 ## 3.8.0 — 2026-06-14
 
 ### Added
