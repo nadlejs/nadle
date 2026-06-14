@@ -46,9 +46,10 @@ function renderTaskRegistration(script: ScriptEntry): string {
 
 function renderBuiltinTask(script: ScriptEntry): string {
 	const options = buildTaskOptions(script);
-	const config = buildConfigChain(script);
+	const configFields = buildConfigFields(script);
+	const fields = [`run: ${script.taskType}`, `options: ${options}`, ...configFields];
 
-	return `tasks.register("${script.nadleTaskName}", ${script.taskType}, ${options})${config};\n`;
+	return `tasks.register("${script.nadleTaskName}", { ${fields.join(", ")} });\n`;
 }
 
 function buildTaskOptions(script: ScriptEntry): string {
@@ -112,7 +113,7 @@ function formatPmOptions(script: ScriptEntry): string {
 	return `{ args: [${argsStr}] }`;
 }
 
-function buildConfigChain(script: ScriptEntry): string {
+function buildConfigFields(script: ScriptEntry): string[] {
 	const parts: string[] = [];
 
 	if (script.dependsOn.length > 0) {
@@ -127,22 +128,25 @@ function buildConfigChain(script: ScriptEntry): string {
 		parts.push(`env: { ${entries} }`);
 	}
 
-	if (parts.length === 0) {
-		return "";
-	}
-
-	return `\n\t.config({ ${parts.join(", ")} })`;
+	return parts;
 }
 
 function renderInlineTask(script: ScriptEntry): string {
-	const config = buildConfigChain(script);
+	const configFields = buildConfigFields(script);
 
-	return `tasks.register("${script.nadleTaskName}", async () => {\n\t// TODO: review this migrated script\n\t// Original: ${script.command}\n})${config};\n`;
+	if (configFields.length === 0) {
+		return `tasks.register("${script.nadleTaskName}", async () => {\n\t// TODO: review this migrated script\n\t// Original: ${script.command}\n});\n`;
+	}
+
+	const run = `async () => {\n\t\t// TODO: review this migrated script\n\t\t// Original: ${script.command}\n\t}`;
+	const fields = [`run: ${run}`, ...configFields].map((field) => `\t${field}`).join(",\n");
+
+	return `tasks.register("${script.nadleTaskName}", {\n${fields}\n});\n`;
 }
 
 function renderDefaultTask(hasTypeScript: boolean): string {
 	if (hasTypeScript) {
-		return `tasks.register("build", ExecTask, { command: "tsc" });\n`;
+		return `tasks.register("build", { run: ExecTask, options: { command: "tsc" } });\n`;
 	}
 
 	return `tasks.register("build", async () => {\n\tconsole.log("Building project...");\n});\n`;
