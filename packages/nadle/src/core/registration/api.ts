@@ -22,7 +22,7 @@ export interface TasksAPI {
 	/**
 	 * Register a task from a keyed spec whose body (`run`) is a {@link Task}.
 	 * `Options` is inferred from `run` so `options` is demanded when the task
-	 * body has required option fields and omittable otherwise. Placed before the
+	 * body has required option fields and optional otherwise. Placed before the
 	 * config-only overload so TS prefers it whenever `run` is a Task object.
 	 */
 	register<Options>(
@@ -42,7 +42,7 @@ export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
 
 /**
  * A task registration spec. `run`/`options` are required when the task body's
- * `Options` has required fields, optional/omittable otherwise. Config fields
+ * `Options` has required fields, optional otherwise. Config fields
  * (group, dependsOn, …) come from TaskConfiguration and sit directly on the spec.
  * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
  */

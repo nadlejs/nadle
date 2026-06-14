@@ -57,7 +57,7 @@ export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
 
 /**
  * A task registration spec. `run`/`options` are required when the task body's
- * `Options` has required fields, optional/omittable otherwise. Config fields
+ * `Options` has required fields, optional otherwise. Config fields
  * (group, dependsOn, …) come from TaskConfiguration and sit directly on the spec.
  * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
  */

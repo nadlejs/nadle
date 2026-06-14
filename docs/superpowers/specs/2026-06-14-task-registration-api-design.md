@@ -98,7 +98,7 @@ shorthand is sugar for `{ }` and `{ run: fn }` respectively.
 | 4 | Task + required options | `register("eslint", { run: PnpxTask, options })` |
 | 5 | Task + options + config | `register("eslint", { run: PnpxTask, options, group, dependsOn })` |
 | 6 | lazy config | `register("x", lazy(() => ({ run, options, env })))` — `lazy()`-wrapped spec thunk, see Lazy |
-| 7 | optional options | `register("x", { run: MyTask })` — options omittable per rules |
+| 7 | optional options | `register("x", { run: MyTask })` — options optional per rules |
 | 8 | programmatic/spread | `register("task-A", defineSpec({...}))` — returns a `TaskSpec` |
 | 9 | context-using fn | `register("pwd", ({ context }) => ...)` — fn unchanged |
 
