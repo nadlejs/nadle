@@ -32,6 +32,12 @@ function toStructuredError(error: unknown): StructuredError {
 	};
 }
 
+/** A task name paired with its optional description, for shell completion menus. */
+export interface TaskCompletion {
+	readonly label: string;
+	readonly description: string | undefined;
+}
+
 export class Nadle implements ExecutionContext {
 	public static readonly version: string = "0.5.3"; // x-release-please-version
 
@@ -65,15 +71,24 @@ export class Nadle implements ExecutionContext {
 	}
 
 	/**
-	 * Resolves the project and loads config files to discover task labels, without
-	 * attaching any reporter or emitting lifecycle events. Used by shell completion.
+	 * Resolves the project and loads config files to discover task labels and their
+	 * descriptions, without attaching any reporter or emitting lifecycle events.
+	 * Used by shell completion to surface descriptions alongside task names.
 	 */
-	public async getTaskLabels(): Promise<string[]> {
+	public async getTaskCompletions(): Promise<TaskCompletion[]> {
 		this.#options = await runWithInstance(this, () =>
 			new OptionsResolver(this.logger, this.taskRegistry, this.fileOptionRegistry).resolve(this.cliOptions)
 		);
 
-		return [...new Set(this.taskRegistry.tasks.map((task) => task.label))].sort((a, b) => a.localeCompare(b));
+		const byLabel = new Map<string, TaskCompletion>();
+
+		for (const task of this.taskRegistry.tasks) {
+			if (!byLabel.has(task.label)) {
+				byLabel.set(task.label, { label: task.label, description: task.configResolver().description });
+			}
+		}
+
+		return [...byLabel.values()].sort((a, b) => a.label.localeCompare(b.label));
 	}
 
 	private resolveReporter(): Listener {

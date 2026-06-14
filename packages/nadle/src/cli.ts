@@ -3,9 +3,28 @@ import Process from "node:process";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { Nadle } from "./core/nadle.js";
 import { CLIOptions } from "./core/options/cli-options.js";
+import { Nadle, type TaskCompletion } from "./core/nadle.js";
 import { CLIOptionsResolver } from "./core/options/cli-options-resolver.js";
+
+// Matches how yargs itself detects zsh (SHELL / ZSH_NAME env). In zsh the completion
+// script feeds entries to `_describe`, which renders `value:description`. Other shells
+// (such as bash) treat the whole entry literally, so they get bare names.
+function isZshShell(): boolean {
+	const shell = Process.env.SHELL ?? "";
+	const zshName = Process.env.ZSH_NAME ?? "";
+
+	return shell.includes("zsh") || zshName.includes("zsh");
+}
+
+function formatCompletion(completion: TaskCompletion, zsh: boolean): string {
+	if (zsh && completion.description) {
+		// `_describe` splits on the first unescaped colon; escape colons in the name.
+		return `${completion.label.replace(/:/g, "\\:")}:${completion.description}`;
+	}
+
+	return completion.label;
+}
 
 // yargs completion callback signature is fixed (4 positional params).
 // eslint-disable-next-line max-params
@@ -19,9 +38,12 @@ async function completeTaskNames(current: string, completionArgv: Record<string,
 	}
 
 	try {
-		const labels = await new Nadle(CLIOptionsResolver.resolve(completionArgv as Parameters<typeof CLIOptionsResolver.resolve>[0])).getTaskLabels();
+		const completions = await new Nadle(
+			CLIOptionsResolver.resolve(completionArgv as Parameters<typeof CLIOptionsResolver.resolve>[0])
+		).getTaskCompletions();
+		const zsh = isZshShell();
 
-		done(labels);
+		done(completions.map((completion) => formatCompletion(completion, zsh)));
 	} catch {
 		// Completion must never surface errors; fall back to no task suggestions.
 		done([]);
