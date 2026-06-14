@@ -421,6 +421,7 @@ export const tasks: TasksAPI;
 export interface TasksAPI {
     register(name: string): void;
     register(name: string, fn: TaskFn): void;
+    register<Options>(name: string, spec: LazySpec<Options>): void;
     register<Options>(name: string, spec: TaskConfiguration & {
         run: Task<Options>;
     } & ({} extends Options ? {
@@ -431,7 +432,6 @@ export interface TasksAPI {
     register(name: string, spec: TaskConfiguration & {
         run?: TaskFn;
     }): void;
-    register<Options>(name: string, spec: LazySpec<Options>): void;
 }
 
 // @public
