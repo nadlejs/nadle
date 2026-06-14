@@ -217,7 +217,7 @@ function createEnvironmentInjector(originalEnv: NodeJS.ProcessEnv, taskEnv: Task
 
 	return {
 		apply() {
-			Object.assign(process.env, { ...originalEnv, ...taskEnv });
+			Object.assign(process.env, { ...originalEnv, ...serializedTaskEnv });
 		},
 		restore() {
 			for (const [key] of Object.entries(serializedTaskEnv)) {
