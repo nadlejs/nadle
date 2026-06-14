@@ -1,3 +1,5 @@
+// @ts-nocheck -- self-host config bootstraps on published nadle (old .config() API);
+// the local build's index.d.ts (new keyed API) shadows it via package self-reference. Migrates post-publish.
 import Path from "node:path";
 import Fs from "node:fs/promises";
 

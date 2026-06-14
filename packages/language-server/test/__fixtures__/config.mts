@@ -1,3 +1,4 @@
+// @ts-nocheck -- LSP fixture; analyzed as AST, not compiled
 import { tasks, Inputs, Outputs, ExecTask } from "nadle";
 
 tasks.register("compile", {

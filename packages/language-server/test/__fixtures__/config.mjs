@@ -1,3 +1,4 @@
+// @ts-nocheck -- LSP fixture; analyzed as AST, not compiled
 import { tasks, ExecTask } from "nadle";
 
 tasks.register("lint", { run: ExecTask, options: { command: "eslint", args: ["."] } });
