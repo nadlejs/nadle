@@ -59,7 +59,10 @@ tasks.register("check").config({
 
 tasks.register("typecheck", PnpxTask, { command: "tsgo", args: ["-b", "--noEmit"] }).config({
 	group: "Building",
-	dependsOn: ["compile"],
+	// Depends on bundle: test files import "nadle"/"@nadle/language-server", whose .d.ts
+	// are emitted by tsup (bundle), not by compile. Without this, typecheck can race ahead
+	// of bundle on a clean build and fail to resolve those package types.
+	dependsOn: ["compile", "bundle"],
 	description: "Type-check all project references"
 });
 
