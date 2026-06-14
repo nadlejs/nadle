@@ -187,6 +187,14 @@ export const CLIOptions = {
 			description: "Diagnose project, config, and cache health without executing tasks"
 		}
 	},
+	capabilities: {
+		key: "capabilities",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Emit a machine-readable JSON description of CLI flags, tasks, and task configuration schema"
+		}
+	},
 
 	exclude: {
 		key: "exclude",

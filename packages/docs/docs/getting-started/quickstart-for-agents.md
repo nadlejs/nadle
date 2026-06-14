@@ -155,6 +155,36 @@ nadle --explain test --json
 ]
 ```
 
+## Discovering capabilities
+
+`nadle --capabilities` prints a single machine-readable JSON document describing what this
+version of Nadle can do, then exits without running anything. Use it to discover Nadle's
+surface programmatically instead of parsing `--help` or loading the config yourself. The
+document is the only output (no banner or footer), so it is safe to pipe into a JSON parser.
+
+```bash
+nadle --capabilities
+```
+
+The document has four top-level fields:
+
+- `version` — the Nadle version that produced the document.
+- `flags` — every recognized CLI flag, each with its `name`, `type`, optional `default`,
+  optional `choices`, `aliases`, and `description`. This list is derived from the same
+  definitions that drive option parsing, so it never drifts from the flags Nadle accepts.
+- `tasks` — the tasks discovered from your configuration (the same set as `--list`), each with
+  its `id`, `name`, `label`, `workspaceId`, and optional `group` and `description`.
+- `config` — a JSON Schema for the task configuration object you pass to `.config({ ... })`.
+
+```jsonc
+{
+	"version": "0.5.3",
+	"flags": [{ "name": "dry-run", "type": "boolean", "default": false, "aliases": ["m"], "description": "..." }],
+	"tasks": [{ "id": "root:build", "name": "build", "label": "build", "workspaceId": "root", "group": "CI" }],
+	"config": { "title": "TaskConfiguration", "type": "object", "properties": { "dependsOn": {} } }
+}
+```
+
 ## Next steps
 
 - [CLI Reference](../cli-reference) — every flag, alias, type, and default.

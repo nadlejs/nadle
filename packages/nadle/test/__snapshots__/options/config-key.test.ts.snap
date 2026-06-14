@@ -17,6 +17,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
   "cleanCache": false,
   "showConfig": true,
   "maxCacheEntries": 5,
+  "capabilities": false,
   "reporter": "default",
   "implicitDependencies": true,
   "excludedTasks": [],
