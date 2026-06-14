@@ -43,6 +43,20 @@ nadle [tasks...] [options]
 ## Flags
 `;
 
+const FOOTER = `
+## Shell Completion
+
+The \`completion\` command prints a shell completion script (bash, zsh, or fish) to
+standard output. Install it by appending the output to your shell profile:
+
+\`\`\`bash
+nadle completion >> ~/.zshrc   # or ~/.bashrc, or your fish config
+\`\`\`
+
+After reloading your shell, pressing TAB completes both option flags and the live
+task names defined by your configuration.
+`;
+
 interface RawOptions {
 	type?: string;
 	alias?: string;
@@ -117,7 +131,7 @@ async function main() {
 
 	const table = ["| Flag | Type | Default | Description |", "| --- | --- | --- | --- |", ...rows].join("\n");
 
-	const content = `${FRONTMATTER}\n\n${HEADER}\n${table}\n`;
+	const content = `${FRONTMATTER}\n\n${HEADER}\n${table}\n${FOOTER}`;
 
 	await Fs.writeFile(outputFile, content, "utf-8");
 

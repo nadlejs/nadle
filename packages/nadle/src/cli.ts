@@ -7,7 +7,28 @@ import { Nadle } from "./core/nadle.js";
 import { CLIOptions } from "./core/options/cli-options.js";
 import { CLIOptionsResolver } from "./core/options/cli-options-resolver.js";
 
-const argv = yargs(hideBin(Process.argv))
+// yargs completion callback signature is fixed (4 positional params).
+// eslint-disable-next-line max-params
+async function completeTaskNames(current: string, completionArgv: Record<string, unknown>, _filter: unknown, done: (completions: string[]) => void) {
+	// Only contribute task names when completing a positional, not an option value.
+	// Do NOT re-read `parser.argv` here — that re-enters this callback and recurses.
+	if (current.startsWith("-")) {
+		done([]);
+
+		return;
+	}
+
+	try {
+		const labels = await new Nadle(CLIOptionsResolver.resolve(completionArgv as Parameters<typeof CLIOptionsResolver.resolve>[0])).getTaskLabels();
+
+		done(labels);
+	} catch {
+		// Completion must never surface errors; fall back to no task suggestions.
+		done([]);
+	}
+}
+
+const parser = yargs(hideBin(Process.argv))
 	.scriptName("nadle")
 	.command("$0 [tasks...]", "Execute one or more named tasks")
 
@@ -74,10 +95,18 @@ const argv = yargs(hideBin(Process.argv))
 		"General options:"
 	)
 	.group(["help", "version"], "Miscellaneous options:")
+	.completion("completion", "Print a shell completion script (bash/zsh/fish)", completeTaskNames)
 	.example("nadle test -- -u", "Run the test task, passing -u through to its underlying command")
 	.parserConfiguration({ "populate--": true })
 	.wrap(100)
-	.strict()
-	.parseSync();
+	.strict();
 
-new Nadle(CLIOptionsResolver.resolve(argv)).execute();
+const argv = parser.parseSync();
+
+// yargs handles the `completion` command and `--get-yargs-completions` internally
+// (printing and exiting). Skip normal execution in that case.
+const isCompletion = argv._[0] === "completion" || "get-yargs-completions" in argv;
+
+if (!isCompletion) {
+	new Nadle(CLIOptionsResolver.resolve(argv)).execute();
+}

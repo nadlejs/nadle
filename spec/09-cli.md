@@ -91,6 +91,22 @@ Rules:
 | `--help`    | `-h`  | Show help.           |
 | `--version` | `-v`  | Show version number. |
 
+## Shell Completion
+
+The `completion` command prints a shell completion script to standard output for the
+detected shell (bash, zsh, or fish). The user installs it by sourcing the output
+(e.g. `nadle completion >> ~/.zshrc`).
+
+Once installed, pressing TAB completes:
+
+- **task names** — the labels of all tasks registered by the live configuration
+  (discovered by loading the config, exactly as `--list` does), and
+- **option flags** — the known CLI flags.
+
+Completion discovers task names dynamically from the current project, so it always
+reflects the tasks actually defined. The completion command and the completion
+callback produce no other output (no banner, footer, or logs).
+
 ## Handler Chain
 
 After options are resolved, Nadle selects a handler using a **first-match-wins** chain:

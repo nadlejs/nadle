@@ -55,6 +55,18 @@ export class Nadle implements ExecutionContext {
 		return this;
 	}
 
+	/**
+	 * Resolves the project and loads config files to discover task labels, without
+	 * attaching any reporter or emitting lifecycle events. Used by shell completion.
+	 */
+	public async getTaskLabels(): Promise<string[]> {
+		this.#options = await runWithInstance(this, () =>
+			new OptionsResolver(this.logger, this.taskRegistry, this.fileOptionRegistry).resolve(this.cliOptions)
+		);
+
+		return [...new Set(this.taskRegistry.tasks.map((task) => task.label))].sort((a, b) => a.localeCompare(b));
+	}
+
 	private resolveReporter(): Listener {
 		const name = this.options.reporter;
 

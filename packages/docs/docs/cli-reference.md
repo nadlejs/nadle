@@ -47,3 +47,15 @@ nadle [tasks...] [options]
 | `--log-level`       | `error` \| `log` \| `info` \| `debug` | `log`                                    | Set the logging level                                                                                    |
 | `--min-workers`     | string                                | `Os.availableParallelism() - 1`          | Minimum number of workers (integer or percentage)                                                        |
 | `--max-workers`     | string                                | `Os.availableParallelism() - 1`          | Maximum number of workers (integer or percentage)                                                        |
+
+## Shell Completion
+
+The `completion` command prints a shell completion script (bash, zsh, or fish) to
+standard output. Install it by appending the output to your shell profile:
+
+```bash
+nadle completion >> ~/.zshrc   # or ~/.bashrc, or your fish config
+```
+
+After reloading your shell, pressing TAB completes both option flags and the live
+task names defined by your configuration.

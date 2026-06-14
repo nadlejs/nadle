@@ -9,6 +9,10 @@ nadle [tasks...]
 
 Execute one or more named tasks
 
+Commands:
+  nadle [tasks...]     Execute one or more named tasks                                     [default]
+  nadle completion     Print a shell completion script (bash/zsh/fish)
+
 Execution options:
       --parallel         Run all specified tasks in parallel regardless of their order, while still
                          respecting task dependencies.                    [boolean] [default: false]

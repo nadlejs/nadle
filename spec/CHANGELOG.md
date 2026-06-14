@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.10.0 — 2026-06-14
+
+### Added
+
+- 09-cli: Shell completion. A `completion` command prints a bash/zsh/fish
+  completion script; once installed, TAB completes option flags and the live
+  task names discovered from the configuration. The completion command and
+  callback emit no other output.
+
 ## 3.9.0 — 2026-06-14
 
 ### Added
