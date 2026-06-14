@@ -34,12 +34,6 @@ export function getSpecObject(node: TSESTree.CallExpression): TSESTree.ObjectExp
 }
 
 /**
- * @deprecated Use {@link getSpecObject}. Kept as a thin alias while rules are repointed;
- * the keyed spec object is the new config location, so the semantics match.
- */
-export const getConfigObject = getSpecObject;
-
-/**
  * Check if a node is inside a task action scope.
  * Task actions are:
  * 1. The second argument to `tasks.register(name, fn)` (function shorthand)

@@ -1,7 +1,7 @@
 import { ESLintUtils, type TSESTree, AST_NODE_TYPES } from "@typescript-eslint/utils";
 import { parseTaskReference, isWorkspaceQualified, VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
 
-import { isTasksRegisterCall } from "../utils/ast-helpers.js";
+import { getSpecObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
@@ -26,17 +26,17 @@ export default createRule({
 	create(context) {
 		return {
 			CallExpression(node) {
-				if (!isConfigCallOnRegister(node)) {
+				if (!isTasksRegisterCall(node)) {
 					return;
 				}
 
-				const configArg = node.arguments[0];
+				const specObject = getSpecObject(node);
 
-				if (!configArg || configArg.type !== AST_NODE_TYPES.ObjectExpression) {
+				if (!specObject) {
 					return;
 				}
 
-				const dependsOnProp = configArg.properties.find(
+				const dependsOnProp = specObject.properties.find(
 					(prop) => prop.type === AST_NODE_TYPES.Property && prop.key.type === AST_NODE_TYPES.Identifier && prop.key.name === "dependsOn"
 				);
 
@@ -95,22 +95,6 @@ function validateDepRef(context: Readonly<RuleContext>, node: TSESTree.StringLit
 	if (!VALID_TASK_NAME_PATTERN.test(ref)) {
 		context.report({ node, data: { name: ref }, messageId: "invalidDependencyName" });
 	}
-}
-
-function isConfigCallOnRegister(node: Parameters<typeof isTasksRegisterCall>[0]): boolean {
-	const callee = node.callee;
-
-	if (callee.type !== AST_NODE_TYPES.MemberExpression || callee.property.type !== AST_NODE_TYPES.Identifier || callee.property.name !== "config") {
-		return false;
-	}
-
-	const object = callee.object;
-
-	if (object.type !== AST_NODE_TYPES.CallExpression) {
-		return false;
-	}
-
-	return isTasksRegisterCall(object);
 }
 
 function isStringLiteral(node: { type: string; value?: unknown }): node is TSESTree.StringLiteral {

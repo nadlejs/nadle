@@ -18,6 +18,10 @@ tasks.register("build", async () => {});`
 				code: 'tasks.register("build", async (context) => { const dir = context.workingDir; })'
 			},
 			{
+				name: "no process.cwd() in keyed spec run action",
+				code: 'tasks.register("build", { run: (context) => { const dir = context.workingDir; } })'
+			},
+			{
 				name: "not a tasks.register call",
 				code: 'something.register("x", () => { process.cwd(); })'
 			},
@@ -41,6 +45,11 @@ tasks.register("build", async () => {});`
 				name: "process.cwd() in async task action",
 				errors: [{ messageId: "noProcessCwd" as const }],
 				code: 'tasks.register("test", async (ctx) => { const p = process.cwd(); })'
+			},
+			{
+				name: "process.cwd() in keyed spec run action",
+				errors: [{ messageId: "noProcessCwd" as const }],
+				code: 'tasks.register("build", { run: () => { const dir = process.cwd(); } })'
 			}
 		]
 	});

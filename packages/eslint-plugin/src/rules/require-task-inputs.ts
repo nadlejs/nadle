@@ -1,6 +1,6 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 
-import { getTaskName, getConfigObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
+import { getTaskName, getSpecObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
@@ -30,7 +30,7 @@ export default createRule({
 					return;
 				}
 
-				const configObject = getConfigObject(node);
+				const configObject = getSpecObject(node);
 
 				if (!configObject) {
 					return;
