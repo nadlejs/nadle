@@ -39,7 +39,7 @@ export interface TaskCompletion {
 }
 
 export class Nadle implements ExecutionContext {
-	public static readonly version: string = "0.5.3"; // x-release-please-version
+	public static readonly version: string = "0.5.4"; // x-release-please-version
 
 	public state: State = { selectingTasks: false };
 
