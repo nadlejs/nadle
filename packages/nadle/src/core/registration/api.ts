@@ -19,6 +19,16 @@ export interface TasksAPI {
 	register(name: string): void;
 	/** Register a task with an inline function body. */
 	register(name: string, fn: TaskFn): void;
+	/** Register a task from a lazily-resolved keyed spec (see {@link lazy}). */
+	register<Options>(name: string, spec: LazySpec<Options>): void;
+	/*
+	 * Overload order below is semantically significant: TS picks the first matching
+	 * overload, so the `run: Task<Options>` overload MUST precede the config-only
+	 * `run?: TaskFn` overload to enforce required options on tasks with required fields.
+	 * perfectionist would sort these alphabetically and invert that contract, so it is
+	 * disabled here.
+	 */
+	/* eslint-disable perfectionist/sort-interfaces */
 	/**
 	 * Register a task from a keyed spec whose body (`run`) is a {@link Task}.
 	 * `Options` is inferred from `run` so `options` is demanded when the task
@@ -31,8 +41,7 @@ export interface TasksAPI {
 	): void;
 	/** Register a task from a config-only keyed spec, or one with an inline function body. */
 	register(name: string, spec: TaskConfiguration & { run?: TaskFn }): void;
-	/** Register a task from a lazily-resolved keyed spec (see {@link lazy}). */
-	register<Options>(name: string, spec: LazySpec<Options>): void;
+	/* eslint-enable perfectionist/sort-interfaces */
 }
 
 /**
@@ -77,7 +86,7 @@ export interface LazySpec<Options = void> {
 
 /** Wrap a spec thunk for deferred (lazy, memoized) config resolution. */
 export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<Options> {
-	return { __nadleLazySpec: true, [LAZY_SPEC]: thunk };
+	return { [LAZY_SPEC]: thunk, __nadleLazySpec: true };
 }
 
 function isLazySpec(value: unknown): value is LazySpec {

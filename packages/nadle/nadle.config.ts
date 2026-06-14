@@ -1,5 +1,9 @@
-// @ts-nocheck -- self-host config bootstraps on published nadle (old .config() API);
-// the local build's index.d.ts (new keyed API) shadows it via package self-reference. Migrates post-publish.
+// Self-host config bootstraps on the published nadle (old .config() API); the local build's
+// index.d.ts (new keyed API) shadows it via package self-reference, so it cannot typecheck
+// against the local types. ts-nocheck suppresses that; migrates post-publish. ban-ts-comment
+// is disabled here because the file must stay in the tsconfig for eslint's project service.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
