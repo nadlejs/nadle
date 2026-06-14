@@ -1,4 +1,4 @@
-import { tasks, type Task } from "nadle";
+import { tasks, lazy, type Task } from "nadle";
 
 tasks.register("firstTask", () => console.log({ FIRST_TASK_ENV: process.env.FIRST_TASK_ENV })).config({ env: { FIRST_TASK_ENV: "first task env" } });
 
@@ -9,4 +9,4 @@ const MyTask: Task = {
 	}
 };
 
-tasks.register("secondTask", MyTask, {}).config(() => ({ env: { SECOND_TASK_ENV: "second task env" } }));
+tasks.register("secondTask", lazy(() => ({ run: MyTask, env: { SECOND_TASK_ENV: "second task env" } })));

@@ -21,6 +21,8 @@ export interface TasksAPI {
 	register(name: string, fn: TaskFn): void;
 	/** Register a task from a keyed spec. */
 	register<Options>(name: string, spec: SpecArg<Options>): void;
+	/** Register a task from a lazily-resolved keyed spec (see {@link lazy}). */
+	register<Options>(name: string, spec: LazySpec<Options>): void;
 }
 
 /**
@@ -46,6 +48,25 @@ export type TaskSpec<Options = void> = TaskConfiguration &
 /** Stable public name for register's spec argument; internals of TaskSpec can be refined without breaking callers. Thunk form intentionally dropped. */
 export type SpecArg<Options = void> = TaskSpec<Options>;
 
+const LAZY_SPEC = Symbol("nadle.lazySpec");
+
+/**
+ * A branded spec thunk produced by {@link lazy}. The config portion of the wrapped
+ * spec is resolved lazily (and memoized) when first read.
+ */
+export interface LazySpec<Options = void> {
+	readonly [LAZY_SPEC]: () => TaskSpec<Options>;
+}
+
+/** Wrap a spec thunk for deferred (lazy, memoized) config resolution. */
+export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<Options> {
+	return { [LAZY_SPEC]: thunk };
+}
+
+function isLazySpec(value: unknown): value is LazySpec {
+	return typeof value === "object" && value !== null && LAZY_SPEC in value;
+}
+
 /**
  * The main tasks API instance for registering tasks in Nadle.
  *
@@ -57,7 +78,7 @@ export type SpecArg<Options = void> = TaskSpec<Options>;
  * ```
  */
 export const tasks: TasksAPI = {
-	register: (name: string, second?: TaskFn | SpecArg<unknown>): void => {
+	register: (name: string, second?: TaskFn | SpecArg<unknown> | LazySpec): void => {
 		const { taskRegistry } = getCurrentInstance();
 
 		validateTaskName(name);
@@ -66,21 +87,7 @@ export const tasks: TasksAPI = {
 			throw new ConfigurationError(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 
-		// Normalize the 2nd arg: undefined → placeholder; function → inline body;
-		// object → eager spec. (No top-level thunk: that form was intentionally dropped.)
-		let run: TaskFn | Task | undefined;
-		let options: Resolver | undefined;
-		let config: TaskConfiguration = {};
-
-		if (typeof second === "function") {
-			run = second as TaskFn;
-		} else if (second !== undefined) {
-			const { run: specRun, options: specOptions, ...rest } = second as TaskSpec;
-
-			run = specRun as TaskFn | Task | undefined;
-			options = specOptions as Resolver | undefined;
-			config = rest;
-		}
+		const { run, options, getConfig } = normalizeSecondArg(second);
 
 		// Resolve the config at most once per task (configuration avoidance, #647):
 		// validation is read several times per run (scheduling, execution, reporting).
@@ -89,11 +96,55 @@ export const tasks: TasksAPI = {
 
 		taskRegistry.register({
 			name,
-			configResolver: () => (resolved ??= validateConfig(name, config)),
+			configResolver: () => (resolved ??= validateConfig(name, getConfig())),
 			...computeTaskInfo(run, options)
 		});
 	}
 };
+
+interface NormalizedSpec {
+	readonly run: TaskFn | Task | undefined;
+	readonly options: Resolver | undefined;
+	readonly getConfig: () => TaskConfiguration;
+}
+
+/**
+ * Normalize register's 2nd arg into run/options (eager — needed for task identity)
+ * and a `getConfig` thunk (resolved at most once, when the config is first read):
+ *   - undefined → placeholder; function → inline body; LazySpec → deferred config;
+ *     plain object → eager spec.
+ */
+function normalizeSecondArg(second?: TaskFn | SpecArg<unknown> | LazySpec): NormalizedSpec {
+	if (typeof second === "function") {
+		return { run: second as TaskFn, options: undefined, getConfig: () => ({}) };
+	}
+
+	if (isLazySpec(second)) {
+		// Invoke the thunk at most once: run/options are pulled eagerly here (they
+		// define task identity), and the same memoized spec feeds the deferred config.
+		let cached: TaskSpec | undefined;
+		const resolveSpec = () => (cached ??= second[LAZY_SPEC]());
+		const { run: specRun, options: specOptions } = resolveSpec();
+
+		return {
+			run: specRun as TaskFn | Task | undefined,
+			options: specOptions as Resolver | undefined,
+			getConfig: () => {
+				const { run: _run, options: _options, ...config } = resolveSpec();
+
+				return config;
+			}
+		};
+	}
+
+	if (second !== undefined) {
+		const { run: specRun, options: specOptions, ...config } = second as TaskSpec;
+
+		return { run: specRun as TaskFn | Task | undefined, options: specOptions as Resolver | undefined, getConfig: () => config };
+	}
+
+	return { run: undefined, options: undefined, getConfig: () => ({}) };
+}
 
 function computeTaskInfo(run: TaskFn | Task | undefined, options?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver" | "empty"> {
 	if (run === undefined) {

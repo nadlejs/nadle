@@ -1,7 +1,7 @@
 import Process from "node:process";
 
 import { Inputs } from "nadle";
-import { tasks, Outputs, PnpxTask, CopyTask, type Task, configure } from "nadle";
+import { lazy, tasks, Outputs, PnpxTask, CopyTask, type Task, configure } from "nadle";
 
 import { createTask } from "./create-task.js";
 
@@ -133,7 +133,7 @@ const MyTask: Task = {
 	run: () => console.log(Process.env.FIRST_TASK_ENV)
 };
 
-tasks.register("secondTask", MyTask, {}).config(() => ({ env: { SECOND_TASK_ENV: "second task env" } }));
+tasks.register("secondTask", lazy(() => ({ run: MyTask, env: { SECOND_TASK_ENV: "second task env" } })));
 
 tasks
 	.register("printWorkingDir", ({ context }) => {

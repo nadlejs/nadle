@@ -2,22 +2,24 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { glob } from "glob";
-import { tasks, Inputs, Outputs } from "nadle";
+import { lazy, tasks, Inputs, Outputs } from "nadle";
 
-tasks
-	.register("bundle-resources", async ({ context }) => {
-		for (const entry of await glob("resources/**/*.txt", {})) {
-			const path = Path.join(context.workingDir, entry);
-			const content = await Fs.readFile(path, "utf-8");
-			const modifiedContent = content + " modified";
+tasks.register(
+	"bundle-resources",
+	lazy(() => ({
+		run: async ({ context }) => {
+			for (const entry of await glob("resources/**/*.txt", {})) {
+				const path = Path.join(context.workingDir, entry);
+				const content = await Fs.readFile(path, "utf-8");
+				const modifiedContent = content + " modified";
 
-			const outputPath = Path.join(context.workingDir, "dist", entry);
-			await Fs.mkdir(Path.dirname(outputPath), { recursive: true });
-			await Fs.writeFile(outputPath, modifiedContent);
-		}
-	})
-	.config(() => ({
+				const outputPath = Path.join(context.workingDir, "dist", entry);
+				await Fs.mkdir(Path.dirname(outputPath), { recursive: true });
+				await Fs.writeFile(outputPath, modifiedContent);
+			}
+		},
 		outputs: [Outputs.dirs("dist")],
 		inputs: [Inputs.dirs("resources")],
 		env: { BUILD_MODE: process.env.BUILD_MODE ?? "development" }
-	}));
+	}))
+);

@@ -1,7 +1,7 @@
 import { it, expect, describe } from "vitest";
 import { type Project } from "@nadle/project-resolver";
 
-import { tasks } from "../../src/core/registration/api.js";
+import { tasks, lazy } from "../../src/core/registration/api.js";
 import { runWithInstance } from "../../src/core/nadle-context.js";
 import { TaskRegistry } from "../../src/core/registration/task-registry.js";
 
@@ -29,11 +29,14 @@ describe("lazy task configuration (#647)", () => {
 		runWithInstance({ taskRegistry: registry, pluginRegistry: {} as never, fileOptionRegistry: {} as never }, () => {
 			registry.onConfigureWorkspace("root");
 
-			tasks.register("build").config(() => {
-				calls += 1;
+			tasks.register(
+				"build",
+				lazy(() => {
+					calls += 1;
 
-				return { group: "build" };
-			});
+					return { group: "build" };
+				})
+			);
 		});
 
 		registry.configure(project);
