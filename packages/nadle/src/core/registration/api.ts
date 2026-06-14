@@ -11,51 +11,16 @@ import type { TaskConfiguration } from "../interfaces/task-configuration.js";
 /**
  * The main API for registering tasks in Nadle.
  *
- * Provides overloaded `register` methods for defining tasks with or without options and custom resolvers.
- * Each method returns a TaskConfigurationBuilder for further configuration.
+ * Provides overloaded `register` methods for registering tasks by name only,
+ * with an inline function body, or from a keyed spec object.
  */
 export interface TasksAPI {
-	/**
-	 * Register a task by name only.
-	 * @param name - The unique name of the task.
-	 * @returns ConfigBuilder for further configuration.
-	 */
-	register(name: string): TaskConfigurationBuilder;
-
-	/**
-	 * Register a task with options and a resolver.
-	 *
-	 * The resolver may be omitted when the task's options have no required fields
-	 * (i.e. an empty object satisfies `Options`); otherwise it is mandatory.
-	 * @param name - The unique name of the task.
-	 * @param optTask - The task definition with options.
-	 * @param optionsResolver - A resolver for the task's options.
-	 * @returns ConfigBuilder for further configuration.
-	 */
-	register<Options>(
-		name: string,
-		optTask: Task<Options>,
-		...optionsResolver: {} extends Options ? [optionsResolver?: Resolver<Options>] : [optionsResolver: Resolver<Options>]
-	): TaskConfigurationBuilder;
-
-	/**
-	 * Register a task with a task function.
-	 * @param name - The unique name of the task.
-	 * @param fnTask - The function to execute for this task.
-	 * @returns ConfigBuilder for further configuration.
-	 */
-	register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
-}
-
-/**
- * Builder interface for configuring a task.
- */
-export interface TaskConfigurationBuilder {
-	/**
-	 * Configure the task with a configuration object or builder callback.
-	 * @param builder - Task configuration or a callback returning configuration.
-	 */
-	config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
+	/** Register a placeholder/aggregator task (name only). */
+	register(name: string): void;
+	/** Register a task with an inline function body. */
+	register(name: string, fn: TaskFn): void;
+	/** Register a task from a keyed spec. */
+	register<Options>(name: string, spec: SpecArg<Options>): void;
 }
 
 /**
@@ -84,15 +49,15 @@ export type SpecArg<Options = void> = TaskSpec<Options>;
 /**
  * The main tasks API instance for registering tasks in Nadle.
  *
- * Use this object to register new tasks and configure them using the fluent API.
+ * Use this object to register new tasks by name, inline function, or keyed spec.
  *
  * Example:
  * ```ts
- * tasks.register("build", async ({ context }) => { ... }).config({ ... });
+ * tasks.register("build", { run: async ({ context }) => { ... }, group: "Build" });
  * ```
  */
 export const tasks: TasksAPI = {
-	register: (name: string, task?: TaskFn | Task, optionsResolver?: Resolver): TaskConfigurationBuilder => {
+	register: (name: string, second?: TaskFn | SpecArg<unknown>): void => {
 		const { taskRegistry } = getCurrentInstance();
 
 		validateTaskName(name);
@@ -101,42 +66,45 @@ export const tasks: TasksAPI = {
 			throw new ConfigurationError(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 
-		let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
+		// Normalize the 2nd arg: undefined → placeholder; function → inline body;
+		// object → eager spec. (No top-level thunk: that form was intentionally dropped.)
+		let run: TaskFn | Task | undefined;
+		let options: Resolver | undefined;
+		let config: TaskConfiguration = {};
 
-		const register = () => {
-			// Resolve the config at most once per task (configuration avoidance, #647):
-			// the user's config callback can do real work, and it is read several times
-			// per run (scheduling, execution, reporting). Memoize so it runs only once.
-			let resolved: TaskConfiguration | undefined;
+		if (typeof second === "function") {
+			run = second as TaskFn;
+		} else if (second !== undefined) {
+			const { run: specRun, options: specOptions, ...rest } = second as TaskSpec;
 
-			taskRegistry.register({
-				name,
-				configResolver: () => (resolved ??= validateConfig(name, typeof configCollector === "function" ? configCollector() : configCollector)),
-				...computeTaskInfo(task, optionsResolver)
-			});
-		};
+			run = specRun as TaskFn | Task | undefined;
+			options = specOptions as Resolver | undefined;
+			config = rest;
+		}
 
-		register();
+		// Resolve the config at most once per task (configuration avoidance, #647):
+		// validation is read several times per run (scheduling, execution, reporting).
+		// Memoize so it runs only once.
+		let resolved: TaskConfiguration | undefined;
 
-		return {
-			config: (collector) => {
-				configCollector = collector;
-				register();
-			}
-		};
+		taskRegistry.register({
+			name,
+			configResolver: () => (resolved ??= validateConfig(name, config)),
+			...computeTaskInfo(run, options)
+		});
 	}
 };
 
-function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver" | "empty"> {
-	if (task === undefined) {
+function computeTaskInfo(run: TaskFn | Task | undefined, options?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver" | "empty"> {
+	if (run === undefined) {
 		return { empty: true, run: () => {}, optionsResolver: undefined };
 	}
 
-	if (typeof task === "function") {
-		return { run: task, empty: false, optionsResolver: undefined };
+	if (typeof run === "function") {
+		return { run, empty: false, optionsResolver: undefined };
 	}
 
-	return { ...task, empty: false, optionsResolver: optionsResolver ?? (() => ({})) };
+	return { ...run, empty: false, optionsResolver: options ?? (() => ({})) };
 }
 
 function validateTaskName(name: string): void {

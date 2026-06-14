@@ -21,9 +21,5 @@ export function use<Options = void>(plugin: NadlePlugin<Options>, options?: Opti
 }
 
 function registerPluginTask({ name, task, config, optionsResolver }: PluginTask): void {
-	const builder = optionsResolver === undefined ? tasks.register(name, task as never) : tasks.register(name, task as never, optionsResolver);
-
-	if (config !== undefined) {
-		builder.config(config);
-	}
+	tasks.register(name, { ...config, run: task, options: optionsResolver } as never);
 }
