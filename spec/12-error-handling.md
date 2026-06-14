@@ -76,6 +76,32 @@ else:
 | Invalid configure usage | `"configure function can only be called from the root workspace."`                                                                      | When `configure()` called from non-root workspace. |
 | Workspace not found     | `"Workspace {input} not found. Available workspaces: {list}."`                                                                          | During workspace resolution.                       |
 
+## Structured Error Output
+
+By default, a failure prints a human-readable message (and an optional repro hint).
+In a machine-readable error mode — active whenever the selected reporter is the
+agent reporter, and intended to extend to any future explicit machine-output flag —
+a failure additionally emits a single structured error record to the error stream.
+
+The record is a one-line, machine-parseable object with these fields:
+
+| Field       | Type   | Presence                       | Description                                                      |
+| ----------- | ------ | ------------------------------ | ---------------------------------------------------------------- |
+| `errorCode` | number | always                         | The numeric exit code for the failure (see Exit Code, above).    |
+| `errorType` | string | always                         | The error category name (e.g. the NadleError subclass name).     |
+| `message`   | string | always                         | The human-readable error message.                                |
+| `task`      | string | only for task-execution errors | The label of the task that failed. Omitted for all other errors. |
+
+Rules:
+
+- Exactly one structured record is emitted per failure, on the error stream,
+  independent of any human-readable output already produced.
+- A non-NadleError failure reports `errorCode` `1` and an `errorType` reflecting
+  the generic error category.
+- Only a task-execution failure carries `task`; every other error omits it.
+- The default (human) error path is unchanged: when the mode is inactive, no
+  structured record is emitted.
+
 ## Stacktrace Display
 
 By default, only the error message is shown. When `--stacktrace` is passed:

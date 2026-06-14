@@ -21,7 +21,16 @@ import { DefaultLogger } from "./interfaces/defaults/default-logger.js";
 import { FileOptionRegistry } from "./registration/file-option-registry.js";
 import { DefaultFileReader } from "./interfaces/defaults/default-file-reader.js";
 import { type NadleCLIOptions, type NadleResolvedOptions } from "./options/types.js";
-import { NadleError, ConfigurationError, TaskExecutionError } from "./utilities/nadle-error.js";
+import { NadleError, ConfigurationError, TaskExecutionError, type StructuredError } from "./utilities/nadle-error.js";
+
+/** Structure a non-NadleError failure: generic exit code 1 and the error's class name. */
+function toStructuredError(error: unknown): StructuredError {
+	return {
+		errorCode: 1,
+		errorType: error instanceof Error ? error.name : "Error",
+		message: error instanceof Error ? error.message : String(error)
+	};
+}
 
 /** A task name paired with its optional description, for shell completion menus. */
 export interface TaskCompletion {
@@ -160,10 +169,32 @@ export class Nadle implements ExecutionContext {
 				this.logger.error(error.message);
 			}
 
+			if (this.isStructuredErrorMode()) {
+				this.emitStructuredError(error);
+			}
+
 			await this.eventEmitter.onExecutionFailed(error);
 
 			Process.exit(error instanceof NadleError ? error.errorCode : 1);
 		}
+	}
+
+	/**
+	 * Whether failures should additionally emit a machine-readable error record.
+	 * Keyed off the resolved reporter (falling back to the requested CLI reporter
+	 * when options aren't resolved yet), so a future explicit machine-output flag
+	 * can plug in here without touching the catch block.
+	 */
+	private isStructuredErrorMode(): boolean {
+		const reporter = this.#options?.reporter ?? this.cliOptions.reporter;
+
+		return reporter === "agent";
+	}
+
+	private emitStructuredError(error: unknown): void {
+		const structured: StructuredError = error instanceof NadleError ? error.toStructured() : toStructuredError(error);
+
+		this.logger.errorStream.write(`${JSON.stringify(structured)}\n`);
 	}
 
 	public get options(): NadleResolvedOptions {

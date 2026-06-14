@@ -57,6 +57,7 @@ const parser = yargs(hideBin(Process.argv))
 	.options({
 		[CLIOptions.why.key]: CLIOptions.why.options,
 		[CLIOptions.list.key]: CLIOptions.list.options,
+		[CLIOptions.json.key]: CLIOptions.json.options,
 		[CLIOptions.cache.key]: CLIOptions.cache.options,
 		[CLIOptions.graph.key]: CLIOptions.graph.options,
 		[CLIOptions.watch.key]: CLIOptions.watch.options,
@@ -100,6 +101,7 @@ const parser = yargs(hideBin(Process.argv))
 			CLIOptions.since.key,
 			CLIOptions.showConfig.key,
 			CLIOptions.configKey.key,
+			CLIOptions.json.key,
 			CLIOptions.doctor.key,
 			CLIOptions.capabilities.key,
 			CLIOptions.stacktrace.key

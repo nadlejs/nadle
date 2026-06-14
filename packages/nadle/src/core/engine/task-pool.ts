@@ -17,7 +17,7 @@ function toTaskExecutionError(error: unknown, label: string): NadleError {
 
 	const message = error instanceof Error ? error.message : String(error);
 
-	return new TaskExecutionError(`Task ${label} failed: ${message}`, { cause: error });
+	return new TaskExecutionError(`Task ${label} failed: ${message}`, { task: label, cause: error });
 }
 
 export class TaskPool {

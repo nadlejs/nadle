@@ -69,6 +69,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	/** Path to configuration file. */
 	readonly configFile?: string;
 
+	/** Emit machine-readable JSON from read commands instead of human text. */
+	readonly json: boolean;
 	/** Run health diagnostics instead of executing tasks. */
 	readonly doctor: boolean;
 	/** Path to a specific resolved configuration value, using dot/bracket notation. */

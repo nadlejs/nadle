@@ -8,7 +8,7 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
-## 3.12.1 — 2026-06-14
+## 3.15.0 — 2026-06-14
 
 ### Changed
 
@@ -16,6 +16,28 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   shells that can render a `value:description` pairing, matching the context shown by
   `--list`. Tasks without a description and shells that cannot display descriptions
   still complete to the bare task name.
+
+## 3.14.0 — 2026-06-14
+
+### Added
+
+- 12-error-handling / 09-cli: Structured error output. In a machine-readable error
+  mode (active when the agent reporter is selected, and extensible to a future
+  explicit machine-output flag), a failure emits a single one-line structured error
+  record (`errorCode`, `errorType`, `message`, and `task` for task-execution errors)
+  to the error stream. The default human error path is unchanged.
+
+## 3.13.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--json` flag. Switches the read-only inspection commands (`--list`,
+  `--list-workspaces`, `--dry-run`, `--graph`, `--explain`) to emit a single
+  machine-readable JSON document on standard output — no banner, footer, colors,
+  or run summary, and the live footer is forced off. `--list --json` reports each
+  task's `name`, `label`, `group`, `description`, `dependsOn`, `inputs`, `outputs`,
+  and `workspace`. `--show-config`/`--config-key` already emit JSON and are
+  unaffected.
 
 ## 3.12.0 — 2026-06-14
 

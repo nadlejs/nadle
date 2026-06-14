@@ -114,6 +114,67 @@ nadle --reporter agent build
 nadle --graph
 ```
 
+## Machine-readable errors
+
+With `--reporter agent`, a failure prints a single structured error record to
+**stderr** as one JSON line, in addition to the human-readable output. Parse it
+to learn what failed without scraping prose:
+
+```jsonc
+{ "errorCode": 3, "errorType": "TaskNotFoundError", "message": "Task nope not found in root workspace." }
+```
+
+| Field       | Description                                                                |
+| ----------- | -------------------------------------------------------------------------- |
+| `errorCode` | The process exit code (`1` generic, `2` config, `3` not found, `4` cycle). |
+| `errorType` | The error class name.                                                      |
+| `message`   | The human-readable message.                                                |
+| `task`      | The failing task's label — present only for task-execution failures.       |
+
+Without `--reporter agent`, no JSON line is emitted and the human error output is
+unchanged.
+
+## Machine-readable output (`--json`)
+
+Add `--json` to a read command to get a single, stable JSON document on stdout — no
+banner, footer, colors, or run summary, so the output parses cleanly:
+
+```bash
+# Every task with its full metadata (name, label, group, description, dependsOn, inputs, outputs, workspace)
+nadle --list --json
+
+# All workspaces with their parent
+nadle --list-workspaces --json
+
+# The ordered execution plan
+nadle build --dry-run --json
+
+# The dependency graph as nodes + roots (the tree/mermaid choice is ignored)
+nadle build --graph --json
+
+# A single task's explanation as structured data
+nadle --explain test --json
+```
+
+`--json` applies to `--list`, `--list-workspaces`, `--dry-run`, `--graph`, and
+`--explain`. `--show-config` and `--config-key` already emit JSON. Example
+`nadle --list --json` shape:
+
+```json
+[
+	{
+		"name": "test",
+		"label": "test",
+		"group": "CI",
+		"workspace": "root",
+		"description": "Run tests",
+		"dependsOn": ["build"],
+		"inputs": [],
+		"outputs": []
+	}
+]
+```
+
 ## Discovering capabilities
 
 `nadle --capabilities` prints a single machine-readable JSON document describing what this
