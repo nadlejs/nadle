@@ -8,6 +8,18 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.13.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--json` flag. Switches the read-only inspection commands (`--list`,
+  `--list-workspaces`, `--dry-run`, `--graph`, `--explain`) to emit a single
+  machine-readable JSON document on standard output — no banner, footer, colors,
+  or run summary, and the live footer is forced off. `--list --json` reports each
+  task's `name`, `label`, `group`, `description`, `dependsOn`, `inputs`, `outputs`,
+  and `workspace`. `--show-config`/`--config-key` already emit JSON and are
+  unaffected.
+
 ## 3.12.0 — 2026-06-14
 
 ### Added

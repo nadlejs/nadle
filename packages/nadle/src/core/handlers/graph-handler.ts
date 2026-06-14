@@ -1,5 +1,6 @@
 import { BaseHandler } from "./base-handler.js";
 import { Messages } from "../utilities/messages.js";
+import { stringify } from "../utilities/stringify.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 import { type TaskGraph, renderTaskGraph } from "../reporting/task-graph.js";
 
@@ -13,7 +14,11 @@ export class GraphHandler extends BaseHandler {
 
 	public handle(): void {
 		if (this.context.options.tasks.length === 0) {
-			this.context.logger.log(Messages.NoTasksFound());
+			if (this.context.options.json) {
+				this.context.logger.log(stringify({ roots: [], nodes: [] }));
+			} else {
+				this.context.logger.log(Messages.NoTasksFound());
+			}
 
 			return;
 		}
@@ -28,6 +33,12 @@ export class GraphHandler extends BaseHandler {
 		}));
 
 		const roots = this.context.options.tasks.map(ResolvedTask.getId);
+
+		if (this.context.options.json) {
+			this.context.logger.log(stringify({ roots, nodes }));
+
+			return;
+		}
 
 		this.context.logger.log(renderTaskGraph({ roots, nodes, format: this.context.options.graph ?? "tree" }));
 	}

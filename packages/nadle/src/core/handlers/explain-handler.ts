@@ -1,10 +1,10 @@
 import { ROOT_WORKSPACE_ID } from "@nadle/project-resolver";
 
 import { BaseHandler } from "./base-handler.js";
-import { MaybeArray } from "../utilities/maybe-array.js";
+import { stringify } from "../utilities/stringify.js";
 import { type TaskScheduler } from "../engine/task-scheduler.js";
-import { renderTaskExplanation } from "../reporting/task-explanation.js";
-import { type TaskConfiguration } from "../interfaces/task-configuration.js";
+import { formatDeclarations } from "../utilities/declarations.js";
+import { type TaskExplanation, renderTaskExplanation } from "../reporting/task-explanation.js";
 
 export class ExplainHandler extends BaseHandler {
 	public readonly name = "explain";
@@ -34,16 +34,22 @@ export class ExplainHandler extends BaseHandler {
 		const task = this.context.taskRegistry.getTaskById(taskId);
 		const config = task.configResolver();
 
-		this.context.logger.log(
-			renderTaskExplanation({
-				label: task.label,
-				inputs: this.collectInputs(config.inputs),
-				cachingEnabled: this.context.options.cache,
-				requestedDirectly: requestedRoots.includes(taskId),
-				dependents: this.collectDependents(scheduler, taskId),
-				pullPaths: this.collectPullPaths(scheduler, requestedRoots, taskId)
-			})
-		);
+		const explanation: TaskExplanation.Props = {
+			label: task.label,
+			inputs: formatDeclarations(config.inputs),
+			cachingEnabled: this.context.options.cache,
+			requestedDirectly: requestedRoots.includes(taskId),
+			dependents: this.collectDependents(scheduler, taskId),
+			pullPaths: this.collectPullPaths(scheduler, requestedRoots, taskId)
+		};
+
+		if (this.context.options.json) {
+			this.context.logger.log(stringify(explanation));
+
+			return;
+		}
+
+		this.context.logger.log(renderTaskExplanation(explanation));
 	}
 
 	private collectDependents(scheduler: TaskScheduler, taskId: string): string[] {
@@ -76,13 +82,5 @@ export class ExplainHandler extends BaseHandler {
 		}
 
 		return paths;
-	}
-
-	private collectInputs(inputs: TaskConfiguration["inputs"]): string[] {
-		if (inputs === undefined) {
-			return [];
-		}
-
-		return MaybeArray.toArray(inputs).flatMap((declaration) => declaration.patterns.map((pattern) => `${declaration.type}: ${pattern}`));
 	}
 }

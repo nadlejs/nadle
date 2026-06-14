@@ -2,6 +2,7 @@ import c from "tinyrainbow";
 
 import { BaseHandler } from "./base-handler.js";
 import { Messages } from "../utilities/messages.js";
+import { stringify } from "../utilities/stringify.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
 
 export class DryRunHandler extends BaseHandler {
@@ -13,6 +14,12 @@ export class DryRunHandler extends BaseHandler {
 	}
 
 	public handle() {
+		if (this.context.options.json) {
+			this.context.logger.log(stringify(this.toJson()));
+
+			return;
+		}
+
 		if (this.context.options.tasks.length === 0) {
 			this.context.logger.log(Messages.NoTasksFound());
 
@@ -37,5 +44,24 @@ export class DryRunHandler extends BaseHandler {
 					: "";
 			this.context.logger.log(`${c.yellow(">")} Task ${c.bold(label)}${argsSuffix}${suffix}`);
 		}
+	}
+
+	private toJson() {
+		if (this.context.options.tasks.length === 0) {
+			return { plan: [] };
+		}
+
+		const scheduler = this.context.taskScheduler.init();
+		const { passthroughArgs } = this.context.options;
+		const requestedTaskIds = new Set(this.context.options.tasks.map(ResolvedTask.getId));
+
+		const plan = scheduler.getExecutionPlan().map((taskId) => ({
+			id: taskId,
+			implicitDependencies: scheduler.getImplicitDeps(taskId),
+			args: requestedTaskIds.has(taskId) ? passthroughArgs : [],
+			label: this.context.taskRegistry.getTaskById(taskId).label
+		}));
+
+		return { plan };
 	}
 }

@@ -68,6 +68,7 @@ Rules:
 | `--since`           |       | string   |         | Run only the requested tasks affected by changes since a git ref.     |
 | `--show-config`     |       | boolean  | `false` | Print the resolved configuration.                                     |
 | `--config-key`      |       | string   |         | Path to a specific config value (dot/bracket notation).               |
+| `--json`            |       | boolean  | `false` | Emit machine-readable JSON from read commands instead of human text.  |
 | `--doctor`          |       | boolean  | `false` | Diagnose project, config, and cache health; no execution.             |
 | `--capabilities`    |       | boolean  | `false` | Emit a machine-readable JSON description of flags, tasks, and config. |
 | `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                       |
@@ -108,6 +109,33 @@ Once installed, pressing TAB completes:
 Completion discovers task names dynamically from the current project, so it always
 reflects the tasks actually defined. The completion command and the completion
 callback produce no other output (no banner, footer, or logs).
+
+## JSON Output
+
+The `--json` flag switches the read-only inspection commands from human-oriented text to
+a single machine-readable JSON document on standard output. It is intended for tooling and
+automation that need to parse Nadle's introspection output reliably.
+
+When `--json` is set:
+
+- The selected read command prints exactly one JSON document and nothing else: no banner,
+  no progress footer, no colors, and no trailing run summary.
+- The live progress footer is forced off regardless of its own default.
+
+`--json` applies to these commands; any other command ignores it:
+
+| Command             | JSON document                                                                                                                                                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--list`            | An array of task objects, each with `name`, `label`, `group`, `description`, `dependsOn`, `inputs`, `outputs`, and `workspace`.                                                                                         |
+| `--list-workspaces` | An array of workspace objects, each with `id`, `label`, and `parent` (the id of the nearest enclosing workspace, or null for the root).                                                                                 |
+| `--dry-run`         | An object with the ordered execution `plan`; each entry has the task `id`, `label`, its implicit-dependency ids, and the passthrough arguments it would receive.                                                        |
+| `--graph`           | An object describing the dependency graph: the requested `roots` and a `nodes` array, each node with `id`, `label`, explicit `dependencies`, and `implicitDependencies`. The `tree`/`mermaid` format choice is ignored. |
+| `--explain`         | An object describing one task: its `label`, whether it was `requestedDirectly`, the `pullPaths` that transitively request it, its `dependents`, declared `inputs`, and whether caching is enabled.                      |
+
+`--show-config` and `--config-key` already emit JSON and are unaffected by `--json`.
+
+A task's `dependsOn`, `inputs`, and `outputs` reflect its declared configuration. `inputs`
+and `outputs` are rendered as `<type>: <pattern>` entries (one per declared pattern).
 
 ## Handler Chain
 

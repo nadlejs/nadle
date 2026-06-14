@@ -33,6 +33,9 @@ Execution options:
       --show-config      Print the resolved configuration                 [boolean] [default: false]
       --config-key       Path to a specific resolved configuration value, using dot/bracket notation
                                                                        [string] [default: undefined]
+      --json             Emit machine-readable JSON from read commands (--list, --list-workspaces,
+                         --dry-run, --graph, --explain) instead of human text
+                                                                          [boolean] [default: false]
       --doctor           Diagnose project, config, and cache health without executing tasks
                                                                           [boolean] [default: false]
       --capabilities     Emit a machine-readable JSON description of CLI flags, tasks, and task
