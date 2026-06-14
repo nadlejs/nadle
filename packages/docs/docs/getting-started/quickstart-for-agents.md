@@ -114,6 +114,26 @@ nadle --reporter agent build
 nadle --graph
 ```
 
+## Machine-readable errors
+
+With `--reporter agent`, a failure prints a single structured error record to
+**stderr** as one JSON line, in addition to the human-readable output. Parse it
+to learn what failed without scraping prose:
+
+```jsonc
+{ "errorCode": 3, "errorType": "TaskNotFoundError", "message": "Task nope not found in root workspace." }
+```
+
+| Field       | Description                                                                |
+| ----------- | -------------------------------------------------------------------------- |
+| `errorCode` | The process exit code (`1` generic, `2` config, `3` not found, `4` cycle). |
+| `errorType` | The error class name.                                                      |
+| `message`   | The human-readable message.                                                |
+| `task`      | The failing task's label — present only for task-execution failures.       |
+
+Without `--reporter agent`, no JSON line is emitted and the human error output is
+unchanged.
+
 ## Next steps
 
 - [CLI Reference](../cli-reference) — every flag, alias, type, and default.

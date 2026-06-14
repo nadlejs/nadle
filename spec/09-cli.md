@@ -177,6 +177,10 @@ When an error is caught during execution:
 - If the error is a NadleError, exit with its `errorCode`.
 - Otherwise, exit with code `1`.
 
+In a machine-readable error mode (see Error Handling — Structured Error Output),
+the same failure also emits a one-line structured error record to the error stream
+before exiting.
+
 ## Interactive Task Selection
 
 When no tasks are specified on the command line and stdin is a TTY, Nadle enters an
