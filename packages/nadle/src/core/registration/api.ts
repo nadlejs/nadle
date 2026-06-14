@@ -19,8 +19,18 @@ export interface TasksAPI {
 	register(name: string): void;
 	/** Register a task with an inline function body. */
 	register(name: string, fn: TaskFn): void;
-	/** Register a task from a keyed spec. */
-	register<Options>(name: string, spec: SpecArg<Options>): void;
+	/**
+	 * Register a task from a keyed spec whose body (`run`) is a {@link Task}.
+	 * `Options` is inferred from `run` so `options` is demanded when the task
+	 * body has required option fields and omittable otherwise. Placed before the
+	 * config-only overload so TS prefers it whenever `run` is a Task object.
+	 */
+	register<Options>(
+		name: string,
+		spec: TaskConfiguration & { run: Task<Options> } & ({} extends Options ? { options?: Resolver<Options> } : { options: Resolver<Options> })
+	): void;
+	/** Register a task from a config-only keyed spec, or one with an inline function body. */
+	register(name: string, spec: TaskConfiguration & { run?: TaskFn }): void;
 	/** Register a task from a lazily-resolved keyed spec (see {@link lazy}). */
 	register<Options>(name: string, spec: LazySpec<Options>): void;
 }
@@ -53,15 +63,21 @@ const LAZY_SPEC = Symbol("nadle.lazySpec");
 /**
  * A branded spec thunk produced by {@link lazy}. The config portion of the wrapped
  * spec is resolved lazily (and memoized) when first read.
+ *
+ * Branded with a public `__nadleLazySpec` marker (not just the private `[LAZY_SPEC]`
+ * symbol) so the structural shape survives `.d.ts` emission: a symbol-only member is
+ * stripped, leaving `{}` which would match any object and defeat overload resolution.
  */
 export interface LazySpec<Options = void> {
+	/** Brand that survives d.ts emission so LazySpec stays distinguishable from a plain spec. */
+	readonly __nadleLazySpec: true;
 	/** @internal The wrapped spec thunk. */
 	readonly [LAZY_SPEC]: () => TaskSpec<Options>;
 }
 
 /** Wrap a spec thunk for deferred (lazy, memoized) config resolution. */
 export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<Options> {
-	return { [LAZY_SPEC]: thunk };
+	return { __nadleLazySpec: true, [LAZY_SPEC]: thunk };
 }
 
 function isLazySpec(value: unknown): value is LazySpec {

@@ -125,6 +125,7 @@ export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<O
 
 // @public
 export interface LazySpec<Options = void> {
+    readonly __nadleLazySpec: true;
 }
 
 // @public
@@ -420,17 +421,26 @@ export const tasks: TasksAPI;
 export interface TasksAPI {
     register(name: string): void;
     register(name: string, fn: TaskFn): void;
-    register<Options>(name: string, spec: SpecArg<Options>): void;
+    register<Options>(name: string, spec: TaskConfiguration & {
+        run: Task<Options>;
+    } & ({} extends Options ? {
+        options?: Resolver<Options>;
+    } : {
+        options: Resolver<Options>;
+    })): void;
+    register(name: string, spec: TaskConfiguration & {
+        run?: TaskFn;
+    }): void;
     register<Options>(name: string, spec: LazySpec<Options>): void;
 }
 
 // @public
 export type TaskSpec<Options = void> = TaskConfiguration & ([void] extends [Options] ? {
-    run?: TaskFn | Task<Options>;
     options?: Resolver<Options>;
+    run?: TaskFn | Task<Options>;
 } : {} extends Options ? {
-    run?: TaskFn | Task<Options>;
     options?: Resolver<Options>;
+    run?: TaskFn | Task<Options>;
 } : {
     run: Task<Options>;
     options: Resolver<Options>;
