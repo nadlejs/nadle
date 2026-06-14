@@ -1,5 +1,5 @@
 import { it, describe, expectTypeOf } from "vitest";
-import { tasks, Inputs, Outputs, CopyTask, PnpmTask, type Task, type TaskConfigurationBuilder } from "nadle";
+import { tasks, Inputs, Outputs, CopyTask, PnpmTask, defineSpec, type Task, type TaskConfigurationBuilder, type TaskSpec } from "nadle";
 
 interface OptionalOptions {
 	readonly flag?: boolean;
@@ -42,5 +42,20 @@ describe.concurrent("tasks.register", () => {
 				outputs: Outputs.files("index.js")
 			})
 		).toEqualTypeOf<void>();
+	});
+});
+
+describe.concurrent("TaskSpec / defineSpec", () => {
+	it("TaskSpec<void> allows optional run", () => {
+		expectTypeOf<TaskSpec<void>>().toMatchTypeOf<{ run?: unknown }>();
+	});
+
+	it("TaskSpec with required options mandates options property", () => {
+		type WithReq = TaskSpec<{ command: string }>;
+		expectTypeOf<WithReq>().toHaveProperty("options");
+	});
+
+	it("defineSpec returns TaskSpec<void> for a plain config object", () => {
+		expectTypeOf(defineSpec({ group: "x" })).toMatchTypeOf<TaskSpec<void>>();
 	});
 });

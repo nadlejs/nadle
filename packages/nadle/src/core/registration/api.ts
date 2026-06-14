@@ -64,6 +64,22 @@ export interface TaskConfigurationBuilder {
 export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
 
 /**
+ * A task registration spec. `run`/`options` are required when the task body's
+ * `Options` has required fields, optional/omittable otherwise. Config fields
+ * (group, dependsOn, …) come from TaskConfiguration and sit directly on the spec.
+ * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
+ */
+export type TaskSpec<Options = void> = TaskConfiguration &
+	([void] extends [Options]
+		? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
+		: {} extends Options
+			? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
+			: { run: Task<Options>; options: Resolver<Options> });
+
+/** The spec argument to `register`: an eager spec (a thunk form was intentionally dropped — see plan). */
+export type SpecArg<Options = void> = TaskSpec<Options>;
+
+/**
  * The main tasks API instance for registering tasks in Nadle.
  *
  * Use this object to register new tasks and configure them using the fluent API.
