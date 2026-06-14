@@ -7,12 +7,13 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 ---------- Stdout ------------
 [log] {
   "why": false,
+  "json": false,
   "cache": true,
   "watch": false,
+  "doctor": false,
   "summary": false,
   "parallel": false,
   "logLevel": "log",
-  "doctor": false,
   "cleanCache": false,
   "showConfig": true,
   "maxCacheEntries": 5,

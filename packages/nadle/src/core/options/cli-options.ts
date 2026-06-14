@@ -115,6 +115,14 @@ export const CLIOptions = {
 			defaultDescription: "undefined"
 		}
 	},
+	json: {
+		key: "json",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Emit machine-readable JSON from read commands (--list, --list-workspaces, --dry-run, --graph, --explain) instead of human text"
+		}
+	},
 	footer: {
 		key: "footer",
 		options: {

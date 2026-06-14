@@ -19,6 +19,9 @@ interface LoggerOptions {
 	/** Output reporter; the agent reporter forces plain, ANSI-free output. */
 	readonly reporter?: string;
 
+	/** Emit machine-readable JSON; forces plain, ANSI-free, prefix-free output. */
+	readonly json?: boolean;
+
 	/** @internal True if running in a worker thread. */
 	readonly isWorkerThread?: boolean;
 }
@@ -40,7 +43,7 @@ export class DefaultLogger implements Logger {
 		const { logLevel = "log", isWorkerThread = false } = options;
 		this.consola.level = LogLevels[logLevel];
 
-		if (options.reporter === "agent") {
+		if (options.reporter === "agent" || options.json) {
 			this.consola.options.reporters = createPlainReporters();
 		}
 

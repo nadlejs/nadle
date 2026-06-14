@@ -114,6 +114,47 @@ nadle --reporter agent build
 nadle --graph
 ```
 
+## Machine-readable output (`--json`)
+
+Add `--json` to a read command to get a single, stable JSON document on stdout — no
+banner, footer, colors, or run summary, so the output parses cleanly:
+
+```bash
+# Every task with its full metadata (name, label, group, description, dependsOn, inputs, outputs, workspace)
+nadle --list --json
+
+# All workspaces with their parent
+nadle --list-workspaces --json
+
+# The ordered execution plan
+nadle build --dry-run --json
+
+# The dependency graph as nodes + roots (the tree/mermaid choice is ignored)
+nadle build --graph --json
+
+# A single task's explanation as structured data
+nadle --explain test --json
+```
+
+`--json` applies to `--list`, `--list-workspaces`, `--dry-run`, `--graph`, and
+`--explain`. `--show-config` and `--config-key` already emit JSON. Example
+`nadle --list --json` shape:
+
+```json
+[
+	{
+		"name": "test",
+		"label": "test",
+		"group": "CI",
+		"workspace": "root",
+		"description": "Run tests",
+		"dependsOn": ["build"],
+		"inputs": [],
+		"outputs": []
+	}
+]
+```
+
 ## Next steps
 
 - [CLI Reference](../cli-reference) — every flag, alias, type, and default.
