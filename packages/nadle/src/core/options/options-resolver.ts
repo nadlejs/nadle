@@ -21,6 +21,7 @@ export class OptionsResolver {
 		why: false,
 		cache: true,
 		watch: false,
+		doctor: false,
 		summary: false,
 		parallel: false,
 		logLevel: "log",

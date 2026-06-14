@@ -171,6 +171,14 @@ export const CLIOptions = {
 			description: "Print a summary at the end of the run: task durations, critical path, and cache-miss hotspots"
 		}
 	},
+	doctor: {
+		key: "doctor",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Diagnose project, config, and cache health without executing tasks"
+		}
+	},
 
 	exclude: {
 		key: "exclude",

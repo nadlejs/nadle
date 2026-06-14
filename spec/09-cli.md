@@ -68,6 +68,7 @@ Rules:
 | `--since`           |       | string   |         | Run only the requested tasks affected by changes since a git ref.   |
 | `--show-config`     |       | boolean  | `false` | Print the resolved configuration.                                   |
 | `--config-key`      |       | string   |         | Path to a specific config value (dot/bracket notation).             |
+| `--doctor`          |       | boolean  | `false` | Diagnose project, config, and cache health; no execution.           |
 | `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                     |
 
 ### General Options
@@ -120,8 +121,9 @@ After options are resolved, Nadle selects a handler using a **first-match-wins**
 | 5        | **Explain**        | `--explain` is set               |
 | 6        | **DryRun**         | `--dry-run` is `true`            |
 | 7        | **ShowConfig**     | `--show-config` is `true`        |
-| 8        | **Watch**          | `--watch` is `true`              |
-| 9        | **Execute**        | Always matches (default handler) |
+| 8        | **Doctor**         | `--doctor` is `true`             |
+| 9        | **Watch**          | `--watch` is `true`              |
+| 10       | **Execute**        | Always matches (default handler) |
 
 Each handler is instantiated and its `canHandle()` method is checked. The first handler
 that returns `true` has its `handle()` method invoked. Only one handler runs per
@@ -133,6 +135,25 @@ git ref. A task is affected when a changed file lies within its workspace direct
 the dependencies of an affected task are included so its inputs are produced. If no
 task is affected, Execute reports it and runs nothing. Cross-workspace dependent
 propagation is out of scope for this version.
+
+### Doctor
+
+The **Doctor** handler (`--doctor`) runs a set of read-only diagnostic checks and
+prints each as a status line, then a summary. It performs no execution and mutates
+nothing. Each check yields one of: **ok**, **warning**, or **error**. The process
+exits non-zero if any check is an error (zero if only warnings or all ok).
+
+The checks are:
+
+| Check                | Warning / error condition                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------ |
+| Project              | Reports the detected package manager and workspace count (informational, always ok).       |
+| Cache directory      | Warns if the cache directory exists but is not writable.                                   |
+| Partial cacheability | Warns for each task that declares `inputs` without `outputs` or vice versa (never cached). |
+| Stale outputs        | Warns for each cacheable task whose declared outputs are entirely missing on disk.         |
+
+The set of checks may grow over time; the contract is that Doctor is read-only and
+that an error-level finding makes the exit code non-zero.
 
 ### Handler Interface
 

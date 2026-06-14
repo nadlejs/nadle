@@ -41,6 +41,7 @@ const parser = yargs(hideBin(Process.argv))
 		[CLIOptions.since.key]: CLIOptions.since.options,
 		[CLIOptions.dryRun.key]: CLIOptions.dryRun.options,
 		[CLIOptions.footer.key]: CLIOptions.footer.options,
+		[CLIOptions.doctor.key]: CLIOptions.doctor.options,
 		[CLIOptions.explain.key]: CLIOptions.explain.options,
 		[CLIOptions.exclude.key]: CLIOptions.exclude.options,
 		[CLIOptions.noCache.key]: CLIOptions.noCache.options,
@@ -76,6 +77,7 @@ const parser = yargs(hideBin(Process.argv))
 			CLIOptions.since.key,
 			CLIOptions.showConfig.key,
 			CLIOptions.configKey.key,
+			CLIOptions.doctor.key,
 			CLIOptions.stacktrace.key
 		],
 		"Execution options:"

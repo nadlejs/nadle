@@ -1,6 +1,7 @@
 import { ListHandler } from "./list-handler.js";
 import { GraphHandler } from "./graph-handler.js";
 import { WatchHandler } from "./watch-handler.js";
+import { DoctorHandler } from "./doctor-handler.js";
 import { DryRunHandler } from "./dry-run-handler.js";
 import { ExplainHandler } from "./explain-handler.js";
 import { ExecuteHandler } from "./execute-handler.js";
@@ -17,6 +18,7 @@ export const Handlers: HandlerConstructor[] = [
 	ExplainHandler,
 	DryRunHandler,
 	ShowConfigHandler,
+	DoctorHandler,
 	WatchHandler,
 	ExecuteHandler
 ];

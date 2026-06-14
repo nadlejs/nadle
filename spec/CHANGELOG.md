@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.11.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--doctor` handler. Runs read-only diagnostics (project summary, cache
+  directory writability, partial-cacheability smells, stale/missing outputs) and
+  prints per-check ok/warning/error lines plus a summary. Exits non-zero only on
+  an error-level finding; performs no execution and mutates nothing.
+
 ## 3.10.0 — 2026-06-14
 
 ### Added
