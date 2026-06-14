@@ -44,6 +44,9 @@ export type Declaration = FileDeclaration | DirDeclaration;
 export function definePlugin<Options = void>(plugin: NadlePlugin<Options>): NadlePlugin<Options>;
 
 // @public
+export function defineSpec<Options = void>(spec: TaskSpec<Options>): TaskSpec<Options>;
+
+// @public
 export function defineTask<Options>(params: DefineTaskParams<Options>): Task<Options>;
 
 // @public
@@ -115,6 +118,15 @@ export interface FileSelector {
 export namespace Inputs {
     export function dirs(...patterns: string[]): DirDeclaration;
     export function files(...patterns: string[]): FileDeclaration;
+}
+
+// @public
+export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<Options>;
+
+// @public
+export interface LazySpec<Options = void> {
+    // (undocumented)
+    readonly [LAZY_SPEC]: () => TaskSpec<Options>;
 }
 
 // @public
@@ -304,6 +316,9 @@ export interface RunnerContext {
 }
 
 // @public
+export type SpecArg<Options = void> = TaskSpec<Options>;
+
+// @public
 export interface StructuredError {
     readonly errorCode: number;
     readonly errorType: string;
@@ -351,11 +366,6 @@ export interface TaskConfiguration {
     retries?: number;
     timeout?: number;
     workingDir?: string;
-}
-
-// @public
-export interface TaskConfigurationBuilder {
-    config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
 }
 
 // @public
@@ -410,10 +420,23 @@ export const tasks: TasksAPI;
 
 // @public
 export interface TasksAPI {
-    register(name: string): TaskConfigurationBuilder;
-    register<Options>(name: string, optTask: Task<Options>, ...optionsResolver: {} extends Options ? [optionsResolver?: Resolver<Options>] : [optionsResolver: Resolver<Options>]): TaskConfigurationBuilder;
-    register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
+    register(name: string): void;
+    register(name: string, fn: TaskFn): void;
+    register<Options>(name: string, spec: SpecArg<Options>): void;
+    register<Options>(name: string, spec: LazySpec<Options>): void;
 }
+
+// @public
+export type TaskSpec<Options = void> = TaskConfiguration & ([void] extends [Options] ? {
+    run?: TaskFn | Task<Options>;
+    options?: Resolver<Options>;
+} : {} extends Options ? {
+    run?: TaskFn | Task<Options>;
+    options?: Resolver<Options>;
+} : {
+    run: Task<Options>;
+    options: Resolver<Options>;
+});
 
 // @public
 export enum TaskStatus {

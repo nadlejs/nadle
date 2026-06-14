@@ -97,7 +97,7 @@ shorthand is sugar for `{ }` and `{ run: fn }` respectively.
 | 3 | fn + config | `register("goodbye", { run: fn, group, dependsOn })` |
 | 4 | Task + required options | `register("eslint", { run: PnpxTask, options })` |
 | 5 | Task + options + config | `register("eslint", { run: PnpxTask, options, group, dependsOn })` |
-| 6 | lazy config | `register("x", () => ({ run, options, env }))` — whole-spec thunk, see Lazy |
+| 6 | lazy config | `register("x", lazy(() => ({ run, options, env })))` — `lazy()`-wrapped spec thunk, see Lazy |
 | 7 | optional options | `register("x", { run: MyTask })` — options omittable per rules |
 | 8 | programmatic/spread | `register("task-A", defineSpec({...}))` — returns a `TaskSpec` |
 | 9 | context-using fn | `register("pwd", ({ context }) => ...)` — fn unchanged |
@@ -118,8 +118,9 @@ type TaskSpec<Options> =
     ? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
     : { run: Task<Options>; options: Resolver<Options> });
 
-// register's spec argument may be the spec or a thunk returning it:
-type SpecArg<Options> = TaskSpec<Options> | (() => TaskSpec<Options>);
+// register's eager spec argument is the spec itself (the bare-thunk form is
+// dropped — deferral is opt-in via lazy(), see Lazy configuration):
+type SpecArg<Options> = TaskSpec<Options>;
 ```
 
 - Body is `void`/no options → `options` may be omitted.
@@ -136,26 +137,38 @@ intersection is conflict-free. The spec adds a **reserved-key guarantee**:
 ## Lazy configuration
 
 Today `.config()` accepts a callback for deferred config (#675 memoizes it). The
-keyed form keeps one — and only one — deferral mechanism: **the spec argument
-itself may be a thunk** returning the spec. This mirrors the old
-`.config(callback)` (defer the whole thing) without inventing a third lazy path:
+keyed form keeps one — and only one — whole-spec deferral mechanism, but it is
+**opt-in via an explicit `lazy()` wrapper** rather than a bare thunk:
 
 ```ts
-// whole spec deferred
-tasks.register("secondTask", () => ({
+// whole spec deferred via lazy()
+tasks.register("secondTask", lazy(() => ({
   run: MyTask,
   options: {},
   env: { SECOND_TASK_ENV: "..." },
-}));
+})));
 ```
 
-So `register`'s second argument is `TaskSpec<Options> | (() => TaskSpec<Options>)`.
-The thunk is invoked at most once (same memoization as #675), keeping lazy work
-(which "can do real work, read several times per run") out of the registration
-hot path. An eager spec object resolves synchronously.
+`lazy(thunk)` returns a branded `LazySpec<Options>` — an object tagged with a
+private symbol that wraps the spec thunk. `register` has a dedicated overload for
+it. A bare `() => TaskSpec` thunk is **not** accepted as the spec argument; the
+explicit tag is required.
 
-There are exactly two deferral points, no overlap: **the whole spec** (a spec
-thunk, for config that must be computed at resolve time) and **`options`** (a
+Why a tagged wrapper instead of a bare thunk: a bare function argument is
+ambiguous against the inline-function body shorthand (`register(name, fn)`) —
+both are `(…) => …`, and only the return type distinguishes a config thunk from a
+task body, which is brittle for both readers and static tooling. The `lazy()` tag
+makes the deferral intent explicit and unambiguous at the call site and in the
+AST.
+
+So `register`'s second argument is `TaskFn | TaskSpec<Options> | LazySpec<Options>`
+(plus the name-only form). The wrapped thunk is invoked at most once (same
+memoization as #675), keeping lazy work (which "can do real work, read several
+times per run") out of the registration hot path. An eager spec object resolves
+synchronously.
+
+There are exactly two deferral points, no overlap: **the whole spec** (via
+`lazy()`, for config that must be computed at resolve time) and **`options`** (a
 `Resolver<Options>`, for a `Task` body whose options are computed). There is no
 separate `config:` key — config fields live directly on the spec.
 
@@ -180,14 +193,18 @@ updated in the same change set.
 ### 1. Core (`packages/nadle/src/core/registration/`)
 - `api.ts` — replace 3 overloads + builder with: two shorthand overloads
   (`register(name)`, `register(name, fn)`) + the keyed form
-  (`register(name, spec)`). Collapse the internal re-`register()` swap: config
-  is now known at call time (or via the `config` thunk), so `register` runs once.
+  (`register(name, spec)`) + the `lazy()` form (`register(name, LazySpec)`).
+  Collapse the internal re-`register()` swap: config is now known at call time
+  (or via a `lazy()`-wrapped spec, resolved at most once), so `register` runs
+  once. Add `lazy()` (the tagged-wrapper factory) and the `LazySpec`/`SpecArg`
+  types.
 - `define-task.ts` — `defineTask` keeps returning a `Task<Options>` (body only);
   unaffected. Add a `defineSpec` helper (mirrors `defineTask`/`definePlugin`)
   for case #8 (programmatic specs) so spread sites get a typed spec instead of
   tuple spread.
 - `TasksAPI` / `TaskConfigurationBuilder` — `TaskConfigurationBuilder` deleted;
-  `TasksAPI.register` retyped.
+  `TasksAPI.register` retyped. New exports: `TaskSpec`, `SpecArg`, `LazySpec`,
+  `lazy`, `defineSpec`.
 
 ### 2. eslint-plugin (11 rules, `ast-helpers.ts`)
 AST-matchers keyed on `CallExpression` `register(...).config(...)` must be
@@ -231,8 +248,8 @@ rewritten to match `register(name, spec)`:
 A **codemod** (ts-morph or jscodeshift) ships with the change to mechanically
 rewrite `register(a, b, c).config(d)` → `register(a, { run: b, options: c, ...d })`,
 handling: name-only, fn, Task+options, `.config(obj)`, `.config(callback)`
-(→ whole-spec thunk `register(a, () => ({ run: b, options: c, ...d }))`), and
-tuple-spread (`register(...x)`). Documented in the
+(→ `lazy()`-wrapped spec `register(a, lazy(() => ({ run: b, options: c, ...d })))`),
+and tuple-spread (`register(...x)`). Documented in the
 migration guide. The repo's own ~60 fixtures are the codemod's first test corpus.
 
 ### 7. Spec (`spec/`) — language-agnostic
@@ -299,8 +316,9 @@ surprised.
 
 ## Open questions (resolved)
 
-- *Lazy form?* → the whole spec argument may be a thunk (`() => TaskSpec`),
-  memoized; the only whole-spec deferral path. No separate `config:` key.
+- *Lazy form?* → opt-in via an explicit `lazy(() => TaskSpec)` tagged wrapper
+  (`LazySpec`), memoized; the only whole-spec deferral path. A bare thunk is not
+  accepted (ambiguous against the inline-fn shorthand). No separate `config:` key.
 - *Trivial-task tax?* → `register(name)` / `register(name, fn)` shorthands kept.
 - *Options strictness?* → required iff `Options` has required fields (conditional
   mapped type).

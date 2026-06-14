@@ -108,8 +108,8 @@ Each entry in `plugin.tasks` has the shape:
 | `config`          | no       | Task configuration (`inputs`/`outputs`/`dependsOn`/`group`/etc.). |
 
 Contributed tasks are routed through the same registration path as user-defined
-tasks (`register(name, task, optionsResolver?)` followed by an optional
-`.config(config)`), so they have the full task configuration surface and behave
+tasks — a name, a task body, an optional options resolver, and an optional
+configuration — so they have the full task configuration surface and behave
 identically to hand-registered tasks. See [01-task.md](01-task.md) and
 [02-task-configuration.md](02-task-configuration.md).
 
