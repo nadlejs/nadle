@@ -70,9 +70,10 @@ The duration timer is unreferenced so it does not prevent the process from exiti
 ## Custom Listeners
 
 The core registers a fixed set of listeners (ExecutionTracker and the active reporter).
-User-facing extension is through the **plugin system**: a plugin applied with `use()`
-contributes lifecycle hooks that the core dispatches on the main thread via an internal
-listener. The hooks map to events as follows:
+User-facing extension is through the **plugin system** (specified in full in
+[14-plugins.md](14-plugins.md)): a plugin applied with `use()` contributes lifecycle hooks
+that the core dispatches on the main thread via an internal listener. The hooks map to
+events as follows:
 
 | Plugin hook  | Event(s)                                                                                                                          |
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------- |

@@ -21,7 +21,7 @@ const sidebars: SidebarsConfig = {
 		{
 			type: "category",
 			label: "Concepts",
-			items: ["concepts/task", "concepts/workspace"]
+			items: ["concepts/task", "concepts/workspace", "concepts/plugin"]
 		},
 		{
 			label: "Guides",
@@ -32,6 +32,7 @@ const sidebars: SidebarsConfig = {
 				"guides/configuring-task",
 				"guides/executing-task",
 				"guides/file-operation-tasks",
+				"guides/authoring-plugin",
 				"guides/configuring-nadle",
 				"guides/eslint-plugin"
 			]

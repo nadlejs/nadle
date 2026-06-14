@@ -81,13 +81,14 @@ In this example:
 
 ## env
 
-- **Type:** `Record<string, string>`
+- **Type:** `Record<string, string | number | boolean>`
 
-Specifies one or more task names that must be executed before this task runs. Used to build the task execution graph.
+Specifies environment variables to set while the task runs. Non-string values are
+converted to strings before being applied to the task's environment.
 
 ```ts
 tasks.register("build").config({
-	dependsOn: ["compile", "bundle", "test"]
+	env: { NODE_ENV: "production", PORT: 3000 }
 });
 ```
 

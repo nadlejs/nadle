@@ -1,6 +1,6 @@
 # Nadle Specification
 
-**Version**: 3.7.0
+**Version**: 3.8.0
 
 This directory contains the language-agnostic specification for Nadle, a type-safe,
 Gradle-inspired task runner for Node.js.
@@ -35,25 +35,27 @@ Built-in Tasks (10)
 Events (11)
 Error Handling (12)
 Reporting (13)
+Plugins (14)
 ```
 
 ## Files
 
-| #   | File                                                       | Concept                                                                        |
-| --- | ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 01  | [01-task.md](01-task.md)                                   | Task model, registration, naming, status lifecycle                             |
-| 02  | [02-task-configuration.md](02-task-configuration.md)       | dependsOn, env, workingDir, inputs, outputs, group                             |
-| 03  | [03-scheduling.md](03-scheduling.md)                       | DAG, dependency resolution, cycle detection, execution order                   |
-| 04  | [04-execution.md](04-execution.md)                         | Worker pool, message protocol, env injection, cancellation                     |
-| 05  | [05-caching.md](05-caching.md)                             | Fingerprinting, cache key, validation flow, storage layout                     |
-| 06  | [06-project.md](06-project.md)                             | Project model, root detection, package manager                                 |
-| 07  | [07-workspace.md](07-workspace.md)                         | Workspace identity, dependencies, aliases, config files                        |
-| 08  | [08-configuration-loading.md](08-configuration-loading.md) | Config file resolution, option precedence, defaults                            |
-| 09  | [09-cli.md](09-cli.md)                                     | Commands, flags, handler chain, exit codes                                     |
-| 10  | [10-builtin-tasks.md](10-builtin-tasks.md)                 | ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, PnpxTask, CopyTask, DeleteTask |
-| 11  | [11-events.md](11-events.md)                               | Listener interface, event lifecycle                                            |
-| 12  | [12-error-handling.md](12-error-handling.md)               | NadleError, error propagation, exit codes                                      |
-| 13  | [13-reporting.md](13-reporting.md)                         | Footer renderer, summary output                                                |
+| #   | File                                                       | Concept                                                                           |
+| --- | ---------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 01  | [01-task.md](01-task.md)                                   | Task model, registration, naming, status lifecycle                                |
+| 02  | [02-task-configuration.md](02-task-configuration.md)       | dependsOn, env, workingDir, inputs, outputs, group                                |
+| 03  | [03-scheduling.md](03-scheduling.md)                       | DAG, dependency resolution, cycle detection, execution order                      |
+| 04  | [04-execution.md](04-execution.md)                         | Worker pool, message protocol, env injection, cancellation                        |
+| 05  | [05-caching.md](05-caching.md)                             | Fingerprinting, cache key, validation flow, storage layout                        |
+| 06  | [06-project.md](06-project.md)                             | Project model, root detection, package manager                                    |
+| 07  | [07-workspace.md](07-workspace.md)                         | Workspace identity, dependencies, aliases, config files                           |
+| 08  | [08-configuration-loading.md](08-configuration-loading.md) | Config file resolution, option precedence, defaults                               |
+| 09  | [09-cli.md](09-cli.md)                                     | Commands, flags, handler chain, exit codes                                        |
+| 10  | [10-builtin-tasks.md](10-builtin-tasks.md)                 | ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, PnpxTask, CopyTask, DeleteTask    |
+| 11  | [11-events.md](11-events.md)                               | Listener interface, event lifecycle                                               |
+| 12  | [12-error-handling.md](12-error-handling.md)               | NadleError, error propagation, exit codes                                         |
+| 13  | [13-reporting.md](13-reporting.md)                         | Footer renderer, summary output                                                   |
+| 14  | [14-plugins.md](14-plugins.md)                             | Plugin model, `use`/`definePlugin`, lifecycle hooks, contributed tasks, reporters |
 
 ## Versioning
 
@@ -84,6 +86,7 @@ user-facing docs should also be updated.
 | **Cache Key**        | A hash derived from task ID, input fingerprints, and task environment.                                                 |
 | **DAG**              | Directed Acyclic Graph representing task dependencies.                                                                 |
 | **Listener**         | An object with optional methods for lifecycle events.                                                                  |
+| **Plugin**           | A distributable unit applied with `use()` that contributes task types, lifecycle hooks, and/or custom reporters.       |
 | **Handler**          | A command handler (List, DryRun, Execute, etc.) selected by the CLI.                                                   |
 | **Runner Context**   | The logger and working directory provided to every task function.                                                      |
 | **Kernel**           | Shared zero-dependency package (`@nadle/kernel`) providing workspace identity, task identifiers, and alias resolution. |

@@ -42,8 +42,11 @@ Dependency strings are resolved as follows:
    preceding segments form the workspace ID. Resolved by workspace ID or label.
 3. **Root workspace** — use `"root:taskName"` (root workspace ID is always `"root"`).
 
-If a dependency is not found in the target workspace, Nadle falls back to the root
-workspace. If still not found, an error is raised with suggestions.
+A dependency is resolved only within its target workspace (the current workspace
+for a colon-less name, or the explicit workspace for a qualified name) — there is
+no implicit fallback to the root workspace. If the task is not found there, an
+error is raised with suggestions. To depend on a root task, qualify it explicitly
+with `"root:taskName"`.
 
 Excluded tasks (via `--exclude`) are filtered out of the resolved dependency set.
 

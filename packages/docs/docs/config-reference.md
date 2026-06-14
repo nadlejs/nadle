@@ -290,7 +290,7 @@ For instance: `75%` on a 16-core machine results in a maximum of 12 workers.
 ### `minWorkers`
 
 - **Type:** `number | string`
-- **Default:** `1`
+- **Default:** number of CPU cores minus one (same as `maxWorkers`)
 - **CLI:** `--min-workers <number>`
 
 Specifies the **minimum number of worker threads** used for parallel task execution.

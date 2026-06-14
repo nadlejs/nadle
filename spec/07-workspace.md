@@ -45,8 +45,10 @@ Workspace dependencies are populated from the `package.json` dependency fields:
 
 - `dependencies`
 - `devDependencies`
-- `peerDependencies`
-- `optionalDependencies`
+
+`peerDependencies` and `optionalDependencies` are intentionally excluded: they
+rarely imply a build-ordering relationship and including them risks spurious
+edges (or cycles) in the task graph.
 
 If a dependency references another workspace in the project (e.g., via
 `workspace:*` protocol), it is recorded as a workspace dependency.

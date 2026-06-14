@@ -8,6 +8,36 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 3.8.0 — 2026-06-14
+
+### Added
+
+- 14-plugins: New dedicated section specifying the plugin authoring contract —
+  the plugin model (`name`/`enforce`/`hooks`/`tasks`/`reporters`), `use()`
+  application and deduplication semantics, `definePlugin`, the four lifecycle
+  hooks with their context shapes, contributed task types, and custom reporters.
+  Previously plugin behavior was only mentioned incidentally in 11-events and
+  13-reporting.
+
+### Changed
+
+- 09-cli: Added the `--reporter` flag to the General Options table.
+
+### Fixed
+
+- 02-task-configuration: Removed the false claim that `dependsOn` falls back to
+  the root workspace when a task is not found in the target workspace. There is
+  no implicit fallback; a missing task is an error (use `"root:taskName"` to
+  depend on a root task).
+- 07-workspace: Workspace dependencies are derived only from `dependencies` and
+  `devDependencies`; `peerDependencies`/`optionalDependencies` are excluded.
+  Previously all four were listed.
+- 09-cli: Corrected the `--cache-dir` default to
+  `<projectDir>/node_modules/.cache/nadle` (was `<projectDir>/.nadle`).
+- 12-error-handling: Removed two error rows (empty/duplicate workspace label)
+  that are not raised by the implementation, and the stale "Task not found (with
+  suggestions) … with fallback" row.
+
 ## 3.7.0 — 2026-06-13
 
 ### Added

@@ -16,8 +16,8 @@ The reporter name space is open: in addition to the two built-ins, a plugin may 
 a named reporter (a listener factory), selected by the same `--reporter <name>` option.
 Exactly one reporter is active per run (a plugin reporter replaces the default). A plugin
 reporter may not shadow a built-in name, and an unknown reporter name is a configuration
-error listing the available reporters. See the plugin system for how reporters are
-contributed.
+error listing the available reporters. See [14-plugins.md](14-plugins.md) for how
+reporters are contributed.
 
 The remaining sections of this document describe the `default` reporter. The `agent`
 reporter is specified below.

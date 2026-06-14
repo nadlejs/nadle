@@ -114,6 +114,33 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 - **Release**: `release-please` for automated changelog + version bumps
 - **CI**: Ubuntu + macOS + Windows, Node 22/24
 
+## Definition of Done (keep spec/docs/impl in sync)
+
+The `spec/` directory is the single source of truth and `packages/docs/` is the
+user-facing contract. They drift silently because nothing fails CI when they fall
+behind the code. Any change to **behavior, a public API, or a CLI/config option**
+is not done until every applicable item below is updated **in the same PR**:
+
+- **Spec** (`spec/`): update the relevant numbered section so it matches the new
+  behavior. New concept → new/expanded section (and a TOC + glossary entry in
+  `spec/README.md`). Always add a `spec/CHANGELOG.md` entry and bump
+  `spec/README.md` version (semver: major = breaking, minor = new
+  concept/section, patch = clarification/fix).
+- **User docs** (`packages/docs/`): update `docs/concepts/` and/or `docs/guides/`,
+  plus the reference pages — `docs/config-reference.md` for any config option and
+  `docs/cli-reference.md` for any CLI flag. A new flag/option must appear in BOTH
+  the reference tables and the spec, with matching **type, choices, and default**.
+  Wire any new doc page into `packages/docs/sidebars.ts`.
+- **Public API** (`packages/nadle/index.api.md`): regenerate from
+  `build/api/index.api.md` after any export change (see Build & Release).
+- **Option-dump snapshots**: any new resolved option also requires regenerating
+  all option-dump snapshots (see Testing / project memory).
+
+Before claiming a feature is complete, grep the spec and the two reference docs
+for the option/flag/symbol names you touched and confirm the type/default/choices
+agree with the code. CLI flag tables and worker/cache defaults are the usual drift
+sites.
+
 ## Testing
 
 ```bash
