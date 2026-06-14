@@ -54,16 +54,6 @@ function isTasksRegister(node: ts.CallExpression): boolean {
 	);
 }
 
-function findConfigCall(registerCall: ts.CallExpression): ts.CallExpression | null {
-	const { parent } = registerCall;
-
-	if (!ts.isPropertyAccessExpression(parent) || parent.name.text !== "config") {
-		return null;
-	}
-
-	return ts.isCallExpression(parent.parent) ? parent.parent : null;
-}
-
 function extractDependsOn(node: ts.Expression, file: ts.SourceFile): DependencyRef[] {
 	const refs: DependencyRef[] = [];
 
@@ -88,10 +78,18 @@ function extractDependsOn(node: ts.Expression, file: ts.SourceFile): DependencyR
 	return refs;
 }
 
-function extractConfig(configCall: ts.CallExpression, file: ts.SourceFile): TaskConfigInfo | null {
-	const arg = configCall.arguments[0];
+function isFunctionLike(node: ts.Expression): boolean {
+	return ts.isArrowFunction(node) || ts.isFunctionExpression(node);
+}
 
-	if (!arg || !ts.isObjectLiteralExpression(arg)) {
+const CONFIG_KEYS = new Set(["dependsOn", "description", "group", "inputs", "outputs"]);
+
+function extractConfig(spec: ts.ObjectLiteralExpression, file: ts.SourceFile): TaskConfigInfo | null {
+	const hasConfigKey = spec.properties.some(
+		(prop) => ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name) && CONFIG_KEYS.has(prop.name.text)
+	);
+
+	if (!hasConfigKey) {
 		return null;
 	}
 
@@ -101,7 +99,7 @@ function extractConfig(configCall: ts.CallExpression, file: ts.SourceFile): Task
 	let hasInputs = false;
 	let hasOutputs = false;
 
-	for (const prop of arg.properties) {
+	for (const prop of spec.properties) {
 		if (!ts.isPropertyAssignment(prop) || !ts.isIdentifier(prop.name)) {
 			continue;
 		}
@@ -131,31 +129,70 @@ function extractConfig(configCall: ts.CallExpression, file: ts.SourceFile): Task
 		}
 	}
 
-	return { group, dependsOn, hasInputs, hasOutputs, description, configRange: toRange(arg, file) };
+	return { group, dependsOn, hasInputs, hasOutputs, description, configRange: toRange(spec, file) };
 }
 
-function determineForm(args: ts.NodeArray<ts.Expression>): {
-	taskObjectName: string | null;
+interface ParsedSpec {
 	form: TaskRegistration["form"];
-} {
-	if (args.length >= 3) {
-		const taskArg = args[1];
+	taskObjectName: string | null;
+	configuration: TaskConfigInfo | null;
+}
 
-		return {
-			form: "typed",
-			taskObjectName: ts.isIdentifier(taskArg) ? taskArg.text : null
-		};
+/**
+ * Classifies the `run` property of a keyed spec object and resolves the task
+ * object name when `run` references a Task identifier.
+ */
+function classifyRun(spec: ts.ObjectLiteralExpression): { form: TaskRegistration["form"]; taskObjectName: string | null } {
+	const runProp = spec.properties.find(
+		(prop): prop is ts.PropertyAssignment => ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name) && prop.name.text === "run"
+	);
+
+	if (!runProp) {
+		return { form: "no-op", taskObjectName: null };
 	}
 
-	return { taskObjectName: null, form: args.length === 2 ? "function" : "no-op" };
+	if (isFunctionLike(runProp.initializer)) {
+		return { form: "function", taskObjectName: null };
+	}
+
+	return {
+		form: "typed",
+		taskObjectName: ts.isIdentifier(runProp.initializer) ? runProp.initializer.text : null
+	};
 }
 
-function extractRegistration(registerCall: ts.CallExpression, configCall: ts.CallExpression | null, file: ts.SourceFile): TaskRegistration {
+/**
+ * Parses the second argument of `tasks.register(name, secondArg)`.
+ *
+ * - absent → "no-op" placeholder.
+ * - function (arrow/function expression) → "function" inline body.
+ * - keyed spec object → classify by its `run` property and read config fields.
+ * - anything else (e.g. `lazy(() => ({...}))`) → dynamic; name only, no config.
+ */
+function parseSecondArg(secondArg: ts.Expression | undefined, file: ts.SourceFile): ParsedSpec {
+	if (!secondArg) {
+		return { form: "no-op", taskObjectName: null, configuration: null };
+	}
+
+	if (isFunctionLike(secondArg)) {
+		return { form: "function", taskObjectName: null, configuration: null };
+	}
+
+	if (ts.isObjectLiteralExpression(secondArg)) {
+		const { form, taskObjectName } = classifyRun(secondArg);
+
+		return { form, taskObjectName, configuration: extractConfig(secondArg, file) };
+	}
+
+	// Dynamic spec (e.g. lazy(...)): name is still resolvable, config is not.
+	return { form: "no-op", taskObjectName: null, configuration: null };
+}
+
+function extractRegistration(registerCall: ts.CallExpression, file: ts.SourceFile): TaskRegistration {
 	const nameArg = registerCall.arguments[0];
 	const name = nameArg && ts.isStringLiteral(nameArg) ? nameArg.text : null;
 	const nameRange = nameArg ? toRange(nameArg, file) : toRange(registerCall, file);
-	const { form, taskObjectName } = determineForm(registerCall.arguments);
-	const configuration = configCall ? extractConfig(configCall, file) : null;
+	const { form, taskObjectName, configuration } = parseSecondArg(registerCall.arguments[1], file);
 
 	return {
 		name,
@@ -170,12 +207,10 @@ function extractRegistration(registerCall: ts.CallExpression, configCall: ts.Cal
 export function analyzeDocument(content: string, fileName: string): DocumentAnalysis {
 	const file = ts.createSourceFile(fileName, content, ts.ScriptTarget.Latest, true);
 	const registrations: TaskRegistration[] = [];
-	const processed = new Set<ts.CallExpression>();
 
 	function walk(node: ts.Node): void {
-		if (ts.isCallExpression(node) && isTasksRegister(node) && !processed.has(node)) {
-			processed.add(node);
-			registrations.push(extractRegistration(node, findConfigCall(node), file));
+		if (ts.isCallExpression(node) && isTasksRegister(node)) {
+			registrations.push(extractRegistration(node, file));
 		}
 
 		ts.forEachChild(node, walk);

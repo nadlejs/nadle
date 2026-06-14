@@ -1,18 +1,24 @@
 // @ts-nocheck -- intentional type errors for LSP analyzer testing
 import { tasks, ExecTask } from "nadle";
 
-tasks.register("compile", ExecTask, { command: "tsc" });
+tasks.register("compile", { run: ExecTask, options: { command: "tsc" } });
 
-tasks.register("test", ExecTask, { command: "vitest" }).config({
+tasks.register("test", {
+	run: ExecTask,
+	options: { command: "vitest" },
 	dependsOn: ["compile", "nonexistent"]
 });
 
 // Workspace-qualified dep (should NOT be flagged)
-tasks.register("deploy", ExecTask, { command: "deploy" }).config({
+tasks.register("deploy", {
+	run: ExecTask,
+	options: { command: "deploy" },
 	dependsOn: ["compile", "other-pkg:build"]
 });
 
 // Single string dependsOn with typo
-tasks.register("release", ExecTask, { command: "npm" }).config({
+tasks.register("release", {
+	run: ExecTask,
+	options: { command: "npm" },
 	dependsOn: "typo-task"
 });
