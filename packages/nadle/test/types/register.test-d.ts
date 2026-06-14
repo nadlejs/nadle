@@ -50,9 +50,13 @@ describe.concurrent("TaskSpec / defineSpec", () => {
 		expectTypeOf<TaskSpec<void>>().toMatchTypeOf<{ run?: unknown }>();
 	});
 
-	it("TaskSpec with required options mandates options property", () => {
-		type WithReq = TaskSpec<{ command: string }>;
-		expectTypeOf<WithReq>().toHaveProperty("options");
+	it("TaskSpec with required options mandates run and options", () => {
+		// Both `run` and `options` must be required — omitting either is a type error.
+		// @ts-expect-error options (and run) are required when Options has required fields
+		const _bad: TaskSpec<{ command: string }> = {};
+		const _good: TaskSpec<{ command: string }> = { run: { run: () => {} }, options: { command: "echo" } };
+		void _bad;
+		void _good;
 	});
 
 	it("defineSpec returns TaskSpec<void> for a plain config object", () => {

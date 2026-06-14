@@ -70,13 +70,15 @@ export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
  * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
  */
 export type TaskSpec<Options = void> = TaskConfiguration &
+	// Tuple wrapping `[void] extends [Options]` suppresses distributivity: plain
+	// `void extends Options` distributes over unions and lands void in the wrong branch.
 	([void] extends [Options]
 		? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
 		: {} extends Options
 			? { run?: TaskFn | Task<Options>; options?: Resolver<Options> }
 			: { run: Task<Options>; options: Resolver<Options> });
 
-/** The spec argument to `register`: an eager spec (a thunk form was intentionally dropped — see plan). */
+/** Stable public name for register's spec argument; internals of TaskSpec can be refined without breaking callers. Thunk form intentionally dropped. */
 export type SpecArg<Options = void> = TaskSpec<Options>;
 
 /**
