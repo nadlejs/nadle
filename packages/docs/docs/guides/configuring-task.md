@@ -1,30 +1,36 @@
 ---
-description: Configure Nadle tasks with dependsOn, inputs, outputs, environment variables, and caching using the .config() method.
-keywords: [nadle, task configuration, dependsOn, inputs, outputs, caching, env]
+description: Configure Nadle tasks with dependsOn, inputs, outputs, environment variables, and caching by adding config fields to the task spec.
+keywords: [nadle, task configuration, dependsOn, inputs, outputs, caching, env, spec]
 ---
 
 # Configuring Task
 
-After registering a task, configuration can be applied using `.config(...)`.
-This allows you to define metadata, dependencies, environment variables, working directory,
-and caching behavior for the task.
-
-You can pass either an object or a function returning an object to `.config(...)`.
+A task is configured through **config fields on its spec** — the keyed object passed as the
+second argument to [`tasks.register`](./registering-task.md). Alongside `run` (and
+`options` for reusable tasks), the spec carries metadata, dependencies, environment
+variables, the working directory, and caching behavior.
 
 ```ts
-tasks
-	.register("exampleTask", () => {
+tasks.register("exampleTask", {
+	run: () => {
 		// task logic
-	})
-	.config({
-		group: "build",
-		description: "Compile the example project",
-		dependsOn: ["prepare"],
-		env: { NODE_ENV: "production" },
-		workingDir: "./packages/example",
-		inputs: [Inputs.dirs("src")],
-		outputs: [Outputs.dirs("lib")]
-	});
+	},
+	group: "build",
+	description: "Compile the example project",
+	dependsOn: ["prepare"],
+	env: { NODE_ENV: "production" },
+	workingDir: "./packages/example",
+	inputs: [Inputs.dirs("src")],
+	outputs: [Outputs.dirs("lib")]
+});
+```
+
+When a task has no body, the config fields are the entire spec:
+
+```ts
+tasks.register("ci", {
+	dependsOn: ["build", "test"]
+});
 ```
 
 ---
@@ -39,7 +45,10 @@ All of them are optional, and you can choose to specify only those that are appl
 Used to categorize related tasks under a common group name. Useful for organizing task listings and CLI output.
 
 ```ts
-tasks.register("compile").config({
+tasks.register("compile", {
+	run: () => {
+		/* … */
+	},
 	group: "build"
 });
 ```
@@ -51,7 +60,10 @@ tasks.register("compile").config({
 Provides a short explanation of what the task does. Often displayed in help commands or task listings.
 
 ```ts
-tasks.register("compile").config({
+tasks.register("compile", {
+	run: () => {
+		/* … */
+	},
 	description: "Transpile TypeScript files to JavaScript"
 });
 ```
@@ -68,7 +80,7 @@ To refer to a task in another workspace, use the fully qualified [task identifie
 **Example:**
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
 	dependsOn: ["commmon:build", "compile", "root:setup"]
 });
 ```
@@ -87,7 +99,10 @@ Specifies environment variables to set while the task runs. Non-string values ar
 converted to strings before being applied to the task's environment.
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
+	run: () => {
+		/* … */
+	},
 	env: { NODE_ENV: "production", PORT: 3000 }
 });
 ```
@@ -99,7 +114,10 @@ tasks.register("build").config({
 Overrides the working directory for this task. All relative paths are resolved based on this directory.
 
 ```ts
-tasks.register("publish").config({
+tasks.register("publish", {
+	run: () => {
+		/* … */
+	},
 	workingDir: "./packages/core"
 });
 ```
@@ -111,7 +129,10 @@ tasks.register("publish").config({
 Declares files, directories, or glob patterns that the task reads from. Used to detect changes for cache invalidation.
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
+	run: () => {
+		/* … */
+	},
 	inputs: [Inputs.dirs("src"), Inputs.files("tsconfig.json")]
 });
 ```
@@ -123,7 +144,10 @@ tasks.register("build").config({
 Declares files or directories that the task generates. Nadle uses this information to manage task outputs and caching.
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
+	run: () => {
+		/* … */
+	},
 	outputs: [Outputs.dirs("dist")]
 });
 ```
@@ -137,7 +161,10 @@ timeout fails with a timeout error (and is eligible for `retries`). The task fun
 not forcibly interrupted; the attempt is treated as failed.
 
 ```ts
-tasks.register("deploy").config({
+tasks.register("deploy", {
+	run: () => {
+		/* … */
+	},
 	timeout: 30_000
 });
 ```
@@ -152,7 +179,10 @@ external services). Both `timeout` and `retries` apply only to the task function
 restoring outputs from cache.
 
 ```ts
-tasks.register("flaky-check").config({
+tasks.register("flaky-check", {
+	run: () => {
+		/* … */
+	},
 	retries: 2,
 	timeout: 10_000
 });
@@ -160,13 +190,19 @@ tasks.register("flaky-check").config({
 
 :::tip
 
-You can also use a function to return a configuration object.
-This is useful when values depend on environment or dynamic conditions.
+When the configuration itself depends on the environment or other dynamic conditions, wrap
+the whole spec in [`lazy`](./registering-task.md#deferring-the-whole-spec-with-lazy). The
+thunk is evaluated at most once, the first time Nadle reads the task's configuration.
 
 ```ts
-tasks.register("publish").config(() => ({
-	workingDir: "./packages/core"
-}));
+import { tasks, lazy } from "nadle";
+
+tasks.register(
+	"publish",
+	lazy(() => ({
+		workingDir: process.env.PACKAGE_DIR ?? "./packages/core"
+	}))
+);
 ```
 
 :::

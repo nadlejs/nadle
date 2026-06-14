@@ -33,9 +33,12 @@ const BuildTask = defineTask<BuildOptions>({
 	}
 });
 
-tasks.register("build", BuildTask, {
-	target: "web",
-	optimize: false
+tasks.register("build", {
+	run: BuildTask,
+	options: {
+		target: "web",
+		optimize: false
+	}
 });
 ```
 
@@ -47,13 +50,12 @@ tasks.register("build", BuildTask, {
 - Progress tracking for parallel tasks
 
 ```typescript
-tasks
-	.register("build:all", async () => {
+tasks.register("build:all", {
+	run: async () => {
 		// These tasks will run in parallel if possible
-	})
-	.config({
-		dependsOn: ["build:web", "build:mobile", "build:desktop"]
-	});
+	},
+	dependsOn: ["build:web", "build:mobile", "build:desktop"]
+});
 ```
 
 ## Dependency Management
@@ -63,13 +65,12 @@ tasks
 - Topological sort scheduling
 
 ```typescript
-tasks
-	.register("deploy", async () => {
+tasks.register("deploy", {
+	run: async () => {
 		// Deploy implementation
-	})
-	.config({
-		dependsOn: ["build", "test"]
-	});
+	},
+	dependsOn: ["build", "test"]
+});
 ```
 
 ## Progress Tracking
@@ -107,14 +108,13 @@ Available logger methods: `log`, `info`, `warn`, `error`, `debug`, `throw`.
 - Task discovery via `nadle --list`
 
 ```typescript
-tasks
-	.register("build:web", async () => {
+tasks.register("build:web", {
+	run: async () => {
 		// Implementation
-	})
-	.config({
-		group: "Build",
-		description: "Build web application"
-	});
+	},
+	group: "Build",
+	description: "Build web application"
+});
 ```
 
 ## Error Handling
@@ -152,16 +152,16 @@ Nadle caches task results based on declared inputs and outputs. When inputs have
 ```typescript
 import { tasks, ExecTask, Inputs, Outputs } from "nadle";
 
-tasks
-	.register("compile", ExecTask, {
+tasks.register("compile", {
+	run: ExecTask,
+	options: {
 		command: "tsc",
 		args: ["--build"]
-	})
-	.config({
-		inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
-		outputs: [Outputs.dirs("lib")],
-		description: "Compile TypeScript sources"
-	});
+	},
+	inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
+	outputs: [Outputs.dirs("lib")],
+	description: "Compile TypeScript sources"
+});
 ```
 
 ### Cache Declarations
@@ -176,16 +176,15 @@ tasks
 Tasks can set environment variables via the `env` config field:
 
 ```typescript
-tasks
-	.register("build:prod", async () => {
+tasks.register("build:prod", {
+	run: async () => {
 		// Build with production env
-	})
-	.config({
-		env: {
-			NODE_ENV: "production",
-			MINIFY: true
-		}
-	});
+	},
+	env: {
+		NODE_ENV: "production",
+		MINIFY: true
+	}
+});
 ```
 
 ## Built-in Tasks
@@ -199,9 +198,12 @@ Run arbitrary shell commands:
 ```typescript
 import { tasks, ExecTask } from "nadle";
 
-tasks.register("lint", ExecTask, {
-	command: "eslint",
-	args: [".", "--cache"]
+tasks.register("lint", {
+	run: ExecTask,
+	options: {
+		command: "eslint",
+		args: [".", "--cache"]
+	}
 });
 ```
 
@@ -212,8 +214,11 @@ Run Node.js scripts:
 ```typescript
 import { tasks, NodeTask } from "nadle";
 
-tasks.register("seed", NodeTask, {
-	script: "scripts/seed-db.mjs"
+tasks.register("seed", {
+	run: NodeTask,
+	options: {
+		script: "scripts/seed-db.mjs"
+	}
 });
 ```
 
@@ -224,8 +229,11 @@ Run npm commands:
 ```typescript
 import { tasks, NpmTask } from "nadle";
 
-tasks.register("install", NpmTask, {
-	args: ["install", "--frozen-lockfile"]
+tasks.register("install", {
+	run: NpmTask,
+	options: {
+		args: ["install", "--frozen-lockfile"]
+	}
 });
 ```
 
@@ -236,9 +244,12 @@ Run locally-installed binaries via npx:
 ```typescript
 import { tasks, NpxTask } from "nadle";
 
-tasks.register("lint", NpxTask, {
-	command: "eslint",
-	args: [".", "--cache"]
+tasks.register("lint", {
+	run: NpxTask,
+	options: {
+		command: "eslint",
+		args: [".", "--cache"]
+	}
 });
 ```
 
@@ -249,8 +260,11 @@ Run pnpm commands:
 ```typescript
 import { tasks, PnpmTask } from "nadle";
 
-tasks.register("install", PnpmTask, {
-	args: ["install", "--frozen-lockfile"]
+tasks.register("install", {
+	run: PnpmTask,
+	options: {
+		args: ["install", "--frozen-lockfile"]
+	}
 });
 ```
 
@@ -261,9 +275,12 @@ Run locally-installed binaries via pnpm exec:
 ```typescript
 import { tasks, PnpxTask } from "nadle";
 
-tasks.register("build", PnpxTask, {
-	command: "tsup",
-	args: []
+tasks.register("build", {
+	run: PnpxTask,
+	options: {
+		command: "tsup",
+		args: []
+	}
 });
 ```
 
@@ -274,10 +291,13 @@ Copy files with glob patterns:
 ```typescript
 import { tasks, CopyTask } from "nadle";
 
-tasks.register("copy:assets", CopyTask, {
-	from: "src/assets",
-	to: "dist/assets",
-	include: ["**/*.png", "**/*.svg"]
+tasks.register("copy:assets", {
+	run: CopyTask,
+	options: {
+		from: "src/assets",
+		to: "dist/assets",
+		include: ["**/*.png", "**/*.svg"]
+	}
 });
 ```
 
@@ -288,8 +308,11 @@ Delete files and directories:
 ```typescript
 import { tasks, DeleteTask } from "nadle";
 
-tasks.register("clean", DeleteTask, {
-	paths: ["**/lib/**", "**/build/**"]
+tasks.register("clean", {
+	run: DeleteTask,
+	options: {
+		paths: ["**/lib/**", "**/build/**"]
+	}
 });
 ```
 

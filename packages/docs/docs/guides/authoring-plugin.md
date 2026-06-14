@@ -34,7 +34,7 @@ typed `use(timingPlugin, { threshold: 200 })`.
 ## Contributing task types
 
 List ready-made tasks under `tasks`. Each entry is registered through the same
-path as a hand-written `tasks.register(...).config(...)`, so contributed tasks
+path as a hand-written `tasks.register(name, spec)`, so contributed tasks
 have the full configuration surface (`inputs`, `outputs`, `dependsOn`, `group`, …).
 
 ```ts
@@ -61,8 +61,8 @@ export const deployPlugin = definePlugin({
 
 - `task` — the task definition produced by [`defineTask`](./defining-task.md).
 - `optionsResolver` — supplies the task's options (omit for option-less tasks).
-- `config` — optional task configuration, identical to what
-  [`.config()`](./configuring-task.md) accepts.
+- `config` — optional task configuration, identical to the
+  [config fields](./configuring-task.md) a task spec accepts.
 
 ---
 

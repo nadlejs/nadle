@@ -327,15 +327,14 @@ set per-task in the task configuration, which takes precedence over the global v
 
 ```typescript
 // Per-task override
-tasks
-	.register("build", async () => {
+tasks.register("build", {
+	run: async () => {
 		/* ... */
-	})
-	.config({
-		maxCacheEntries: 3,
-		inputs: [Inputs.dirs("src")],
-		outputs: [Outputs.dirs("dist")]
-	});
+	},
+	maxCacheEntries: 3,
+	inputs: [Inputs.dirs("src")],
+	outputs: [Outputs.dirs("dist")]
+});
 ```
 
 ## Configuration File Example
