@@ -152,6 +152,10 @@ tasks.register("build", {
 });
 ```
 
+<AgentPrompt>
+Add caching to my Nadle `build` task so it is skipped when its inputs are unchanged. First read the Nadle docs for the current API — fetch https://nadle.dev/llms.txt (or browse https://nadle.dev/docs/guides/configuring-task). Then declare `inputs` for the source files and config it reads, and `outputs` for the directory it produces, using `Inputs.files(...)` / `Outputs.dirs(...)` in the task's keyed spec, and explain how to verify a cache hit.
+</AgentPrompt>
+
 ## timeout
 
 - **Type:** `number` (milliseconds, positive integer)

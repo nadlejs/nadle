@@ -10,6 +10,10 @@ A plugin packages reusable behavior so other projects can enable it with a singl
 `definePlugin` helper, which gives you full type inference for the plugin's
 options.
 
+<AgentPrompt>
+Scaffold a Nadle plugin in this repository using `definePlugin`. First read the Nadle docs for the current API — fetch https://nadle.dev/llms.txt (or browse https://nadle.dev/docs/guides/authoring-plugin). It should contribute one custom task (built with `defineTask`) and one reporter, and export the plugin so it can be applied with `use(...)` in `nadle.config.ts`. Follow the keyed task spec API.
+</AgentPrompt>
+
 ```ts
 import { definePlugin } from "nadle";
 

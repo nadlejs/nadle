@@ -35,3 +35,6 @@ packages/vscode-extension/server
 # typescript
 *.tsbuildinfo
 tsconfig.vitest-temp.json
+
+# brainstorm/visual-companion scratch
+.superpowers/

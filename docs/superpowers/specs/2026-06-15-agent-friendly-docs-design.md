@@ -81,7 +81,10 @@ the CLI).
 | Author a plugin | `guides/authoring-plugin.md` | Scaffold a nadle plugin with a task + reporter using `definePlugin` |
 
 Prompts are written in the keyed-spec API (post-#688) and must stay accurate to the
-shipped API.
+shipped API. **Each prompt instructs the agent to first read the authoritative
+docs** — fetch `https://nadle.dev/llms.txt` (or the relevant `/docs` page) — so the
+agent grounds itself in the current API rather than relying on stale model
+knowledge. This reuses the already-generated `llms.txt` (#664).
 
 ## Architecture / files
 

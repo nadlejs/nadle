@@ -54,6 +54,10 @@ nadle --version
 
 You should see the current version of Nadle printed to your terminal.
 
+<AgentPrompt>
+Set up Nadle in this repository. First read the Nadle docs for the current API — fetch https://nadle.dev/llms.txt (or browse https://nadle.dev/docs). Then install `nadle` as a dev dependency, create a `nadle.config.ts` at the project root that registers a `build` task running `tsc` and a `test` task that depends on `build`, and run `nadle build` to verify. Use the keyed task spec form: `tasks.register("build", { run: ExecTask, options: { command: "tsc" } })`.
+</AgentPrompt>
+
 ## Write nadle.config.ts
 
 The `nadle.config.ts` file serves as the central entry point for defining and organizing your Nadle tasks.
@@ -102,3 +106,12 @@ Goodbye, Nadle!
 
 RUN SUCCESSFUL in 505ms (2 tasks executed)
 ```
+
+## Migrating an existing project
+
+Already have npm scripts? Hand this prompt to your AI agent to convert them to Nadle tasks.
+(Dedicated migration guides — from npm scripts, Turborepo, Nx, and Makefile — are tracked in [#650](https://github.com/nadlejs/nadle/issues/650).)
+
+<AgentPrompt>
+Migrate this repository's npm scripts to Nadle. First read the Nadle docs for the current API — fetch https://nadle.dev/llms.txt (or browse https://nadle.dev/docs). Then, for each script in package.json, register an equivalent Nadle task in `nadle.config.ts` using the keyed spec form (`tasks.register("name", { run: ExecTask, options: { command, args } })`), preserve the original behavior, wire up `dependsOn` where one script calls another, and leave the npm scripts in place until I confirm the Nadle tasks work.
+</AgentPrompt>

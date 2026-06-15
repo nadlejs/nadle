@@ -1,0 +1,21 @@
+.button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.25rem 0.7rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: var(--ifm-color-emphasis-800);
+	background: var(--ifm-color-emphasis-100);
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+.button:hover {
+	background: var(--ifm-color-emphasis-200);
+}
+.copied {
+	color: var(--ifm-color-success);
+	border-color: var(--ifm-color-success);
+}
