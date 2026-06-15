@@ -2,7 +2,7 @@
 
 **Status:** Approved (user approved 2026-06-15).
 **Scope:** The Docusaurus docs site (`packages/docs/`). Make nadle.dev usable by AI
-coding agents: copy a page as Markdown / open it in an assistant, and copy curated
+coding agents: copy a page as Markdown, and copy curated
 agent-instruction prompts for common scenarios.
 **Out of scope (follow-up issue):** an Nx-style CLI (`create-nadle --ai`) that
 scaffolds `AGENTS.md`/`CLAUDE.md` into a user repo. Bigger build; deferred.
@@ -12,9 +12,9 @@ scaffolds `AGENTS.md`/`CLAUDE.md` into a user repo. Bigger build; deferred.
 When a developer uses an AI coding agent (Claude Code, Cursor, Copilot, …) and wants
 nadle in their project, give them two frictionless on-ramps from the docs:
 
-1. **Copy/open any doc page as Markdown** — one click to grab the current page as
-   clean Markdown (to paste into an agent) or open it pre-loaded in Claude/ChatGPT.
-   The emerging standard (Nx, Anthropic, Vercel docs all do this).
+1. **Copy any doc page as Markdown** — one click to grab the current page as clean
+   Markdown to paste into an agent. The emerging standard (Nx, Anthropic, Vercel
+   docs all do this). (No "open in Claude/ChatGPT" deep links — out of scope.)
 2. **Copy a ready-made agent prompt** — inline blocks on key guides that copy a
    natural-language instruction *to* an agent ("Set up Nadle in this repo: …"), so
    the user pastes it into their assistant and the agent does the work.
@@ -32,21 +32,17 @@ already shipped (#664–#668). This design adds the *interactive* layer on top.
 
 ## Component 1 — "Copy page" affordance (site-wide)
 
-A small action group rendered at the top of every doc article (right of the H1),
-via a swizzled Docusaurus `DocItem` (or `DocItem/Content` wrapper) theme component:
+A single **Copy page** button rendered at the top of every doc article (right of
+the H1), via a swizzled Docusaurus `DocItem` (or `DocItem/Content` wrapper) theme
+component:
 
 ```
-┌ Configuring Tasks ─────────────────── [📋 Copy page] [↗ Open in ▾] ┐
+┌ Configuring Tasks ───────────────────────────────── [📋 Copy page] ┐
 ```
 
 - **Copy page** — copies the current page's Markdown to the clipboard. Source: the
   page's generated `.md` (from the llms-txt plugin) fetched at click time, or the
   raw frontmatter+body if simpler. Falls back to copying a link if fetch fails.
-- **Open in ▾** — a small menu: **Open in Claude**, **Open in ChatGPT**. Each opens
-  the assistant with a pre-filled prompt that references the page URL + asks the
-  assistant to read it (e.g. `https://claude.ai/new?q=<encoded prompt incl. page URL>`).
-  Use each vendor's documented deep-link query param; if a vendor lacks one, omit
-  that entry rather than guess.
 
 Behavior:
 - Shows a transient "Copied!" state on success.
@@ -92,16 +88,16 @@ shipped API.
 - `packages/docs/src/theme/DocItem/Content/index.tsx` (swizzled) — renders the
   Component-1 action group above the article body. Wraps the original component;
   does not fork the whole DocItem.
-- `packages/docs/src/components/CopyPageButton/` — the copy-page + open-in-assistant
-  logic (clipboard, fetch the page `.md`, vendor deep links). One focused unit.
+- `packages/docs/src/components/CopyPageButton/` — the copy-page logic (clipboard,
+  fetch the page `.md`, URL fallback). One focused unit.
 - `packages/docs/src/components/AgentPrompt/` — the inline prompt block (Component 2).
 - MDX edits: add `<AgentPrompt>` to the 4 scenario pages (import auto-available via
   `@theme` or a global MDX scope registration in `docusaurus.config`/`MDXComponents`).
 - No change to the llms-txt plugin config; it already produces the Markdown sources.
 
 Each component is independently understandable: `CopyPageButton` knows "given the
-current page, produce its Markdown + assistant links"; `AgentPrompt` knows "render
-this text as a copyable prompt." Neither depends on the other.
+current page, copy its Markdown"; `AgentPrompt` knows "render this text as a
+copyable prompt." Neither depends on the other.
 
 ## Data flow
 
@@ -109,8 +105,6 @@ this text as a copyable prompt." Neither depends on the other.
   read a frontmatter/route-mapped path the llms-txt plugin emits) → `fetch()` →
   `navigator.clipboard.writeText(markdown)` → "Copied!" toast. On fetch failure,
   copy the canonical page URL instead and label it accordingly.
-- **Open in assistant:** click → build the vendor URL with an encoded prompt that
-  includes the page URL → `window.open`.
 - **Agent prompt:** click → `navigator.clipboard.writeText(promptText)` → "Copied!".
 
 ## Error handling
@@ -118,7 +112,6 @@ this text as a copyable prompt." Neither depends on the other.
 - Clipboard API unavailable / denied → fall back to selecting the text + a "press
   ⌘C" hint, or a `document.execCommand('copy')` fallback.
 - `.md` fetch fails (offline, 404) → copy the page URL, toast "Link copied".
-- Missing vendor deep-link → that menu entry is omitted at build, never a dead click.
 
 ## Testing
 
@@ -128,8 +121,7 @@ this text as a copyable prompt." Neither depends on the other.
   the dev server is acceptable for a docs-only feature (matches repo norms — docs
   have no unit suite today).
 - Manual: load a page, click Copy page → paste shows the page Markdown; click an
-  AgentPrompt Copy → paste shows the prompt text; Open-in-Claude opens with the
-  prompt pre-filled.
+  AgentPrompt Copy → paste shows the prompt text.
 
 ## Alternatives considered
 
