@@ -22,7 +22,7 @@
 		"husky": "^9.1.7",
 		"jiti": "^2.7.0",
 		"knip": "^6.16.1",
-		"nadle": "^0.5.3",
+		"nadle": "https://pkg.pr.new/nadlejs/nadle@185f0cc",
 		"prettier": "^3.8.4",
 		"remark-cli": "^12.0.1",
 		"remark-validate-links": "^13.1.0",

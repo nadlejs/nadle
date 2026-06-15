@@ -67,8 +67,8 @@ importers:
         specifier: ^6.16.1
         version: 6.16.1
       nadle:
-        specifier: ^0.5.3
-        version: 0.5.3(@types/react@19.2.17)
+        specifier: https://pkg.pr.new/nadlejs/nadle@185f0cc
+        version: https://pkg.pr.new/nadlejs/nadle@185f0cc(@types/react@19.2.17)
       prettier:
         specifier: ^3.8.4
         version: 3.8.4
@@ -2717,8 +2717,9 @@ packages:
     peerDependencies:
       eslint: ^9.30.1
 
-  '@nadle/kernel@0.0.2':
-    resolution: {integrity: sha512-J43dusMefpYeHx3jKKjGlvYZBYAEsGmmQDK4u4eeagJUsanuw18eKFSTt2mw0OaOqgNPvUWxFnXvXi52+W+BCA==}
+  '@nadle/kernel@https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@185f0cc544fbec238cc6fd971165e3c853dcd538':
+    resolution: {integrity: sha512-0/20Dbx1ISJKsLXQ0HjY0MgHi87i4l3XzGr6OBgPviabdX1p+C52MqnW62yZUTZVXvvDmRXA2jTyIT6n4HJsow==, tarball: https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@185f0cc544fbec238cc6fd971165e3c853dcd538}
+    version: 0.0.2
     engines: {node: '>=22'}
 
   '@nadle/prettier-config@0.0.5':
@@ -2727,8 +2728,9 @@ packages:
     peerDependencies:
       prettier: ^3.6.2
 
-  '@nadle/project-resolver@0.0.3':
-    resolution: {integrity: sha512-kElU5QIcRdR0y3ZkjfvaGDBqvEHlxrMzMF10Uq2ikgSGgnA6RD62qYFzp/0acNzTMS54euj1AMyS5kcDTTsBPA==}
+  '@nadle/project-resolver@https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@185f0cc544fbec238cc6fd971165e3c853dcd538':
+    resolution: {integrity: sha512-lpLS/6A1xxJjM0ZNcCnqfz5IkoyOIMJIsjxNG0/annpKM0qWlRX/5TVJSoxkPfWWd9bR/2pkxpk+u0qz1vMKeQ==, tarball: https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@185f0cc544fbec238cc6fd971165e3c853dcd538}
+    version: 0.0.3
     engines: {node: '>=22'}
     hasBin: true
 
@@ -7205,8 +7207,9 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
-  nadle@0.5.3:
-    resolution: {integrity: sha512-wz8O/FGCNe9YqGhmUoKn7BBtYoN41Aol6fkEs03QFbC/8qEj5a/9wDpzgjP7paH/0mk1/k5lTCWavIZckPnNkw==}
+  nadle@https://pkg.pr.new/nadlejs/nadle@185f0cc:
+    resolution: {integrity: sha512-MkB3PYHd/UCJG4n16in0yonD7g99YN+wVqpEB6uzX6i7QFZUfTt5m44oAPryFRfrca2/JHbVOU2QQ7ccAiqFPw==, tarball: https://pkg.pr.new/nadlejs/nadle@185f0cc}
+    version: 0.5.3
     engines: {node: '>=22'}
     hasBin: true
 
@@ -12916,17 +12919,17 @@ snapshots:
       - typescript
       - vitest
 
-  '@nadle/kernel@0.0.2': {}
+  '@nadle/kernel@https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@185f0cc544fbec238cc6fd971165e3c853dcd538': {}
 
   '@nadle/prettier-config@0.0.5(prettier@3.8.4)':
     dependencies:
       prettier: 3.8.4
 
-  '@nadle/project-resolver@0.0.3':
+  '@nadle/project-resolver@https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@185f0cc544fbec238cc6fd971165e3c853dcd538':
     dependencies:
       '@manypkg/find-root': 3.1.0
       '@manypkg/tools': 2.1.2
-      '@nadle/kernel': 0.0.2
+      '@nadle/kernel': https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@185f0cc544fbec238cc6fd971165e3c853dcd538
       find-up: 8.0.0
 
   '@nadle/ts-config@0.0.2': {}
@@ -18214,10 +18217,11 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  nadle@0.5.3(@types/react@19.2.17):
+  nadle@https://pkg.pr.new/nadlejs/nadle@185f0cc(@types/react@19.2.17):
     dependencies:
-      '@nadle/kernel': 0.0.2
-      '@nadle/project-resolver': 0.0.3
+      '@nadle/kernel': https://pkg.pr.new/nadlejs/nadle/@nadle/kernel@185f0cc544fbec238cc6fd971165e3c853dcd538
+      '@nadle/project-resolver': https://pkg.pr.new/nadlejs/nadle/@nadle/project-resolver@185f0cc544fbec238cc6fd971165e3c853dcd538
+      chokidar: 5.0.0
       consola: 3.4.2
       execa: 9.6.1
       fast-glob: 3.3.3
