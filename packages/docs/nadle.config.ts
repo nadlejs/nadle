@@ -1,4 +1,4 @@
-import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, PnpxTask } from "nadle";
 
 tasks.register("buildSpec", {
 	run: PnpxTask,

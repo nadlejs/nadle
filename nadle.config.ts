@@ -1,4 +1,4 @@
-import { tasks, Inputs, Outputs, PnpmTask, PnpxTask, DeleteTask } from "./node_modules/nadle/lib/index.js";
+import { tasks, Inputs, Outputs, PnpmTask, PnpxTask, DeleteTask } from "nadle";
 
 // --- Maintenance ---
 
