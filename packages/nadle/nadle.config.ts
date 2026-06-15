@@ -1,23 +1,15 @@
-// Self-host config bootstraps on the published nadle (old .config() API); the local build's
-// index.d.ts (new keyed API) shadows it via package self-reference, so it cannot typecheck
-// against the local types. ts-nocheck suppresses that; migrates post-publish. ban-ts-comment
-// is disabled here because the file must stay in the tsconfig for eslint's project service.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { tasks, Inputs, Outputs, PnpxTask } from "../../node_modules/nadle/lib/index.js";
 
-tasks.register("build").config({
-	group: "Building",
-	dependsOn: ["root:bundle"],
-	description: "Bundle nadle (delegates to root bundle)"
-});
+tasks.register("build", { group: "Building", dependsOn: ["root:bundle"], description: "Bundle nadle (delegates to root bundle)" });
 
-tasks.register("generateMarkdown", PnpxTask, { command: "typedoc" }).config({
+tasks.register("generateMarkdown", {
+	run: PnpxTask,
 	group: "Building",
 	dependsOn: ["build"],
+	options: { command: "typedoc" },
 	outputs: [Outputs.dirs("../docs/docs/api")],
 	description: "Generate API markdown with typedoc",
 	inputs: [Inputs.dirs("lib"), Inputs.files("typedoc.json")]
@@ -25,16 +17,21 @@ tasks.register("generateMarkdown", PnpxTask, { command: "typedoc" }).config({
 
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
 
-tasks.register("testAPI", PnpxTask, { args: ["run"], command: "api-extractor" }).config({
+tasks.register("testAPI", {
+	run: PnpxTask,
 	group: "Testing",
 	dependsOn: ["build"],
 	outputs: [Outputs.dirs("build/api")],
+	options: { args: ["run"], command: "api-extractor" },
 	description: "Verify API surface with api-extractor",
 	inputs: [Inputs.files("lib/index.d.ts", "api-extractor.json", "../../api-extractor.json", "index.api.md")]
 });
 
-tasks
-	.register("testNoWarningsAndUndocumentedAPI", async () => {
+tasks.register("testNoWarningsAndUndocumentedAPI", {
+	group: "Testing",
+	dependsOn: ["testAPI"],
+	description: "Ensure no API warnings or undocumented items",
+	run: async () => {
 		const apiContent = await Fs.readFile(Path.join(import.meta.dirname, "index.api.md"), "utf-8");
 
 		if (apiContent.includes("Warning:")) {
@@ -44,23 +41,17 @@ tasks
 		if (apiContent.includes("undocumented")) {
 			throw new Error(`API documentation contains undocumented items`);
 		}
-	})
-	.config({
-		group: "Testing",
-		dependsOn: ["testAPI"],
-		description: "Ensure no API warnings or undocumented items"
-	});
-
-tasks.register("test").config({
-	group: "Testing",
-	description: "Run all tests and checks",
-	dependsOn: ["testAPI", "testNoWarningsAndUndocumentedAPI"]
+	}
 });
+
+tasks.register("test", { group: "Testing", description: "Run all tests and checks", dependsOn: ["testAPI", "testNoWarningsAndUndocumentedAPI"] });
 
 // --- Maintenance (nadle-specific) ---
 
-tasks.register("updateAPI", PnpxTask, { command: "api-extractor", args: ["run", "--local"] }).config({
+tasks.register("updateAPI", {
+	run: PnpxTask,
 	group: "Maintenance",
 	dependsOn: ["build"],
-	description: "Update API report locally"
+	description: "Update API report locally",
+	options: { command: "api-extractor", args: ["run", "--local"] }
 });
