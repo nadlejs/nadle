@@ -6,7 +6,7 @@ const ruleTester = createRuleTester();
 ruleTester.run("prefer-builtin-task", rule, {
 	valid: [
 		{
-			code: 'tasks.register("build", ExecTask, { command: "tsc" });'
+			code: 'tasks.register("build", { run: ExecTask, options: { command: "tsc" } });'
 		},
 		{
 			code: 'exec("ls");'

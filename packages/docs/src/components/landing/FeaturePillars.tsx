@@ -16,15 +16,14 @@ const DeployTask = defineTask<DeployOptions>({
   }
 });
 
-tasks.register("deploy", DeployTask, {
-  target: "staging",
-  dryRun: true
+tasks.register("deploy", {
+  run: DeployTask,
+  options: { target: "staging", dryRun: true }
 });`;
 
-const cachingCode = `tasks.register("compile", ExecTask, {
-  command: "tsc",
-  args: ["--build"]
-}).config({
+const cachingCode = `tasks.register("compile", {
+  run: ExecTask,
+  options: { command: "tsc", args: ["--build"] },
   inputs: [Inputs.files("src/**/*.ts", "tsconfig.json")],
   outputs: [Outputs.dirs("lib")]
 });

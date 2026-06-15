@@ -193,8 +193,8 @@ deterministic output across environments:
 Files ending in `.test-d.ts` use vitest's `expectTypeOf` for compile-time type assertions:
 
 ```typescript
-expectTypeOf(tasks.register("check")).toEqualTypeOf<TaskConfigurationBuilder>();
-expectTypeOf(tasks.register("check").config({ inputs: Inputs.files("*.ts") })).toEqualTypeOf<void>();
+expectTypeOf(tasks.register("check")).toEqualTypeOf<void>();
+expectTypeOf(tasks.register("check", { inputs: Inputs.files("*.ts") })).toEqualTypeOf<void>();
 ```
 
 ## When to Write Which Test Type
