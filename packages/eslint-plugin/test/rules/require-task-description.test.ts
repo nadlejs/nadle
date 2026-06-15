@@ -9,16 +9,16 @@ describe("require-task-description", () => {
 	ruleTester.run("require-task-description", rule, {
 		valid: [
 			{
-				name: "register with config containing description",
-				code: 'tasks.register("build").config({ description: "Build the project" })'
+				name: "register with spec containing description",
+				code: 'tasks.register("build", { description: "Build the project" })'
 			},
 			{
-				name: "register with action and config containing description",
-				code: 'tasks.register("test", () => {}).config({ description: "Run tests" })'
+				name: "register with run action and description",
+				code: 'tasks.register("test", { run: () => {}, description: "Run tests" })'
 			},
 			{
-				name: "register with task class, options, and config containing description",
-				code: 'tasks.register("build", ExecTask, { command: "tsc" }).config({ description: "Compile", dependsOn: ["lint"] })'
+				name: "register with task class, options, and description",
+				code: 'tasks.register("build", { run: ExecTask, options: { command: "tsc" }, description: "Compile", dependsOn: ["lint"] })'
 			},
 			{
 				name: "dynamic name is skipped",
@@ -31,23 +31,23 @@ describe("require-task-description", () => {
 		],
 		invalid: [
 			{
+				name: "register without spec",
 				code: 'tasks.register("build")',
-				name: "register without config call",
 				errors: [{ data: { name: "build" }, messageId: "missingConfig" as const }]
 			},
 			{
 				code: 'tasks.register("test", () => {})',
-				name: "register with action but no config call",
+				name: "register with fn shorthand but no spec",
 				errors: [{ data: { name: "test" }, messageId: "missingConfig" as const }]
 			},
 			{
-				name: "config without description property",
-				code: 'tasks.register("build").config({ dependsOn: ["lint"] })',
+				name: "spec without description property",
+				code: 'tasks.register("build", { dependsOn: ["lint"] })',
 				errors: [{ data: { name: "build" }, messageId: "missingDescription" as const }]
 			},
 			{
-				name: "empty config object",
-				code: 'tasks.register("build").config({})',
+				name: "empty spec object",
+				code: 'tasks.register("build", {})',
 				errors: [{ data: { name: "build" }, messageId: "missingDescription" as const }]
 			}
 		]

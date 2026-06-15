@@ -46,32 +46,39 @@ Create `nadle.config.ts` at the project root:
 ```typescript
 import { tasks } from "nadle";
 
-tasks
-	.register("hello", async () => {
+tasks.register("hello", {
+	run: async () => {
 		console.log("Hello from Nadle!");
-	})
-	.config({ group: "Greetings", description: "Say hello" });
+	},
+	group: "Greetings",
+	description: "Say hello"
+});
 ```
 
 ## Register, depend, and run
 
-`tasks.register(name, fn)` defines a task; `.config({ ... })` attaches metadata. Use
+`tasks.register(name, spec)` defines a task; the spec's keyed fields attach metadata. Use
 `dependsOn` to order tasks — dependencies run first.
 
 ```typescript
 import { tasks } from "nadle";
 
-tasks
-	.register("build", async () => {
+tasks.register("build", {
+	run: async () => {
 		console.log("Building...");
-	})
-	.config({ group: "CI", description: "Build the project" });
+	},
+	group: "CI",
+	description: "Build the project"
+});
 
-tasks
-	.register("test", async () => {
+tasks.register("test", {
+	run: async () => {
 		console.log("Testing...");
-	})
-	.config({ group: "CI", description: "Run tests", dependsOn: ["build"] });
+	},
+	group: "CI",
+	description: "Run tests",
+	dependsOn: ["build"]
+});
 ```
 
 Run a task (dependencies run automatically):
@@ -194,7 +201,7 @@ The document has four top-level fields:
   definitions that drive option parsing, so it never drifts from the flags Nadle accepts.
 - `tasks` — the tasks discovered from your configuration (the same set as `--list`), each with
   its `id`, `name`, `label`, `workspaceId`, and optional `group` and `description`.
-- `config` — a JSON Schema for the task configuration object you pass to `.config({ ... })`.
+- `config` — a JSON Schema for the task configuration fields you set on a task spec.
 
 ```jsonc
 {

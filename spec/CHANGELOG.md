@@ -8,6 +8,18 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.0.0 — 2026-06-14
+
+### Changed
+
+- 01-task / 02-task-configuration / 10-builtin-tasks / 14-plugins: **Breaking.** Task
+  configuration is now provided as part of the registration itself — alongside the task
+  body and options — rather than as a separate, later configuration step. The notion of a
+  standalone "configuration builder" with a dedicated configuration method is removed; a
+  task's name, optional body, optional options, and configuration are all associated in a
+  single registration. Configuration may instead be supplied **lazily**, deferring its
+  resolution until first needed (resolved at most once and memoized, as before).
+
 ## 3.15.0 — 2026-06-14
 
 ### Changed

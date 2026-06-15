@@ -23,6 +23,9 @@ tasks.register("build", async () => {});`
 		},
 		{
 			code: 'someOtherThing.register("build", () => { fs.readFileSync("f"); });'
+		},
+		{
+			code: 'tasks.register("build", { run: async () => { await fs.readFile("f"); } });'
 		}
 	],
 	invalid: [
@@ -61,6 +64,10 @@ tasks.register("build", async () => {});`
 		{
 			errors: [{ messageId: "noSync", data: { name: "existsSync" } }],
 			code: 'tasks.register("build", async () => { fs.existsSync("f"); });'
+		},
+		{
+			errors: [{ messageId: "noSync", data: { name: "readFileSync" } }],
+			code: 'tasks.register("build", { run: () => { fs.readFileSync("file.txt"); } });'
 		}
 	]
 });

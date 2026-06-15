@@ -45,7 +45,7 @@ The tasks listed in `dependsOn` are called **dependencies**, and the task that d
 For example, in the following configuration:
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
 	dependsOn: ["lint", "test"]
 });
 ```

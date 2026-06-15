@@ -5,23 +5,11 @@ import { isTasksRegisterCall } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
-/** Check if an expression statement contains a `tasks.register()` call (possibly chained). */
+/** Check if an expression statement is a `tasks.register()` call. */
 function isTaskRegistrationStatement(node: TSESTree.ExpressionStatement): boolean {
-	let expr: TSESTree.Expression = node.expression;
+	const expr = node.expression;
 
-	while (expr.type === AST_NODE_TYPES.CallExpression) {
-		if (isTasksRegisterCall(expr)) {
-			return true;
-		}
-
-		if (expr.callee.type === AST_NODE_TYPES.MemberExpression) {
-			expr = expr.callee.object;
-		} else {
-			break;
-		}
-	}
-
-	return false;
+	return expr.type === AST_NODE_TYPES.CallExpression && isTasksRegisterCall(expr);
 }
 
 export default createRule({

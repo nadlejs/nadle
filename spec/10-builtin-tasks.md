@@ -296,4 +296,5 @@ defineTask({
 ```
 
 The `run` function receives typed options and a runner context. The returned task
-object is then registered with `tasks.register(name, taskObject, optionsResolver)`.
+object is then registered by providing it as the task body together with an options
+resolver (see [01-task.md](01-task.md)).

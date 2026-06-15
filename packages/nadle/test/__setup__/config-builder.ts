@@ -1,3 +1,8 @@
+/** Strip the surrounding braces of a stringified object literal, returning its inner property text. */
+function objectInner(stringified: string): string {
+	return stringified.trim().slice(1, -1).trim();
+}
+
 export class ConfigBuilder {
 	#imports = new Set<string>();
 	#configureOptions: Record<string, unknown> | undefined;
@@ -37,10 +42,17 @@ export class ConfigBuilder {
 		}
 
 		for (const task of this.#tasks) {
-			let statement = task.action ? `tasks.register("${task.name}", ${task.action})` : `tasks.register("${task.name}")`;
+			const configInner = task.configOptions ? objectInner(JSON.stringify(task.configOptions, null, "\t")) : undefined;
+			let statement: string;
 
-			if (task.configOptions) {
-				statement += `.config(${JSON.stringify(task.configOptions, null, "\t")})`;
+			if (task.action && configInner !== undefined) {
+				statement = `tasks.register("${task.name}", { run: ${task.action}, ${configInner} })`;
+			} else if (task.action) {
+				statement = `tasks.register("${task.name}", ${task.action})`;
+			} else if (configInner !== undefined) {
+				statement = `tasks.register("${task.name}", { ${configInner} })`;
+			} else {
+				statement = `tasks.register("${task.name}")`;
 			}
 
 			lines.push(`${statement};`);

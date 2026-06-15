@@ -11,51 +11,37 @@ import type { TaskConfiguration } from "../interfaces/task-configuration.js";
 /**
  * The main API for registering tasks in Nadle.
  *
- * Provides overloaded `register` methods for defining tasks with or without options and custom resolvers.
- * Each method returns a TaskConfigurationBuilder for further configuration.
+ * Provides overloaded `register` methods for registering tasks by name only,
+ * with an inline function body, or from a keyed spec object.
  */
 export interface TasksAPI {
-	/**
-	 * Register a task by name only.
-	 * @param name - The unique name of the task.
-	 * @returns ConfigBuilder for further configuration.
+	/** Register a placeholder/aggregator task (name only). */
+	register(name: string): void;
+	/** Register a task with an inline function body. */
+	register(name: string, fn: TaskFn): void;
+	/** Register a task from a lazily-resolved keyed spec (see {@link lazy}). */
+	register<Options>(name: string, spec: LazySpec<Options>): void;
+	/*
+	 * Overload order below is semantically significant: TS picks the first matching
+	 * overload, so the `run: Task<Options>` overload MUST precede the config-only
+	 * `run?: TaskFn` overload to enforce required options on tasks with required fields.
+	 * perfectionist would sort these alphabetically and invert that contract, so it is
+	 * disabled here.
 	 */
-	register(name: string): TaskConfigurationBuilder;
-
+	/* eslint-disable perfectionist/sort-interfaces */
 	/**
-	 * Register a task with options and a resolver.
-	 *
-	 * The resolver may be omitted when the task's options have no required fields
-	 * (i.e. an empty object satisfies `Options`); otherwise it is mandatory.
-	 * @param name - The unique name of the task.
-	 * @param optTask - The task definition with options.
-	 * @param optionsResolver - A resolver for the task's options.
-	 * @returns ConfigBuilder for further configuration.
+	 * Register a task from a keyed spec whose body (`run`) is a {@link Task}.
+	 * `Options` is inferred from `run` so `options` is demanded when the task
+	 * body has required option fields and optional otherwise. Placed before the
+	 * config-only overload so TS prefers it whenever `run` is a Task object.
 	 */
 	register<Options>(
 		name: string,
-		optTask: Task<Options>,
-		...optionsResolver: {} extends Options ? [optionsResolver?: Resolver<Options>] : [optionsResolver: Resolver<Options>]
-	): TaskConfigurationBuilder;
-
-	/**
-	 * Register a task with a task function.
-	 * @param name - The unique name of the task.
-	 * @param fnTask - The function to execute for this task.
-	 * @returns ConfigBuilder for further configuration.
-	 */
-	register(name: string, fnTask: TaskFn): TaskConfigurationBuilder;
-}
-
-/**
- * Builder interface for configuring a task.
- */
-export interface TaskConfigurationBuilder {
-	/**
-	 * Configure the task with a configuration object or builder callback.
-	 * @param builder - Task configuration or a callback returning configuration.
-	 */
-	config(builder: Callback<TaskConfiguration> | TaskConfiguration): void;
+		spec: TaskConfiguration & { run: Task<Options> } & ({} extends Options ? { options?: Resolver<Options> } : { options: Resolver<Options> })
+	): void;
+	/** Register a task from a config-only keyed spec, or one with an inline function body. */
+	register(name: string, spec: TaskConfiguration & { run?: TaskFn }): void;
+	/* eslint-enable perfectionist/sort-interfaces */
 }
 
 /**
@@ -64,17 +50,61 @@ export interface TaskConfigurationBuilder {
 export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
 
 /**
+ * A task registration spec. `run`/`options` are required when the task body's
+ * `Options` has required fields, optional otherwise. Config fields
+ * (group, dependsOn, …) come from TaskConfiguration and sit directly on the spec.
+ * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
+ */
+export type TaskSpec<Options = void> = TaskConfiguration &
+	// Tuple wrapping `[void] extends [Options]` suppresses distributivity: plain
+	// `void extends Options` distributes over unions and lands void in the wrong branch.
+	([void] extends [Options]
+		? { options?: Resolver<Options>; run?: TaskFn | Task<Options> }
+		: {} extends Options
+			? { options?: Resolver<Options>; run?: TaskFn | Task<Options> }
+			: { run: Task<Options>; options: Resolver<Options> });
+
+/** Stable public name for register's spec argument; internals of TaskSpec can be refined without breaking callers. Thunk form intentionally dropped. */
+export type SpecArg<Options = void> = TaskSpec<Options>;
+
+const LAZY_SPEC = Symbol("nadle.lazySpec");
+
+/**
+ * A branded spec thunk produced by {@link lazy}. The config portion of the wrapped
+ * spec is resolved lazily (and memoized) when first read.
+ *
+ * Branded with a public `__nadleLazySpec` marker (not just the private `[LAZY_SPEC]`
+ * symbol) so the structural shape survives `.d.ts` emission: a symbol-only member is
+ * stripped, leaving `{}` which would match any object and defeat overload resolution.
+ */
+export interface LazySpec<Options = void> {
+	/** Brand that survives d.ts emission so LazySpec stays distinguishable from a plain spec. */
+	readonly __nadleLazySpec: true;
+	/** @internal The wrapped spec thunk. */
+	readonly [LAZY_SPEC]: () => TaskSpec<Options>;
+}
+
+/** Wrap a spec thunk for deferred (lazy, memoized) config resolution. */
+export function lazy<Options = void>(thunk: () => TaskSpec<Options>): LazySpec<Options> {
+	return { [LAZY_SPEC]: thunk, __nadleLazySpec: true };
+}
+
+function isLazySpec(value: unknown): value is LazySpec {
+	return typeof value === "object" && value !== null && LAZY_SPEC in value;
+}
+
+/**
  * The main tasks API instance for registering tasks in Nadle.
  *
- * Use this object to register new tasks and configure them using the fluent API.
+ * Use this object to register new tasks by name, inline function, or keyed spec.
  *
  * Example:
  * ```ts
- * tasks.register("build", async ({ context }) => { ... }).config({ ... });
+ * tasks.register("build", { run: async ({ context }) => { ... }, group: "Build" });
  * ```
  */
 export const tasks: TasksAPI = {
-	register: (name: string, task?: TaskFn | Task, optionsResolver?: Resolver): TaskConfigurationBuilder => {
+	register: (name: string, second?: TaskFn | SpecArg<unknown> | LazySpec): void => {
 		const { taskRegistry } = getCurrentInstance();
 
 		validateTaskName(name);
@@ -83,42 +113,75 @@ export const tasks: TasksAPI = {
 			throw new ConfigurationError(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 
-		let configCollector: Callback<TaskConfiguration> | TaskConfiguration = () => ({});
+		const { run, options, getConfig } = normalizeSecondArg(second);
 
-		const register = () => {
-			// Resolve the config at most once per task (configuration avoidance, #647):
-			// the user's config callback can do real work, and it is read several times
-			// per run (scheduling, execution, reporting). Memoize so it runs only once.
-			let resolved: TaskConfiguration | undefined;
+		// Resolve the config at most once per task (configuration avoidance, #647):
+		// validation is read several times per run (scheduling, execution, reporting).
+		// Memoize so it runs only once.
+		let resolved: TaskConfiguration | undefined;
 
-			taskRegistry.register({
-				name,
-				configResolver: () => (resolved ??= validateConfig(name, typeof configCollector === "function" ? configCollector() : configCollector)),
-				...computeTaskInfo(task, optionsResolver)
-			});
-		};
-
-		register();
-
-		return {
-			config: (collector) => {
-				configCollector = collector;
-				register();
-			}
-		};
+		taskRegistry.register({
+			name,
+			configResolver: () => (resolved ??= validateConfig(name, getConfig())),
+			...computeTaskInfo(run, options)
+		});
 	}
 };
 
-function computeTaskInfo(task: TaskFn | Task | undefined, optionsResolver?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver" | "empty"> {
-	if (task === undefined) {
+interface NormalizedSpec {
+	readonly options: Resolver | undefined;
+	readonly run: TaskFn | Task | undefined;
+	readonly getConfig: () => TaskConfiguration;
+}
+
+/**
+ * Normalize register's 2nd arg into run/options (eager — needed for task identity)
+ * and a `getConfig` thunk (resolved at most once, when the config is first read):
+ *   - undefined → placeholder; function → inline body; LazySpec → deferred config;
+ *     plain object → eager spec.
+ */
+function normalizeSecondArg(second?: TaskFn | SpecArg<unknown> | LazySpec): NormalizedSpec {
+	if (typeof second === "function") {
+		return { options: undefined, run: second as TaskFn, getConfig: () => ({}) };
+	}
+
+	if (isLazySpec(second)) {
+		// Invoke the thunk at most once: run/options are pulled eagerly here (they
+		// define task identity), and the same memoized spec feeds the deferred config.
+		let cached: TaskSpec | undefined;
+		const resolveSpec = () => (cached ??= second[LAZY_SPEC]());
+		const { run: specRun, options: specOptions } = resolveSpec();
+
+		return {
+			run: specRun as TaskFn | Task | undefined,
+			options: specOptions as Resolver | undefined,
+			getConfig: () => {
+				const { run: _run, options: _options, ...config } = resolveSpec();
+
+				return config;
+			}
+		};
+	}
+
+	if (second !== undefined) {
+		const { run: specRun, options: specOptions, ...config } = second as TaskSpec;
+
+		return { getConfig: () => config, run: specRun as TaskFn | Task | undefined, options: specOptions as Resolver | undefined };
+	}
+
+	return { run: undefined, options: undefined, getConfig: () => ({}) };
+}
+
+function computeTaskInfo(run: TaskFn | Task | undefined, options?: Resolver): Pick<RegisteredTask, "run" | "optionsResolver" | "empty"> {
+	if (run === undefined) {
 		return { empty: true, run: () => {}, optionsResolver: undefined };
 	}
 
-	if (typeof task === "function") {
-		return { run: task, empty: false, optionsResolver: undefined };
+	if (typeof run === "function") {
+		return { run, empty: false, optionsResolver: undefined };
 	}
 
-	return { ...task, empty: false, optionsResolver: optionsResolver ?? (() => ({})) };
+	return { ...run, empty: false, optionsResolver: options ?? (() => ({})) };
 }
 
 function validateTaskName(name: string): void {

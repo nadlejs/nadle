@@ -1,7 +1,9 @@
 # 02 — Task Configuration
 
-Every registered task may be configured via a builder pattern. The `.config()` method
-accepts either a static configuration object or a callback that returns one.
+Every registered task may carry configuration. Configuration is provided as part of the
+registration itself (see [01-task.md](01-task.md)) — alongside the task body and options —
+rather than through a separate, later configuration step. The configuration may be supplied
+directly, or **lazily** so that its resolution is deferred until first needed.
 
 ## Configuration Fields
 
@@ -17,21 +19,19 @@ All fields are optional.
 | `group`       | string                                 | Group label for display in `--list` output only.                   |
 | `description` | string                                 | Description for display in `--list` output only.                   |
 
-## Builder Pattern
+## Supplying Configuration
 
-The configuration builder exposes a single method:
+Configuration is supplied as a set of fields at registration time. The configuration
+provided at registration is the task's complete configuration; there is no separate merge
+step.
 
-- `config(builderOrObject)` — accepts a static object or a callback returning the object.
-
-Calling `.config()` **replaces** the entire configuration (it does not merge). The last
-call wins.
-
-A callback form is resolved **lazily and at most once** per task: it is not evaluated at
-registration, only when the configuration is first needed (scheduling, execution, or
-reporting), and the result is memoized so the callback never runs more than once for a
-task in a given invocation (configuration avoidance). Callbacks must therefore be pure
-with respect to that single evaluation; do not rely on a side effect running on every
-read.
+A task's configuration may instead be supplied **lazily** — deferred rather than determined
+eagerly at registration. A lazily-supplied configuration is resolved **at most once** per
+task: it is not evaluated at registration, only when the configuration is first needed
+(scheduling, execution, or reporting), and the result is memoized so the deferred resolution
+never runs more than once for a task in a given invocation (configuration avoidance). A
+lazy configuration must therefore be pure with respect to that single evaluation; do not
+rely on a side effect running on every read.
 
 ## dependsOn Resolution
 

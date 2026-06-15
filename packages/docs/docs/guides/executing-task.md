@@ -73,7 +73,7 @@ Each dependency is only run once per execution, even if multiple tasks depend on
 Example:
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
 	dependsOn: ["lint", "test"]
 });
 ```

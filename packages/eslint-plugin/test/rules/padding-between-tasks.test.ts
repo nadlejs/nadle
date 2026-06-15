@@ -8,9 +8,9 @@ ruleTester.run("padding-between-tasks", rule, {
 		{
 			name: "empty line between consecutive tasks",
 			code: `
-tasks.register("build").config({ description: "Build" });
+tasks.register("build", { description: "Build" });
 
-tasks.register("test").config({ description: "Test" });
+tasks.register("test", { description: "Test" });
 			`.trim()
 		},
 		{
@@ -65,16 +65,16 @@ tasks.register("test");
 			`.trim()
 		},
 		{
+			name: "no empty line between keyed spec tasks",
 			errors: [{ messageId: "needsPadding" as const }],
-			name: "no empty line between chained config tasks",
 			code: `
-tasks.register("build").config({ description: "Build" });
-tasks.register("test").config({ description: "Test" });
+tasks.register("build", { description: "Build" });
+tasks.register("test", { description: "Test" });
 			`.trim(),
 			output: `
-tasks.register("build").config({ description: "Build" });
+tasks.register("build", { description: "Build" });
 
-tasks.register("test").config({ description: "Test" });
+tasks.register("test", { description: "Test" });
 			`.trim()
 		},
 		{
@@ -95,13 +95,13 @@ tasks.register("lint");
 		},
 		{
 			errors: [{ messageId: "needsPadding" as const }],
-			name: "mixed chained and plain tasks without padding",
+			name: "mixed keyed spec and plain tasks without padding",
 			code: `
-tasks.register("build").config({ description: "Build" });
+tasks.register("build", { description: "Build" });
 tasks.register("test");
 			`.trim(),
 			output: `
-tasks.register("build").config({ description: "Build" });
+tasks.register("build", { description: "Build" });
 
 tasks.register("test");
 			`.trim()

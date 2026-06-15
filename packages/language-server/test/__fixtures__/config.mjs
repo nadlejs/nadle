@@ -1,4 +1,5 @@
+// @ts-nocheck -- LSP fixture; analyzed as AST, not compiled
 import { tasks, ExecTask } from "nadle";
 
-tasks.register("lint", ExecTask, { command: "eslint", args: ["."] });
-tasks.register("format", ExecTask, { command: "prettier", args: ["--write", "."] });
+tasks.register("lint", { run: ExecTask, options: { command: "eslint", args: ["."] } });
+tasks.register("format", { run: ExecTask, options: { command: "prettier", args: ["--write", "."] } });

@@ -11,7 +11,7 @@ export interface ReporterContext {
 	readonly logger: Logger;
 }
 
-/** A task type a plugin contributes; registered as `tasks.register(name, task, optionsResolver).config(config)`. */
+/** A task type a plugin contributes; registered as `tasks.register(name, { ...config, run: task, options: optionsResolver })`. */
 export interface PluginTask {
 	/** The name users register / invoke the task under. */
 	readonly name: string;

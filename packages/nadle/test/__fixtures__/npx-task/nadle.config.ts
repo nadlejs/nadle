@@ -1,5 +1,5 @@
 import { tasks, NpxTask } from "nadle";
 
-tasks.register("pass", NpxTask, { command: "tsc", args: ["./src/pass.ts", "--noEmit", "--pretty"] });
-tasks.register("fail", NpxTask, { command: "tsc", args: ["./src/nonexistent.ts", "--noEmit", "--pretty"] });
-tasks.register("echo", NpxTask, { command: "echo", args: ["hello"] });
+tasks.register("pass", { run: NpxTask, options: { command: "tsc", args: ["./src/pass.ts", "--noEmit", "--pretty"] } });
+tasks.register("fail", { run: NpxTask, options: { command: "tsc", args: ["./src/nonexistent.ts", "--noEmit", "--pretty"] } });
+tasks.register("echo", { run: NpxTask, options: { command: "echo", args: ["hello"] } });
