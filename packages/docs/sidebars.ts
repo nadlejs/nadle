@@ -34,7 +34,17 @@ const sidebars: SidebarsConfig = {
 				"guides/file-operation-tasks",
 				"guides/authoring-plugin",
 				"guides/configuring-nadle",
-				"guides/eslint-plugin"
+				"guides/eslint-plugin",
+				{
+					label: "Migrating",
+					type: "category",
+					items: [
+						"guides/migrating/from-npm-scripts",
+						"guides/migrating/from-turborepo",
+						"guides/migrating/from-nx",
+						"guides/migrating/from-makefile"
+					]
+				}
 			]
 		},
 		"config-reference",
