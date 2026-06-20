@@ -123,6 +123,13 @@ export class OptionsResolver {
 
 		const { alias, ...fileOptions } = this.fileOptionRegistry.get(ROOT_WORKSPACE_ID);
 
-		return { fileOptions, project: configureProject(project, alias) };
+		try {
+			return { fileOptions, project: configureProject(project, alias) };
+		} catch (error) {
+			// configureProject validates aliases via the zero-dependency kernel, which throws
+			// a plain Error. Translate it to a ConfigurationError so the message is surfaced
+			// (the top-level handler only prints NadleError messages) with the config exit code.
+			throw new ConfigurationError(error instanceof Error ? error.message : String(error));
+		}
 	}
 }
