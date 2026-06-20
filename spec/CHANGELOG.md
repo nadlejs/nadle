@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.1.0 — 2026-06-20
+
+### Added
+
+- 07-workspace: When the workspace alias is given as an object map, every key must match a
+  known workspace path (the root path `.` or a sub-workspace's relative path). A key that
+  matches no workspace is now an error, catching typo'd alias keys that were previously
+  ignored silently. The function form is unaffected — it is only ever invoked with known
+  workspace paths.
+
 ## 4.0.0 — 2026-06-14
 
 ### Changed
