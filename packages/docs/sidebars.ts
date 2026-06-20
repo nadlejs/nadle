@@ -36,8 +36,8 @@ const sidebars: SidebarsConfig = {
 				"guides/configuring-nadle",
 				"guides/eslint-plugin",
 				{
-					label: "Migrating",
 					type: "category",
+					label: "Migrating",
 					items: [
 						"guides/migrating/from-npm-scripts",
 						"guides/migrating/from-turborepo",
