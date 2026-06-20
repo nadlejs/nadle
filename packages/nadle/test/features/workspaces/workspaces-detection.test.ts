@@ -3,9 +3,10 @@ import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { expectPass, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("workspaces detection", () => {
-	// TODO(#416): a monorepo whose pnpm-workspace matches exactly one package
-	// currently errors during detection. Decide the intended behavior (treat as
-	// a valid single-workspace monorepo vs. a clear error message) and assert it.
+	// TODO(#699): blocked on a behavior decision. A monorepo whose pnpm-workspace
+	// matches exactly one package currently errors during detection. Once #699
+	// settles the intended behavior (valid single-workspace monorepo vs. a clear
+	// error message), assert it.
 	it.todo("single workspace in monorepo");
 
 	it("one package", async () => {
