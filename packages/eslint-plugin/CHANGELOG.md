@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.0.4](https://github.com/nadlejs/nadle/compare/eslint-plugin-nadle/v0.0.3...eslint-plugin-nadle/v0.0.4) (2026-06-21)
+
+
+### Documentation
+
+* Purge remaining old-API register samples ([bb68b65](https://github.com/nadlejs/nadle/commit/bb68b65fa0c2a874b4dcada067a4e2fe745406ec))
+
+
+### Internal
+
+* **deps:** Bump the minor-updates group across 1 directory with 7 updates ([#616](https://github.com/nadlejs/nadle/issues/616)) ([1d2791d](https://github.com/nadlejs/nadle/commit/1d2791dec488b4df5b7ea3e45877c5dd5f7dcba1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+
 ## [0.0.3](https://github.com/nadlejs/nadle/compare/eslint-plugin-nadle/v0.0.2...eslint-plugin-nadle/v0.0.3) (2026-06-12)
 
 
