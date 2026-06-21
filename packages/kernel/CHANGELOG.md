@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/nadlejs/nadle/compare/kernel/v0.0.2...kernel/v0.0.3) (2026-06-21)
+
+
+### Features
+
+* Validate alias config keys against known workspaces ([#701](https://github.com/nadlejs/nadle/issues/701)) ([6868b1d](https://github.com/nadlejs/nadle/commit/6868b1d78394072e647112636fac77a56781c103))
+
 ## [0.0.2](https://github.com/nadlejs/nadle/compare/kernel/v0.0.1...kernel/v0.0.2) (2026-06-12)
 
 
