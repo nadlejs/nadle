@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.0.4](https://github.com/nadlejs/nadle/compare/project-resolver/v0.0.3...project-resolver/v0.0.4) (2026-06-21)
+
+
+### Features
+
+* Validate alias config keys against known workspaces ([#701](https://github.com/nadlejs/nadle/issues/701)) ([6868b1d](https://github.com/nadlejs/nadle/commit/6868b1d78394072e647112636fac77a56781c103))
+
+
+### Bug Fixes
+
+* Ignore workspace pattern matching the project root ([#702](https://github.com/nadlejs/nadle/issues/702)) ([3a6d959](https://github.com/nadlejs/nadle/commit/3a6d9592ed837bb6e1d5c2ad358f69ba2ceaf49c))
+
+
+### Internal
+
+* **deps:** Bump the minor-updates group across 1 directory with 7 updates ([#616](https://github.com/nadlejs/nadle/issues/616)) ([1d2791d](https://github.com/nadlejs/nadle/commit/1d2791dec488b4df5b7ea3e45877c5dd5f7dcba1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+
 ## [0.0.3](https://github.com/nadlejs/nadle/compare/project-resolver/v0.0.2...project-resolver/v0.0.3) (2026-06-12)
 
 
