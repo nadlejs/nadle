@@ -1,5 +1,62 @@
 # nadle
 
+## [0.5.4](https://github.com/nadlejs/nadle/compare/nadle/v0.5.3...nadle/v0.5.4) (2026-06-21)
+
+
+### Features
+
+* --json output for read commands ([#683](https://github.com/nadlejs/nadle/issues/683)) ([a0ff881](https://github.com/nadlejs/nadle/commit/a0ff8813f640507be365284a37419e11d60d483a))
+* --summary shows critical path and cache-miss hotspots ([#670](https://github.com/nadlejs/nadle/issues/670)) ([eb43c43](https://github.com/nadlejs/nadle/commit/eb43c4337e05f810abfc8461bc6d5ee4c02b2a4e))
+* --watch re-runs tasks on input change ([#657](https://github.com/nadlejs/nadle/issues/657)) ([3450499](https://github.com/nadlejs/nadle/commit/3450499d26ea57979c5a0ea9020e17b358d51479))
+* --why explains each task's cache outcome ([#654](https://github.com/nadlejs/nadle/issues/654)) ([c2fe09e](https://github.com/nadlejs/nadle/commit/c2fe09ea8cd2877cfe6a93385c0a22c6f99a79bb))
+* Machine-readable capabilities command ([#682](https://github.com/nadlejs/nadle/issues/682)) ([a2ae74d](https://github.com/nadlejs/nadle/commit/a2ae74d1c6ae3176fe4fc51baab1ee9d9a6728d2))
+* Memoize task config resolution for configuration avoidance ([#675](https://github.com/nadlejs/nadle/issues/675)) ([5ad7731](https://github.com/nadlejs/nadle/commit/5ad773147b46bd5fbdefe3666f27aa22b43483d3))
+* Nadle --explain &lt;task&gt; statically explains a task ([#659](https://github.com/nadlejs/nadle/issues/659)) ([2882faf](https://github.com/nadlejs/nadle/commit/2882faf3a58080ecb96785a689f78b30f0f6a5ec))
+* Nadle --graph prints the task dependency graph ([#653](https://github.com/nadlejs/nadle/issues/653)) ([6707100](https://github.com/nadlejs/nadle/commit/67071008217a5ddfc306d6d0de60e0d32e01981f))
+* Nadle --since &lt;ref&gt; runs only affected tasks ([#662](https://github.com/nadlejs/nadle/issues/662)) ([67665df](https://github.com/nadlejs/nadle/commit/67665dfcd7bc46307567be250bce168bff804f40))
+* Nadle doctor health diagnostics (#--doctor) ([cd96c88](https://github.com/nadlejs/nadle/commit/cd96c880318d0c425d0e004da8c789416e88d887))
+* Per-task timeout and retries ([3249fab](https://github.com/nadlejs/nadle/commit/3249fabadabe98da1ceac36ac23a809b550e4adf))
+* Plugin system (definePlugin, use, lifecycle hooks, reporters) ([#676](https://github.com/nadlejs/nadle/issues/676)) ([f0437b9](https://github.com/nadlejs/nadle/commit/f0437b9b153981942060ed2b57f0bb5e49ddcb04))
+* Repro hint and downstream-skipped count on failure ([#661](https://github.com/nadlejs/nadle/issues/661)) ([95eac47](https://github.com/nadlejs/nadle/commit/95eac47c98dcfe6462cd11f8ebe1fd0add0e6ff0))
+* Shell completion command ([#128](https://github.com/nadlejs/nadle/issues/128)) ([327b02e](https://github.com/nadlejs/nadle/commit/327b02e25616c2c06e88d7c8f87ece705f3c82bd))
+* Structured error output for agents ([#684](https://github.com/nadlejs/nadle/issues/684)) ([db09ec0](https://github.com/nadlejs/nadle/commit/db09ec07c39f8d99d05e435d8ba925289a9c9b49))
+* Surface task descriptions in shell completion ([#685](https://github.com/nadlejs/nadle/issues/685)) ([a70e094](https://github.com/nadlejs/nadle/commit/a70e094e69718acf20a7ef181611fbe21afa4bd4))
+* Validate alias config keys against known workspaces ([#701](https://github.com/nadlejs/nadle/issues/701)) ([6868b1d](https://github.com/nadlejs/nadle/commit/6868b1d78394072e647112636fac77a56781c103))
+
+
+### Bug Fixes
+
+* Coerce non-string task env values to strings ([6e13bdc](https://github.com/nadlejs/nadle/commit/6e13bdcd1029a91cf655e0df62943753203761c2))
+* Ignore workspace pattern matching the project root ([#702](https://github.com/nadlejs/nadle/issues/702)) ([3a6d959](https://github.com/nadlejs/nadle/commit/3a6d9592ed837bb6e1d5c2ad358f69ba2ceaf49c))
+
+
+### Documentation
+
+* Purge remaining old-API register samples ([bb68b65](https://github.com/nadlejs/nadle/commit/bb68b65fa0c2a874b4dcada067a4e2fe745406ec))
+
+
+### Internal
+
+* Add regression test for output-existence cache invalidation ([#630](https://github.com/nadlejs/nadle/issues/630)) ([89a01a0](https://github.com/nadlejs/nadle/commit/89a01a082732ec378cba1908f113f2a76718d8cd))
+* Bump size-limit to 210 KB for the plugin system ([#677](https://github.com/nadlejs/nadle/issues/677)) ([a024448](https://github.com/nadlejs/nadle/commit/a024448d038d7c0614ef5e40825aa4495b4e237f))
+* Complete skipped/todo tests and fix non-TTY empty-task crash ([#652](https://github.com/nadlejs/nadle/issues/652)) ([2a12565](https://github.com/nadlejs/nadle/commit/2a12565d1ab97ac67fc80321cbabee4ab3ab8dfc))
+* Complete sub-workspace duplicate-task test ([#416](https://github.com/nadlejs/nadle/issues/416)) ([#700](https://github.com/nadlejs/nadle/issues/700)) ([e8f372b](https://github.com/nadlejs/nadle/commit/e8f372b739dda3d48e2ff8c6e219194b85e938cf))
+* Deterministic graceful-cancellation test ([#651](https://github.com/nadlejs/nadle/issues/651)) ([f8508af](https://github.com/nadlejs/nadle/commit/f8508afc4b95df888c4637df1679641affd8b9fd))
+* Fix help snapshot for the new --summary description ([#673](https://github.com/nadlejs/nadle/issues/673)) ([1a76703](https://github.com/nadlejs/nadle/commit/1a76703ac18e7061d1c5f784f2f0d329453e5faa))
+* Prune obsolete config-key snapshots after --watch regen ([0eb5405](https://github.com/nadlejs/nadle/commit/0eb540555fd0fc82d862f8a35857029eb8e07b93))
+* Redact resolved-options dump in builtin-task snapshots ([#658](https://github.com/nadlejs/nadle/issues/658)) ([66eb953](https://github.com/nadlejs/nadle/commit/66eb9531cf530b6b03a80903d59f82337e7d80d7))
+* Regenerate builtin-task snapshots for --graph and --why options ([3236f56](https://github.com/nadlejs/nadle/commit/3236f56e913f6645dba13853a8855d9e8e878585))
+* Self-host on keyed register API ([#693](https://github.com/nadlejs/nadle/issues/693)) ([cf38d56](https://github.com/nadlejs/nadle/commit/cf38d56cffc424a2c1a13967c7ae59a9237b7fd8))
+* Skip --since git integration tests on Windows ([#663](https://github.com/nadlejs/nadle/issues/663)) ([7b92376](https://github.com/nadlejs/nadle/commit/7b923769eebb359fac29bf816650e0cc222b352e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.5.3](https://github.com/nadlejs/nadle/compare/nadle/v0.5.2...nadle/v0.5.3) (2026-06-12)
 
 
