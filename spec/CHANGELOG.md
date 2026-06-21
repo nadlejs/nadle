@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.1.1 — 2026-06-21
+
+### Changed
+
+- 06-project: Workspace discovery now ignores a workspace pattern that matches the project
+  root directory (e.g. a pattern of `.`). Previously such a match produced a degenerate
+  empty-path workspace duplicating the root, which then failed label validation with a
+  confusing error. The root is already represented by the root workspace, so the match is
+  dropped and the project resolves cleanly.
+
 ## 4.1.0 — 2026-06-20
 
 ### Added

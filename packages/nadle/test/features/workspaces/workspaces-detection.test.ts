@@ -3,11 +3,27 @@ import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { expectPass, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("workspaces detection", () => {
-	// TODO(#699): blocked on a behavior decision. A monorepo whose pnpm-workspace
-	// matches exactly one package currently errors during detection. Once #699
-	// settles the intended behavior (valid single-workspace monorepo vs. a clear
-	// error message), assert it.
-	it.todo("single workspace in monorepo");
+	it("ignores a workspace pattern that matches the project root", async () => {
+		// A pattern of "." matches the root directory. The root is already its own
+		// workspace, so the match is dropped instead of creating a degenerate empty
+		// workspace that would fail label validation. The real sub-package resolves.
+		await withFixture({
+			fixtureDir: "monorepo",
+			testFn: async ({ exec }) => {
+				await expectPass(exec`--show-config --config-key project`);
+			},
+			files: {
+				[CONFIG_FILE]: "",
+				[PACKAGE_JSON]: createPackageJson("root"),
+				[PNPM_WORKSPACE]: createPnpmWorkspace([".", "packages/*"]),
+				packages: {
+					only: {
+						[PACKAGE_JSON]: createPackageJson("only")
+					}
+				}
+			}
+		});
+	});
 
 	it("one package", async () => {
 		await withFixture({

@@ -39,7 +39,13 @@ async function createProject(packages: Packages): Promise<Project> {
 		rootWorkspace,
 		packageManager: packages.tool.type,
 		currentWorkspaceId: rootWorkspace.id,
-		workspaces: packages.packages.map((pkg) => createWorkspace(pkg)).sort((a, b) => a.relativePath.localeCompare(b.relativePath))
+		// A workspace pattern can match the project root itself (e.g. "."). The root is
+		// already represented by rootWorkspace, so drop that match instead of creating a
+		// degenerate empty-path workspace that would later fail label validation.
+		workspaces: packages.packages
+			.filter((pkg) => pkg.dir !== packages.rootDir)
+			.map((pkg) => createWorkspace(pkg))
+			.sort((a, b) => a.relativePath.localeCompare(b.relativePath))
 	};
 
 	return resolveWorkspaceDependencies(project);
