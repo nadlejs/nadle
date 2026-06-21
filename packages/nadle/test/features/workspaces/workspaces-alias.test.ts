@@ -1,5 +1,5 @@
-import { it, describe } from "vitest";
-import { expectPass, withFixture, workspaceFixture } from "setup";
+import { it, expect, describe } from "vitest";
+import { getStderr, expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces alias", () => {
 	it("object style", async () => {
@@ -58,9 +58,51 @@ describe("workspaces alias", () => {
 		});
 	});
 
-	// TODO(#698): blocked on alias validation not existing yet. Once #698 adds
-	// semantic validation, assert it rejects invalid configs — duplicate aliases
-	// mapping to different workspaces, an alias colliding with a real workspace id,
-	// and an alias for a non-existent path should each error.
-	it.todo("rejects invalid alias configuration");
+	it("rejects an alias key that matches no workspace", async () => {
+		await withFixture({
+			fixtureDir: "monorepo",
+			testFn: async ({ exec }) => {
+				await expect(getStderr(exec`build`)).resolves.toContain(`Alias key "packages/nope" does not match any workspace`);
+			},
+			files: workspaceFixture({
+				workspaces: {
+					"packages/one": { tasks: [{ name: "build" }] }
+				},
+				root: { tasks: [{ name: "build" }], configure: { alias: { "packages/nope": "nope" } } }
+			})
+		});
+	});
+
+	it("rejects duplicate aliases mapping to the same label", async () => {
+		await withFixture({
+			fixtureDir: "monorepo",
+			testFn: async ({ exec }) => {
+				await expect(getStderr(exec`build`)).resolves.toContain(`conflicts with workspace`);
+			},
+			files: workspaceFixture({
+				root: { tasks: [{ name: "build" }], configure: { alias: { "packages/one": "dup", "packages/two": "dup" } } },
+				workspaces: {
+					"packages/one": { tasks: [{ name: "build" }] },
+					"packages/two": { tasks: [{ name: "build" }] }
+				}
+			})
+		});
+	});
+
+	it("rejects an alias that collides with a real workspace id", async () => {
+		await withFixture({
+			fixtureDir: "monorepo",
+			testFn: async ({ exec }) => {
+				// `packages:two` is another workspace's id; aliasing `packages/one` to it is rejected.
+				await expect(getStderr(exec`build`)).resolves.toContain(`conflicts with`);
+			},
+			files: workspaceFixture({
+				root: { tasks: [{ name: "build" }], configure: { alias: { "packages/one": "packages:two" } } },
+				workspaces: {
+					"packages/one": { tasks: [{ name: "build" }] },
+					"packages/two": { tasks: [{ name: "build" }] }
+				}
+			})
+		});
+	});
 });

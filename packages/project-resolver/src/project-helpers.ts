@@ -1,5 +1,6 @@
 import {
 	type AliasOption,
+	validateAliasKeys,
 	createAliasResolver,
 	validateWorkspaceLabels,
 	resolveWorkspace as kernelResolveWorkspace,
@@ -21,6 +22,8 @@ export function getWorkspaceById(project: Project, workspaceId: string): Workspa
 }
 
 export function configureProject(project: Project, aliasOption: AliasOption): Project {
+	validateAliasKeys(aliasOption, getAllWorkspaces(project));
+
 	const resolveAlias = createAliasResolver(aliasOption);
 
 	const configuredProject: Project = {

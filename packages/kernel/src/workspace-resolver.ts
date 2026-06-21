@@ -1,3 +1,4 @@
+import { type AliasOption } from "./alias-resolver.js";
 import { isRootWorkspaceId, type WorkspaceIdentity } from "./workspace-identity.js";
 
 export function resolveWorkspace<W extends WorkspaceIdentity>(workspaceInput: string, workspaces: readonly W[]): W {
@@ -39,6 +40,20 @@ export function validateWorkspaceLabels(workspaces: readonly WorkspaceIdentity[]
 
 		if (conflictsWithId) {
 			throw new Error(`Workspace "${workspace.id}" has label "${workspace.label}" which conflicts with the ID of workspace "${conflictsWithId.id}".`);
+		}
+	}
+}
+
+export function validateAliasKeys(aliasOption: AliasOption, workspaces: readonly WorkspaceIdentity[]): void {
+	if (aliasOption === undefined || typeof aliasOption === "function") {
+		return;
+	}
+
+	const knownPaths = new Set(workspaces.map((workspace) => workspace.relativePath));
+
+	for (const key of Object.keys(aliasOption)) {
+		if (!knownPaths.has(key)) {
+			throw new Error(`Alias key "${key}" does not match any workspace. Known paths: ${[...knownPaths].join(", ")}`);
 		}
 	}
 }

@@ -12,7 +12,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --list-workspaces
 [log] <Bold>Available workspaces:
 </BoldDim>
 [log] Root workspace <Bold><Yellow>root</Yellow></BoldDim> <Dim>(alias: projectRoot)</BoldDim>
-├── Workspace <Bold><Yellow>minusOne</Yellow></BoldDim>
+├── Workspace <Bold><Yellow>minusOne</Yellow></BoldDim> <Dim>(alias: oneMinus)</BoldDim>
 ├── Workspace <Bold><Yellow>packages</Yellow></BoldDim>
 │   ├── Workspace <Bold><Yellow>packages:one</Yellow></BoldDim> <Dim>(alias: one)</BoldDim>
 │   └── Workspace <Bold><Yellow>packages:two</Yellow></BoldDim>
