@@ -12,7 +12,7 @@
 	],
 	"bin": "lib/cli.js",
 	"dependencies": {
-		"@clack/prompts": "^1.5.1",
+		"@clack/prompts": "^1.7.0",
 		"execa": "^9.6.1",
 		"find-up": "^7.0.0",
 		"meow": "^14.1.0",
@@ -24,7 +24,7 @@
 		"@types/node": "^20.19.25",
 		"@types/serialize-javascript": "^5.0.4",
 		"fixturify": "^3.0.0",
-		"serialize-javascript": "^7.0.5",
+		"serialize-javascript": "^7.0.7",
 		"size-limit": "^12.1.0",
 		"typescript": "^5.9.3",
 		"vitest": "4.0.18",
