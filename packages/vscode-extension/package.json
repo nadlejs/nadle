@@ -16,11 +16,11 @@
 	"main": "./lib/extension.js",
 	"devDependencies": {
 		"@types/node": "^20.19.33",
-		"@types/vscode": "^1.120.0",
+		"@types/vscode": "^1.134.0",
 		"@vscode/vsce": "^3.9.2",
 		"tsup": "^8.5.1",
 		"typescript": "^5.9.3",
-		"vscode-languageclient": "^10.0.0"
+		"vscode-languageclient": "^10.1.1"
 	},
 	"engines": {
 		"vscode": "^1.85.0",
