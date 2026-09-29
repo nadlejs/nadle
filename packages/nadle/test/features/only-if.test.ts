@@ -22,6 +22,21 @@ const WRITE_MARKER = `async ({ context }) => {
  * A fully cacheable task that is always skipped. Declares real inputs and outputs so
  * validate() would have work to do, and a body that would write dist/out.txt if it ran.
  */
+const OPTIONS_PREDICATE_CONFIG = `import Fs from "node:fs";
+import Path from "node:path";
+
+import { tasks } from "nadle";
+
+const writer = {
+	run: ({ options, context }: { options: { skip: boolean }; context: { workingDir: string } }) => {
+		Fs.writeFileSync(Path.join(context.workingDir, options.skip ? "skipped.txt" : "ran.txt"), "x");
+	}
+};
+
+tasks.register("gated", { run: writer, options: { skip: true }, onlyIf: ({ options }) => !options.skip });
+tasks.register("open", { run: writer, options: { skip: false }, onlyIf: ({ options }) => !options.skip });
+`;
+
 const CACHEABLE_SKIPPED_CONFIG = `import Fs from "node:fs";
 import Path from "node:path";
 
@@ -239,7 +254,7 @@ describe.concurrent("onlyIf", () => {
 							"build",
 							{
 								dependsOn: ["prepare"],
-								onlyIf: raw(`async (context) => {
+								onlyIf: raw(`async ({ context }) => {
 									const Fs = await import("node:fs");
 									const Path = await import("node:path");
 									return !Fs.existsSync(Path.join(context.workingDir, "flag.txt"));
@@ -257,8 +272,8 @@ describe.concurrent("onlyIf", () => {
 				.packageJson("only-if-inline")
 				.config(
 					config()
-						.taskWithConfig("generate", { onlyIf: raw("() => false") }, WRITE_MARKER)
-						.taskWithConfig("build", { dependsOn: ["generate"] }, "() => {}")
+						.taskWithConfig("generate", { onlyIf: raw("() => false") }, "() => {}")
+						.taskWithConfig("build", { dependsOn: ["generate"] }, WRITE_MARKER)
 				)
 				.build(),
 			testFn: async ({ cwd, exec }) => {
@@ -267,7 +282,40 @@ describe.concurrent("onlyIf", () => {
 				expect(exitCode).toBe(0);
 				expect(stdout.match(/SKIPPED/g)).toHaveLength(1);
 				expect(stripAnsi(stdout)).toMatch(/1 task skipped/);
-				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(false);
+				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(true);
+			}
+		}));
+
+	it("skips identically on the pool executor", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("only-if-pool")
+				.config(
+					config()
+						.taskWithConfig("generate", { onlyIf: raw("() => false") }, "() => {}")
+						.taskWithConfig("build", { dependsOn: ["generate"] }, WRITE_MARKER)
+				)
+				.build(),
+			testFn: async ({ cwd, exec }) => {
+				const { stdout, exitCode } = await settle(exec`build --max-workers 2`);
+
+				expect(exitCode).toBe(0);
+				expect(stdout.match(/SKIPPED/g)).toHaveLength(1);
+				expect(stripAnsi(stdout)).toMatch(/1 task skipped/);
+				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(true);
+			}
+		}));
+
+	it("lets the predicate decide from the resolved task options", () =>
+		withGeneratedFixture({
+			files: fixture().packageJson("only-if-options").configRaw(OPTIONS_PREDICATE_CONFIG).build(),
+			testFn: async ({ cwd, exec }) => {
+				const { stdout, exitCode } = await settle(exec`gated open`);
+
+				expect(exitCode).toBe(0);
+				expect(stdout.match(/SKIPPED/g)).toHaveLength(1);
+				await expect(isPathExists(Path.join(cwd, "skipped.txt"))).resolves.toBe(false);
+				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(true);
 			}
 		}));
 });

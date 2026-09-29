@@ -40,7 +40,9 @@ export interface TasksAPI {
 	 */
 	register<Options>(
 		name: string,
-		spec: TaskConfiguration & { run: Task<Options> } & ({} extends Options ? { options?: Resolver<Options> } : { options: Resolver<Options> })
+		spec: TaskConfiguration<Options> & { run: Task<Options> } & ({} extends Options
+				? { options?: Resolver<Options> }
+				: { options: Resolver<Options> })
 	): void;
 	/** Register a task from a config-only keyed spec, or one with an inline function body. */
 	register(name: string, spec: TaskConfiguration & { run?: TaskFn }): void;
@@ -58,7 +60,7 @@ export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
  * (group, dependsOn, …) come from TaskConfiguration and sit directly on the spec.
  * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
  */
-export type TaskSpec<Options = void> = TaskConfiguration &
+export type TaskSpec<Options = void> = TaskConfiguration<Options> &
 	// Tuple wrapping `[void] extends [Options]` suppresses distributivity: plain
 	// `void extends Options` distributes over unions and lands void in the wrong branch.
 	([void] extends [Options]

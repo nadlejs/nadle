@@ -71,7 +71,7 @@ export async function runTask(
 	};
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
 
-	if (taskConfig.onlyIf && !(await taskConfig.onlyIf(context))) {
+	if (taskConfig.onlyIf && !(await taskConfig.onlyIf({ context, options: taskOptions }))) {
 		await notify({ threadId, type: "skipped" } satisfies WorkerMessage);
 
 		return undefined;

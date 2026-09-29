@@ -109,8 +109,8 @@ cache restore. See [04-execution.md](04-execution.md).
 ## Conditional Execution
 
 A task may declare `onlyIf`, a predicate deciding whether the task's body runs. The
-predicate receives the same run context passed to the task body and may resolve
-synchronously or asynchronously.
+predicate receives the same argument shape as the task body, namely the run context and
+the resolved task options, and may resolve synchronously or asynchronously.
 
 - When `onlyIf` is omitted, or resolves to a **truthy** value, the task executes normally.
 - When it resolves to a **falsey** value, the task is **skipped**: its body does not run and

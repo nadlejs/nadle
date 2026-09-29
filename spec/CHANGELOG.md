@@ -30,6 +30,8 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 
 ### Changed
 
+- 02-task-configuration: The `onlyIf` predicate receives the same argument shape as the task
+  body, the run context and the resolved task options, so it may decide based on options.
 - 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
   reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
 - 13-reporting: The failed-run summary's not-run clause is worded "downstream tasks not run",

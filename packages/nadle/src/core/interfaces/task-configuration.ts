@@ -6,7 +6,7 @@ import type { Declaration } from "../models/cache/declaration.js";
 /**
  * Configuration for a Nadle task.
  */
-export interface TaskConfiguration {
+export interface TaskConfiguration<Options = unknown> {
 	/**
 	 * The group name to which this task belongs.
 	 */
@@ -22,7 +22,7 @@ export interface TaskConfiguration {
 	 * time, before cache validation, so it may observe what dependencies produced.
 	 * A falsey result skips the task; dependents still run.
 	 */
-	onlyIf?: (context: RunnerContext) => Awaitable<unknown>;
+	onlyIf?(params: { options: Options; context: RunnerContext }): Awaitable<unknown>;
 
 	/**
 	 * A task or a list of tasks that this task depends on.
