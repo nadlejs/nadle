@@ -234,6 +234,10 @@ Skipping affects **only the task itself**:
   predicate is ever evaluated.
 - Its **dependents still run**, treating the skipped task as satisfied.
 
+Because a skipped task produces nothing, a dependent that expects its outputs must
+tolerate their absence — "satisfied" means the dependency is not waited on, not that its
+outputs exist.
+
 This is the key difference from [`--exclude`](../config-reference.md#--exclude), which
 removes tasks from the graph before anything executes. Use `--exclude` to prune work; use
 `onlyIf` to turn a single task into a no-op while everything around it proceeds.

@@ -90,7 +90,8 @@ hooks: {
 Key rules:
 
 - **`beforeTask`/`afterTask` are not a guaranteed pair.** `beforeTask` is skipped
-  for cache hits; `afterTask` always fires. Branch on `result` in `afterTask`.
+  for cache hits and for tasks skipped by `onlyIf`; `afterTask` always fires.
+  Branch on `result` in `afterTask`.
 - **Only `beforeAll` can abort.** Throwing from `beforeAll` fails the run.
   Errors from `afterAll`/`beforeTask`/`afterTask` are downgraded to warnings.
 - **Ordering** follows `enforce`: `"pre"` plugins first, then normal, then
