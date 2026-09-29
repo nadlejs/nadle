@@ -19,8 +19,8 @@ const WRITE_MARKER = `async ({ context }) => {
 }`;
 
 /**
- * A fully cacheable task that is always skipped. Declares real inputs and outputs so
- * validate() would have work to do, and a body that would write dist/out.txt if it ran.
+ * Two tasks sharing one body, differing only in `options.skip`, so a predicate that reads
+ * resolved task options decides which of them is skipped.
  */
 const OPTIONS_PREDICATE_CONFIG = `import Fs from "node:fs";
 import Path from "node:path";
@@ -37,6 +37,10 @@ tasks.register("gated", { run: writer, options: { skip: true }, onlyIf: ({ optio
 tasks.register("open", { run: writer, options: { skip: false }, onlyIf: ({ options }) => !options.skip });
 `;
 
+/**
+ * A fully cacheable task that is always skipped. Declares real inputs and outputs so
+ * validate() would have work to do, and a body that would write dist/out.txt if it ran.
+ */
 const CACHEABLE_SKIPPED_CONFIG = `import Fs from "node:fs";
 import Path from "node:path";
 
