@@ -44,9 +44,9 @@ export class ExecutionTracker implements Listener {
 
 	/**
 	 * Tasks left in the Scheduled state once a run ends are those that never ran
-	 * because an upstream task failed — i.e. downstream tasks that were skipped.
+	 * because an upstream task failed — i.e. downstream tasks that were not run.
 	 */
-	public get skippedCount(): number {
+	public get notRunCount(): number {
 		return this.getTaskStateByStatus(TaskStatus.Scheduled).length;
 	}
 

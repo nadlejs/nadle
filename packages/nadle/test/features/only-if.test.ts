@@ -1,5 +1,6 @@
 import Path from "node:path";
 
+import stripAnsi from "strip-ansi";
 import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
 import { raw, config, settle, fixture, withGeneratedFixture } from "setup";
@@ -177,4 +178,19 @@ describe.concurrent("onlyIf", () => {
 			}
 		})
 	);
+
+	it("reports skipped tasks in the run summary", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("only-if-summary")
+				.config(config().taskWithConfig("build", { onlyIf: raw("() => false") }, "() => {}"))
+				.build(),
+			testFn: async ({ exec }) => {
+				const { stdout, exitCode } = await settle(exec`build`);
+
+				expect(exitCode).toBe(0);
+				expect(stdout).toContain("RUN SUCCESSFUL");
+				expect(stripAnsi(stdout)).toMatch(/1 task skipped/);
+			}
+		}));
 });
