@@ -101,17 +101,17 @@ Registered -> Scheduled -> Running -+-> Failed
                   +-> Skipped
 ```
 
-| Status     | Value          | Meaning                                                            |
-| ---------- | -------------- | ------------------------------------------------------------------ |
-| Registered | `"registered"` | Task is registered but not yet scheduled.                          |
-| Scheduled  | `"scheduled"`  | Task is included in the execution plan.                            |
-| Running    | `"running"`    | Task function is currently executing in a worker.                  |
-| Finished   | `"finished"`   | Task function completed successfully.                              |
-| UpToDate   | `"up-to-date"` | Cache validation determined outputs are current; task was skipped. |
-| FromCache  | `"from-cache"` | Outputs were restored from cache; task was skipped.                |
-| Skipped    | `"skipped"`    | The task's `onlyIf` predicate resolved falsey; task was skipped.   |
-| Failed     | `"failed"`     | Task function threw an error.                                      |
-| Canceled   | `"canceled"`   | Worker was terminated before the task completed.                   |
+| Status     | Value          | Meaning                                                                |
+| ---------- | -------------- | ---------------------------------------------------------------------- |
+| Registered | `"registered"` | Task is registered but not yet scheduled.                              |
+| Scheduled  | `"scheduled"`  | Task is included in the execution plan.                                |
+| Running    | `"running"`    | Task function is currently executing in a worker.                      |
+| Finished   | `"finished"`   | Task function completed successfully.                                  |
+| UpToDate   | `"up-to-date"` | Cache validation determined outputs are current; task did not execute. |
+| FromCache  | `"from-cache"` | Outputs were restored from cache; task did not execute.                |
+| Skipped    | `"skipped"`    | The task's `onlyIf` predicate resolved falsey; task was skipped.       |
+| Failed     | `"failed"`     | Task function threw an error.                                          |
+| Canceled   | `"canceled"`   | Worker was terminated before the task completed.                       |
 
 ### Transition Rules
 

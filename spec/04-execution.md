@@ -31,12 +31,12 @@ Each task dispatch sends these parameters to the worker:
 Workers communicate back to the pool via MessagePort. There are exactly four message
 types:
 
-| Type           | Fields     | Meaning                                                                                          |
-| -------------- | ---------- | ------------------------------------------------------------------------------------------------ |
-| `"start"`      | `threadId` | The task function is about to execute. Sent after cache validation determines the task must run. |
-| `"up-to-date"` | `threadId` | Cache validation determined outputs are current. No execution needed.                            |
-| `"from-cache"` | `threadId` | Outputs were restored from cache. No execution needed.                                           |
-| `"skipped"`    | `threadId` | The `onlyIf` predicate resolved falsey. No execution needed.                                     |
+| Type           | Fields     | Meaning                                                                                                                        |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `"start"`      | `threadId` | The task function is about to execute. Sent after the `onlyIf` check passes and cache validation determines the task must run. |
+| `"up-to-date"` | `threadId` | Cache validation determined outputs are current. No execution needed.                                                          |
+| `"from-cache"` | `threadId` | Outputs were restored from cache. No execution needed.                                                                         |
+| `"skipped"`    | `threadId` | The `onlyIf` predicate resolved falsey. No execution needed.                                                                   |
 
 ### Completion Detection
 
