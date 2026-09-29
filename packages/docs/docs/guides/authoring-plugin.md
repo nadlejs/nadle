@@ -82,7 +82,7 @@ hooks: {
 		// a task is about to execute — NOT fired for cache hits
 	},
 	afterTask: ({ task, result, error }) => {
-		// a task settled — result: "done" | "failed" | "up-to-date" | "from-cache" | "canceled"
+		// a task settled — result: "done" | "failed" | "up-to-date" | "from-cache" | "canceled" | "skipped"
 	}
 }
 ```
