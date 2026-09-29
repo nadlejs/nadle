@@ -32,6 +32,8 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 
 - 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
   reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
+- 13-reporting: The failed-run summary's not-run clause is worded "downstream tasks not run",
+  naming the relationship that caused the tasks to be left unexecuted.
 
 ## 4.1.1 — 2026-06-21
 

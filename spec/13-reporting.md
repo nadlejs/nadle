@@ -129,11 +129,12 @@ Up-to-date, from-cache, and skipped counts are only shown if greater than zero.
 On failure:
 
 ```
-RUN FAILED in {duration} ({N} tasks executed[, {N} tasks skipped], {N} tasks failed[, {N} tasks not run])
+RUN FAILED in {duration} ({N} tasks executed[, {N} tasks skipped], {N} tasks failed[, {N} downstream tasks not run])
 ```
 
 The skipped count is only shown if greater than zero. The not-run count is the number of
-tasks not run because an upstream task failed, and is only shown if greater than zero.
+downstream tasks that never ran because an upstream task failed, and is only shown if
+greater than zero.
 
 If `--stacktrace` is not set, a hint is shown:
 

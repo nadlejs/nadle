@@ -31,7 +31,7 @@ describe("failure output", () => {
 			}
 		}));
 
-	it("reports a downstream-skipped count when dependents are skipped", () =>
+	it("reports a downstream not-run count when dependents never run", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
