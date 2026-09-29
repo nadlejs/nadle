@@ -44,7 +44,8 @@ export class DefaultReporter implements Listener {
 			return footer;
 		}
 
-		const doneTask = this.stats[TaskStatus.Finished] + this.stats[TaskStatus.FromCache] + this.stats[TaskStatus.UpToDate];
+		const doneTask =
+			this.stats[TaskStatus.Finished] + this.stats[TaskStatus.FromCache] + this.stats[TaskStatus.UpToDate] + this.stats[TaskStatus.Skipped];
 
 		const stats = [
 			c.cyanBright(`${this.stats[TaskStatus.Scheduled] - this.stats[TaskStatus.Running] - this.stats[TaskStatus.Failed] - doneTask} pending`),
