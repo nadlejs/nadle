@@ -193,4 +193,81 @@ describe.concurrent("onlyIf", () => {
 				expect(stripAnsi(stdout)).toMatch(/1 task skipped/);
 			}
 		}));
+
+	it("still runs dependents of a skipped task", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("only-if-dependents")
+				.config(
+					config()
+						.taskWithConfig("generate", { onlyIf: raw("() => false") }, "() => {}")
+						.taskWithConfig("build", { dependsOn: ["generate"] }, WRITE_MARKER)
+				)
+				.build(),
+			testFn: async ({ cwd, exec }) => {
+				const { stdout, exitCode } = await settle(exec`build`);
+
+				expect(exitCode).toBe(0);
+				expect(stdout.match(/SKIPPED/g)).toHaveLength(1);
+				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(true);
+			}
+		}));
+
+	it("evaluates the predicate after its dependencies have run", () =>
+		withGeneratedFixture({
+			testFn: async ({ cwd, exec }) => {
+				const { stdout, exitCode } = await settle(exec`build`);
+
+				expect(exitCode).toBe(0);
+				expect(stdout.match(/SKIPPED/g)).toHaveLength(1);
+				await expect(isPathExists(Path.join(cwd, "flag.txt"))).resolves.toBe(true);
+				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(false);
+			},
+			files: fixture()
+				.packageJson("only-if-late")
+				.config(
+					config()
+						.task(
+							"prepare",
+							`async ({ context }) => {
+								const Fs = await import("node:fs");
+								const Path = await import("node:path");
+								Fs.writeFileSync(Path.join(context.workingDir, "flag.txt"), "stop");
+							}`
+						)
+						.taskWithConfig(
+							"build",
+							{
+								dependsOn: ["prepare"],
+								onlyIf: raw(`async (context) => {
+									const Fs = await import("node:fs");
+									const Path = await import("node:path");
+									return !Fs.existsSync(Path.join(context.workingDir, "flag.txt"));
+								}`)
+							},
+							WRITE_MARKER
+						)
+				)
+				.build()
+		}));
+
+	it("skips identically on the inline executor", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("only-if-inline")
+				.config(
+					config()
+						.taskWithConfig("generate", { onlyIf: raw("() => false") }, WRITE_MARKER)
+						.taskWithConfig("build", { dependsOn: ["generate"] }, "() => {}")
+				)
+				.build(),
+			testFn: async ({ cwd, exec }) => {
+				const { stdout, exitCode } = await settle(exec`build --max-workers 1`);
+
+				expect(exitCode).toBe(0);
+				expect(stdout.match(/SKIPPED/g)).toHaveLength(1);
+				expect(stripAnsi(stdout)).toMatch(/1 task skipped/);
+				await expect(isPathExists(Path.join(cwd, "ran.txt"))).resolves.toBe(false);
+			}
+		}));
 });
