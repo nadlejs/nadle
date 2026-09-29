@@ -22,7 +22,7 @@ export interface TaskConfiguration {
 	 * time, before cache validation, so it may observe what dependencies produced.
 	 * A falsey result skips the task; dependents still run.
 	 */
-	onlyIf?: (context: RunnerContext) => Awaitable<boolean>;
+	onlyIf?: (context: RunnerContext) => Awaitable<unknown>;
 
 	/**
 	 * A task or a list of tasks that this task depends on.

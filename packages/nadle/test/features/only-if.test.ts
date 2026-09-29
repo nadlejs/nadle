@@ -1,10 +1,23 @@
+import Path from "node:path";
+
 import { it, expect, describe } from "vitest";
 import { raw, config, settle, fixture, withGeneratedFixture } from "setup";
+
+import { isPathExists } from "../../src/core/utilities/fs.js";
+
+const DEFAULT_CACHE_DIR = "node_modules/.cache/nadle";
 
 const WRITE_MARKER = `async ({ context }) => {
 	const Fs = await import("node:fs");
 	const Path = await import("node:path");
 	Fs.writeFileSync(Path.join(context.workingDir, "ran.txt"), "ran");
+}`;
+
+const WRITE_DIST_MARKER = `async ({ context }) => {
+	const Fs = await import("node:fs");
+	const Path = await import("node:path");
+	Fs.mkdirSync(Path.join(context.workingDir, "dist"), { recursive: true });
+	Fs.writeFileSync(Path.join(context.workingDir, "dist", "out.txt"), "out");
 }`;
 
 describe.concurrent("onlyIf", () => {
@@ -113,6 +126,24 @@ describe.concurrent("onlyIf", () => {
 
 				expect(exitCode).not.toBe(0);
 				expect(stdout + stderr).toContain("boom");
+			}
+		}));
+
+	// A skipped task must do no cache work: the predicate is evaluated before the
+	// cache validator exists, so no fingerprint is computed even with inputs/outputs.
+	it("does no cache work when skipped despite declaring inputs and outputs", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("only-if-no-cache-work")
+				.file("src/input.txt", "input")
+				.config(config().taskWithConfig("build", { inputs: ["src/**"], outputs: ["dist/**"], onlyIf: raw("() => false") }, WRITE_DIST_MARKER))
+				.build(),
+			testFn: async ({ cwd, exec }) => {
+				const { exitCode } = await settle(exec`build`);
+
+				expect(exitCode).toBe(0);
+				await expect(isPathExists(Path.join(cwd, "dist/out.txt"))).resolves.toBe(false);
+				await expect(isPathExists(Path.join(cwd, DEFAULT_CACHE_DIR))).resolves.toBe(false);
 			}
 		}));
 });
