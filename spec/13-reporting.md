@@ -105,6 +105,13 @@ message. The STARTED message is suppressed because these tasks perform no work â
 exist solely as dependency aggregation points. This matches the single-message pattern
 used by UP-TO-DATE and FROM-CACHE tasks.
 
+A skipped task (see [02-task-configuration.md](02-task-configuration.md)) renders a
+`SKIPPED` line, in the same position an `UP-TO-DATE` or `FROM-CACHE` line would occupy.
+The run summary reports the count of skipped tasks when it is non-zero.
+
+The summary also reports the count of tasks that never ran because an upstream task
+failed. That count is worded "not run" so that "skipped" unambiguously means `onlyIf`.
+
 ## Execution Result
 
 ### Successful Run

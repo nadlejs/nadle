@@ -36,6 +36,7 @@ const config = {
 	words: [
 		"Cancelation",
 		"Dogfooding",
+		"falsey",
 		"SCROLLBACK",
 		"Turborepo",
 		"Vitest",

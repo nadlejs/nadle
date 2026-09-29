@@ -17,6 +17,21 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   fail the run. Previously unrecognized fields were silently accepted, so a misspelled
   `dependsOn` dropped the dependency without a diagnostic and the run passed in an
   unconstrained order.
+- 02-task-configuration: New `onlyIf` field — a predicate evaluated at execution time that
+  skips a task's body when it resolves falsey. Evaluated after configuration, options, and
+  working directory resolution but before cache validation, so it may observe state produced
+  by dependencies and a skipped task performs no cache work. Skipping affects only the task
+  itself: dependencies have already run and dependents still run.
+- 01-task: New `Skipped` terminal status, entered directly from Scheduled alongside UpToDate
+  and FromCache.
+- 04-execution: New `"skipped"` worker message type.
+- 11-events, 14-plugins: New `onTaskSkipped` event, mapped to the `afterTask` plugin hook.
+  `beforeTask` does not fire for skipped tasks, matching its existing cache-hit behavior.
+
+### Changed
+
+- 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
+  reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
 
 ## 4.1.1 — 2026-06-21
 

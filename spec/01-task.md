@@ -97,6 +97,8 @@ Registered -> Scheduled -> Running -+-> Failed
                   +-> UpToDate
                   |
                   +-> FromCache
+                  |
+                  +-> Skipped
 ```
 
 | Status     | Value          | Meaning                                                            |
@@ -107,16 +109,17 @@ Registered -> Scheduled -> Running -+-> Failed
 | Finished   | `"finished"`   | Task function completed successfully.                              |
 | UpToDate   | `"up-to-date"` | Cache validation determined outputs are current; task was skipped. |
 | FromCache  | `"from-cache"` | Outputs were restored from cache; task was skipped.                |
+| Skipped    | `"skipped"`    | The task's `onlyIf` predicate resolved falsey; task was skipped.   |
 | Failed     | `"failed"`     | Task function threw an error.                                      |
 | Canceled   | `"canceled"`   | Worker was terminated before the task completed.                   |
 
 ### Transition Rules
 
-- **UpToDate** and **FromCache** are entered directly from Scheduled, without passing
-  through Running. These tasks never emit a "start" event.
+- **UpToDate**, **FromCache**, and **Skipped** are entered directly from Scheduled, without
+  passing through Running. These tasks never emit a "start" event.
 - Only tasks in Running can transition to Finished, Failed, or Canceled.
 - The Running counter is only decremented for Finished, Failed, and Canceled transitions
-  (not for UpToDate or FromCache).
+  (not for UpToDate, FromCache, or Skipped).
 - **Empty (lifecycle-only) tasks** still transition through Running and emit start/finish
   events, but the reporter suppresses the STARTED message — only DONE is printed.
   See [13-reporting.md](13-reporting.md) for details.

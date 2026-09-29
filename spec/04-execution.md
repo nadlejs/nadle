@@ -28,7 +28,7 @@ Each task dispatch sends these parameters to the worker:
 
 ## Message Protocol
 
-Workers communicate back to the pool via MessagePort. There are exactly three message
+Workers communicate back to the pool via MessagePort. There are exactly four message
 types:
 
 | Type           | Fields     | Meaning                                                                                          |
@@ -36,13 +36,14 @@ types:
 | `"start"`      | `threadId` | The task function is about to execute. Sent after cache validation determines the task must run. |
 | `"up-to-date"` | `threadId` | Cache validation determined outputs are current. No execution needed.                            |
 | `"from-cache"` | `threadId` | Outputs were restored from cache. No execution needed.                                           |
+| `"skipped"`    | `threadId` | The `onlyIf` predicate resolved falsey. No execution needed.                                     |
 
 ### Completion Detection
 
 There is **no explicit "done" message**. Completion is inferred:
 
 - **Success**: the worker's promise resolves. The pool then checks the message type
-  received to determine the outcome (execute, up-to-date, or from-cache).
+  received to determine the outcome (execute, up-to-date, from-cache, or skipped).
 - **Failure**: the worker's promise rejects with an error.
 
 ## Worker Execution Flow
@@ -56,8 +57,10 @@ There is **no explicit "done" message**. Completion is inferred:
 2. Look up the task by ID in the registry.
 3. Resolve the task's configuration and options.
 4. Resolve the working directory (relative to project root).
-5. Run cache validation (see [05-caching.md](05-caching.md)).
-6. Based on validation result:
+5. Evaluate the task's `onlyIf` predicate, if declared. If it resolves falsey, send
+   `"skipped"` and return without validating the cache or executing the task.
+6. Run cache validation (see [05-caching.md](05-caching.md)).
+7. Based on validation result:
    - **not-cacheable** or **cache-disabled**: send `"start"`, apply env, execute, restore env.
    - **up-to-date**: send `"up-to-date"`, return.
    - **restore-from-cache**: restore outputs, update cache pointer, send `"from-cache"`.
