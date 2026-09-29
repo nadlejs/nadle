@@ -26,6 +26,7 @@ export class ExecutionTracker implements Listener {
 	public taskStats: TaskStats = {
 		[TaskStatus.Failed]: 0,
 		[TaskStatus.Running]: 0,
+		[TaskStatus.Skipped]: 0,
 		[TaskStatus.Canceled]: 0,
 		[TaskStatus.Finished]: 0,
 		[TaskStatus.UpToDate]: 0,
@@ -85,6 +86,10 @@ export class ExecutionTracker implements Listener {
 		this.updateTaskState(task, { status: TaskStatus.UpToDate });
 	}
 
+	public async onTaskSkipped(task: RegisteredTask) {
+		this.updateTaskState(task, { status: TaskStatus.Skipped });
+	}
+
 	public async onTaskRestoreFromCache(task: RegisteredTask) {
 		this.updateTaskState(task, { status: TaskStatus.FromCache });
 	}
@@ -123,7 +128,7 @@ export class ExecutionTracker implements Listener {
 			this.taskStats = { ...this.taskStats, [status]: ++this.taskStats[status] };
 
 			// Only decrement Running for tasks that were actually running
-			// (UpToDate and FromCache never emit start events, so they never increment Running)
+			// (UpToDate, FromCache and Skipped never emit start events, so they never increment Running)
 			if (status === TaskStatus.Failed || status === TaskStatus.Finished || status === TaskStatus.Canceled) {
 				this.taskStats = { ...this.taskStats, [TaskStatus.Running]: --this.taskStats[TaskStatus.Running] };
 			}

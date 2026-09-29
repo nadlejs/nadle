@@ -46,6 +46,12 @@ export interface Listener {
 	readonly onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
 
 	/**
+	 * Called when a task is skipped because its onlyIf predicate resolved falsey.
+	 * @param task The skipped task.
+	 */
+	readonly onTaskSkipped?: (task: RegisteredTask) => Awaitable<void>;
+
+	/**
 	 * Called when tasks are scheduled for execution.
 	 * @param tasks The scheduled tasks.
 	 */
