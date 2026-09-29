@@ -47,6 +47,10 @@ export class PluginListener implements Listener {
 		await this.dispatchTaskSafe("afterTask", task, { result: "up-to-date" });
 	}
 
+	public async onTaskSkipped(task: RegisteredTask): Promise<void> {
+		await this.dispatchTaskSafe("afterTask", task, { result: "skipped" });
+	}
+
 	public async onTaskRestoreFromCache(task: RegisteredTask): Promise<void> {
 		await this.dispatchTaskSafe("afterTask", task, { result: "from-cache" });
 	}
