@@ -1,10 +1,12 @@
+import { type RunnerContext } from "./task.js";
+import { type Awaitable } from "../utilities/index.js";
 import { type MaybeArray } from "../utilities/maybe-array.js";
 import type { Declaration } from "../models/cache/declaration.js";
 
 /**
  * Configuration for a Nadle task.
  */
-export interface TaskConfiguration {
+export interface TaskConfiguration<Options = unknown> {
 	/**
 	 * The group name to which this task belongs.
 	 */
@@ -14,6 +16,13 @@ export interface TaskConfiguration {
 	 * The description of the task.
 	 */
 	description?: string;
+
+	/**
+	 * Predicate deciding whether this task's body runs. Evaluated at execution
+	 * time, before cache validation, so it may observe what dependencies produced.
+	 * A falsey result skips the task; dependents still run.
+	 */
+	onlyIf?(params: { options: Options; context: RunnerContext }): Awaitable<unknown>;
 
 	/**
 	 * A task or a list of tasks that this task depends on.
@@ -43,6 +52,15 @@ export interface TaskConfiguration {
 	 * These are used for caching, restoring, and cleanup.
 	 */
 	outputs?: MaybeArray<Declaration>;
+
+	/**
+	 * Caches the success verdict of a task that declares `inputs` but produces no
+	 * output files, such as a linter or type-checker. While the inputs are unchanged
+	 * the task is reported up-to-date instead of running. Only success is cached: a
+	 * failing task always re-runs. Setting this asserts the task produces no artifact
+	 * any other task consumes. Ignored when `outputs` are declared.
+	 */
+	cacheVerdict?: boolean;
 
 	/**
 	 * Maximum number of cache entries to keep for this task.

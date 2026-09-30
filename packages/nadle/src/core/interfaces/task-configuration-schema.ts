@@ -23,6 +23,9 @@ export const TaskConfigurationSchema = {
 			type: "string",
 			description: "Changes the working directory for the task."
 		},
+		onlyIf: {
+			description: "Predicate deciding whether the task's body runs. Function-valued; not expressible as JSON."
+		},
 		timeout: {
 			minimum: 1,
 			type: "integer",
@@ -32,6 +35,10 @@ export const TaskConfigurationSchema = {
 			minimum: 0,
 			type: "integer",
 			description: "Number of additional attempts after the first failure (default 0)."
+		},
+		cacheVerdict: {
+			type: "boolean",
+			description: "Caches the success verdict of an inputs-only task that produces no output files."
 		},
 		maxCacheEntries: {
 			minimum: 0,

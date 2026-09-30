@@ -1,5 +1,7 @@
 import { it, expect, describe } from "vitest";
-import { exec, createExec, serializeANSI } from "setup";
+import { raw, exec, config, fixture, createExec, serializeANSI, withGeneratedFixture } from "setup";
+
+const SLOW_BODY = "() => new Promise((resolve) => setTimeout(resolve, 1500))";
 
 describe.concurrent("--footer", () => {
 	it("should show in-progress summary when enable explicitly", async () => {
@@ -17,8 +19,30 @@ describe.concurrent("--footer", () => {
 			`<Dim>Tasks      </BoldDim> <BrightCyan>1 pending</Yellow> <BrightBlack>|</Yellow> <Yellow>1 running</Yellow> <BrightBlack>|</Yellow> <Green>1 done</Green> <Dim>(3 scheduled)</BoldDim>`
 		);
 		expect(blurStdout).contain(`<Yellow>></Yellow> <Dim>IDLE</BoldDim>`);
-		expect(blurStdout).contain(`<Yellow>></Yellow> :<Bold>prepare</BoldDim>`);
+		expect(blurStdout).contain(`<Yellow>></Yellow> <Bold>prepare</BoldDim>`);
 	});
+
+	it("should count a skipped task as done, not pending", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("footer-skipped")
+				.config(
+					config()
+						.taskWithConfig("a", { onlyIf: raw("() => false") }, "() => {}")
+						.taskWithConfig("b", { dependsOn: ["a"] }, SLOW_BODY)
+				)
+				.build(),
+			testFn: async ({ exec: execFixture }) => {
+				const { stdout, exitCode } = await execFixture`b --footer`;
+
+				expect(exitCode).toBe(0);
+
+				expect(serializeANSI(stdout as string)).contain(
+					`<Dim>Tasks      </BoldDim> <BrightCyan>0 pending</Yellow> <BrightBlack>|</Yellow> ` +
+						`<Yellow>1 running</Yellow> <BrightBlack>|</Yellow> <Green>0 done</Green> <Dim>(2 scheduled)</BoldDim>`
+				);
+			}
+		}));
 
 	it("should not show summary when disabled explicitly", async () => {
 		const { stdout, exitCode } = await exec`copy --no-footer`;
@@ -34,10 +58,11 @@ describe.concurrent("--footer", () => {
 		expect(serializeANSI(stdout as string)).not.contain(`<Dim>Tasks      </BoldDim>`);
 	});
 
-	it("should show summary when not in CI by default", async () => {
+	// The default is `!isCI && isTTY`; execa pipes stdout, so the non-TTY default is off.
+	it("should not show summary on a non-TTY stdout by default", async () => {
 		const { stdout, exitCode } = await createExec({ env: { CI: "false" }, autoDisabledSummary: false })`copy`;
 
 		expect(exitCode).toBe(0);
-		expect(serializeANSI(stdout as string)).contain(`<Dim>Tasks      </BoldDim>`);
+		expect(serializeANSI(stdout as string)).not.contain(`<Dim>Tasks      </BoldDim>`);
 	});
 });

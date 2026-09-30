@@ -8,6 +8,7 @@ function createMockListener(overrides: Partial<Listener> = {}): Required<Listene
 		onTaskStart: vi.fn(),
 		onTaskFinish: vi.fn(),
 		onTaskFailed: vi.fn(),
+		onTaskSkipped: vi.fn(),
 		onTaskCanceled: vi.fn(),
 		onTaskUpToDate: vi.fn(),
 		onExecutionStart: vi.fn(),

@@ -1,6 +1,23 @@
-/** Strip the surrounding braces of a stringified object literal, returning its inner property text. */
-function objectInner(stringified: string): string {
-	return stringified.trim().slice(1, -1).trim();
+const RAW = Symbol("raw");
+
+export interface RawExpression {
+	readonly [RAW]: string;
+}
+
+/** Marks a config value to be emitted verbatim rather than JSON-serialized. */
+export function raw(source: string): RawExpression {
+	return { [RAW]: source };
+}
+
+function isRaw(value: unknown): value is RawExpression {
+	return typeof value === "object" && value !== null && RAW in value;
+}
+
+/** Serialize config options to inner object-literal text, emitting raw values verbatim. */
+function configInnerText(options: Record<string, unknown>): string {
+	return Object.entries(options)
+		.map(([key, value]) => `${JSON.stringify(key)}: ${isRaw(value) ? value[RAW] : JSON.stringify(value)}`)
+		.join(", ");
 }
 
 export class ConfigBuilder {
@@ -42,7 +59,7 @@ export class ConfigBuilder {
 		}
 
 		for (const task of this.#tasks) {
-			const configInner = task.configOptions ? objectInner(JSON.stringify(task.configOptions, null, "\t")) : undefined;
+			const configInner = task.configOptions ? configInnerText(task.configOptions) : undefined;
 			let statement: string;
 
 			if (task.action && configInner !== undefined) {
