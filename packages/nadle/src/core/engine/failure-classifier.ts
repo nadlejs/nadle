@@ -1,4 +1,6 @@
+import { type ExecutionContext } from "../context.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
+import { type NonExecutedCounts } from "../reporting/run-summary.js";
 
 export interface FailureClassifierInput {
 	/** Tasks that failed during the run. */
@@ -54,4 +56,17 @@ export function hasFailureInClosure(
 	}
 
 	return false;
+}
+
+/** Joins tracker state with the scheduler graph to size the two non-executed counts. */
+export function countNonExecuted(context: ExecutionContext): NonExecutedCounts {
+	const tracker = context.executionTracker;
+
+	const { blocked, notStarted } = classifyNonExecutedTasks({
+		failedTaskIds: tracker.failedTaskIds,
+		nonExecutedTaskIds: tracker.nonExecutedTaskIds,
+		getTransitiveDependencies: (taskId) => context.taskScheduler.getTransitiveDependencies(taskId)
+	});
+
+	return { blocked: blocked.length, notStarted: notStarted.length };
 }

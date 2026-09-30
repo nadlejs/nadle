@@ -2,6 +2,7 @@ import { formatTime } from "../utilities/utils.js";
 import { type ExecutionContext } from "../context.js";
 import { type Listener } from "../interfaces/listener.js";
 import { StringBuilder } from "../utilities/string-builder.js";
+import { countNonExecuted } from "../engine/failure-classifier.js";
 import { profileAccessors, collectProfileData } from "./profile-report.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
@@ -80,6 +81,8 @@ export class AgentReporter implements Listener {
 	}
 
 	private summaryLine(result: "SUCCESS" | "FAILED"): string {
+		const { blocked, notStarted } = countNonExecuted(this.context);
+
 		const counts = new StringBuilder(" ")
 			.add(`done ${this.stats[TaskStatus.Finished]}`)
 			.add(this.stats[TaskStatus.UpToDate] > 0 && `up-to-date ${this.stats[TaskStatus.UpToDate]}`)
@@ -87,7 +90,8 @@ export class AgentReporter implements Listener {
 			.add(this.stats[TaskStatus.Skipped] > 0 && `skipped ${this.stats[TaskStatus.Skipped]}`)
 			.add(this.stats[TaskStatus.Failed] > 0 && `failed ${this.stats[TaskStatus.Failed]}`)
 			.add(this.stats[TaskStatus.Canceled] > 0 && `canceled ${this.stats[TaskStatus.Canceled]}`)
-			.add(this.tracker.notRunCount > 0 && `not-run ${this.tracker.notRunCount}`)
+			.add(blocked > 0 && `blocked ${blocked}`)
+			.add(notStarted > 0 && `not-started ${notStarted}`)
 			.build();
 
 		return `${result} in ${formatTime(this.tracker.duration)} (${counts})`;

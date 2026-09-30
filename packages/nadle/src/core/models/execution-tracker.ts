@@ -56,11 +56,6 @@ export class ExecutionTracker implements Listener {
 		return new Set(this.getTaskStateByStatus(TaskStatus.Failed).map((state) => state.id));
 	}
 
-	/** @deprecated Superseded by the blocked / not-started split; removed with the reporter update. */
-	public get notRunCount(): number {
-		return this.nonExecutedTaskIds.length;
-	}
-
 	public getTaskState(taskId: TaskIdentifier): TaskState {
 		return this.taskStates[taskId] ?? defaultTaskState;
 	}

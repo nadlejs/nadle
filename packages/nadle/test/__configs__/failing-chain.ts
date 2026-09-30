@@ -7,3 +7,9 @@ tasks.register("flaky", () => {
 tasks.register("after", { dependsOn: ["flaky"] });
 
 tasks.register("alsoAfter", { dependsOn: ["flaky"] });
+
+tasks.register("independent", () => {
+	console.log("INDEPENDENT RAN");
+});
+
+tasks.register("gate", { dependsOn: ["flaky", "independent"] });
