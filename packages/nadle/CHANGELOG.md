@@ -1,5 +1,15 @@
 # nadle
 
+## [0.6.2](https://github.com/nadlejs/nadle/compare/nadle/v0.6.1...nadle/v0.6.2) (2026-09-30)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.6.1](https://github.com/nadlejs/nadle/compare/nadle/v0.6.0...nadle/v0.6.1) (2026-09-30)
 
 
