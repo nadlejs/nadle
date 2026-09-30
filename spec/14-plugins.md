@@ -58,19 +58,20 @@ A plugin's `hooks` object may define any of four hooks. All hooks are optional,
 run on the **main thread**, and may be async. They are dispatched over the same
 event seam described in [11-events.md](11-events.md).
 
-| Hook         | Fires                                                          | Context           |
-| ------------ | -------------------------------------------------------------- | ----------------- |
-| `beforeAll`  | Once, before scheduling.                                       | `RunHookContext`  |
-| `afterAll`   | Once, after the run settles (success or failure).              | `RunHookContext`  |
-| `beforeTask` | Before a task actually executes. **Not fired for cache hits.** | `TaskHookContext` |
-| `afterTask`  | After a task settles, for **every** terminal outcome.          | `TaskHookContext` |
+| Hook         | Fires                                                                           | Context           |
+| ------------ | ------------------------------------------------------------------------------- | ----------------- |
+| `beforeAll`  | Once, before scheduling.                                                        | `RunHookContext`  |
+| `afterAll`   | Once, after the run settles (success or failure).                               | `RunHookContext`  |
+| `beforeTask` | Before a task actually executes. **Not fired for cache hits or skipped tasks.** | `TaskHookContext` |
+| `afterTask`  | After a task settles, for **every** terminal outcome.                           | `TaskHookContext` |
 
 ### Pairing and outcomes
 
-Because `beforeTask` is skipped for cache hits while `afterTask` always fires,
-the two are **not a guaranteed pair**. Treat `beforeTask` as "about to do real
+Because `beforeTask` is skipped for cache hits and skipped tasks while `afterTask`
+always fires, the two are **not a guaranteed pair**. Treat `beforeTask` as "about to do real
 work" and `afterTask` as "settled — inspect `result`". `afterTask`'s `result` is
-one of `"done"`, `"failed"`, `"up-to-date"`, `"from-cache"`, or `"canceled"`.
+one of `"done"`, `"failed"`, `"up-to-date"`, `"from-cache"`, `"skipped"`, or
+`"canceled"`.
 `afterAll`'s `outcome` is `"success"` or `"failed"`.
 
 ### Error semantics

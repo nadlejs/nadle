@@ -38,8 +38,26 @@ export class CacheValidator {
 		this.cacheManager = new CacheManager(this.context.projectDir, this.context.cacheDir);
 	}
 
+	/**
+	 * `artifact` snapshots declared outputs; `verdict` records only that an inputs-only
+	 * task succeeded. Anything else is never cached.
+	 */
+	private get mode(): "artifact" | "verdict" | "none" {
+		if (this.taskConfiguration.inputs === undefined) {
+			return "none";
+		}
+
+		if (this.taskConfiguration.outputs !== undefined) {
+			return "artifact";
+		}
+
+		return this.taskConfiguration.cacheVerdict ? "verdict" : "none";
+	}
+
 	public async validate(): Promise<CacheValidationResult> {
-		if (this.taskConfiguration.inputs === undefined || this.taskConfiguration.outputs === undefined) {
+		const { mode } = this;
+
+		if (mode === "none") {
 			return { result: "not-cacheable" };
 		}
 
@@ -60,10 +78,14 @@ export class CacheValidator {
 			};
 		}
 
+		if (mode === "verdict") {
+			return this.validateVerdict(latestRunMetadata, cacheQuery, inputsFingerprints);
+		}
+
 		const outputHashes = hashObject(
 			await FileFingerprints.compute({
 				workingDir: this.context.workingDir,
-				declarations: MaybeArray.toArray(this.taskConfiguration.outputs)
+				declarations: MaybeArray.toArray(this.taskConfiguration.outputs!)
 			})
 		);
 
@@ -76,6 +98,23 @@ export class CacheValidator {
 			result: "restore-from-cache",
 			outputsFingerprint: latestRunMetadata.outputsFingerprint,
 			restore: () => this.cacheManager.restoreOutputs(cacheQuery)
+		};
+	}
+
+	/**
+	 * Nothing was snapshotted, so there is no output state to compare or restore:
+	 * a matching latest run is the whole verdict, anything else re-runs.
+	 */
+	private validateVerdict(latestRun: RunCacheMetadata, cacheQuery: CacheQuery, inputsFingerprints: FileFingerprints): CacheValidationResult {
+		if (latestRun.cacheKey === cacheQuery.cacheKey) {
+			return { result: "up-to-date", outputsFingerprint: latestRun.outputsFingerprint };
+		}
+
+		return {
+			cacheQuery,
+			inputsFingerprints,
+			result: "cache-miss",
+			reasons: CacheMissReason.compute(latestRun.inputsFingerprints, inputsFingerprints)
 		};
 	}
 

@@ -22,13 +22,14 @@ Events are listed in typical emission order:
 | `onTaskCanceled`         | `task`                             | When a worker is terminated while a task is running.                    |
 | `onTaskUpToDate`         | `task`                             | When cache validation determines outputs are current.                   |
 | `onTaskRestoreFromCache` | `task`                             | When outputs are restored from cache.                                   |
+| `onTaskSkipped`          | `task`                             | When the task's `onlyIf` predicate resolves falsey.                     |
 | `onExecutionFinish`      | _(none)_                           | After all tasks complete successfully.                                  |
 | `onExecutionFailed`      | `error`                            | When any task fails or an unhandled error occurs.                       |
 
 ### Important Notes
 
 - `onTaskStart` is only emitted for tasks that actually execute. Tasks resolved as
-  up-to-date or from-cache do **not** receive `onTaskStart`.
+  up-to-date, from-cache, or skipped do **not** receive `onTaskStart`.
 - `onExecutionFinish` and `onExecutionFailed` are mutually exclusive — exactly one
   is emitted per run.
 
@@ -61,7 +62,7 @@ DefaultReporter renders output.
 The execution tracker maintains:
 
 - **Task stats**: count of tasks in each status (Scheduled, Running, Finished,
-  UpToDate, FromCache, Failed, Canceled).
+  UpToDate, FromCache, Skipped, Failed, Canceled).
 - **Duration**: total execution time, updated every 100ms via an interval timer.
 - **Per-task state**: status, duration, start time, and thread ID for each task.
 
@@ -75,13 +76,13 @@ User-facing extension is through the **plugin system** (specified in full in
 that the core dispatches on the main thread via an internal listener. The hooks map to
 events as follows:
 
-| Plugin hook  | Event(s)                                                                                                                          |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| `beforeAll`  | `onExecutionStart` (may throw to abort the run)                                                                                   |
-| `afterAll`   | `onExecutionFinish` / `onExecutionFailed` (errors downgraded to a warning)                                                        |
-| `beforeTask` | `onTaskStart` (fires only for tasks that actually execute, not cache hits)                                                        |
-| `afterTask`  | `onTaskFinish` / `onTaskFailed` / `onTaskUpToDate` / `onTaskRestoreFromCache` / `onTaskCanceled` (errors downgraded to a warning) |
+| Plugin hook  | Event(s)                                                                                                                                            |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `beforeAll`  | `onExecutionStart` (may throw to abort the run)                                                                                                     |
+| `afterAll`   | `onExecutionFinish` / `onExecutionFailed` (errors downgraded to a warning)                                                                          |
+| `beforeTask` | `onTaskStart` (fires only for tasks that actually execute, not cache hits or skipped tasks)                                                         |
+| `afterTask`  | `onTaskFinish` / `onTaskFailed` / `onTaskUpToDate` / `onTaskRestoreFromCache` / `onTaskSkipped` / `onTaskCanceled` (errors downgraded to a warning) |
 
 Hooks run in plugin order, grouped by the optional `enforce` (`pre` → normal → `post`).
-Because `beforeTask` is skipped for cache hits while `afterTask` always fires, the two are
-not a guaranteed pair. Plugins may also contribute task types and reporters.
+Because `beforeTask` is skipped for cache hits and skipped tasks while `afterTask` always
+fires, the two are not a guaranteed pair. Plugins may also contribute task types and reporters.

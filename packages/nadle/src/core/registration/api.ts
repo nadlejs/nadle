@@ -1,12 +1,15 @@
 import { VALID_TASK_NAME_PATTERN } from "@nadle/kernel";
 
 import { Messages } from "../utilities/messages.js";
+import { suggest } from "../utilities/suggestion.js";
+import { type Logger } from "../interfaces/logger.js";
 import { getCurrentInstance } from "../nadle-context.js";
 import { ConfigurationError } from "../utilities/nadle-error.js";
 import type { Task, RunnerContext } from "../interfaces/task.js";
 import { type RegisteredTask } from "../interfaces/registered-task.js";
 import type { Callback, Resolver, Awaitable } from "../utilities/types.js";
 import type { TaskConfiguration } from "../interfaces/task-configuration.js";
+import { TaskConfigurationSchema } from "../interfaces/task-configuration-schema.js";
 
 /**
  * The main API for registering tasks in Nadle.
@@ -37,7 +40,9 @@ export interface TasksAPI {
 	 */
 	register<Options>(
 		name: string,
-		spec: TaskConfiguration & { run: Task<Options> } & ({} extends Options ? { options?: Resolver<Options> } : { options: Resolver<Options> })
+		spec: TaskConfiguration<Options> & { run: Task<Options> } & ({} extends Options
+				? { options?: Resolver<Options> }
+				: { options: Resolver<Options> })
 	): void;
 	/** Register a task from a config-only keyed spec, or one with an inline function body. */
 	register(name: string, spec: TaskConfiguration & { run?: TaskFn }): void;
@@ -55,7 +60,7 @@ export type TaskFn = Callback<Awaitable<void>, { context: RunnerContext }>;
  * (group, dependsOn, …) come from TaskConfiguration and sit directly on the spec.
  * `run` and `options` are reserved keys and must never be added to TaskConfiguration.
  */
-export type TaskSpec<Options = void> = TaskConfiguration &
+export type TaskSpec<Options = void> = TaskConfiguration<Options> &
 	// Tuple wrapping `[void] extends [Options]` suppresses distributivity: plain
 	// `void extends Options` distributes over unions and lands void in the wrong branch.
 	([void] extends [Options]
@@ -113,7 +118,7 @@ export const tasks: TasksAPI = {
 			throw new ConfigurationError(Messages.DuplicatedTaskName(name, taskRegistry.workspaceId ?? ""));
 		}
 
-		const { run, options, getConfig } = normalizeSecondArg(second);
+		const { run, options, getConfig } = normalizeSecondArg(name, second);
 
 		// Resolve the config at most once per task (configuration avoidance, #647):
 		// validation is read several times per run (scheduling, execution, reporting).
@@ -140,7 +145,31 @@ interface NormalizedSpec {
  *   - undefined → placeholder; function → inline body; LazySpec → deferred config;
  *     plain object → eager spec.
  */
-function normalizeSecondArg(second?: TaskFn | SpecArg<unknown> | LazySpec): NormalizedSpec {
+const KNOWN_CONFIG_KEYS = Object.keys(TaskConfigurationSchema.properties);
+
+/**
+ * Warn on spec keys that match no `TaskConfiguration` field. `run`/`options` are spec-level
+ * keys, not config, and are destructured away before this runs.
+ */
+function warnUnknownConfigKeys(name: string, config: TaskConfiguration, logger: Logger): TaskConfiguration {
+	for (const key of Object.keys(config)) {
+		if (KNOWN_CONFIG_KEYS.includes(key)) {
+			continue;
+		}
+
+		const match = suggest(key, KNOWN_CONFIG_KEYS, logger);
+		const suggestion = "result" in match && match.result !== undefined ? match.result : undefined;
+
+		logger.warn(Messages.UnknownTaskConfigKey(name, key, suggestion));
+	}
+
+	return config;
+}
+
+function normalizeSecondArg(name: string, second?: TaskFn | SpecArg<unknown> | LazySpec): NormalizedSpec {
+	// Captured eagerly: a lazy spec's config resolves outside the async context.
+	const { logger } = getCurrentInstance();
+
 	if (typeof second === "function") {
 		return { options: undefined, run: second as TaskFn, getConfig: () => ({}) };
 	}
@@ -158,13 +187,14 @@ function normalizeSecondArg(second?: TaskFn | SpecArg<unknown> | LazySpec): Norm
 			getConfig: () => {
 				const { run: _run, options: _options, ...config } = resolveSpec();
 
-				return config;
+				return warnUnknownConfigKeys(name, config, logger);
 			}
 		};
 	}
 
 	if (second !== undefined) {
 		const { run: specRun, options: specOptions, ...config } = second as TaskSpec;
+		warnUnknownConfigKeys(name, config, logger);
 
 		return { getConfig: () => config, run: specRun as TaskFn | Task | undefined, options: specOptions as Resolver | undefined };
 	}

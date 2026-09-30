@@ -15,12 +15,12 @@ NadleError is a specialized error class with a numeric exit code.
 NadleError has a hierarchy of subclasses so consumers can catch specific error
 categories programmatically. Each subclass fixes a distinct `errorCode`.
 
-| Subclass                | `errorCode` | Raised when                                                                                                                                                                      |
-| ----------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ConfigurationError`    | `2`         | Config is missing or invalid: config file not found, invalid options or task inputs, invalid task name, duplicate task name, invalid `configure()` usage, invalid worker config. |
-| `TaskNotFoundError`     | `3`         | A requested task or workspace cannot be resolved.                                                                                                                                |
-| `CyclicDependencyError` | `4`         | The task graph contains a cycle.                                                                                                                                                 |
-| `TaskExecutionError`    | `1`         | A task throws during execution. Wraps the original error as `cause`; keeps exit code `1` to preserve the baseline failure contract.                                              |
+| Subclass                | `errorCode` | Raised when                                                                                                                                                                                          |
+| ----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ConfigurationError`    | `2`         | Config is missing or invalid: config file not found or cannot be loaded, invalid options or task inputs, invalid task name, duplicate task name, invalid `configure()` usage, invalid worker config. |
+| `TaskNotFoundError`     | `3`         | A requested task or workspace cannot be resolved.                                                                                                                                                    |
+| `CyclicDependencyError` | `4`         | The task graph contains a cycle.                                                                                                                                                                     |
+| `TaskExecutionError`    | `1`         | A task throws during execution. Wraps the original error as `cause`; keeps exit code `1` to preserve the baseline failure contract.                                                                  |
 
 Invariant violations (states that should be impossible — unset working
 directory, project not yet configured, exhaustiveness fallbacks) remain plain
@@ -71,6 +71,7 @@ else:
 | Duplicate task name     | `"Task {name} already registered in workspace {id}"`                                                                                    | During task registration.                          |
 | Invalid task name       | `"Invalid task name: {name}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash."` | During task registration.                          |
 | Config file not found   | `"No nadle.config.{...} found in {path} directory or parent directories."`                                                              | During config resolution.                          |
+| Config file load failed | `"Failed to load config file {path}: {cause}"`                                                                                          | While loading a config file.                       |
 | Task not found          | `"Task {name} not found in {workspace} workspace."`                                                                                     | During task resolution (no root fallback).         |
 | Invalid worker config   | `"Invalid value for --{min/max}-workers. Expect to be an integer or a percentage."`                                                     | During CLI option parsing.                         |
 | Invalid configure usage | `"configure function can only be called from the root workspace."`                                                                      | When `configure()` called from non-root workspace. |

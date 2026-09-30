@@ -39,6 +39,8 @@ export enum TaskStatus {
 	UpToDate = "up-to-date",
 	/** Task result was restored from cache. */
 	FromCache = "from-cache",
+	/** Task was skipped because its onlyIf predicate resolved falsey. */
+	Skipped = "skipped",
 	/** Task execution failed. */
 	Failed = "failed",
 	/** Task was canceled before completion. */
