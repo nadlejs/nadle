@@ -45,8 +45,10 @@ Workspace dependencies are populated from the `package.json` dependency fields:
 
 - `dependencies`
 - `devDependencies`
-- `peerDependencies`
-- `optionalDependencies`
+
+`peerDependencies` and `optionalDependencies` are intentionally excluded: they
+rarely imply a build-ordering relationship and including them risks spurious
+edges (or cycles) in the task graph.
 
 If a dependency references another workspace in the project (e.g., via
 `workspace:*` protocol), it is recorded as a workspace dependency.
@@ -70,6 +72,10 @@ Aliases provide human-readable labels for workspaces. They are configured via th
 - An alias must not be empty for non-root workspaces.
 - An alias must not duplicate another workspace's label.
 - An alias must not duplicate another workspace's ID.
+- When the alias is an object map, every key must match a known workspace path — the
+  root path (`.`) or a sub-workspace's relative path. A key matching no workspace is an
+  error (this catch does not apply to the function form, which is only ever called with
+  known workspace paths).
 - The root workspace label defaults to empty string (so its tasks display without
   a prefix).
 

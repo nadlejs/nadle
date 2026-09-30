@@ -9,24 +9,24 @@ ruleTester.run("no-circular-dependencies", rule, {
 			name: "direct cycle (a -> b -> a)",
 			errors: [{ messageId: "circular", data: { cycle: "a -> b -> a" } }],
 			code: `
-				tasks.register("a").config({ dependsOn: ["b"] });
-				tasks.register("b").config({ dependsOn: ["a"] });
+				tasks.register("a", { dependsOn: ["b"] });
+				tasks.register("b", { dependsOn: ["a"] });
 			`
 		},
 		{
 			name: "self-reference (a -> a)",
-			errors: [{ messageId: "circular", data: { cycle: "a -> a" } }],
 			code: `
-				tasks.register("a").config({ dependsOn: ["a"] });
-			`
+				tasks.register("a", { dependsOn: ["a"] });
+			`,
+			errors: [{ messageId: "circular", data: { cycle: "a -> a" } }]
 		},
 		{
 			name: "transitive cycle (a -> b -> c -> a)",
 			errors: [{ messageId: "circular", data: { cycle: "a -> b -> c -> a" } }],
 			code: `
-				tasks.register("a").config({ dependsOn: ["b"] });
-				tasks.register("b").config({ dependsOn: ["c"] });
-				tasks.register("c").config({ dependsOn: ["a"] });
+				tasks.register("a", { dependsOn: ["b"] });
+				tasks.register("b", { dependsOn: ["c"] });
+				tasks.register("c", { dependsOn: ["a"] });
 			`
 		}
 	],
@@ -34,8 +34,8 @@ ruleTester.run("no-circular-dependencies", rule, {
 		{
 			name: "linear chain",
 			code: `
-				tasks.register("a").config({ dependsOn: ["b"] });
-				tasks.register("b").config({ dependsOn: ["c"] });
+				tasks.register("a", { dependsOn: ["b"] });
+				tasks.register("b", { dependsOn: ["c"] });
 				tasks.register("c");
 			`
 		},
@@ -49,28 +49,28 @@ ruleTester.run("no-circular-dependencies", rule, {
 		{
 			name: "diamond shape (no cycle)",
 			code: `
-				tasks.register("a").config({ dependsOn: ["b", "c"] });
-				tasks.register("b").config({ dependsOn: ["d"] });
-				tasks.register("c").config({ dependsOn: ["d"] });
+				tasks.register("a", { dependsOn: ["b", "c"] });
+				tasks.register("b", { dependsOn: ["d"] });
+				tasks.register("c", { dependsOn: ["d"] });
 				tasks.register("d");
 			`
 		},
 		{
 			name: "depends on unknown task (not a cycle)",
 			code: `
-				tasks.register("a").config({ dependsOn: ["external"] });
+				tasks.register("a", { dependsOn: ["external"] });
 			`
 		},
 		{
 			name: "no dependsOn property",
 			code: `
-				tasks.register("a").config({ description: "builds stuff" });
+				tasks.register("a", { description: "builds stuff" });
 			`
 		},
 		{
 			name: "workspace-qualified deps are excluded from cycle detection",
 			code: `
-				tasks.register("a").config({ dependsOn: ["shared:a"] });
+				tasks.register("a", { dependsOn: ["shared:a"] });
 			`
 		}
 	]

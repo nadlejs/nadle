@@ -7,7 +7,7 @@ import { runTask, type Notifier, type WorkerParams, type WorkerMessage } from ".
 
 /**
  * Runs a single task and resolves with its outputs fingerprint (or undefined).
- * Lifecycle messages (start / up-to-date / from-cache) are delivered to `notify`.
+ * Lifecycle messages (start / skipped / up-to-date / from-cache) are delivered to `notify`.
  * Each implementation owns its own transport: the pool path posts across a
  * MessagePort, the inline path invokes `notify` directly in-process.
  */

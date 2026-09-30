@@ -25,7 +25,7 @@ Executes an arbitrary external command.
 1. Normalize arguments (see Argument Normalization).
 2. Spawn the process with the command and arguments.
 3. Set working directory to the task's `workingDir`.
-4. Force color output in the subprocess (`FORCE_COLOR=1`).
+4. Force color output in the subprocess (`FORCE_COLOR=1`) unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR`.
 5. Stream all subprocess output (stdout and stderr combined) to the task logger.
 6. Await subprocess completion.
 
@@ -46,7 +46,7 @@ Executes a pnpm command. Specialized variant of ExecTask with `pnpm` as the comm
 2. Normalize `args` (see Argument Normalization) and append it after the filter flags.
 3. Spawn `pnpm` with the combined arguments.
 4. Set working directory to the task's `workingDir`.
-5. Force color output (`FORCE_COLOR=1`).
+5. Force color output (`FORCE_COLOR=1`) unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR`.
 6. Stream combined output to the task logger.
 7. Await subprocess completion.
 
@@ -66,7 +66,7 @@ Executes a Node.js script. Specialized variant of ExecTask with `node` as the co
 1. Normalize arguments (see Argument Normalization).
 2. Spawn `node <script> <args>`.
 3. Set working directory to the task's `workingDir`.
-4. Force color output (`FORCE_COLOR=1`).
+4. Force color output (`FORCE_COLOR=1`) unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR`.
 5. Stream combined output to the task logger.
 6. Await subprocess completion.
 
@@ -85,7 +85,7 @@ Executes an npm command. Specialized variant of ExecTask with `npm` as the comma
 1. Normalize arguments (see Argument Normalization).
 2. Spawn `npm` with the arguments.
 3. Set working directory to the task's `workingDir`.
-4. Force color output (`FORCE_COLOR=1`).
+4. Force color output (`FORCE_COLOR=1`) unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR`.
 5. Stream combined output to the task logger.
 6. Await subprocess completion.
 
@@ -106,7 +106,7 @@ for running binaries from `node_modules/.bin` through pnpm.
 1. Normalize arguments (see Argument Normalization).
 2. Spawn `pnpm exec <command> <args>`.
 3. Set working directory to the task's `workingDir`.
-4. Force color output (`FORCE_COLOR=1`).
+4. Force color output (`FORCE_COLOR=1`) unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR`.
 5. Stream combined output to the task logger.
 6. Await subprocess completion.
 
@@ -127,7 +127,7 @@ for running binaries from `node_modules/.bin` through npx.
 1. Normalize arguments (see Argument Normalization).
 2. Spawn `npx <command> <args>`.
 3. Set working directory to the task's `workingDir`.
-4. Force color output (`FORCE_COLOR=1`).
+4. Force color output (`FORCE_COLOR=1`) unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR`.
 5. Stream combined output to the task logger.
 6. Await subprocess completion.
 
@@ -279,7 +279,7 @@ Deletes files and directories using glob patterns.
 All built-in tasks share these characteristics:
 
 - They all respect the `workingDir` from the runner context.
-- ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, and PnpxTask force color output via `FORCE_COLOR=1` environment variable.
+- ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, and PnpxTask force color output via `FORCE_COLOR=1` environment variable, unless the task's environment already sets `FORCE_COLOR` or `NO_COLOR` (a configured value is never overridden).
 - ExecTask, NodeTask, NpmTask, NpxTask, PnpmTask, and PnpxTask append the runner context's
   passthrough arguments (CLI args after `--`, see spec 09) after their configured arguments.
   CopyTask and DeleteTask ignore passthrough arguments.
@@ -296,4 +296,5 @@ defineTask({
 ```
 
 The `run` function receives typed options and a runner context. The returned task
-object is then registered with `tasks.register(name, taskObject, optionsResolver)`.
+object is then registered by providing it as the task body together with an options
+resolver (see [01-task.md](01-task.md)).

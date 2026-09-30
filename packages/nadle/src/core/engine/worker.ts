@@ -5,7 +5,9 @@ import c from "tinyrainbow";
 import { getWorkspaceById } from "@nadle/project-resolver";
 
 import { Nadle } from "../nadle.js";
+import { runWithRetries } from "./task-runner.js";
 import { bindObject } from "../utilities/utils.js";
+import { explainCacheOutcome } from "./explain-cache.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { type NadleResolvedOptions } from "../options/types.js";
@@ -19,6 +21,7 @@ const threadId = WorkerThreads.threadId || 1;
 
 export type WorkerMessage =
 	| { readonly type: "start"; readonly threadId: number }
+	| { readonly type: "skipped"; readonly threadId: number }
 	| { readonly threadId: number; readonly type: "up-to-date"; readonly outputsFingerprint?: string }
 	| { readonly threadId: number; readonly type: "from-cache"; readonly outputsFingerprint?: string };
 
@@ -67,6 +70,13 @@ export async function runTask(
 		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
 	};
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
+
+	if (taskConfig.onlyIf && !(await taskConfig.onlyIf({ context, options: taskOptions }))) {
+		await notify({ threadId, type: "skipped" } satisfies WorkerMessage);
+
+		return undefined;
+	}
+
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 
 	const cacheValidator = createCacheValidator(nadle, {
@@ -82,7 +92,11 @@ export async function runTask(
 
 	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskId), validationResult.result);
 
-	const ctx: DispatchContext = { task, notify, context, taskOptions, environmentInjector };
+	if (nadle.options.why) {
+		nadle.logger.log(explainCacheOutcome(task.label, validationResult, taskConfig));
+	}
+
+	const ctx: DispatchContext = { task, notify, context, taskConfig, taskOptions, environmentInjector };
 
 	return dispatchByValidationResult({ ctx, nadle, cacheValidator, validationResult });
 }
@@ -133,6 +147,7 @@ interface DispatchContext {
 	notify: Notifier;
 	taskOptions: unknown;
 	context: RunnerContext;
+	taskConfig: TaskConfiguration;
 	environmentInjector: Injector<void>;
 	task: ReturnType<Nadle["taskRegistry"]["getTaskById"]>;
 }
@@ -195,7 +210,10 @@ async function executeTask(ctx: DispatchContext) {
 	ctx.environmentInjector.apply();
 
 	try {
-		await ctx.task.run({ context: ctx.context, options: ctx.taskOptions });
+		await runWithRetries(() => Promise.resolve(ctx.task.run({ context: ctx.context, options: ctx.taskOptions })), {
+			timeout: ctx.taskConfig.timeout,
+			retries: ctx.taskConfig.retries ?? 0
+		});
 	} finally {
 		// Restore even when the task throws: in the inline path this mutates the
 		// main process's env, so a skipped restore would leak into later tasks.
@@ -213,7 +231,7 @@ function createEnvironmentInjector(originalEnv: NodeJS.ProcessEnv, taskEnv: Task
 
 	return {
 		apply() {
-			Object.assign(process.env, { ...originalEnv, ...taskEnv });
+			Object.assign(process.env, { ...originalEnv, ...serializedTaskEnv });
 		},
 		restore() {
 			for (const [key] of Object.entries(serializedTaskEnv)) {

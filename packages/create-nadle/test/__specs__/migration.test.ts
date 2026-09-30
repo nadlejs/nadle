@@ -26,6 +26,8 @@ describe("script migration", () => {
 				expect(config).toContain('command: "tsc"');
 				expect(config).toContain('"test"');
 				expect(config).toContain('command: "vitest"');
+				expect(config).toContain("{ run: ExecTask, options: ");
+				expect(config).not.toContain(".config(");
 			}
 		});
 	});

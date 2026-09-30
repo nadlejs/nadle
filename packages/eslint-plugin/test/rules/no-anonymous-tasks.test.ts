@@ -9,7 +9,7 @@ ruleTester.run("no-anonymous-tasks", rule, {
 			code: 'tasks.register("build", () => {})'
 		},
 		{
-			code: 'tasks.register("test", ExecTask, { command: "vitest" })'
+			code: 'tasks.register("test", { run: ExecTask, options: { command: "vitest" } })'
 		},
 		{
 			code: 'tasks.register("deploy")'

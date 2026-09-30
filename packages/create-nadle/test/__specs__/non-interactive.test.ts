@@ -24,6 +24,8 @@ describe("non-interactive mode", () => {
 				const config = await Fs.readFile(Path.join(cwd, CONFIG_FILE), "utf8");
 
 				expect(config).toContain("tasks");
+				expect(config).toContain('{ run: ExecTask, options: { command: "tsc" } }');
+				expect(config).not.toContain(".config(");
 			}
 		});
 	});

@@ -24,6 +24,7 @@ export class TaskScheduler {
 	public constructor(private readonly deps: SchedulerDependencies) {}
 
 	public init(taskIds: string[] = this.deps.options.tasks.map(({ taskId }) => taskId)): this {
+		this.reset();
 		this.taskIds = this.expandWorkspaceTasks(taskIds);
 		this.excludedTaskIds = new Set(this.deps.options.excludedTasks.map(ResolvedTask.getId));
 		this.taskIds.forEach((taskId) => this.analyze(taskId));
@@ -36,6 +37,20 @@ export class TaskScheduler {
 		}
 
 		return this;
+	}
+
+	// Clear all derived graph state so init() is idempotent — re-initializing (the
+	// watch loop, or the --since pre-pass) starts from a clean graph rather than
+	// accumulating edges or stale indegree values from a previous init.
+	private reset(): void {
+		this.dependentsGraph.clear();
+		this.dependencyGraph.clear();
+		this.transitiveDependencyGraph.clear();
+		this.indegree.clear();
+		this.readyTasks.clear();
+		this.implicitEdges.clear();
+		this.rootAggregationDeps.clear();
+		this.mainTaskId = undefined;
 	}
 
 	private expandWorkspaceTasks(taskIds: string[]): string[] {
@@ -150,6 +165,10 @@ export class TaskScheduler {
 
 	public getImplicitDeps(taskId: TaskIdentifier): TaskIdentifier[] {
 		return [...this.dependencyGraph.get(taskId)].filter((dep) => this.implicitEdges.has(`${dep}->${taskId}`));
+	}
+
+	public getTransitiveDependencies(taskId: TaskIdentifier): ReadonlySet<TaskIdentifier> {
+		return this.transitiveDependencyGraph.get(taskId);
 	}
 
 	private getIndegreeEntries() {

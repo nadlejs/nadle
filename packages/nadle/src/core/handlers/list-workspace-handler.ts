@@ -3,6 +3,7 @@ import { type Workspace, getAllWorkspaces, isRootWorkspaceId } from "@nadle/proj
 
 import { BaseHandler } from "./base-handler.js";
 import { highlight } from "../utilities/utils.js";
+import { stringify } from "../utilities/stringify.js";
 import { createTree } from "../utilities/create-tree.js";
 import { StringBuilder } from "../utilities/string-builder.js";
 
@@ -18,6 +19,21 @@ export class ListWorkspacesHandler extends BaseHandler {
 		const workspaces = getAllWorkspaces(this.context.options.project);
 
 		const parentWorkspaceMap = this.computeParentWorkspaceMap(workspaces);
+
+		if (this.context.options.json) {
+			this.context.logger.log(
+				stringify(
+					workspaces.map((workspace) => ({
+						id: workspace.id,
+						label: workspace.label,
+						parent: parentWorkspaceMap[workspace.id]?.id ?? null
+					}))
+				)
+			);
+
+			return;
+		}
+
 		const childrenWorkspaceMap = Object.fromEntries(
 			workspaces.map(({ id }) => [id, workspaces.filter((workspace) => parentWorkspaceMap[workspace.id]?.id === id)])
 		);

@@ -5,8 +5,10 @@ import { isRootWorkspaceId } from "@nadle/project-resolver";
 import { BaseHandler } from "./base-handler.js";
 import { DASH } from "../utilities/constants.js";
 import { capitalize } from "../utilities/utils.js";
+import { stringify } from "../utilities/stringify.js";
 import { combineComparators } from "../utilities/comparator.js";
 import type { RegisteredTask } from "../interfaces/registered-task.js";
+import { collectDependsOn, formatDeclarations } from "../utilities/declarations.js";
 
 interface DescribedTask extends RegisteredTask {
 	readonly description?: string;
@@ -25,6 +27,12 @@ export class ListHandler extends BaseHandler {
 	}
 
 	public handle() {
+		if (this.context.options.json) {
+			this.context.logger.log(stringify(this.toJson()));
+
+			return;
+		}
+
 		if (this.context.taskRegistry.tasks.length === 0) {
 			this.context.logger.log("No tasks found");
 
@@ -54,6 +62,25 @@ export class ListHandler extends BaseHandler {
 				this.context.logger.log("");
 			}
 		}
+	}
+
+	private toJson() {
+		return this.computeGroups().flatMap(([, tasks]) =>
+			tasks.map((task) => {
+				const config = task.configResolver();
+
+				return {
+					name: task.name,
+					label: task.label,
+					group: config.group ?? null,
+					workspace: task.workspaceId,
+					description: config.description ?? null,
+					inputs: formatDeclarations(config.inputs),
+					outputs: formatDeclarations(config.outputs),
+					dependsOn: collectDependsOn(config.dependsOn)
+				};
+			})
+		);
 	}
 
 	private computeGroups(): Group[] {

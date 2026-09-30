@@ -60,6 +60,14 @@ describe("basic", () => {
 					await expect(getStdout(exec`test`)).resolves.toRunInOrder("node", "install", "test");
 				}
 			}));
+
+		it("can run a keyed-spec task", () =>
+			withGeneratedFixture({
+				files: basicFiles,
+				testFn: async ({ exec }) => {
+					await expect(getStdout(exec`keyed`)).resolves.toContain("keyed ran");
+				}
+			}));
 	});
 
 	describe("multiple commands", () => {

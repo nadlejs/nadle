@@ -63,17 +63,22 @@ Copy the following template to create your first `nadle.config.ts` file:
 ```typescript
 import { tasks } from "nadle";
 
-tasks
-	.register("hello", async () => {
+tasks.register("hello", {
+	run: async () => {
 		console.log("Hello from nadle!");
-	})
-	.config({ group: "Greetings", description: "Say hello" });
+	},
+	group: "Greetings",
+	description: "Say hello"
+});
 
-tasks
-	.register("goodbye", () => {
+tasks.register("goodbye", {
+	run: () => {
 		console.log("Goodbye, tak!");
-	})
-	.config({ group: "Greetings", dependsOn: ["hello"], description: "Say goodbye" });
+	},
+	group: "Greetings",
+	dependsOn: ["hello"],
+	description: "Say goodbye"
+});
 ```
 
 This configuration defines two greeting tasks: `hello`, which logs a message, and `goodbye`,

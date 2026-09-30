@@ -1,6 +1,6 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 
-import { getTaskName, getConfigObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
+import { getTaskName, getSpecObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
@@ -14,8 +14,8 @@ export default createRule({
 			description: "Require task descriptions"
 		},
 		messages: {
-			missingConfig: "Task '{{name}}' has no .config() call. Add .config({ description: \"...\" }).",
-			missingDescription: "Task '{{name}}' is missing a description. Add a description property in .config()."
+			missingConfig: "Task '{{name}}' has no spec. Add a task spec with a description property.",
+			missingDescription: "Task '{{name}}' is missing a description. Add a description property to the task spec."
 		}
 	},
 	create(context) {
@@ -31,7 +31,7 @@ export default createRule({
 					return;
 				}
 
-				const configObject = getConfigObject(node);
+				const configObject = getSpecObject(node);
 
 				if (configObject === undefined) {
 					context.report({

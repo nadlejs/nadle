@@ -1,7 +1,6 @@
 import { type Project } from "@nadle/project-resolver";
 
 import { type SupportLogLevel } from "../utilities/consola.js";
-import { type SupportReporter } from "../reporting/reporters.js";
 import { type ResolvedTask } from "../interfaces/resolved-task.js";
 
 /**
@@ -15,12 +14,12 @@ export interface NadleBaseOptions {
 
 	/** Show footer in output. */
 	readonly footer?: boolean;
+	/** Output reporter to use: a built-in (`default`/`agent`) or a plugin-registered reporter name. */
+	readonly reporter?: string;
 	/** Enable or disable parallel task execution. */
 	readonly parallel?: boolean;
 	/** Maximum number of cache entries to keep per task. Oldest are evicted when exceeded. */
 	readonly maxCacheEntries?: number;
-	/** Output reporter to use. */
-	readonly reporter?: SupportReporter;
 	/** Log level for reporting. */
 	readonly logLevel?: SupportLogLevel;
 	/** Minimum number of worker threads (number or string, e.g., "50%"). */
@@ -47,10 +46,20 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	/** List all workspaces. */
 	readonly listWorkspaces: boolean;
 
+	/** Explain each task's cache outcome (hit/miss and, on a miss, what changed). */
+	readonly why?: boolean;
+	/** Run only the requested tasks affected by changes since the given git ref. */
+	readonly since?: string;
 	/** Perform a dry run without executing tasks. */
 	readonly dryRun: boolean;
-	/** Show summary after execution. */
+	/** Re-run the requested tasks whenever their declared inputs change. */
+	readonly watch?: boolean;
+	/** Explain why a task runs, what depends on it, and its declared inputs, instead of executing. */
+	readonly explain?: string;
+	/** Show summary after execution (task durations, critical path, cache-miss hotspots). */
 	readonly summary?: boolean;
+	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */
+	readonly graph?: "tree" | "mermaid";
 
 	/** Show stacktrace on errors. */
 	readonly stacktrace: boolean;
@@ -60,10 +69,16 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	/** Path to configuration file. */
 	readonly configFile?: string;
 
+	/** Emit machine-readable JSON from read commands instead of human text. */
+	readonly json: boolean;
+	/** Run health diagnostics instead of executing tasks. */
+	readonly doctor: boolean;
 	/** Path to a specific resolved configuration value, using dot/bracket notation. */
 	readonly configKey?: string;
 	/** Show resolved configuration. */
 	readonly showConfig: boolean;
+	/** Emit a machine-readable JSON description of flags, tasks, and config instead of executing. */
+	readonly capabilities: boolean;
 }
 
 /**
@@ -84,10 +99,19 @@ export type AliasOption = Record<string, string> | ((workspacePath: string) => s
  * Fully resolved Nadle options, including required fields and project reference.
  */
 export interface NadleResolvedOptions extends Required<
-	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks">
+	Omit<NadleCLIOptions, "maxWorkers" | "minWorkers" | "configKey" | "configFile" | "tasks" | "excludedTasks" | "graph" | "explain" | "since">
 > {
 	/** Project information. */
 	readonly project: Project;
+
+	/** Task graph output format, when --graph was requested. */
+	readonly graph?: "tree" | "mermaid";
+
+	/** Task name to explain, when --explain was requested. */
+	readonly explain?: string;
+
+	/** Git ref to diff against for affected-only execution, when --since was requested. */
+	readonly since?: string;
 
 	/** Minimum number of worker threads (resolved as number). */
 	readonly minWorkers: number;

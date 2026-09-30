@@ -2,7 +2,7 @@ import { it, expect, describe } from "vitest";
 
 import { renderProfilingSummary } from "../../src/core/reporting/profiling-summary.js";
 
-describe.skip("profiling summary", () => {
+describe("profiling summary", () => {
 	it("should render top 5 slowest tasks descending", async () => {
 		expect(
 			renderProfilingSummary({

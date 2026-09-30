@@ -28,6 +28,8 @@ packages/docs/static/spec
 packages/vscode-extension/server
 # worktrees
 .claude/worktrees
+# agent scratch
+.superpowers
 
 # misc
 .DS_Store

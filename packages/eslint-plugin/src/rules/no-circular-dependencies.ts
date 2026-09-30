@@ -1,7 +1,7 @@
 import { isWorkspaceQualified } from "@nadle/kernel";
 import { ESLintUtils, type TSESTree, AST_NODE_TYPES } from "@typescript-eslint/utils";
 
-import { getTaskName, getConfigObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
+import { getTaskName, getSpecObject, isTasksRegisterCall } from "../utils/ast-helpers.js";
 
 const createRule = ESLintUtils.RuleCreator((name) => `https://github.com/nadlejs/nadle/blob/main/packages/eslint-plugin/docs/rules/${name}.md`);
 
@@ -38,7 +38,7 @@ export default createRule({
 					return;
 				}
 
-				const configObj = getConfigObject(node);
+				const configObj = getSpecObject(node);
 
 				if (!configObj) {
 					if (!graph.has(taskName)) {

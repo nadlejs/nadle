@@ -36,6 +36,7 @@ const config = {
 	words: [
 		"Cancelation",
 		"Dogfooding",
+		"falsey",
 		"SCROLLBACK",
 		"Turborepo",
 		"Vitest",
@@ -60,13 +61,16 @@ const config = {
 		"dogfooded",
 		"transpiling",
 		"flamegraph",
+		"hotspot",
 		"hotspots",
 		"codemod",
+		"dedup",
 		"SARIF",
 		"subdeps",
 		"esbuild",
 		"keytar",
 		"Uncategorized",
+		"reimplementation",
 		...extractLibraryNames()
 	],
 	ignorePaths: [
@@ -79,6 +83,7 @@ const config = {
 		".specify/scripts/**",
 		".specify/templates/**",
 		"./packages/docs/**",
+		"docs/superpowers/**",
 		".github/workflows/**",
 		"**/CHANGELOG.md",
 		"./specs/**",

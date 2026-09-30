@@ -1,6 +1,6 @@
 import { it, expect, describe } from "vitest";
 
-import { getWorkspaceById, resolveWorkspace, type WorkspaceIdentity, validateWorkspaceLabels } from "../src/index.js";
+import { getWorkspaceById, resolveWorkspace, validateAliasKeys, type WorkspaceIdentity, validateWorkspaceLabels } from "../src/index.js";
 
 const workspaces: WorkspaceIdentity[] = [
 	{ label: "", id: "root", relativePath: "." },
@@ -90,5 +90,23 @@ describe("validateWorkspaceLabels", () => {
 		const emptyLabel: WorkspaceIdentity[] = [{ label: "", id: "packages:foo", relativePath: "packages/foo" }];
 
 		expect(() => validateWorkspaceLabels(emptyLabel)).toThrow();
+	});
+});
+
+describe("validateAliasKeys", () => {
+	it("is a no-op for an undefined alias", () => {
+		expect(() => validateAliasKeys(undefined, workspaces)).not.toThrow();
+	});
+
+	it("is a no-op for a function alias", () => {
+		expect(() => validateAliasKeys(() => undefined, workspaces)).not.toThrow();
+	});
+
+	it("passes when every object key matches a known workspace path", () => {
+		expect(() => validateAliasKeys({ ".": "my-root", "packages/foo": "foo" }, workspaces)).not.toThrow();
+	});
+
+	it("throws when an object key matches no workspace", () => {
+		expect(() => validateAliasKeys({ "packages/nope": "x" }, workspaces)).toThrow(`Alias key "packages/nope" does not match any workspace`);
 	});
 });

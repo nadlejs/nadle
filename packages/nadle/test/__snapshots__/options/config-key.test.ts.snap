@@ -6,13 +6,18 @@ Working Directory: /ROOT/test/__fixtures__/main
 Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key
 ---------- Stdout ------------
 [log] {
+  "why": false,
+  "json": false,
   "cache": true,
+  "watch": false,
+  "doctor": false,
   "summary": false,
   "parallel": false,
   "logLevel": "log",
   "cleanCache": false,
   "showConfig": true,
   "maxCacheEntries": 5,
+  "capabilities": false,
   "reporter": "default",
   "implicitDependencies": true,
   "excludedTasks": [],

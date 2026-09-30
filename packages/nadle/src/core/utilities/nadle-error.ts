@@ -1,4 +1,21 @@
 /**
+ * Machine-readable representation of an error, emitted on failure when a
+ * structured error mode is active (e.g. the agent reporter).
+ *
+ * @public
+ */
+export interface StructuredError {
+	/** The label of the failing task; present only for task-execution errors. */
+	readonly task?: string;
+	/** The human-readable error message. */
+	readonly message: string;
+	/** The numeric exit code for this failure. */
+	readonly errorCode: number;
+	/** The error category name (the error's class name). */
+	readonly errorType: string;
+}
+
+/**
  * Error class for Nadle with a typed exit code.
  *
  * @public
@@ -13,6 +30,13 @@ export class NadleError extends Error {
 		super(message, options);
 		this.name = "NadleError";
 		this.errorCode = errorCode;
+	}
+
+	/**
+	 * Produce the machine-readable representation of this error.
+	 */
+	public toStructured(): StructuredError {
+		return { errorType: this.name, message: this.message, errorCode: this.errorCode };
 	}
 }
 
@@ -59,10 +83,32 @@ export class CyclicDependencyError extends NadleError {
  * @public
  */
 export class TaskExecutionError extends NadleError {
-	public constructor(message: string, options?: ErrorOptions) {
+	/** The label of the task that failed, when known. */
+	public readonly task?: string;
+
+	public constructor(message: string, options?: TaskExecutionErrorOptions) {
 		// Keeps the generic exit code 1 — a failing task is the baseline failure
 		// mode and changing its exit code would break existing CLI contracts.
 		super(message, 1, options);
 		this.name = "TaskExecutionError";
+		this.task = options?.task;
 	}
+
+	/**
+	 * Produce the machine-readable representation of this error, including the
+	 * failing task's label.
+	 */
+	public override toStructured(): StructuredError {
+		return { ...super.toStructured(), task: this.task };
+	}
+}
+
+/**
+ * Options for constructing a {@link TaskExecutionError}.
+ *
+ * @public
+ */
+export interface TaskExecutionErrorOptions extends ErrorOptions {
+	/** The label of the task that failed. */
+	readonly task?: string;
 }

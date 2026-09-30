@@ -8,21 +8,26 @@ workspace, and may carry a function to execute and typed options.
 Tasks are registered via the `tasks` API, which is available from the public API. During
 config file loading, calls to `tasks.register()` delegate to the active Nadle instance
 via an `AsyncLocalStorage` context. Each Nadle instance owns its own task registry,
-ensuring full isolation between instances. There are three registration forms:
+ensuring full isolation between instances. A registration associates a name with an
+optional **task body** and a set of **configuration** fields. There are three
+registration forms:
 
-| Form       | Parameters                               | Description                                                                                             |
-| ---------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| No-op      | `name`                                   | Registers a lifecycle-only task with no function body. Useful as an aggregation point for dependencies. |
-| Function   | `name`, `taskFn`                         | Registers a task with a function that receives a runner context.                                        |
-| Typed task | `name`, `taskObject`, `optionsResolver?` | Registers a reusable task type with typed options. The resolver provides those options.                 |
+| Form       | Provides                                       | Description                                                                                             |
+| ---------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| No-op      | name only                                      | Registers a lifecycle-only task with no function body. Useful as an aggregation point for dependencies. |
+| Function   | name + a function body                         | Registers a task with a function that receives a runner context.                                        |
+| Typed task | name + a typed task body + an options resolver | Registers a reusable task type with typed options. The resolver provides those options.                 |
 
-For the typed-task form, the `optionsResolver` is **optional when the options type has no
+For the typed-task form, the options resolver is **optional when the options type has no
 required fields** (an empty object satisfies it); in that case the options default to an
-empty object (`{}`). When the options type has at least one required field, the resolver is
-mandatory.
+empty object (`{}`). When the options type has at least one required field, both the body
+and the resolver are mandatory.
 
-All three forms return a **configuration builder** that exposes a `.config()` method
-(see [02-task-configuration.md](02-task-configuration.md)).
+A task's **configuration** (group, dependsOn, inputs, outputs, env, etc.) is provided as
+part of the registration alongside the body and options — it is not a separate, later step.
+See [02-task-configuration.md](02-task-configuration.md). Configuration may also be supplied
+**lazily**, deferring its resolution until the configuration is first needed (see
+[02-task-configuration.md](02-task-configuration.md)).
 
 ### Task Function Signature
 
@@ -92,26 +97,29 @@ Registered -> Scheduled -> Running -+-> Failed
                   +-> UpToDate
                   |
                   +-> FromCache
+                  |
+                  +-> Skipped
 ```
 
-| Status     | Value          | Meaning                                                            |
-| ---------- | -------------- | ------------------------------------------------------------------ |
-| Registered | `"registered"` | Task is registered but not yet scheduled.                          |
-| Scheduled  | `"scheduled"`  | Task is included in the execution plan.                            |
-| Running    | `"running"`    | Task function is currently executing in a worker.                  |
-| Finished   | `"finished"`   | Task function completed successfully.                              |
-| UpToDate   | `"up-to-date"` | Cache validation determined outputs are current; task was skipped. |
-| FromCache  | `"from-cache"` | Outputs were restored from cache; task was skipped.                |
-| Failed     | `"failed"`     | Task function threw an error.                                      |
-| Canceled   | `"canceled"`   | Worker was terminated before the task completed.                   |
+| Status     | Value          | Meaning                                                                |
+| ---------- | -------------- | ---------------------------------------------------------------------- |
+| Registered | `"registered"` | Task is registered but not yet scheduled.                              |
+| Scheduled  | `"scheduled"`  | Task is included in the execution plan.                                |
+| Running    | `"running"`    | Task function is currently executing in a worker.                      |
+| Finished   | `"finished"`   | Task function completed successfully.                                  |
+| UpToDate   | `"up-to-date"` | Cache validation determined outputs are current; task did not execute. |
+| FromCache  | `"from-cache"` | Outputs were restored from cache; task did not execute.                |
+| Skipped    | `"skipped"`    | The task's `onlyIf` predicate resolved falsey; task was skipped.       |
+| Failed     | `"failed"`     | Task function threw an error.                                          |
+| Canceled   | `"canceled"`   | Worker was terminated before the task completed.                       |
 
 ### Transition Rules
 
-- **UpToDate** and **FromCache** are entered directly from Scheduled, without passing
-  through Running. These tasks never emit a "start" event.
+- **UpToDate**, **FromCache**, and **Skipped** are entered directly from Scheduled, without
+  passing through Running. These tasks never emit a "start" event.
 - Only tasks in Running can transition to Finished, Failed, or Canceled.
 - The Running counter is only decremented for Finished, Failed, and Canceled transitions
-  (not for UpToDate or FromCache).
+  (not for UpToDate, FromCache, or Skipped).
 - **Empty (lifecycle-only) tasks** still transition through Running and emit start/finish
   events, but the reporter suppresses the STARTED message — only DONE is printed.
   See [13-reporting.md](13-reporting.md) for details.
@@ -122,5 +130,5 @@ The `defineTask()` function creates a reusable task type with a typed options co
 It is an identity function that enables type inference for the `run` function's `options`
 parameter.
 
-A reusable task type is then registered with `tasks.register(name, taskObject, resolver)`
-where the resolver provides the concrete options for this instance.
+A reusable task type is then registered by providing it as the task body together with an
+options resolver that supplies the concrete options for this instance.

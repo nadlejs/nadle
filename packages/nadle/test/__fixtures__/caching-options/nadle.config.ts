@@ -18,6 +18,9 @@ const compileTask = {
 	}
 };
 
-tasks
-	.register("compile", compileTask, () => ({ mode: process.env.BUILD_MODE ?? "development" }))
-	.config({ inputs: [Inputs.dirs("src")], outputs: [Outputs.dirs("dist")] });
+tasks.register("compile", {
+	run: compileTask,
+	inputs: [Inputs.dirs("src")],
+	outputs: [Outputs.dirs("dist")],
+	options: () => ({ mode: process.env.BUILD_MODE ?? "development" })
+});

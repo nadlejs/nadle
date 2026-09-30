@@ -12,7 +12,7 @@ minimumReleaseAgeExclude:
   - "@typescript/native-preview*"
   - "@nadle/kernel@0.0.2"
   - "@nadle/project-resolver@0.0.3"
-  - nadle@0.5.3
+  - nadle@0.6.0
 
 # Only esbuild needs its install script; the rest were silently skipped
 # under pnpm 10 as well and work fine without building.

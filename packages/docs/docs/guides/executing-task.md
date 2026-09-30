@@ -55,7 +55,7 @@ nadle "build*"
 This runs every task whose name starts with `build` (e.g. `build`, `build-css`, `build-js`). Quote
 the pattern so your shell does not expand it first.
 
-Patterns also work with a workspace qualifier and with [`--exclude`](../config-reference.md#exclude):
+Patterns also work with a workspace qualifier and with [`--exclude`](../config-reference.md#--exclude):
 
 ```sh
 nadle "api:build*"          # only matching tasks in the api workspace
@@ -73,7 +73,7 @@ Each dependency is only run once per execution, even if multiple tasks depend on
 Example:
 
 ```ts
-tasks.register("build").config({
+tasks.register("build", {
 	dependsOn: ["lint", "test"]
 });
 ```

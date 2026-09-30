@@ -37,8 +37,9 @@ You can then register this task in your config:
 import { tasks } from "nadle";
 import { MyTask } from "./tasks/my-task.js";
 
-tasks.register("printMessage", PnpmTask, {
-	args: ["--filter", "nadle", "build"]
+tasks.register("printMessage", {
+	run: PnpmTask,
+	options: { args: ["--filter", "nadle", "build"] }
 });
 ```
 
@@ -48,8 +49,8 @@ tasks.register("printMessage", PnpmTask, {
 import { tasks } from "nadle";
 import { GreetingTask } from "./tasks/greeting-task.js";
 
-tasks.register("greetAlice", GreetingTask, { name: "Alice" });
-tasks.register("greetBob", GreetingTask, { name: "Bob" });
+tasks.register("greetAlice", { run: GreetingTask, options: { name: "Alice" } });
+tasks.register("greetBob", { run: GreetingTask, options: { name: "Bob" } });
 ```
 
 Each task will invoke the same `GreetingTask` logic with its own `name` argument.

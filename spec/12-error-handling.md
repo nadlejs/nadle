@@ -15,12 +15,12 @@ NadleError is a specialized error class with a numeric exit code.
 NadleError has a hierarchy of subclasses so consumers can catch specific error
 categories programmatically. Each subclass fixes a distinct `errorCode`.
 
-| Subclass                | `errorCode` | Raised when                                                                                                                                                                      |
-| ----------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ConfigurationError`    | `2`         | Config is missing or invalid: config file not found, invalid options or task inputs, invalid task name, duplicate task name, invalid `configure()` usage, invalid worker config. |
-| `TaskNotFoundError`     | `3`         | A requested task or workspace cannot be resolved.                                                                                                                                |
-| `CyclicDependencyError` | `4`         | The task graph contains a cycle.                                                                                                                                                 |
-| `TaskExecutionError`    | `1`         | A task throws during execution. Wraps the original error as `cause`; keeps exit code `1` to preserve the baseline failure contract.                                              |
+| Subclass                | `errorCode` | Raised when                                                                                                                                                                                          |
+| ----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ConfigurationError`    | `2`         | Config is missing or invalid: config file not found or cannot be loaded, invalid options or task inputs, invalid task name, duplicate task name, invalid `configure()` usage, invalid worker config. |
+| `TaskNotFoundError`     | `3`         | A requested task or workspace cannot be resolved.                                                                                                                                                    |
+| `CyclicDependencyError` | `4`         | The task graph contains a cycle.                                                                                                                                                                     |
+| `TaskExecutionError`    | `1`         | A task throws during execution. Wraps the original error as `cause`; keeps exit code `1` to preserve the baseline failure contract.                                                                  |
 
 Invariant violations (states that should be impossible — unset working
 directory, project not yet configured, exhaustiveness fallbacks) remain plain
@@ -65,19 +65,43 @@ else:
 
 ## Known Error Types
 
-| Error                             | Message Pattern                                                                                                                         | When Raised                                        |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Cycle detected                    | `"Cycle detected in task {path}. Please resolve the cycle before executing tasks."`                                                     | During scheduling, before execution.               |
-| Duplicate task name               | `"Task {name} already registered in workspace {id}"`                                                                                    | During task registration.                          |
-| Invalid task name                 | `"Invalid task name: {name}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash."` | During task registration.                          |
-| Config file not found             | `"No nadle.config.{...} found in {path} directory or parent directories."`                                                              | During config resolution.                          |
-| Task not found                    | `"Task {name} not found in {workspace} workspace."`                                                                                     | During task resolution.                            |
-| Task not found (with suggestions) | `"Task {name} not found in {workspace} nor {fallback} workspace. {suggestions}"`                                                        | During task resolution with fallback.              |
-| Invalid worker config             | `"Invalid value for --{min/max}-workers. Expect to be an integer or a percentage."`                                                     | During CLI option parsing.                         |
-| Invalid configure usage           | `"configure function can only be called from the root workspace."`                                                                      | When `configure()` called from non-root workspace. |
-| Workspace not found               | `"Workspace {input} not found. Available workspaces: {list}."`                                                                          | During workspace resolution.                       |
-| Empty workspace label             | `"Workspace {id} alias can not be empty."`                                                                                              | During alias validation.                           |
-| Duplicate workspace label         | `"Workspace {id} has a duplicated label {label} with workspace {other}."`                                                               | During alias validation.                           |
+| Error                   | Message Pattern                                                                                                                         | When Raised                                        |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Cycle detected          | `"Cycle detected in task {path}. Please resolve the cycle before executing tasks."`                                                     | During scheduling, before execution.               |
+| Duplicate task name     | `"Task {name} already registered in workspace {id}"`                                                                                    | During task registration.                          |
+| Invalid task name       | `"Invalid task name: {name}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash."` | During task registration.                          |
+| Config file not found   | `"No nadle.config.{...} found in {path} directory or parent directories."`                                                              | During config resolution.                          |
+| Config file load failed | `"Failed to load config file {path}: {cause}"`                                                                                          | While loading a config file.                       |
+| Task not found          | `"Task {name} not found in {workspace} workspace."`                                                                                     | During task resolution (no root fallback).         |
+| Invalid worker config   | `"Invalid value for --{min/max}-workers. Expect to be an integer or a percentage."`                                                     | During CLI option parsing.                         |
+| Invalid configure usage | `"configure function can only be called from the root workspace."`                                                                      | When `configure()` called from non-root workspace. |
+| Workspace not found     | `"Workspace {input} not found. Available workspaces: {list}."`                                                                          | During workspace resolution.                       |
+
+## Structured Error Output
+
+By default, a failure prints a human-readable message (and an optional repro hint).
+In a machine-readable error mode — active whenever the selected reporter is the
+agent reporter, and intended to extend to any future explicit machine-output flag —
+a failure additionally emits a single structured error record to the error stream.
+
+The record is a one-line, machine-parseable object with these fields:
+
+| Field       | Type   | Presence                       | Description                                                      |
+| ----------- | ------ | ------------------------------ | ---------------------------------------------------------------- |
+| `errorCode` | number | always                         | The numeric exit code for the failure (see Exit Code, above).    |
+| `errorType` | string | always                         | The error category name (e.g. the NadleError subclass name).     |
+| `message`   | string | always                         | The human-readable error message.                                |
+| `task`      | string | only for task-execution errors | The label of the task that failed. Omitted for all other errors. |
+
+Rules:
+
+- Exactly one structured record is emitted per failure, on the error stream,
+  independent of any human-readable output already produced.
+- A non-NadleError failure reports `errorCode` `1` and an `errorType` reflecting
+  the generic error category.
+- Only a task-execution failure carries `task`; every other error omits it.
+- The default (human) error path is unchanged: when the mode is inactive, no
+  structured record is emitted.
 
 ## Stacktrace Display
 

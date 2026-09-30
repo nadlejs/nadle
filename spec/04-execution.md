@@ -28,21 +28,22 @@ Each task dispatch sends these parameters to the worker:
 
 ## Message Protocol
 
-Workers communicate back to the pool via MessagePort. There are exactly three message
+Workers communicate back to the pool via MessagePort. There are exactly four message
 types:
 
-| Type           | Fields     | Meaning                                                                                          |
-| -------------- | ---------- | ------------------------------------------------------------------------------------------------ |
-| `"start"`      | `threadId` | The task function is about to execute. Sent after cache validation determines the task must run. |
-| `"up-to-date"` | `threadId` | Cache validation determined outputs are current. No execution needed.                            |
-| `"from-cache"` | `threadId` | Outputs were restored from cache. No execution needed.                                           |
+| Type           | Fields     | Meaning                                                                                                                        |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `"start"`      | `threadId` | The task function is about to execute. Sent after the `onlyIf` check passes and cache validation determines the task must run. |
+| `"up-to-date"` | `threadId` | Cache validation determined outputs are current. No execution needed.                                                          |
+| `"from-cache"` | `threadId` | Outputs were restored from cache. No execution needed.                                                                         |
+| `"skipped"`    | `threadId` | The `onlyIf` predicate resolved falsey. No execution needed.                                                                   |
 
 ### Completion Detection
 
 There is **no explicit "done" message**. Completion is inferred:
 
 - **Success**: the worker's promise resolves. The pool then checks the message type
-  received to determine the outcome (execute, up-to-date, or from-cache).
+  received to determine the outcome (execute, up-to-date, from-cache, or skipped).
 - **Failure**: the worker's promise rejects with an error.
 
 ## Worker Execution Flow
@@ -56,13 +57,38 @@ There is **no explicit "done" message**. Completion is inferred:
 2. Look up the task by ID in the registry.
 3. Resolve the task's configuration and options.
 4. Resolve the working directory (relative to project root).
-5. Run cache validation (see [05-caching.md](05-caching.md)).
-6. Based on validation result:
+5. Evaluate the task's `onlyIf` predicate, if declared. If it resolves falsey, send
+   `"skipped"` and return without validating the cache or executing the task.
+6. Run cache validation (see [05-caching.md](05-caching.md)).
+7. Based on validation result:
    - **not-cacheable** or **cache-disabled**: send `"start"`, apply env, execute, restore env.
    - **up-to-date**: send `"up-to-date"`, return.
    - **restore-from-cache**: restore outputs, update cache pointer, send `"from-cache"`.
    - **cache-miss**: log reasons, send `"start"`, apply env, execute, restore env,
      save outputs and metadata.
+
+## Timeouts and Retries
+
+A task may declare a `timeout` (milliseconds) and/or a `retries` count (see
+[02-task-configuration.md](02-task-configuration.md)). They apply only to the
+execution of the task function — never to cache restore, which is not retried or
+timed.
+
+- **Attempt** — one invocation of the task function. A task runs up to
+  `1 + retries` attempts (default `retries` is `0`, i.e. a single attempt).
+- **Timeout** — if `timeout` is set, each attempt is bounded. An attempt that
+  does not settle within `timeout` milliseconds fails with a timeout error. The
+  task function is not forcibly interrupted (its asynchronous work may continue);
+  the attempt is treated as failed for scheduling and retry purposes.
+- **Retry** — when an attempt fails (including by timeout), the task is retried
+  until it succeeds or the attempts are exhausted. The final failure (the last
+  attempt's error) is the task's error. A succeeding attempt makes the task
+  succeed regardless of earlier failures.
+- Environment injection is applied and restored around the attempts, not around
+  each individual attempt.
+
+`timeout` must be a positive integer and `retries` a non-negative integer;
+otherwise a configuration error is raised.
 
 ## Environment Injection
 

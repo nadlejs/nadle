@@ -44,7 +44,10 @@ Child workspaces are discovered via the package manager's workspace configuratio
 - **npm/yarn**: `workspaces` field in root `package.json`
 
 Each discovered package directory becomes a workspace (see
-[07-workspace.md](07-workspace.md)).
+[07-workspace.md](07-workspace.md)), **except the project root itself**: a workspace
+pattern that matches the root directory (for example a pattern of `.`) does not create a
+second workspace, because the root is already represented by the root workspace. Such a
+match is ignored rather than treated as an error.
 
 Workspaces are sorted by their relative path for deterministic ordering.
 

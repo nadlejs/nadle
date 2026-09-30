@@ -6,7 +6,7 @@ const ruleTester = createRuleTester();
 ruleTester.run("prefer-builtin-task", rule, {
 	valid: [
 		{
-			code: 'tasks.register("build", ExecTask, { command: "tsc" });'
+			code: 'tasks.register("build", { run: ExecTask, options: { command: "tsc" } });'
 		},
 		{
 			code: 'exec("ls");'
@@ -28,6 +28,9 @@ ruleTester.run("prefer-builtin-task", rule, {
 		},
 		{
 			code: 'tasks.register("build");'
+		},
+		{
+			code: 'tasks.register("build", { run: async () => { console.log("hello"); } });'
 		}
 	],
 	invalid: [
@@ -163,6 +166,11 @@ ruleTester.run("prefer-builtin-task", rule, {
 				{ messageId: "preferCopy", data: { name: "fs.cp" } },
 				{ data: { name: "rimraf" }, messageId: "preferDelete" }
 			]
+		},
+		// Keyed spec run action
+		{
+			errors: [{ messageId: "preferExec", data: { name: "execa" } }],
+			code: 'tasks.register("build", { run: async () => { await execa("tsc"); } });'
 		}
 	]
 });

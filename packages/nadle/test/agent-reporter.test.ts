@@ -1,6 +1,6 @@
 import stripAnsi from "strip-ansi";
 import { it, expect, describe } from "vitest";
-import { config, settle, fixture, getStdout, createExec, withGeneratedFixture } from "setup";
+import { raw, config, settle, fixture, getStdout, createExec, withGeneratedFixture } from "setup";
 
 const files = fixture()
 	.packageJson("agent-reporter")
@@ -56,6 +56,20 @@ describe("agent reporter", () => {
 
 				expect(stdout).toContain("DONE c");
 				expect(stdout).toBe(stripAnsi(stdout));
+			}
+		}));
+
+	it("emits SKIPPED and a skipped count", () =>
+		withGeneratedFixture({
+			files: fixture()
+				.packageJson("agent-reporter-skipped")
+				.config(config().taskWithConfig("build", { onlyIf: raw("() => false") }, "() => {}"))
+				.build(),
+			testFn: async ({ exec }) => {
+				const stdout = await getStdout(exec`--reporter=agent build`, { stripAnsi: true });
+
+				expect(stdout).toContain("SKIPPED build");
+				expect(stdout).toMatch(/skipped 1/);
 			}
 		}));
 });

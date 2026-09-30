@@ -1,30 +1,52 @@
 # 02 — Task Configuration
 
-Every registered task may be configured via a builder pattern. The `.config()` method
-accepts either a static configuration object or a callback that returns one.
+Every registered task may carry configuration. Configuration is provided as part of the
+registration itself (see [01-task.md](01-task.md)) — alongside the task body and options —
+rather than through a separate, later configuration step. The configuration may be supplied
+directly, or **lazily** so that its resolution is deferred until first needed.
 
 ## Configuration Fields
 
 All fields are optional.
 
-| Field         | Type                                   | Description                                                        |
-| ------------- | -------------------------------------- | ------------------------------------------------------------------ |
-| `dependsOn`   | string or array of strings             | Tasks that must complete before this task runs.                    |
-| `env`         | map of string to string/number/boolean | Environment variables injected into the worker.                    |
-| `workingDir`  | string                                 | Working directory for the task, relative to the project root.      |
-| `inputs`      | declaration or array of declarations   | File patterns the task reads from. Used for cache fingerprinting.  |
-| `outputs`     | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration. |
-| `group`       | string                                 | Group label for display in `--list` output only.                   |
-| `description` | string                                 | Description for display in `--list` output only.                   |
+| Field          | Type                                   | Description                                                                                      |
+| -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `dependsOn`    | string or array of strings             | Tasks that must complete before this task runs.                                                  |
+| `env`          | map of string to string/number/boolean | Environment variables injected into the worker.                                                  |
+| `workingDir`   | string                                 | Working directory for the task, relative to the project root.                                    |
+| `inputs`       | declaration or array of declarations   | File patterns the task reads from. Used for cache fingerprinting.                                |
+| `outputs`      | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration.                               |
+| `cacheVerdict` | boolean                                | Opts an `inputs`-only task into caching its success verdict. See [05-caching.md](05-caching.md). |
+| `group`        | string                                 | Group label for display in `--list` output only.                                                 |
+| `description`  | string                                 | Description for display in `--list` output only.                                                 |
+| `onlyIf`       | predicate function                     | Runtime condition; when it resolves falsey the task is skipped.                                  |
 
-## Builder Pattern
+## Supplying Configuration
 
-The configuration builder exposes a single method:
+Configuration is supplied as a set of fields at registration time. The configuration
+provided at registration is the task's complete configuration; there is no separate merge
+step.
 
-- `config(builderOrObject)` — accepts a static object or a callback returning the object.
+A task's configuration may instead be supplied **lazily** — deferred rather than determined
+eagerly at registration. A lazily-supplied configuration is resolved **at most once** per
+task: it is not evaluated at registration, only when the configuration is first needed
+(scheduling, execution, or reporting), and the result is memoized so the deferred resolution
+never runs more than once for a task in a given invocation (configuration avoidance). A
+lazy configuration must therefore be pure with respect to that single evaluation; do not
+rely on a side effect running on every read.
 
-Calling `.config()` **replaces** the entire configuration (it does not merge). The last
-call wins.
+## Unknown Fields
+
+A configuration field that is not one of the fields above is **unrecognized**. An
+unrecognized field has no effect, and the implementation MUST emit a warning naming both
+the task and the field, so that a misspelled field (for example a misspelled `dependsOn`,
+which would otherwise drop the dependency silently) is visible at configuration-loading
+time rather than surfacing later as a nondeterministic ordering failure. The warning MAY
+name a close known field as a suggestion. An unrecognized field MUST NOT fail the run: a
+configuration written for a newer version must stay loadable on an older one.
+
+The warning is emitted once per unrecognized field per task. For a lazily-supplied
+configuration it is emitted when that configuration is first resolved.
 
 ## dependsOn Resolution
 
@@ -35,8 +57,11 @@ Dependency strings are resolved as follows:
    preceding segments form the workspace ID. Resolved by workspace ID or label.
 3. **Root workspace** — use `"root:taskName"` (root workspace ID is always `"root"`).
 
-If a dependency is not found in the target workspace, Nadle falls back to the root
-workspace. If still not found, an error is raised with suggestions.
+A dependency is resolved only within its target workspace (the current workspace
+for a colon-less name, or the explicit workspace for a qualified name) — there is
+no implicit fallback to the root workspace. If the task is not found there, an
+error is raised with suggestions. To depend on a root task, qualify it explicitly
+with `"root:taskName"`.
 
 Excluded tasks (via `--exclude`) are filtered out of the resolved dependency set.
 
@@ -72,3 +97,40 @@ original values afterward.
 The `workingDir` field is resolved relative to the project root workspace's absolute path.
 If omitted, it defaults to the project root. The resolved absolute path is provided to
 the task function via the runner context.
+
+## Timeouts and Retries
+
+`timeout` (milliseconds, positive integer) bounds each execution attempt of the
+task function; an attempt that does not settle in time fails with a timeout error.
+`retries` (non-negative integer, default `0`) is the number of additional attempts
+after the first failure. Together a task runs up to `1 + retries` attempts and
+fails only if all attempts fail. Both apply only to the task function, not to
+cache restore. See [04-execution.md](04-execution.md).
+
+## Conditional Execution
+
+A task may declare `onlyIf`, a predicate deciding whether the task's body runs. The
+predicate receives the same argument shape as the task body, namely the run context and
+the resolved task options, and may resolve synchronously or asynchronously.
+
+- When `onlyIf` is omitted, or resolves to a **truthy** value, the task executes normally.
+- When it resolves to a **falsey** value, the task is **skipped**: its body does not run and
+  the task settles with the Skipped status (see [01-task.md](01-task.md)).
+
+The predicate is evaluated **at execution time**, after the task's configuration, options,
+and working directory are resolved, and **before cache validation**. Consequences:
+
+- The predicate may observe state produced by the task's dependencies, which have already
+  completed by the time it runs.
+- A skipped task performs no cache work: no fingerprint is computed, no outputs are
+  restored, and no cache entry is written. This holds even when the task declares inputs
+  and outputs.
+- A skipped task contributes no outputs fingerprint to its dependents.
+
+Skipping affects only the task itself. Its dependencies have already run, and its dependents
+still run, treating the skipped task as satisfied. Skipping never removes tasks from the
+graph — that is the role of exclusion (see [03-scheduling.md](03-scheduling.md)).
+
+A predicate that throws, or whose returned promise rejects, fails the task exactly as a
+failing task body does. `timeout` and `retries` bound the task function only; they do not
+apply to the predicate, which is evaluated once.

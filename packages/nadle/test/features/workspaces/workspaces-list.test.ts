@@ -37,7 +37,7 @@ describe("workspaces > list", () => {
 			files: {
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({ configure: { alias: { ".": "projectRoot", "packages/one": "one", "packages/minusOne": "oneMinus" } } }),
+				[CONFIG_FILE]: createNadleConfig({ configure: { alias: { ".": "projectRoot", minusOne: "oneMinus", "packages/one": "one" } } }),
 
 				zero: {
 					[PACKAGE_JSON]: createPackageJson("zero")
@@ -68,7 +68,7 @@ describe("workspaces > list", () => {
 			files: {
 				[PNPM_WORKSPACE]: createPnpmWorkspace(),
 				[PACKAGE_JSON]: createPackageJson("root"),
-				[CONFIG_FILE]: createNadleConfig({ configure: { alias: { ".": "projectRoot", "packages/one": "one", "packages/minusOne": "oneMinus" } } }),
+				[CONFIG_FILE]: createNadleConfig({ configure: { alias: { ".": "projectRoot", "packages/one": "one" } } }),
 
 				zero: {
 					[PACKAGE_JSON]: createPackageJson("zero")

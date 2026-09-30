@@ -12,6 +12,13 @@ The output style is selected by the `reporter` option (`--reporter`):
 | `default` | Humans (default)  | Welcome banner, colored task status messages, optional live footer, optional summary table.    |
 | `agent`   | AI agents/scripts | Compact, plain (no color/banner/footer/spinner): one stable line per task plus a summary line. |
 
+The reporter name space is open: in addition to the two built-ins, a plugin may contribute
+a named reporter (a listener factory), selected by the same `--reporter <name>` option.
+Exactly one reporter is active per run (a plugin reporter replaces the default). A plugin
+reporter may not shadow a built-in name, and an unknown reporter name is a configuration
+error listing the available reporters. See [14-plugins.md](14-plugins.md) for how
+reporters are contributed.
+
 The remaining sections of this document describe the `default` reporter. The `agent`
 reporter is specified below.
 
@@ -25,15 +32,20 @@ summary line. No colors, welcome banner, footer, STARTED lines, or profiling tab
 | Task finished   | `DONE {label} {duration}`   |
 | Task up-to-date | `UP-TO-DATE {label}`        |
 | Task from cache | `FROM-CACHE {label}`        |
+| Task skipped    | `SKIPPED {label}`           |
 | Task failed     | `FAILED {label} {duration}` |
 | Task canceled   | `CANCELED {label}`          |
 
 Summary line:
 
 ```
-SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ failed {N}])
-FAILED in {duration} (done {N}[ ... ] failed {N})
+SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ skipped {N}][ failed {N}][ not-run {N}])
+FAILED in {duration} (done {N}[ ... ] failed {N}[ not-run {N}])
 ```
+
+`skipped` counts tasks skipped by `onlyIf` (see [02-task-configuration.md](02-task-configuration.md)).
+`not-run` counts tasks that did not run because an upstream task failed. Optional counts are
+only shown if greater than zero.
 
 With `--stacktrace`, the full error stack is printed after a failed run. The process
 exit code is unchanged from the default reporter.
@@ -55,7 +67,7 @@ The footer displays:
 
 The execution tracker updates the duration every **100ms** via an interval timer.
 The footer re-renders on each task event (start, finish, fail, cancel, up-to-date,
-from-cache, scheduled).
+from-cache, skipped, scheduled).
 
 ### Rendering
 
@@ -88,6 +100,7 @@ During execution, each task event produces a status message:
 | Task finished   | `✓ Task {label} DONE {duration}`   |
 | Task up-to-date | `- Task {label} UP-TO-DATE`        |
 | Task from cache | `↩ Task {label} FROM-CACHE`        |
+| Task skipped    | `- Task {label} SKIPPED`           |
 | Task failed     | `✗ Task {label} FAILED {duration}` |
 | Task canceled   | `✗ Task {label} CANCELED`          |
 
@@ -106,18 +119,22 @@ On successful completion:
 
 ```
 RUN SUCCESSFUL in {duration}
-{N} tasks executed[, {N} tasks up-to-date][, {N} tasks restored from cache]
+{N} tasks executed[, {N} tasks up-to-date][, {N} tasks restored from cache][, {N} tasks skipped]
 ```
 
-Up-to-date and from-cache counts are only shown if greater than zero.
+Up-to-date, from-cache, and skipped counts are only shown if greater than zero.
 
 ### Failed Run
 
 On failure:
 
 ```
-RUN FAILED in {duration} ({N} tasks executed, {N} tasks failed)
+RUN FAILED in {duration} ({N} tasks executed[, {N} tasks skipped], {N} tasks failed[, {N} downstream tasks not run])
 ```
+
+The skipped count is only shown if greater than zero. The not-run count is the number of
+downstream tasks that never ran because an upstream task failed, and is only shown if
+greater than zero.
 
 If `--stacktrace` is not set, a hint is shown:
 

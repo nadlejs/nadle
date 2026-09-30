@@ -8,6 +8,238 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.2.0 — 2026-09-30
+
+### Added
+
+- 02-task-configuration: New "Unknown Fields" section. A task configuration field that is
+  not a recognized field MUST produce a warning naming the task and the field, and MUST NOT
+  fail the run. Previously unrecognized fields were silently accepted, so a misspelled
+  `dependsOn` dropped the dependency without a diagnostic and the run passed in an
+  unconstrained order.
+- 02-task-configuration: New `onlyIf` field — a predicate evaluated at execution time that
+  skips a task's body when it resolves falsey. Evaluated after configuration, options, and
+  working directory resolution but before cache validation, so it may observe state produced
+  by dependencies and a skipped task performs no cache work. Skipping affects only the task
+  itself: dependencies have already run and dependents still run.
+- 01-task: New `Skipped` terminal status, entered directly from Scheduled alongside UpToDate
+  and FromCache.
+- 04-execution: New `"skipped"` worker message type.
+- 11-events, 14-plugins: New `onTaskSkipped` event, mapped to the `afterTask` plugin hook.
+  `beforeTask` does not fire for skipped tasks, matching its existing cache-hit behavior.
+- 05-caching, 02-task-configuration: Verdict caching. A task that declares `inputs` but no
+  `outputs` may set `cacheVerdict` to have its **success** outcome cached against those
+  inputs and replayed while they are unchanged. This covers linters, formatters in check
+  mode and type-checkers, whose entire result is the exit code and which were previously
+  impossible to cache. Only success is recorded, so a failing task always re-runs and
+  re-emits its diagnostics. `cacheVerdict` is an explicit opt-in because it asserts a
+  contract the implementation cannot verify: that the task produces no artifact any
+  downstream task consumes.
+
+### Changed
+
+- 02-task-configuration: The `onlyIf` predicate receives the same argument shape as the task
+  body, the run context and the resolved task options, so it may decide based on options.
+- 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
+  reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
+- 13-reporting: The failed-run summary's not-run clause is worded "downstream tasks not run",
+  naming the relationship that caused the tasks to be left unexecuted.
+
+### Fixed
+
+- 10-builtin-tasks: Exec-based built-in tasks no longer override a `FORCE_COLOR` or `NO_COLOR`
+  value present in the task's environment. Color is forced (`FORCE_COLOR=1`) only when neither
+  is set, so a task can opt out of forced color by configuring its own environment.
+
+### Changed
+
+- 08-configuration-loading, 12-error-handling: A config file that cannot be loaded (for
+  example because one of its imports cannot be resolved) now fails with a configuration error
+  (exit code `2`) whose message names the file and the cause. Previously such failures exited
+  `1` with no output. A config file may live outside the project root.
+
+## 4.1.1 — 2026-06-21
+
+### Changed
+
+- 06-project: Workspace discovery now ignores a workspace pattern that matches the project
+  root directory (e.g. a pattern of `.`). Previously such a match produced a degenerate
+  empty-path workspace duplicating the root, which then failed label validation with a
+  confusing error. The root is already represented by the root workspace, so the match is
+  dropped and the project resolves cleanly.
+
+## 4.1.0 — 2026-06-20
+
+### Added
+
+- 07-workspace: When the workspace alias is given as an object map, every key must match a
+  known workspace path (the root path `.` or a sub-workspace's relative path). A key that
+  matches no workspace is now an error, catching typo'd alias keys that were previously
+  ignored silently. The function form is unaffected — it is only ever invoked with known
+  workspace paths.
+
+## 4.0.0 — 2026-06-14
+
+### Changed
+
+- 01-task / 02-task-configuration / 10-builtin-tasks / 14-plugins: **Breaking.** Task
+  configuration is now provided as part of the registration itself — alongside the task
+  body and options — rather than as a separate, later configuration step. The notion of a
+  standalone "configuration builder" with a dedicated configuration method is removed; a
+  task's name, optional body, optional options, and configuration are all associated in a
+  single registration. Configuration may instead be supplied **lazily**, deferring its
+  resolution until first needed (resolved at most once and memoized, as before).
+
+## 3.15.0 — 2026-06-14
+
+### Changed
+
+- 09-cli: Shell completion now annotates task candidates with their description in
+  shells that can render a `value:description` pairing, matching the context shown by
+  `--list`. Tasks without a description and shells that cannot display descriptions
+  still complete to the bare task name.
+
+## 3.14.0 — 2026-06-14
+
+### Added
+
+- 12-error-handling / 09-cli: Structured error output. In a machine-readable error
+  mode (active when the agent reporter is selected, and extensible to a future
+  explicit machine-output flag), a failure emits a single one-line structured error
+  record (`errorCode`, `errorType`, `message`, and `task` for task-execution errors)
+  to the error stream. The default human error path is unchanged.
+
+## 3.13.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--json` flag. Switches the read-only inspection commands (`--list`,
+  `--list-workspaces`, `--dry-run`, `--graph`, `--explain`) to emit a single
+  machine-readable JSON document on standard output — no banner, footer, colors,
+  or run summary, and the live footer is forced off. `--list --json` reports each
+  task's `name`, `label`, `group`, `description`, `dependsOn`, `inputs`, `outputs`,
+  and `workspace`. `--show-config`/`--config-key` already emit JSON and are
+  unaffected.
+
+## 3.12.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--capabilities` handler. Emits a single machine-readable JSON document
+  describing this version's CLI flags (derived from the same definitions that drive
+  option parsing, so it cannot drift), the tasks discovered from the live configuration,
+  and a JSON Schema for the task configuration object. The document is the only output;
+  the handler performs no execution and mutates nothing.
+
+## 3.11.0 — 2026-06-14
+
+### Added
+
+- 09-cli: `--doctor` handler. Runs read-only diagnostics (project summary, cache
+  directory writability, partial-cacheability smells, stale/missing outputs) and
+  prints per-check ok/warning/error lines plus a summary. Exits non-zero only on
+  an error-level finding; performs no execution and mutates nothing.
+
+## 3.10.0 — 2026-06-14
+
+### Added
+
+- 09-cli: Shell completion. A `completion` command prints a bash/zsh/fish
+  completion script; once installed, TAB completes option flags and the live
+  task names discovered from the configuration. The completion command and
+  callback emit no other output.
+
+## 3.9.0 — 2026-06-14
+
+### Added
+
+- 02-task-configuration / 04-execution: Task `timeout` (milliseconds, positive
+  integer) and `retries` (non-negative integer, default 0). A task runs up to
+  `1 + retries` attempts; each attempt is bounded by `timeout` and an over-time
+  attempt fails (eligible for retry). Both apply only to the task function, not
+  to cache restore. Invalid values raise a configuration error.
+
+## 3.8.0 — 2026-06-14
+
+### Added
+
+- 14-plugins: New dedicated section specifying the plugin authoring contract —
+  the plugin model (`name`/`enforce`/`hooks`/`tasks`/`reporters`), `use()`
+  application and deduplication semantics, `definePlugin`, the four lifecycle
+  hooks with their context shapes, contributed task types, and custom reporters.
+  Previously plugin behavior was only mentioned incidentally in 11-events and
+  13-reporting.
+
+### Changed
+
+- 09-cli: Added the `--reporter` flag to the General Options table.
+
+### Fixed
+
+- 02-task-configuration: Removed the false claim that `dependsOn` falls back to
+  the root workspace when a task is not found in the target workspace. There is
+  no implicit fallback; a missing task is an error (use `"root:taskName"` to
+  depend on a root task).
+- 07-workspace: Workspace dependencies are derived only from `dependencies` and
+  `devDependencies`; `peerDependencies`/`optionalDependencies` are excluded.
+  Previously all four were listed.
+- 09-cli: Corrected the `--cache-dir` default to
+  `<projectDir>/node_modules/.cache/nadle` (was `<projectDir>/.nadle`).
+- 12-error-handling: Removed two error rows (empty/duplicate workspace label)
+  that are not raised by the implementation, and the stale "Task not found (with
+  suggestions) … with fallback" row.
+
+## 3.7.0 — 2026-06-13
+
+### Added
+
+- 11-events / 13-reporting: Plugin system. A plugin (applied with `use(plugin, options?)`
+  in config) contributes task types, lifecycle hooks (`beforeAll`/`afterAll`/`beforeTask`/
+  `afterTask`, dispatched main-thread from the existing events; `beforeAll` may abort,
+  teardown errors downgrade to warnings; `beforeTask` is skipped for cache hits), and
+  custom reporters (selected by `--reporter <name>`, opening the previously-closed reporter
+  name space). Hook order follows an optional `enforce: "pre" | "post"`.
+
+## 3.6.0 — 2026-06-13
+
+### Added
+
+- 02-task-configuration: A callback-form `.config()` is now resolved lazily and
+  memoized — evaluated at most once per task per invocation, only when the
+  configuration is first needed (configuration avoidance, #647). Callbacks must be
+  pure with respect to that single evaluation.
+
+## 3.5.0 — 2026-06-13
+
+### Changed
+
+- 09-cli: `--summary` now prints profiling insights — in addition to the slow-task
+  duration table, it shows the **critical path** (longest cumulative-duration
+  dependency chain) and **cache-miss hotspots** (executed tasks ranked by duration,
+  each with a suggestion: declare inputs/outputs to enable caching, or an input
+  changed). Folded into `--summary` rather than a separate flag.
+
+## 3.4.0 — 2026-06-13
+
+### Added
+
+- 09-cli: `--since <ref>` for affected-only execution. The Execute handler filters
+  the requested (expanded) task set to those whose workspace directory contains a file
+  changed since the git ref (via `git diff --name-only <ref>`), pulling in the
+  dependencies an affected task needs. Reports and runs nothing when no task is
+  affected. Cross-workspace dependent propagation is out of scope for this version.
+
+## 3.3.0 — 2026-06-13
+
+### Added
+
+- 09-cli: Document the introspection flags and their handlers, which had been
+  implemented but not yet specified — `--watch` (re-run on input change), `--graph`
+  (`tree`/`mermaid` dependency graph), `--explain` (static single-task explanation:
+  why it runs, dependents, inputs), and `--why` (per-task cache-outcome explanation).
+  Handler-chain table updated to the actual order: Graph and Explain run before
+  DryRun/ShowConfig; Watch runs before the default Execute handler.
+
 ## 3.2.0 — 2026-06-11
 
 ### Added

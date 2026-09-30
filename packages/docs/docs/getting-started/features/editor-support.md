@@ -22,9 +22,7 @@ tasks.register("My-Task", ...); // Error: invalid task name
 tasks.register("build", ...);
 tasks.register("build", ...); // Error: duplicate task name
 
-tasks
-  .register("test", ...)
-  .config({ dependsOn: ["buld"] }); // Warning: unresolved dependency
+tasks.register("test", { dependsOn: ["buld"] }); // Warning: unresolved dependency
 ```
 
 ### Autocompletion

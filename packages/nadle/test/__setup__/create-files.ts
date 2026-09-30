@@ -35,13 +35,7 @@ export function createNadleConfig(params?: { configure?: NadleFileOptions; tasks
 	for (const task of params?.tasks ?? []) {
 		const { name, config } = task;
 
-		let taskRegisterStatement = `tasks.register("${name}")`;
-
-		if (config) {
-			taskRegisterStatement += `\n.config(${serializeJson(config, 2)})`;
-		}
-
-		taskRegisterStatement += ";";
+		const taskRegisterStatement = config ? `tasks.register("${name}", ${serializeJson(config, 2)});` : `tasks.register("${name}");`;
 
 		sourceFile.addStatements(taskRegisterStatement);
 	}

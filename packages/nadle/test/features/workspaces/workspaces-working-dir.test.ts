@@ -50,7 +50,7 @@ describe("workspaces > working directory", () => {
 						[PACKAGE_JSON]: createPackageJson("lib"),
 						[CONFIG_FILE]: [
 							`import { tasks } from "nadle";`,
-							`tasks.register("logDir", ({ context }) => { console.log(context.workingDir); }).config({ workingDir: "src" });`
+							`tasks.register("logDir", { run: ({ context }) => { console.log(context.workingDir); }, workingDir: "src" });`
 						].join("\n")
 					}
 				}

@@ -15,13 +15,16 @@ Every task that reads files accepts the same `from` shapes — a path, a selecto
 mixing both:
 
 ```ts
-tasks.register("collect", CopyTask, {
-	from: [
-		"README.md", // a single file
-		"assets", // a whole directory
-		{ dir: "docs", include: "**/*.md", exclude: "**/draft-*.md" } // a selector
-	],
-	into: "dist"
+tasks.register("collect", {
+	run: CopyTask,
+	options: {
+		from: [
+			"README.md", // a single file
+			"assets", // a whole directory
+			{ dir: "docs", include: "**/*.md", exclude: "**/draft-*.md" } // a selector
+		],
+		into: "dist"
+	}
 });
 ```
 
@@ -36,13 +39,16 @@ The destination (`into`) is **always a directory** and is created if missing.
 ## CopyTask
 
 ```ts
-tasks.register("stageConfigs", CopyTask, {
-	from: { dir: "configs", include: "*.prod.json" },
-	into: "build",
-	flatten: true, // drop source directory structure
-	rename: { "app.prod.json": "app.json" }, // rename by exact base name
-	overwrite: "error", // replace (default) | skip | error
-	strict: true // fail on missing source or zero matches
+tasks.register("stageConfigs", {
+	run: CopyTask,
+	options: {
+		from: { dir: "configs", include: "*.prod.json" },
+		into: "build",
+		flatten: true, // drop source directory structure
+		rename: { "app.prod.json": "app.json" }, // rename by exact base name
+		overwrite: "error", // replace (default) | skip | error
+		strict: true // fail on missing source or zero matches
+	}
 });
 ```
 
@@ -56,10 +62,13 @@ filesystem rename when possible, copy-then-delete across devices). Files skipped
 `overwrite` policy keep their source.
 
 ```ts
-tasks.register("archiveLogs", MoveTask, {
-	from: { dir: "logs", include: "*.log" },
-	into: "logs/archive",
-	overwrite: "skip"
+tasks.register("archiveLogs", {
+	run: MoveTask,
+	options: {
+		from: { dir: "logs", include: "*.log" },
+		into: "logs/archive",
+		overwrite: "skip"
+	}
 });
 ```
 
@@ -70,26 +79,35 @@ then deletes files in `into` that have no corresponding source and prunes empty 
 Use `preserve` for files that must survive:
 
 ```ts
-tasks.register("syncPublic", SyncTask, {
-	from: "static",
-	into: "dist/public",
-	preserve: ["cache-manifest.json"]
+tasks.register("syncPublic", {
+	run: SyncTask,
+	options: {
+		from: "static",
+		into: "dist/public",
+		preserve: ["cache-manifest.json"]
+	}
 });
 ```
 
 ## ZipTask and UnzipTask
 
 ```ts
-tasks.register("bundle", ZipTask, {
-	from: "dist",
-	archive: "out/bundle.zip",
-	prefix: "bundle" // entries stored as bundle/...
+tasks.register("bundle", {
+	run: ZipTask,
+	options: {
+		from: "dist",
+		archive: "out/bundle.zip",
+		prefix: "bundle" // entries stored as bundle/...
+	}
 });
 
-tasks.register("extract", UnzipTask, {
-	archive: "out/bundle.zip",
-	into: "extracted",
-	include: "bundle/assets/**" // optional entry filter
+tasks.register("extract", {
+	run: UnzipTask,
+	options: {
+		archive: "out/bundle.zip",
+		into: "extracted",
+		include: "bundle/assets/**" // optional entry filter
+	}
 });
 ```
 
@@ -99,10 +117,13 @@ refuses entries that would escape the destination directory (zip-slip protection
 ## DownloadTask
 
 ```ts
-tasks.register("fetchSchema", DownloadTask, {
-	url: "https://example.com/schema.json",
-	into: "vendor",
-	sha256: "ab12…" // optional integrity check
+tasks.register("fetchSchema", {
+	run: DownloadTask,
+	options: {
+		url: "https://example.com/schema.json",
+		into: "vendor",
+		sha256: "ab12…" // optional integrity check
+	}
 });
 ```
 
@@ -113,7 +134,7 @@ tasks.register("fetchSchema", DownloadTask, {
 ## DeleteTask
 
 ```ts
-tasks.register("clean", DeleteTask, { paths: ["dist", "**/*.tmp"] });
+tasks.register("clean", { run: DeleteTask, options: { paths: ["dist", "**/*.tmp"] } });
 ```
 
 Glob patterns are resolved once; the logged list is exactly what gets deleted.
@@ -126,7 +147,9 @@ All options are plain data, so they participate in the cache key automatically. 
 ```ts
 import { tasks, Inputs, Outputs, CopyTask } from "nadle";
 
-tasks.register("bundleAssets", CopyTask, { from: "assets", into: "dist/assets" }).config({
+tasks.register("bundleAssets", {
+	run: CopyTask,
+	options: { from: "assets", into: "dist/assets" },
 	inputs: [Inputs.dirs("assets")],
 	outputs: [Outputs.dirs("dist/assets")]
 });

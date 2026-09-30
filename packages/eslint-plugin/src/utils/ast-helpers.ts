@@ -23,33 +23,22 @@ export function getTaskName(node: TSESTree.CallExpression): string | undefined {
 }
 
 /**
- * Find the `.config(obj)` call chained on a `tasks.register()` result.
- * Pattern: `tasks.register(...).config({ ... })`
- * Returns the object expression argument, or `undefined`.
+ * Returns the keyed spec object (2nd arg of `tasks.register(name, spec)`), or `undefined`
+ * for shorthands (`register(name)`, `register(name, fn)`) and lazy/dynamic configs
+ * (`register(name, lazy(() => ({ ... })))`), which are not statically analyzable.
  */
-export function getConfigObject(node: TSESTree.CallExpression): TSESTree.ObjectExpression | undefined {
-	if (
-		node.parent?.type === AST_NODE_TYPES.MemberExpression &&
-		node.parent.property.type === AST_NODE_TYPES.Identifier &&
-		node.parent.property.name === "config" &&
-		node.parent.parent?.type === AST_NODE_TYPES.CallExpression
-	) {
-		const configCall = node.parent.parent;
-		const arg = configCall.arguments[0];
+export function getSpecObject(node: TSESTree.CallExpression): TSESTree.ObjectExpression | undefined {
+	const second = node.arguments[1];
 
-		if (arg?.type === AST_NODE_TYPES.ObjectExpression) {
-			return arg;
-		}
-	}
-
-	return undefined;
+	return second?.type === AST_NODE_TYPES.ObjectExpression ? second : undefined;
 }
 
 /**
  * Check if a node is inside a task action scope.
  * Task actions are:
- * 1. The second argument to `tasks.register(name, fn)`
- * 2. Functions nested inside those task action functions
+ * 1. The second argument to `tasks.register(name, fn)` (function shorthand)
+ * 2. The `run` property value of the keyed spec in `tasks.register(name, { run: fn })`
+ * 3. Functions nested inside those task action functions
  */
 export function isInTaskAction(node: TSESTree.Node): boolean {
 	let current: TSESTree.Node | undefined = node.parent;
@@ -65,7 +54,11 @@ export function isInTaskAction(node: TSESTree.Node): boolean {
 	return false;
 }
 
-/** Check if a node is a task action function (second arg of tasks.register). */
+/**
+ * Check if a node is a task action function: either the second argument of
+ * `tasks.register(name, fn)`, or the `run` property value of the keyed spec in
+ * `tasks.register(name, { run: fn })`.
+ */
 function isTaskActionFunction(node: TSESTree.Node): boolean {
 	if (node.type !== AST_NODE_TYPES.ArrowFunctionExpression && node.type !== AST_NODE_TYPES.FunctionExpression) {
 		return false;
@@ -73,14 +66,28 @@ function isTaskActionFunction(node: TSESTree.Node): boolean {
 
 	const parent = node.parent;
 
-	if (parent?.type !== AST_NODE_TYPES.CallExpression) {
-		return false;
+	// Function shorthand: tasks.register(name, fn)
+	if (parent?.type === AST_NODE_TYPES.CallExpression && parent.arguments[1] === node) {
+		return isTasksRegisterCall(parent);
 	}
 
-	// Must be the second argument: tasks.register(name, fn)
-	if (parent.arguments[1] !== node) {
-		return false;
+	// Keyed spec: tasks.register(name, { run: fn })
+	if (
+		parent?.type === AST_NODE_TYPES.Property &&
+		parent.key.type === AST_NODE_TYPES.Identifier &&
+		parent.key.name === "run" &&
+		parent.value === node
+	) {
+		const specObject = parent.parent;
+
+		if (specObject?.type === AST_NODE_TYPES.ObjectExpression) {
+			const registerCall = specObject.parent;
+
+			if (registerCall?.type === AST_NODE_TYPES.CallExpression && registerCall.arguments[1] === specObject && isTasksRegisterCall(registerCall)) {
+				return true;
+			}
+		}
 	}
 
-	return isTasksRegisterCall(parent);
+	return false;
 }

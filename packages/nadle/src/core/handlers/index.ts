@@ -1,8 +1,13 @@
 import { ListHandler } from "./list-handler.js";
+import { GraphHandler } from "./graph-handler.js";
+import { WatchHandler } from "./watch-handler.js";
+import { DoctorHandler } from "./doctor-handler.js";
 import { DryRunHandler } from "./dry-run-handler.js";
+import { ExplainHandler } from "./explain-handler.js";
 import { ExecuteHandler } from "./execute-handler.js";
 import { CleanCacheHandler } from "./clean-cache-handler.js";
 import { ShowConfigHandler } from "./show-config-handler.js";
+import { CapabilitiesHandler } from "./capabilities-handler.js";
 import { type HandlerConstructor } from "../interfaces/handler.js";
 import { ListWorkspacesHandler } from "./list-workspace-handler.js";
 
@@ -10,7 +15,12 @@ export const Handlers: HandlerConstructor[] = [
 	ListHandler,
 	ListWorkspacesHandler,
 	CleanCacheHandler,
+	GraphHandler,
+	ExplainHandler,
 	DryRunHandler,
 	ShowConfigHandler,
+	DoctorHandler,
+	CapabilitiesHandler,
+	WatchHandler,
 	ExecuteHandler
 ];

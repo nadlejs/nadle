@@ -85,6 +85,23 @@ const configs: ConfigArray = tsEslint.config(
 	},
 	{
 		rules: {
+			"max-lines": "off"
+		},
+		// Flat declarative CLI option registry — the 200-line complexity heuristic
+		// doesn't fit a one-entry-per-flag list that only grows with new flags.
+		files: ["packages/nadle/src/core/options/cli-options.ts"]
+	},
+	{
+		rules: {
+			"max-lines": "off"
+		},
+		// The core DAG engine: cohesive scheduling logic (analyze, cycle detection,
+		// ready-task ordering, graph reset) that belongs together. Splitting purely to
+		// satisfy a line count would scatter tightly-coupled graph state.
+		files: ["packages/nadle/src/core/engine/task-scheduler.ts"]
+	},
+	{
+		rules: {
 			"no-console": "off"
 		},
 		files: ["packages/sample-app/**", "packages/nadle/test/**", "packages/validators/**", "packages/examples/**"]
@@ -115,6 +132,14 @@ const configs: ConfigArray = tsEslint.config(
 			"nadle/no-duplicate-task-names": "off",
 			"nadle/no-circular-dependencies": "off",
 			"nadle/require-task-description": "off"
+		}
+	},
+	{
+		// Test config files exercising the plugin API. `use()` collides with the React
+		// `use` hook name, so react-hooks misfires here; these are nadle configs, not React.
+		files: ["packages/nadle/test/__configs__/**"],
+		rules: {
+			"react-hooks/rules-of-hooks": "off"
 		}
 	},
 	{

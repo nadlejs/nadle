@@ -1,6 +1,6 @@
 {
 	"name": "nadle",
-	"version": "0.5.3",
+	"version": "0.6.0",
 	"description": "A type-safe, Gradle-inspired task runner for Node.js. Sharp tasks. Fast builds.",
 	"license": "MIT",
 	"type": "module",
@@ -21,6 +21,7 @@
 	"dependencies": {
 		"@nadle/kernel": "workspace:^",
 		"@nadle/project-resolver": "workspace:^",
+		"chokidar": "^5.0.0",
 		"consola": "^3.4.2",
 		"execa": "^9.6.1",
 		"fast-glob": "^3.3.3",
@@ -100,7 +101,7 @@
 	"size-limit": [
 		{
 			"path": "lib/**",
-			"limit": "160 KB",
+			"limit": "230 KB",
 			"name": "bundled",
 			"brotli": false
 		}

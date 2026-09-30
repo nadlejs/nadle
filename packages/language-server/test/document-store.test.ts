@@ -3,7 +3,7 @@ import { DocumentStore } from "src/document-store.js";
 
 const SIMPLE_CONFIG = `
 import { tasks, ExecTask } from "nadle";
-tasks.register("build", ExecTask, { command: "tsc" });
+tasks.register("build", { run: ExecTask, options: { command: "tsc" } });
 `;
 
 describe("DocumentStore", () => {
@@ -23,7 +23,7 @@ describe("DocumentStore", () => {
 
 			const updatedConfig = `
 import { tasks, ExecTask } from "nadle";
-tasks.register("test", ExecTask, { command: "vitest" });
+tasks.register("test", { run: ExecTask, options: { command: "vitest" } });
 `;
 			store.updateDocument("file:///a.ts", 1, updatedConfig, "a.ts");
 
@@ -39,7 +39,7 @@ tasks.register("test", ExecTask, { command: "vitest" });
 
 			const updatedConfig = `
 import { tasks, ExecTask } from "nadle";
-tasks.register("test", ExecTask, { command: "vitest" });
+tasks.register("test", { run: ExecTask, options: { command: "vitest" } });
 `;
 			store.updateDocument("file:///a.ts", 1, updatedConfig, "a.ts");
 			store.removeDocument("file:///a.ts");
@@ -63,7 +63,7 @@ tasks.register("lint");
 
 			const updatedConfig = `
 import { tasks, ExecTask } from "nadle";
-tasks.register("test", ExecTask, { command: "vitest" });
+tasks.register("test", { run: ExecTask, options: { command: "vitest" } });
 `;
 			store.updateDocument("file:///a.ts", 1, updatedConfig, "a.ts");
 

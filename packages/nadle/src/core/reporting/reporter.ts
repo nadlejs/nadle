@@ -8,12 +8,13 @@ import { type ExecutionContext } from "../context.js";
 import { stringify } from "../utilities/stringify.js";
 import { type Listener } from "../interfaces/listener.js";
 import { highlight, formatTime } from "../utilities/utils.js";
-import { StringBuilder } from "../utilities/string-builder.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
+import { renderFailureCounts, renderSuccessCounts } from "./run-summary.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
+import { profileAccessors, collectProfileData, renderProfileReport } from "./profile-report.js";
 import { DASH, CHECK, CROSS, CURVE_ARROW, RIGHT_ARROW, VERTICAL_BAR } from "../utilities/constants.js";
 
 export class DefaultReporter implements Listener {
@@ -43,7 +44,8 @@ export class DefaultReporter implements Listener {
 			return footer;
 		}
 
-		const doneTask = this.stats[TaskStatus.Finished] + this.stats[TaskStatus.FromCache] + this.stats[TaskStatus.UpToDate];
+		const doneTask =
+			this.stats[TaskStatus.Finished] + this.stats[TaskStatus.FromCache] + this.stats[TaskStatus.UpToDate] + this.stats[TaskStatus.Skipped];
 
 		const stats = [
 			c.cyanBright(`${this.stats[TaskStatus.Scheduled] - this.stats[TaskStatus.Running] - this.stats[TaskStatus.Failed] - doneTask} pending`),
@@ -104,11 +106,28 @@ export class DefaultReporter implements Listener {
 		this.renderer.schedule();
 	}
 
+	public async onTaskSkipped(task: RegisteredTask) {
+		this.context.logger.log(`\n${c.dim(DASH)} Task ${c.bold(task.label)} ${c.dim("SKIPPED")}`);
+		this.renderer.schedule();
+	}
+
 	public async onTaskFailed(task: RegisteredTask) {
 		this.context.logger.log(
 			`\n${c.red(CROSS)} Task ${c.bold(task.label)} ${c.red("FAILED")} ${formatTime(this.tracker.getTaskState(task.id).duration ?? 0)}`
 		);
+		this.context.logger.log(c.dim(`  ${CURVE_ARROW} to re-run just this task: ${this.reproCommand(task)}`));
 		this.renderer.schedule();
+	}
+
+	private reproCommand(task: RegisteredTask): string {
+		const requested = this.context.options.tasks.some((resolved) => resolved.taskId === task.id);
+		const passthroughArgs = this.context.options.passthroughArgs;
+
+		if (requested && passthroughArgs.length > 0) {
+			return `nadle ${task.label} -- ${passthroughArgs.join(" ")}`;
+		}
+
+		return `nadle ${task.label}`;
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
@@ -128,7 +147,7 @@ export class DefaultReporter implements Listener {
 
 		const workspaceConfigFileCount = project.workspaces.flatMap((workspace) => workspace.configFilePath ?? []).length;
 
-		if (!this.context.options.showConfig) {
+		if (!this.context.options.showConfig && !this.context.options.capabilities && !this.context.options.json) {
 			this.context.logger.log(c.bold(c.cyan(`▶ Welcome to Nadle v${Nadle.version}!`)));
 			this.context.logger.log(`Using Nadle from ${Url.fileURLToPath(import.meta.resolve("nadle"))}`);
 			this.context.logger.log(
@@ -150,7 +169,7 @@ export class DefaultReporter implements Listener {
 	private printResolvedTasks() {
 		const resolvedTasks = [...this.context.options.tasks, ...this.context.options.excludedTasks].filter(({ corrected }) => corrected);
 
-		if (resolvedTasks.length === 0) {
+		if (resolvedTasks.length === 0 || this.context.options.json) {
 			return;
 		}
 
@@ -173,7 +192,7 @@ export class DefaultReporter implements Listener {
 		this.renderer.finish();
 		this.context.logger.info("Execution finished");
 
-		if (this.context.options.showConfig) {
+		if (this.context.options.showConfig || this.context.options.capabilities || this.context.options.json) {
 			return;
 		}
 
@@ -192,29 +211,20 @@ export class DefaultReporter implements Listener {
 					})
 				})
 			);
+
+			this.context.logger.log(renderProfileReport(collectProfileData(profileAccessors(this.context, this.tracker))));
 		}
 
-		const print = (count: number) => `${c.bold(count)} task${count > 1 ? "s" : ""}`;
-
 		this.context.logger.log(`\n${c.bold(c.green("RUN SUCCESSFUL"))} in ${c.bold(formatTime(this.duration))}`);
-		this.context.logger.log(
-			new StringBuilder(", ")
-				.add(`${print(this.stats[TaskStatus.Finished])} executed`)
-				.add(this.stats[TaskStatus.UpToDate] > 0 && `${print(this.stats[TaskStatus.UpToDate])} up-to-date`)
-				.add(this.stats[TaskStatus.FromCache] > 0 && `${print(this.stats[TaskStatus.FromCache])} restored from cache`)
-				.build()
-		);
+		this.context.logger.log(renderSuccessCounts(this.stats));
 	}
 
 	public async onExecutionFailed(error: unknown) {
 		this.renderer.finish();
 		this.context.logger.info("Execution failed");
 
-		const finishedTasks = `${c.bold(this.stats[TaskStatus.Finished])} task${this.stats[TaskStatus.Finished] > 1 ? "s" : ""}`;
-		const failedTasks = `${c.bold(this.stats[TaskStatus.Failed])} task${this.stats[TaskStatus.Failed] > 1 ? "s" : ""}`;
-
 		this.context.logger.log(
-			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${finishedTasks} executed, ${failedTasks} failed)`)}`
+			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${renderFailureCounts(this.stats, this.tracker.notRunCount)})`)}`
 		);
 
 		if (!this.context.options.stacktrace) {

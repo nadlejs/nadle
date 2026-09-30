@@ -21,7 +21,7 @@ function randomGraph(size: number): { config: string; edges: [string, string][] 
 		if (dependencies.length === 0) {
 			lines.push(`tasks.register("${names[index]}");`);
 		} else {
-			lines.push(`tasks.register("${names[index]}").config({ dependsOn: ${JSON.stringify(dependencies)} });`);
+			lines.push(`tasks.register("${names[index]}", { dependsOn: ${JSON.stringify(dependencies)} });`);
 		}
 	}
 

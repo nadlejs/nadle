@@ -10,6 +10,6 @@ configure({
 
 tasks.register("check");
 
-tasks.register("build").config({ dependsOn: ["check", "shared:types:build"] });
+tasks.register("build", { dependsOn: ["check", "shared:types:build"] });
 
 tasks.register("deploy");

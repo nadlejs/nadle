@@ -9,6 +9,10 @@ nadle [tasks...]
 
 Execute one or more named tasks
 
+Commands:
+  nadle [tasks...]     Execute one or more named tasks                                     [default]
+  nadle completion     Print a shell completion script (bash/zsh/fish)
+
 Execution options:
       --parallel         Run all specified tasks in parallel regardless of their order, while still
                          respecting task dependencies.                    [boolean] [default: false]
@@ -20,9 +24,22 @@ Execution options:
   -l, --list             List all available tasks                         [boolean] [default: false]
       --list-workspaces  List all available workspaces                    [boolean] [default: false]
   -m, --dry-run          Run specified tasks in dry run mode              [boolean] [default: false]
+  -w, --watch            Re-run the requested tasks when their inputs change
+                                                                          [boolean] [default: false]
+      --explain          Explain why a task runs, what depends on it, and its inputs, instead of
+                         executing                                                          [string]
+      --since            Run only the requested tasks affected by changes since the given git ref
+                                                                                            [string]
       --show-config      Print the resolved configuration                 [boolean] [default: false]
       --config-key       Path to a specific resolved configuration value, using dot/bracket notation
                                                                        [string] [default: undefined]
+      --json             Emit machine-readable JSON from read commands (--list, --list-workspaces,
+                         --dry-run, --graph, --explain) instead of human text
+                                                                          [boolean] [default: false]
+      --doctor           Diagnose project, config, and cache health without executing tasks
+                                                                          [boolean] [default: false]
+      --capabilities     Emit a machine-readable JSON description of CLI flags, tasks, and task
+                         configuration schema                             [boolean] [default: false]
       --stacktrace       Print stacktrace on error                        [boolean] [default: false]
 
 General options:
@@ -37,7 +54,9 @@ General options:
                                                    [string] [default: Os.availableParallelism() - 1]
       --footer       Enables the in-progress summary footer during task execution
                                                                  [boolean] [default: !isCI && isTTY]
-      --summary      Print a summary of executed tasks at the end of the run
+      --summary      Print a summary at the end of the run: task durations, critical path, and
+                     cache-miss hotspots                                  [boolean] [default: false]
+      --why          Explain each task's cache outcome (hit/miss and what changed)
                                                                           [boolean] [default: false]
 
 Miscellaneous options:
@@ -45,8 +64,10 @@ Miscellaneous options:
   -v, --version  Show version number                                                       [boolean]
 
 Options:
-      --reporter  Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)
-                                           [string] [choices: "default", "agent"] [default: default]
+      --graph     Print the task dependency graph instead of executing (tree or mermaid)
+                                                           [string] [choices: "", "tree", "mermaid"]
+      --reporter  Output reporter: a built-in ('default'/'agent') or a plugin-registered reporter
+                  name                                                   [string] [default: default]
 
 Examples:
   nadle test -- -u  Run the test task, passing -u through to its underlying command

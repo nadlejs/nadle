@@ -21,6 +21,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer throwable --stacktrace
 
 [log]
 <Red>×</Red> Task <Bold>throwable</BoldDim> <Red>FAILED</Red> {duration}
+[log] <Dim>  ↩ to re-run just this task: nadle throwable</BoldDim>
 [log]
 <Bold><Red>RUN FAILED</Red></BoldDim> in <Bold>{duration}</BoldDim> <Dim>(<Bold>2</BoldDim><Dim> tasks executed, <Bold>1</BoldDim><Dim> task failed)</BoldDim>
 ---------- Stderr ------------

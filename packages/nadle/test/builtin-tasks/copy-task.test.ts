@@ -146,7 +146,7 @@ describe.skipIf(isWindows).concurrent("copyTask with into", () => {
 
 	it("copies a directory into the destination preserving structure", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("copy", CopyTask, { from: "assets", into: "dist" });`),
+			files: makeFixture(`tasks.register("copy", { run: CopyTask, options: { from: "assets", into: "dist" } });`),
 			testFn: async ({ cwd, exec }) => {
 				await getStdout(exec`copy`);
 
@@ -156,19 +156,19 @@ describe.skipIf(isWindows).concurrent("copyTask with into", () => {
 
 	it("copies multiple sources, files and selectors mixed", () =>
 		withGeneratedFixture({
-			files: makeFixture(
-				`tasks.register("copy", CopyTask, { from: ["foo.txt", { dir: "assets", include: "**/*.txt", exclude: "bar.txt" }], into: "dist" });`
-			),
 			testFn: async ({ cwd, exec }) => {
 				await getStdout(exec`copy`);
 
 				expect(readDist(cwd)).toEqual({ "foo.txt": "foo contents", sub: { "baz.txt": "baz contents" } });
-			}
+			},
+			files: makeFixture(
+				`tasks.register("copy", { run: CopyTask, options: { from: ["foo.txt", { dir: "assets", include: "**/*.txt", exclude: "bar.txt" }], into: "dist" } });`
+			)
 		}));
 
 	it("flattens source structure when flatten is set", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("copy", CopyTask, { flatten: true, from: ["assets", "other"], into: "dist" });`),
+			files: makeFixture(`tasks.register("copy", { run: CopyTask, options: { flatten: true, from: ["assets", "other"], into: "dist" } });`),
 			testFn: async ({ cwd, exec }) => {
 				await getStdout(exec`copy`);
 
@@ -178,7 +178,9 @@ describe.skipIf(isWindows).concurrent("copyTask with into", () => {
 
 	it("renames files by base name", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("copy", CopyTask, { from: "assets", into: "dist", rename: { "bar.txt": "renamed.txt" } });`),
+			files: makeFixture(
+				`tasks.register("copy", { run: CopyTask, options: { from: "assets", into: "dist", rename: { "bar.txt": "renamed.txt" } } });`
+			),
 			testFn: async ({ cwd, exec }) => {
 				await getStdout(exec`copy`);
 
@@ -188,7 +190,9 @@ describe.skipIf(isWindows).concurrent("copyTask with into", () => {
 
 	it("fails when flattening collides", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("copy", CopyTask, { flatten: true, into: "dist", from: [{ dir: "assets" }, { dir: "assets" }] });`),
+			files: makeFixture(
+				`tasks.register("copy", { run: CopyTask, options: { flatten: true, into: "dist", from: [{ dir: "assets" }, { dir: "assets" }] } });`
+			),
 			testFn: async ({ exec }) => {
 				const { stdout, stderr, exitCode } = await settle(exec`copy --stacktrace`);
 
@@ -207,32 +211,32 @@ describe.skipIf(isWindows).concurrent("copyTask with into", () => {
 			},
 			files: makeFixture(
 				[
-					`tasks.register("seed", CopyTask, { from: "assets", into: "dist" });`,
-					`tasks.register("copy", CopyTask, { from: "other", into: "dist/sub", overwrite: "skip", rename: { "qux.txt": "baz.txt" } });`
+					`tasks.register("seed", { run: CopyTask, options: { from: "assets", into: "dist" } });`,
+					`tasks.register("copy", { run: CopyTask, options: { from: "other", into: "dist/sub", overwrite: "skip", rename: { "qux.txt": "baz.txt" } } });`
 				].join("\n")
 			)
 		}));
 
 	it("fails on existing destination with overwrite error", () =>
 		withGeneratedFixture({
-			files: makeFixture(
-				[
-					`tasks.register("seed", CopyTask, { from: "assets", into: "dist" });`,
-					`tasks.register("copy", CopyTask, { from: "assets", into: "dist", overwrite: "error" });`
-				].join("\n")
-			),
 			testFn: async ({ exec }) => {
 				await getStdout(exec`seed`);
 				const { stdout, stderr, exitCode } = await settle(exec`copy --stacktrace`);
 
 				expect(exitCode).not.toBe(0);
 				expect(stdout + stderr).toContain("already exists");
-			}
+			},
+			files: makeFixture(
+				[
+					`tasks.register("seed", { run: CopyTask, options: { from: "assets", into: "dist" } });`,
+					`tasks.register("copy", { run: CopyTask, options: { from: "assets", into: "dist", overwrite: "error" } });`
+				].join("\n")
+			)
 		}));
 
 	it("warns and succeeds on missing source by default", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("copy", CopyTask, { from: "missing", into: "dist" });`),
+			files: makeFixture(`tasks.register("copy", { run: CopyTask, options: { from: "missing", into: "dist" } });`),
 			testFn: async ({ exec }) => {
 				const { stdout, stderr, exitCode } = await settle(exec`copy`);
 
@@ -243,7 +247,7 @@ describe.skipIf(isWindows).concurrent("copyTask with into", () => {
 
 	it("fails on missing source when strict", () =>
 		withGeneratedFixture({
-			files: makeFixture(`tasks.register("copy", CopyTask, { strict: true, from: "missing", into: "dist" });`),
+			files: makeFixture(`tasks.register("copy", { run: CopyTask, options: { strict: true, from: "missing", into: "dist" } });`),
 			testFn: async ({ exec }) => {
 				const { stdout, stderr, exitCode } = await settle(exec`copy --stacktrace`);
 

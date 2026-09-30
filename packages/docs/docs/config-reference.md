@@ -77,6 +77,76 @@ Simulate task execution without actually running the tasks. Shows what would be 
 nadle --dry-run build
 ```
 
+### `--watch`
+
+- **Type:** `boolean`
+- **Alias:** `-w`
+- **Default:** `false`
+
+Run the requested tasks, then keep running and re-run them whenever any of their
+declared `inputs` change. Only tasks whose inputs actually changed re-execute;
+the rest stay cached. Config files are watched too (when any task declares
+inputs). Press Ctrl-C to exit. Tasks with no declared `inputs` are not watchable.
+
+```bash
+nadle build --watch
+```
+
+### `--graph`
+
+- **Type:** `string`
+- **Choices:** `tree` (default), `mermaid`
+
+Print the task dependency graph instead of executing. `tree` renders an indented forest rooted at
+the requested tasks; `mermaid` emits a `graph TD` block you can paste into docs. Implicit
+(workspace-derived) dependencies are marked.
+
+```bash
+nadle build --graph
+nadle build --graph=mermaid
+```
+
+### `--since`
+
+- **Type:** `string` (a git ref)
+
+Run only the requested tasks affected by changes since a git ref. A task is affected
+when a file inside its workspace directory changed (computed via `git diff --name-only
+<ref>`); the dependencies that affected task needs are pulled in too. `nadle build
+--since main` builds exactly the packages that changed. If nothing is affected, Nadle
+prints a notice and exits 0. Cross-workspace dependent propagation (rebuilding B
+because its dependency A changed) is not yet included.
+
+```bash
+nadle build test --since main
+```
+
+### `--explain`
+
+- **Type:** `string` (a task name)
+
+Explain a single task without running it: why it would run (the dependency paths that pull it in,
+or whether it was requested directly), what depends on it, and its declared inputs (plus whether
+caching is enabled). Complements `--why`, which explains a past run's cache outcome — `--explain`
+is purely static.
+
+```bash
+nadle build --explain install
+```
+
+### `--why`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Explain each task's cache outcome. For a hit, states whether the task was up-to-date or restored
+from cache; for a miss, lists exactly what changed (the input file added/removed/modified, or that
+no previous cache existed). Useful for answering "why did this rebuild?".
+
+```bash
+nadle build --why
+```
+
 ### `--stacktrace`
 
 - **Type:** `boolean`
@@ -194,8 +264,11 @@ footer, or spinners — just one stable line per task (`DONE <task> <time>`,
 - **Default:** `false`
 - **CLI:** `--summary`, `--no-summary`
 
-Prints a summary of the slowest tasks after all tasks have finished.
-Only the top slowest tasks are shown, sorted by duration in descending order.
+Prints profiling insights after all tasks have finished: a table of the slowest tasks
+(sorted by duration), the **critical path** (the longest cumulative-duration
+dependency chain that bounded the run), and **cache-miss hotspots** — the tasks that
+executed, each with a suggestion (declare inputs & outputs to make it cacheable, or
+note that an input changed).
 Useful for identifying performance bottlenecks and optimizing build times.
 
 ### `maxWorkers`
@@ -217,7 +290,7 @@ For instance: `75%` on a 16-core machine results in a maximum of 12 workers.
 ### `minWorkers`
 
 - **Type:** `number | string`
-- **Default:** `1`
+- **Default:** number of CPU cores minus one (same as `maxWorkers`)
 - **CLI:** `--min-workers <number>`
 
 Specifies the **minimum number of worker threads** used for parallel task execution.
@@ -254,15 +327,14 @@ set per-task in the task configuration, which takes precedence over the global v
 
 ```typescript
 // Per-task override
-tasks
-	.register("build", async () => {
+tasks.register("build", {
+	run: async () => {
 		/* ... */
-	})
-	.config({
-		maxCacheEntries: 3,
-		inputs: [Inputs.dirs("src")],
-		outputs: [Outputs.dirs("dist")]
-	});
+	},
+	maxCacheEntries: 3,
+	inputs: [Inputs.dirs("src")],
+	outputs: [Outputs.dirs("dist")]
+});
 ```
 
 ## Configuration File Example
@@ -280,3 +352,84 @@ configure({
 	footer: false
 });
 ```
+
+## Plugins
+
+A plugin is a package that contributes task types, lifecycle hooks, and/or custom reporters
+to your build. Author one with `definePlugin` and apply it in `nadle.config.ts` with `use`:
+
+```ts
+import { use } from "nadle";
+import { myPlugin } from "my-nadle-plugin";
+
+use(myPlugin, {
+	/* plugin options (typed) */
+});
+```
+
+`use(plugin, options?)` registers the plugin's task types (so they behave exactly like tasks
+you register yourself, with full `inputs`/`outputs`/`dependsOn` config), records its options,
+and wires its hooks. Applying the same plugin twice is a no-op if the options match and an
+error if they differ.
+
+### Authoring a plugin
+
+```ts
+import { definePlugin } from "nadle";
+
+export const myPlugin = definePlugin<{ threshold?: number }>({
+	name: "timing", // required, unique
+	enforce: "post", // optional ordering: "pre" | "post"
+	tasks: [
+		{
+			name: "deploy",
+			task: DeployTask,
+			config: {
+				inputs: [
+					/* … */
+				]
+			}
+		}
+	],
+	hooks: {
+		beforeAll: (ctx) => {
+			/* once, before scheduling — throw to abort the run */
+		},
+		afterAll: (ctx) => {
+			/* once, after the run settles — ctx.outcome is "success" | "failed" */
+		},
+		beforeTask: (ctx) => {
+			/* a task is about to execute — NOT fired for cache hits */
+		},
+		afterTask: (ctx) => {
+			/* a task settled — ctx.result: "done" | "failed" | "up-to-date" | "from-cache" | "canceled" */
+		}
+	}
+});
+```
+
+All hooks are optional and run on the main thread. **`beforeTask` and `afterTask` are not a
+guaranteed pair:** `beforeTask` fires only when a task actually executes (not for cache hits),
+while `afterTask` fires for every terminal outcome. Treat `beforeTask` as "about to do real
+work" and `afterTask` as "settled — check `result`". Hook ordering follows `enforce` (`pre`
+plugins first, then normal, then `post`); errors thrown from `afterAll`/`beforeTask`/`afterTask`
+are logged as warnings and never fail the run, while a throwing `beforeAll` aborts it.
+
+### Custom reporters
+
+A plugin can contribute a reporter (a `Listener`), selected with `--reporter <name>`:
+
+```ts
+export const jsonPlugin = definePlugin({
+	name: "json-reporter",
+	reporters: [{ name: "json", create: (context) => new JsonReporter(context.logger) }]
+});
+```
+
+```bash
+nadle build --reporter json
+```
+
+Exactly one reporter is active at a time (a plugin reporter replaces the default). A reporter
+name may not shadow the built-in `default`/`agent`; an unknown `--reporter` name errors with
+the list of available reporters.

@@ -2,6 +2,7 @@ import { formatTime } from "../utilities/utils.js";
 import { type ExecutionContext } from "../context.js";
 import { type Listener } from "../interfaces/listener.js";
 import { StringBuilder } from "../utilities/string-builder.js";
+import { profileAccessors, collectProfileData } from "./profile-report.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
 
@@ -33,8 +34,13 @@ export class AgentReporter implements Listener {
 		this.context.logger.log(`FROM-CACHE ${task.label}`);
 	}
 
+	public async onTaskSkipped(task: RegisteredTask) {
+		this.context.logger.log(`SKIPPED ${task.label}`);
+	}
+
 	public async onTaskFailed(task: RegisteredTask) {
 		this.context.logger.log(`FAILED ${task.label} ${this.duration(task)}`);
+		this.context.logger.log(`REPRO nadle ${task.label}`);
 	}
 
 	public async onTaskCanceled(task: RegisteredTask) {
@@ -46,7 +52,23 @@ export class AgentReporter implements Listener {
 			return;
 		}
 
+		if (this.context.options.summary) {
+			this.emitProfile();
+		}
+
 		this.context.logger.log(this.summaryLine("SUCCESS"));
+	}
+
+	private emitProfile() {
+		const { hotspots, criticalPath } = collectProfileData(profileAccessors(this.context, this.tracker));
+
+		if (criticalPath !== null) {
+			this.context.logger.log(`CRITICAL ${criticalPath.path.join(" ")} ${formatTime(criticalPath.duration)}`);
+		}
+
+		for (const hotspot of hotspots) {
+			this.context.logger.log(`HOTSPOT ${hotspot.label} ${formatTime(hotspot.duration)} ${hotspot.suggestion}`);
+		}
 	}
 
 	public onExecutionFailed(error: unknown) {
@@ -62,7 +84,9 @@ export class AgentReporter implements Listener {
 			.add(`done ${this.stats[TaskStatus.Finished]}`)
 			.add(this.stats[TaskStatus.UpToDate] > 0 && `up-to-date ${this.stats[TaskStatus.UpToDate]}`)
 			.add(this.stats[TaskStatus.FromCache] > 0 && `cached ${this.stats[TaskStatus.FromCache]}`)
+			.add(this.stats[TaskStatus.Skipped] > 0 && `skipped ${this.stats[TaskStatus.Skipped]}`)
 			.add(this.stats[TaskStatus.Failed] > 0 && `failed ${this.stats[TaskStatus.Failed]}`)
+			.add(this.tracker.notRunCount > 0 && `not-run ${this.tracker.notRunCount}`)
 			.build();
 
 		return `${result} in ${formatTime(this.tracker.duration)} (${counts})`;

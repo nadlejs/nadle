@@ -5,7 +5,6 @@ import { CONFIG_FILE_PATTERN } from "@nadle/project-resolver";
 import { type NadleCLIOptions } from "./types.js";
 import { Messages } from "../utilities/messages.js";
 import { SupportLogLevels } from "../utilities/consola.js";
-import { SupportReporters } from "../reporting/reporters.js";
 import { ConfigurationError } from "../utilities/nadle-error.js";
 
 export const CLIOptions = {
@@ -52,6 +51,46 @@ export const CLIOptions = {
 			description: "Run specified tasks in dry run mode"
 		}
 	},
+	watch: {
+		key: "watch",
+		options: {
+			alias: "w",
+			default: false,
+			type: "boolean",
+			description: "Re-run the requested tasks when their inputs change"
+		}
+	},
+	graph: {
+		key: "graph",
+		options: {
+			type: "string",
+			// Bare `--graph` yields "" → treated as the default "tree" format in the resolver.
+			choices: ["", "tree", "mermaid"] as const,
+			description: "Print the task dependency graph instead of executing (tree or mermaid)"
+		}
+	},
+	explain: {
+		key: "explain",
+		options: {
+			type: "string",
+			description: "Explain why a task runs, what depends on it, and its inputs, instead of executing"
+		}
+	},
+	since: {
+		key: "since",
+		options: {
+			type: "string",
+			description: "Run only the requested tasks affected by changes since the given git ref"
+		}
+	},
+	why: {
+		key: "why",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Explain each task's cache outcome (hit/miss and what changed)"
+		}
+	},
 	stacktrace: {
 		key: "stacktrace",
 		options: {
@@ -76,6 +115,14 @@ export const CLIOptions = {
 			defaultDescription: "undefined"
 		}
 	},
+	json: {
+		key: "json",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Emit machine-readable JSON from read commands (--list, --list-workspaces, --dry-run, --graph, --explain) instead of human text"
+		}
+	},
 	footer: {
 		key: "footer",
 		options: {
@@ -89,8 +136,7 @@ export const CLIOptions = {
 		options: {
 			type: "string",
 			defaultDescription: "default",
-			choices: SupportReporters,
-			description: "Output reporter: 'default' (human) or 'agent' (compact, plain, for agents/scripts)"
+			description: "Output reporter: a built-in ('default'/'agent') or a plugin-registered reporter name"
 		}
 	},
 	cache: {
@@ -130,7 +176,23 @@ export const CLIOptions = {
 		options: {
 			type: "boolean" as const,
 			default: false,
-			description: "Print a summary of executed tasks at the end of the run"
+			description: "Print a summary at the end of the run: task durations, critical path, and cache-miss hotspots"
+		}
+	},
+	doctor: {
+		key: "doctor",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Diagnose project, config, and cache health without executing tasks"
+		}
+	},
+	capabilities: {
+		key: "capabilities",
+		options: {
+			type: "boolean" as const,
+			default: false,
+			description: "Emit a machine-readable JSON description of CLI flags, tasks, and task configuration schema"
 		}
 	},
 

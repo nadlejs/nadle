@@ -1,5 +1,41 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`workspaces detection > ignores a workspace pattern that matches the project root 1`] = `
+---------- Context -----------
+Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__
+Command: /ROOT/lib/cli.js --max-workers 1 --no-footer --show-config --config-key project
+---------- Stdout ------------
+[log] {
+  "rootWorkspace": {
+    "label": "",
+    "packageJson": {
+      "name": "root",
+      "type": "module"
+    },
+    "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__",
+    "dependencies": [],
+    "relativePath": ".",
+    "configFilePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/nadle.config.ts",
+    "id": "root"
+  },
+  "packageManager": "pnpm",
+  "currentWorkspaceId": "root",
+  "workspaces": [
+    {
+      "id": "packages:only",
+      "label": "packages:only",
+      "absolutePath": "/ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__/packages/only",
+      "relativePath": "packages/only",
+      "dependencies": [],
+      "configFilePath": null,
+      "packageJson": {
+        "name": "only"
+      }
+    }
+  ]
+}
+`;
+
 exports[`workspaces detection > multiple packages 1`] = `
 ---------- Context -----------
 Working Directory: /ROOT/test/__fixtures__/monorepo/__temp__/__{hash}__

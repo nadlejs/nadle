@@ -26,28 +26,35 @@ describe("analyzeDocument", () => {
 			expect(names).toEqual(["clean-cache", "compile", "deploy", "lint", "build", "release", "clean"]);
 		});
 
-		it("detects no-op form (1 arg)", async () => {
+		it("detects no-op form (name only)", async () => {
 			const analysis = await analyzeFixture("valid.ts");
 			const cleanCache = analysis.registrations[0];
 			expect(cleanCache.form).toBe("no-op");
 			expect(cleanCache.taskObjectName).toBeNull();
 		});
 
-		it("detects typed form (3 args) with task object name", async () => {
+		it("detects typed form (spec with run: Task) with task object name", async () => {
 			const analysis = await analyzeFixture("valid.ts");
 			const compile = analysis.registrations[1];
 			expect(compile.form).toBe("typed");
 			expect(compile.taskObjectName).toBe("ExecTask");
 		});
 
-		it("detects function form (2 args)", async () => {
+		it("detects function form (spec with run: function)", async () => {
 			const analysis = await analyzeFixture("valid.ts");
 			const deploy = analysis.registrations[2];
 			expect(deploy.form).toBe("function");
 			expect(deploy.taskObjectName).toBeNull();
 		});
 
-		it("extracts .config() with dependsOn array", async () => {
+		it("detects no-op form (config-only spec, no run)", async () => {
+			const analysis = await analyzeFixture("valid.ts");
+			const build = analysis.registrations[4];
+			expect(build.form).toBe("no-op");
+			expect(build.taskObjectName).toBeNull();
+		});
+
+		it("extracts config with dependsOn array from spec", async () => {
 			const analysis = await analyzeFixture("valid.ts");
 			const build = analysis.registrations[4];
 			expect(build.configuration).not.toBeNull();
@@ -56,7 +63,7 @@ describe("analyzeDocument", () => {
 			expect(build.configuration!.dependsOn[1].name).toBe("lint");
 		});
 
-		it("extracts .config() with single string dependsOn", async () => {
+		it("extracts config with single string dependsOn from spec", async () => {
 			const analysis = await analyzeFixture("valid.ts");
 			const release = analysis.registrations[5];
 			expect(release.configuration).not.toBeNull();
