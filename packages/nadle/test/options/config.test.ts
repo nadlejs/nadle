@@ -81,7 +81,7 @@ describe("--config failures", () => {
 
 					expect(exitCode).toBe(2);
 					expect(stdout + stderr).toContain("Failed to load config file");
-					expect(stdout + stderr).toContain("Cannot find module");
+					expect(stdout + stderr).toContain(outsideConfig);
 				} finally {
 					await Fs.rm(outsideDir, { force: true, recursive: true });
 				}
