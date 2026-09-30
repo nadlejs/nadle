@@ -7,6 +7,7 @@ import { getWorkspaceById } from "@nadle/project-resolver";
 import { Nadle } from "../nadle.js";
 import { runWithRetries } from "./task-runner.js";
 import { bindObject } from "../utilities/utils.js";
+import { withPlainOutput } from "./plain-output-env.js";
 import { explainCacheOutcome } from "./explain-cache.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
@@ -77,7 +78,7 @@ export async function runTask(
 		return undefined;
 	}
 
-	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
+	const environmentInjector = createEnvironmentInjector(originalEnv, withPlainOutput(originalEnv, taskConfig.env, options.reporter));
 
 	const cacheValidator = createCacheValidator(nadle, {
 		taskId,

@@ -19,3 +19,12 @@ tasks.register("color-no-color", {
 	env: { NO_COLOR: "1" },
 	options: { command: "node", args: printColorEnv }
 });
+
+const failColored = ["-e", "console.log(process.env.FORCE_COLOR ? '\\x1b[31m red \\x1b[0m' : 'plain-failure'); process.exit(1)"];
+
+tasks.register("color-fail", { run: ExecTask, options: { command: "node", args: failColored } });
+tasks.register("color-fail-forced", {
+	run: ExecTask,
+	env: { FORCE_COLOR: "1" },
+	options: { command: "node", args: failColored }
+});
