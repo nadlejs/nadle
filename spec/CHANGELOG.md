@@ -18,6 +18,12 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   `dependsOn` dropped the dependency without a diagnostic and the run passed in an
   unconstrained order.
 
+### Fixed
+
+- 10-builtin-tasks: Exec-based built-in tasks no longer override a `FORCE_COLOR` or `NO_COLOR`
+  value present in the task's environment. Color is forced (`FORCE_COLOR=1`) only when neither
+  is set, so a task can opt out of forced color by configuring its own environment.
+
 ## 4.1.1 — 2026-06-21
 
 ### Changed

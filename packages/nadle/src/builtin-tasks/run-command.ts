@@ -24,17 +24,23 @@ interface RunCommandParams {
 	readonly startMessage: (finalArgs: readonly string[]) => string;
 }
 
+function colorEnv(): Record<string, string> {
+	const hasColorPreference = process.env.FORCE_COLOR !== undefined || process.env.NO_COLOR !== undefined;
+
+	return hasColorPreference ? {} : { FORCE_COLOR: "1" };
+}
+
 /**
  * Shared runner for exec-based builtin tasks: appends passthrough args, spawns the
- * command in the task's working directory with forced color, streams combined
- * output to the task logger, and wraps failures in a TaskExecutionError.
+ * command in the task's working directory (forcing color unless FORCE_COLOR or NO_COLOR is
+ * set), streams combined output to the task logger, and wraps failures in a TaskExecutionError.
  */
 export async function runCommand(context: RunnerContext, { args, command, doneMessage, startMessage }: RunCommandParams): Promise<void> {
 	const finalArgs = [...args, ...context.passthroughArgs];
 
 	context.logger.info(startMessage(finalArgs));
 
-	const subprocess = execa(command, finalArgs, { all: true, cwd: context.workingDir, env: { FORCE_COLOR: "1" } });
+	const subprocess = execa(command, finalArgs, { all: true, env: colorEnv(), cwd: context.workingDir });
 
 	subprocess.all?.on("data", (chunk) => {
 		context.logger.log(chunk.toString());
