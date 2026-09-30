@@ -26,9 +26,26 @@ jobs:
           manifest-file: .release-please-manifest.json
 
       - name: Keep release PRs as draft
+        if: always()
         run: |
-          gh pr list --label "autorelease: pending" --json number,isDraft --jq '.[] | select(.isDraft == false) | .number' | while read -r pr; do
-            gh pr ready "$pr" --undo 2>/dev/null || true
+          # Release PRs are kept as draft so CI skips them until a human marks
+          # them ready. Log failures instead of swallowing them: a silent failure
+          # here leaves release PRs open and CI-eligible without anyone noticing.
+          prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open \
+            --label "autorelease: pending" --json number,isDraft \
+            --jq '.[] | select(.isDraft == false) | .number')
+
+          if [ -z "$prs" ]; then
+            echo "No non-draft release PRs found."
+            exit 0
+          fi
+
+          for pr in $prs; do
+            if gh pr ready "$pr" --repo "$GITHUB_REPOSITORY" --undo; then
+              echo "Converted PR #$pr back to draft."
+            else
+              echo "::warning::Failed to convert PR #$pr to draft."
+            fi
           done
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}

@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { fixture, getStdout, readConfig, withGeneratedFixture } from "setup";
+import { fixture, getStdout, createExec, readConfig, withGeneratedFixture } from "setup";
 
 const files = fixture()
 	.packageJson("exec-task")
@@ -18,4 +18,38 @@ describe.concurrent("execTask", () => {
 			}
 		})
 	);
+
+	describe("color env", () => {
+		const env = { NO_COLOR: undefined, FORCE_COLOR: undefined };
+
+		it("forces color by default", () =>
+			withGeneratedFixture({
+				files,
+				testFn: async ({ cwd }) => {
+					const stdout = await getStdout(createExec({ cwd, env })`color-default`);
+
+					expect(stdout).toContain("FORCE_COLOR=1 NO_COLOR=undefined");
+				}
+			}));
+
+		it("keeps FORCE_COLOR configured in task env", () =>
+			withGeneratedFixture({
+				files,
+				testFn: async ({ cwd }) => {
+					const stdout = await getStdout(createExec({ cwd, env })`color-force-off`);
+
+					expect(stdout).toContain("FORCE_COLOR=0 NO_COLOR=undefined");
+				}
+			}));
+
+		it("does not force color when NO_COLOR is configured in task env", () =>
+			withGeneratedFixture({
+				files,
+				testFn: async ({ cwd }) => {
+					const stdout = await getStdout(createExec({ cwd, env })`color-no-color`);
+
+					expect(stdout).toContain("FORCE_COLOR=undefined NO_COLOR=1");
+				}
+			}));
+	});
 });

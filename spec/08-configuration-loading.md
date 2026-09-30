@@ -26,7 +26,12 @@ this precedence order:
 
 If multiple exist, the first match wins (JS before TS, TS before MTS).
 
-The `--config` flag overrides this search and specifies an explicit path.
+The `--config` flag overrides this search and specifies an explicit path. The file may live
+outside the project root; its imports are resolved relative to the file's own location, so a
+config outside the project cannot import packages that are only installed in the project.
+
+A config file that cannot be loaded (syntax error, unresolvable import, or an error thrown
+while it runs) is a configuration error: the message names the file and the underlying cause.
 
 ## Runtime Transpilation
 

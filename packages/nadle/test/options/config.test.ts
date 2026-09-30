@@ -1,5 +1,9 @@
-import { it, describe } from "vitest";
-import { fixture, expectPass, withGeneratedFixture } from "setup";
+import Os from "node:os";
+import Path from "node:path";
+import Fs from "node:fs/promises";
+
+import { it, expect, describe } from "vitest";
+import { settle, fixture, expectPass, withGeneratedFixture } from "setup";
 
 function helloConfig(importLine: string): string {
 	return [importLine, "", 'import { tasks } from "nadle";', "", 'tasks.register("hello");', ""].join("\n");
@@ -45,6 +49,42 @@ describe("--config", () => {
 			files: fixtures["mixed-ts-mts"]!,
 			testFn: async ({ exec }) => {
 				await expectPass(exec`hello`);
+			}
+		}));
+});
+
+describe("--config failures", () => {
+	const validFiles = () => fixture().packageJson("config-failures").configRaw(helloConfig('import Url from "node:url";')).build();
+
+	it("should report a missing config file with exit code 2", () =>
+		withGeneratedFixture({
+			files: validFiles(),
+			testFn: async ({ exec }) => {
+				const { stdout, stderr, exitCode } = await settle(exec`--config does-not-exist.config.ts hello`);
+
+				expect(exitCode).toBe(2);
+				expect(stdout + stderr).toContain("Config file not found at");
+			}
+		}));
+
+	it("should explain a config outside the project root that cannot resolve nadle", () =>
+		withGeneratedFixture({
+			files: validFiles(),
+			testFn: async ({ exec }) => {
+				const outsideDir = await Fs.mkdtemp(Path.join(Os.tmpdir(), "nadle-outside-config-"));
+				const outsideConfig = Path.join(outsideDir, "outside.config.ts");
+
+				try {
+					await Fs.writeFile(outsideConfig, helloConfig('import Url from "node:url";'));
+
+					const { stdout, stderr, exitCode } = await settle(exec`--config ${outsideConfig} hello`);
+
+					expect(exitCode).toBe(2);
+					expect(stdout + stderr).toContain("Failed to load config file");
+					expect(stdout + stderr).toContain(outsideConfig);
+				} finally {
+					await Fs.rm(outsideDir, { force: true, recursive: true });
+				}
 			}
 		}));
 });
