@@ -5,24 +5,65 @@ fingerprinting and output snapshots.
 
 ## Precondition
 
-A task is cacheable only if **both** `inputs` and `outputs` are declared in its
-configuration. If either is missing, the task is always executed.
+A task is cacheable in one of two modes:
+
+- **Artifact caching** — **both** `inputs` and `outputs` are declared. The task's
+  produced files are snapshotted and can be restored.
+- **Verdict caching** — `inputs` are declared, no `outputs` are declared, and
+  `cacheVerdict` is set. Nothing is snapshotted; only the fact that the task
+  **succeeded** for the given inputs is recorded and replayed.
+
+If neither precondition holds, the task is always executed. In particular, declaring
+`inputs` alone without `cacheVerdict` is never cached.
+
+### The Verdict Caching Contract
+
+Verdict caching exists for tasks whose entire result is the success/failure outcome —
+linters, formatters in check mode, type-checkers, test suites that write no reports.
+Setting `cacheVerdict` is an assertion by the task author that:
+
+1. The task produces **no** file the rest of the build depends on. Any file it does
+   produce is incidental (logs, console diagnostics) and never consumed by a
+   downstream task.
+2. Re-running the task with unchanged `inputs` would produce the same success outcome.
+
+Declaring `cacheVerdict` on a task that does produce consumed artifacts is a
+configuration error that the implementation cannot detect: a replayed verdict skips
+execution, so those artifacts would never be produced. Such a task must declare
+`outputs` and use artifact caching instead.
+
+`cacheVerdict` is ignored when `outputs` are declared — artifact caching already covers
+that case and is strictly stronger.
+
+### Verdict Caching Is Success-Only
+
+A verdict is recorded only after the task **succeeds**. A task that fails is never
+written to the cache and therefore always re-runs, so its diagnostics are emitted on
+every invocation until the underlying problem is fixed.
+
+### Observable Effect of a Verdict Hit
+
+On a verdict cache hit the task body does not run, so any console output it would have
+produced — a linter's summary line, a type-checker's file count — is not reproduced. The
+task reports as up-to-date. This is the same trade already made by artifact caching and
+is the intended behavior: the hit means nothing the task reads has changed.
 
 ## Validation Outcomes
 
 Cache validation produces exactly one of five results:
 
-| Result               | Condition                                                                       | Action                                          |
-| -------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `not-cacheable`      | Task has no inputs or no outputs declared.                                      | Execute the task.                               |
-| `cache-disabled`     | The `--no-cache` flag is set.                                                   | Execute the task.                               |
-| `up-to-date`         | Cache key matches the latest run AND output fingerprints are unchanged on disk. | Skip execution entirely.                        |
-| `restore-from-cache` | Cache key found in run history, but outputs need restoration.                   | Copy cached outputs to project, skip execution. |
-| `cache-miss`         | No cache entry exists for the current cache key.                                | Execute the task, then save outputs.            |
+| Result               | Condition                                                                                                                                           | Action                                          |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `not-cacheable`      | Task meets neither caching precondition.                                                                                                            | Execute the task.                               |
+| `cache-disabled`     | The `--no-cache` flag is set.                                                                                                                       | Execute the task.                               |
+| `up-to-date`         | Cache key matches the latest run AND output fingerprints are unchanged on disk. Under verdict caching, the cache key alone matching the latest run. | Skip execution entirely.                        |
+| `restore-from-cache` | Cache key found in run history, but outputs need restoration.                                                                                       | Copy cached outputs to project, skip execution. |
+| `cache-miss`         | No cache entry exists for the current cache key.                                                                                                    | Execute the task, then save outputs.            |
 
 ## Validation Flow
 
-1. Check if task is cacheable (inputs AND outputs defined). If not, return `not-cacheable`.
+1. Check if the task meets a caching precondition (`inputs` with `outputs`, or `inputs`
+   with `cacheVerdict`). If not, return `not-cacheable`.
 2. Check if caching is enabled (`cache` flag). If not, return `cache-disabled`.
 3. Compute input fingerprints from config files and declared input patterns.
 4. Compute cache key from `{taskId, inputsFingerprints, env, options, dependencyFingerprints}`.
@@ -32,6 +73,11 @@ Cache validation produces exactly one of five results:
 8. Compute current output fingerprints.
 9. If the latest run's cache key matches AND output fingerprints match, return `up-to-date`.
 10. Otherwise, return `restore-from-cache`.
+
+Under verdict caching, steps 8-10 are replaced by: return `up-to-date` if the latest run's
+cache key matches, and `cache-miss` otherwise. `restore-from-cache` never occurs for a
+verdict-cached task, because there is nothing to restore — a cache entry for a key that is
+not the latest run is indistinguishable from no entry, so the task re-runs.
 
 ## Input Fingerprinting
 
@@ -68,6 +114,10 @@ The hash is SHA-256 with unordered object and array comparison, producing a 64-c
 hex string.
 
 ### Dependency Fingerprints
+
+A verdict-cached task contributes the fingerprint of its empty output set to downstream
+tasks, which is a constant. It therefore never invalidates a downstream task's cache key —
+correctly, since it produces nothing a downstream task could consume.
 
 When a task depends on other tasks (via `dependsOn`), the cache key includes the
 output fingerprints of its direct dependencies. This ensures that a downstream task
@@ -132,14 +182,14 @@ for filesystem compatibility. For example, `packages:foo:build` becomes
 
 **Run metadata** (`tasks/{id}/runs/{key}/metadata.json`):
 
-| Field                | Description                                       |
-| -------------------- | ------------------------------------------------- |
-| `version`            | Schema version (currently `1`).                   |
-| `taskId`             | Task identifier string.                           |
-| `cacheKey`           | Cache key for this run.                           |
-| `timestamp`          | ISO 8601 timestamp of when the run was cached.    |
-| `inputsFingerprints` | Map of file path to SHA-256 hash.                 |
-| `outputsFingerprint` | SHA-256 hash of all output fingerprints combined. |
+| Field                | Description                                                                                               |
+| -------------------- | --------------------------------------------------------------------------------------------------------- |
+| `version`            | Schema version (currently `1`).                                                                           |
+| `taskId`             | Task identifier string.                                                                                   |
+| `cacheKey`           | Cache key for this run.                                                                                   |
+| `timestamp`          | ISO 8601 timestamp of when the run was cached.                                                            |
+| `inputsFingerprints` | Map of file path to SHA-256 hash.                                                                         |
+| `outputsFingerprint` | SHA-256 hash of all output fingerprints combined. Under verdict caching, the hash of an empty output set. |
 
 ## Output Snapshot
 
@@ -166,13 +216,13 @@ On restore-from-cache:
 
 After validation, the cache is updated based on the result:
 
-| Result               | Update Action                                                               |
-| -------------------- | --------------------------------------------------------------------------- |
-| `not-cacheable`      | No action.                                                                  |
-| `up-to-date`         | No action.                                                                  |
-| `restore-from-cache` | Update latest run pointer.                                                  |
-| `cache-miss`         | Save outputs, write run metadata, update latest pointer, evict old entries. |
-| `cache-disabled`     | No action.                                                                  |
+| Result               | Update Action                                                                                                                                                                                                   |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `not-cacheable`      | No action.                                                                                                                                                                                                      |
+| `up-to-date`         | No action.                                                                                                                                                                                                      |
+| `restore-from-cache` | Update latest run pointer.                                                                                                                                                                                      |
+| `cache-miss`         | Save outputs, write run metadata, update latest pointer, evict old entries. Under verdict caching only the metadata is written — there are no outputs to save — and this happens only after the task succeeded. |
+| `cache-disabled`     | No action.                                                                                                                                                                                                      |
 
 ## Cache Eviction
 

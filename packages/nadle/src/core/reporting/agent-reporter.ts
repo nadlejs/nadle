@@ -34,6 +34,10 @@ export class AgentReporter implements Listener {
 		this.context.logger.log(`FROM-CACHE ${task.label}`);
 	}
 
+	public async onTaskSkipped(task: RegisteredTask) {
+		this.context.logger.log(`SKIPPED ${task.label}`);
+	}
+
 	public async onTaskFailed(task: RegisteredTask) {
 		this.context.logger.log(`FAILED ${task.label} ${this.duration(task)}`);
 		this.context.logger.log(`REPRO nadle ${task.label}`);
@@ -80,8 +84,9 @@ export class AgentReporter implements Listener {
 			.add(`done ${this.stats[TaskStatus.Finished]}`)
 			.add(this.stats[TaskStatus.UpToDate] > 0 && `up-to-date ${this.stats[TaskStatus.UpToDate]}`)
 			.add(this.stats[TaskStatus.FromCache] > 0 && `cached ${this.stats[TaskStatus.FromCache]}`)
+			.add(this.stats[TaskStatus.Skipped] > 0 && `skipped ${this.stats[TaskStatus.Skipped]}`)
 			.add(this.stats[TaskStatus.Failed] > 0 && `failed ${this.stats[TaskStatus.Failed]}`)
-			.add(this.tracker.skippedCount > 0 && `skipped ${this.tracker.skippedCount}`)
+			.add(this.tracker.notRunCount > 0 && `not-run ${this.tracker.notRunCount}`)
 			.build();
 
 		return `${result} in ${formatTime(this.tracker.duration)} (${counts})`;

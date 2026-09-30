@@ -58,7 +58,7 @@ export interface TaskHookContext<Options> {
 	/** The options this plugin was applied with. */
 	readonly pluginOptions: Options;
 	/** How the task settled — present only in `afterTask`. */
-	readonly result?: "done" | "failed" | "up-to-date" | "from-cache" | "canceled";
+	readonly result?: "done" | "failed" | "up-to-date" | "from-cache" | "canceled" | "skipped";
 }
 
 /** Optional plugin lifecycle hooks. All run on the main thread. */

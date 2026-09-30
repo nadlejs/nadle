@@ -9,15 +9,17 @@ directly, or **lazily** so that its resolution is deferred until first needed.
 
 All fields are optional.
 
-| Field         | Type                                   | Description                                                        |
-| ------------- | -------------------------------------- | ------------------------------------------------------------------ |
-| `dependsOn`   | string or array of strings             | Tasks that must complete before this task runs.                    |
-| `env`         | map of string to string/number/boolean | Environment variables injected into the worker.                    |
-| `workingDir`  | string                                 | Working directory for the task, relative to the project root.      |
-| `inputs`      | declaration or array of declarations   | File patterns the task reads from. Used for cache fingerprinting.  |
-| `outputs`     | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration. |
-| `group`       | string                                 | Group label for display in `--list` output only.                   |
-| `description` | string                                 | Description for display in `--list` output only.                   |
+| Field          | Type                                   | Description                                                                                      |
+| -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `dependsOn`    | string or array of strings             | Tasks that must complete before this task runs.                                                  |
+| `env`          | map of string to string/number/boolean | Environment variables injected into the worker.                                                  |
+| `workingDir`   | string                                 | Working directory for the task, relative to the project root.                                    |
+| `inputs`       | declaration or array of declarations   | File patterns the task reads from. Used for cache fingerprinting.                                |
+| `outputs`      | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration.                               |
+| `cacheVerdict` | boolean                                | Opts an `inputs`-only task into caching its success verdict. See [05-caching.md](05-caching.md). |
+| `group`        | string                                 | Group label for display in `--list` output only.                                                 |
+| `description`  | string                                 | Description for display in `--list` output only.                                                 |
+| `onlyIf`       | predicate function                     | Runtime condition; when it resolves falsey the task is skipped.                                  |
 
 ## Supplying Configuration
 
@@ -32,6 +34,19 @@ task: it is not evaluated at registration, only when the configuration is first 
 never runs more than once for a task in a given invocation (configuration avoidance). A
 lazy configuration must therefore be pure with respect to that single evaluation; do not
 rely on a side effect running on every read.
+
+## Unknown Fields
+
+A configuration field that is not one of the fields above is **unrecognized**. An
+unrecognized field has no effect, and the implementation MUST emit a warning naming both
+the task and the field, so that a misspelled field (for example a misspelled `dependsOn`,
+which would otherwise drop the dependency silently) is visible at configuration-loading
+time rather than surfacing later as a nondeterministic ordering failure. The warning MAY
+name a close known field as a suggestion. An unrecognized field MUST NOT fail the run: a
+configuration written for a newer version must stay loadable on an older one.
+
+The warning is emitted once per unrecognized field per task. For a lazily-supplied
+configuration it is emitted when that configuration is first resolved.
 
 ## dependsOn Resolution
 
@@ -91,3 +106,31 @@ task function; an attempt that does not settle in time fails with a timeout erro
 after the first failure. Together a task runs up to `1 + retries` attempts and
 fails only if all attempts fail. Both apply only to the task function, not to
 cache restore. See [04-execution.md](04-execution.md).
+
+## Conditional Execution
+
+A task may declare `onlyIf`, a predicate deciding whether the task's body runs. The
+predicate receives the same argument shape as the task body, namely the run context and
+the resolved task options, and may resolve synchronously or asynchronously.
+
+- When `onlyIf` is omitted, or resolves to a **truthy** value, the task executes normally.
+- When it resolves to a **falsey** value, the task is **skipped**: its body does not run and
+  the task settles with the Skipped status (see [01-task.md](01-task.md)).
+
+The predicate is evaluated **at execution time**, after the task's configuration, options,
+and working directory are resolved, and **before cache validation**. Consequences:
+
+- The predicate may observe state produced by the task's dependencies, which have already
+  completed by the time it runs.
+- A skipped task performs no cache work: no fingerprint is computed, no outputs are
+  restored, and no cache entry is written. This holds even when the task declares inputs
+  and outputs.
+- A skipped task contributes no outputs fingerprint to its dependents.
+
+Skipping affects only the task itself. Its dependencies have already run, and its dependents
+still run, treating the skipped task as satisfied. Skipping never removes tasks from the
+graph — that is the role of exclusion (see [03-scheduling.md](03-scheduling.md)).
+
+A predicate that throws, or whose returned promise rejects, fails the task exactly as a
+failing task body does. `timeout` and `retries` bound the task function only; they do not
+apply to the predicate, which is evaluated once.

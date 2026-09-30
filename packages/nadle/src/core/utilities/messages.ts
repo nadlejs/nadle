@@ -4,6 +4,7 @@ import { highlight } from "./utils.js";
 
 export const Messages = {
 	InvalidConfigureUsage: () => `configure function can only be called from the root workspace.`,
+	ConfigFileLoadFailed: (filePath: string, reason: string) => `Failed to load config file ${highlight(filePath)}: ${reason}`,
 	SpecifiedConfigFileNotFound: (filePath: string) => `Config file not found at ${highlight(filePath)}. Please check the path.`,
 	InvalidWorkerConfig: (type: "min" | "max", value: string) =>
 		`Invalid value for --${type}-workers. Expect to be an integer or a percentage (e.g., 50%). Got: ${highlight(value)}`,
@@ -22,6 +23,9 @@ export const Messages = {
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)} workspace.`,
 	InvalidTaskName: (taskName: string) =>
 		`Invalid task name: ${highlight(taskName)}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`,
+	UnknownTaskConfigKey: (taskName: string, key: string, suggestion: string | undefined) =>
+		`Task ${highlight(taskName)} has an unknown configuration key ${highlight(key)}, which is ignored.` +
+		`${suggestion ? ` Did you mean ${highlight(suggestion)}?` : ""}`,
 	UnresolvedTaskWithSuggestions: (options: {
 		suggestions: string;
 		taskNameInput: string;

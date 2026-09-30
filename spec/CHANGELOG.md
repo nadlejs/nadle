@@ -8,6 +8,56 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.2.0 — 2026-09-30
+
+### Added
+
+- 02-task-configuration: New "Unknown Fields" section. A task configuration field that is
+  not a recognized field MUST produce a warning naming the task and the field, and MUST NOT
+  fail the run. Previously unrecognized fields were silently accepted, so a misspelled
+  `dependsOn` dropped the dependency without a diagnostic and the run passed in an
+  unconstrained order.
+- 02-task-configuration: New `onlyIf` field — a predicate evaluated at execution time that
+  skips a task's body when it resolves falsey. Evaluated after configuration, options, and
+  working directory resolution but before cache validation, so it may observe state produced
+  by dependencies and a skipped task performs no cache work. Skipping affects only the task
+  itself: dependencies have already run and dependents still run.
+- 01-task: New `Skipped` terminal status, entered directly from Scheduled alongside UpToDate
+  and FromCache.
+- 04-execution: New `"skipped"` worker message type.
+- 11-events, 14-plugins: New `onTaskSkipped` event, mapped to the `afterTask` plugin hook.
+  `beforeTask` does not fire for skipped tasks, matching its existing cache-hit behavior.
+- 05-caching, 02-task-configuration: Verdict caching. A task that declares `inputs` but no
+  `outputs` may set `cacheVerdict` to have its **success** outcome cached against those
+  inputs and replayed while they are unchanged. This covers linters, formatters in check
+  mode and type-checkers, whose entire result is the exit code and which were previously
+  impossible to cache. Only success is recorded, so a failing task always re-runs and
+  re-emits its diagnostics. `cacheVerdict` is an explicit opt-in because it asserts a
+  contract the implementation cannot verify: that the task produces no artifact any
+  downstream task consumes.
+
+### Changed
+
+- 02-task-configuration: The `onlyIf` predicate receives the same argument shape as the task
+  body, the run context and the resolved task options, so it may decide based on options.
+- 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
+  reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
+- 13-reporting: The failed-run summary's not-run clause is worded "downstream tasks not run",
+  naming the relationship that caused the tasks to be left unexecuted.
+
+### Fixed
+
+- 10-builtin-tasks: Exec-based built-in tasks no longer override a `FORCE_COLOR` or `NO_COLOR`
+  value present in the task's environment. Color is forced (`FORCE_COLOR=1`) only when neither
+  is set, so a task can opt out of forced color by configuring its own environment.
+
+### Changed
+
+- 08-configuration-loading, 12-error-handling: A config file that cannot be loaded (for
+  example because one of its imports cannot be resolved) now fails with a configuration error
+  (exit code `2`) whose message names the file and the cause. Previously such failures exited
+  `1` with no output. A config file may live outside the project root.
+
 ## 4.1.1 — 2026-06-21
 
 ### Changed

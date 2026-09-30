@@ -175,3 +175,20 @@ const lintSpec = defineSpec({
 
 tasks.register("lint", lintSpec);
 ```
+
+## Unknown configuration keys
+
+A key on the spec that is neither `run`/`options` nor a known configuration field is ignored,
+and Nadle warns about it at configuration-loading time, naming the task and the key:
+
+```text
+Task build has an unknown configuration key dependsOnn, which is ignored. Did you mean dependsOn?
+```
+
+TypeScript already rejects such a key in a typed config, but it can still slip through an
+`as any`, a JavaScript or generated config, or a config written against a newer Nadle version.
+The warning matters most for a misspelled `dependsOn`: without it the dependency silently
+disappears and the build passes in an unconstrained order.
+
+An unknown key is never a hard error, so a config written for a newer Nadle stays loadable on
+an older one.
