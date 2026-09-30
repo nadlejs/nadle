@@ -1,6 +1,6 @@
 # Nadle Specification
 
-**Version**: 4.1.1
+**Version**: 4.2.0
 
 This directory contains the language-agnostic specification for Nadle, a type-safe,
 Gradle-inspired task runner for Node.js.

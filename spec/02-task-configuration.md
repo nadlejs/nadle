@@ -33,6 +33,19 @@ never runs more than once for a task in a given invocation (configuration avoida
 lazy configuration must therefore be pure with respect to that single evaluation; do not
 rely on a side effect running on every read.
 
+## Unknown Fields
+
+A configuration field that is not one of the fields above is **unrecognized**. An
+unrecognized field has no effect, and the implementation MUST emit a warning naming both
+the task and the field, so that a misspelled field (for example a misspelled `dependsOn`,
+which would otherwise drop the dependency silently) is visible at configuration-loading
+time rather than surfacing later as a nondeterministic ordering failure. The warning MAY
+name a close known field as a suggestion. An unrecognized field MUST NOT fail the run: a
+configuration written for a newer version must stay loadable on an older one.
+
+The warning is emitted once per unrecognized field per task. For a lazily-supplied
+configuration it is emitted when that configuration is first resolved.
+
 ## dependsOn Resolution
 
 Dependency strings are resolved as follows:

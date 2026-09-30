@@ -25,7 +25,7 @@ function withInstance(fn: () => void) {
 	const taskRegistry = new TaskRegistry();
 	const pluginRegistry = new PluginRegistry();
 	taskRegistry.onConfigureWorkspace("root");
-	runWithInstance({ taskRegistry, pluginRegistry, fileOptionRegistry: {} as never }, fn);
+	runWithInstance({ taskRegistry, pluginRegistry, logger: {} as never, fileOptionRegistry: {} as never }, fn);
 
 	return { taskRegistry, pluginRegistry };
 }
