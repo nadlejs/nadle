@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.2.1 — 2026-09-30
+
+### Changed
+
+- 03-scheduling: Tightened the sequential-mode completion rule for a main task. It said the
+  main task is complete once no task in its tree can be admitted any more; read literally
+  that advances early whenever every task in the tree happens to be running, since nothing
+  is admissible at that instant even though each pending completion may still admit its
+  dependents. Completion now also requires that no task in the tree is still running.
+
 ## 4.2.0 — 2026-09-30
 
 ### Added

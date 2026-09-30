@@ -90,7 +90,7 @@ describe("--continue over graph shapes", () => {
 			}
 		}));
 
-	it("keeps admitting an independent branch on the pool executor", () =>
+	it("counts blocked tasks on the pool executor", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
