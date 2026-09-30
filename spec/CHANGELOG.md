@@ -53,18 +53,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 
 ### Changed
 
-- 13-reporting: The failed-run summary replaces the single "downstream tasks not run" count
-  with two counts, **blocked** and **not started**, in both the default and the agent
-  reporter. The single count described every unexecuted task as downstream of the failure,
-  which was wrong for tasks independent of it, and the two states read differently to
-  someone deciding whether a re-run is needed: a non-zero not-started count is exactly the
-  signal that `--continue` would have produced more verdicts in the same run.
+- 13-reporting: The failed-run summary counts tasks that never ran as two separate counts,
+  **blocked** and **not started**, in both the default and the agent reporter, and the word
+  "skipped" is reserved for `onlyIf`. A single count conflating the two described every
+  unexecuted task as downstream of the failure, which was wrong for tasks independent of it,
+  and the two states read differently to someone deciding whether a re-run is needed: a
+  non-zero not-started count is exactly the signal that `--continue` would have produced more
+  verdicts in the same run. **Breaking for consumers parsing the agent reporter summary
+  line**: the `not-run` token is removed and replaced by `blocked` and `not-started`.
 - 02-task-configuration: The `onlyIf` predicate receives the same argument shape as the task
   body, the run context and the resolved task options, so it may decide based on options.
-- 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
-  reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
-- 13-reporting: The failed-run summary's not-run clause is worded "downstream tasks not run",
-  naming the relationship that caused the tasks to be left unexecuted.
 
 ### Fixed
 
