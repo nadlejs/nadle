@@ -1,6 +1,6 @@
 import { isWindows } from "std-env";
 import { it, expect, describe } from "vitest";
-import { withFixture, watchSession, createFileModifier } from "setup";
+import { settle, withFixture, watchSession, createFileModifier } from "setup";
 
 // Windows file-watching is the #420 risk area; start skipped there.
 describe.skipIf(isWindows)("--watch", () => {
@@ -45,15 +45,13 @@ describe.skipIf(isWindows)("--watch", () => {
 			copyAll: true,
 			fixtureDir: "main",
 			testFn: async ({ exec }) => {
-				const session = watchSession(exec`hello --watch`);
-
-				const out = await session.waitFor("nothing to watch");
-
-				expect(out).toContain("No watchable inputs");
-
-				const exitCode = await session.stop();
+				// A task with nothing watchable exits on its own, so assert on the settled
+				// output: waiting for a marker on a live stream races the process exiting
+				// before the listener attaches (#730).
+				const { stdout, stderr, exitCode } = await settle(exec`hello --watch`);
 
 				expect(exitCode).toBe(0);
+				expect(stdout + stderr).toContain("No watchable inputs");
 			}
 		}));
 });
