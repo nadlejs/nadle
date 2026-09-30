@@ -22,9 +22,19 @@ export class TaskScheduler {
 	private readonly rootAggregationDeps = new Map<TaskIdentifier, Set<TaskIdentifier>>();
 	private taskIds: TaskIdentifier[] = [];
 	private excludedTaskIds = new Set<TaskIdentifier>();
-	private mainTaskId: string | undefined = undefined;
+	/**
+	 * Cursor into `taskIds` for the sequential walk, or -1 when there is no current
+	 * main task. A position, not an id: the same task id can be requested twice
+	 * (`nadle build build`), and advancing by looking the id up would park on the
+	 * first occurrence forever. The cursor bounds the walk by `taskIds.length`.
+	 */
+	private mainTaskIndex = -1;
 
 	public constructor(private readonly deps: SchedulerDependencies) {}
+
+	private get mainTaskId(): TaskIdentifier | undefined {
+		return this.mainTaskIndex >= 0 ? this.taskIds[this.mainTaskIndex] : undefined;
+	}
 
 	public init(taskIds: string[] = this.deps.options.tasks.map(({ taskId }) => taskId)): this {
 		this.reset();
@@ -35,8 +45,8 @@ export class TaskScheduler {
 		this.deps.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
 		this.deps.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
 
-		if (!this.deps.options.parallel) {
-			this.mainTaskId = this.taskIds[0];
+		if (!this.deps.options.parallel && this.taskIds.length > 0) {
+			this.mainTaskIndex = 0;
 		}
 
 		return this;
@@ -55,7 +65,7 @@ export class TaskScheduler {
 		this.failedTaskIds.clear();
 		this.implicitEdges.clear();
 		this.rootAggregationDeps.clear();
-		this.mainTaskId = undefined;
+		this.mainTaskIndex = -1;
 	}
 
 	private expandWorkspaceTasks(taskIds: string[]): string[] {
@@ -311,9 +321,21 @@ export class TaskScheduler {
 		return nextReadyTasks;
 	}
 
-	private moveToNextMainTask() {
-		const nextIndex = this.mainTaskId !== undefined ? this.taskIds.indexOf(this.mainTaskId) + 1 : -1;
-		this.mainTaskId = nextIndex >= 0 ? this.taskIds[nextIndex] : undefined;
+	// Advances the cursor by one position. Returns the new main task id, or undefined
+	// once the list is exhausted — which also stops the walk in
+	// getInitialReadyTasksAcrossMainTasks after at most taskIds.length steps.
+	private moveToNextMainTask(): TaskIdentifier | undefined {
+		if (this.mainTaskIndex < 0 || this.mainTaskIndex >= this.taskIds.length) {
+			this.mainTaskIndex = -1;
+
+			return undefined;
+		}
+
+		this.mainTaskIndex += 1;
+
+		if (this.mainTaskIndex >= this.taskIds.length) {
+			this.mainTaskIndex = -1;
+		}
 
 		return this.mainTaskId;
 	}
