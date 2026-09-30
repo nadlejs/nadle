@@ -3,9 +3,16 @@
 ## [0.6.0](https://github.com/nadlejs/nadle/compare/nadle/v0.5.3...nadle/v0.6.0) (2026-09-30)
 
 
+### ⚠ BREAKING CHANGES
+
+* `tasks.register` no longer accepts the positional `(name, task, optionsResolver)` overloads or the fluent `.config()` builder; `TaskConfigurationBuilder` is removed. Tasks are now registered with a single keyed spec object — `tasks.register(name, { run, options, ...config })` — with `register(name)` / `register(name, fn)` shorthands and `lazy(() => spec)` for deferred config. Migrate existing configs with the bundled codemod (`packages/nadle/scripts/codemod-register-api.ts`). ([#688](https://github.com/nadlejs/nadle/issues/688))
+
 ### Features
 
 * --json output for read commands ([#683](https://github.com/nadlejs/nadle/issues/683)) ([a0ff881](https://github.com/nadlejs/nadle/commit/a0ff8813f640507be365284a37419e11d60d483a))
+* Add onlyIf for conditional task execution ([#714](https://github.com/nadlejs/nadle/issues/714)) ([919ad73](https://github.com/nadlejs/nadle/commit/919ad73099d6406e1df8d53d6028eea47ea0f5d8))
+* Cache the success verdict of inputs-only tasks ([#723](https://github.com/nadlejs/nadle/issues/723)) ([8a312ca](https://github.com/nadlejs/nadle/commit/8a312caec4e220acb9f877ddaf3cbe88a489e599))
+* Keyed-spec task registration API ([#688](https://github.com/nadlejs/nadle/issues/688)) ([185f0cc](https://github.com/nadlejs/nadle/commit/185f0cc544fbec238cc6fd971165e3c853dcd538))
 * --summary shows critical path and cache-miss hotspots ([#670](https://github.com/nadlejs/nadle/issues/670)) ([eb43c43](https://github.com/nadlejs/nadle/commit/eb43c4337e05f810abfc8461bc6d5ee4c02b2a4e))
 * --watch re-runs tasks on input change ([#657](https://github.com/nadlejs/nadle/issues/657)) ([3450499](https://github.com/nadlejs/nadle/commit/3450499d26ea57979c5a0ea9020e17b358d51479))
 * --why explains each task's cache outcome ([#654](https://github.com/nadlejs/nadle/issues/654)) ([c2fe09e](https://github.com/nadlejs/nadle/commit/c2fe09ea8cd2877cfe6a93385c0a22c6f99a79bb))
@@ -28,6 +35,7 @@
 
 * Coerce non-string task env values to strings ([6e13bdc](https://github.com/nadlejs/nadle/commit/6e13bdcd1029a91cf655e0df62943753203761c2))
 * Ignore workspace pattern matching the project root ([#702](https://github.com/nadlejs/nadle/issues/702)) ([3a6d959](https://github.com/nadlejs/nadle/commit/3a6d9592ed837bb6e1d5c2ad358f69ba2ceaf49c))
+* Let tasks opt out of forced color ([#720](https://github.com/nadlejs/nadle/issues/720)) ([280a658](https://github.com/nadlejs/nadle/commit/280a65897ad3816fa5d1b10ae16f5b7816df8fcd))
 * Report config load failures instead of exiting silently ([#722](https://github.com/nadlejs/nadle/issues/722)) ([55053b8](https://github.com/nadlejs/nadle/commit/55053b810b0857f589803af90fa03e4c4d8d1fe0))
 * Typecheck the caching-verdict fixture against the pinned nadle ([257384e](https://github.com/nadlejs/nadle/commit/257384e1ba086b0a9003939a78139cdb8f6e5fc3))
 * Warn on unrecognized task-config keys ([#721](https://github.com/nadlejs/nadle/issues/721)) ([9b1924c](https://github.com/nadlejs/nadle/commit/9b1924c49141230cb0777f63888fb4321430a984))
