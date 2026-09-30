@@ -34,12 +34,38 @@ export class TaskPool {
 			maxWorkers === 1 ? new InlineExecutor(this.context as unknown as Nadle) : new PoolExecutor({ minThreads: minWorkers, maxThreads: maxWorkers });
 	}
 
+	/**
+	 * Lets every in-flight task settle before the pool is destroyed, so a task that
+	 * was already running reports its own verdict instead of being terminated and
+	 * recorded as canceled. Fail-fast is unaffected: `pushTask` throws before it
+	 * queries the scheduler, so tasks that never started are never dispatched.
+	 */
 	public async run() {
+		let settle: () => void;
+
 		try {
-			await Promise.all(Array.from(this.getNextReadyTasks()).map((taskId) => this.pushTask(taskId)));
+			settle = await this.pushTasks(this.getNextReadyTasks());
 		} finally {
 			await this.executor.destroy();
 		}
+
+		settle();
+	}
+
+	/**
+	 * Dispatches a set of ready tasks and waits for all of them to settle. Returns a
+	 * thunk that rethrows the first failure, letting the caller decide when to surface
+	 * it — `run` defers it until after the pool is destroyed.
+	 */
+	private async pushTasks(taskIds: Set<TaskIdentifier>): Promise<() => void> {
+		const results = await Promise.allSettled(Array.from(taskIds).map((taskId) => this.pushTask(taskId)));
+		const failure = results.find((result) => result.status === "rejected");
+
+		return () => {
+			if (failure) {
+				throw failure.reason;
+			}
+		};
 	}
 
 	private async pushTask(taskId: string) {
@@ -79,7 +105,7 @@ export class TaskPool {
 			throw toTaskExecutionError(error, task.label);
 		}
 
-		await Promise.all(Array.from(this.getNextReadyTasks(taskId)).map((readyTaskId) => this.pushTask(readyTaskId)));
+		(await this.pushTasks(this.getNextReadyTasks(taskId)))();
 	}
 
 	private async executeWorker(taskId: string) {
