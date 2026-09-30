@@ -118,20 +118,29 @@ function renderDescription(options: RawOptions): string {
 	return options.description ?? options.describe ?? "";
 }
 
+/**
+ * Renders a markdown table with padded columns, matching what prettier produces.
+ * Emitting it unaligned leaves the tree dirty after every regeneration (#735).
+ */
+function renderTable(headers: string[], rows: string[][]): string {
+	const widths = headers.map((header, index) => Math.max(header.length, ...rows.map((row) => row[index].length)));
+	const line = (cells: string[]) => `| ${cells.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
+
+	return [line(headers), `| ${widths.map((width) => "-".repeat(width)).join(" | ")} |`, ...rows.map(line)].join("\n");
+}
+
 async function main() {
 	const cliOptions = await loadCliOptions();
 	const entries = Object.values(cliOptions).filter((entry) => !entry.options.hidden);
 
-	const rows = entries.map((entry) => {
-		const flag = renderFlag(entry);
-		const type = renderType(entry.options);
-		const def = renderDefault(entry.options);
-		const description = escapeCell(renderDescription(entry.options));
+	const rows = entries.map((entry) => [
+		renderFlag(entry),
+		renderType(entry.options),
+		renderDefault(entry.options),
+		escapeCell(renderDescription(entry.options))
+	]);
 
-		return `| ${flag} | ${type} | ${def} | ${description} |`;
-	});
-
-	const table = ["| Flag | Type | Default | Description |", "| --- | --- | --- | --- |", ...rows].join("\n");
+	const table = renderTable(["Flag", "Type", "Default", "Description"], rows);
 
 	const content = `${FRONTMATTER}\n\n${HEADER}\n${table}\n${FOOTER}`;
 
