@@ -356,6 +356,7 @@ export interface Task<Options = unknown> {
 
 // @public
 export interface TaskConfiguration<Options = unknown> {
+    cacheVerdict?: boolean;
     dependsOn?: MaybeArray<string>;
     description?: string;
     env?: TaskEnv;

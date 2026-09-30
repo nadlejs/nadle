@@ -27,6 +27,14 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - 04-execution: New `"skipped"` worker message type.
 - 11-events, 14-plugins: New `onTaskSkipped` event, mapped to the `afterTask` plugin hook.
   `beforeTask` does not fire for skipped tasks, matching its existing cache-hit behavior.
+- 05-caching, 02-task-configuration: Verdict caching. A task that declares `inputs` but no
+  `outputs` may set `cacheVerdict` to have its **success** outcome cached against those
+  inputs and replayed while they are unchanged. This covers linters, formatters in check
+  mode and type-checkers, whose entire result is the exit code and which were previously
+  impossible to cache. Only success is recorded, so a failing task always re-runs and
+  re-emits its diagnostics. `cacheVerdict` is an explicit opt-in because it asserts a
+  contract the implementation cannot verify: that the task produces no artifact any
+  downstream task consumes.
 
 ### Changed
 

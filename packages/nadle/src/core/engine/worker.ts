@@ -7,11 +7,11 @@ import { getWorkspaceById } from "@nadle/project-resolver";
 import { Nadle } from "../nadle.js";
 import { runWithRetries } from "./task-runner.js";
 import { bindObject } from "../utilities/utils.js";
+import { explainCacheOutcome } from "./explain-cache.js";
 import { type RunnerContext } from "../interfaces/task.js";
 import { CacheValidator } from "../caching/cache-validator.js";
 import { type NadleResolvedOptions } from "../options/types.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
-import { explainCacheOutcome } from "../caching/explain-cache-outcome.js";
 import { type TaskEnv, type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 // In a worker thread this is the real thread id (>= 1). In the main process
@@ -93,7 +93,7 @@ export async function runTask(
 	nadle.logger.debug({ tag: "Caching" }, c.yellow(taskId), validationResult.result);
 
 	if (nadle.options.why) {
-		nadle.logger.log(explainCacheOutcome(task.label, validationResult));
+		nadle.logger.log(explainCacheOutcome(task.label, validationResult, taskConfig));
 	}
 
 	const ctx: DispatchContext = { task, notify, context, taskConfig, taskOptions, environmentInjector };

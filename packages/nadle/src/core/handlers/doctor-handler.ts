@@ -95,13 +95,16 @@ export class DoctorHandler extends BaseHandler {
 			const hasInputs = config.inputs !== undefined;
 			const hasOutputs = config.outputs !== undefined;
 
-			if (hasInputs !== hasOutputs) {
-				const missing = hasInputs ? "outputs" : "inputs";
-				findings.push({
-					status: "warning",
-					message: `Task ${task.label} declares ${hasInputs ? "inputs" : "outputs"} but no ${missing}, so it is never cached.`
-				});
+			if (hasInputs === hasOutputs || config.cacheVerdict) {
+				continue;
 			}
+
+			findings.push({
+				status: "warning",
+				message: hasInputs
+					? `Task ${task.label} declares inputs but no outputs, so it is never cached. Add outputs, or set cacheVerdict if it produces no files.`
+					: `Task ${task.label} declares outputs but no inputs, so it is never cached.`
+			});
 		}
 
 		return findings;

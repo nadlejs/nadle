@@ -9,16 +9,17 @@ directly, or **lazily** so that its resolution is deferred until first needed.
 
 All fields are optional.
 
-| Field         | Type                                   | Description                                                        |
-| ------------- | -------------------------------------- | ------------------------------------------------------------------ |
-| `dependsOn`   | string or array of strings             | Tasks that must complete before this task runs.                    |
-| `env`         | map of string to string/number/boolean | Environment variables injected into the worker.                    |
-| `workingDir`  | string                                 | Working directory for the task, relative to the project root.      |
-| `inputs`      | declaration or array of declarations   | File patterns the task reads from. Used for cache fingerprinting.  |
-| `outputs`     | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration. |
-| `group`       | string                                 | Group label for display in `--list` output only.                   |
-| `description` | string                                 | Description for display in `--list` output only.                   |
-| `onlyIf`      | predicate function                     | Runtime condition; when it resolves falsey the task is skipped.    |
+| Field          | Type                                   | Description                                                                                      |
+| -------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `dependsOn`    | string or array of strings             | Tasks that must complete before this task runs.                                                  |
+| `env`          | map of string to string/number/boolean | Environment variables injected into the worker.                                                  |
+| `workingDir`   | string                                 | Working directory for the task, relative to the project root.                                    |
+| `inputs`       | declaration or array of declarations   | File patterns the task reads from. Used for cache fingerprinting.                                |
+| `outputs`      | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration.                               |
+| `cacheVerdict` | boolean                                | Opts an `inputs`-only task into caching its success verdict. See [05-caching.md](05-caching.md). |
+| `group`        | string                                 | Group label for display in `--list` output only.                                                 |
+| `description`  | string                                 | Description for display in `--list` output only.                                                 |
+| `onlyIf`       | predicate function                     | Runtime condition; when it resolves falsey the task is skipped.                                  |
 
 ## Supplying Configuration
 

@@ -36,6 +36,10 @@ export const TaskConfigurationSchema = {
 			type: "integer",
 			description: "Number of additional attempts after the first failure (default 0)."
 		},
+		cacheVerdict: {
+			type: "boolean",
+			description: "Caches the success verdict of an inputs-only task that produces no output files."
+		},
 		maxCacheEntries: {
 			minimum: 0,
 			type: "integer",
