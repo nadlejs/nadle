@@ -1,5 +1,34 @@
 # nadle
 
+## [0.6.1](https://github.com/nadlejs/nadle/compare/nadle/v0.6.0...nadle/v0.6.1) (2026-09-30)
+
+
+### Features
+
+* Add --continue to keep running after a task fails ([#737](https://github.com/nadlejs/nadle/issues/737)) ([36c37f0](https://github.com/nadlejs/nadle/commit/36c37f0e6a0221d1fd7260c2a7d05cfe082a43d7))
+
+
+### Bug Fixes
+
+* Keep relayed task output plain under the agent reporter ([#732](https://github.com/nadlejs/nadle/issues/732)) ([1da8ed0](https://github.com/nadlejs/nadle/commit/1da8ed0568da0bf758324681189fbadeaca02330))
+* Let in-flight tasks settle before tearing down the pool ([#733](https://github.com/nadlejs/nadle/issues/733)) ([860c06f](https://github.com/nadlejs/nadle/commit/860c06f525a31e1d1c2d1cdd075918aed7b418ff))
+
+
+### Internal
+
+* Bootstrap on the published nadle 0.6.0 ([1342852](https://github.com/nadlejs/nadle/commit/13428520e6f9cc1e4c09ed10a040de9e410410ef))
+* De-flake the no-watchable-inputs watch test ([5c84b04](https://github.com/nadlejs/nadle/commit/5c84b0471fc04a5f4b991e659e70806e5944a04e)), closes [#730](https://github.com/nadlejs/nadle/issues/730)
+* **deps-dev:** Bump @size-limit/file from 12.1.0 to 13.0.3 ([#710](https://github.com/nadlejs/nadle/issues/710)) ([93082ab](https://github.com/nadlejs/nadle/commit/93082ab81d079b5c004a402da5e85dcfc71f9959))
+* **deps:** Bump postcss from 8.5.15 to 8.5.23 in the security-updates group across 1 directory ([#706](https://github.com/nadlejs/nadle/issues/706)) ([985c602](https://github.com/nadlejs/nadle/commit/985c602ccbf0eae61421e617bb3082573ff29160))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.6.0](https://github.com/nadlejs/nadle/compare/nadle/v0.5.3...nadle/v0.6.0) (2026-09-30)
 
 
