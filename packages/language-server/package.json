@@ -23,7 +23,7 @@
 		"@nadle/project-resolver": "workspace:^",
 		"typescript": "^5.9.3",
 		"vscode-languageserver": "^9.0.1",
-		"vscode-languageserver-textdocument": "^1.0.12"
+		"vscode-languageserver-textdocument": "^1.0.15"
 	},
 	"devDependencies": {
 		"@size-limit/file": "^12.1.0",
