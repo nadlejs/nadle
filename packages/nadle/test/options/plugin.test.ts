@@ -9,6 +9,11 @@ const files = fixture()
 	.configRaw(await readConfig("plugin-basic.ts"))
 	.build();
 
+const onlyIfFiles = fixture()
+	.packageJson("plugin-only-if")
+	.configRaw(await readConfig("plugin-only-if.ts"))
+	.build();
+
 describe("plugins", () => {
 	it("fires beforeAll and afterAll around a run", () =>
 		withGeneratedFixture({
@@ -33,6 +38,19 @@ describe("plugins", () => {
 				const log = await Fs.readFile(Path.join(cwd, "hooks.log"), "utf8");
 				expect(log).toContain("beforeTask:hello");
 				expect(log).toContain("afterTask:hello:done");
+			}
+		}));
+
+	it("fires afterTask but not beforeTask for a skipped task", () =>
+		withGeneratedFixture({
+			files: onlyIfFiles,
+			testFn: async ({ cwd, exec }) => {
+				const result = await settle(exec`guarded`);
+				expect(result.exitCode).toBe(0);
+
+				const log = await Fs.readFile(Path.join(cwd, "hooks.log"), "utf8");
+				expect(log).toContain("afterTask:guarded:skipped");
+				expect(log).not.toContain("beforeTask:guarded");
 			}
 		}));
 });

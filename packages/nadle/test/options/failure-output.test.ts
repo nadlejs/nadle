@@ -31,7 +31,7 @@ describe("failure output", () => {
 			}
 		}));
 
-	it("reports a downstream-skipped count when dependents are skipped", () =>
+	it("reports a downstream not-run count when dependents never run", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
@@ -39,39 +39,39 @@ describe("failure output", () => {
 				// fails so the two dependents never run.
 				const result = await settle(exec`after alsoAfter`);
 
-				expect(out(result)).toContain("2 downstream tasks skipped");
+				expect(out(result)).toContain("2 downstream tasks not run");
 			}
 		}));
 
-	it("uses singular wording for a single skipped task", () =>
+	it("uses singular wording for a single not-run task", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
 				const result = await settle(exec`after`);
 
-				expect(out(result)).toContain("1 downstream task skipped");
-				expect(out(result)).not.toContain("1 downstream tasks skipped");
+				expect(out(result)).toContain("1 downstream task not run");
+				expect(out(result)).not.toContain("1 downstream tasks not run");
 			}
 		}));
 
-	it("omits the skipped clause when nothing downstream is skipped", () =>
+	it("omits the not-run clause when nothing downstream is left not run", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
 				const result = await settle(exec`flaky`);
 
-				expect(out(result)).not.toContain("downstream task");
+				expect(out(result)).not.toContain("downstream task not run");
 			}
 		}));
 
-	it("agent reporter emits REPRO and a skipped count", () =>
+	it("agent reporter emits REPRO and a not-run count", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
 				const result = await settle(exec`after --reporter agent`);
 
 				expect(out(result)).toContain("REPRO nadle flaky");
-				expect(out(result)).toContain("skipped 1");
+				expect(out(result)).toContain("not-run 1");
 			}
 		}));
 });

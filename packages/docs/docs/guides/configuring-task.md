@@ -152,6 +152,33 @@ tasks.register("build", {
 });
 ```
 
+## cacheVerdict
+
+- **Type:** `boolean` (default `false`)
+
+Caches the success verdict of a task that declares `inputs` but produces no output files —
+a linter, a formatter in check mode, a type-checker. While the inputs are unchanged the task
+reports as up-to-date instead of running again.
+
+```ts
+tasks.register("lint", {
+	cacheVerdict: true,
+	inputs: [Inputs.dirs("src")],
+	run: () => {
+		/* … */
+	}
+});
+```
+
+Only success is cached. A failing task is never written to the cache, so it re-runs and
+re-prints its diagnostics on every invocation until the problem is fixed.
+
+Setting `cacheVerdict` asserts that the task produces no file another task consumes; on a
+cache hit the task body does not run, so any such file would never be produced. A task that
+does generate artifacts must declare `outputs` instead — `cacheVerdict` is ignored when
+`outputs` are present. Note that a cache hit also means the task's own console output is not
+reprinted.
+
 ## timeout
 
 - **Type:** `number` (milliseconds, positive integer)
@@ -187,6 +214,80 @@ tasks.register("flaky-check", {
 	timeout: 10_000
 });
 ```
+
+## onlyIf
+
+- **Type:** `({ options, context }) => unknown | Promise<unknown>`
+
+A predicate deciding whether the task's body runs. It receives the same single argument as
+`run` — the resolved `options` and the runner `context` — and may resolve synchronously or
+asynchronously. When it resolves to a **falsey** value the task is skipped; any **truthy**
+value (or omitting `onlyIf` altogether) runs the task normally. The return type is
+deliberately wide, so returning a missing file path or an empty array skips just as `false`
+does. This is Nadle's equivalent of Gradle's `Task.onlyIf`.
+
+```ts
+tasks.register("publish", {
+	dependsOn: ["build"],
+	onlyIf: () => process.env.CI === "true",
+	run: () => {
+		/* … */
+	}
+});
+```
+
+Since the predicate is handed the resolved options, a
+[reusable task](./registering-task.md#3-reusable-task) can decide from its own
+configuration — and `context` exposes the same `logger`, `workingDir` and
+`passthroughArgs` the body sees:
+
+```ts
+tasks.register("copy-assets", {
+	run: CopyTask,
+	options: { from: "assets", into: "dist" },
+	onlyIf: ({ options, context }) => {
+		context.logger.info(`Checking ${options.from}`);
+
+		return Fs.existsSync(Path.join(context.workingDir, options.from));
+	}
+});
+```
+
+### Skipping never prunes the graph
+
+Skipping affects **only the task itself**:
+
+- Its **dependencies have already run** — they are scheduled and executed before the
+  predicate is ever evaluated.
+- Its **dependents still run**, treating the skipped task as satisfied.
+
+Because a skipped task produces nothing, a dependent that expects its outputs must
+tolerate their absence — "satisfied" means the dependency is not waited on, not that its
+outputs exist.
+
+This is the key difference from [`--exclude`](../config-reference.md#--exclude), which
+removes tasks from the graph before anything executes. Use `--exclude` to prune work; use
+`onlyIf` to turn a single task into a no-op while everything around it proceeds.
+
+### Evaluation timing
+
+The predicate runs **at execution time** — after the task's configuration, options and
+working directory are resolved and after its dependencies have completed, but **before
+cache validation**. Two consequences follow:
+
+- The predicate may inspect whatever the dependencies produced, on disk or in the
+  environment, and decide from it.
+- A skipped task does **no cache work at all**: no fingerprint is computed, no outputs are
+  restored, and no cache entry is written — even when the task declares `inputs` and
+  `outputs`.
+
+### Failures and reporting
+
+A predicate that throws, or whose promise rejects, **fails the task** exactly as a failing
+body would. `timeout` and `retries` bound the task function only; they never apply to the
+predicate, which is evaluated once.
+
+A skipped task is reported as `SKIPPED` and counted in the run summary's skipped total.
 
 :::tip
 

@@ -21,6 +21,7 @@
 
 	"packages": {
 		"packages/nadle": {
+			"release-as": "0.6.0",
 			"extra-files": [
 				{
 					"type": "generic",
