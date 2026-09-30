@@ -44,8 +44,8 @@ output. An explicit color preference is honored.
 Summary line:
 
 ```
-SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ skipped {N}][ failed {N}][ not-started {N}])
-FAILED in {duration} (done {N}[ ... ] failed {N}[ blocked {N}][ not-started {N}])
+SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ skipped {N}])
+FAILED in {duration} (done {N}[ up-to-date {N}][ cached {N}][ skipped {N}] failed {N}[ blocked {N}][ not-started {N}])
 ```
 
 `skipped` counts tasks skipped by `onlyIf` (see [02-task-configuration.md](02-task-configuration.md)).
@@ -53,6 +53,9 @@ FAILED in {duration} (done {N}[ ... ] failed {N}[ blocked {N}][ not-started {N}]
 failed; `not-started` counts tasks that were independent of every failure and never ran. The
 two are defined in [03-scheduling.md](03-scheduling.md). Optional counts are only shown if
 greater than zero.
+
+`failed`, `blocked` and `not-started` appear only on the failed-run line. A successful run
+has no failure, so nothing is blocked, and every scheduled task reached a terminal status.
 
 With `--stacktrace`, the full error stack is printed after a failed run. The process
 exit code is unchanged from the default reporter.
