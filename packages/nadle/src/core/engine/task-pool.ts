@@ -58,6 +58,8 @@ export class TaskPool {
 				await this.context.eventEmitter.onTaskUpToDate(task);
 			} else if (executeType === "from-cache") {
 				await this.context.eventEmitter.onTaskRestoreFromCache(task);
+			} else if (executeType === "skipped") {
+				await this.context.eventEmitter.onTaskSkipped(task);
 			} else {
 				throw new Error(`Unknown execute type: ${executeType}`);
 			}
@@ -82,7 +84,7 @@ export class TaskPool {
 
 	private async executeWorker(taskId: string) {
 		const task = this.context.taskRegistry.getTaskById(taskId);
-		let executeType: "execute" | "up-to-date" | "from-cache" = "execute";
+		let executeType: "execute" | "up-to-date" | "from-cache" | "skipped" = "execute";
 
 		const notify: Notifier = async (message: WorkerMessage) => {
 			if (message.type === "start") {
@@ -91,6 +93,8 @@ export class TaskPool {
 				executeType = "up-to-date";
 			} else if (message.type === "from-cache") {
 				executeType = "from-cache";
+			} else if (message.type === "skipped") {
+				executeType = "skipped";
 			}
 		};
 

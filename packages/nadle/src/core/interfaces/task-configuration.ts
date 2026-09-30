@@ -1,10 +1,12 @@
+import { type RunnerContext } from "./task.js";
+import { type Awaitable } from "../utilities/index.js";
 import { type MaybeArray } from "../utilities/maybe-array.js";
 import type { Declaration } from "../models/cache/declaration.js";
 
 /**
  * Configuration for a Nadle task.
  */
-export interface TaskConfiguration {
+export interface TaskConfiguration<Options = unknown> {
 	/**
 	 * The group name to which this task belongs.
 	 */
@@ -14,6 +16,13 @@ export interface TaskConfiguration {
 	 * The description of the task.
 	 */
 	description?: string;
+
+	/**
+	 * Predicate deciding whether this task's body runs. Evaluated at execution
+	 * time, before cache validation, so it may observe what dependencies produced.
+	 * A falsey result skips the task; dependents still run.
+	 */
+	onlyIf?(params: { options: Options; context: RunnerContext }): Awaitable<unknown>;
 
 	/**
 	 * A task or a list of tasks that this task depends on.

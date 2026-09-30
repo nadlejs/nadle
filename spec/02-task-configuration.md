@@ -18,6 +18,7 @@ All fields are optional.
 | `outputs`     | declaration or array of declarations   | File patterns the task produces. Used for caching and restoration. |
 | `group`       | string                                 | Group label for display in `--list` output only.                   |
 | `description` | string                                 | Description for display in `--list` output only.                   |
+| `onlyIf`      | predicate function                     | Runtime condition; when it resolves falsey the task is skipped.    |
 
 ## Supplying Configuration
 
@@ -104,3 +105,31 @@ task function; an attempt that does not settle in time fails with a timeout erro
 after the first failure. Together a task runs up to `1 + retries` attempts and
 fails only if all attempts fail. Both apply only to the task function, not to
 cache restore. See [04-execution.md](04-execution.md).
+
+## Conditional Execution
+
+A task may declare `onlyIf`, a predicate deciding whether the task's body runs. The
+predicate receives the same argument shape as the task body, namely the run context and
+the resolved task options, and may resolve synchronously or asynchronously.
+
+- When `onlyIf` is omitted, or resolves to a **truthy** value, the task executes normally.
+- When it resolves to a **falsey** value, the task is **skipped**: its body does not run and
+  the task settles with the Skipped status (see [01-task.md](01-task.md)).
+
+The predicate is evaluated **at execution time**, after the task's configuration, options,
+and working directory are resolved, and **before cache validation**. Consequences:
+
+- The predicate may observe state produced by the task's dependencies, which have already
+  completed by the time it runs.
+- A skipped task performs no cache work: no fingerprint is computed, no outputs are
+  restored, and no cache entry is written. This holds even when the task declares inputs
+  and outputs.
+- A skipped task contributes no outputs fingerprint to its dependents.
+
+Skipping affects only the task itself. Its dependencies have already run, and its dependents
+still run, treating the skipped task as satisfied. Skipping never removes tasks from the
+graph — that is the role of exclusion (see [03-scheduling.md](03-scheduling.md)).
+
+A predicate that throws, or whose returned promise rejects, fails the task exactly as a
+failing task body does. `timeout` and `retries` bound the task function only; they do not
+apply to the predicate, which is evaluated once.

@@ -8,9 +8,10 @@ import { Nadle } from "../nadle.js";
 import { runWithRetries } from "./task-runner.js";
 import { bindObject } from "../utilities/utils.js";
 import { type RunnerContext } from "../interfaces/task.js";
+import { CacheValidator } from "../caching/cache-validator.js";
 import { type NadleResolvedOptions } from "../options/types.js";
 import { CacheMissReason } from "../models/cache/cache-miss-reason.js";
-import { CacheValidator, type CacheValidationResult } from "../caching/cache-validator.js";
+import { explainCacheOutcome } from "../caching/explain-cache-outcome.js";
 import { type TaskEnv, type TaskConfiguration } from "../interfaces/task-configuration.js";
 
 // In a worker thread this is the real thread id (>= 1). In the main process
@@ -20,6 +21,7 @@ const threadId = WorkerThreads.threadId || 1;
 
 export type WorkerMessage =
 	| { readonly type: "start"; readonly threadId: number }
+	| { readonly type: "skipped"; readonly threadId: number }
 	| { readonly threadId: number; readonly type: "up-to-date"; readonly outputsFingerprint?: string }
 	| { readonly threadId: number; readonly type: "from-cache"; readonly outputsFingerprint?: string };
 
@@ -68,6 +70,13 @@ export async function runTask(
 		logger: bindObject(nadle.logger, ["error", "warn", "log", "info", "debug", "getColumns"])
 	};
 	const taskOptions = typeof task.optionsResolver === "function" ? task.optionsResolver(context) : task.optionsResolver;
+
+	if (taskConfig.onlyIf && !(await taskConfig.onlyIf({ context, options: taskOptions }))) {
+		await notify({ threadId, type: "skipped" } satisfies WorkerMessage);
+
+		return undefined;
+	}
+
 	const environmentInjector = createEnvironmentInjector(originalEnv, taskConfig.env);
 
 	const cacheValidator = createCacheValidator(nadle, {
@@ -234,29 +243,4 @@ function createEnvironmentInjector(originalEnv: NodeJS.ProcessEnv, taskEnv: Task
 			}
 		}
 	};
-}
-
-/**
- * Human-readable explanation of a task's cache outcome, emitted under `--why`.
- * Hit cases say so; a cache miss lists what changed (file/options/config) using
- * the reasons already computed by CacheValidator.
- */
-function explainCacheOutcome(label: string, result: CacheValidationResult): string {
-	const head = `${c.yellow("why")} ${c.bold(label)}:`;
-
-	switch (result.result) {
-		case "not-cacheable":
-			return `${head} not cacheable (no inputs/outputs declared)`;
-		case "cache-disabled":
-			return `${head} caching disabled`;
-		case "up-to-date":
-			return `${head} ${c.green("up-to-date")} — inputs and outputs unchanged`;
-		case "restore-from-cache":
-			return `${head} ${c.green("restored from cache")} — inputs match a previous run`;
-		case "cache-miss":
-			return [
-				`${head} ${c.red("cache miss")} — will run because:`,
-				...result.reasons.map((reason) => `  - ${CacheMissReason.toString(reason)}`)
-			].join("\n");
-	}
 }

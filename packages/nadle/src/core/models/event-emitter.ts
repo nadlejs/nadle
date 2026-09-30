@@ -49,6 +49,10 @@ export class EventEmitter implements Required<Listener> {
 		await this.emit("onTaskRestoreFromCache", task);
 	}
 
+	public async onTaskSkipped(task: RegisteredTask): Promise<void> {
+		await this.emit("onTaskSkipped", task);
+	}
+
 	public async onTaskStart(task: RegisteredTask, threadId: number): Promise<void> {
 		await this.emit("onTaskStart", task, threadId);
 	}

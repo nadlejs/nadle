@@ -23,6 +23,9 @@ export const TaskConfigurationSchema = {
 			type: "string",
 			description: "Changes the working directory for the task."
 		},
+		onlyIf: {
+			description: "Predicate deciding whether the task's body runs. Function-valued; not expressible as JSON."
+		},
 		timeout: {
 			minimum: 1,
 			type: "integer",
