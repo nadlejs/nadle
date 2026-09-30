@@ -1,5 +1,14 @@
 # create-nadle
 
+## [0.0.6](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.5...create-nadle/v0.0.6) (2026-09-30)
+
+
+### Internal
+
+* **deps-dev:** Bump @size-limit/file from 12.1.0 to 13.0.3 ([#710](https://github.com/nadlejs/nadle/issues/710)) ([93082ab](https://github.com/nadlejs/nadle/commit/93082ab81d079b5c004a402da5e85dcfc71f9959))
+* **deps:** Bump postcss from 8.5.15 to 8.5.23 in the security-updates group across 1 directory ([#706](https://github.com/nadlejs/nadle/issues/706)) ([985c602](https://github.com/nadlejs/nadle/commit/985c602ccbf0eae61421e617bb3082573ff29160))
+* **deps:** Bump the minor-updates group across 1 directory with 7 updates ([#616](https://github.com/nadlejs/nadle/issues/616)) ([1d2791d](https://github.com/nadlejs/nadle/commit/1d2791dec488b4df5b7ea3e45877c5dd5f7dcba1))
+
 ## [0.0.5](https://github.com/nadlejs/nadle/compare/create-nadle/v0.0.4...create-nadle/v0.0.5) (2026-06-12)
 
 
