@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.2.0 — 2026-09-30
+
+### Added
+
+- 02-task-configuration: New "Unknown Fields" section. A task configuration field that is
+  not a recognized field MUST produce a warning naming the task and the field, and MUST NOT
+  fail the run. Previously unrecognized fields were silently accepted, so a misspelled
+  `dependsOn` dropped the dependency without a diagnostic and the run passed in an
+  unconstrained order.
+
 ## 4.1.1 — 2026-06-21
 
 ### Changed

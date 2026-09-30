@@ -22,6 +22,9 @@ export const Messages = {
 		`Task ${highlight(taskNameInput)} not found in ${highlight(targetWorkspaceId)} workspace.`,
 	InvalidTaskName: (taskName: string) =>
 		`Invalid task name: ${highlight(taskName)}. Task names must contain only letters, numbers, and dashes; start with a letter, and not end with a dash.`,
+	UnknownTaskConfigKey: (taskName: string, key: string, suggestion: string | undefined) =>
+		`Task ${highlight(taskName)} has an unknown configuration key ${highlight(key)}, which is ignored.` +
+		`${suggestion ? ` Did you mean ${highlight(suggestion)}?` : ""}`,
 	UnresolvedTaskWithSuggestions: (options: {
 		suggestions: string;
 		taskNameInput: string;
