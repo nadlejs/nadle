@@ -179,6 +179,16 @@ does generate artifacts must declare `outputs` instead — `cacheVerdict` is ign
 `outputs` are present. Note that a cache hit also means the task's own console output is not
 reprinted.
 
+A practical test for whether a task qualifies: **is it read-only by flag?** `oxlint`,
+`tsc --noEmit`, `oxfmt --check`, `go vet` and `gofmt -l` all inspect without writing. The same
+tools in write mode — `oxfmt -w`, `gofmt -w` — do not qualify, because a cache hit would skip
+the write. Checking the flag is easier than reasoning about undeclared artifacts.
+
+One project reported its six read-only lint and type-check tasks dropping from 4s to 2s on an
+untouched tree, with all six reporting up-to-date. The number matters less than the behavior
+that makes it safe: editing a watched input re-runs the task and re-prints its diagnostics
+rather than replaying the pass.
+
 ## timeout
 
 - **Type:** `number` (milliseconds, positive integer)
