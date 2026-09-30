@@ -4,6 +4,7 @@ import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
+import { hasFailureInClosure } from "./failure-classifier.js";
 import { type SchedulerDependencies } from "./scheduler-types.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { CyclicDependencyError } from "../utilities/nadle-error.js";
@@ -15,6 +16,8 @@ export class TaskScheduler {
 	private readonly transitiveDependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
 	private readonly indegree = new EnsureMap<TaskIdentifier, number>(() => 0);
 	private readonly readyTasks = new Set<TaskIdentifier>();
+	private readonly settledTaskIds = new Set<TaskIdentifier>();
+	private readonly failedTaskIds = new Set<TaskIdentifier>();
 	private readonly implicitEdges = new Set<string>();
 	private readonly rootAggregationDeps = new Map<TaskIdentifier, Set<TaskIdentifier>>();
 	private taskIds: TaskIdentifier[] = [];
@@ -48,6 +51,8 @@ export class TaskScheduler {
 		this.transitiveDependencyGraph.clear();
 		this.indegree.clear();
 		this.readyTasks.clear();
+		this.settledTaskIds.clear();
+		this.failedTaskIds.clear();
 		this.implicitEdges.clear();
 		this.rootAggregationDeps.clear();
 		this.mainTaskId = undefined;
@@ -183,6 +188,31 @@ export class TaskScheduler {
 		);
 	}
 
+	public markFailed(taskId: TaskIdentifier): void {
+		this.failedTaskIds.add(taskId);
+	}
+
+	private isAdmissible(taskId: TaskIdentifier): boolean {
+		return !hasFailureInClosure(taskId, this.failedTaskIds, (id) => this.transitiveDependencyGraph.get(id));
+	}
+
+	private isCurrentTreeExhausted(nextReadyTasks: ReadonlySet<TaskIdentifier>): boolean {
+		return this.mainTaskId !== undefined && nextReadyTasks.size === 0 && !this.canProgressInCurrentTree();
+	}
+
+	private canProgressInCurrentTree(): boolean {
+		for (const [taskId, indegree] of this.getIndegreeEntries()) {
+			const isRunning = this.readyTasks.has(taskId) && !this.settledTaskIds.has(taskId) && !this.failedTaskIds.has(taskId);
+			const isPendingAdmission = indegree === 0 && !this.readyTasks.has(taskId) && this.isAdmissible(taskId);
+
+			if (isRunning || isPendingAdmission) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private isBelongToRootTaskTree(taskId: string): boolean {
 		if (!this.mainTaskId || taskId === this.mainTaskId) {
 			return true;
@@ -191,13 +221,7 @@ export class TaskScheduler {
 		return this.transitiveDependencyGraph.get(this.mainTaskId).has(taskId);
 	}
 
-	public getReadyTasks(doneTaskId?: string): Set<string> {
-		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
-
-		if (doneTaskId === undefined) {
-			return this.getInitialReadyTasks();
-		}
-
+	private admitDependents(doneTaskId: TaskIdentifier): Set<TaskIdentifier> {
 		const nextReadyTasks = new Set<TaskIdentifier>();
 
 		for (const dependentTask of this.dependentsGraph.get(doneTaskId)) {
@@ -213,10 +237,32 @@ export class TaskScheduler {
 
 			this.indegree.set(dependentTask, --indegree);
 
-			if (indegree === 0 && this.isBelongToRootTaskTree(dependentTask)) {
+			if (indegree === 0 && this.isBelongToRootTaskTree(dependentTask) && this.isAdmissible(dependentTask)) {
 				nextReadyTasks.add(dependentTask);
 				this.readyTasks.add(dependentTask);
 			}
+		}
+
+		return nextReadyTasks;
+	}
+
+	public getReadyTasks(doneTaskId?: string): Set<string> {
+		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
+
+		if (doneTaskId === undefined) {
+			return this.getInitialReadyTasks();
+		}
+
+		this.settledTaskIds.add(doneTaskId);
+
+		const nextReadyTasks = this.admitDependents(doneTaskId);
+
+		if (this.isCurrentTreeExhausted(nextReadyTasks)) {
+			if (!this.moveToNextMainTask()) {
+				return new Set<string>();
+			}
+
+			return this.getReadyTasks();
 		}
 
 		if (doneTaskId === this.mainTaskId) {
@@ -238,7 +284,7 @@ export class TaskScheduler {
 		for (const [taskId, indegree] of this.getIndegreeEntries()) {
 			this.deps.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
 
-			if (indegree === 0 && !this.readyTasks.has(taskId)) {
+			if (indegree === 0 && !this.readyTasks.has(taskId) && this.isAdmissible(taskId)) {
 				nextReadyTasks.add(taskId);
 				this.readyTasks.add(taskId);
 			}
