@@ -27,6 +27,11 @@ reporter is specified below.
 Selected with `--reporter=agent`. Emits one plain line per task outcome and a single
 summary line. No colors, welcome banner, footer, STARTED lines, or profiling table.
 
+Plainness extends to relayed task output. Unless a color preference is already expressed
+(`FORCE_COLOR` or `NO_COLOR` set in the process environment or the task's environment), tasks
+run with `NO_COLOR=1`, so subprocesses started by exec-based built-in tasks do not color their
+output. An explicit color preference is honored.
+
 | Event           | Output                      |
 | --------------- | --------------------------- |
 | Task finished   | `DONE {label} {duration}`   |

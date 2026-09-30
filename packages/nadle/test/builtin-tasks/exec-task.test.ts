@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { fixture, getStdout, createExec, readConfig, withGeneratedFixture } from "setup";
+import { settle, fixture, getStdout, createExec, readConfig, withGeneratedFixture } from "setup";
 
 const files = fixture()
 	.packageJson("exec-task")
@@ -49,6 +49,37 @@ describe.concurrent("execTask", () => {
 					const stdout = await getStdout(createExec({ cwd, env })`color-no-color`);
 
 					expect(stdout).toContain("FORCE_COLOR=undefined NO_COLOR=1");
+				}
+			}));
+
+		it("relays colored failure output under the default reporter", () =>
+			withGeneratedFixture({
+				files,
+				testFn: async ({ cwd }) => {
+					const { stdout } = await settle(createExec({ cwd, env })`color-fail`);
+
+					expect(stdout).toContain("\u001B[31m");
+				}
+			}));
+
+		it("relays plain failure output under the agent reporter", () =>
+			withGeneratedFixture({
+				files,
+				testFn: async ({ cwd }) => {
+					const { stdout } = await settle(createExec({ cwd, env })`color-fail --reporter agent`);
+
+					expect(stdout).toContain("plain-failure");
+					expect(stdout).not.toContain("\u001B");
+				}
+			}));
+
+		it("keeps color explicitly configured in task env under the agent reporter", () =>
+			withGeneratedFixture({
+				files,
+				testFn: async ({ cwd }) => {
+					const { stdout } = await settle(createExec({ cwd, env })`color-fail-forced --reporter agent`);
+
+					expect(stdout).toContain("\u001B[31m");
 				}
 			}));
 	});

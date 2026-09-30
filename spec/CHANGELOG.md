@@ -47,6 +47,10 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 
 ### Fixed
 
+- 13-reporting, 10-builtin-tasks: The `agent` reporter's plain-output guarantee now covers
+  relayed task output. Tasks run with `NO_COLOR=1` under this reporter unless a color
+  preference (`FORCE_COLOR` or `NO_COLOR`) is already set, so a failing task's captured tool
+  output no longer carries escape sequences.
 - 10-builtin-tasks: Exec-based built-in tasks no longer override a `FORCE_COLOR` or `NO_COLOR`
   value present in the task's environment. Color is forced (`FORCE_COLOR=1`) only when neither
   is set, so a task can opt out of forced color by configuring its own environment.
