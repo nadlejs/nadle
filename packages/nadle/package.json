@@ -43,7 +43,7 @@
 		"yargs": "^18.0.0"
 	},
 	"devDependencies": {
-		"@size-limit/file": "^12.1.0",
+		"@size-limit/file": "^13.0.3",
 		"@types/lodash-es": "^4.17.12",
 		"@types/micromatch": "^4.0.10",
 		"@types/node": "^20.19.25",

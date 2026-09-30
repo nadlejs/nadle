@@ -122,8 +122,8 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2
       '@size-limit/file':
-        specifier: ^12.1.0
-        version: 12.1.0(size-limit@12.1.0(jiti@2.7.0))
+        specifier: ^13.0.3
+        version: 13.0.3(size-limit@12.1.0(jiti@2.7.0))
       '@types/node':
         specifier: ^20.19.25
         version: 20.19.33
@@ -266,8 +266,8 @@ importers:
         version: 1.0.12
     devDependencies:
       '@size-limit/file':
-        specifier: ^12.1.0
-        version: 12.1.0(size-limit@12.1.0(jiti@2.7.0))
+        specifier: ^13.0.3
+        version: 13.0.3(size-limit@12.1.0(jiti@2.7.0))
       '@types/node':
         specifier: ^20.19.25
         version: 20.19.33
@@ -354,8 +354,8 @@ importers:
         version: 18.0.0
     devDependencies:
       '@size-limit/file':
-        specifier: ^12.1.0
-        version: 12.1.0(size-limit@12.1.0(jiti@2.7.0))
+        specifier: ^13.0.3
+        version: 13.0.3(size-limit@12.1.0(jiti@2.7.0))
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -3450,11 +3450,11 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@size-limit/file@12.1.0':
-    resolution: {integrity: sha512-eGwDcIufnNnvJRzv3liDOn6MAOGgmOTUdpeGQ2KuRTlgIgO54AJH1ilvktlJc6PIjNfwpYY0dOGyap1QgM1swQ==}
+  '@size-limit/file@13.0.3':
+    resolution: {integrity: sha512-PWTITIXH5p9aGIf6qq2Fruihn/b9nBQyfkyoAyb6DzFJgS1Ek9MSPJYKxKFLO8jdo0aqSgBPd3sevbS6PyBiJw==}
     engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
     peerDependencies:
-      size-limit: 12.1.0
+      size-limit: 13.0.3
 
   '@slorber/react-helmet-async@1.3.0':
     resolution: {integrity: sha512-e9/OK8VhwUSc67diWI8Rb3I0YgI9/SBQtnhe9aEuK6MhZm7ntZZimXgwXnd8W96YTmSOb9M4d8LwhRZyhWr/1A==}
@@ -13552,7 +13552,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@size-limit/file@12.1.0(size-limit@12.1.0(jiti@2.7.0))':
+  '@size-limit/file@13.0.3(size-limit@12.1.0(jiti@2.7.0))':
     dependencies:
       size-limit: 12.1.0(jiti@2.7.0)
 
