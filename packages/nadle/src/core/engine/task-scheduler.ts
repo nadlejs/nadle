@@ -250,7 +250,7 @@ export class TaskScheduler {
 		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
 
 		if (doneTaskId === undefined) {
-			return this.getInitialReadyTasks();
+			return this.getInitialReadyTasksAcrossMainTasks();
 		}
 
 		this.settledTaskIds.add(doneTaskId);
@@ -274,6 +274,22 @@ export class TaskScheduler {
 		}
 
 		this.deps.logger.debug({ tag: "Scheduler" }, `Next tasks = ${Array.from(nextReadyTasks).join(",")}`);
+
+		return nextReadyTasks;
+	}
+
+	/**
+	 * Walks forward through the sequential main-task list until a tree yields work.
+	 * Under --continue a main task can be entirely inadmissible (a failure in its
+	 * closure); without this the run would stop there instead of reaching the later,
+	 * unaffected trees. In parallel mode there is no main task and this is one pass.
+	 */
+	private getInitialReadyTasksAcrossMainTasks(): Set<TaskIdentifier> {
+		let nextReadyTasks = this.getInitialReadyTasks();
+
+		while (nextReadyTasks.size === 0 && this.mainTaskId !== undefined && this.moveToNextMainTask()) {
+			nextReadyTasks = this.getInitialReadyTasks();
+		}
 
 		return nextReadyTasks;
 	}

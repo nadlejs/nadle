@@ -22,11 +22,13 @@ function toTaskExecutionError(error: unknown, label: string): NadleError {
 
 export class TaskPool {
 	private readonly executor: Executor;
+	private readonly failures: NadleError[] = [];
 	private readonly outputFingerprints = new Map<TaskIdentifier, string>();
 
 	public constructor(
 		private readonly context: ExecutionContext,
-		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>
+		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>,
+		private readonly markFailed: (taskId: TaskIdentifier) => void
 	) {
 		const { minWorkers, maxWorkers } = this.context.options;
 
@@ -50,6 +52,12 @@ export class TaskPool {
 		}
 
 		settle();
+
+		const [firstFailure] = this.failures;
+
+		if (firstFailure !== undefined) {
+			throw firstFailure;
+		}
 	}
 
 	/**
@@ -90,22 +98,46 @@ export class TaskPool {
 				throw new Error(`Unknown execute type: ${executeType}`);
 			}
 		} catch (error) {
-			if (
-				error instanceof Error &&
-				error.message === TERMINATING_WORKER_ERROR &&
-				this.context.executionTracker.getTaskStatus(task.id) === TaskStatus.Running
-			) {
-				await this.context.eventEmitter.onTaskCanceled(task);
-
+			if (!(await this.handleTaskError(taskId, error))) {
 				return;
 			}
-
-			await this.context.eventEmitter.onTaskFailed(task);
-
-			throw toTaskExecutionError(error, task.label);
 		}
 
+		// Under --continue a failed task still advances the scheduler: it settles, its
+		// dependents lose an indegree (admission then rejects them), and a sequential
+		// run moves on to the next main task instead of stalling on the failure.
 		(await this.pushTasks(this.getNextReadyTasks(taskId)))();
+	}
+
+	/**
+	 * Records a task's failure and decides whether the run goes on. Throws the failure
+	 * under fail-fast; returns false when the task was canceled, so a terminated task
+	 * never advances the scheduler on another task's behalf.
+	 */
+	private async handleTaskError(taskId: TaskIdentifier, error: unknown): Promise<boolean> {
+		const task = this.context.taskRegistry.getTaskById(taskId);
+
+		if (
+			error instanceof Error &&
+			error.message === TERMINATING_WORKER_ERROR &&
+			this.context.executionTracker.getTaskStatus(task.id) === TaskStatus.Running
+		) {
+			await this.context.eventEmitter.onTaskCanceled(task);
+
+			return false;
+		}
+
+		await this.context.eventEmitter.onTaskFailed(task);
+
+		const failure = toTaskExecutionError(error, task.label);
+		this.failures.push(failure);
+		this.markFailed(taskId);
+
+		if (!this.context.options.continue) {
+			throw failure;
+		}
+
+		return true;
 	}
 
 	private async executeWorker(taskId: string) {

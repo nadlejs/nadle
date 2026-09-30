@@ -41,7 +41,11 @@ export class WatchHandler extends BaseHandler {
 			try {
 				const runScheduler = this.context.taskScheduler.init(chosenTasks);
 				await this.context.eventEmitter.onTasksScheduled(runScheduler.scheduledTask.map((taskId) => this.context.taskRegistry.getTaskById(taskId)));
-				await new TaskPool(this.context, (taskId) => runScheduler.getReadyTasks(taskId)).run();
+				await new TaskPool(
+					this.context,
+					(taskId) => runScheduler.getReadyTasks(taskId),
+					(taskId) => runScheduler.markFailed(taskId)
+				).run();
 			} catch (error) {
 				// Watch mode never exits on a failed run — report and keep watching.
 				this.context.logger.error(error instanceof Error ? error.message : String(error));

@@ -71,6 +71,7 @@ const parser = yargs(hideBin(Process.argv))
 		[CLIOptions.summary.key]: CLIOptions.summary.options,
 		[CLIOptions.reporter.key]: CLIOptions.reporter.options,
 		[CLIOptions.parallel.key]: CLIOptions.parallel.options,
+		[CLIOptions.continue.key]: CLIOptions.continue.options,
 		[CLIOptions.cacheDir.key]: CLIOptions.cacheDir.options,
 		[CLIOptions.logLevel.key]: CLIOptions.logLevel.options,
 		[CLIOptions.configKey.key]: CLIOptions.configKey.options,
@@ -90,6 +91,7 @@ const parser = yargs(hideBin(Process.argv))
 	.group(
 		[
 			CLIOptions.parallel.key,
+			CLIOptions.continue.key,
 			CLIOptions.exclude.key,
 			CLIOptions.noCache.key,
 			CLIOptions.cleanCache.key,
