@@ -32,6 +32,12 @@ Events are listed in typical emission order:
   up-to-date, from-cache, or skipped do **not** receive `onTaskStart`.
 - `onExecutionFinish` and `onExecutionFailed` are mutually exclusive — exactly one
   is emitted per run.
+- Tasks that were scheduled but never started emit **no** task event. A task left blocked by
+  a failed dependency, or left not started when the run ended, never reaches a terminal
+  status and therefore fires neither a task event nor an `afterTask` hook (see
+  [03-scheduling.md](03-scheduling.md)). They are observable through the run summary counts
+  and through the scheduled task list delivered by `onTasksScheduled`, which a listener can
+  reconcile against the terminal events it received.
 
 ## Emission Order
 

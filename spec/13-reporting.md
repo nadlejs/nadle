@@ -44,13 +44,15 @@ output. An explicit color preference is honored.
 Summary line:
 
 ```
-SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ skipped {N}][ failed {N}][ not-run {N}])
-FAILED in {duration} (done {N}[ ... ] failed {N}[ not-run {N}])
+SUCCESS in {duration} (done {N}[ up-to-date {N}][ cached {N}][ skipped {N}][ failed {N}][ not-started {N}])
+FAILED in {duration} (done {N}[ ... ] failed {N}[ blocked {N}][ not-started {N}])
 ```
 
 `skipped` counts tasks skipped by `onlyIf` (see [02-task-configuration.md](02-task-configuration.md)).
-`not-run` counts tasks that did not run because an upstream task failed. Optional counts are
-only shown if greater than zero.
+`blocked` counts tasks that did not run because a task in their transitive dependency closure
+failed; `not-started` counts tasks that were independent of every failure and never ran. The
+two are defined in [03-scheduling.md](03-scheduling.md). Optional counts are only shown if
+greater than zero.
 
 With `--stacktrace`, the full error stack is printed after a failed run. The process
 exit code is unchanged from the default reporter.
@@ -134,12 +136,25 @@ Up-to-date, from-cache, and skipped counts are only shown if greater than zero.
 On failure:
 
 ```
-RUN FAILED in {duration} ({N} tasks executed[, {N} tasks skipped], {N} tasks failed[, {N} downstream tasks not run])
+RUN FAILED in {duration} ({N} tasks executed[, {N} tasks skipped], {N} tasks failed[, {N} tasks blocked][, {N} tasks not started])
 ```
 
-The skipped count is only shown if greater than zero. The not-run count is the number of
-downstream tasks that never ran because an upstream task failed, and is only shown if
-greater than zero.
+The failed count is the number of tasks that failed; **all** of them are reported, not only
+the first (see [12-error-handling.md](12-error-handling.md)). The tasks that were scheduled
+and never ran are reported as two separate counts, defined in
+[03-scheduling.md](03-scheduling.md):
+
+| Count       | Meaning                                                                 |
+| ----------- | ----------------------------------------------------------------------- |
+| blocked     | Did not run because a task in its transitive dependency closure failed. |
+| not started | Independent of every failure; would have run under `--continue`.        |
+
+The skipped, blocked, and not-started counts are each only shown if greater than zero. The
+two counts replace a single conflated count that described every unexecuted task as
+downstream of the failure, which misreported independent tasks. Under `--continue` the
+not-started count is zero whenever the run ended because no task could be admitted any more,
+so a non-zero not-started count in a default run is exactly the signal that `--continue`
+would have produced more verdicts in the same run.
 
 If `--stacktrace` is not set, a hint is shown:
 

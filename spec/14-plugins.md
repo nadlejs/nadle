@@ -74,6 +74,10 @@ one of `"done"`, `"failed"`, `"up-to-date"`, `"from-cache"`, `"skipped"`, or
 `"canceled"`.
 `afterAll`'s `outcome` is `"success"` or `"failed"`.
 
+A task that never started — blocked by a failed dependency, or not started when the run
+ended (see [03-scheduling.md](03-scheduling.md)) — fires **neither** hook. `afterTask` fires
+for every terminal outcome, and these tasks have none.
+
 ### Error semantics
 
 - A throwing `beforeAll` **aborts the run** — it is the only hook whose error
