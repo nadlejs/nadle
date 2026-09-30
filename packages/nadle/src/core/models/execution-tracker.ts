@@ -43,12 +43,22 @@ export class ExecutionTracker implements Listener {
 	}
 
 	/**
-	 * Tasks left in the Scheduled state once a run ends never started, because an
-	 * upstream task failed. Distinct from Canceled, which is a task that did start
-	 * and was then torn down.
+	 * Tasks scheduled for the run that never reached a terminal status. They never
+	 * started, so they are neither Canceled nor classified by status; the graph
+	 * splits them into blocked and not-started (see spec/03-scheduling.md).
 	 */
+	public get nonExecutedTaskIds(): TaskIdentifier[] {
+		return this.getTaskStateByStatus(TaskStatus.Scheduled).map((state) => state.id);
+	}
+
+	/** Tasks that failed during the run. */
+	public get failedTaskIds(): Set<TaskIdentifier> {
+		return new Set(this.getTaskStateByStatus(TaskStatus.Failed).map((state) => state.id));
+	}
+
+	/** @deprecated Superseded by the blocked / not-started split; removed with the reporter update. */
 	public get notRunCount(): number {
-		return this.getTaskStateByStatus(TaskStatus.Scheduled).length;
+		return this.nonExecutedTaskIds.length;
 	}
 
 	public getTaskState(taskId: TaskIdentifier): TaskState {
