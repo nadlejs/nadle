@@ -51,6 +51,13 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   value present in the task's environment. Color is forced (`FORCE_COLOR=1`) only when neither
   is set, so a task can opt out of forced color by configuring its own environment.
 
+### Changed
+
+- 08-configuration-loading, 12-error-handling: A config file that cannot be loaded (for
+  example because one of its imports cannot be resolved) now fails with a configuration error
+  (exit code `2`) whose message names the file and the cause. Previously such failures exited
+  `1` with no output. A config file may live outside the project root.
+
 ## 4.1.1 — 2026-06-21
 
 ### Changed

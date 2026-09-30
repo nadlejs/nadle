@@ -4,6 +4,7 @@ import { highlight } from "./utils.js";
 
 export const Messages = {
 	InvalidConfigureUsage: () => `configure function can only be called from the root workspace.`,
+	ConfigFileLoadFailed: (filePath: string, reason: string) => `Failed to load config file ${highlight(filePath)}: ${reason}`,
 	SpecifiedConfigFileNotFound: (filePath: string) => `Config file not found at ${highlight(filePath)}. Please check the path.`,
 	InvalidWorkerConfig: (type: "min" | "max", value: string) =>
 		`Invalid value for --${type}-workers. Expect to be an integer or a percentage (e.g., 50%). Got: ${highlight(value)}`,
