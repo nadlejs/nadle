@@ -152,6 +152,33 @@ tasks.register("build", {
 });
 ```
 
+## cacheVerdict
+
+- **Type:** `boolean` (default `false`)
+
+Caches the success verdict of a task that declares `inputs` but produces no output files —
+a linter, a formatter in check mode, a type-checker. While the inputs are unchanged the task
+reports as up-to-date instead of running again.
+
+```ts
+tasks.register("lint", {
+	cacheVerdict: true,
+	inputs: [Inputs.dirs("src")],
+	run: () => {
+		/* … */
+	}
+});
+```
+
+Only success is cached. A failing task is never written to the cache, so it re-runs and
+re-prints its diagnostics on every invocation until the problem is fixed.
+
+Setting `cacheVerdict` asserts that the task produces no file another task consumes; on a
+cache hit the task body does not run, so any such file would never be produced. A task that
+does generate artifacts must declare `outputs` instead — `cacheVerdict` is ignored when
+`outputs` are present. Note that a cache hit also means the task's own console output is not
+reprinted.
+
 ## timeout
 
 - **Type:** `number` (milliseconds, positive integer)

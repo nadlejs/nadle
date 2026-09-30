@@ -138,7 +138,6 @@ export interface Listener {
     readonly onTaskFailed?: (task: RegisteredTask) => Awaitable<void>;
     readonly onTaskFinish?: (task: RegisteredTask) => Awaitable<void>;
     readonly onTaskRestoreFromCache?: (task: RegisteredTask) => Awaitable<void>;
-    readonly onTaskSkipped?: (task: RegisteredTask) => Awaitable<void>;
     readonly onTasksScheduled?: (tasks: RegisteredTask[]) => Awaitable<void>;
     readonly onTaskStart?: (task: RegisteredTask, threadId: number) => Awaitable<void>;
     readonly onTaskUpToDate?: (task: RegisteredTask) => Awaitable<void>;
@@ -355,17 +354,14 @@ export interface Task<Options = unknown> {
 }
 
 // @public
-export interface TaskConfiguration<Options = unknown> {
+export interface TaskConfiguration {
+    cacheVerdict?: boolean;
     dependsOn?: MaybeArray<string>;
     description?: string;
     env?: TaskEnv;
     group?: string;
     inputs?: MaybeArray<Declaration>;
     maxCacheEntries?: number;
-    onlyIf?(params: {
-        options: Options;
-        context: RunnerContext;
-    }): Awaitable<unknown>;
     outputs?: MaybeArray<Declaration>;
     retries?: number;
     timeout?: number;
@@ -397,7 +393,7 @@ export interface TaskHookContext<Options> {
     readonly error?: unknown;
     readonly logger: Logger;
     readonly pluginOptions: Options;
-    readonly result?: "done" | "failed" | "up-to-date" | "from-cache" | "canceled" | "skipped";
+    readonly result?: "done" | "failed" | "up-to-date" | "from-cache" | "canceled";
     readonly task: RegisteredTask;
     readonly threadId?: number;
 }
@@ -427,7 +423,7 @@ export interface TasksAPI {
     register(name: string): void;
     register(name: string, fn: TaskFn): void;
     register<Options>(name: string, spec: LazySpec<Options>): void;
-    register<Options>(name: string, spec: TaskConfiguration<Options> & {
+    register<Options>(name: string, spec: TaskConfiguration & {
         run: Task<Options>;
     } & ({} extends Options ? {
         options?: Resolver<Options>;
@@ -440,7 +436,7 @@ export interface TasksAPI {
 }
 
 // @public
-export type TaskSpec<Options = void> = TaskConfiguration<Options> & ([void] extends [Options] ? {
+export type TaskSpec<Options = void> = TaskConfiguration & ([void] extends [Options] ? {
     options?: Resolver<Options>;
     run?: TaskFn | Task<Options>;
 } : {} extends Options ? {
@@ -460,7 +456,6 @@ export enum TaskStatus {
     Registered = "registered",
     Running = "running",
     Scheduled = "scheduled",
-    Skipped = "skipped",
     UpToDate = "up-to-date"
 }
 

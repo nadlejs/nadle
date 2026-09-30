@@ -84,6 +84,7 @@ user-facing docs should also be updated.
 | **Declaration**      | A file or directory pattern used to describe task inputs or outputs.                                                   |
 | **Fingerprint**      | A SHA-256 hash of a file's contents, used for cache key computation.                                                   |
 | **Cache Key**        | A hash derived from task ID, input fingerprints, and task environment.                                                 |
+| **Verdict Caching**  | Caching a task's success outcome against its inputs, for tasks that declare `inputs` but produce no output artifacts.  |
 | **DAG**              | Directed Acyclic Graph representing task dependencies.                                                                 |
 | **Listener**         | An object with optional methods for lifecycle events.                                                                  |
 | **Plugin**           | A distributable unit applied with `use()` that contributes task types, lifecycle hooks, and/or custom reporters.       |

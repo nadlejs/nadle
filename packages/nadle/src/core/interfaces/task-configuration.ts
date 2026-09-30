@@ -54,6 +54,15 @@ export interface TaskConfiguration<Options = unknown> {
 	outputs?: MaybeArray<Declaration>;
 
 	/**
+	 * Caches the success verdict of a task that declares `inputs` but produces no
+	 * output files, such as a linter or type-checker. While the inputs are unchanged
+	 * the task is reported up-to-date instead of running. Only success is cached: a
+	 * failing task always re-runs. Setting this asserts the task produces no artifact
+	 * any other task consumes. Ignored when `outputs` are declared.
+	 */
+	cacheVerdict?: boolean;
+
+	/**
 	 * Maximum number of cache entries to keep for this task.
 	 * When exceeded, the oldest entries are evicted.
 	 * Overrides the global `maxCacheEntries` setting.
