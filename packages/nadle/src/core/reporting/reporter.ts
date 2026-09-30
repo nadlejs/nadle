@@ -11,6 +11,7 @@ import { highlight, formatTime } from "../utilities/utils.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
+import { countNonExecuted } from "../engine/failure-classifier.js";
 import { renderFailureCounts, renderSuccessCounts } from "./run-summary.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
@@ -223,8 +224,10 @@ export class DefaultReporter implements Listener {
 		this.renderer.finish();
 		this.context.logger.info("Execution failed");
 
+		const nonExecuted = countNonExecuted(this.context);
+
 		this.context.logger.log(
-			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${renderFailureCounts(this.stats, this.tracker.notRunCount)})`)}`
+			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${renderFailureCounts(this.stats, nonExecuted)})`)}`
 		);
 
 		if (!this.context.options.stacktrace) {

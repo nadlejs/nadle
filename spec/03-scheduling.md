@@ -190,9 +190,12 @@ Under `--continue`, a failure inside that tree does not end the run:
 
 1. Within the current main task's tree, admission continues under the same rule — every
    task whose dependencies all succeeded is still run.
-2. The main task is considered complete once no task in its tree can be admitted any more,
-   whether it reached a terminal status successfully or is itself blocked by a failure
-   beneath it.
+2. The main task is considered complete once no task in its tree can be admitted any more
+   **and** no task in its tree is still running. Waiting for the running tasks is what
+   makes the rule correct: a tree whose tasks are all in flight has nothing admissible at
+   that instant, yet each pending completion may still admit its dependents. The main task
+   is complete whether it reached a terminal status successfully or is itself blocked by a
+   failure beneath it.
 3. The scheduler then **advances to the next main task** and proceeds normally. A failure
    in main task 1 therefore does not prevent main task 2 from running, unless main task 2
    transitively depends on a task that failed — in which case main task 2 is blocked by the
