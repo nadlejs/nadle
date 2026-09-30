@@ -48,17 +48,18 @@
 **Decision**: Two presets with the following severity mapping:
 
 **`recommended`** (subset, appropriate severity):
-| Rule | Severity |
-|------|----------|
-| `no-anonymous-tasks` | error |
-| `no-duplicate-task-names` | error |
-| `valid-task-name` | error |
-| `valid-depends-on` | error |
-| `require-task-description` | warn |
-| `require-task-inputs` | warn |
-| `no-sync-in-task-action` | warn |
-| `no-process-cwd` | warn |
-| `padding-between-tasks` | warn |
+
+| Rule                       | Severity |
+| -------------------------- | -------- |
+| `no-anonymous-tasks`       | error    |
+| `no-duplicate-task-names`  | error    |
+| `valid-task-name`          | error    |
+| `valid-depends-on`         | error    |
+| `require-task-description` | warn     |
+| `require-task-inputs`      | warn     |
+| `no-sync-in-task-action`   | warn     |
+| `no-process-cwd`           | warn     |
+| `padding-between-tasks`    | warn     |
 
 **`all`** — all rules at `error` level (including `no-circular-dependencies` and `prefer-builtin-task`).
 

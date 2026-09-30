@@ -362,9 +362,7 @@ to your build. Author one with `definePlugin` and apply it in `nadle.config.ts` 
 import { use } from "nadle";
 import { myPlugin } from "my-nadle-plugin";
 
-use(myPlugin, {
-	/* plugin options (typed) */
-});
+use(myPlugin, {/* plugin options (typed) */});
 ```
 
 `use(plugin, options?)` registers the plugin's task types (so they behave exactly like tasks
@@ -385,9 +383,7 @@ export const myPlugin = definePlugin<{ threshold?: number }>({
 			name: "deploy",
 			task: DeployTask,
 			config: {
-				inputs: [
-					/* … */
-				]
+				inputs: [/* … */]
 			}
 		}
 	],
