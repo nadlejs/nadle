@@ -17,11 +17,13 @@ export function renderSuccessCounts(stats: TaskStats): string {
 
 export function renderFailureCounts(stats: TaskStats, notRun: number): string {
 	const skipped = stats[TaskStatus.Skipped];
+	const canceled = stats[TaskStatus.Canceled];
 
 	return new StringBuilder(", ")
 		.add(`${taskCount(stats[TaskStatus.Finished])} executed`)
 		.add(skipped > 0 && `${taskCount(skipped)} skipped`)
 		.add(`${taskCount(stats[TaskStatus.Failed])} failed`)
+		.add(canceled > 0 && `${taskCount(canceled)} canceled`)
 		.add(notRun > 0 && `${c.bold(notRun)} downstream task${notRun > 1 ? "s" : ""} not run`)
 		.build();
 }

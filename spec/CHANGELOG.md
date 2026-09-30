@@ -70,6 +70,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
   relayed task output. Tasks run with `NO_COLOR=1` under this reporter unless a color
   preference (`FORCE_COLOR` or `NO_COLOR`) is already set, so a failing task's captured tool
   output no longer carries escape sequences.
+- 04-execution: A failing task no longer interrupts the tasks running alongside it. Every
+  dispatched task is allowed to settle before the worker threads are torn down, so each one
+  reports its own verdict. Previously the first failure tore the pool down immediately and
+  its still-running siblings were recorded as Canceled, discarding their real outcomes — a
+  run with several genuine failures surfaced only one or two of them. Fail-fast is unchanged:
+  tasks that had not started are still never dispatched.
+- 13-reporting: Canceled tasks are now counted in the failed-run summary of both reporters,
+  separately from the not-run count. Previously they were absent from every count, so the
+  summary did not add up to the number of scheduled tasks.
 - 10-builtin-tasks: Exec-based built-in tasks no longer override a `FORCE_COLOR` or `NO_COLOR`
   value present in the task's environment. Color is forced (`FORCE_COLOR=1`) only when neither
   is set, so a task can opt out of forced color by configuring its own environment.

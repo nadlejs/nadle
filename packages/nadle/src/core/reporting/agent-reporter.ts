@@ -86,6 +86,7 @@ export class AgentReporter implements Listener {
 			.add(this.stats[TaskStatus.FromCache] > 0 && `cached ${this.stats[TaskStatus.FromCache]}`)
 			.add(this.stats[TaskStatus.Skipped] > 0 && `skipped ${this.stats[TaskStatus.Skipped]}`)
 			.add(this.stats[TaskStatus.Failed] > 0 && `failed ${this.stats[TaskStatus.Failed]}`)
+			.add(this.stats[TaskStatus.Canceled] > 0 && `canceled ${this.stats[TaskStatus.Canceled]}`)
 			.add(this.tracker.notRunCount > 0 && `not-run ${this.tracker.notRunCount}`)
 			.build();
 

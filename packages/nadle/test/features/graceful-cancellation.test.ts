@@ -4,10 +4,11 @@ import { settle, config, fixture, withGeneratedFixture } from "setup";
 
 // Deterministic rendezvous: fail-task busy-waits until success-task has written
 // its marker file, guaranteeing success-task is already Running (not merely
-// scheduled) before fail-task throws. This makes the *outcomes* deterministic —
-// success-task is always cancelable. We assert the outcomes directly rather than
-// snapshotting full stdout, because the interleaving of STARTED log lines is a
-// separate reporter-flush timing detail unrelated to cancellation behavior.
+// scheduled) before fail-task throws. A sibling failure must no longer interrupt
+// it: success-task runs to completion and reports its own verdict, and only then
+// is the pool torn down and the failure surfaced. We assert the outcomes directly
+// rather than snapshotting full stdout, because the interleaving of STARTED log
+// lines is a separate reporter-flush timing detail.
 const files = fixture()
 	.packageJson("graceful-cancellation")
 	.config(
@@ -19,7 +20,7 @@ const files = fixture()
 					'\tconst Fs = await import("node:fs");',
 					'\tconst Path = await import("node:path");',
 					'\tFs.writeFileSync(Path.join(process.cwd(), "success-running.marker"), "1");',
-					"\tawait new Promise((resolve) => setTimeout(resolve, 5000));",
+					"\tawait new Promise((resolve) => setTimeout(resolve, 300));",
 					"}"
 				].join("\n")
 			)
@@ -42,7 +43,7 @@ const files = fixture()
 	.build();
 
 describe("graceful cancellation", () => {
-	it("should report other running tasks as canceled instead of failed", () =>
+	it("should let a running sibling finish instead of cancelling it", () =>
 		withGeneratedFixture({
 			files,
 			testFn: async ({ exec }) => {
@@ -51,7 +52,8 @@ describe("graceful cancellation", () => {
 
 				expect(exitCode).toBe(1);
 				expect(output).toSettle("fail-task", "failed");
-				expect(output).toSettle("success-task", "canceled");
+				expect(output).toSettle("success-task", "done");
+				expect(output).not.toContain("CANCELED");
 			}
 		}));
 });

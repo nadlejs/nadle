@@ -101,12 +101,25 @@ Non-string env values are converted to strings before application.
 
 ## Cancellation
 
-If a task fails and other tasks are still running:
+If a task fails while other tasks are still running, those tasks are **not** interrupted.
+The pool waits for every dispatched task to settle, then destroys the worker threads, then
+surfaces the failure. Each in-flight task therefore reports its own verdict — a task that
+was about to fail is recorded as Failed with its own diagnostics, not as Canceled.
 
-1. The pool is destroyed, which terminates all worker threads.
-2. A terminated worker throws a "Terminating worker thread" error.
-3. The pool detects this error and checks if the task's status is Running.
-4. If Running, the task is marked as Canceled (not Failed).
+Fail-fast is unaffected: a failing task never queries the scheduler for its dependents, so
+tasks that had not started are never dispatched. They remain Scheduled and are reported as
+not run.
+
+Cancellation remains the outcome when a running task's worker is torn down by something
+other than a sibling's failure:
+
+1. The pool is destroyed while a task is still Running — for example the process is
+   interrupted (SIGINT), or a watch session is shut down.
+2. A worker thread dies for its own reasons (a crash, or an out-of-memory kill).
+
+In those cases the terminated worker throws a "Terminating worker thread" error. The pool
+detects this error, checks whether the task's status is Running, and if so marks the task
+Canceled (not Failed).
 
 ## Cleanup
 
