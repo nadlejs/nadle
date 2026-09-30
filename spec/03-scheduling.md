@@ -99,7 +99,9 @@ the command line.
    eligible for scheduling.
 3. Within the main task's tree, all zero-indegree tasks run concurrently (dependencies
    within a chain step still parallelize).
-4. When the main task completes, the scheduler advances to the next specified task.
+4. When the main task completes, the scheduler advances to the next specified task (see
+   [Failure Handling](#failure-handling) for what completion means when a task in the tree
+   has failed).
 5. If the next main task's dependencies are already satisfied, it may start immediately.
 
 ### Ready Task Computation (Kahn's Algorithm)
@@ -109,7 +111,96 @@ the command line.
    If the dependent's indegree reaches zero and it belongs to the current eligible set,
    it becomes ready.
 3. **Main task completion** (sequential mode only): advance to the next main task and
-   recompute the initial ready set.
+   recompute the initial ready set. See [Failure Handling](#failure-handling) for what
+   completion means when a task in the tree has failed.
+
+## Failure Handling
+
+When a task fails, the scheduler decides whether the run stops admitting new work or
+keeps going. The decision is governed by the `--continue` option.
+
+### Fail-Fast (default)
+
+By default the run **fails fast**: as soon as any task fails, the scheduler stops
+admitting tasks to execution. No task that has not already started is started, whether or
+not it depends on the failure. Tasks already in flight reach a terminal status under the
+rules of [04-execution.md](04-execution.md) and are reported.
+
+### Continue (`--continue`)
+
+With `--continue`, a failure does not stop the scheduler. The run proceeds until no task
+can be admitted any more:
+
+- A task whose dependencies have **all** succeeded is still admitted and executed, however
+  many unrelated tasks have failed.
+- A task that has at least one **failed** task in its transitive dependency closure is
+  **never** admitted — running it would consume outputs that were not produced. Because the
+  closure is transitive, a task whose only unmet dependency is itself blocked is likewise
+  never admitted: the original failure is in its closure too.
+- Succeeding after a failure does not clear the failure: the run's outcome is still a
+  failure, the exit code is non-zero, and **every** failure is reported, not just the first
+  (see [12-error-handling.md](12-error-handling.md)).
+- `--continue` changes admission only. It changes neither the dependency order, the
+  concurrency limits, nor any cache decision — in particular, a task that succeeds during a
+  failed run has its result cached normally, because cache writes are gated on the task's
+  own outcome, not the run's (see [05-caching.md](05-caching.md)).
+
+The option is independent of the execution mode. It composes with parallel and sequential
+mode as described below.
+
+### Terminal Non-Execution States
+
+When a run ends, every task that was scheduled but never reached a terminal status is
+classified into exactly one of two states. The classification is a property of the graph
+and the set of failures, not a task status: these tasks never started and therefore never
+reach a terminal status (see [01-task.md](01-task.md)).
+
+| State       | Definition                                                                            |
+| ----------- | ------------------------------------------------------------------------------------- |
+| Blocked     | At least one task in the task's transitive dependency closure failed.                 |
+| Not started | No task in its transitive dependency closure failed, and the run ended before it ran. |
+
+Rules:
+
+- The two states are mutually exclusive and jointly exhaustive over the tasks that were
+  scheduled and never reached a terminal status. Every such task is either blocked or not
+  started.
+- **Blocked** is decided by the graph alone. A task is blocked if and only if a failure
+  exists in its transitive dependency closure, independently of `--continue`. A blocked
+  task is blocked under both fail-fast and `--continue`; skipping it is always correct.
+- **Not started** means the task was independent of every failure. Under `--continue` this
+  set is empty for tasks whose dependencies could still be satisfied — the whole point of
+  the option is that such a task runs. It remains non-empty when the run is aborted for a
+  reason other than a task failure.
+- Neither state is the `Canceled` status. `Canceled` describes a task that **was running**
+  and was terminated before it completed; blocked and not-started tasks never started.
+- A task excluded from the run (see Exclusion) is not scheduled at all and is therefore
+  neither blocked nor not started.
+
+The two states are reported as separate counts — see [13-reporting.md](13-reporting.md).
+
+### Interaction with Execution Modes
+
+**Parallel mode.** Admission is graph-wide. Under `--continue`, any task whose indegree has
+reached zero and whose transitive dependency closure holds no failure is admitted, so
+independent branches of unrelated main tasks continue concurrently with the failure.
+
+**Sequential mode.** The scheduler restricts eligibility to the current main task's tree.
+Under `--continue`, a failure inside that tree does not end the run:
+
+1. Within the current main task's tree, admission continues under the same rule — every
+   task whose dependencies all succeeded is still run.
+2. The main task is considered complete once no task in its tree can be admitted any more,
+   whether it reached a terminal status successfully or is itself blocked by a failure
+   beneath it.
+3. The scheduler then **advances to the next main task** and proceeds normally. A failure
+   in main task 1 therefore does not prevent main task 2 from running, unless main task 2
+   transitively depends on a task that failed — in which case main task 2 is blocked by the
+   ordinary rule, not by the mode.
+
+This is the behavior the option exists for: a gate that lists several independent checks as
+main tasks gets a verdict for each of them in one run. Under the default fail-fast
+behavior, a failure in main task 1 ends the run and main task 2 is reported as not started.
 
 ## Exclusion
 

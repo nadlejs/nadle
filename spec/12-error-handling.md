@@ -54,6 +54,27 @@ Task function throws
 7. `onExecutionFailed` is emitted with the error.
 8. The process exits with the appropriate code.
 
+## Multiple Failures
+
+A run may produce more than one task failure. This is the normal case under `--continue`
+(see [03-scheduling.md](03-scheduling.md)), and it already occurs under the default
+fail-fast behavior when several tasks are in flight when the first one fails.
+
+Rules:
+
+- Every failure emits its own failed-task event as it happens, so every failing task's
+  diagnostics reach the output at the point they are produced.
+- At the end of a failed run, **all** failures are reported together, not only the first.
+  The failed count in the run summary (see [13-reporting.md](13-reporting.md)) is the total
+  number of failed tasks.
+- The run's overall error is the **first** failure observed, in the order failures were
+  observed. That error determines the error category, the message, and the exit code; the
+  remaining failures do not change it.
+- The single structured error record (see Structured Error Output) describes that first
+  failure. Exactly one record is emitted per run regardless of how many tasks failed.
+- A failure is a failure regardless of how many tasks afterwards succeeded: the exit code is
+  non-zero whenever at least one task failed.
+
 ## Exit Code Determination
 
 ```

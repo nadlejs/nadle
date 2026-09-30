@@ -57,6 +57,7 @@ Rules:
 | ------------------- | ----- | -------- | ------- | --------------------------------------------------------------------- |
 | `--parallel`        |       | boolean  | `false` | Run all specified tasks in parallel while respecting dependencies.    |
 | `--exclude`         | `-x`  | string[] |         | Tasks to exclude from execution. Supports comma-separated values.     |
+| `--continue`        |       | boolean  | `false` | Keep running tasks whose dependencies succeeded after a failure.      |
 | `--no-cache`        |       | boolean  | `false` | Disable task caching. All tasks execute and results are not stored.   |
 | `--clean-cache`     |       | boolean  | `false` | Delete all files in the cache directory.                              |
 | `--list`            | `-l`  | boolean  | `false` | List all available tasks.                                             |
@@ -72,6 +73,12 @@ Rules:
 | `--doctor`          |       | boolean  | `false` | Diagnose project, config, and cache health; no execution.             |
 | `--capabilities`    |       | boolean  | `false` | Emit a machine-readable JSON description of flags, tasks, and config. |
 | `--stacktrace`      |       | boolean  | `false` | Print full stacktrace on error.                                       |
+
+`--continue` changes only which tasks are admitted after a failure: a task whose
+dependencies all succeeded still runs, a task blocked by a failed dependency still does
+not, and the run still fails with a non-zero exit code. See
+[03-scheduling.md](03-scheduling.md) for the admission rules and
+[13-reporting.md](13-reporting.md) for the resulting summary.
 
 ### General Options
 

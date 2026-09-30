@@ -12,6 +12,21 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 
 ### Added
 
+- 03-scheduling, 09-cli: New `--continue` option. After a task fails, the scheduler keeps
+  admitting every task whose dependencies all succeeded, instead of stopping the run. A task
+  with a failure in its transitive dependency closure is still never admitted. The run still
+  fails with a non-zero exit code, and all failures are reported. Without it, a single
+  failure dropped tasks that had no dependency relationship to it, so a gate of independent
+  checks needed one re-run per fix.
+- 03-scheduling: New "Failure Handling" section. The default fail-fast behavior was
+  previously unspecified; it is now documented as the baseline, together with the two
+  terminal non-execution states. A scheduled task that never ran is **blocked** if and only
+  if at least one task in its transitive dependency closure failed, and **not started**
+  otherwise. Neither is the `Canceled` status, which describes a task that was running when
+  it was terminated.
+- 12-error-handling: New "Multiple Failures" section. All failures of a run are reported,
+  not only the first; the first observed failure determines the error category, message and
+  exit code, and exactly one structured error record is still emitted per run.
 - 02-task-configuration: New "Unknown Fields" section. A task configuration field that is
   not a recognized field MUST produce a warning naming the task and the field, and MUST NOT
   fail the run. Previously unrecognized fields were silently accepted, so a misspelled
@@ -38,12 +53,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 
 ### Changed
 
+- 13-reporting: The failed-run summary counts tasks that never ran as two separate counts,
+  **blocked** and **not started**, in both the default and the agent reporter, and the word
+  "skipped" is reserved for `onlyIf`. A single count conflating the two described every
+  unexecuted task as downstream of the failure, which was wrong for tasks independent of it,
+  and the two states read differently to someone deciding whether a re-run is needed: a
+  non-zero not-started count is exactly the signal that `--continue` would have produced more
+  verdicts in the same run. **Breaking for consumers parsing the agent reporter summary
+  line**: the `not-run` token is removed and replaced by `blocked` and `not-started`.
 - 02-task-configuration: The `onlyIf` predicate receives the same argument shape as the task
   body, the run context and the resolved task options, so it may decide based on options.
-- 13-reporting: The run summary count of tasks that never ran due to an upstream failure is
-  reworded from "skipped" to "not run", so "skipped" unambiguously refers to `onlyIf`.
-- 13-reporting: The failed-run summary's not-run clause is worded "downstream tasks not run",
-  naming the relationship that caused the tasks to be left unexecuted.
 
 ### Fixed
 
