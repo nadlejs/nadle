@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.6](https://github.com/nadlejs/nadle/compare/language-server/v0.0.5...language-server/v0.0.6) (2026-09-30)
+
+
+### Internal
+
+* **deps-dev:** Bump @size-limit/file from 12.1.0 to 13.0.3 ([#710](https://github.com/nadlejs/nadle/issues/710)) ([93082ab](https://github.com/nadlejs/nadle/commit/93082ab81d079b5c004a402da5e85dcfc71f9959))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.0.5](https://github.com/nadlejs/nadle/compare/language-server/v0.0.4...language-server/v0.0.5) (2026-06-12)
 
 
