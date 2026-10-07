@@ -16,7 +16,7 @@
 	"main": "./lib/extension.js",
 	"devDependencies": {
 		"@types/node": "^20.19.33",
-		"@types/vscode": "^1.138.0",
+		"@types/vscode": "^1.140.0",
 		"@vscode/vsce": "^3.9.2",
 		"tsup": "^8.5.1",
 		"typescript": "^5.9.3",

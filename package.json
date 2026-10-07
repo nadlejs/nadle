@@ -7,7 +7,7 @@
 		"start": "tsgo -b ./tsconfig.compile.json --watch"
 	},
 	"devDependencies": {
-		"@microsoft/api-extractor": "^7.59.2",
+		"@microsoft/api-extractor": "^7.59.3",
 		"@nadle/eslint-config": "^1.0.2",
 		"@nadle/prettier-config": "^0.0.5",
 		"@nadle/ts-config": "^0.0.2",
@@ -21,7 +21,7 @@
 		"glob": "^11.1.0",
 		"husky": "^9.1.7",
 		"jiti": "^2.7.0",
-		"knip": "^6.38.0",
+		"knip": "^6.39.0",
 		"nadle": "0.6.0",
 		"prettier": "^3.9.9",
 		"remark-cli": "^12.0.1",
@@ -31,7 +31,7 @@
 		"tsup": "^8.5.1",
 		"tsx": "^4.23.15",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.70.1",
+		"typescript-eslint": "^8.71.0",
 		"vitest": "4.0.18"
 	},
 	"engines": {
