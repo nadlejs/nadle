@@ -16,7 +16,7 @@
 		"execa": "^9.6.1",
 		"find-up": "^7.0.0",
 		"meow": "^14.1.0",
-		"preferred-pm": "^5.0.0"
+		"preferred-pm": "^5.0.1"
 	},
 	"devDependencies": {
 		"@manypkg/tools": "^2.1.2",
