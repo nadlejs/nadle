@@ -16,6 +16,15 @@ interface ExecOptions extends ExecaOptions {
 
 export type Exec = (strings: TemplateStringsArray, ...values: unknown[]) => ResultPromise;
 
+/** The flag `createExec` injects when a command does not set `--max-workers` itself. */
+export const SINGLE_WORKER = "--max-workers 1";
+
+/**
+ * Opt a command into PoolExecutor. Keep the count at 2: nadle clamps workers to
+ * `Os.availableParallelism()`, so a test needing more deadlocks on CI runners.
+ */
+export const poolWorkers = (count = 2) => `--max-workers ${count}`;
+
 export function createExec(options?: ExecOptions): Exec {
 	const configFile = options?.config;
 	const autoInjectMaxWorkers = options?.autoInjectMaxWorkers ?? true;
@@ -33,9 +42,14 @@ export function createExec(options?: ExecOptions): Exec {
 			command = "--no-footer " + command;
 		}
 
-		// Enforce one worker if not specified
+		// Default to a single worker for deterministic task ordering. This is load-bearing
+		// for most tests, but it also selects InlineExecutor, so a command without an
+		// explicit --max-workers exercises NONE of PoolExecutor: no worker threads, no
+		// MessageChannel, no port-based notify, and a destroy() that is a documented no-op.
+		// Production defaults to the pool, so concurrency bugs are invisible here (see #731).
+		// Opt into the real transport with `poolWorkers()`; see test/features/pool-executor.test.ts.
 		if (autoInjectMaxWorkers && !command.includes("--max-workers")) {
-			command = "--max-workers 1 " + command;
+			command = `${SINGLE_WORKER} ` + command;
 		}
 
 		let env: ExecOptions["env"] = { CI: "false", TEST: "true", ...options?.env };
