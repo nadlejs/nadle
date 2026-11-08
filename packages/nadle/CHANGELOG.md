@@ -1,5 +1,20 @@
 # nadle
 
+## [0.6.2](https://github.com/nadlejs/nadle/compare/nadle/v0.6.1...nadle/v0.6.2) (2026-11-08)
+
+
+### Features
+
+* Drop footer IDLE rows no pending task can fill ([#752](https://github.com/nadlejs/nadle/issues/752)) ([567ab77](https://github.com/nadlejs/nadle/commit/567ab77c9b5518cf07d21718df005d4b3bb58174))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.6.1](https://github.com/nadlejs/nadle/compare/nadle/v0.6.0...nadle/v0.6.1) (2026-09-30)
 
 
