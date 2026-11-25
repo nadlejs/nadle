@@ -26,7 +26,6 @@
 		"fixturify": "^3.0.0",
 		"serialize-javascript": "^7.1.2",
 		"size-limit": "^12.1.0",
-		"typescript": "^5.9.3",
 		"vite-plus": "catalog:",
 		"yaml": "^2.9.1"
 	},

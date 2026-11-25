@@ -93,7 +93,7 @@ Key source directories under `packages/nadle/src/`:
 ```bash
 pnpm install                  # Install dependencies
 nadle check build test        # Full CI pipeline (nadle runs itself)
-nadle compile                 # tsgo: compile + type-check kernel, project-resolver, create-nadle, eslint-plugin
+nadle compile                 # tsc: compile + type-check kernel, project-resolver, create-nadle, eslint-plugin
 nadle bundle                  # vp pack (tsdown): bundle nadle, language-server, vscode-extension
 nadle build                   # compile + typecheck + bundle (everything tests need)
 nadle testUnit                # All vitest projects (vp test, root vite.config.ts)
@@ -123,7 +123,7 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 
 ## Build & Release
 
-- **Build**: tsgo (`nadle compile`, root `tsconfig.compile.json`) for unbundled packages;
+- **Build**: tsc 7 (`nadle compile`, root `tsconfig.compile.json`) for unbundled packages;
   `vp pack` (`nadle bundle`, `pack` in root `vite.config.ts`) for nadle (cli/index/worker),
   language-server, and vscode-extension. Linting is oxlint and formatting oxfmt, both configured in
   `vite.config.ts`; `pnpm install` runs `vp config`, which installs the `.vite-hooks` git hooks

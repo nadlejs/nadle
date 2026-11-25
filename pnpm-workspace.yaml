@@ -6,10 +6,8 @@ packages:
   - "!./packages/examples/**"
   - "!./packages/vscode-extension/server"
 
-# tsgo is consumed as a nightly by design; everything else honors the
-# default 24h minimumReleaseAge supply-chain delay.
+# Exact exclusions for versions that must install before the default 24h minimumReleaseAge passes.
 minimumReleaseAgeExclude:
-  - "@typescript/native-preview*"
   - "@nadle/kernel@0.0.2"
   - "@nadle/project-resolver@0.0.3"
   - nadle@0.6.0
