@@ -10,7 +10,7 @@
 		"@microsoft/api-extractor": "^7.59.2",
 		"@nadle/ts-config": "^0.0.2",
 		"@stylistic/eslint-plugin": "^5.1.0",
-		"@types/node": "^20.19.33",
+		"@types/node": "^22.20.5",
 		"@vitest/coverage-v8": "catalog:",
 		"cspell": "^9.3.2",
 		"eslint-plugin-n": "^17.21.0",

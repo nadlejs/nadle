@@ -3,7 +3,7 @@
 	"type": "module",
 	"private": true,
 	"devDependencies": {
-		"@types/node": "^20.19.25",
+		"@types/node": "^22.20.5",
 		"glob": "^11.1.0",
 		"tinyrainbow": "^3.1.1",
 		"type-fest": "^5.10.0"

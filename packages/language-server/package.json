@@ -27,7 +27,7 @@
 	},
 	"devDependencies": {
 		"@size-limit/file": "^13.0.3",
-		"@types/node": "^20.19.25",
+		"@types/node": "^22.20.5",
 		"size-limit": "^12.1.0",
 		"std-env": "^3.10.0",
 		"vite-plus": "catalog:"
