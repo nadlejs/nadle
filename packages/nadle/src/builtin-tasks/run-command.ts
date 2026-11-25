@@ -31,9 +31,35 @@ function colorEnv(): Record<string, string> {
 }
 
 /**
+ * Forwards output to `log` one line per call, without its newline: how a child splits its
+ * writes into chunks is timing-dependent, so the partial last line waits for more output.
+ */
+function createLineBuffer(log: (line: string) => void) {
+	let pending = "";
+
+	return {
+		flush(): void {
+			if (pending !== "") {
+				log(pending);
+				pending = "";
+			}
+		},
+		push(chunk: string): void {
+			const lines = (pending + chunk).split(/\r?\n/);
+			pending = lines.pop() ?? "";
+
+			for (const line of lines) {
+				log(line);
+			}
+		}
+	};
+}
+
+/**
  * Shared runner for exec-based builtin tasks: appends passthrough args, spawns the
  * command in the task's working directory (forcing color unless FORCE_COLOR or NO_COLOR is
- * set), streams combined output to the task logger, and wraps failures in a TaskExecutionError.
+ * set), streams combined output to the task logger line by line, and wraps failures in a
+ * TaskExecutionError.
  */
 export async function runCommand(context: RunnerContext, { args, command, doneMessage, startMessage }: RunCommandParams): Promise<void> {
 	const finalArgs = [...args, ...context.passthroughArgs];
@@ -41,14 +67,17 @@ export async function runCommand(context: RunnerContext, { args, command, doneMe
 	context.logger.info(startMessage(finalArgs));
 
 	const subprocess = execa(command, finalArgs, { all: true, env: colorEnv(), cwd: context.workingDir });
+	const output = createLineBuffer((text) => context.logger.log(text));
 
 	subprocess.all?.on("data", (chunk) => {
-		context.logger.log(chunk.toString());
+		output.push(chunk.toString());
 	});
 
 	try {
 		await subprocess;
 	} catch (error) {
+		output.flush();
+
 		const exitCode = (error as { exitCode?: number }).exitCode;
 
 		throw new TaskExecutionError(`Command failed${exitCode !== undefined ? ` with exit code ${exitCode}` : ""}: ${command} ${finalArgs.join(" ")}`, {
@@ -56,5 +85,6 @@ export async function runCommand(context: RunnerContext, { args, command, doneMe
 		});
 	}
 
+	output.flush();
 	context.logger.info(doneMessage);
 }
