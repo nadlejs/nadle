@@ -81,20 +81,20 @@ const FeaturePillars: FC = () => (
 					badge="Type Safety"
 					title="Catch errors before they happen"
 					description="Define custom task types with generics. Full IntelliSense for task options, configuration errors caught at compile time. TypeScript is the foundation, not an afterthought."
-					media={<CodeWindow title="deploy.ts" code={typeSafetyCode} />}
+					media=<CodeWindow title="deploy.ts" code={typeSafetyCode} />
 				/>
 				<Pillar
 					reverse
 					badge="Parallelism"
 					title="Maximum throughput, zero wasted time"
 					description="Nadle builds a dependency graph and runs independent tasks in parallel across worker threads. Watch your pipeline light up as dependencies resolve."
-					media={<TerminalBlock content={parallelTerminal} />}
+					media=<TerminalBlock content={parallelTerminal} />
 				/>
 				<Pillar
 					badge="Caching"
 					title="Only rebuild what changed"
 					description="Declare inputs and outputs for any task. Nadle fingerprints them and skips work when nothing changed. Fast incremental builds out of the box."
-					media={<CodeWindow title="nadle.config.ts" code={cachingCode} />}
+					media=<CodeWindow title="nadle.config.ts" code={cachingCode} />
 				/>
 			</div>
 		</div>

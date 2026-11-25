@@ -2,8 +2,8 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { getHover } from "src/hover.js";
-import { it, expect, describe } from "vite-plus/test";
 import { analyzeDocument } from "src/analyzer.js";
+import { it, expect, describe } from "vite-plus/test";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 const fixturesDir = Path.resolve(import.meta.dirname, "__fixtures__");
