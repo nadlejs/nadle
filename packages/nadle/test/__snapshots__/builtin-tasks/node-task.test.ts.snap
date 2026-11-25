@@ -19,7 +19,6 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer pass --log-level info
 
 [info] Running node script: node ./src/pass.js
 [log] pass
-
 [info] Node script completed successfully.
 [log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
@@ -41,7 +40,6 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer pass
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
 [log] pass
-
 [log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
 [log]
