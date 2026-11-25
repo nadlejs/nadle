@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { CLIOptionsResolver } from "../../src/core/options/cli-options-resolver.js";
 

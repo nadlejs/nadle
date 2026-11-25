@@ -1,4 +1,4 @@
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import { configure, type AliasOption, type NadleBaseOptions, type NadleFileOptions } from "nadle";
 
 describe.concurrent("configure", () => {

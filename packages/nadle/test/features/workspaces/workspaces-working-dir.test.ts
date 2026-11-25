@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { getStdout, CONFIG_FILE, withFixture, PNPM_WORKSPACE, createPackageJson, createPnpmWorkspace } from "setup";
 

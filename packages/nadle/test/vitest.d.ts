@@ -1,4 +1,4 @@
-import "vitest";
+import "vite-plus/test";
 
 interface CustomMatchers<R = unknown> {
 	toRun: (taskName: string) => R;
@@ -8,6 +8,6 @@ interface CustomMatchers<R = unknown> {
 	toSettle: (taskName: string, status: "done" | "up-to-date" | "from-cache" | "failed" | "canceled") => R;
 }
 
-declare module "vitest" {
+declare module "vite-plus/test" {
 	interface Assertion<T = any> extends CustomMatchers<T> {}
 }

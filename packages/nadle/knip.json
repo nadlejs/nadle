@@ -2,5 +2,6 @@
 	"$schema": "https://unpkg.com/knip@latest/schema.json",
 	"ignore": ["test/**", "nadle.config.ts"],
 	"ignoreBinaries": ["nadle"],
+	"rules": { "catalogReferences": "off" },
 	"ignoreDependencies": ["@vitest/expect"]
 }

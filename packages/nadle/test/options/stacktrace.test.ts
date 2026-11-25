@@ -1,4 +1,4 @@
-import { it, describe } from "vitest";
+import { it, describe } from "vite-plus/test";
 import { exec, expectFail } from "setup";
 
 describe("--stacktrace", () => {

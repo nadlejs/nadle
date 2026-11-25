@@ -1,4 +1,4 @@
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import { tasks, type Task, type Logger, type TaskEnv, type RunnerContext, type TaskConfiguration } from "nadle";
 
 describe.concurrent("RunnerContext", () => {

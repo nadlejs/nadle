@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { ROOT_WORKSPACE_ID, deriveWorkspaceId, isRootWorkspaceId } from "../src/index.js";
 

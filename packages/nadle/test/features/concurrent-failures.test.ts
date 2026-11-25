@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, settle, fixture, withGeneratedFixture } from "setup";
 
 // `fast` fails as soon as `slow` is provably Running, while `slow` is still mid-sleep.

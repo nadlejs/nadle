@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { noop, clamp, capitalize, bindObject, normalizeGlobPath } from "../../src/core/utilities/utils.js";
 

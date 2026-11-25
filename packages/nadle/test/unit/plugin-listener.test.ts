@@ -1,4 +1,4 @@
-import { it, vi, expect, describe } from "vitest";
+import { it, vi, expect, describe } from "vite-plus/test";
 
 import { PluginListener } from "../../src/core/plugins/plugin-listener.js";
 import { PluginRegistry } from "../../src/core/plugins/plugin-registry.js";

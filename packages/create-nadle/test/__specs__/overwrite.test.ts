@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { cliPath, withFixture, CONFIG_FILE, PACKAGE_JSON, createPackageJson } from "setup";
 
 describe("overwrite handling", () => {

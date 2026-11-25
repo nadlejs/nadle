@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { type Project } from "@nadle/project-resolver";
 
 import { lazy, tasks } from "../../src/core/registration/api.js";

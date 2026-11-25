@@ -1,4 +1,4 @@
-import { it, expectTypeOf } from "vitest";
+import { it, expectTypeOf } from "vite-plus/test";
 import { definePlugin, type NadlePlugin } from "nadle";
 
 it("threads the Options generic into hooks", () => {

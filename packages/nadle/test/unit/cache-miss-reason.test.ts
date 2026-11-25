@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { CacheMissReason } from "../../src/core/models/cache/cache-miss-reason.js";
 

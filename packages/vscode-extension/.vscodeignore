@@ -1,6 +1,5 @@
 src/
 node_modules/
-tsup.config.ts
 tsconfig.json
 scripts/
 *.map

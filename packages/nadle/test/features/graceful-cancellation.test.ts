@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { settle, config, fixture, withGeneratedFixture } from "setup";
 
 // Deterministic rendezvous: fail-task busy-waits until success-task has written

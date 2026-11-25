@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { getWorkspaceById, resolveWorkspace, validateAliasKeys, type WorkspaceIdentity, validateWorkspaceLabels } from "../src/index.js";
 

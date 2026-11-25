@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { SEEDS, drive, policies, ranBefore, type TaskDef, createMockDeps, randomDurations, driveWithDurations } from "./__helpers__.js";
 

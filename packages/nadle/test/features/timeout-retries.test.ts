@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, settle, fixture, getStdout, withGeneratedFixture } from "setup";
 
 // A task body that fails the first `failTimes` attempts, then succeeds. Attempts are

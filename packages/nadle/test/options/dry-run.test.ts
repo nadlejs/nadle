@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { exec, fixture, getStdout, readConfig, expectPass, withGeneratedFixture } from "setup";
 
 const dependsOnFiles = fixture()

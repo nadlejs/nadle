@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { type NadleFileOptions } from "src/core/options/types.js";
 import { validateFileOptions } from "src/core/options/file-options-validator.js";
 

@@ -1,5 +1,5 @@
 import type { RimrafAsyncOptions } from "rimraf";
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import {
 	NpmTask,
 	NpxTask,

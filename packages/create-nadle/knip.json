@@ -2,5 +2,6 @@
 	"$schema": "https://unpkg.com/knip@latest/schema.json",
 	"entry": ["src/cli.ts"],
 	"ignore": ["test/**"],
-	"ignoreBinaries": ["nadle"]
+	"ignoreBinaries": ["nadle"],
+	"rules": { "catalogReferences": "off" }
 }

@@ -1,6 +1,6 @@
 import fixturify from "fixturify";
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { settle, fixture, getStdout, expectPass, withFixture, withGeneratedFixture } from "setup";
 
 describe.skipIf(isWindows)("copyTask", () => {

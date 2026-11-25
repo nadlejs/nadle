@@ -1,4 +1,4 @@
-import { it, afterAll, describe } from "vitest";
+import { it, afterAll, describe } from "vite-plus/test";
 import { RuleTester } from "@typescript-eslint/rule-tester";
 
 RuleTester.afterAll = afterAll;

@@ -20,19 +20,20 @@ tasks.register("spell", {
 	options: { command: "cspell", args: ["**", "--quiet", "--gitignore", "--cache", "--cache-location", "node_modules/.cache/cspell/.cspellcache"] }
 });
 
-tasks.register("eslint", {
+// Depends on compile: the nadle lint rules load from the built eslint-plugin-nadle.
+tasks.register("lint", {
 	run: PnpxTask,
 	group: "Checking",
 	dependsOn: ["compile"],
-	description: "Lint all files with ESLint",
-	options: { command: "eslint", args: [".", "--quiet", "--cache", "--cache-location", "node_modules/.cache/eslint/"] }
+	description: "Lint all files with Vite+ (oxlint)",
+	options: { command: "vp", args: ["lint", "--quiet"] }
 });
 
-tasks.register("prettier", {
+tasks.register("fmt", {
 	run: PnpxTask,
 	group: "Checking",
-	description: "Check formatting with Prettier",
-	options: { command: "prettier", args: ["--experimental-cli", "--check", "."] }
+	description: "Check formatting with Vite+ (oxfmt)",
+	options: { command: "vp", args: ["fmt", "--check"] }
 });
 
 tasks.register("knip", {
@@ -59,8 +60,8 @@ tasks.register("checkLinks", {
 
 tasks.register("check", {
 	group: "Checking",
-	description: "Run all checks (spell, lint, format, knip, validate, links)",
-	dependsOn: ["spell", "eslint", "prettier", "knip", "validate", "checkLinks"]
+	dependsOn: ["spell", "lint", "fmt", "knip", "validate", "checkLinks"],
+	description: "Run all checks (spell, lint, format, knip, validate, links)"
 });
 
 // --- Building (nadle-specific, kept here due to workspace self-reference limitation) ---
@@ -69,7 +70,7 @@ tasks.register("typecheck", {
 	run: PnpxTask,
 	group: "Building",
 	// Depends on bundle: test files import "nadle"/"@nadle/language-server", whose .d.ts
-	// are emitted by tsup (bundle), not by compile. Without this, typecheck can race ahead
+	// are emitted by vp pack (bundle), not by compile. Without this, typecheck can race ahead
 	// of bundle on a clean build and fail to resolve those package types.
 	dependsOn: ["compile", "bundle"],
 	description: "Type-check all project references",
@@ -92,12 +93,12 @@ tasks.register("bundle", {
 	run: PnpxTask,
 	group: "Building",
 	dependsOn: ["compile"],
-	options: { command: "tsup" },
-	description: "Bundle all tsup-based packages in one pass",
+	options: { command: "vp", args: ["pack"] },
+	description: "Bundle all vp pack packages in one pass",
 	outputs: [Outputs.dirs("packages/nadle/lib", "packages/language-server/lib", "packages/vscode-extension/lib")],
 	inputs: [
 		Inputs.dirs("packages/nadle/src", "packages/language-server/src", "packages/vscode-extension/src"),
-		Inputs.files("tsup.config.ts", "tsconfig.src.json", "tsconfig.base.json", "pnpm-lock.yaml")
+		Inputs.files("vite.config.ts", "tsconfig.src.json", "tsconfig.base.json", "pnpm-lock.yaml")
 	]
 });
 
@@ -113,7 +114,7 @@ tasks.register("testUnit", {
 	run: PnpxTask,
 	group: "Testing",
 	dependsOn: ["bundle"],
-	options: { args: ["run"], command: "vitest" },
+	options: { command: "vp", args: ["test", "run"] },
 	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
 });
 
@@ -121,19 +122,19 @@ tasks.register("test", { group: "Testing", dependsOn: ["typecheck", "testUnit"],
 
 // --- Formatting ---
 
-tasks.register("fixEslint", {
+tasks.register("fixLint", {
 	run: PnpxTask,
 	group: "Formatting",
 	dependsOn: ["compile"],
-	description: "Fix lint issues with ESLint",
-	options: { command: "eslint", args: [".", "--quiet", "--fix"] }
+	description: "Fix lint issues with Vite+ (oxlint)",
+	options: { command: "vp", args: ["lint", "--quiet", "--fix"] }
 });
 
-tasks.register("fixPrettier", {
+tasks.register("fixFmt", {
 	run: PnpxTask,
 	group: "Formatting",
-	description: "Format all files with Prettier",
-	options: { command: "prettier", args: ["--experimental-cli", "--write", "."] }
+	options: { command: "vp", args: ["fmt"] },
+	description: "Format all files with Vite+ (oxfmt)"
 });
 
-tasks.register("format", { group: "Formatting", dependsOn: ["fixEslint", "fixPrettier"], description: "Fix lint and format all files" });
+tasks.register("format", { group: "Formatting", dependsOn: ["fixLint", "fixFmt"], description: "Fix lint and format all files" });

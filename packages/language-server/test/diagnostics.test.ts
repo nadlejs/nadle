@@ -1,7 +1,7 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { analyzeDocument } from "src/analyzer.js";
 import { computeDiagnostics } from "src/diagnostics.js";
 import { DiagnosticSeverity } from "vscode-languageserver";

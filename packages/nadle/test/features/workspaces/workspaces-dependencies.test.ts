@@ -1,4 +1,4 @@
-import { it, describe } from "vitest";
+import { it, describe } from "vite-plus/test";
 import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { stringify } from "src/core/utilities/stringify.js";
 import {

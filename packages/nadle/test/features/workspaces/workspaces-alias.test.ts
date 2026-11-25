@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { getStderr, expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces alias", () => {

@@ -1,4 +1,4 @@
-import { describe } from "vitest";
+import { describe } from "vite-plus/test";
 
 import { createRuleTester } from "../helpers.js";
 import rule from "../../src/rules/no-duplicate-task-names.js";

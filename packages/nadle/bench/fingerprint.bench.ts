@@ -4,7 +4,7 @@ import Crypto from "node:crypto";
 import Fs from "node:fs/promises";
 
 import objectHash from "object-hash";
-import { bench, describe, afterAll, beforeAll } from "vitest";
+import { bench, describe, afterAll, beforeAll } from "vite-plus/test";
 
 let tempDir: string;
 const filePaths: string[] = [];

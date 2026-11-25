@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { raw, exec, config, fixture, createExec, serializeANSI, withGeneratedFixture } from "setup";
 
 const SLOW_BODY = "() => new Promise((resolve) => setTimeout(resolve, 1500))";

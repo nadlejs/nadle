@@ -1,0 +1,7 @@
+{
+	"extends": "./tsconfig.base.json",
+	"include": ["./nadle.config.ts", "./cspell.config.js", "./vite.config.ts", "./lint-rules/node-import-style.js"],
+	"compilerOptions": {
+		"allowJs": true
+	}
+}

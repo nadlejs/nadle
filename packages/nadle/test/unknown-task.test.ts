@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, fixture, getStderr, withGeneratedFixture } from "setup";
 
 const files = fixture()

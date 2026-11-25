@@ -35,6 +35,11 @@ const config = {
 	ignoreWords: ["Hoang"],
 	words: [
 		"Cancelation",
+		"oxfmt",
+		"oxlint",
+		"voidzero",
+		"tsdown",
+		"vite",
 		"Dogfooding",
 		"falsey",
 		"SCROLLBACK",
