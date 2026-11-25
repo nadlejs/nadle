@@ -1,5 +1,5 @@
-import { it, describe } from "vite-plus/test";
 import { exec, expectPass } from "setup";
+import { it, describe } from "vite-plus/test";
 
 describe("abbreviation", () => {
 	it("should resolve abbr task properly", async () => {
