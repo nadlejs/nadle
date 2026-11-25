@@ -14,10 +14,7 @@ describe("pnpm Task", () => {
 		await expectPass(exec`pass --log-level info`);
 	});
 
-	// Flaky on tsc 7: it writes the error in random stdout chunks and nadle logs each chunk as a line.
-	// Re-enable once child output is line-buffered.
-	// oxlint-disable-next-line vitest/no-disabled-tests
-	it.skip("throw error when running tsc command with error ts file", async () => {
+	it("throw error when running tsc command with error ts file", async () => {
 		await expectFail(exec`fail`);
 	});
 
