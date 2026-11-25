@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { raw, config, settle, fixture, getStdout, createExec, withGeneratedFixture } from "setup";
 
 const files = fixture()

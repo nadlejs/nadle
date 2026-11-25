@@ -1,7 +1,7 @@
 import Path from "node:path";
 
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { fixture, getStdout, readConfig, createExec, withGeneratedFixture } from "setup";
 
 const files = fixture()

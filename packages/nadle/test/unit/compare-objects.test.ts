@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { compareObjects } from "../../src/core/utilities/compare-objects.js";
 

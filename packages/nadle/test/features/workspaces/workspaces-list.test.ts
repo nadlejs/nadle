@@ -1,4 +1,4 @@
-import { it, describe } from "vitest";
+import { it, describe } from "vite-plus/test";
 import { PACKAGE_JSON } from "@nadle/project-resolver";
 import { expectPass, withFixture, CONFIG_FILE, PNPM_WORKSPACE, createPackageJson, createNadleConfig, createPnpmWorkspace } from "setup";
 

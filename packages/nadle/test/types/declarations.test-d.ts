@@ -1,4 +1,4 @@
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import { Inputs, Outputs, type Declaration, type DirDeclaration, type FileDeclaration } from "nadle";
 
 describe.concurrent("Declaration", () => {

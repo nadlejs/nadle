@@ -1,5 +1,5 @@
 import { createExec } from "setup";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 describe.concurrent("logger", () => {
 	const environments = [

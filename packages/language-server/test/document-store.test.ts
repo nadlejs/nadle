@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { DocumentStore } from "src/document-store.js";
 
 const SIMPLE_CONFIG = `

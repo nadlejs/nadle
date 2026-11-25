@@ -1,6 +1,6 @@
 import fixturify from "fixturify";
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { settle, fixture, getStdout, withGeneratedFixture } from "setup";
 
 const makeFixture = (config: string) =>

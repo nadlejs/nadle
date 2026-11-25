@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { getStdout, withFixture, createFileModifier } from "setup";
 
 describe.skipIf(isWindows)("cache eviction", () => {

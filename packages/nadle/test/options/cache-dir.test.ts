@@ -1,7 +1,7 @@
 import Path from "node:path";
 
 import { withFixture } from "setup";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";
 

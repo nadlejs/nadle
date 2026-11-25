@@ -1,5 +1,5 @@
 import { exec, getStdout } from "setup";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 describe("--log-level", () => {
 	it("shows the welcome banner and resolved options at info level", async () => {

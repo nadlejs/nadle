@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { getStderr, getStdout, createExec, withFixture, workspaceFixture } from "setup";
 
 describe.concurrent("workspaces > depends on tasks", () => {

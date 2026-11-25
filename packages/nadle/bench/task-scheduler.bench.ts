@@ -1,4 +1,4 @@
-import { bench, describe } from "vitest";
+import { bench, describe } from "vite-plus/test";
 
 /**
  * Standalone topological sort matching the DAG algorithm used by TaskScheduler.

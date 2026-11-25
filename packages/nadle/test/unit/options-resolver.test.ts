@@ -1,6 +1,6 @@
 import Os from "node:os";
 
-import { it, expect, describe, afterEach, beforeEach } from "vitest";
+import { it, expect, describe, afterEach, beforeEach } from "vite-plus/test";
 
 import { clamp } from "../../src/core/utilities/utils.js";
 

@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { execa } from "execa";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { cliPath, withFixture, PACKAGE_JSON, PNPM_WORKSPACE, createPackageJson, createPnpmWorkspace } from "setup";
 
 describe("given a pnpm monorepo project", () => {

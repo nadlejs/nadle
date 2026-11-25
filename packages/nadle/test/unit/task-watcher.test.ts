@@ -1,4 +1,4 @@
-import { it, vi, expect, describe } from "vitest";
+import { it, vi, expect, describe } from "vite-plus/test";
 
 import { TaskWatcher } from "../../src/core/watch/task-watcher.js";
 

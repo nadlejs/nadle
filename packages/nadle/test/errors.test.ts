@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { exec, fixture, readConfig, expectFail, withFixture, workspaceFixture, withGeneratedFixture } from "setup";
 
 const duplicateTasksFiles = fixture()

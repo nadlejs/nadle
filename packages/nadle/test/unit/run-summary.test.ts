@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { TaskStatus } from "../../src/core/interfaces/registered-task.js";
 import { type TaskStats } from "../../src/core/models/execution-tracker.js";

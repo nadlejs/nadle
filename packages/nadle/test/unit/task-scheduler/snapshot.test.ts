@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { createMockDeps, generateRandomDag, driveWithDurations, generateRandomWorkspaceDag } from "./__helpers__.js";
 

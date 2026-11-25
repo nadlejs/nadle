@@ -1,5 +1,5 @@
 import { exec, getStdout } from "setup";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 describe("when not given any tasks", () => {
 	it("reports that no tasks were specified in a non-interactive context", async () => {

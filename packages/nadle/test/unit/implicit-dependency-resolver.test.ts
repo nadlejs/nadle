@@ -1,4 +1,4 @@
-import { it, vi, expect, describe } from "vitest";
+import { it, vi, expect, describe } from "vite-plus/test";
 
 import { type SchedulerTask } from "../../src/core/engine/scheduler-types.js";
 import { resolveImplicitDependencies } from "../../src/core/engine/implicit-dependency-resolver.js";

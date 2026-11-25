@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { settle, fixture, withGeneratedFixture } from "setup";
 
 const lazyTypoConfig = `import { lazy, tasks } from "nadle";

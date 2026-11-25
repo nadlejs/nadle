@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { createMockDeps } from "./task-scheduler/__helpers__.js";
 import { TaskScheduler } from "../../src/core/engine/task-scheduler.js";

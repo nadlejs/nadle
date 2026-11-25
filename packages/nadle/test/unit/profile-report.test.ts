@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { renderProfileReport, computeCriticalPath } from "../../src/core/reporting/profile-report.js";
 

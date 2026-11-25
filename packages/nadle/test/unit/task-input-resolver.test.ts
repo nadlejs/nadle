@@ -1,5 +1,5 @@
 import { type Logger } from "src/core/index.js";
-import { it, vi, expect, describe } from "vitest";
+import { it, vi, expect, describe } from "vite-plus/test";
 import { type Project } from "@nadle/project-resolver";
 import { ResolvedTask } from "src/core/interfaces/resolved-task.js";
 import { TaskInputResolver } from "src/core/options/task-input-resolver.js";

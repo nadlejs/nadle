@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { expect } from "vitest";
+import { expect } from "vite-plus/test";
 import stripAnsi from "strip-ansi";
 import { execa, type Result, parseCommandString, type ResultPromise, type Options as ExecaOptions } from "execa";
 

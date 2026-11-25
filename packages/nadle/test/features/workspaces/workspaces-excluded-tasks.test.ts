@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { it, describe } from "vitest";
+import { it, describe } from "vite-plus/test";
 import { createExec, expectPass, withFixture, workspaceFixture } from "setup";
 
 describe("workspaces > excluded tasks", () => {

@@ -1,8 +1,0 @@
-/node_modules
-/lib
-pnpm-lock.yaml
-**/index.api.md
-**/CHANGELOG.md
-.claude
-.specify
-docs/superpowers

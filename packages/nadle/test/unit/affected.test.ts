@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { computeAffectedTasks } from "../../src/core/engine/affected.js";
 
