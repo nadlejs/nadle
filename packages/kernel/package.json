@@ -16,7 +16,6 @@
 	"types": "lib/index.d.ts",
 	"devDependencies": {
 		"@types/node": "^20.19.25",
-		"typescript": "^5.9.3",
 		"vite-plus": "catalog:"
 	},
 	"engines": {

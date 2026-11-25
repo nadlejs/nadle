@@ -74,14 +74,14 @@ tasks.register("typecheck", {
 	// of bundle on a clean build and fail to resolve those package types.
 	dependsOn: ["compile", "bundle"],
 	description: "Type-check all project references",
-	options: { command: "tsgo", args: ["-b", "--noEmit"] }
+	options: { command: "tsc", args: ["-b", "--noEmit"] }
 });
 
 tasks.register("compile", {
 	run: PnpxTask,
 	group: "Building",
-	options: { command: "tsgo", args: ["-b", "./tsconfig.compile.json"] },
-	description: "Compile and type-check all tsgo-built packages in one pass",
+	options: { command: "tsc", args: ["-b", "./tsconfig.compile.json"] },
+	description: "Compile and type-check all tsc-built packages in one pass",
 	outputs: [Outputs.dirs("packages/kernel/lib", "packages/project-resolver/lib", "packages/create-nadle/lib", "packages/eslint-plugin/lib")],
 	inputs: [
 		Inputs.dirs("packages/kernel/src", "packages/project-resolver/src", "packages/create-nadle/src", "packages/eslint-plugin/src"),

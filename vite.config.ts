@@ -401,7 +401,7 @@ export default defineConfig({
 			"perfectionist/sort-object-types": ["error", { type: "line-length", partitionByNewLine: true }],
 			"perfectionist/sort-imports": [
 				"error",
-				{ type: "line-length", newlinesBetween: "always", groups: ["side-effect", "builtin", "external", ["parent", "sibling", "index"]] }
+				{ newlinesBetween: 1, type: "line-length", groups: ["side-effect", "builtin", "external", ["parent", "sibling", "index"]] }
 			],
 			"stylistic/padding-line-between-statements": [
 				"error",
