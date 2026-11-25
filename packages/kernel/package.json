@@ -15,7 +15,7 @@
 	},
 	"types": "lib/index.d.ts",
 	"devDependencies": {
-		"@types/node": "^20.19.25",
+		"@types/node": "^22.20.5",
 		"vite-plus": "catalog:"
 	},
 	"engines": {
