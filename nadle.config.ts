@@ -25,15 +25,8 @@ tasks.register("lint", {
 	run: PnpxTask,
 	group: "Checking",
 	dependsOn: ["compile"],
-	description: "Lint all files with Vite+ (oxlint)",
-	options: { command: "vp", args: ["lint", "--quiet"] }
-});
-
-tasks.register("fmt", {
-	run: PnpxTask,
-	group: "Checking",
-	description: "Check formatting with Vite+ (oxfmt)",
-	options: { command: "vp", args: ["fmt", "--check"] }
+	options: { command: "vp", args: ["check", "--quiet"] },
+	description: "Check formatting and lint all files with Vite+ (oxfmt, oxlint)"
 });
 
 tasks.register("knip", {
@@ -60,7 +53,7 @@ tasks.register("checkLinks", {
 
 tasks.register("check", {
 	group: "Checking",
-	dependsOn: ["spell", "lint", "fmt", "knip", "validate", "checkLinks"],
+	dependsOn: ["spell", "lint", "knip", "validate", "checkLinks"],
 	description: "Run all checks (spell, lint, format, knip, validate, links)"
 });
 
@@ -122,19 +115,10 @@ tasks.register("test", { group: "Testing", dependsOn: ["typecheck", "testUnit"],
 
 // --- Formatting ---
 
-tasks.register("fixLint", {
+tasks.register("format", {
 	run: PnpxTask,
 	group: "Formatting",
 	dependsOn: ["compile"],
-	description: "Fix lint issues with Vite+ (oxlint)",
-	options: { command: "vp", args: ["lint", "--quiet", "--fix"] }
+	options: { command: "vp", args: ["check", "--fix", "--quiet"] },
+	description: "Format and fix lint issues in all files with Vite+"
 });
-
-tasks.register("fixFmt", {
-	run: PnpxTask,
-	group: "Formatting",
-	options: { command: "vp", args: ["fmt"] },
-	description: "Format all files with Vite+ (oxfmt)"
-});
-
-tasks.register("format", { group: "Formatting", dependsOn: ["fixLint", "fixFmt"], description: "Fix lint and format all files" });

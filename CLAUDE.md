@@ -97,7 +97,7 @@ nadle compile                 # tsc: compile + type-check kernel, project-resolv
 nadle bundle                  # vp pack (tsdown): bundle nadle, language-server, vscode-extension
 nadle build                   # compile + typecheck + bundle (everything tests need)
 nadle testUnit                # All vitest projects (vp test, root vite.config.ts)
-nadle lint fmt                # vp lint (oxlint) and vp fmt --check (oxfmt); `nadle format` fixes both
+nadle lint                    # vp check: format check (oxfmt) + lint (oxlint); `nadle format` fixes both
 ```
 
 Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via direnv);
