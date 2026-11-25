@@ -5,7 +5,7 @@
 	"devDependencies": {
 		"@types/node": "^22.20.5",
 		"glob": "^11.1.0",
-		"tinyrainbow": "^3.1.1",
+		"tinyrainbow": "^3.2.0",
 		"type-fest": "^5.10.0"
 	}
 }

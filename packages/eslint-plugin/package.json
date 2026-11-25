@@ -19,8 +19,8 @@
 	},
 	"devDependencies": {
 		"@types/node": "^22.20.5",
-		"@typescript-eslint/rule-tester": "~8.70.1",
-		"@typescript-eslint/utils": "~8.70.1",
+		"@typescript-eslint/rule-tester": "~8.73.0",
+		"@typescript-eslint/utils": "~8.73.0",
 		"typescript": "^5.9.3",
 		"vite-plus": "catalog:"
 	},
