@@ -107,6 +107,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
+        # The oldest supported Node on every OS; each newer LTS on ubuntu only.
         node-version: ["22"]
         shard: [1, 2, 3]
         include:
@@ -118,6 +119,15 @@ jobs:
             shard: 2
           - os: ubuntu-latest
             node-version: "24"
+            shard: 3
+          - os: ubuntu-latest
+            node-version: "26"
+            shard: 1
+          - os: ubuntu-latest
+            node-version: "26"
+            shard: 2
+          - os: ubuntu-latest
+            node-version: "26"
             shard: 3
 
     steps:
