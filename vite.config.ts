@@ -183,9 +183,6 @@ export default defineConfig({
 					retry: isCI ? 5 : 2,
 					fileParallelism: !isCI,
 					setupFiles: [pkg("nadle", "test/__setup__/vitest.ts")],
-					benchmark: {
-						include: ["bench/**/*.bench.ts"]
-					},
 					globalSetup: [pkg("nadle", "test/__setup__/global-setup.ts")],
 					typecheck: {
 						enabled: true,
