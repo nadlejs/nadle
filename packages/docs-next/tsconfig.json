@@ -1,0 +1,9 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"include": [".vitepress/**/*.ts", "scripts", "nadle.config.ts"],
+	"compilerOptions": {
+		"lib": ["ESNext", "DOM"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler"
+	}
+}

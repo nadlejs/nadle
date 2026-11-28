@@ -23,6 +23,7 @@ __temp__
 # generated docs
 packages/docs/docs/api
 packages/docs/static/spec
+packages/docs-next/.vitepress/cache
 
 # bundled vscode extension server
 packages/vscode-extension/server
