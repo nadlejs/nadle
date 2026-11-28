@@ -138,11 +138,17 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 nadle testUnit                                  # All vitest projects
 nadle testUnit -- --project nadle               # Only the nadle suite (passthrough args)
 nadle testUnit -- --project kernel              # Kernel tests
+nadle testChanged                               # Only tests affected by local changes (see below)
 pnpm exec vp test run --project nadle basic     # Single test file, no task graph
 ```
 
-All test configuration lives in the root `vite.config.ts` (six projects:
-nadle, create-nadle, language-server, kernel, project-resolver, eslint-plugin).
+All test configuration lives in the root `vite.config.ts` (seven projects:
+nadle, create-nadle, language-server, tooling, kernel, project-resolver, eslint-plugin).
+
+`nadle testChanged [-- --base <ref>]` is a local shortcut, not a gate: it diffs against `origin/main`
+(plus uncommitted and untracked files) and runs the whole nadle project when nadle, kernel or
+project-resolver source changed, otherwise only tests the import graph selects. It prints its scope
+and reason. CI always runs everything.
 
 - Framework: **vitest** (bundled with Vite+; tests import from `vite-plus/test`) with thread pool, 20s timeout
 - Retries: 5 on CI, 2 locally

@@ -134,6 +134,17 @@ export default defineConfig({
 		}
 	],
 	test: {
+		// Files the import graph cannot see but that change what tests do (config the spawned CLI loads,
+		// install state). Listed with the vitest defaults, which setting this option would otherwise replace.
+		forceRerunTriggers: [
+			"**/package.json",
+			"**/{vitest,vite}.config.*",
+			"**/pnpm-lock.yaml",
+			"**/pnpm-workspace.yaml",
+			"**/tsconfig*.json",
+			"**/packages/nadle/test/__fixtures__/**",
+			"**/packages/nadle/test/__configs__/**"
+		],
 		resolveSnapshotPath(testPath: string, snapshotExtension: string) {
 			const testDirName = "test";
 			const segments = Path.relative(import.meta.dirname, testPath).split(Path.sep);
@@ -224,6 +235,7 @@ export default defineConfig({
 					root: pkg("language-server")
 				}
 			},
+			{ test: { name: "tooling", root: Path.resolve(import.meta.dirname, "scripts") } },
 			{ test: { name: "kernel", root: pkg("kernel") } },
 			{ test: { name: "project-resolver", root: pkg("project-resolver") } },
 			{ test: { name: "eslint-plugin", root: pkg("eslint-plugin") } }

@@ -122,6 +122,14 @@ tasks.register("testUnit", {
 	description: "Run all vitest projects (filter via passthrough, e.g. nadle testUnit -- --project kernel)"
 });
 
+tasks.register("testChanged", {
+	run: PnpxTask,
+	group: "Testing",
+	dependsOn: ["bundle"],
+	options: { command: "tsx", args: "./scripts/test-changed.ts" },
+	description: "Run only tests affected by local changes against origin/main (local shortcut; CI runs all)"
+});
+
 tasks.register("test", { group: "Testing", dependsOn: ["typecheck", "testUnit"], description: "Run all tests and checks" });
 
 // --- Formatting ---
