@@ -235,6 +235,7 @@ export default defineConfig({
 					root: pkg("language-server")
 				}
 			},
+			{ test: { name: "tooling", root: Path.resolve(import.meta.dirname, "scripts") } },
 			{ test: { name: "kernel", root: pkg("kernel") } },
 			{ test: { name: "project-resolver", root: pkg("project-resolver") } },
 			{ test: { name: "eslint-plugin", root: pkg("eslint-plugin") } }
