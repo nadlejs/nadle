@@ -3,18 +3,10 @@ name: CI
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-    paths-ignore:
-      - "*.md"
-      - "packages/docs/**"
-      - "LICENSE"
   merge_group:
   push:
     branches:
       - main
-    paths-ignore:
-      - "*.md"
-      - "packages/docs/**"
-      - "LICENSE"
 
 permissions:
   contents: read
@@ -23,7 +15,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Job dependency graph:
+# Job dependency graph (every heavy job also waits on `changes`, which skips them
+# for docs-only changes; `status` is the only source of the required "CI Status" check):
 #
 #   check (lint + typecheck + API surface) ─────────────┐
 #                                                        │
@@ -39,9 +32,60 @@ concurrency:
 # The nadle suite (the slow leg) is split across 3 shards via vitest --shard.
 
 jobs:
+  # Docs-only = every changed file matches "*.md" (repo root), "packages/docs/**" or
+  # "LICENSE". Decided here, not by a paths filter, which matches when ANY file matches.
+  changes:
+    name: Changes
+    if: ${{ github.event.pull_request.draft != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      docs-only: ${{ steps.detect.outputs.docs-only }}
+    steps:
+      - name: Detect docs-only change
+        id: detect
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          is_docs() {
+            case "$1" in
+              LICENSE | packages/docs/*) return 0 ;;
+              */*) return 1 ;;
+              *.md) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+          # Unknown diff (merge queue, new branch, API error) means run everything.
+          docs_only=false
+          files=""
+          if [ "$EVENT" = "pull_request" ]; then
+            files=$(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files" \
+              --jq '.[] | .filename, (.previous_filename // empty)') || files=""
+          elif [ "$EVENT" = "push" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            files=$(gh api "repos/$REPO/compare/$BEFORE...$SHA" \
+              --jq '.files[] | .filename, (.previous_filename // empty)') || files=""
+          fi
+          if [ -n "$files" ]; then
+            docs_only=true
+            while IFS= read -r path; do
+              is_docs "$path" || docs_only=false
+            done <<< "$files"
+          fi
+          echo "docs-only=$docs_only" >> "$GITHUB_OUTPUT"
+
   build:
     name: Build
-    if: ${{ github.event.pull_request.draft != true }}
+    needs: [changes]
+    if: ${{ github.event.pull_request.draft != true && needs.changes.outputs.docs-only != 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -65,7 +109,8 @@ jobs:
 
   check:
     name: Lint
-    if: ${{ github.event.pull_request.draft != true }}
+    needs: [changes]
+    if: ${{ github.event.pull_request.draft != true && needs.changes.outputs.docs-only != 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -91,8 +136,8 @@ jobs:
 
   test:
     name: Test Node ${{ matrix.node-version }} on ${{ matrix.os }} (shard ${{ matrix.shard }}/3)
-    if: ${{ github.event.pull_request.draft != true }}
-    needs: [build]
+    if: ${{ github.event.pull_request.draft != true && needs.changes.outputs.docs-only != 'true' }}
+    needs: [changes, build]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     # bash everywhere: PowerShell strips the bare `--` separator that nadle
@@ -153,7 +198,8 @@ jobs:
 
   size-limit:
     name: Size Limit
-    if: ${{ github.event.pull_request.draft != true }}
+    needs: [changes]
+    if: ${{ github.event.pull_request.draft != true && needs.changes.outputs.docs-only != 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
@@ -171,13 +217,14 @@ jobs:
 
   status:
     name: CI Status
-    needs: [check, build, test, size-limit]
+    needs: [changes, check, build, test, size-limit]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check results
         if: |
+          (needs.changes.result == 'failure' || needs.changes.result == 'cancelled') ||
           (needs.check.result == 'failure' || needs.check.result == 'cancelled') ||
           (needs.build.result == 'failure' || needs.build.result == 'cancelled') ||
           (needs.test.result == 'failure' || needs.test.result == 'cancelled') ||
