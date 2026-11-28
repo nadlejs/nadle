@@ -13,6 +13,8 @@ export interface StructuredError {
 	readonly errorCode: number;
 	/** The error category name (the error's class name). */
 	readonly errorType: string;
+	/** Every failed task with its repro command; present only when more than one task failed. */
+	readonly failed?: readonly { readonly task: string; readonly repro: string }[];
 }
 
 /**

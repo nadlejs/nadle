@@ -193,8 +193,10 @@ export class Nadle implements ExecutionContext {
 
 	private emitStructuredError(error: unknown): void {
 		const structured: StructuredError = error instanceof NadleError ? error.toStructured() : toStructuredError(error);
+		const { failedLabels } = this.executionTracker;
+		const failed = failedLabels.length > 1 ? failedLabels.map((task) => ({ task, repro: `nadle ${task}` })) : undefined;
 
-		this.logger.errorStream.write(`${JSON.stringify(structured)}\n`);
+		this.logger.errorStream.write(`${JSON.stringify(failed ? { ...structured, failed } : structured)}\n`);
 	}
 
 	public get options(): NadleResolvedOptions {

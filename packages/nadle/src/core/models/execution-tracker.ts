@@ -34,6 +34,8 @@ export class ExecutionTracker implements Listener {
 		[TaskStatus.Scheduled]: 0
 	};
 	public duration = 0;
+	/** Labels of failed tasks, in the order their failures were observed. */
+	public readonly failedLabels: string[] = [];
 
 	private taskStates: Record<string, TaskState | undefined> = {};
 	private durationInterval: NodeJS.Timeout | undefined = undefined;
@@ -101,6 +103,7 @@ export class ExecutionTracker implements Listener {
 	}
 
 	public async onTaskFailed(task: RegisteredTask) {
+		this.failedLabels.push(task.label);
 		this.updateTaskState(task, { duration: true, status: TaskStatus.Failed });
 	}
 

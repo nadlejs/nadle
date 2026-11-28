@@ -7,6 +7,7 @@ interface StructuredError {
 	message: string;
 	errorType: string;
 	errorCode: number;
+	failed?: { task: string; repro: string }[];
 }
 
 /** Find the single JSON error record emitted on stderr, if any. */
@@ -32,7 +33,45 @@ const failing = fixture()
 	.configRaw(await readConfig("failing-chain.ts"))
 	.build();
 
+const throwing = (name: string) => `async () => { throw new Error("${name} is expected to fail"); }`;
+const multiFailing = fixture()
+	.packageJson("structured-error-multi")
+	.config(
+		config()
+			.task("a", throwing("a"))
+			.task("b", throwing("b"))
+			.taskWithConfig("all", { dependsOn: ["a", "b"] })
+	)
+	.build();
+
 describe("structured error output", () => {
+	it("lists every failed task with its repro command under --continue", () =>
+		withGeneratedFixture({
+			files: multiFailing,
+			testFn: async ({ exec }) => {
+				const result = await settle(exec`all --continue --reporter agent`);
+				const structured = parseStructuredError(result.stderr);
+
+				expect(result.exitCode).toBe(1);
+				expect(structured?.errorType).toBe("TaskExecutionError");
+				expect(structured?.task).toBe("a");
+				expect(structured?.failed).toEqual([
+					{ task: "a", repro: "nadle a" },
+					{ task: "b", repro: "nadle b" }
+				]);
+			}
+		}));
+
+	it("omits the failed list when a single task failed", () =>
+		withGeneratedFixture({
+			files: failing,
+			testFn: async ({ exec }) => {
+				const result = await settle(exec`flaky --reporter agent`);
+
+				expect(parseStructuredError(result.stderr)?.failed).toBeUndefined();
+			}
+		}));
+
 	it("emits a structured TaskNotFoundError on stderr under --reporter agent", () =>
 		withGeneratedFixture({
 			files: simple,
