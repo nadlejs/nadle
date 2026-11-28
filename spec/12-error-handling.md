@@ -119,6 +119,7 @@ The record is a one-line, machine-parseable object with these fields:
 Each `failed` entry is an object with `task` (the failed task's label) and `repro` (the
 command that re-runs that task alone, the same command printed after its failed-task line).
 A run with a single failed task omits `failed`, so its record is unchanged.
+
 Rules:
 
 - Exactly one structured record is emitted per failure, on the error stream,
