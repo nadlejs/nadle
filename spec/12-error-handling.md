@@ -71,7 +71,8 @@ Rules:
   observed. That error determines the error category, the message, and the exit code; the
   remaining failures do not change it.
 - The single structured error record (see Structured Error Output) describes that first
-  failure. Exactly one record is emitted per run regardless of how many tasks failed.
+  failure and, when more than one task failed, also lists every failed task. Exactly one
+  record is emitted per run regardless of how many tasks failed.
 - A failure is a failure regardless of how many tasks afterwards succeeded: the exit code is
   non-zero whenever at least one task failed.
 
@@ -113,7 +114,11 @@ The record is a one-line, machine-parseable object with these fields:
 | `errorType` | string | always                         | The error category name (e.g. the NadleError subclass name).     |
 | `message`   | string | always                         | The human-readable error message.                                |
 | `task`      | string | only for task-execution errors | The label of the task that failed. Omitted for all other errors. |
+| `failed`    | array  | only when 2+ tasks failed      | Every failed task, in the order failures were observed.          |
 
+Each `failed` entry is an object with `task` (the failed task's label) and `repro` (the
+command that re-runs that task alone, the same command printed after its failed-task line).
+A run with a single failed task omits `failed`, so its record is unchanged.
 Rules:
 
 - Exactly one structured record is emitted per failure, on the error stream,

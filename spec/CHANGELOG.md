@@ -8,6 +8,16 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.3.0 — 2026-11-28
+
+### Added
+
+- 12-error-handling: The structured error record gains an optional `failed` field, present
+  only when more than one task failed (typically under `--continue`). It lists every failed
+  task with its repro command. The record's other fields still describe the first failure, so
+  single-failure output is unchanged. Previously the record named only the first failed task,
+  so a reader of the last line fixed one failure and missed the rest.
+
 ## 4.2.1 — 2026-09-30
 
 ### Changed

@@ -131,12 +131,29 @@ to learn what failed without scraping prose:
 { "errorCode": 3, "errorType": "TaskNotFoundError", "message": "Task nope not found in root workspace." }
 ```
 
-| Field       | Description                                                                |
-| ----------- | -------------------------------------------------------------------------- |
-| `errorCode` | The process exit code (`1` generic, `2` config, `3` not found, `4` cycle). |
-| `errorType` | The error class name.                                                      |
-| `message`   | The human-readable message.                                                |
-| `task`      | The failing task's label — present only for task-execution failures.       |
+| Field       | Description                                                                 |
+| ----------- | --------------------------------------------------------------------------- |
+| `errorCode` | The process exit code (`1` generic, `2` config, `3` not found, `4` cycle).  |
+| `errorType` | The error class name.                                                       |
+| `message`   | The human-readable message.                                                 |
+| `task`      | The failing task's label — present only for task-execution failures.        |
+| `failed`    | Every failed task as `{ task, repro }` — present only when 2+ tasks failed. |
+
+With `--continue`, several tasks can fail. `message` and `task` still describe the first
+failure; `failed` lists all of them, each with the command that re-runs it:
+
+```jsonc
+{
+	"errorCode": 1,
+	"errorType": "TaskExecutionError",
+	"message": "Task a failed: ...",
+	"task": "a",
+	"failed": [
+		{ "task": "a", "repro": "nadle a" },
+		{ "task": "b", "repro": "nadle b" }
+	]
+}
+```
 
 Without `--reporter agent`, no JSON line is emitted and the human error output is
 unchanged.
