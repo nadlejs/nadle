@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3](https://github.com/nadlejs/nadle/compare/kernel/v0.0.2...kernel/v0.0.3) (2026-11-28)
+
+
+### Features
+
+* Validate alias config keys against known workspaces ([#701](https://github.com/nadlejs/nadle/issues/701)) ([6868b1d](https://github.com/nadlejs/nadle/commit/6868b1d78394072e647112636fac77a56781c103))
+
+
+### Bug Fixes
+
+* Export TaskIdentifier as a type only in the published types ([7f0ea10](https://github.com/nadlejs/nadle/commit/7f0ea10cd50519b0292ed142459d9e35970ea647))
+
+
+### Internal
+
+* Type against Node 22, the oldest supported version ([bb4b04e](https://github.com/nadlejs/nadle/commit/bb4b04e201266d4f31374f70ed70ae53a34820e4))
+
 ## [0.0.2](https://github.com/nadlejs/nadle/compare/kernel/v0.0.1...kernel/v0.0.2) (2026-06-12)
 
 
