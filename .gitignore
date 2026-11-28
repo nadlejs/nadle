@@ -23,7 +23,13 @@ __temp__
 # generated docs
 packages/docs/docs/api
 packages/docs/static/spec
+packages/docs-next/docs/api
+packages/docs-next/public/spec
+packages/docs-next/public/rss.xml
+packages/docs-next/public/llms.txt
+packages/docs-next/public/llms-full.txt
 packages/docs-next/.vitepress/cache
+packages/docs-next/.vitepress/api-sidebar.json
 
 # bundled vscode extension server
 packages/vscode-extension/server

@@ -1,6 +1,6 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"include": [".vitepress/**/*.ts", "scripts", "nadle.config.ts"],
+	"include": [".vitepress/**/*.ts", "scripts", "blog/*.ts", "nadle.config.ts"],
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM"],
 		"module": "ESNext",

@@ -15,12 +15,65 @@ tasks.register("convertContent", {
 	description: "Convert the Docusaurus pages, blog and sidebar of packages/docs to VitePress"
 });
 
+// The three generators below reuse the scripts of packages/docs, pointed at this package.
+tasks.register("buildSpec", {
+	run: PnpxTask,
+	group: "Building",
+	outputs: [Outputs.dirs("public/spec")],
+	description: "Build spec HTML from markdown",
+	inputs: [Inputs.files("../../spec/*.md"), Inputs.files("../docs/scripts/build-spec.ts")],
+	options: { command: "tsx", args: ["../docs/scripts/build-spec.ts", "--out", "public/spec"] }
+});
+
+tasks.register("buildCliReference", {
+	run: PnpxTask,
+	group: "Building",
+	outputs: [Outputs.files("docs/cli-reference.md")],
+	description: "Build CLI reference markdown from source",
+	options: {
+		command: "tsx",
+		args: ["../docs/scripts/build-cli-reference.ts", "--out", "docs/cli-reference.md"]
+	},
+	inputs: [Inputs.files("../nadle/src/core/options/cli-options.ts"), Inputs.files("../docs/scripts/build-cli-reference.ts")]
+});
+
+tasks.register("prepareAPIMarkdown", {
+	run: PnpxTask,
+	group: "Building",
+	dependsOn: ["packages:nadle:generateMarkdownForDocsNext"],
+	description: "Prepare API markdown and its sidebar for VitePress",
+	options: {
+		command: "tsx",
+		args: ["../docs/scripts/adjust-api-markdown.ts", "--vitepress", "--dir", "docs/api", "--sidebar", ".vitepress/api-sidebar.json"]
+	}
+});
+
+tasks.register("buildRss", {
+	run: PnpxTask,
+	group: "Building",
+	outputs: [Outputs.files("public/rss.xml")],
+	description: "Build the RSS feed of the blog",
+	options: { command: "tsx", args: "scripts/build-rss.ts" },
+	inputs: [Inputs.dirs("blog"), Inputs.files("scripts/build-rss.ts", "scripts/page-source.ts")]
+});
+
+tasks.register("buildLlmsTxt", {
+	run: PnpxTask,
+	group: "Building",
+	dependsOn: ["prepareAPIMarkdown", "buildCliReference"],
+	options: { command: "tsx", args: "scripts/build-llms.ts" },
+	description: "Build llms.txt and llms-full.txt from the docs pages",
+	outputs: [Outputs.files("public/llms.txt", "public/llms-full.txt")],
+	inputs: [Inputs.dirs("docs"), Inputs.files(".vitepress/sidebar.json", "scripts/build-llms.ts", "scripts/page-source.ts")]
+});
+
 tasks.register("bundleSite", {
 	run: PnpxTask,
 	group: "Building",
 	outputs: [Outputs.dirs(".vitepress/dist")],
 	options: { args: ["build"], command: "vitepress" },
 	description: "Render the documentation site with VitePress",
+	dependsOn: ["prepareAPIMarkdown", "buildSpec", "buildCliReference", "buildRss", "buildLlmsTxt"],
 	inputs: [Inputs.dirs(".vitepress", "docs", "blog", "public"), Inputs.files("index.md", "../../pnpm-lock.yaml")]
 });
 
