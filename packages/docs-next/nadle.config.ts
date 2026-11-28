@@ -48,10 +48,29 @@ tasks.register("prepareAPIMarkdown", {
 	}
 });
 
+tasks.register("buildRss", {
+	run: PnpxTask,
+	group: "Building",
+	outputs: [Outputs.files("public/rss.xml")],
+	description: "Build the RSS feed of the blog",
+	options: { command: "tsx", args: "scripts/build-rss.ts" },
+	inputs: [Inputs.dirs("blog"), Inputs.files("scripts/build-rss.ts", "scripts/page-source.ts")]
+});
+
+tasks.register("buildLlmsTxt", {
+	run: PnpxTask,
+	group: "Building",
+	description: "Build llms.txt and llms-full.txt from the docs pages",
+	dependsOn: ["prepareAPIMarkdown", "buildCliReference"],
+	options: { command: "tsx", args: "scripts/build-llms.ts" },
+	outputs: [Outputs.files("public/llms.txt", "public/llms-full.txt")],
+	inputs: [Inputs.dirs("docs"), Inputs.files(".vitepress/sidebar.json", "scripts/build-llms.ts", "scripts/page-source.ts")]
+});
+
 tasks.register("bundleSite", {
 	run: PnpxTask,
 	group: "Building",
-	dependsOn: ["prepareAPIMarkdown", "buildSpec", "buildCliReference"],
+	dependsOn: ["prepareAPIMarkdown", "buildSpec", "buildCliReference", "buildRss", "buildLlmsTxt"],
 	outputs: [Outputs.dirs(".vitepress/dist")],
 	options: { args: ["build"], command: "vitepress" },
 	description: "Render the documentation site with VitePress",
