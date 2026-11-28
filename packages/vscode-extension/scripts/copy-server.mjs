@@ -9,7 +9,8 @@ const lspLib = Path.resolve(__dirname, "..", "..", "language-server", "lib");
 await Fs.mkdir(serverDir, { recursive: true });
 
 for (const file of await Fs.readdir(lspLib)) {
-	if (file === "server.js" || file.startsWith("chunk-")) {
+	// Chunk names follow the bundler, so take every module except the library entry.
+	if (file.endsWith(".js") && file !== "index.js") {
 		await Fs.copyFile(Path.join(lspLib, file), Path.join(serverDir, file));
 	}
 }
