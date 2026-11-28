@@ -1,5 +1,39 @@
 # nadle
 
+## [0.6.2](https://github.com/nadlejs/nadle/compare/nadle/v0.6.1...nadle/v0.6.2) (2026-11-28)
+
+
+### Features
+
+* Drop footer IDLE rows no pending task can fill ([#752](https://github.com/nadlejs/nadle/issues/752)) ([567ab77](https://github.com/nadlejs/nadle/commit/567ab77c9b5518cf07d21718df005d4b3bb58174))
+
+
+### Bug Fixes
+
+* Bump glob to 14 for GHSA-3g3m-2fjr-6pw4 ([#765](https://github.com/nadlejs/nadle/issues/765)) ([a341318](https://github.com/nadlejs/nadle/commit/a341318c475effd84686f5e7c27cc9b1cbfbdadc))
+* Export TaskIdentifier as a type only in the published types ([7f0ea10](https://github.com/nadlejs/nadle/commit/7f0ea10cd50519b0292ed142459d9e35970ea647))
+* List every failed task in the agent reporter's closing error ([#766](https://github.com/nadlejs/nadle/issues/766)) ([68867b7](https://github.com/nadlejs/nadle/commit/68867b766556acfcdd8333a3d97dcb7b696bc10e))
+* Log child process output one line per log call ([#762](https://github.com/nadlejs/nadle/issues/762)) ([5fb3171](https://github.com/nadlejs/nadle/commit/5fb3171a8fb47a1167903caddee7c14178065e7e))
+* Settle a canceled task so the sequential walk can advance ([#770](https://github.com/nadlejs/nadle/issues/770)) ([14f9458](https://github.com/nadlejs/nadle/commit/14f945894b723d2f3cf21a25e0d53b75f76a60bb))
+
+
+### Internal
+
+* Cover the pool executor and name what the single-worker default hides ([#736](https://github.com/nadlejs/nadle/issues/736)) ([9a1347f](https://github.com/nadlejs/nadle/commit/9a1347f596317e151c3f0cf9e077d88eb73bdb71))
+* Delete the nadle benchmarks ([eb763de](https://github.com/nadlejs/nadle/commit/eb763de7ee49915a62b086c0820ddfdab1e7637f))
+* Generate reference pages and feeds for the VitePress docs ([#773](https://github.com/nadlejs/nadle/issues/773)) ([ffd13cf](https://github.com/nadlejs/nadle/commit/ffd13cf49c422245bc962fc50344c4aac351ea7c))
+* Skip the tsc failure output tests until child output is line-buffered ([4df1d4b](https://github.com/nadlejs/nadle/commit/4df1d4b6177bcda6ed30fe776ae72e71d7c7613c))
+* Switch the docs site to VitePress ([#776](https://github.com/nadlejs/nadle/issues/776)) ([ee55abd](https://github.com/nadlejs/nadle/commit/ee55abdfbea765c80e523d4d53162027dcc9098d))
+* Type against Node 22, the oldest supported version ([bb4b04e](https://github.com/nadlejs/nadle/commit/bb4b04e201266d4f31374f70ed70ae53a34820e4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.6.1](https://github.com/nadlejs/nadle/compare/nadle/v0.6.0...nadle/v0.6.1) (2026-09-30)
 
 
