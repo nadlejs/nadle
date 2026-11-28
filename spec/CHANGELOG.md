@@ -8,6 +8,15 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.3.1 — 2026-11-28
+
+### Changed
+
+- 03-scheduling: Clarified that a canceled task no longer counts as running when deciding
+  whether a main task is complete in sequential mode. Without this a canceled task could be
+  read as in flight forever and stall the walk to the next main task. It is still not a
+  failure and still never admits its dependents.
+
 ## 4.3.0 — 2026-11-28
 
 ### Added
