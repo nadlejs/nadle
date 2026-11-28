@@ -2,7 +2,9 @@ import Url from "node:url";
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-const outputFile = Path.join(__dirname, "..", "docs", "cli-reference.md");
+import { readPathOption } from "./script-options.js";
+
+const outputFile = readPathOption("out") ?? Path.join(__dirname, "..", "docs", "cli-reference.md");
 
 // `CLIOptions` is not a public export of the `nadle` package, so we import the
 // source file directly via tsx. The specifier is built at runtime so the docs
@@ -146,7 +148,7 @@ async function main() {
 
 	await Fs.writeFile(outputFile, content, "utf-8");
 
-	console.log(`CLI reference generated at packages/docs/docs/cli-reference.md (${entries.length} flags).`);
+	console.log(`CLI reference generated at ${outputFile} (${entries.length} flags).`);
 }
 
 main().catch((error) => {

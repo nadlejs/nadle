@@ -2,12 +2,14 @@ import Path from "node:path";
 import Module from "node:module";
 import Fs from "node:fs/promises";
 
+import { readPathOption } from "./script-options.js";
+
 const require = Module.createRequire(import.meta.url);
 const specMd: { html: (filepath: string, options?: { head?: string }) => string } = require("spec-md");
 
 const rootDir = Path.resolve(__dirname, "..", "..", "..");
 const specDir = Path.join(rootDir, "spec");
-const outputDir = Path.join(__dirname, "..", "static", "spec");
+const outputDir = readPathOption("out") ?? Path.join(__dirname, "..", "static", "spec");
 const tempFile = Path.join(outputDir, "_combined.md");
 const GITHUB_SPEC_URL = "https://github.com/nadlejs/nadle/blob/main/spec";
 
@@ -124,7 +126,7 @@ async function main() {
 	await Fs.writeFile(Path.join(outputDir, "index.html"), html, "utf-8");
 	await Fs.rm(tempFile);
 
-	console.log("Spec HTML generated at packages/docs/static/spec/index.html");
+	console.log(`Spec HTML generated at ${Path.join(outputDir, "index.html")}`);
 }
 
 main().catch((error) => {
