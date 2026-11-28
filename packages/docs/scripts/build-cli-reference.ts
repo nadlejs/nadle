@@ -2,9 +2,7 @@ import Url from "node:url";
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { readPathOption } from "./script-options.js";
-
-const outputFile = readPathOption("out") ?? Path.join(__dirname, "..", "docs", "cli-reference.md");
+const outputFile = Path.join(__dirname, "..", "docs", "cli-reference.md");
 
 // `CLIOptions` is not a public export of the `nadle` package, so we import the
 // source file directly via tsx. The specifier is built at runtime so the docs

@@ -2,14 +2,12 @@ import Path from "node:path";
 import Module from "node:module";
 import Fs from "node:fs/promises";
 
-import { readPathOption } from "./script-options.js";
-
 const require = Module.createRequire(import.meta.url);
 const specMd: { html: (filepath: string, options?: { head?: string }) => string } = require("spec-md");
 
 const rootDir = Path.resolve(__dirname, "..", "..", "..");
 const specDir = Path.join(rootDir, "spec");
-const outputDir = readPathOption("out") ?? Path.join(__dirname, "..", "static", "spec");
+const outputDir = Path.join(__dirname, "..", "public", "spec");
 const tempFile = Path.join(outputDir, "_combined.md");
 const GITHUB_SPEC_URL = "https://github.com/nadlejs/nadle/blob/main/spec";
 

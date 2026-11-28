@@ -15,8 +15,8 @@ async function readApiSidebar(): Promise<DefaultTheme.SidebarItem[]> {
 
 const apiSidebar = await readApiSidebar();
 
-/** Docusaurus (github-slugger) anchors: keeps leading dashes and digits, e.g. "--exclude". */
-function docusaurusSlugify(text: string): string {
+/** Keeps leading dashes and digits (e.g. "--exclude") so anchors of published links stay valid. */
+function keepDashesSlugify(text: string): string {
 	return text
 		.trim()
 		.toLowerCase()
@@ -63,12 +63,12 @@ export default defineConfig({
 	base: "/",
 	lang: "en",
 	title: "Nadle",
-	// Emits /docs/<page> without an extension, the URL scheme of the Docusaurus site.
+	// Emits /docs/<page> without an extension, keeping the URLs published before the VitePress move.
 	cleanUrls: true,
 	description: SITE_DESCRIPTION,
 	srcExclude: ["README.md", "scripts/**"],
 	sitemap: { hostname: "https://nadle.dev" },
-	markdown: { anchor: { slugify: docusaurusSlugify } },
+	markdown: { anchor: { slugify: keepDashesSlugify } },
 	themeConfig: {
 		logo: "/img/logo.svg",
 		socialLinks: [{ icon: "github", link: "https://github.com/nadlejs/nadle" }],

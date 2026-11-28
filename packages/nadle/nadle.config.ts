@@ -15,16 +15,6 @@ tasks.register("generateMarkdown", {
 	inputs: [Inputs.dirs("lib"), Inputs.files("typedoc.json")]
 });
 
-tasks.register("generateMarkdownForDocsNext", {
-	run: PnpxTask,
-	group: "Building",
-	dependsOn: ["build"],
-	outputs: [Outputs.dirs("../docs-next/docs/api")],
-	inputs: [Inputs.dirs("lib"), Inputs.files("typedoc.json")],
-	description: "Generate API markdown with typedoc for the VitePress site",
-	options: { command: "typedoc", args: ["--out", "../docs-next/docs/api"] }
-});
-
 // --- Testing (nadle-specific, kept here due to workspace self-reference limitation) ---
 
 tasks.register("testAPI", {

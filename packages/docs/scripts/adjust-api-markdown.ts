@@ -3,15 +3,11 @@ import Fs from "node:fs/promises";
 
 import { glob } from "glob";
 
-import { readPathOption } from "./script-options.js";
-
 const rootDoc = Path.join(__dirname, "..");
 
-// `--vitepress` adjusts the markdown of the VitePress site instead of the Docusaurus one.
-const isVitepress = process.argv.includes("--vitepress");
-const apiDocPath = readPathOption("dir") ?? Path.join(rootDoc, "docs", "api");
+const apiDocPath = Path.join(rootDoc, "docs", "api");
+const SIDEBAR_FILE = Path.join(rootDoc, ".vitepress", "api-sidebar.json");
 const README_FILE_NAME = "README.md";
-const CATEGORY_FILE_NAME = "_category_.json";
 const INDEX_FILE_NAME = "index.md";
 const API_URL_PREFIX = "/docs/api";
 
@@ -45,18 +41,6 @@ async function stripBreadcrumbs() {
 			"utf-8"
 		);
 	}
-}
-
-async function adjustDocusaurus() {
-	// Update sidebar item labels
-	for (const entry of await glob("**/", { nodir: false, cwd: apiDocPath })) {
-		const path = Path.join(apiDocPath, entry);
-
-		await Fs.writeFile(Path.join(path, CATEGORY_FILE_NAME), JSON.stringify({ label: toLabel(Path.basename(path)) }), "utf-8");
-	}
-
-	// Update top sidebar item and its content
-	await Fs.writeFile(Path.join(apiDocPath, "index", CATEGORY_FILE_NAME), JSON.stringify({ label: "API Reference" }), "utf-8");
 }
 
 /** Renames every README.md to index.md and points links at the renamed pages. */
@@ -104,33 +88,24 @@ async function buildSidebarItems(dir: string): Promise<SidebarItem[]> {
 	return items;
 }
 
-async function adjustVitepress() {
-	await renameReadmesToIndex();
-
+async function writeSidebar() {
 	const sidebar: SidebarItem = {
 		collapsed: true,
 		text: "API Reference",
 		link: `${API_URL_PREFIX}/index/`,
 		items: await buildSidebarItems(Path.join(apiDocPath, "index"))
 	};
-	const sidebarFile = readPathOption("sidebar");
-
-	if (sidebarFile) {
-		await Fs.writeFile(sidebarFile, JSON.stringify([sidebar], null, "\t") + "\n", "utf-8");
-	}
+	await Fs.writeFile(SIDEBAR_FILE, JSON.stringify([sidebar], null, "\t") + "\n", "utf-8");
 }
 
 async function main() {
 	await Fs.rm(Path.join(apiDocPath, README_FILE_NAME), { force: true });
 	await stripBreadcrumbs();
 
-	if (isVitepress) {
-		await adjustVitepress();
-	} else {
-		await adjustDocusaurus();
-	}
+	await renameReadmesToIndex();
+	await writeSidebar();
 
-	const indexPath = Path.join(apiDocPath, "index", isVitepress ? INDEX_FILE_NAME : README_FILE_NAME);
+	const indexPath = Path.join(apiDocPath, "index", INDEX_FILE_NAME);
 	const indexFileLines = (await Fs.readFile(indexPath, "utf-8")).split("\n");
 	const h1IndexLine = indexFileLines.indexOf(`# index`);
 
