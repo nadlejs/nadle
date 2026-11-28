@@ -24,7 +24,7 @@ const rendezvous = (mine: string, theirs: string) =>
 		`\tFs.writeFileSync(Path.join(dir, "${mine}"), "1");`,
 		"\tconst deadline = Date.now() + 8000;",
 		`\twhile (!Fs.existsSync(Path.join(dir, "${theirs}"))) {`,
-		"\t\tif (Date.now() > deadline) { throw new Error(`${mine} never met ${theirs}`); }",
+		`\t\tif (Date.now() > deadline) { throw new Error("${mine} never met ${theirs}"); }`,
 		"\t\tawait new Promise((r) => setTimeout(r, 25));",
 		"\t}",
 		"}"
