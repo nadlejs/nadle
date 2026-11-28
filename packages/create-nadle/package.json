@@ -12,11 +12,11 @@
 	],
 	"bin": "lib/cli.js",
 	"dependencies": {
-		"@clack/prompts": "^1.8.1",
+		"@clack/prompts": "^1.9.0",
 		"execa": "^9.6.1",
 		"find-up": "^7.0.0",
 		"meow": "^14.1.0",
-		"preferred-pm": "^5.0.0"
+		"preferred-pm": "^5.0.1"
 	},
 	"devDependencies": {
 		"@manypkg/tools": "^2.1.2",
@@ -24,7 +24,7 @@
 		"@types/node": "^22.20.5",
 		"@types/serialize-javascript": "^5.0.4",
 		"fixturify": "^3.0.0",
-		"serialize-javascript": "^7.1.2",
+		"serialize-javascript": "^7.1.4",
 		"size-limit": "^12.1.0",
 		"vite-plus": "catalog:",
 		"yaml": "^2.9.1"

@@ -7,7 +7,7 @@
 		"start": "tsc -b ./tsconfig.compile.json --watch"
 	},
 	"devDependencies": {
-		"@microsoft/api-extractor": "^7.59.2",
+		"@microsoft/api-extractor": "^7.60.1",
 		"@nadle/ts-config": "^0.0.2",
 		"@stylistic/eslint-plugin": "^5.1.0",
 		"@types/node": "^22.20.5",
@@ -18,11 +18,11 @@
 		"eslint-plugin-perfectionist": "^5.13.0",
 		"glob": "^11.1.0",
 		"jiti": "^2.7.0",
-		"knip": "^6.38.0",
+		"knip": "^6.47.0",
 		"nadle": "0.6.0",
 		"remark-cli": "^12.0.1",
 		"remark-validate-links": "^13.1.0",
-		"rimraf": "^6.1.3",
+		"rimraf": "^6.1.4",
 		"std-env": "^3.10.0",
 		"tsx": "^4.23.15",
 		"typescript": "^7.0.2",

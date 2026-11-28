@@ -16,7 +16,7 @@
 	"main": "./lib/extension.js",
 	"devDependencies": {
 		"@types/node": "^22.20.5",
-		"@types/vscode": "^1.138.0",
+		"@types/vscode": "^1.146.0",
 		"@vscode/vsce": "^3.9.2",
 		"vscode-languageclient": "^10.1.2"
 	},
