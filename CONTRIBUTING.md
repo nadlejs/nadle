@@ -13,6 +13,9 @@ You can run the tests of the project that you modified by going to the project's
 nadle test
 ```
 
+For a quicker local loop, `nadle testChanged` runs only the tests affected by your changes against
+`origin/main`. It is a convenience: CI always runs the full suite.
+
 ## Formatting Code
 
 You can format the code using the following command:
