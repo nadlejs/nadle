@@ -1,0 +1,135 @@
+/* Brand colors: the primary cyan of the previous site, light and dark. */
+:root {
+	--vp-c-brand-1: #0891b2;
+	--vp-c-brand-2: #0e7490;
+	--vp-c-brand-3: #06b6d4;
+	--vp-c-brand-soft: rgba(8, 145, 178, 0.14);
+}
+
+.dark {
+	--vp-c-brand-1: #22d3ee;
+	--vp-c-brand-2: #67e8f9;
+	--vp-c-brand-3: #06b6d4;
+	--vp-c-brand-soft: rgba(34, 211, 238, 0.16);
+}
+
+/* Landing page tokens: the page is dark in both color modes, like the previous site. */
+:root {
+	--landing-bg: #08090c;
+	--landing-cyan: #22d3ee;
+	--landing-blue: #3b82f6;
+	--landing-violet: #8b5cf6;
+	--landing-emerald: #34d399;
+	--landing-slate-100: #f1f5f9;
+	--landing-slate-200: #e2e8f0;
+	--landing-slate-300: #cbd5e1;
+	--landing-slate-400: #94a3b8;
+	--landing-slate-500: #64748b;
+	--landing-slate-600: #475569;
+}
+
+/* The landing page ships its own navbar and footer. */
+.landing-page .VPNav,
+.landing-page .VPLocalNav {
+	display: none;
+}
+
+.landing-page .VPContent {
+	padding-top: 0;
+}
+
+.landing-page {
+	background: var(--landing-bg);
+}
+
+.landing-gradient-text {
+	background: linear-gradient(100deg, var(--landing-cyan), var(--landing-blue) 45%, var(--landing-violet));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.landing-glow {
+	position: absolute;
+	z-index: 0;
+	width: 360px;
+	height: 360px;
+	border-radius: 9999px;
+	pointer-events: none;
+	filter: blur(40px);
+}
+
+.landing-glow-cyan {
+	background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 70%);
+}
+
+.landing-glow-blue {
+	width: 300px;
+	height: 300px;
+	background: radial-gradient(circle, rgba(59, 130, 246, 0.16), transparent 70%);
+}
+
+.landing-glow-violet {
+	background: radial-gradient(circle, rgba(139, 92, 246, 0.18), transparent 70%);
+}
+
+.landing-cta-primary,
+.landing-cta-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	font-size: 0.875rem;
+	border-radius: 0.5rem;
+	text-decoration: none;
+}
+
+.landing-cta-primary {
+	font-weight: 600;
+	color: #fff;
+	background: linear-gradient(100deg, var(--landing-cyan), var(--landing-blue));
+	box-shadow: 0 8px 24px -8px rgba(59, 130, 246, 0.5);
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.landing-cta-primary:hover {
+	color: #fff;
+	transform: translateY(-1px);
+	box-shadow: 0 12px 28px -8px rgba(59, 130, 246, 0.65);
+}
+
+.landing-cta-secondary {
+	font-weight: 500;
+	color: var(--landing-slate-300);
+	border: 1px solid rgba(148, 163, 184, 0.2);
+	background: rgba(255, 255, 255, 0.02);
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease,
+		background 0.2s ease;
+}
+
+.landing-cta-secondary:hover {
+	color: #fff;
+	border-color: rgba(148, 163, 184, 0.4);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.landing-version {
+	padding: 0.25rem 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1;
+	text-decoration: none;
+	border-radius: 9999px;
+	color: #22d3ee;
+	font-family: var(--vp-font-family-mono);
+	background: rgba(34, 211, 238, 0.1);
+	border: 1px solid rgba(34, 211, 238, 0.2);
+	transition: color 0.2s ease;
+}
+
+a.landing-version:hover {
+	color: #fff;
+}
