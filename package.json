@@ -16,7 +16,7 @@
 		"eslint-plugin-n": "^17.21.0",
 		"eslint-plugin-nadle": "workspace:*",
 		"eslint-plugin-perfectionist": "^5.13.0",
-		"glob": "^11.1.0",
+		"glob": "^14.0.2",
 		"jiti": "^2.7.0",
 		"knip": "^6.47.0",
 		"nadle": "0.6.0",
