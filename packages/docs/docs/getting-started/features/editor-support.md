@@ -124,6 +124,6 @@ name = "typescript"
 language-servers = ["typescript-language-server", "nadle"]
 ```
 
-:::tip
+::: tip
 Any LSP-capable editor works — point it to `nadle-language-server` as the server command. The server communicates over stdio, so no port configuration is needed.
 :::

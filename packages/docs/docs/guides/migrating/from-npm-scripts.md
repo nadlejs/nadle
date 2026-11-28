@@ -64,7 +64,7 @@ tasks.register("check", {
 cached. See [Registering Task](../registering-task.md) and
 [Configuring Task](../configuring-task.md) for the full spec.
 
-:::tip
+::: tip
 Scripts that just call the package manager (`npm install`, `npm publish`) can use the
 [`NpmTask`](../../api/index/variables/NpmTask.md) helper instead of `ExecTask` —
 `{ run: NpmTask, options: { args: ["publish"] } }`.
@@ -100,7 +100,7 @@ Forwarding is the fragile route. Prefer one script per variant, each with its ow
 }
 ```
 
-:::note
+::: info Note
 Verified with pnpm 11 and the nadle CLI. Other package managers may pass the `--` you type differently;
 this was not checked.
 :::

@@ -13,7 +13,9 @@ This is particularly useful for implementing tasks like `CopyTask`, `ExecTask`, 
 
 ## Basic Example: Greeting Task
 
-```ts title="tasks/greeting-task.ts"
+::: code-group
+
+```ts [tasks/greeting-task.ts]
 import { defineTask } from "nadle";
 
 export interface GreetingTaskOptions {
@@ -26,6 +28,8 @@ export const GreetingTask = defineTask<GreetingTaskOptions>({
 	}
 });
 ```
+
+:::
 
 - `GreetingTaskOptions` defines the expected options.
 - The `run()` function contains the logic to execute.

@@ -19,32 +19,21 @@ Before installing Nadle, make sure you have:
 
 You can install Nadle using your preferred package manager:
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+::: code-group
 
-<Tabs>
-  <TabItem value="npm" label="npm">
-
-```bash
+```bash [npm]
 npm install -D nadle
 ```
 
-  </TabItem>
-  <TabItem value="yarn" label="yarn">
-
-```bash
+```bash [yarn]
 yarn add -D nadle
 ```
 
-  </TabItem>
-  <TabItem value="pnpm" label="pnpm">
-
-```bash
+```bash [pnpm]
 pnpm add -D nadle
 ```
 
-  </TabItem>
-</Tabs>
+:::
 
 After installation, verify that Nadle is working correctly:
 
@@ -120,7 +109,7 @@ Once the superseded version is past the age threshold, delete its entry. We reco
 exact version you are installing, as above, so each entry is easy to retire; a range has no
 single moment at which it becomes safe to remove.
 
-:::note
+::: info Note
 The default delay and the appending behavior are reported by users, not verified against
 pnpm's own documentation.
 :::

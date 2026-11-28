@@ -1,3 +1,58 @@
 [build]
 command = "nadle packages:docs:buildSite"
-publish = "packages/docs/build/"
+publish = "packages/docs/.vitepress/dist/"
+
+# Pages and feeds of the previous site generator that have no counterpart now.
+[[redirects]]
+from = "/blog/rss.xml"
+to = "/rss.xml"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/atom.xml"
+to = "/rss.xml"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/feed.json"
+to = "/rss.xml"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/archive"
+to = "/blog/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/authors"
+to = "/blog/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/authors/*"
+to = "/blog/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/tags"
+to = "/blog/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/tags/*"
+to = "/blog/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/search"
+to = "/"
+status = 301
+force = true

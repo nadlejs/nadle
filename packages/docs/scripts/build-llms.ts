@@ -17,7 +17,7 @@ interface Section {
 	match: (link: string) => boolean;
 }
 
-// Same grouping as the llms.txt of the Docusaurus site; pages outside every group are listed first.
+// Same grouping as the llms.txt published before the VitePress move; pages outside every group are listed first.
 const SECTIONS: Section[] = [
 	{ title: "Docs", match: () => false },
 	{ title: "Getting Started", match: (link) => link.startsWith("/docs/getting-started/") },

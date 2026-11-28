@@ -89,7 +89,6 @@ const config = {
 		".specify/scripts/**",
 		".specify/templates/**",
 		"./packages/docs/**",
-		"./packages/docs-next/**",
 		"docs/superpowers/**",
 		".github/workflows/**",
 		"**/CHANGELOG.md",

@@ -24,7 +24,7 @@ A type-safe, Gradle-inspired task runner for Node.js. See [ROADMAP.md](./ROADMAP
 - `spec/` (first, + CHANGELOG + version).
 - `packages/docs/` — concepts/guides + reference pages (`config-reference.md` per option,
   `cli-reference.md` per flag, regenerated). New flags/options match **type/choices/default**
-  in both the reference table and the spec; new pages wired into `sidebars.ts`.
+  in both the reference table and the spec; new pages wired into `packages/docs/.vitepress/sidebar.json`.
 - `packages/nadle/index.api.md` — regenerated after any export change.
 - Option-dump snapshots — regenerated for any new resolved option (see Testing).
 
@@ -42,7 +42,7 @@ packages/
   language-server/ # LSP for nadle.config.ts (shared across editors)
   vscode-extension/# VS Code extension (bundles language-server)
   create-nadle/    # Scaffolding CLI (npm create nadle)
-  docs/            # Docusaurus site (nadle.dev)
+  docs/            # VitePress site (nadle.dev)
   examples/basic/  # Basic example project
   sample-app/      # Richer example with task graphs and caching
   validators/      # Internal package validator

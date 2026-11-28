@@ -99,7 +99,7 @@ When you run a [root-scoped](../concepts/task.md#scope) task (e.g., `nadle root:
 
 This allows you to orchestrate and trigger the same-named tasks across your monorepo.
 
-:::note
+::: info Note
 Running a task in a sub-workspace does not automatically trigger the root workspace's version of the task. Only the explicitly referenced workspace's task will run.
 :::
 

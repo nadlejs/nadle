@@ -12,12 +12,9 @@ tasks.register("clean", {
 			"**/build/**",
 			"**/__temp__/**",
 			"packages/docs/docs/api/**",
-			"packages/docs/.docusaurus/**",
-			"packages/docs/static/spec/**",
-			"packages/docs-next/docs/api/**",
-			"packages/docs-next/public/spec/**",
-			"packages/docs-next/public/{rss.xml,llms.txt,llms-full.txt}",
-			"packages/docs-next/.vitepress/{dist,cache,api-sidebar.json}/**"
+			"packages/docs/public/spec/**",
+			"packages/docs/public/{rss.xml,llms.txt,llms-full.txt}",
+			"packages/docs/.vitepress/{dist,cache,api-sidebar.json}/**"
 		]
 	}
 });

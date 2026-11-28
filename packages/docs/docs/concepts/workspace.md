@@ -17,7 +17,7 @@ so any workspace recognized by those tools will be recognized by Nadle as well.
 Workspaces are automatically detected based on your monorepo tool and project structure.
 The root of the repository is also treated as a special workspace, known as the [root workspace](#root-workspace).
 
-:::info
+::: info
 
 ## Workspace Detection Algorithm
 
@@ -73,7 +73,7 @@ When you run a task at the root level (e.g., `nadle build`), Nadle will:
 This ensures that root-level tasks orchestrate the same-named tasks across your monorepo,
 running children in the correct dependency order before the root task finalizes.
 
-:::note
+::: info Note
 The reverse is not true—running a task in a sub-workspace does not automatically trigger the root workspace's version of the task. Only the explicitly referenced workspace's task will run.
 :::
 

@@ -1,6 +1,6 @@
 # Nadle Specification
 
-**Version**: 4.3.1
+**Version**: 4.3.2
 
 This directory contains the language-agnostic specification for Nadle, a type-safe,
 Gradle-inspired task runner for Node.js.
@@ -70,7 +70,7 @@ All changes are recorded in [CHANGELOG.md](CHANGELOG.md).
 ## Relationship to User-Facing Docs
 
 This spec defines the internal behavioral contract. The user-facing documentation lives in
-`packages/docs/` (the Docusaurus site at nadle.dev). When a spec change is significant to
+`packages/docs/` (the documentation site at nadle.dev). When a spec change is significant to
 users — new feature, changed behavior, new CLI flag, breaking change — the corresponding
 user-facing docs should also be updated.
 

@@ -2,14 +2,12 @@ import Url from "node:url";
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { readPathOption } from "./script-options.js";
-
-const outputFile = readPathOption("out") ?? Path.join(__dirname, "..", "docs", "cli-reference.md");
+const outputFile = Path.join(import.meta.dirname, "..", "docs", "cli-reference.md");
 
 // `CLIOptions` is not a public export of the `nadle` package, so we import the
 // source file directly via tsx. The specifier is built at runtime so the docs
 // tsconfig project does not pull `packages/nadle/src/**` across its boundary.
-const cliOptionsPath = Path.join(__dirname, "..", "..", "nadle", "src", "core", "options", "cli-options.ts");
+const cliOptionsPath = Path.join(import.meta.dirname, "..", "..", "nadle", "src", "core", "options", "cli-options.ts");
 
 async function loadCliOptions(): Promise<Record<string, Entry>> {
 	const moduleUrl = Url.pathToFileURL(cliOptionsPath).href;
