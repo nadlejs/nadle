@@ -8,6 +8,15 @@ pnpm exec nadle packages:docs-next:dev        # serve with hot reload
 pnpm exec nadle packages:docs-next:buildSite  # build, then check the output
 ```
 
+Content comes from `packages/docs` through a script, so later edits there can be carried over:
+
+```bash
+pnpm exec nadle packages:docs-next:convertContent   # re-convert pages, blog and sidebar (committed output)
+pnpm exec nadle packages:docs:buildSite             # old site, needed for the two comparisons below
+pnpm -C packages/docs-next exec tsx scripts/diff-urls.ts     # old vs new sitemap URLs
+pnpm -C packages/docs-next exec tsx scripts/diff-anchors.ts  # old heading anchors still present
+```
+
 VitePress runs on vite 5 here (see the `vitepress>vite` override in `pnpm-workspace.yaml`): under the repo-wide
 vite override its build exits 0 but omits the per-page chunks. `scripts/check-chunks.ts` fails the build if a page
 references a JS file that was not emitted.

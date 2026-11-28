@@ -7,6 +7,14 @@ tasks.register("dev", {
 	description: "Serve the documentation site with hot reload"
 });
 
+// The converted pages are committed; run this to refresh them after editing packages/docs.
+tasks.register("convertContent", {
+	run: PnpxTask,
+	group: "Building",
+	options: { command: "tsx", args: "scripts/convert-docusaurus.ts" },
+	description: "Convert the Docusaurus pages, blog and sidebar of packages/docs to VitePress"
+});
+
 tasks.register("bundleSite", {
 	run: PnpxTask,
 	group: "Building",
