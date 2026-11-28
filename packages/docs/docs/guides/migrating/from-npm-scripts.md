@@ -70,6 +70,41 @@ Scripts that just call the package manager (`npm install`, `npm publish`) can us
 `{ run: NpmTask, options: { args: ["publish"] } }`.
 :::
 
+## Flags typed after `pnpm <script>`
+
+Once a script is a nadle invocation, anything you type after the script name is appended to
+that command line, so nadle parses it. With `"test": "nadle test --continue"`:
+
+| You type               | What nadle sees                    | Result                                    |
+| ---------------------- | ---------------------------------- | ----------------------------------------- |
+| `pnpm test --parallel` | `nadle test --continue --parallel` | A nadle option: nadle reads it            |
+| `pnpm test --quick`    | `nadle test --continue --quick`    | Unknown option: nadle exits with an error |
+| `pnpm test quick`      | `nadle test --continue quick`      | `quick` is a task name; not found, exit 3 |
+| `pnpm test -- --quick` | `nadle test --continue -- --quick` | `--quick` is forwarded to the `test` task |
+
+A flag reaches the task only after a bare `--`
+([argument passthrough](../executing-task.md)). Before it, nadle's strict option parsing
+applies, so a misspelled or task-specific flag is rejected rather than ignored. If the script
+itself ends with `--` (`"test": "nadle test --continue --"`), every flag typed after the
+script name is forwarded to the task, and a flag meant for nadle (`--parallel`) is forwarded
+too, so nadle no longer reads it.
+
+Forwarding is the fragile route. Prefer one script per variant, each with its own fixed flags:
+
+```json
+{
+	"scripts": {
+		"test": "nadle test --continue",
+		"test:quick": "nadle test --continue -- --project quick"
+	}
+}
+```
+
+:::note
+Verified with pnpm 11 and the nadle CLI. Other package managers may pass the `--` you type differently;
+this was not checked.
+:::
+
 ## Migrate with an agent
 
 Paste this prompt into your coding agent with both files open:
