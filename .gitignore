@@ -15,21 +15,18 @@ nadle.iml
 **/dist
 **/lib
 __temp__
-.docusaurus
 .vercel
 # legacy cache directory (before v0.6)
 .nadle*
 
 # generated docs
 packages/docs/docs/api
-packages/docs/static/spec
-packages/docs-next/docs/api
-packages/docs-next/public/spec
-packages/docs-next/public/rss.xml
-packages/docs-next/public/llms.txt
-packages/docs-next/public/llms-full.txt
-packages/docs-next/.vitepress/cache
-packages/docs-next/.vitepress/api-sidebar.json
+packages/docs/public/spec
+packages/docs/public/rss.xml
+packages/docs/public/llms.txt
+packages/docs/public/llms-full.txt
+packages/docs/.vitepress/cache
+packages/docs/.vitepress/api-sidebar.json
 
 # bundled vscode extension server
 packages/vscode-extension/server

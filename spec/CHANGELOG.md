@@ -8,6 +8,13 @@ Versioning follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New concept, new section, or materially expanded rules
 - **PATCH**: Clarifications, corrections, wording improvements
 
+## 4.3.2 — 2026-11-28
+
+### Changed
+
+- README: The user-facing documentation site is described without naming the tool that
+  generates it, keeping the spec free of implementation details.
+
 ## 4.3.1 — 2026-11-28
 
 ### Changed

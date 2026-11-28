@@ -115,7 +115,7 @@
 
 - **Docs pages to create**: [e.g., new guide in docs/guides/, new feature page in docs/getting-started/features/]
 - **Docs pages to update**: [e.g., config-reference.md, existing guides that reference changed behavior]
-- **Sidebar update needed**: [Yes/No — if adding new pages, sidebars.ts must be updated]
+- **Sidebar update needed**: [Yes/No — if adding new pages, .vitepress/sidebar.json must be updated]
 
 ## Success Criteria *(mandatory)*
 
