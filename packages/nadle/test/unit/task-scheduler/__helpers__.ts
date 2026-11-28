@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi } from "vite-plus/test";
 
 import { TaskScheduler } from "../../../src/core/engine/task-scheduler.js";
 import { type SchedulerTask, type SchedulerDependencies } from "../../../src/core/engine/scheduler-types.js";

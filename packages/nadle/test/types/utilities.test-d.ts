@@ -1,4 +1,4 @@
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import { MaybeArray, NadleError, type Callback, type Resolver, type Awaitable, type SupportLogLevel } from "nadle";
 
 describe.concurrent("Awaitable", () => {

@@ -1,5 +1,5 @@
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { settle, withFixture, watchSession, createFileModifier } from "setup";
 
 // Windows file-watching is the #420 risk area; start skipped there.

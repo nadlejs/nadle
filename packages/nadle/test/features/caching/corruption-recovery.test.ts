@@ -2,8 +2,8 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
 import { getStdout, withFixture } from "setup";
+import { it, expect, describe } from "vite-plus/test";
 
 const CACHE_TASK_DIR = Path.join("node_modules", ".cache", "nadle", "tasks", "root_bundle-resources");
 

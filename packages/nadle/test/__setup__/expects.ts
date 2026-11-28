@@ -1,4 +1,4 @@
-import { expect } from "vitest";
+import { expect } from "vite-plus/test";
 import type { ResultPromise } from "execa";
 
 import { settle, createSnapshotTemplate } from "./exec.js";

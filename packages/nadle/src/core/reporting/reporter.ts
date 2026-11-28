@@ -4,6 +4,7 @@ import c from "tinyrainbow";
 import { isCI, isTest } from "std-env";
 
 import { Nadle } from "../nadle.js";
+import { workerRows } from "./worker-rows.js";
 import { type ExecutionContext } from "../context.js";
 import { stringify } from "../utilities/stringify.js";
 import { type Listener } from "../interfaces/listener.js";
@@ -11,6 +12,7 @@ import { highlight, formatTime } from "../utilities/utils.js";
 import { FooterRenderer } from "./renderers/footer-renderer.js";
 import { renderProfilingSummary } from "./profiling-summary.js";
 import { DefaultRenderer } from "./renderers/default-renderer.js";
+import { countNonExecuted } from "../engine/failure-classifier.js";
 import { renderFailureCounts, renderSuccessCounts } from "./run-summary.js";
 import { TaskStatus, type RegisteredTask } from "../interfaces/registered-task.js";
 import { type TaskStats, type ExecutionTracker } from "../models/execution-tracker.js";
@@ -47,8 +49,9 @@ export class DefaultReporter implements Listener {
 		const doneTask =
 			this.stats[TaskStatus.Finished] + this.stats[TaskStatus.FromCache] + this.stats[TaskStatus.UpToDate] + this.stats[TaskStatus.Skipped];
 
+		const pending = this.stats[TaskStatus.Scheduled] - this.stats[TaskStatus.Running] - this.stats[TaskStatus.Failed] - doneTask;
 		const stats = [
-			c.cyanBright(`${this.stats[TaskStatus.Scheduled] - this.stats[TaskStatus.Running] - this.stats[TaskStatus.Failed] - doneTask} pending`),
+			c.cyanBright(`${pending} pending`),
 			c.yellow(`${this.stats[TaskStatus.Running]} running`),
 			c.green(`${this.stats[TaskStatus.Finished]} done`)
 		].join(` ${c.gray(VERTICAL_BAR)} `);
@@ -56,28 +59,23 @@ export class DefaultReporter implements Listener {
 		footer.push([this.printLabel("Tasks"), stats, c.dim(`(${this.stats[TaskStatus.Scheduled]} scheduled)`)].join(" "));
 		footer.push([this.printLabel("Duration"), formatTime(this.duration)].join(" "));
 
-		footer.push(...this.printRunningTasks());
+		footer.push(...this.printRunningTasks(pending));
 
 		footer.push("");
 
 		return footer;
 	}
 
-	private printRunningTasks() {
-		const lines = Array.from({ length: this.context.options.maxWorkers }, () => ` ${c.yellow(">")} ${c.dim("IDLE")}`);
-
-		let maxThreadId = 0;
-
-		for (const { label, threadId } of this.tracker.getTaskStateByStatus(TaskStatus.Running)) {
+	private printRunningTasks(pending: number) {
+		const running = this.tracker.getTaskStateByStatus(TaskStatus.Running).map(({ label, threadId }) => {
 			if (threadId === null) {
 				throw new Error(`Task ${label} is running but has no worker ID assigned.`);
 			}
 
-			lines[threadId - 1] = ` ${c.yellow(">")} ${c.bold(label)}`;
-			maxThreadId = Math.max(maxThreadId, threadId);
-		}
+			return { label, threadId };
+		});
 
-		return lines.slice(0, maxThreadId);
+		return workerRows(running, pending).map((label) => ` ${c.yellow(">")} ${label === undefined ? c.dim("IDLE") : c.bold(label)}`);
 	}
 
 	public async onTaskStart(task: RegisteredTask) {
@@ -223,8 +221,10 @@ export class DefaultReporter implements Listener {
 		this.renderer.finish();
 		this.context.logger.info("Execution failed");
 
+		const nonExecuted = countNonExecuted(this.context);
+
 		this.context.logger.log(
-			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${renderFailureCounts(this.stats, this.tracker.notRunCount)})`)}`
+			`\n${c.bold(c.red("RUN FAILED"))} in ${c.bold(formatTime(this.duration))} ${c.dim(`(${renderFailureCounts(this.stats, nonExecuted)})`)}`
 		);
 
 		if (!this.context.options.stacktrace) {

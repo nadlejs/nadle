@@ -1,5 +1,5 @@
 import { raw, config } from "setup";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 describe("ConfigBuilder raw expressions", () => {
 	it("emits a raw config value verbatim instead of JSON-serializing it", () => {

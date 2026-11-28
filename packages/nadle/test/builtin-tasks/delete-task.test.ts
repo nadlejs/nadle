@@ -1,6 +1,6 @@
 import type fixturify from "fixturify";
-import { it, expect, describe } from "vitest";
 import { expectPass, withFixture } from "setup";
+import { it, expect, describe } from "vite-plus/test";
 
 describe("deleteTask", () => {
 	const files: fixturify.DirJSON = {

@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { TaskIdentifier } from "../../src/core/models/task-identifier.js";
 

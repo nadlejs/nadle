@@ -1,7 +1,7 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { expect } from "vitest";
+import { expect } from "vite-plus/test";
 
 import { linkLocalNadle } from "./fs.js";
 import { serialize } from "./serialize.js";

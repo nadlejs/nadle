@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, settle, fixture, readConfig, withGeneratedFixture } from "setup";
 
 interface StructuredError {

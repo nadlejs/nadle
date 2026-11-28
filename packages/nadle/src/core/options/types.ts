@@ -58,6 +58,8 @@ export interface NadleCLIOptions extends NadleBaseOptions {
 	readonly explain?: string;
 	/** Show summary after execution (task durations, critical path, cache-miss hotspots). */
 	readonly summary?: boolean;
+	/** Keep admitting tasks whose dependencies succeeded after another task fails. */
+	readonly continue?: boolean;
 	/** Print the task dependency graph instead of executing. "tree" (default) or "mermaid". */
 	readonly graph?: "tree" | "mermaid";
 

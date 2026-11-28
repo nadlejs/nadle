@@ -1,7 +1,7 @@
 import Path from "node:path";
 
 import { getStdout } from "setup";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { fixture, createExec, fixturesDir, withGeneratedFixture } from "setup";
 
 // TODO: Use --config-paths to extract project path value

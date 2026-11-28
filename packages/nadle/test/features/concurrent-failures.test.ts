@@ -1,5 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, settle, fixture, withGeneratedFixture } from "setup";
 
 // `fast` fails as soon as `slow` is provably Running, while `slow` is still mid-sleep.
@@ -69,8 +69,8 @@ describe("concurrent failures", () => {
 				const { stdout } = await settle(exec`all --reporter agent --max-workers 2`);
 				const output = stripAnsi(stdout);
 
-				// Both leaves fail; `all` never starts, so it is the single not-run task.
-				expect(output).toMatch(/FAILED in .+ \(done 0 failed 2 not-run 1\)/);
+				// Both leaves fail; `all` never starts and both failures are in its closure.
+				expect(output).toMatch(/FAILED in .+ \(done 0 failed 2 blocked 1\)/);
 				expect(output).not.toContain("canceled");
 			}
 		}));

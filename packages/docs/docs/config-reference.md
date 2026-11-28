@@ -50,6 +50,25 @@ This flag allows selectively skipping certain tasks, which is useful when runnin
 Multiple exclusions can be provided either as separate flags (`--exclude lint --exclude test`) or as a comma-separated list (`--exclude lint,test`).
 Whitespace around task names is trimmed automatically.
 
+### `--continue`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Keeps the run going after a task fails.
+Every task whose dependencies all succeeded still runs, however many unrelated tasks failed.
+A task with a failure anywhere in its dependency chain is still skipped, because its inputs were never produced.
+
+The run still fails: the exit code is non-zero and every failure is reported.
+This is the flag for a gate that runs several independent checks - lint, types, tests - and wants a verdict for each of them in a single run instead of one re-run per fix.
+
+```bash
+nadle lint typecheck test --continue
+```
+
+The failed-run summary distinguishes tasks that did not run because a dependency failed (`blocked`) from tasks that were independent of every failure and never got the chance (`not started`).
+A non-zero `not started` count without this flag is exactly the signal that `--continue` would have produced more verdicts in the same run.
+
 ### `--list`
 
 - **Type:** `boolean`

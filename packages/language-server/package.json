@@ -23,15 +23,14 @@
 		"@nadle/project-resolver": "workspace:^",
 		"typescript": "^5.9.3",
 		"vscode-languageserver": "^9.0.1",
-		"vscode-languageserver-textdocument": "^1.0.15"
+		"vscode-languageserver-textdocument": "^1.0.16"
 	},
 	"devDependencies": {
 		"@size-limit/file": "^13.0.3",
-		"@types/node": "^20.19.25",
+		"@types/node": "^22.20.5",
 		"size-limit": "^12.1.0",
 		"std-env": "^3.10.0",
-		"tsup": "^8.5.1",
-		"vitest": "4.0.18"
+		"vite-plus": "catalog:"
 	},
 	"engines": {
 		"node": ">=22"

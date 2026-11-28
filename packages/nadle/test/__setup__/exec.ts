@@ -1,7 +1,7 @@
 import Path from "node:path";
 
-import { expect } from "vitest";
 import stripAnsi from "strip-ansi";
+import { expect } from "vite-plus/test";
 import { execa, type Result, parseCommandString, type ResultPromise, type Options as ExecaOptions } from "execa";
 
 import { serialize } from "./serialize.js";

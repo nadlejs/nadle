@@ -2,7 +2,7 @@ import Path from "node:path";
 
 import stripAnsi from "strip-ansi";
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { raw, config, settle, fixture, withGeneratedFixture } from "setup";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";

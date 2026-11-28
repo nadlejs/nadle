@@ -5,7 +5,7 @@ import Process from "node:process";
 import { execa } from "execa";
 import stripAnsi from "strip-ansi";
 import type fixturify from "fixturify";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { settle, workspaceFixture, withGeneratedFixture } from "setup";
 
 // The integration fixtures `git init` a temp dir that lives inside the already-

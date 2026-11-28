@@ -61,7 +61,11 @@ export class ExecuteHandler extends BaseHandler {
 		const scheduler = this.context.taskScheduler.init(chosenTasks);
 		await this.context.eventEmitter.onTasksScheduled(scheduler.scheduledTask.map((taskId) => this.context.taskRegistry.getTaskById(taskId)));
 
-		await new TaskPool(this.context, (taskId) => scheduler.getReadyTasks(taskId)).run();
+		await new TaskPool(
+			this.context,
+			(taskId) => scheduler.getReadyTasks(taskId),
+			(taskId) => scheduler.markFailed(taskId)
+		).run();
 	}
 
 	private async filterAffected(roots: string[], since: string): Promise<string[]> {

@@ -15,15 +15,22 @@ export function renderSuccessCounts(stats: TaskStats): string {
 		.build();
 }
 
-export function renderFailureCounts(stats: TaskStats, notRun: number): string {
+export interface NonExecutedCounts {
+	readonly blocked: number;
+	readonly notStarted: number;
+}
+
+export function renderFailureCounts(stats: TaskStats, nonExecuted: NonExecutedCounts): string {
 	const skipped = stats[TaskStatus.Skipped];
 	const canceled = stats[TaskStatus.Canceled];
+	const { blocked, notStarted } = nonExecuted;
 
 	return new StringBuilder(", ")
 		.add(`${taskCount(stats[TaskStatus.Finished])} executed`)
 		.add(skipped > 0 && `${taskCount(skipped)} skipped`)
 		.add(`${taskCount(stats[TaskStatus.Failed])} failed`)
 		.add(canceled > 0 && `${taskCount(canceled)} canceled`)
-		.add(notRun > 0 && `${c.bold(notRun)} downstream task${notRun > 1 ? "s" : ""} not run`)
+		.add(blocked > 0 && `${taskCount(blocked)} blocked`)
+		.add(notStarted > 0 && `${taskCount(notStarted)} not started`)
 		.build();
 }

@@ -93,10 +93,11 @@ Key source directories under `packages/nadle/src/`:
 ```bash
 pnpm install                  # Install dependencies
 nadle check build test        # Full CI pipeline (nadle runs itself)
-nadle compile                 # tsgo: compile + type-check kernel, project-resolver, create-nadle, eslint-plugin
-nadle bundle                  # tsup: bundle nadle, language-server, vscode-extension
+nadle compile                 # tsc: compile + type-check kernel, project-resolver, create-nadle, eslint-plugin
+nadle bundle                  # vp pack (tsdown): bundle nadle, language-server, vscode-extension
 nadle build                   # compile + typecheck + bundle (everything tests need)
-nadle testUnit                # All vitest projects (root vitest.config.ts)
+nadle testUnit                # All vitest projects (vp test, root vite.config.ts)
+nadle lint                    # vp check: format check (oxfmt) + lint (oxlint); `nadle format` fixes both
 ```
 
 Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via direnv);
@@ -111,9 +112,9 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 - **ESM only**, target `node22`
 - **TypeScript strict mode**
 - Node built-in imports use **PascalCase default** only: `import Path from "node:path"`
-  (no named/namespace imports from `node:` modules — enforced by eslint)
+  (no named/namespace imports from `node:` modules — enforced by the `lint-rules/` oxlint plugin)
 - **No `process.cwd()`** in core source — use `projectDir` / `workingDir` context instead
-  (enforced by eslint)
+  (enforced by oxlint)
 - **No direct `consola` import** — use the `logger` abstraction
 - Source file limits: max 200 lines, max 50 lines/function, max complexity 10, max 3 params
 - Tests are **integration-first**: spawn CLI via `execa`, assert on stdout with custom matchers
@@ -122,9 +123,10 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 
 ## Build & Release
 
-- **Build**: tsgo (`nadle compile`, root `tsconfig.compile.json`) for unbundled packages;
-  tsup (`nadle bundle`, root `tsup.config.ts`) for nadle (cli/index/worker), language-server,
-  and vscode-extension
+- **Build**: tsc 7 (`nadle compile`, root `tsconfig.compile.json`) for unbundled packages;
+  `vp pack` (`nadle bundle`, `pack` in root `vite.config.ts`) for nadle (cli/index/worker),
+  language-server, and vscode-extension. Linting is oxlint and formatting oxfmt, both configured in
+  `vite.config.ts`; `pnpm install` runs `vp config`, which installs the `.vite-hooks` git hooks
 - **Bundle size limit**: 160 KB (tracked by `size-limit`)
 - **API surface**: Tracked by `@microsoft/api-extractor` → `index.api.md`
 - **Release**: `release-please` for automated changelog + version bumps
@@ -136,13 +138,13 @@ Run `nadle` directly (a local `.envrc` adds `node_modules/.bin` to PATH via dire
 nadle testUnit                                  # All vitest projects
 nadle testUnit -- --project nadle               # Only the nadle suite (passthrough args)
 nadle testUnit -- --project kernel              # Kernel tests
-pnpm exec vitest run --project nadle basic      # Single test file, no task graph
+pnpm exec vp test run --project nadle basic     # Single test file, no task graph
 ```
 
-All test configuration lives in the root `vitest.config.ts` (six projects:
+All test configuration lives in the root `vite.config.ts` (six projects:
 nadle, create-nadle, language-server, kernel, project-resolver, eslint-plugin).
 
-- Framework: **vitest** with thread pool, 20s timeout
+- Framework: **vitest** (bundled with Vite+; tests import from `vite-plus/test`) with thread pool, 20s timeout
 - Retries: 5 on CI, 2 locally
 - Custom matchers in `test/__setup__/matchers/`
 - Type-level tests in `*.test-d.ts` files

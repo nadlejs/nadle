@@ -1,4 +1,4 @@
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import { type Task, defineTask, type TaskFn, type Callback, type Awaitable, type RunnerContext, type DefineTaskParams } from "nadle";
 
 describe.concurrent("defineTask", () => {

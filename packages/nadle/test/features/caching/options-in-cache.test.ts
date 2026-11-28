@@ -1,5 +1,5 @@
 import { isWindows } from "std-env";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { getStdout, createExec, withFixture } from "setup";
 
 describe.skipIf(isWindows).concurrent("task options in cache key", () => {

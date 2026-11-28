@@ -2,10 +2,10 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import { getHover } from "src/hover.js";
-import { it, expect, describe } from "vitest";
 import { analyzeDocument } from "src/analyzer.js";
 import { getDefinition } from "src/definitions.js";
 import { getCompletions } from "src/completions.js";
+import { it, expect, describe } from "vite-plus/test";
 import { computeDiagnostics } from "src/diagnostics.js";
 import type { DocumentAnalysis } from "src/analyzer.js";
 import { DiagnosticSeverity } from "vscode-languageserver";

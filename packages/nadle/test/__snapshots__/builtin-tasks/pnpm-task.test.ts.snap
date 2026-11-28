@@ -17,7 +17,7 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer pass --log-level info
 [info] Scheduled tasks: root:pass
 [log] <Yellow>></Yellow> Task <Bold>pass</BoldDim> <Yellow>STARTED</Yellow>
 
-[info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --pretty
+[info] Running pnpm command: pnpm exec tsc ./src/pass.ts --noEmit --ignoreConfig --pretty
 [info] pnpm command completed successfully.
 [log]
 <Green>✓</Green> Task <Bold>pass</BoldDim> <Green>DONE</Green> <Dim>{duration}</BoldDim>
@@ -56,13 +56,12 @@ Command: /ROOT/lib/cli.js --max-workers 1 --no-footer fail
 
 [log] <Yellow>></Yellow> Task <Bold>fail</BoldDim> <Yellow>STARTED</Yellow>
 
-[log] <BrightRed>error</Reset><BrightBlack> TS6053: </Reset>File 'src/nonexistent.ts' not found.
-  The file is in the program because:
-    Root file specified for compilation
-
+[log] <BrightRed>error</Reset><BrightBlack> TS6053: </Reset>File './src/nonexistent.ts' not found.
+[log]   The file is in the program because:
+[log]     Root file specified for compilation
 [log]
-Found 1 error.
-
+[log] Found 1 error.
+[log]
 [log]
 <Red>×</Red> Task <Bold>fail</BoldDim> <Red>FAILED</Red> {duration}
 [log] <Dim>  ↩ to re-run just this task: nadle fail</BoldDim>

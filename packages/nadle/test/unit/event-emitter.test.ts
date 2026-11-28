@@ -1,4 +1,4 @@
-import { it, vi, expect, describe } from "vitest";
+import { it, vi, expect, describe } from "vite-plus/test";
 
 import { type Listener } from "../../src/core/interfaces/listener.js";
 import { EventEmitter } from "../../src/core/models/event-emitter.js";

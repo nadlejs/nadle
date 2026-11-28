@@ -1,4 +1,4 @@
-import { it, describe, expectTypeOf } from "vitest";
+import { it, describe, expectTypeOf } from "vite-plus/test";
 import { lazy, tasks, CopyTask, PnpmTask, type Task, defineSpec, type TaskSpec } from "nadle";
 
 interface OptionalOptions {

@@ -2,7 +2,7 @@ import Os from "node:os";
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 
 import { discoverProject, resolveCurrentWorkspaceId } from "../src/index.js";
 

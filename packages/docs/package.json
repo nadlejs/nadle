@@ -10,20 +10,20 @@
 		"@docusaurus/plugin-vercel-analytics": "^3.10.2",
 		"@docusaurus/preset-classic": "^3.10.2",
 		"@mdx-js/react": "^3.1.1",
-		"@tailwindcss/postcss": "^4.3.3",
+		"@tailwindcss/postcss": "^4.3.5",
 		"clsx": "^2.0.0",
-		"postcss": "^8.5.28",
+		"postcss": "^8.5.33",
 		"prism-react-renderer": "^2.3.0",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
-		"tailwindcss": "^4.3.3"
+		"tailwindcss": "^4.3.5"
 	},
 	"devDependencies": {
 		"@docusaurus/module-type-aliases": "^3.10.2",
 		"@docusaurus/tsconfig": "^3.10.2",
 		"@docusaurus/types": "^3.10.2",
 		"@signalwire/docusaurus-plugin-llms-txt": "1.2.2",
-		"@types/node": "^20.19.33",
+		"@types/node": "^22.20.5",
 		"glob": "^11.1.0",
 		"spec-md": "^3.1.0",
 		"typescript": "^5.9.3"

@@ -24,9 +24,8 @@
 		"find-up": "^8.0.0"
 	},
 	"devDependencies": {
-		"@types/node": "^20.19.25",
-		"typescript": "^5.9.3",
-		"vitest": "4.0.18"
+		"@types/node": "^22.20.5",
+		"vite-plus": "catalog:"
 	},
 	"engines": {
 		"node": ">=22"

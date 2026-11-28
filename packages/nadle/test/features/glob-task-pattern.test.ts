@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, settle, fixture, getStdout, withGeneratedFixture } from "setup";
 
 const files = fixture().packageJson("glob-pattern").config(config().task("build").task("build-css").task("build-js").task("test")).build();

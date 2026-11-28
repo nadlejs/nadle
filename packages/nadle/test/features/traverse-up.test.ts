@@ -1,6 +1,6 @@
 import Path from "node:path";
 
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { fixture, getStdout, createExec, withGeneratedFixture } from "setup";
 
 const helloTask = 'import { tasks } from "nadle";\n\ntasks.register("hello", () => console.log(`Hello from ${process.cwd()}`));\n';

@@ -1,9 +1,9 @@
 import Path from "node:path";
 import Fs from "node:fs/promises";
 
-import { it, expect, describe } from "vitest";
 import { analyzeDocument } from "src/analyzer.js";
 import { getDefinition } from "src/definitions.js";
+import { it, expect, describe } from "vite-plus/test";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 const fixturesDir = Path.resolve(import.meta.dirname, "__fixtures__");

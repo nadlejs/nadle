@@ -50,8 +50,7 @@ export function defineSpec<Options = void>(spec: TaskSpec<Options>): TaskSpec<Op
 export function defineTask<Options>(params: DefineTaskParams<Options>): Task<Options>;
 
 // @public
-export interface DefineTaskParams<Options> extends Task<Options> {
-}
+export interface DefineTaskParams<Options> extends Task<Options> {}
 
 // @public
 export const DeleteTask: Task<DeleteTaskOptions>;

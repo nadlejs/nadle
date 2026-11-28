@@ -42,6 +42,14 @@ export const CLIOptions = {
 			description: "Run all specified tasks in parallel regardless of their order, while still respecting task dependencies."
 		}
 	},
+	continue: {
+		key: "continue",
+		options: {
+			default: false,
+			type: "boolean",
+			description: "Keep running tasks whose dependencies succeeded after a task fails."
+		}
+	},
 	dryRun: {
 		key: "dry-run",
 		options: {

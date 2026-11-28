@@ -4,6 +4,7 @@ import { EnsureMap } from "../utilities/ensure-map.js";
 import { RIGHT_ARROW } from "../utilities/constants.js";
 import { MaybeArray } from "../utilities/maybe-array.js";
 import { ResolvedTask } from "../interfaces/resolved-task.js";
+import { hasFailureInClosure } from "./failure-classifier.js";
 import { type SchedulerDependencies } from "./scheduler-types.js";
 import { type TaskIdentifier } from "../models/task-identifier.js";
 import { CyclicDependencyError } from "../utilities/nadle-error.js";
@@ -15,13 +16,25 @@ export class TaskScheduler {
 	private readonly transitiveDependencyGraph = new EnsureMap<TaskIdentifier, Set<TaskIdentifier>>(() => new Set());
 	private readonly indegree = new EnsureMap<TaskIdentifier, number>(() => 0);
 	private readonly readyTasks = new Set<TaskIdentifier>();
+	private readonly settledTaskIds = new Set<TaskIdentifier>();
+	private readonly failedTaskIds = new Set<TaskIdentifier>();
 	private readonly implicitEdges = new Set<string>();
 	private readonly rootAggregationDeps = new Map<TaskIdentifier, Set<TaskIdentifier>>();
 	private taskIds: TaskIdentifier[] = [];
 	private excludedTaskIds = new Set<TaskIdentifier>();
-	private mainTaskId: string | undefined = undefined;
+	/**
+	 * Cursor into `taskIds` for the sequential walk, or -1 when there is no current
+	 * main task. A position, not an id: the same task id can be requested twice
+	 * (`nadle build build`), and advancing by looking the id up would park on the
+	 * first occurrence forever. The cursor bounds the walk by `taskIds.length`.
+	 */
+	private mainTaskIndex = -1;
 
 	public constructor(private readonly deps: SchedulerDependencies) {}
+
+	private get mainTaskId(): TaskIdentifier | undefined {
+		return this.mainTaskIndex >= 0 ? this.taskIds[this.mainTaskIndex] : undefined;
+	}
 
 	public init(taskIds: string[] = this.deps.options.tasks.map(({ taskId }) => taskId)): this {
 		this.reset();
@@ -32,8 +45,8 @@ export class TaskScheduler {
 		this.deps.logger.debug({ tag: "Scheduler" }, `transitiveDependencyGraph`, this.transitiveDependencyGraph);
 		this.deps.logger.debug({ tag: "Scheduler" }, `dependencyGraph`, this.dependencyGraph);
 
-		if (!this.deps.options.parallel) {
-			this.mainTaskId = this.taskIds[0];
+		if (!this.deps.options.parallel && this.taskIds.length > 0) {
+			this.mainTaskIndex = 0;
 		}
 
 		return this;
@@ -48,9 +61,11 @@ export class TaskScheduler {
 		this.transitiveDependencyGraph.clear();
 		this.indegree.clear();
 		this.readyTasks.clear();
+		this.settledTaskIds.clear();
+		this.failedTaskIds.clear();
 		this.implicitEdges.clear();
 		this.rootAggregationDeps.clear();
-		this.mainTaskId = undefined;
+		this.mainTaskIndex = -1;
 	}
 
 	private expandWorkspaceTasks(taskIds: string[]): string[] {
@@ -183,6 +198,31 @@ export class TaskScheduler {
 		);
 	}
 
+	public markFailed(taskId: TaskIdentifier): void {
+		this.failedTaskIds.add(taskId);
+	}
+
+	private isAdmissible(taskId: TaskIdentifier): boolean {
+		return !hasFailureInClosure(taskId, this.failedTaskIds, (id) => this.transitiveDependencyGraph.get(id));
+	}
+
+	private isCurrentTreeExhausted(nextReadyTasks: ReadonlySet<TaskIdentifier>): boolean {
+		return this.mainTaskId !== undefined && nextReadyTasks.size === 0 && !this.canProgressInCurrentTree();
+	}
+
+	private canProgressInCurrentTree(): boolean {
+		for (const [taskId, indegree] of this.getIndegreeEntries()) {
+			const isRunning = this.readyTasks.has(taskId) && !this.settledTaskIds.has(taskId) && !this.failedTaskIds.has(taskId);
+			const isPendingAdmission = indegree === 0 && !this.readyTasks.has(taskId) && this.isAdmissible(taskId);
+
+			if (isRunning || isPendingAdmission) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private isBelongToRootTaskTree(taskId: string): boolean {
 		if (!this.mainTaskId || taskId === this.mainTaskId) {
 			return true;
@@ -191,13 +231,7 @@ export class TaskScheduler {
 		return this.transitiveDependencyGraph.get(this.mainTaskId).has(taskId);
 	}
 
-	public getReadyTasks(doneTaskId?: string): Set<string> {
-		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
-
-		if (doneTaskId === undefined) {
-			return this.getInitialReadyTasks();
-		}
-
+	private admitDependents(doneTaskId: TaskIdentifier): Set<TaskIdentifier> {
 		const nextReadyTasks = new Set<TaskIdentifier>();
 
 		for (const dependentTask of this.dependentsGraph.get(doneTaskId)) {
@@ -213,10 +247,32 @@ export class TaskScheduler {
 
 			this.indegree.set(dependentTask, --indegree);
 
-			if (indegree === 0 && this.isBelongToRootTaskTree(dependentTask)) {
+			if (indegree === 0 && this.isBelongToRootTaskTree(dependentTask) && this.isAdmissible(dependentTask)) {
 				nextReadyTasks.add(dependentTask);
 				this.readyTasks.add(dependentTask);
 			}
+		}
+
+		return nextReadyTasks;
+	}
+
+	public getReadyTasks(doneTaskId?: string): Set<string> {
+		this.deps.logger.debug({ tag: "Scheduler" }, `runningRoot = ${this.mainTaskId}, doneTaskId = ${doneTaskId}`);
+
+		if (doneTaskId === undefined) {
+			return this.getInitialReadyTasksAcrossMainTasks();
+		}
+
+		this.settledTaskIds.add(doneTaskId);
+
+		const nextReadyTasks = this.admitDependents(doneTaskId);
+
+		if (this.isCurrentTreeExhausted(nextReadyTasks)) {
+			if (!this.moveToNextMainTask()) {
+				return new Set<string>();
+			}
+
+			return this.getReadyTasks();
 		}
 
 		if (doneTaskId === this.mainTaskId) {
@@ -232,13 +288,29 @@ export class TaskScheduler {
 		return nextReadyTasks;
 	}
 
+	/**
+	 * Walks forward through the sequential main-task list until a tree yields work.
+	 * Under --continue a main task can be entirely inadmissible (a failure in its
+	 * closure); without this the run would stop there instead of reaching the later,
+	 * unaffected trees. In parallel mode there is no main task and this is one pass.
+	 */
+	private getInitialReadyTasksAcrossMainTasks(): Set<TaskIdentifier> {
+		let nextReadyTasks = this.getInitialReadyTasks();
+
+		while (nextReadyTasks.size === 0 && this.mainTaskId !== undefined && this.moveToNextMainTask()) {
+			nextReadyTasks = this.getInitialReadyTasks();
+		}
+
+		return nextReadyTasks;
+	}
+
 	private getInitialReadyTasks() {
 		const nextReadyTasks = new Set<string>();
 
 		for (const [taskId, indegree] of this.getIndegreeEntries()) {
 			this.deps.logger.debug({ tag: "Scheduler" }, `taskId = ${taskId}, indegree = ${indegree}`);
 
-			if (indegree === 0 && !this.readyTasks.has(taskId)) {
+			if (indegree === 0 && !this.readyTasks.has(taskId) && this.isAdmissible(taskId)) {
 				nextReadyTasks.add(taskId);
 				this.readyTasks.add(taskId);
 			}
@@ -249,9 +321,21 @@ export class TaskScheduler {
 		return nextReadyTasks;
 	}
 
-	private moveToNextMainTask() {
-		const nextIndex = this.mainTaskId !== undefined ? this.taskIds.indexOf(this.mainTaskId) + 1 : -1;
-		this.mainTaskId = nextIndex >= 0 ? this.taskIds[nextIndex] : undefined;
+	// Advances the cursor by one position. Returns the new main task id, or undefined
+	// once the list is exhausted — which also stops the walk in
+	// getInitialReadyTasksAcrossMainTasks after at most taskIds.length steps.
+	private moveToNextMainTask(): TaskIdentifier | undefined {
+		if (this.mainTaskIndex < 0 || this.mainTaskIndex >= this.taskIds.length) {
+			this.mainTaskIndex = -1;
+
+			return undefined;
+		}
+
+		this.mainTaskIndex += 1;
+
+		if (this.mainTaskIndex >= this.taskIds.length) {
+			this.mainTaskIndex = -1;
+		}
 
 		return this.mainTaskId;
 	}
