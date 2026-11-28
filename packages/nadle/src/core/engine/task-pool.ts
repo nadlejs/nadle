@@ -28,7 +28,7 @@ export class TaskPool {
 	public constructor(
 		private readonly context: ExecutionContext,
 		private readonly getNextReadyTasks: (taskId?: TaskIdentifier) => Set<TaskIdentifier>,
-		private readonly markFailed: (taskId: TaskIdentifier) => void
+		private readonly outcomes: { markFailed: (taskId: TaskIdentifier) => void; markCanceled: (taskId: TaskIdentifier) => void }
 	) {
 		const { minWorkers, maxWorkers } = this.context.options;
 
@@ -123,6 +123,7 @@ export class TaskPool {
 			this.context.executionTracker.getTaskStatus(task.id) === TaskStatus.Running
 		) {
 			await this.context.eventEmitter.onTaskCanceled(task);
+			this.outcomes.markCanceled(taskId);
 
 			return false;
 		}
@@ -131,7 +132,7 @@ export class TaskPool {
 
 		const failure = toTaskExecutionError(error, task.label);
 		this.failures.push(failure);
-		this.markFailed(taskId);
+		this.outcomes.markFailed(taskId);
 
 		if (!this.context.options.continue) {
 			throw failure;

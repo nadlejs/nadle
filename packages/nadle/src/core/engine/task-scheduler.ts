@@ -202,6 +202,12 @@ export class TaskScheduler {
 		this.failedTaskIds.add(taskId);
 	}
 
+	// Settles without admitting dependents: a terminated task must not advance the walk on
+	// another task's behalf, but it must stop reading as in flight.
+	public markCanceled(taskId: TaskIdentifier): void {
+		this.settledTaskIds.add(taskId);
+	}
+
 	private isAdmissible(taskId: TaskIdentifier): boolean {
 		return !hasFailureInClosure(taskId, this.failedTaskIds, (id) => this.transitiveDependencyGraph.get(id));
 	}
