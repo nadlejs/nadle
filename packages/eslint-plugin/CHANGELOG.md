@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.0.4](https://github.com/nadlejs/nadle/compare/eslint-plugin-nadle/v0.0.3...eslint-plugin-nadle/v0.0.4) (2026-11-28)
+
+
+### Bug Fixes
+
+* Export TaskIdentifier as a type only in the published types ([7f0ea10](https://github.com/nadlejs/nadle/commit/7f0ea10cd50519b0292ed142459d9e35970ea647))
+
+
+### Documentation
+
+* Purge remaining old-API register samples ([bb68b65](https://github.com/nadlejs/nadle/commit/bb68b65fa0c2a874b4dcada067a4e2fe745406ec))
+
+
+### Internal
+
+* **deps:** Bump the minor-updates group across 1 directory with 7 updates ([#616](https://github.com/nadlejs/nadle/issues/616)) ([1d2791d](https://github.com/nadlejs/nadle/commit/1d2791dec488b4df5b7ea3e45877c5dd5f7dcba1))
+* Type against Node 22, the oldest supported version ([bb4b04e](https://github.com/nadlejs/nadle/commit/bb4b04e201266d4f31374f70ed70ae53a34820e4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+
 ## [0.0.3](https://github.com/nadlejs/nadle/compare/eslint-plugin-nadle/v0.0.2...eslint-plugin-nadle/v0.0.3) (2026-06-12)
 
 
