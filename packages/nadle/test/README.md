@@ -86,6 +86,18 @@ expect(() => {
 Creates a configured function for running the nadle CLI. Defaults auto-inject
 `--max-workers 1` and `--no-footer` for deterministic output.
 
+`--max-workers 1` selects `InlineExecutor`, so a command that does not set the flag
+itself exercises none of `PoolExecutor` — no worker threads, no `MessageChannel`, no
+port-based notify. Production defaults to the pool, so a test covering concurrency
+must opt in with `poolWorkers()`; see `test/features/pool-executor.test.ts`.
+
+```typescript
+await exec`build ${poolWorkers()}`; // --max-workers 2
+```
+
+Keep the count at 2: nadle clamps workers to `Os.availableParallelism()`, so a test
+needing more deadlocks on CI runners.
+
 ```typescript
 const exec = createExec({ config: "basic", cwd: "/path/to/fixture" });
 const result = exec`install test --dry-run`;
