@@ -111,7 +111,7 @@ export default defineConfig({
 				alwaysBundle: ["vscode-languageserver", "vscode-languageserver-textdocument", "typescript", "@nadle/kernel", "@nadle/project-resolver"]
 			},
 			banner: {
-				js: "#!/usr/bin/env node\nimport { createRequire } from 'module'; import { fileURLToPath as _banner_fileURLToPath } from 'url'; import { dirname as _banner_dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = _banner_fileURLToPath(import.meta.url); const __dirname = _banner_dirname(__filename);"
+				js: "#!/usr/bin/env node\nimport { createRequire as _banner_createRequire } from 'module'; import { fileURLToPath as _banner_fileURLToPath } from 'url'; import { dirname as _banner_dirname } from 'path'; const require = _banner_createRequire(import.meta.url); const __filename = _banner_fileURLToPath(import.meta.url); const __dirname = _banner_dirname(__filename);"
 			}
 		},
 		typesBuild("language-server", "packages/language-server"),
