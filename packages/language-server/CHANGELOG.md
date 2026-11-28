@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.0.6](https://github.com/nadlejs/nadle/compare/language-server/v0.0.5...language-server/v0.0.6) (2026-11-28)
+
+
+### Bug Fixes
+
+* Export TaskIdentifier as a type only in the published types ([7f0ea10](https://github.com/nadlejs/nadle/commit/7f0ea10cd50519b0292ed142459d9e35970ea647))
+* Start the bundled language server again ([#764](https://github.com/nadlejs/nadle/issues/764)) ([e68fbb8](https://github.com/nadlejs/nadle/commit/e68fbb8069548e5e3eda92c64b93664f4b4eee6d))
+
+
+### Internal
+
+* **deps-dev:** Bump @size-limit/file from 12.1.0 to 13.0.3 ([#710](https://github.com/nadlejs/nadle/issues/710)) ([93082ab](https://github.com/nadlejs/nadle/commit/93082ab81d079b5c004a402da5e85dcfc71f9959))
+* Type against Node 22, the oldest supported version ([bb4b04e](https://github.com/nadlejs/nadle/commit/bb4b04e201266d4f31374f70ed70ae53a34820e4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nadle/kernel bumped to 0.0.3
+    * @nadle/project-resolver bumped to 0.0.4
+
 ## [0.0.5](https://github.com/nadlejs/nadle/compare/language-server/v0.0.4...language-server/v0.0.5) (2026-06-12)
 
 
