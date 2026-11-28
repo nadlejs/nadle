@@ -299,7 +299,7 @@ predicate, which is evaluated once.
 
 A skipped task is reported as `SKIPPED` and counted in the run summary's skipped total.
 
-:::tip
+::: tip
 
 When the configuration itself depends on the environment or other dynamic conditions, wrap
 the whole spec in [`lazy`](./registering-task.md#deferring-the-whole-spec-with-lazy). The

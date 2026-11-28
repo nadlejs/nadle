@@ -14,7 +14,9 @@ Call `configure()` once at the top of your config file before registering any ta
 
 ## Example
 
-```ts title="nadle.config.ts"
+::: code-group
+
+```ts [nadle.config.ts]
 import { configure } from "nadle";
 
 configure({
@@ -25,12 +27,14 @@ configure({
 // Task registrations follow...
 ```
 
+:::
+
 This will:
 
 - Enable the in-progress execution footer
 - Limit concurrency to 3 worker threads
 
-:::note
+::: info Note
 
 If a value is provided both via CLI and via `configure(...)`, the CLI value will take precedence.
 

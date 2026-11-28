@@ -1,9 +1,7 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"include": ["src", "scripts", "docusaurus.config.ts", "sidebars.ts", "nadle.config.ts"],
+	"include": [".vitepress/**/*.ts", "scripts", "blog/*.ts", "nadle.config.ts"],
 	"compilerOptions": {
-		"strict": false,
-		"jsx": "react-jsx",
 		"lib": ["ESNext", "DOM"],
 		"module": "ESNext",
 		"moduleResolution": "Bundler"
