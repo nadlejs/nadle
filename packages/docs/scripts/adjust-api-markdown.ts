@@ -3,7 +3,7 @@ import Fs from "node:fs/promises";
 
 import { glob } from "glob";
 
-const rootDoc = Path.join(__dirname, "..");
+const rootDoc = Path.join(import.meta.dirname, "..");
 
 const apiDocPath = Path.join(rootDoc, "docs", "api");
 const SIDEBAR_FILE = Path.join(rootDoc, ".vitepress", "api-sidebar.json");

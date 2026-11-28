@@ -5,9 +5,9 @@ import Fs from "node:fs/promises";
 const require = Module.createRequire(import.meta.url);
 const specMd: { html: (filepath: string, options?: { head?: string }) => string } = require("spec-md");
 
-const rootDir = Path.resolve(__dirname, "..", "..", "..");
+const rootDir = Path.resolve(import.meta.dirname, "..", "..", "..");
 const specDir = Path.join(rootDir, "spec");
-const outputDir = Path.join(__dirname, "..", "public", "spec");
+const outputDir = Path.join(import.meta.dirname, "..", "public", "spec");
 const tempFile = Path.join(outputDir, "_combined.md");
 const GITHUB_SPEC_URL = "https://github.com/nadlejs/nadle/blob/main/spec";
 
