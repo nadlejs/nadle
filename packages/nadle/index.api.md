@@ -321,6 +321,10 @@ export type SpecArg<Options = void> = TaskSpec<Options>;
 export interface StructuredError {
     readonly errorCode: number;
     readonly errorType: string;
+    readonly failed?: readonly {
+        readonly task: string;
+        readonly repro: string;
+    }[];
     readonly message: string;
     readonly task?: string;
 }
