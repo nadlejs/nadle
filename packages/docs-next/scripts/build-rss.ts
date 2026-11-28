@@ -16,7 +16,7 @@ async function readPosts() {
 			const { frontmatter } = await readPage(Path.join(blogDir, name));
 			const slug = name.replace(/\.md$/, "");
 
-			return { slug, title: frontmatter.title ?? slug, description: frontmatter.description ?? "", date: new Date(frontmatter.date ?? 0) };
+			return { slug, title: frontmatter.title ?? slug, date: new Date(frontmatter.date ?? 0), description: frontmatter.description ?? "" };
 		})
 	);
 

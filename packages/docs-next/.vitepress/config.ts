@@ -1,16 +1,19 @@
+/* eslint-disable perfectionist/sort-objects */
 import Path from "node:path";
-import Fs from "node:fs";
+import Fs from "node:fs/promises";
 
 import { defineConfig, type DefaultTheme } from "vitepress";
 
 import sidebar from "./sidebar.json" with { type: "json" };
 
 /** Written by the prepareAPIMarkdown task; absent until the API pages have been generated. */
-function readApiSidebar(): DefaultTheme.SidebarItem[] {
+async function readApiSidebar(): Promise<DefaultTheme.SidebarItem[]> {
 	const file = Path.join(import.meta.dirname, "api-sidebar.json");
 
-	return Fs.existsSync(file) ? JSON.parse(Fs.readFileSync(file, "utf-8")) : [];
+	return JSON.parse(await Fs.readFile(file, "utf-8").catch(() => "[]"));
 }
+
+const apiSidebar = await readApiSidebar();
 
 /** Docusaurus (github-slugger) anchors: keeps leading dashes and digits, e.g. "--exclude". */
 function docusaurusSlugify(text: string): string {
@@ -30,22 +33,22 @@ const GTAG_ID = "G-GSB7HYN9PC";
 const structuredData = {
 	"@context": "https://schema.org",
 	"@graph": [
-		{ "@type": "WebSite", name: "Nadle", url: SITE_URL },
+		{ name: "Nadle", url: SITE_URL, "@type": "WebSite" },
 		{
-			"@type": "Organization",
 			name: "Nadle",
 			url: SITE_URL,
+			"@type": "Organization",
 			logo: `${SITE_URL}/img/logo.svg`,
 			sameAs: ["https://github.com/nadlejs/nadle"]
 		},
 		{
-			"@type": "SoftwareApplication",
 			name: "Nadle",
 			url: SITE_URL,
-			applicationCategory: "DeveloperApplication",
+			description: SITE_DESCRIPTION,
+			"@type": "SoftwareApplication",
 			operatingSystem: "Cross-platform",
 			offers: { "@type": "Offer", price: "0" },
-			description: SITE_DESCRIPTION
+			applicationCategory: "DeveloperApplication"
 		}
 	]
 };
@@ -60,7 +63,34 @@ export default defineConfig({
 	base: "/",
 	lang: "en",
 	title: "Nadle",
+	// Emits /docs/<page> without an extension, the URL scheme of the Docusaurus site.
+	cleanUrls: true,
 	description: SITE_DESCRIPTION,
+	srcExclude: ["README.md", "scripts/**"],
+	sitemap: { hostname: "https://nadle.dev" },
+	markdown: { anchor: { slugify: docusaurusSlugify } },
+	themeConfig: {
+		logo: "/img/logo.svg",
+		socialLinks: [{ icon: "github", link: "https://github.com/nadlejs/nadle" }],
+		sidebar: [...sidebar, ...apiSidebar],
+		search: { provider: "local" },
+		nav: [
+			{ text: "Docs", link: "/docs/introduction" },
+			{ text: "Blog", link: "/blog/" },
+			{ text: "Spec", link: "/spec/", target: "_self" }
+		]
+	},
+	transformHead({ pageData }) {
+		const { frontmatter, relativePath } = pageData;
+		const keywords: unknown = frontmatter["keywords"];
+		const url = pageUrl(relativePath);
+
+		return [
+			["meta", { name: "keywords", content: Array.isArray(keywords) ? keywords.join(", ") : DEFAULT_KEYWORDS }],
+			["meta", { property: "og:url", content: url }],
+			["link", { rel: "canonical", href: url }]
+		];
+	},
 	head: [
 		["link", { rel: "icon", href: "/img/favicon.ico" }],
 		["link", { rel: "alternate", type: "application/rss+xml", title: "Nadle Blog", href: "/rss.xml" }],
@@ -79,32 +109,5 @@ export default defineConfig({
 		["meta", { property: "og:site_name", content: "Nadle" }],
 		["meta", { property: "og:image", content: SOCIAL_CARD_URL }],
 		["meta", { name: "twitter:image", content: SOCIAL_CARD_URL }]
-	],
-	transformHead({ pageData }) {
-		const { frontmatter, relativePath } = pageData;
-		const keywords: unknown = frontmatter["keywords"];
-		const url = pageUrl(relativePath);
-
-		return [
-			["meta", { name: "keywords", content: Array.isArray(keywords) ? keywords.join(", ") : DEFAULT_KEYWORDS }],
-			["meta", { property: "og:url", content: url }],
-			["link", { rel: "canonical", href: url }]
-		];
-	},
-	// Emits /docs/<page> without an extension, the URL scheme of the Docusaurus site.
-	cleanUrls: true,
-	srcExclude: ["README.md", "scripts/**"],
-	sitemap: { hostname: "https://nadle.dev" },
-	markdown: { anchor: { slugify: docusaurusSlugify } },
-	themeConfig: {
-		logo: "/img/logo.svg",
-		socialLinks: [{ icon: "github", link: "https://github.com/nadlejs/nadle" }],
-		sidebar: [...sidebar, ...readApiSidebar()],
-		search: { provider: "local" },
-		nav: [
-			{ text: "Docs", link: "/docs/introduction" },
-			{ text: "Blog", link: "/blog/" },
-			{ text: "Spec", link: "/spec/", target: "_self" }
-		]
-	}
+	]
 });

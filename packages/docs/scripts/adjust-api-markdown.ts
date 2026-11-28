@@ -18,8 +18,8 @@ const API_URL_PREFIX = "/docs/api";
 interface SidebarItem {
 	text: string;
 	link?: string;
-	items?: SidebarItem[];
 	collapsed?: boolean;
+	items?: SidebarItem[];
 }
 
 const toLabel = (dirName: string) =>
@@ -90,11 +90,14 @@ async function buildSidebarItems(dir: string): Promise<SidebarItem[]> {
 		const url = `${API_URL_PREFIX}/${Path.relative(apiDocPath, path).split(Path.sep).join("/")}`;
 
 		if (entry.isDirectory()) {
-			const hasIndex = await Fs.access(Path.join(path, INDEX_FILE_NAME)).then(() => true, () => false);
+			const hasIndex = await Fs.access(Path.join(path, INDEX_FILE_NAME)).then(
+				() => true,
+				() => false
+			);
 
 			items.push({ collapsed: true, text: toLabel(entry.name), items: await buildSidebarItems(path), ...(hasIndex && { link: `${url}/` }) });
 		} else if (entry.name !== INDEX_FILE_NAME && entry.name.endsWith(".md")) {
-			items.push({ text: entry.name.replace(/\.md$/, ""), link: url.replace(/\.md$/, "") });
+			items.push({ link: url.replace(/\.md$/, ""), text: entry.name.replace(/\.md$/, "") });
 		}
 	}
 

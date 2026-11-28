@@ -20,8 +20,8 @@ tasks.register("generateMarkdownForDocsNext", {
 	group: "Building",
 	dependsOn: ["build"],
 	outputs: [Outputs.dirs("../docs-next/docs/api")],
-	description: "Generate API markdown with typedoc for the VitePress site",
 	inputs: [Inputs.dirs("lib"), Inputs.files("typedoc.json")],
+	description: "Generate API markdown with typedoc for the VitePress site",
 	options: { command: "typedoc", args: ["--out", "../docs-next/docs/api"] }
 });
 

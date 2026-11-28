@@ -5,11 +5,11 @@ import { newBuildDir, oldBuildDir, readSitemapPaths } from "./site-urls.js";
 
 const HEADING_ID = /<h[2-6]\b[^>]*\sid="([^"]+)"/g;
 
-const htmlFile = (buildDir: string, urlPath: string, cleanUrls: boolean) =>
-	Path.join(buildDir, urlPath.endsWith("/") || !cleanUrls ? Path.join(urlPath, "index.html") : `${urlPath}.html`);
+/** A page is either a directory index (the old site) or a clean-URL file, or both kinds exist. */
+const htmlFiles = (buildDir: string, urlPath: string) => [Path.join(buildDir, urlPath, "index.html"), Path.join(buildDir, `${urlPath}.html`)];
 
-async function readAnchors(file: string): Promise<string[] | undefined> {
-	const html = await Fs.readFile(file, "utf-8").catch(() => undefined);
+async function readAnchors(files: string[]): Promise<string[] | undefined> {
+	const html = await Promise.any(files.map((file) => Fs.readFile(file, "utf-8"))).catch(() => undefined);
 
 	return html === undefined ? undefined : [...html.matchAll(HEADING_ID)].map(([, id]) => id);
 }
@@ -19,7 +19,7 @@ let compared = 0;
 const lost: string[] = [];
 
 for (const urlPath of await readSitemapPaths(oldBuildDir)) {
-	const [before, after] = await Promise.all([readAnchors(htmlFile(oldBuildDir, urlPath, false)), readAnchors(htmlFile(newBuildDir, urlPath, true))]);
+	const [before, after] = await Promise.all([readAnchors(htmlFiles(oldBuildDir, urlPath)), readAnchors(htmlFiles(newBuildDir, urlPath))]);
 
 	if (before && after) {
 		compared++;

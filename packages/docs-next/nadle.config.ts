@@ -60,9 +60,9 @@ tasks.register("buildRss", {
 tasks.register("buildLlmsTxt", {
 	run: PnpxTask,
 	group: "Building",
-	description: "Build llms.txt and llms-full.txt from the docs pages",
 	dependsOn: ["prepareAPIMarkdown", "buildCliReference"],
 	options: { command: "tsx", args: "scripts/build-llms.ts" },
+	description: "Build llms.txt and llms-full.txt from the docs pages",
 	outputs: [Outputs.files("public/llms.txt", "public/llms-full.txt")],
 	inputs: [Inputs.dirs("docs"), Inputs.files(".vitepress/sidebar.json", "scripts/build-llms.ts", "scripts/page-source.ts")]
 });
@@ -70,10 +70,10 @@ tasks.register("buildLlmsTxt", {
 tasks.register("bundleSite", {
 	run: PnpxTask,
 	group: "Building",
-	dependsOn: ["prepareAPIMarkdown", "buildSpec", "buildCliReference", "buildRss", "buildLlmsTxt"],
 	outputs: [Outputs.dirs(".vitepress/dist")],
 	options: { args: ["build"], command: "vitepress" },
 	description: "Render the documentation site with VitePress",
+	dependsOn: ["prepareAPIMarkdown", "buildSpec", "buildCliReference", "buildRss", "buildLlmsTxt"],
 	inputs: [Inputs.dirs(".vitepress", "docs", "blog", "public"), Inputs.files("index.md", "../../pnpm-lock.yaml")]
 });
 

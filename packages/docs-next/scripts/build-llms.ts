@@ -67,7 +67,12 @@ async function main() {
 		index.push("");
 	}
 
-	index.push("## Optional", "", `- [Specification](${SPEC_BASE_URL}/spec/): The language-agnostic specification, the single source of truth for Nadle behavior.`, "");
+	index.push(
+		"## Optional",
+		"",
+		`- [Specification](${SPEC_BASE_URL}/spec/): The language-agnostic specification, the single source of truth for Nadle behavior.`,
+		""
+	);
 
 	await Fs.mkdir(Path.join(packageDir, "public"), { recursive: true });
 	await Fs.writeFile(Path.join(packageDir, "public", "llms.txt"), index.join("\n"), "utf-8");

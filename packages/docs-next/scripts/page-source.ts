@@ -4,9 +4,9 @@ import Fs from "node:fs/promises";
 export const SITE_URL = "https://nadle.dev";
 
 export interface Frontmatter {
+	date?: string;
 	title?: string;
 	description?: string;
-	date?: string;
 }
 
 export interface Page {
