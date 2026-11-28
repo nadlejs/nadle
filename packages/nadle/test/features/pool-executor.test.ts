@@ -2,7 +2,7 @@ import Path from "node:path";
 import Fs from "node:fs/promises";
 
 import stripAnsi from "strip-ansi";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe } from "vite-plus/test";
 import { config, settle, fixture, poolWorkers, withGeneratedFixture } from "setup";
 
 import { isPathExists } from "../../src/core/utilities/fs.js";
