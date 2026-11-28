@@ -102,3 +102,26 @@ Goodbye, Nadle!
 
 RUN SUCCESSFUL in 505ms (2 tasks executed)
 ```
+
+## Installing a release minutes after it ships
+
+pnpm applies a `minimumReleaseAge` delay by default (reported for pnpm 12: 24 hours), so a release
+published minutes ago can fail to install. The failure goes away by itself once the release is old
+enough. Until then, either pass `--no-minimum-release-age` or exempt the exact version in
+`pnpm-workspace.yaml`; pnpm offers to add the exemption for you.
+
+```yaml
+minimumReleaseAgeExclude:
+  - nadle@0.6.0
+```
+
+If a follow-up release ships soon after, pnpm appends to the exemption rather than replacing it
+(reported, for example `nadle@0.6.0 || 0.6.1`). Nothing prunes it, so the list grows silently.
+Once the superseded version is past the age threshold, delete its entry. We recommend exempting only the
+exact version you are installing, as above, so each entry is easy to retire; a range has no
+single moment at which it becomes safe to remove.
+
+:::note
+The default delay, the appending behavior, and the `--no-minimum-release-age` flag are
+reported by users, not verified against pnpm's own documentation.
+:::
