@@ -107,8 +107,7 @@ RUN SUCCESSFUL in 505ms (2 tasks executed)
 
 pnpm applies a `minimumReleaseAge` delay by default (reported for pnpm 12: 24 hours), so a release
 published minutes ago can fail to install. The failure goes away by itself once the release is old
-enough. Until then, either pass `--no-minimum-release-age` or exempt the exact version in
-`pnpm-workspace.yaml`; pnpm offers to add the exemption for you.
+enough. Until then, exempt the exact version in `pnpm-workspace.yaml`.
 
 ```yaml
 minimumReleaseAgeExclude:
@@ -122,6 +121,6 @@ exact version you are installing, as above, so each entry is easy to retire; a r
 single moment at which it becomes safe to remove.
 
 :::note
-The default delay, the appending behavior, and the `--no-minimum-release-age` flag are
-reported by users, not verified against pnpm's own documentation.
+The default delay and the appending behavior are reported by users, not verified against
+pnpm's own documentation.
 :::
