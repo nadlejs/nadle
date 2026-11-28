@@ -1,0 +1,132 @@
+[
+	{
+		"link": "/docs/why-nadle",
+		"text": "Why Nadle?"
+	},
+	{
+		"link": "/docs/introduction",
+		"text": "Introduction"
+	},
+	{
+		"collapsed": true,
+		"text": "Getting Started",
+		"items": [
+			{
+				"link": "/docs/getting-started/installation",
+				"text": "Installation"
+			},
+			{
+				"link": "/docs/getting-started/quickstart-for-agents",
+				"text": "Quickstart for Agents"
+			},
+			{
+				"link": "/docs/getting-started/playground",
+				"text": "Playground"
+			},
+			{
+				"collapsed": true,
+				"text": "Features",
+				"items": [
+					{
+						"link": "/docs/getting-started/features/monorepo",
+						"text": "Monorepo Support"
+					},
+					{
+						"link": "/docs/getting-started/features/auto-correction",
+						"text": "Autocorrection"
+					},
+					{
+						"link": "/docs/getting-started/features/editor-support",
+						"text": "Editor Support"
+					}
+				]
+			}
+		]
+	},
+	{
+		"collapsed": true,
+		"text": "Concepts",
+		"items": [
+			{
+				"link": "/docs/concepts/task",
+				"text": "Task"
+			},
+			{
+				"link": "/docs/concepts/workspace",
+				"text": "Workspace"
+			},
+			{
+				"link": "/docs/concepts/plugin",
+				"text": "Plugin"
+			}
+		]
+	},
+	{
+		"collapsed": true,
+		"text": "Guides",
+		"items": [
+			{
+				"link": "/docs/guides/defining-task",
+				"text": "Defining Task"
+			},
+			{
+				"link": "/docs/guides/registering-task",
+				"text": "Registering Task"
+			},
+			{
+				"link": "/docs/guides/configuring-task",
+				"text": "Configuring Task"
+			},
+			{
+				"link": "/docs/guides/executing-task",
+				"text": "Executing Task"
+			},
+			{
+				"link": "/docs/guides/file-operation-tasks",
+				"text": "File Operation Tasks"
+			},
+			{
+				"link": "/docs/guides/authoring-plugin",
+				"text": "Authoring a Plugin"
+			},
+			{
+				"link": "/docs/guides/configuring-nadle",
+				"text": "Configuring Nadle"
+			},
+			{
+				"link": "/docs/guides/eslint-plugin",
+				"text": "ESLint Plugin"
+			},
+			{
+				"collapsed": true,
+				"text": "Migrating",
+				"items": [
+					{
+						"link": "/docs/guides/migrating/from-npm-scripts",
+						"text": "Migrating from npm Scripts"
+					},
+					{
+						"link": "/docs/guides/migrating/from-turborepo",
+						"text": "Migrating from Turborepo"
+					},
+					{
+						"link": "/docs/guides/migrating/from-nx",
+						"text": "Migrating from Nx"
+					},
+					{
+						"link": "/docs/guides/migrating/from-makefile",
+						"text": "Migrating from Make"
+					}
+				]
+			}
+		]
+	},
+	{
+		"link": "/docs/config-reference",
+		"text": "Configuration Reference"
+	},
+	{
+		"link": "/docs/cli-reference",
+		"text": "CLI Reference"
+	}
+]
